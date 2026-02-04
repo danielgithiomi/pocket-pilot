@@ -15,6 +15,11 @@ build
 # expo
 .expo
 
+# compiled output
+/dist
+/node_modules
+/build
+
 # xml
 .xml
 
@@ -22,7 +27,6 @@ build
 .DS_Store
 *.pem
 dist
-*.log
 dist-ssr
 server/dist
 public/dist
@@ -40,10 +44,14 @@ jest/
 .vitest-reports/
 .vitest-attachments/
 
-# debug
+# debug & logs
+logs
+*.log
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
 
 # local env files
 .env
@@ -51,6 +59,10 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# temp directory
+.temp
+.tmp
 
 # turbo
 .turbo
@@ -65,9 +77,27 @@ dist/
 .cursor
 debug/
 
+# Misc
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
 # IDE
 .vscode/
 .idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Tests
+/coverage
+/.nyc_output
 
 # Dependencies
 patches
@@ -76,3 +106,12 @@ patches
 target/
 .run/
 logs/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
