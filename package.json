@@ -29,9 +29,9 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel --no-cache",
     "prisma:studio": "turbo run prisma:studio",
-    "prisma:reset": "turbo run prisma:reset --filter=dev-match-server",
-    "prisma:migrate": "turbo run prisma:migrate --filter=dev-match-server --",
-    "prisma:generate": "turbo run prisma:generate --filter=dev-match-server",
+    "prisma:reset": "turbo run prisma:reset --filter=pocket-pilot-server",
+    "prisma:migrate": "turbo run prisma:migrate --filter=pocket-pilot-server --",
+    "prisma:generate": "turbo run prisma:generate --filter=pocket-pilot-server",
     "check-types": "echo \"Skipping type checking for server\"",
     "clean": "turbo run clean && rimraf node_modules package-lock.json .turbo .expo .cache && npm cache clean --force"
   },
