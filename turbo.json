@@ -1,0 +1,71 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalDependencies": [
+    "package.json",
+    "turbo.json"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        "build/**"
+      ],
+      "inputs": [
+        "src/**",
+        "package.json"
+      ]
+    },
+    "clean": {
+      "cache": false,
+      "outputs": [
+        "dist/**",
+        "build/**"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": []
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "lint": {
+      "cache": false,
+      "outputs": []
+    },
+    "check-types": {
+      "cache": false,
+      "outputs": []
+    },
+    "prisma:migrate": {
+      "cache": false,
+      "persistent": false
+    },
+    "prisma:reset": {
+      "cache": false,
+      "persistent": false
+    },
+    "prisma:generate": {
+      "cache": false,
+      "persistent": false
+    },
+    "prisma:studio": {
+      "cache": false,
+      "persistent": false
+    },
+    "docker:up": {
+      "cache": false,
+      "persistent": false
+    }
+  }
+}

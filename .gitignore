@@ -20,6 +20,9 @@ build
 /node_modules
 /build
 
+# prisma
+server/generated
+
 # xml
 .xml
 
