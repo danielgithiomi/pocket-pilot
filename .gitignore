@@ -1,0 +1,78 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# next.js
+.next/
+.swc/
+out/
+build
+
+# expo
+.expo
+
+# xml
+.xml
+
+# misc
+.DS_Store
+*.pem
+dist
+*.log
+dist-ssr
+server/dist
+public/dist
+
+# caches
+.cache
+jest-cache/
+jest/
+.turbo/cache/
+.expo/
+.expo-shared/
+.expo/cache/
+.vitest/
+.vitest-cache/
+.vitest-reports/
+.vitest-attachments/
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# turbo
+.turbo
+
+# storybook
+*storybook.log
+
+# ignore generated css
+dist/
+
+# cursor
+.cursor
+debug/
+
+# IDE
+.vscode/
+.idea/
+
+# Dependencies
+patches
+
+# Springboot files
+target/
+.run/
+logs/

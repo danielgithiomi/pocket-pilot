@@ -1,0 +1,22 @@
+{
+  "name": "pocket-pilot",
+  "version": "1.0.0",
+  "description": "Navigate your personal finances.",
+  "keywords": [
+    "NestJs",
+    "Angular",
+    "Monorepo",
+    "Full-Stack"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@personal:danielgithiomi/pocket-pilot.git"
+  },
+  "license": "ISC",
+  "author": "danielgithiomi <https://github.com/danielgithiomi>",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
