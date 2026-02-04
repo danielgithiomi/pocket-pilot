@@ -1,0 +1,14 @@
+import {Body, Controller, Post} from '@nestjs/common';
+import { AccountsService } from './accounts.service';
+import {type AccountDto} from "./dtos/account.dto";
+
+@Controller('accounts')
+export class AccountsController {
+  constructor(private readonly accountsService: AccountsService) {}
+
+    @Post()
+    createAccount(@Body() body: AccountDto){
+      return this.accountsService.createAccount(body)
+    }
+
+}
