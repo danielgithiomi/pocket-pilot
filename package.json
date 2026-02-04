@@ -14,9 +14,39 @@
   },
   "license": "ISC",
   "author": "danielgithiomi <https://github.com/danielgithiomi>",
+  "homepage": "https://github.com/danielgithiomi/pocket-pilot#readme",
   "type": "commonjs",
   "main": "index.js",
+  "dependencies": {
+    "husky": "^9.1.7",
+    "rimraf": "^6.0.1",
+    "turbo": "latest"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+    "prepare": "husky",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel --no-cache",
+    "prisma:studio": "turbo run prisma:studio",
+    "prisma:reset": "turbo run prisma:reset --filter=dev-match-server",
+    "prisma:migrate": "turbo run prisma:migrate --filter=dev-match-server --",
+    "prisma:generate": "turbo run prisma:generate --filter=dev-match-server",
+    "check-types": "echo \"Skipping type checking for server\"",
+    "clean": "turbo run clean && rimraf node_modules package-lock.json .turbo .expo .cache && npm cache clean --force"
+  },
+  "lint-staged": {
+    "packages/styles/index.css": [
+      "git add"
+    ],
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write",
+      "vitest related --run"
+    ],
+    "*.{css,md}": [
+      "prettier --write"
+    ]
+  },
+  "packageManager": "npm@11.6.3"
 }
