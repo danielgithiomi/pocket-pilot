@@ -1,6 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { IdentityController } from './identity.controller';
-import { IdentityService } from './identity.service';
+import {Test, TestingModule} from '@nestjs/testing';
+import {IdentityController} from '../controllers/identity.controller';
+import {IdentityService} from '../services/identity.service';
 
 describe('IdentityController', () => {
   let controller: IdentityController;
