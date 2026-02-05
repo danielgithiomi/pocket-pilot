@@ -35,3 +35,8 @@ model Account {
   holder String      @unique
   type   AccountType @default(CURRENT)
 }
+
+model User {
+  id   String @id() @default(uuid())
+  name String @unique
+}
