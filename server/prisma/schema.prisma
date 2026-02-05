@@ -13,8 +13,21 @@ datasource db {
 }
 
 enum AccountType {
+  WALLET
+  BANK
   SAVINGS
+  CREDIT
   CURRENT
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
 }
 
 model Account {
