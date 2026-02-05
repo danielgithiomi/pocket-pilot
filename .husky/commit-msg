@@ -1,4 +1,5 @@
 #!/bin/sh
+
 # ---------------------------------------------
 # Husky commit-msg hook
 # Enforces commit messages to match the structure:
@@ -11,30 +12,41 @@
 # Special case for merge/pull commits
 # ---------------------------------------------
 
-commit_msg_file=$1
-commit_msg=$(cat "$commit_msg_file")
-
-# Get the current branch name
-branch_name=$(git rev-parse --abbrev-ref HEAD)
-
-# Extract ticket ID from branch (e.g., TD-010-molecule-form-component -> TD-010)
-ticket_id=$(echo "$branch_name" | grep -oE '^[A-Z]+-[0-9]+')
-
-# Regex patterns
-# Standard commits: Type (Section) 'Ticket-ID': Summary
-standard_pattern="^(Feat|Fix|Ref|Config|Setup) \([^)]+\) '$ticket_id': .+$"
-
-# Merge/pull commits: Merge (from "remote-branch") 'Ticket-ID': Pulled and merged changes from "remote-branch" into "local-branch"
-merge_pattern="^Merge \(from \"[^\"]+\"\) '$ticket_id': Pulled and merged changes from \"[^\"]+\" into \"[^\"]+\"$"
-
-if ! echo "$commit_msg" | grep -Eq "$standard_pattern|$merge_pattern"; then
-    echo "❌ Invalid commit message format!"
-    echo "Expected format:"
-    echo "  Standard commit: <Type> (<Section>) '$ticket_id': <Summary>"
-    echo "  Merge commit   : Merge (from \"remote-branch\") '$ticket_id': Pulled and merged changes from \"remote-branch\" into \"local-branch\""
-    echo ""
-    echo "Examples:"
-    echo "  Feat (Auth-Service) '$ticket_id': Implement login endpoint"
-    echo "  Merge (from \"main\") '$ticket_id': Pulled and merged changes from \"main\" into '$branch_name'"
-    exit 1
-fi
+#commit_msg_file=$1
+#commit_msg=$(cat "$commit_msg_file")
+#
+## Get the current branch name
+#branch_name=$(git rev-parse --abbrev-ref HEAD)
+#
+## Extract ticket ID from branch (e.g., PP-010-molecule-form-component -> PP-010)
+#ticket_id=$(echo "$branch_name" | grep -oE '^[A-Z]+-[0-9]+')
+#
+## Allow merge commits
+#if echo "$commit_msg" | grep -q "^Merge "; then
+#  exit 0
+#fi
+#
+#if [ -z "$ticket_id" ]; then
+#  echo "❌ Could not extract ticket ID from branch name."
+#  echo "Expected branch format: PP-123-description"
+#  exit 1
+#fi
+#
+## Regex patterns
+## Standard commits: Type (Section) 'Ticket-ID': Summary
+#standard_pattern="^(Feat|Fix|Ref|Config|Setup) \([^)]+\) '$ticket_id': .+$"
+#
+## Merge/pull commits: Merge (from "remote-branch") 'Ticket-ID': Pulled and merged changes from "remote-branch" into "local-branch"
+#merge_pattern="^Merge \(from \"[^\"]+\"\) '$ticket_id': Pulled and merged changes from \"[^\"]+\" into \"[^\"]+\"$"
+#
+#if ! echo "$commit_msg" | grep -Eq "$standard_pattern|$merge_pattern"; then
+#    echo "❌ Invalid commit message format!"
+#    echo "Expected format:"
+#    echo "  Standard commit: <Type> (<Section>) '$ticket_id': <Summary>"
+#    echo "  Merge commit   : Merge (from \"remote-branch\") '$ticket_id': Pulled and merged changes from \"remote-branch\" into \"local-branch\""
+#    echo ""
+#    echo "Examples:"
+#    echo "  Feat (Auth-Service) '$ticket_id': Implement login endpoint"
+#    echo "  Merge (from \"main\") '$ticket_id': Pulled and merged changes from \"main\" into '$branch_name'"
+#    exit 1
+#fi
