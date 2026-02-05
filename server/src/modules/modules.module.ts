@@ -6,5 +6,6 @@ import {DatabaseModule} from "../infrastructure/database/database.module";
   controllers: [],
   providers: [],
   imports: [DatabaseModule, AccountsModule],
+  exports: [DatabaseModule, AccountsModule]
 })
 export class AppModules {}
