@@ -4,8 +4,8 @@ import {type AccountDto} from './dtos/account.dto';
 
 @Controller('accounts')
 export class AccountsController {
-  constructor(private readonly accountsService: AccountsService) {
-  }
+    constructor(private readonly accountsService: AccountsService) {
+    }
 
   @Get()
   getWallets() {
