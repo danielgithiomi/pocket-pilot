@@ -1,14 +1,12 @@
-import {Injectable} from '@nestjs/common';
-import {DatabaseService} from "../../../infrastructure/database/database.service";
-import {UserDto} from "../dto/user.dto";
+import { Injectable } from '@nestjs/common';
+import { DatabaseService } from '../../../infrastructure/database/database.service';
+import { UserDto } from '../dto/user.dto';
 
 @Injectable()
 export class UserService {
-    constructor(private readonly db: DatabaseService) {
-    }
+  constructor(private readonly db: DatabaseService) {}
 
-    createUser(data: UserDto) {
-        return this.db.user.create({data})
-    }
-
+  createUser(data: UserDto) {
+    return this.db.user.create({ data });
+  }
 }
