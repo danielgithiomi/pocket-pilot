@@ -6,7 +6,7 @@ import {IdentityModule} from './identity/identity.module';
 @Module({
   controllers: [],
   providers: [],
-    imports: [DatabaseModule, AccountsModule, IdentityModule],
+  imports: [DatabaseModule, AccountsModule, IdentityModule],
   exports: [DatabaseModule, AccountsModule],
 })
 export class AppModules {}
