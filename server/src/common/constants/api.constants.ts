@@ -8,7 +8,7 @@ export interface ResponseSummary {
 }
 
 // RESPONSE STRUCTURE
-export interface GlobalInterceptor<T> {
+export interface IGlobalInterceptor<T> {
   body: T;
   success: boolean;
   statusCode: number;

@@ -1,5 +1,4 @@
 /* eslint-disable
-  @typescript-eslint/no-unsafe-return,
   @typescript-eslint/no-unsafe-assignment,
   @typescript-eslint/no-unsafe-member-access
 */
@@ -24,15 +23,14 @@ import {
 @Global()
 @Injectable()
 export class GlobalResponseInterceptor<T> implements NestInterceptor<
-    T,
-    GlobalInterceptor<T>
+  T,
+  GlobalInterceptor<T>
 > {
-  constructor(private readonly reflector: Reflector) {
-  }
+  constructor(private readonly reflector: Reflector) {}
 
   intercept(
-      context: ExecutionContext,
-      next: CallHandler,
+    context: ExecutionContext,
+    next: CallHandler,
   ): Observable<GlobalInterceptor<T>> {
     const isRaw = this.reflector.get<boolean>(raw_key, context.getHandler());
 
@@ -45,25 +43,25 @@ export class GlobalResponseInterceptor<T> implements NestInterceptor<
     const response = cxt.getResponse();
 
     const summary = this.reflector.get<ResponseSummary>(
-        summary_key,
-        context.getHandler(),
-    ) ?? {message: 'Operation Successful'};
+      summary_key,
+      context.getHandler(),
+    ) ?? { message: 'Operation Successful' };
 
     return next.handle().pipe(
-        map((body) => ({
-          success: true,
-          statusCode: response.statusCode,
-          body: body ?? {},
-          summary: {
-            message: summary.message,
-            description: summary.description,
-          },
-          metadata: {
-            endpoint: request.url,
-            requestId: randomUUID(),
-            timestamp: new Date().toISOString(),
-          },
-        })),
+      map((body) => ({
+        success: true,
+        statusCode: response.statusCode,
+        body: body ?? {},
+        summary: {
+          message: summary.message,
+          description: summary.description,
+        },
+        metadata: {
+          endpoint: request.url,
+          requestId: randomUUID(),
+          timestamp: new Date().toISOString(),
+        },
+      })),
     );
   }
 }

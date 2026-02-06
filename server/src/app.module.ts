@@ -1,13 +1,11 @@
 import 'dotenv/config';
-import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
-import { AppController } from './app.controller';
-import { AppModules } from './modules/modules.module';
-import { InfrastructureModule } from '@infrastructure/infrastructure.module';
+import {Module} from '@nestjs/common';
+import {AppController} from './app.controller';
+import {APP_MODULE_IMPORTS, APP_MODULE_PROVIDERS} from './app.constants';
 
 @Module({
-  providers: [AppService],
   controllers: [AppController],
-  imports: [InfrastructureModule, AppModules],
+  imports: [...APP_MODULE_IMPORTS],
+  providers: [...APP_MODULE_PROVIDERS],
 })
 export class AppModule {}
