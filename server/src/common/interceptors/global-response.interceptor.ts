@@ -1,4 +1,5 @@
 /* eslint-disable
+  @typescript-eslint/no-unsafe-return,
   @typescript-eslint/no-unsafe-assignment,
   @typescript-eslint/no-unsafe-member-access
 */
@@ -14,7 +15,7 @@ import {randomUUID} from 'crypto';
 import {map} from 'rxjs/operators';
 import {Reflector} from '@nestjs/core';
 import {
-  GlobalInterceptor,
+  IGlobalInterceptor,
   RAW_RESPONSE_REFLECTOR_KEY as raw_key,
   RESPONSE_SUMMARY_REFLECTOR_KEY as summary_key,
   ResponseSummary,
@@ -24,14 +25,14 @@ import {
 @Injectable()
 export class GlobalResponseInterceptor<T> implements NestInterceptor<
   T,
-  GlobalInterceptor<T>
+  IGlobalInterceptor<T>
 > {
   constructor(private readonly reflector: Reflector) {}
 
   intercept(
     context: ExecutionContext,
     next: CallHandler,
-  ): Observable<GlobalInterceptor<T>> {
+  ): Observable<IGlobalInterceptor<T>> {
     const isRaw = this.reflector.get<boolean>(raw_key, context.getHandler());
 
     if (isRaw) {
