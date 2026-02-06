@@ -10,9 +10,26 @@ export interface ResponseSummary {
 // RESPONSE STRUCTURE
 export interface IGlobalInterceptor<T> {
   body: T;
-  success: boolean;
+  success: true;
   statusCode: number;
   summary: ResponseSummary;
+  metadata: {
+    endpoint: string;
+    timestamp: string;
+    requestId: string;
+  };
+}
+
+// EXCEPTION STRUCTURE
+export interface IGlobalExceptionFilter {
+  success: false;
+  statusCode: number;
+  error: {
+    type: string;
+    name?: string;
+    message?: string;
+    details?: unknown;
+  };
   metadata: {
     endpoint: string;
     timestamp: string;
