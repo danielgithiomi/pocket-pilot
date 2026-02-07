@@ -1,9 +1,14 @@
-import {APP_FILTER, APP_INTERCEPTOR} from '@nestjs/core';
-import {AppModules} from './modules/modules.module';
-import {GlobalResponseInterceptor} from '@common/interceptors';
-import {InfrastructureModule} from '@infrastructure/infrastructure.module';
-import {DynamicModule, ForwardReference, Provider, Type,} from '@nestjs/common';
-import {GlobalExceptionFilter} from "@common/exceptions";
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { AppModules } from './modules/modules.module';
+import { GlobalResponseInterceptor } from '@common/interceptors';
+import { InfrastructureModule } from '@infrastructure/infrastructure.module';
+import {
+  DynamicModule,
+  ForwardReference,
+  Provider,
+  Type,
+} from '@nestjs/common';
+import { GlobalExceptionFilter } from '@common/exceptions';
 
 type ModuleImports =
   | Type<any>
@@ -23,6 +28,6 @@ export const APP_MODULE_PROVIDERS: Provider[] = [
   },
   {
     provide: APP_FILTER,
-    useClass: GlobalExceptionFilter
-  }
+    useClass: GlobalExceptionFilter,
+  },
 ];
