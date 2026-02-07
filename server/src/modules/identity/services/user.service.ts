@@ -1,6 +1,6 @@
-import {type RegisterInputDto} from '../dto/user.dto';
-import {HttpCode, HttpStatus, Injectable, Post} from '@nestjs/common';
-import {DatabaseService} from '@infrastructure/database/database.service';
+import { type RegisterInputDto } from '../dto/user.dto';
+import { HttpCode, HttpStatus, Injectable, Post } from '@nestjs/common';
+import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()
 export class UserService {
