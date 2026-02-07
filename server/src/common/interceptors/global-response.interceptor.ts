@@ -9,11 +9,17 @@
  * Global response interceptor intentionally operates on `unknown`
  */
 
-import {CallHandler, ExecutionContext, Global, Injectable, NestInterceptor,} from '@nestjs/common';
-import {Observable} from 'rxjs';
-import {randomUUID} from 'crypto';
-import {map} from 'rxjs/operators';
-import {Reflector} from '@nestjs/core';
+import {
+  CallHandler,
+  ExecutionContext,
+  Global,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { randomUUID } from 'crypto';
+import { map } from 'rxjs/operators';
+import { Reflector } from '@nestjs/core';
 import {
   IGlobalInterceptor,
   RAW_RESPONSE_REFLECTOR_KEY as raw_key,

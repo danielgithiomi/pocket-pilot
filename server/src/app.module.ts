@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import {Module} from '@nestjs/common';
-import {AppController} from './app.controller';
-import {APP_MODULE_IMPORTS, APP_MODULE_PROVIDERS} from './app.constants';
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { APP_MODULE_IMPORTS, APP_MODULE_PROVIDERS } from './app.constants';
 
 @Module({
   controllers: [AppController],
