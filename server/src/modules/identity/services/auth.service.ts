@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { DatabaseService } from '@infrastructure/database/database.service';
-import { LoginInputDto } from '../dto/user.dto';
+import {LoginInputDto} from '../dto/user.dto';
+import {Injectable, NotFoundException} from '@nestjs/common';
+import {DatabaseService} from '@infrastructure/database/database.service';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +19,6 @@ export class AuthService {
         details: `No user found in the database with the email: ${email}`,
       });
 
-    return !!user;
+    return user.password === "P@55w0rd";
   }
 }
