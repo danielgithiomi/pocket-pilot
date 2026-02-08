@@ -3,7 +3,8 @@ import { Summary } from '@common/decorators';
 import { CookiesAuthGuard } from '@common/guards';
 import { User } from '@modules/identity/dto/user.dto';
 import { AccountService } from '../services/account.service';
-import { type CreateAccountDto, Account, GetAccountsResponse } from '../dto/account.dto';
+import { type CreateAccountDto, Account } from '../dto/account.dto';
+import { DeleteResourceResponse, WithCountResponse } from '@common/types';
 import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 
 @Controller('accounts')
@@ -11,14 +12,24 @@ import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nes
 export class AccountController {
     constructor(private readonly accountService: AccountService) {}
 
+    @Get('all')
+    async getAllAccounts(): Promise<WithCountResponse<Account>> {
+        const allAccounts: Account[] = await this.accountService.getAllAccounts();
+
+        return {
+            count: allAccounts.length,
+            data: allAccounts,
+        };
+    }
+
     @Get()
-    async getUserWallets(@Req() req: Request<User>): Promise<GetAccountsResponse> {
+    async getUserAccounts(@Req() req: Request<User>): Promise<WithCountResponse<Account>> {
         const { id }: User = req.user!;
         const userAccounts: Account[] = await this.accountService.getUserAccounts(id!);
 
         return {
             count: userAccounts.length,
-            accounts: userAccounts,
+            data: userAccounts,
         };
     }
 
@@ -29,9 +40,17 @@ export class AccountController {
     }
 
     @Delete(':accountId')
-    @Summary('Delete Successful', 'Deleted the account successfully')
-    deleteAccountById(@Req() req: Request<User>, @Param('accountId') accountId: string) {
+    @Summary('Delete Successful!', 'You have successfully deleted the account.')
+    async deleteAccountById(
+        @Req() req: Request<User>,
+        @Param('accountId') accountId: string,
+    ): Promise<DeleteResourceResponse> {
         const { id: userId }: User = req.user!;
-        return this.accountService.deleteAccountById(userId!, accountId);
+        await this.accountService.deleteAccountById(userId!, accountId);
+
+        return {
+            message: 'Account Deleted',
+            details: `The account with id: {${accountId}} has been deleted successfully.`,
+        };
     }
 }
