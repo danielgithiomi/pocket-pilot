@@ -88,6 +88,7 @@
         "testEnvironment": "node",
         "moduleNameMapper": {
             "@common/(.*)": "<rootDir>/common/$1",
+            "@modules/(.*)": "<rootDir>/modules/$1",
             "@infrastructure/(.*)": "<rootDir>/infrastructure/$1"
         }
     },
