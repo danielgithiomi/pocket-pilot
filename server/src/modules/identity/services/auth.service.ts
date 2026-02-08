@@ -1,15 +1,36 @@
-import { LoginInputDto } from '../dto/user.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { FullUser, LoginInputDto, LoginOutputDto } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+
+interface ValidationResult {
+    isValid: boolean;
+    user: FullUser;
+}
 
 @Injectable()
 export class AuthService {
     constructor(private readonly db: DatabaseService) {}
 
-    async login(data: LoginInputDto): Promise<boolean> {
-        const { email } = data;
+    async login(data: LoginInputDto): Promise<LoginOutputDto> {
+        const { email, password } = data;
 
-        const user = await this.db.user.findUnique({
+        const { isValid, user } = await this.validateUser(email, password);
+
+        if (!isValid)
+            throw new UnauthorizedException({
+                message: 'Invalid credentials',
+                details: `The provided email and password combination is incorrect`,
+            });
+
+        return {
+            user,
+            refresh_token: 'refresh_token',
+            access_token: 'access_token',
+        };
+    }
+
+    private async validateUser(email: string, password: string): Promise<ValidationResult> {
+        const user: FullUser | null = await this.db.user.findUnique({
             where: { email },
         });
 
@@ -19,6 +40,9 @@ export class AuthService {
                 details: `No user found in the database with the email: ${email}`,
             });
 
-        return user.password === 'P@55w0rd';
+        return {
+            isValid: password === 'P@55w0rd',
+            user,
+        };
     }
 }

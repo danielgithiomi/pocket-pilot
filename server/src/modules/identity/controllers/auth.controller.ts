@@ -8,12 +8,6 @@ export class AuthController {
 
     @Post('login')
     async login(@Body() loginDto: LoginInputDto) {
-        return (await this.authService.login(loginDto))
-            ? {
-                  message: 'Login successful',
-              }
-            : {
-                  message: 'Invalid credentials',
-              };
+        return await this.authService.login(loginDto);
     }
 }
