@@ -1,9 +1,9 @@
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { AppModules } from './modules/modules.module';
-import { GlobalResponseInterceptor } from '@common/interceptors';
-import { InfrastructureModule } from '@infrastructure/infrastructure.module';
-import { DynamicModule, ForwardReference, Provider, Type } from '@nestjs/common';
-import { GlobalExceptionFilter } from '@common/exceptions';
+import {AppModules} from './modules/modules.module';
+import {GlobalExceptionFilter} from '@common/exceptions';
+import {APP_FILTER, APP_INTERCEPTOR} from '@nestjs/core';
+import {GlobalResponseInterceptor} from '@common/interceptors';
+import {InfrastructureModule} from '@infrastructure/infrastructure.module';
+import {DynamicModule, ForwardReference, Provider, Type} from '@nestjs/common';
 
 type ModuleImports = Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference<any>;
 
