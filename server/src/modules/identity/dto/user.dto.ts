@@ -2,6 +2,14 @@ import { Prisma } from '@prisma/client';
 
 export type FullUser = Prisma.UserCreateInput;
 
+export interface JWTPayload {
+    id: string;
+    email: string;
+    username: string;
+    iat: number;
+    exp: number;
+}
+
 // INPUT DTOs
 export type LoginInputDto = Pick<FullUser, 'email' | 'password'>;
 export type RegisterInputDto = Pick<FullUser, 'name' | 'email' | 'password'>;
