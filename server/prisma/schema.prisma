@@ -5,40 +5,72 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+    provider = "postgresql"
 }
 
 enum AccountType {
-  WALLET
-  BANK
-  SAVINGS
-  CREDIT
-  CURRENT
+    WALLET
+    BANK
+    SAVINGS
+    CREDIT
+    CURRENT
 }
 
 enum TransactionType {
-  INCOME
-  EXPENSE
+    INCOME
+    EXPENSE
 }
 
 enum CategoryType {
-  INCOME
-  EXPENSE
+    UNASSIGNED
+    HOUSEHOLD
+    GROCERIES
+    TRANSPORTATION
+    ENTERTAINMENT
+    UTILITIES
+    HEALTH
+    EDUCATION
 }
 
 model Account {
-  id     String      @id @default(uuid())
-  holder String      @unique
-  type   AccountType @default(CURRENT)
+    id        String      @id @default(uuid())
+    type      AccountType @default(CURRENT)
+    name      String
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+    balance   Float       @default(0)
+
+    // Link to user - one-to-many
+    holder   User   @relation(fields: [holderId], references: [id])
+    holderId String
+
+    // Link to transaction - one-to-many
+    transactions Transaction[]
 }
 
 model User {
-  id       String @id() @default(uuid())
-  name     String @unique
-  email    String @unique
-  password String
+    id        String   @id() @default(uuid())
+    name      String   @unique
+    email     String   @unique
+    password  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Link to accounts - one-to-many
+    accounts Account[]
+}
+
+model Transaction {
+    id       String          @id() @default(uuid())
+    type     TransactionType
+    amount   Float           @default(0)
+    category CategoryType    @default(UNASSIGNED)
+
+    // Link to account - one-to-many
+    account   Account @relation(fields: [accountId], references: [id])
+    accountId String
 }

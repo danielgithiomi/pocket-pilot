@@ -6,8 +6,8 @@ import { AuthController } from './controllers/auth.controller';
 import { DatabaseModule } from '@infrastructure/database/database.module';
 
 @Module({
-  imports: [DatabaseModule],
-  providers: [UserService, AuthService],
-  controllers: [UserController, AuthController],
+    imports: [DatabaseModule],
+    providers: [UserService, AuthService],
+    controllers: [UserController, AuthController],
 })
 export class IdentityModule {}

@@ -4,10 +4,10 @@ import { Body, Controller, Post } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService) {}
 
-  @Post()
-  registerUser(@Body() user: RegisterInputDto) {
-    return this.userService.registerUser(user);
-  }
+    @Post()
+    registerUser(@Body() user: RegisterInputDto) {
+        return this.userService.registerUser(user);
+    }
 }

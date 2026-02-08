@@ -4,11 +4,11 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly db: DatabaseService) {}
+    constructor(private readonly db: DatabaseService) {}
 
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  registerUser(data: RegisterInputDto) {
-    return this.db.user.create({ data });
-  }
+    @Post()
+    @HttpCode(HttpStatus.CREATED)
+    registerUser(data: RegisterInputDto) {
+        return this.db.user.create({ data });
+    }
 }
