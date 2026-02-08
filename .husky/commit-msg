@@ -34,7 +34,7 @@ fi
 
 # Regex patterns
 # Standard commits: Type (Section) 'Ticket-ID': Summary
-standard_pattern="^(Feat|Fix|Ref|Config|Setup) \([^)]+\) '$ticket_id': .+$"
+standard_pattern="^(Feat|Fix|Ref|Config|Setup|Chore) \([^)]+\) '$ticket_id': .+$"
 
 # Merge/pull commits: Merge (from "remote-branch") 'Ticket-ID': Pulled and merged changes from "remote-branch" into "local-branch"
 merge_pattern="^Merge \(from \"[^\"]+\"\) '$ticket_id': Pulled and merged changes from \"[^\"]+\" into \"[^\"]+\"$"
