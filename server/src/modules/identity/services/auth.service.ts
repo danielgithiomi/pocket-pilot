@@ -1,6 +1,7 @@
-import { FullUser, LoginInputDto, LoginOutputDto } from '../dto/user.dto';
+import { JwtService } from '@nestjs/jwt';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { FullUser, JWTPayload, LoginInputDto, LoginOutputDto } from '../dto/user.dto';
+import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 interface ValidationResult {
     isValid: boolean;
@@ -9,7 +10,10 @@ interface ValidationResult {
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly db: DatabaseService) {}
+    constructor(
+        private readonly db: DatabaseService,
+        private readonly jwtService: JwtService,
+    ) {}
 
     async login(data: LoginInputDto): Promise<LoginOutputDto> {
         const { email, password } = data;
@@ -22,10 +26,31 @@ export class AuthService {
                 details: `The provided email and password combination is incorrect`,
             });
 
+        const payload: JWTPayload = {
+            sub: user.id!,
+            username: user.name,
+            email: user.email,
+            iat: Date.now(),
+        };
+
+        let access_token: string;
+        let refresh_token: string;
+
+        try {
+            access_token = this.jwtService.sign(payload, { expiresIn: '1h' });
+            refresh_token = this.jwtService.sign({ sub: user.id }, { expiresIn: '1d' });
+        } catch (error) {
+            throw new InternalServerErrorException({
+                name: 'JWT Token Generation Error',
+                message: 'Failed to generate tokens',
+                details: `An error occurred while generating the access and refresh tokens: ${error}`,
+            });
+        }
+
         return {
             user,
-            refresh_token: 'refresh_token',
-            access_token: 'access_token',
+            refresh_token,
+            access_token,
         };
     }
 
