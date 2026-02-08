@@ -4,15 +4,15 @@ import { type AccountDto } from './dtos/account.dto';
 
 @Controller('accounts')
 export class AccountsController {
-  constructor(private readonly accountsService: AccountsService) {}
+    constructor(private readonly accountsService: AccountsService) {}
 
-  @Get()
-  getWallets() {
-    return this.accountsService.getAllWallets();
-  }
+    @Get()
+    getWallets() {
+        return this.accountsService.getAllWallets();
+    }
 
-  @Post()
-  createAccount(@Body() body: AccountDto) {
-    return this.accountsService.createAccount(body);
-  }
+    @Post()
+    createAccount(@Body() body: AccountDto) {
+        return this.accountsService.createAccount(body);
+    }
 }

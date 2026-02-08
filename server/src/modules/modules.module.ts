@@ -4,7 +4,7 @@ import { IdentityModule } from './identity/identity.module';
 import { DatabaseModule } from '@infrastructure/database/database.module';
 
 @Module({
-  exports: [AccountsModule, IdentityModule],
-  imports: [DatabaseModule, AccountsModule, IdentityModule],
+    exports: [AccountsModule, IdentityModule],
+    imports: [DatabaseModule, AccountsModule, IdentityModule],
 })
 export class AppModules {}

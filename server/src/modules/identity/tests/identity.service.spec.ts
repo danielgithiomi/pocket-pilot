@@ -3,17 +3,17 @@ import { UserService } from '../services/user.service';
 import { DatabaseService } from '../../../infrastructure/database/database.service';
 
 describe('UserService', () => {
-  let service: UserService;
+    let service: UserService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [UserService, DatabaseService],
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [UserService, DatabaseService],
+        }).compile();
 
-    service = module.get<UserService>(UserService);
-  });
+        service = module.get<UserService>(UserService);
+    });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(service).toBeDefined();
+    });
 });

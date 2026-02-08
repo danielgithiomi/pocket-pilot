@@ -3,17 +3,17 @@ import { AccountsService } from '../accounts.service';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
 describe('AccountsService', () => {
-  let service: AccountsService;
+    let service: AccountsService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [AccountsService, DatabaseService],
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [AccountsService, DatabaseService],
+        }).compile();
 
-    service = module.get<AccountsService>(AccountsService);
-  });
+        service = module.get<AccountsService>(AccountsService);
+    });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(service).toBeDefined();
+    });
 });
