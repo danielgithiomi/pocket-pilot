@@ -31,14 +31,25 @@ enum CategoryType {
 }
 
 model Account {
-  id     String      @id @default(uuid())
-  holder String      @unique
-  type   AccountType @default(CURRENT)
+  id        String      @id @default(uuid())
+  type      AccountType @default(CURRENT)
+  name      String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  // Link to user - one-to-many
+  holder   User?   @relation(fields: [holderId], references: [id])
+  holderId String?
 }
 
 model User {
-  id       String @id() @default(uuid())
-  name     String @unique
-  email    String @unique
-  password String
+  id        String   @id() @default(uuid())
+  name      String   @unique
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Link to accounts - one-to-many
+  accounts Account[]
 }
