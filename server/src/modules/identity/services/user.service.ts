@@ -1,5 +1,6 @@
+import { User } from '../dto/user.dto';
+import { RegisterInputDto } from '../dto/auth.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { User, type RegisterInputDto } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()

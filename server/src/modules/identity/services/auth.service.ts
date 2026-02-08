@@ -1,12 +1,8 @@
 import { JwtService } from '@nestjs/jwt';
+import { FullUser } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { FullUser, JWTPayload, LoginInputDto, LoginOutputDto } from '../dto/user.dto';
+import { JWTPayload, LoginInputDto, LoginOutputDto, ValidationResult } from '../dto/auth.dto';
 import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
-
-interface ValidationResult {
-    isValid: boolean;
-    user: FullUser;
-}
 
 @Injectable()
 export class AuthService {
@@ -55,9 +51,7 @@ export class AuthService {
     }
 
     private async validateUser(email: string, password: string): Promise<ValidationResult> {
-        const user: FullUser | null = await this.db.user.findUnique({
-            where: { email },
-        });
+        const user: FullUser | null = await this.db.user.findUnique({ where: { email } });
 
         if (!user)
             throw new NotFoundException({

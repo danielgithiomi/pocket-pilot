@@ -1,6 +1,6 @@
 import type { Response } from 'express';
 import { Summary } from '@common/decorators';
-import { type LoginInputDto } from '../dto/user.dto';
+import { type LoginInputDto } from '../dto/auth.dto';
 import { AuthService } from '../services/auth.service';
 import { Body, Controller, Post, Res } from '@nestjs/common';
 

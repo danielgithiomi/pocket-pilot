@@ -1,7 +1,8 @@
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { RequestCookies } from '@common/constants';
-import { JWTPayload, User } from '@modules/identity/dto/user.dto';
+import { User } from '@modules/identity/dto/user.dto';
+import { JWTPayload } from '@modules/identity/dto/auth.dto';
 import { UserService } from '@modules/identity/services/user.service';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 
