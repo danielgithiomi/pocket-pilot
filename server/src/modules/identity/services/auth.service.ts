@@ -1,17 +1,57 @@
-import { LoginInputDto } from '../dto/user.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { FullUser } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
+import { JWTPayload, LoginInputDto, LoginOutputDto, ValidationResult } from '../dto/auth.dto';
+import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly db: DatabaseService) {}
+    constructor(
+        private readonly db: DatabaseService,
+        private readonly jwtService: JwtService,
+    ) {}
 
-    async login(data: LoginInputDto): Promise<boolean> {
-        const { email } = data;
+    async login(data: LoginInputDto): Promise<LoginOutputDto> {
+        const { email, password } = data;
 
-        const user = await this.db.user.findUnique({
-            where: { email },
-        });
+        const { isValid, user } = await this.validateUser(email, password);
+
+        if (!isValid)
+            throw new UnauthorizedException({
+                message: 'Invalid credentials',
+                details: `The provided email and password combination is incorrect`,
+            });
+
+        const payload: JWTPayload = {
+            sub: user.id!,
+            username: user.name,
+            email: user.email,
+            iat: Date.now(),
+        };
+
+        let access_token: string;
+        let refresh_token: string;
+
+        try {
+            access_token = this.jwtService.sign(payload, { expiresIn: '1h' });
+            refresh_token = this.jwtService.sign({ sub: user.id }, { expiresIn: '1d' });
+        } catch (error) {
+            throw new InternalServerErrorException({
+                name: 'JWT Token Generation Error',
+                message: 'Failed to generate tokens',
+                details: `An error occurred while generating the access and refresh tokens: ${error}`,
+            });
+        }
+
+        return {
+            user,
+            refresh_token,
+            access_token,
+        };
+    }
+
+    private async validateUser(email: string, password: string): Promise<ValidationResult> {
+        const user: FullUser | null = await this.db.user.findUnique({ where: { email } });
 
         if (!user)
             throw new NotFoundException({
@@ -19,6 +59,9 @@ export class AuthService {
                 details: `No user found in the database with the email: ${email}`,
             });
 
-        return user.password === 'P@55w0rd';
+        return {
+            isValid: password === 'P@55w0rd',
+            user,
+        };
     }
 }

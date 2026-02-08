@@ -1,6 +1,12 @@
 export const RAW_RESPONSE_REFLECTOR_KEY = 'RAW_RESPONSE';
 export const RESPONSE_SUMMARY_REFLECTOR_KEY = 'WRAPPED_RESPONSE';
 
+// TOKENS
+export interface RequestCookies {
+    access_token: string;
+    refresh_token: string;
+}
+
 // RESPONSE SUMMARY
 export interface ResponseSummary {
     message: string;

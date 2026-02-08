@@ -1,6 +1,6 @@
 import { UserService } from '../services/user.service';
-import { type RegisterInputDto } from '../dto/user.dto';
-import { Body, Controller, Post } from '@nestjs/common';
+import { type RegisterInputDto } from '../dto/auth.dto';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
@@ -9,5 +9,10 @@ export class UserController {
     @Post()
     registerUser(@Body() user: RegisterInputDto) {
         return this.userService.registerUser(user);
+    }
+
+    @Get(':userId')
+    findUserById(@Param('userId') userId: string) {
+        return this.userService.findUserById(userId);
     }
 }
