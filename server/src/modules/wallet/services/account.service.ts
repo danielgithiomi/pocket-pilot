@@ -6,6 +6,10 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 export class AccountService {
     constructor(private readonly db: DatabaseService) {}
 
+    getUserAccounts(holderId: string) {
+        return this.db.account.findMany({ where: { holderId } });
+    }
+
     createAccount(data: CreateAccountDto) {
         return this.db.account.create({
             data: {
