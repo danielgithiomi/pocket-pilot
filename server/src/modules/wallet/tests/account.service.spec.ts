@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountService } from '../services/account.service';
-import { DatabaseModule } from '@infrastructure/database/database.module';
 import { describe, beforeEach, it, expect } from '@jest/globals';
+import { DatabaseModule } from '@infrastructure/database/database.module';
 
 describe('AccountService', () => {
     let service: AccountService;

@@ -1,20 +1,19 @@
-import { Observable } from 'rxjs';
-import type { Request } from 'express';
+import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { RequestCookies } from '@common/constants';
 import { JWTPayload, User } from '@modules/identity/dto/user.dto';
 import { UserService } from '@modules/identity/services/user.service';
-import { UnauthorizedException, type CallHandler, type ExecutionContext, type NestInterceptor } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 
-export class AuthTokenInterceptor implements NestInterceptor {
+@Injectable()
+export class CookiesAuthGuard implements CanActivate {
     constructor(
         private readonly jwtService: JwtService,
         private readonly userService: UserService,
     ) {}
 
-    async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
+    async canActivate(context: ExecutionContext): Promise<boolean> {
         const request: Request = context.switchToHttp().getRequest();
-
         const endpoint: string = request.url;
 
         const { access_token, refresh_token } = request.cookies as RequestCookies;
@@ -27,20 +26,16 @@ export class AuthTokenInterceptor implements NestInterceptor {
             });
         }
 
-        console.log('access_token', access_token);
-        console.log('refresh_token', refresh_token);
-
         try {
             const decoded_payload: JWTPayload = this.jwtService.verify(access_token);
-
-            console.log(decoded_payload);
 
             const user: User = await this.userService.findUserById(decoded_payload.sub);
 
             request.user = user;
 
-            return next.handle();
+            return true;
         } catch (error) {
+            console.log(error);
             throw new UnauthorizedException({
                 name: 'JWT Decode Error',
                 message: `Invalid authentication cookies`,
