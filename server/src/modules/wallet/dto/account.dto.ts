@@ -1,3 +1,14 @@
 import { Prisma } from '@prisma/client';
 
-export type CreateAccountDto = Pick<Prisma.AccountCreateInput, 'name'>;
+export type FullAccount = Prisma.AccountCreateInput;
+
+// INPUT
+export type CreateAccountDto = Pick<FullAccount, 'name'>;
+
+// OUTPUT
+export type Account = FullAccount;
+
+export interface GetAccountsResponse {
+    count: number;
+    accounts: Account[];
+}

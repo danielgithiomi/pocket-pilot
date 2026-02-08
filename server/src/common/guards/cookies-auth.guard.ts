@@ -35,7 +35,6 @@ export class CookiesAuthGuard implements CanActivate {
 
             return true;
         } catch (error) {
-            console.log(error);
             throw new UnauthorizedException({
                 name: 'JWT Decode Error',
                 message: `Invalid authentication cookies`,

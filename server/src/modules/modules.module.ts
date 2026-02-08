@@ -1,8 +1,8 @@
+import { JwtModule } from '@nestjs/jwt';
 import { WalletModule } from './wallet/wallet.module';
 import { Module, DynamicModule } from '@nestjs/common';
 import { IdentityModule } from './identity/identity.module';
 import { DatabaseModule } from '@infrastructure/database/database.module';
-import { JwtModule } from '@nestjs/jwt';
 
 const JWTModule: DynamicModule = JwtModule.register({
     global: true,
