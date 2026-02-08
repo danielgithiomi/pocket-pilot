@@ -1,11 +1,19 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Account } from '@prisma/client';
 import { CreateAccountDto } from '../dto/account.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { Account } from '@prisma/client';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class AccountService {
     constructor(private readonly db: DatabaseService) {}
+
+    getAllAccounts(): Promise<Account[]> {
+        return this.db.account.findMany({
+            include: {
+                holder: { select: { id: true, name: true } },
+            },
+        });
+    }
 
     getUserAccounts(holderId: string): Promise<Account[]> {
         return this.db.account.findMany({ where: { holderId } });
