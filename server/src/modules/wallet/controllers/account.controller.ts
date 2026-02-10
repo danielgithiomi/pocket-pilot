@@ -4,7 +4,7 @@ import { Summary, UserInRequest } from '@common/decorators';
 import { AccountService } from '../services/account.service';
 import { DeleteResourceResponse, WithCountResponse } from '@common/types';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { type CreateAccountDto, Account, AccountWithHolder } from '../dto/account.dto';
+import { type CreateAccountDto, Account, AccountWithHolder, AccountWithTransactions } from '../dto/account.dto';
 
 @Controller('accounts')
 @UseGuards(CookiesAuthGuard)
@@ -36,18 +36,18 @@ export class AccountController {
         return this.accountService.getAccountById(user.id!, accountId);
     }
 
-    // @Get(':accountId/all-transactions')
-    // async getAccountAndTransactions(
-    //     @UserInRequest() user: User,
-    //     @Param('accountId') accountId: string,
-    // ): Promise<{ transactionCount: number; data: AccountWithTransactions }> {
-    //     const accountWithTransactions = await this.accountService.getAccountAndTransactions(user.id!, accountId);
+    @Get(':accountId/all-transactions')
+    async getAccountAndTransactions(
+        @UserInRequest() user: User,
+        @Param('accountId') accountId: string,
+    ): Promise<{ transactionCount: number; data: AccountWithTransactions }> {
+        const accountWithTransactions = await this.accountService.getAccountAndTransactions(user.id!, accountId);
 
-    //     return {
-    //         transactionCount: accountWithTransactions.transactions.length,
-    //         data: accountWithTransactions,
-    //     };
-    // }
+        return {
+            transactionCount: accountWithTransactions.transactions.length,
+            data: accountWithTransactions,
+        };
+    }
 
     @Post()
     createAccount(@UserInRequest() user: User, @Body() accountDto: CreateAccountDto): Promise<Account> {
