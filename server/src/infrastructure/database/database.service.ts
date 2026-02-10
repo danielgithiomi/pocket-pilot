@@ -1,9 +1,11 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 
 @Injectable()
 export class DatabaseService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+    private readonly logger = new Logger('DATABASE');
+
     constructor() {
         const adapter = new PrismaPg({
             connectionString: process.env.DATABASE_URL,
@@ -14,13 +16,13 @@ export class DatabaseService extends PrismaClient implements OnModuleInit, OnMod
 
     onModuleInit(): void {
         this.$connect()
-            .then(() => console.log('Database connection established'))
-            .catch((err: any) => console.error('Database connection error:', err));
+            .then(() => this.logger.log('⚙️  Database connection established'))
+            .catch((err: any) => this.logger.error('‼️ Database connection error:', err));
     }
 
     onModuleDestroy(): void {
         this.$disconnect()
-            .then(() => console.log('Database connection closed'))
-            .catch((err: any) => console.error('Database disconnection error:', err));
+            .then(() => this.logger.log('⚙️  Database connection closed'))
+            .catch((err: any) => this.logger.error('‼️ Database disconnection error:', err));
     }
 }
