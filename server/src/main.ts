@@ -33,7 +33,7 @@ async function bootstrap() {
 
 bootstrap()
     .then(() => {
-        logger.log(`🚀 Access URL: http://localhost:${process.env.PORT}`);
+        logger.log(`🚀 Access URL: http://localhost:${process.env.PORT}/api/v1`);
         logger.log(`🚀 Application bootstrapped successfully!`);
     })
     .catch(err => logger.error(`❌ Application failed to bootstrap: ${err}`));
