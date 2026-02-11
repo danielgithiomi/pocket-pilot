@@ -9,7 +9,8 @@
     "Full-Stack"
   ],
   "workspaces": [
-    "./server"
+    "./server",
+    "./frontend/web"
   ],
   "repository": {
     "type": "git",
