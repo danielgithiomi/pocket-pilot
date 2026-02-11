@@ -1,10 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('App')
 export class AppController {
-    @ApiTags('App')
     @Get()
+    @ApiResponse({ status: 200, description: 'You have successfully called the Pocket Pilot API!' })
+    @ApiOperation({ summary: 'Get API root', description: 'Returns a success message if the API is running.' })
     getRoot(): string {
         return 'You have successfully called the Pocket Pilot API!';
     }

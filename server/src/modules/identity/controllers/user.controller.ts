@@ -1,7 +1,7 @@
 import { UserService } from '../services/user.service';
-import { type RegisterInputDto } from '../dto/auth.dto';
+import { CreateUserDto, UserResponseDto } from '../dto/user.dto';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiCookieAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiCookieAuth('access_token')
@@ -10,11 +10,21 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Post()
-    registerUser(@Body() user: RegisterInputDto) {
+    @ApiBody({ type: CreateUserDto })
+    @ApiResponse({ status: 201, description: 'User registered successfully', type: UserResponseDto })
+    @ApiOperation({
+        summary: 'Register a new user',
+        description: 'Creates a new user account with the provided credentials.',
+    })
+    registerUser(@Body() user: CreateUserDto) {
         return this.userService.registerUser(user);
     }
 
     @Get(':userId')
+    @ApiParam({ name: 'userId', description: 'The ID of the user to retrieve' })
+    @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
+    @ApiResponse({ status: 200, description: 'User found successfully', type: UserResponseDto })
+    @ApiOperation({ summary: 'Get user by ID', description: 'Retrieves a user by their unique identifier.' })
     findUserById(@Param('userId') userId: string) {
         return this.userService.findUserById(userId);
     }
