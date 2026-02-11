@@ -3,8 +3,8 @@ import { type User } from '@modules/identity/dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { AccountService } from '../services/account.service';
 import { DeleteResourceResponse, WithCountResponse } from '@common/types';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     Account,
     AccountClass,
@@ -16,6 +16,7 @@ import {
 @ApiTags('Accounts')
 @Controller('accounts')
 @UseGuards(CookiesAuthGuard)
+@ApiCookieAuth('access_token')
 export class AccountController {
     constructor(private readonly accountService: AccountService) {}
 
@@ -30,6 +31,12 @@ export class AccountController {
     }
 
     @ApiOperation({ summary: 'Get User Accounts', description: 'Get all accounts of the logged in user' })
+    @ApiResponse({
+        status: 200,
+        isArray: true,
+        type: AccountClass,
+        description: 'Accounts fetched successfully',
+    })
     @Get()
     async getUserAccounts(@UserInRequest() user: User): Promise<WithCountResponse<Account>> {
         const userAccounts: Account[] = await this.accountService.getUserAccounts(user.id!);
@@ -47,6 +54,12 @@ export class AccountController {
         description: 'The id of the account to be fetched',
     })
     @ApiOperation({ summary: 'Get Account By Id', description: 'Get an account by its id' })
+    @ApiResponse({
+        status: 200,
+        isArray: false,
+        type: AccountClass,
+        description: 'Account fetched successfully',
+    })
     @Get(':accountId')
     getAccountById(@UserInRequest() user: User, @Param('accountId') accountId: string): Promise<Account> {
         return this.accountService.getAccountById(user.id!, accountId);

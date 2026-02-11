@@ -1,5 +1,6 @@
 import type { Response } from 'express';
 import { Summary } from '@common/decorators';
+import { ApiCookieAuth } from '@nestjs/swagger';
 import { type LoginInputDto } from '../dto/auth.dto';
 import { AuthService } from '../services/auth.service';
 import { Body, Controller, Post, Res } from '@nestjs/common';
@@ -20,6 +21,7 @@ export class AuthController {
     }
 
     @Post('logout')
+    @ApiCookieAuth('access_token')
     @Summary('User Logout Successful.', 'The user is logged out and token is cleared from the cookies.')
     logout(@Res({ passthrough: true }) res: Response) {
         res.clearCookie('access_token');
