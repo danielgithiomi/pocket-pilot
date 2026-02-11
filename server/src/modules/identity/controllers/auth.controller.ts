@@ -1,13 +1,14 @@
 import type { Response } from 'express';
+import { MessageResponse } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { LoginInputDto } from './../dto/auth.dto';
+import { plainToInstance } from 'class-transformer';
 import { AuthService } from '../services/auth.service';
 import { type User, UserResponseDto } from '../dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { JWT_ACCESS_TOKEN_VALIDITY_MINUTES, JWT_REFRESH_TOKEN_VALIDITY_DAYS, MessageResponse } from '@common/constants';
-import { plainToInstance } from 'class-transformer';
+import { JWT_ACCESS_TOKEN_VALIDITY_MINUTES, JWT_REFRESH_TOKEN_VALIDITY_DAYS } from '@common/constants';
 
 @Controller('auth')
 export class AuthController {

@@ -5,9 +5,20 @@ export interface WithCountResponse<T> {
     data: T[];
 }
 
-export interface DeleteResourceResponse {
-    message: string;
-    details: string;
+export class MessageResponse {
+    @ApiProperty({ description: 'Message', example: 'User logged out successfully.' })
+    message!: string;
+}
+
+export class DeleteResourceResponse {
+    @ApiProperty({ description: 'Message', example: 'Resource deleted successfully.' })
+    message!: string;
+
+    @ApiProperty({
+        description: 'Details',
+        example: 'The resource with id: {123e4567-e89b-12d3-a456-426614174000} has been deleted successfully.',
+    })
+    details?: string;
 }
 
 export class WithCountResponseClass<T> {

@@ -1,4 +1,5 @@
 import { CookiesAuthGuard } from '@common/guards';
+import { plainToInstance } from 'class-transformer';
 import { DeleteResourceResponse } from '@common/types';
 import { type User } from '@modules/identity/dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
@@ -14,7 +15,6 @@ import {
     UserAccountsResponseDto,
     AccountWithTransactionsResponseDto,
 } from '../dto/account.dto';
-import { plainToInstance } from 'class-transformer';
 
 @ApiTags('Accounts')
 @Controller('accounts')
@@ -97,21 +97,34 @@ export class AccountController {
         };
     }
 
-    @ApiOperation({ summary: 'Create Account', description: 'Create a new account' })
+    @Post()
     @ApiBody({ type: CreateAccountDto })
+    @ApiOperation({ summary: 'Create Account', description: 'Create a new account' })
     @ApiResponse({
         status: 201,
         isArray: false,
         type: Account,
         description: 'Account created successfully',
     })
-    @Post()
     createAccount(@UserInRequest() user: User, @Body() accountDto: CreateAccountDto): Promise<Account> {
         return this.accountService.createAccount(user.id!, accountDto);
     }
 
     @Delete(':accountId')
+    @ApiParam({
+        required: true,
+        name: 'accountId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the account to be deleted.',
+    })
+    @ApiResponse({
+        status: 200,
+        isArray: false,
+        type: DeleteResourceResponse,
+        description: 'Account deleted successfully',
+    })
     @Summary('Delete Successful!', 'You have successfully deleted the account.')
+    @ApiOperation({ summary: 'Delete Account', description: 'Delete an account by its id' })
     async deleteAccountById(
         @UserInRequest() user: User,
         @Param('accountId') accountId: string,
