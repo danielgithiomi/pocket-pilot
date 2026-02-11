@@ -1,15 +1,28 @@
 import type { Response } from 'express';
-import { Summary } from '@common/decorators';
+import { CookiesAuthGuard } from '@common/guards';
 import { LoginInputDto } from './../dto/auth.dto';
-import { UserResponseDto } from '../dto/user.dto';
 import { AuthService } from '../services/auth.service';
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { type User, UserResponseDto } from '../dto/user.dto';
+import { Summary, UserInRequest } from '@common/decorators';
+import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { JWT_ACCESS_TOKEN_VALIDITY_MINUTES, JWT_REFRESH_TOKEN_VALIDITY_DAYS, MessageResponse } from '@common/constants';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
+
+    @Get('me')
+    @UseGuards(CookiesAuthGuard)
+    @ApiCookieAuth('access_token')
+    @ApiResponse({ status: 200, type: UserResponseDto, description: 'Retrieved Logged in user details.' })
+    @ApiOperation({ summary: 'Get user details', description: 'Get the details of the currently logged in user.' })
+    async me(@UserInRequest() user: User): Promise<UserResponseDto> {
+        const userResponse = await this.authService.me(user.id!);
+
+        return plainToInstance(UserResponseDto, userResponse);
+    }
 
     @Post('login')
     @ApiBody({ type: LoginInputDto, required: true })
@@ -28,6 +41,7 @@ export class AuthController {
     }
 
     @Post('logout')
+    @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
     @ApiResponse({ status: 200, description: 'User logged out successfully.', type: MessageResponse })
     @Summary('User Logout Successful.', 'The user is logged out and token is cleared from the cookies.')

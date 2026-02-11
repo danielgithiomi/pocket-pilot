@@ -68,11 +68,11 @@ export type AccountWithHolder = Prisma.AccountGetPayload<{
 @Exclude()
 export class AccountHolder {
     @Expose()
-    @ApiProperty({ example: 'Daniel', description: 'The name of the account holder' })
+    @ApiProperty({ example: 'John Doe', description: 'The name of the account holder' })
     name!: string;
 
     @Expose()
-    @ApiProperty({ example: 'daniel@example.com', description: 'The email of the account holder' })
+    @ApiProperty({ example: 'johndoe@example.com', description: 'The email of the account holder' })
     email!: string;
 }
 
