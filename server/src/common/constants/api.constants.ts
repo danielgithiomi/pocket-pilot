@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export const JWT_REFRESH_TOKEN_VALIDITY_DAYS: number = 7;
 export const JWT_ACCESS_TOKEN_VALIDITY_MINUTES: number = 60;
 
@@ -17,6 +19,11 @@ export interface ResponseSummary {
 }
 
 // RESPONSE STRUCTURE
+export class MessageResponse {
+    @ApiProperty({ description: 'Message', example: 'User logged out successfully.' })
+    message!: string;
+}
+
 export interface IGlobalInterceptor<T> {
     body: T;
     success: true;

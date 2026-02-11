@@ -1,17 +1,24 @@
 import type { Response } from 'express';
 import { Summary } from '@common/decorators';
-import { ApiCookieAuth } from '@nestjs/swagger';
-import { type LoginInputDto } from '../dto/auth.dto';
+import { LoginInputDto } from './../dto/auth.dto';
+import { UserResponseDto } from '../dto/user.dto';
 import { AuthService } from '../services/auth.service';
 import { Body, Controller, Post, Res } from '@nestjs/common';
-import { JWT_ACCESS_TOKEN_VALIDITY_MINUTES, JWT_REFRESH_TOKEN_VALIDITY_DAYS } from '@common/constants';
+import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { JWT_ACCESS_TOKEN_VALIDITY_MINUTES, JWT_REFRESH_TOKEN_VALIDITY_DAYS, MessageResponse } from '@common/constants';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('login')
+    @ApiBody({ type: LoginInputDto, required: true })
+    @ApiResponse({ status: 200, description: 'User logged in successfully.', type: UserResponseDto, isArray: false })
     @Summary('User Login Successful.', 'The user is authenticated and token stored in the cookies.')
+    @ApiOperation({
+        summary: 'User log in',
+        description: 'Log in as a registered user and store the access and refresh tokens in the cookies.',
+    })
     async login(@Body() loginDto: LoginInputDto, @Res({ passthrough: true }) res: Response) {
         const { user, access_token, refresh_token } = await this.authService.login(loginDto);
 
@@ -22,6 +29,7 @@ export class AuthController {
 
     @Post('logout')
     @ApiCookieAuth('access_token')
+    @ApiResponse({ status: 200, description: 'User logged out successfully.', type: MessageResponse })
     @Summary('User Logout Successful.', 'The user is logged out and token is cleared from the cookies.')
     logout(@Res({ passthrough: true }) res: Response) {
         res.clearCookie('access_token');
