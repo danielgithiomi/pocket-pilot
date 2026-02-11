@@ -1,12 +1,17 @@
 {
-  "name": "web",
-  "version": "0.0.0",
+  "name": "pocket-pilot-web",
+  "version": "1.0.0",
+  "author": "danielgithiomi <https://github.com/danielgithiomi>",
+  "description": "This is the pocket-pilot server developed with NestJs.",
+  "private": true,
+  "license": "ISC",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "dev": "ng serve"
   },
   "prettier": {
     "printWidth": 100,
@@ -20,8 +25,6 @@
       }
     ]
   },
-  "private": true,
-  "packageManager": "npm@11.6.3",
   "dependencies": {
     "@angular/common": "^21.1.0",
     "@angular/compiler": "^21.1.0",
@@ -42,5 +45,6 @@
     "tailwindcss": "^4.1.12",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
-  }
+  },
+  "packageManager": "npm@11.6.3"
 }
