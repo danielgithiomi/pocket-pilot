@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
-import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export type FullAccount = Prisma.AccountCreateInput;
@@ -58,7 +58,7 @@ export class Account {
 }
 
 export type AccountWithTransactions = Prisma.AccountGetPayload<{
-    include: { transactions: true };
+    include: { transactions: { select: { id: true; amount: true; type: true } } };
 }>;
 
 export type AccountWithHolder = Prisma.AccountGetPayload<{
@@ -118,6 +118,60 @@ export class AccountWithHolderDto {
     holder!: AccountHolder;
 }
 
+@Exclude()
+export class Transaction {
+    @Expose()
+    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the transaction' })
+    id!: string;
+
+    @Expose()
+    @ApiProperty({ example: 'INCOME', description: 'The type of the transaction' })
+    type!: string;
+
+    @Expose()
+    @ApiProperty({ example: 1000, description: 'The amount of the transaction' })
+    amount!: number;
+
+    // @Expose()
+    // @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'The date of the transaction' })
+    // @Type(() => Date)
+    // date!: Date;
+}
+
+@Exclude()
+export class AccountWithTransactionsDto {
+    @Expose()
+    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the account' })
+    id!: string;
+
+    @Expose()
+    @ApiProperty({ example: 'Savings Account', description: 'The name of the account' })
+    name!: string;
+
+    @Expose()
+    @ApiProperty({ example: 'Savings Account', description: 'The type of the account' })
+    type!: string;
+
+    @Expose()
+    @ApiProperty({ example: 1000, description: 'The balance of the account' })
+    balance!: number;
+
+    @Expose()
+    @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'Creation date of the account' })
+    @Type(() => Date)
+    createdAt!: Date;
+
+    @Expose()
+    @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'Last update date of the account' })
+    @Type(() => Date)
+    updatedAt!: Date;
+
+    @Expose()
+    @ApiProperty({ type: Transaction, isArray: true, description: 'The transactions of the account' })
+    @Type(() => Transaction)
+    transactions!: Transaction[];
+}
+
 // SWAGGER
 @ApiExtraModels(AccountWithHolderDto)
 export class AccountsResponseDto {
@@ -141,4 +195,15 @@ export class UserAccountsResponseDto {
         items: { $ref: getSchemaPath(Account) },
     })
     data!: Account[];
+}
+
+@ApiExtraModels(AccountWithTransactionsDto)
+export class AccountWithTransactionsResponseDto {
+    @ApiProperty({ type: Number, example: 1 })
+    transactionCount!: number;
+
+    @ApiProperty({
+        type: AccountWithTransactionsDto,
+    })
+    data!: AccountWithTransactionsDto;
 }

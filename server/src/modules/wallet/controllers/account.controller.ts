@@ -11,8 +11,8 @@ import {
     AccountWithHolder,
     AccountsResponseDto,
     AccountWithHolderDto,
-    AccountWithTransactions,
     UserAccountsResponseDto,
+    AccountWithTransactionsResponseDto,
 } from '../dto/account.dto';
 import { plainToInstance } from 'class-transformer';
 
@@ -55,39 +55,40 @@ export class AccountController {
         };
     }
 
+    @Get(':accountId')
+    @ApiOperation({ summary: 'Get Account By Id', description: 'Get an account by its id' })
+    @ApiResponse({ status: 200, type: Account, description: 'Account fetched successfully' })
     @ApiParam({
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
         description: 'The id of the account to be fetched',
     })
-    @ApiOperation({ summary: 'Get Account By Id', description: 'Get an account by its id' })
-    @ApiResponse({
-        status: 200,
-        isArray: false,
-        type: Account,
-        description: 'Account fetched successfully',
-    })
-    @Get(':accountId')
     getAccountById(@UserInRequest() user: User, @Param('accountId') accountId: string): Promise<Account> {
         return this.accountService.getAccountById(user.id!, accountId);
     }
 
+    @Get(':accountId/all-transactions')
     @ApiParam({
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to be fetched',
+        description: 'The id of the account to be fetched with its transactions.',
     })
     @ApiOperation({
-        summary: 'Get Account and Transactions',
-        description: 'Get an account and its relevant transactions',
+        summary: 'Get Account and its transactions',
+        description: 'Get an account and all its relevant transactions.',
     })
-    @Get(':accountId/all-transactions')
+    @ApiResponse({
+        status: 200,
+        isArray: false,
+        type: AccountWithTransactionsResponseDto,
+        description: 'Account and transactions fetched successfully.',
+    })
     async getAccountAndTransactions(
         @UserInRequest() user: User,
         @Param('accountId') accountId: string,
-    ): Promise<{ transactionCount: number; data: AccountWithTransactions }> {
+    ): Promise<AccountWithTransactionsResponseDto> {
         const accountWithTransactions = await this.accountService.getAccountAndTransactions(user.id!, accountId);
 
         return {

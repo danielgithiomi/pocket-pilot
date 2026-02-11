@@ -4,7 +4,6 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('users')
-@ApiCookieAuth('access_token')
 @ApiUnauthorizedResponse({ description: 'Authentication required!' })
 export class UserController {
     constructor(private readonly userService: UserService) {}
@@ -21,6 +20,7 @@ export class UserController {
     }
 
     @Get(':userId')
+    @ApiCookieAuth('access_token')
     @ApiParam({ name: 'userId', description: 'The ID of the user to retrieve' })
     @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
     @ApiResponse({ status: 200, description: 'User found successfully', type: UserResponseDto })
