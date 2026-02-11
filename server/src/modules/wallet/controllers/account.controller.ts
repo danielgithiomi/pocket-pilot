@@ -3,9 +3,17 @@ import { type User } from '@modules/identity/dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { AccountService } from '../services/account.service';
 import { DeleteResourceResponse, WithCountResponse } from '@common/types';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { type CreateAccountDto, Account, AccountWithHolder, AccountWithTransactions } from '../dto/account.dto';
+import {
+    Account,
+    AccountClass,
+    CreateAccountDto,
+    AccountWithHolder,
+    AccountWithTransactions,
+} from '../dto/account.dto';
 
+@ApiTags('Accounts')
 @Controller('accounts')
 @UseGuards(CookiesAuthGuard)
 export class AccountController {
@@ -21,6 +29,7 @@ export class AccountController {
         };
     }
 
+    @ApiOperation({ summary: 'Get User Accounts', description: 'Get all accounts of the logged in user' })
     @Get()
     async getUserAccounts(@UserInRequest() user: User): Promise<WithCountResponse<Account>> {
         const userAccounts: Account[] = await this.accountService.getUserAccounts(user.id!);
@@ -31,11 +40,28 @@ export class AccountController {
         };
     }
 
+    @ApiParam({
+        required: true,
+        name: 'accountId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the account to be fetched',
+    })
+    @ApiOperation({ summary: 'Get Account By Id', description: 'Get an account by its id' })
     @Get(':accountId')
     getAccountById(@UserInRequest() user: User, @Param('accountId') accountId: string): Promise<Account> {
         return this.accountService.getAccountById(user.id!, accountId);
     }
 
+    @ApiParam({
+        required: true,
+        name: 'accountId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the account to be fetched',
+    })
+    @ApiOperation({
+        summary: 'Get Account and Transactions',
+        description: 'Get an account and its relevant transactions',
+    })
     @Get(':accountId/all-transactions')
     async getAccountAndTransactions(
         @UserInRequest() user: User,
@@ -49,6 +75,14 @@ export class AccountController {
         };
     }
 
+    @ApiOperation({ summary: 'Create Account', description: 'Create a new account' })
+    @ApiBody({ type: CreateAccountDto })
+    @ApiResponse({
+        status: 201,
+        isArray: false,
+        type: AccountClass,
+        description: 'Account created successfully',
+    })
     @Post()
     createAccount(@UserInRequest() user: User, @Body() accountDto: CreateAccountDto): Promise<Account> {
         return this.accountService.createAccount(user.id!, accountDto);

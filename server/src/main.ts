@@ -2,7 +2,7 @@ import 'dotenv/config.js';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
-import { ConsoleLogger, Logger } from '@nestjs/common';
+import { ConsoleLogger, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
@@ -35,6 +35,13 @@ async function bootstrap() {
 
     app.use(cookieParser());
     app.setGlobalPrefix('api/v1');
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            transform: true,
+            forbidNonWhitelisted: true,
+        }),
+    );
 
     // Swagger Documentation
     const document = SwaggerModule.createDocument(app, SWAGGER_CONFIG);

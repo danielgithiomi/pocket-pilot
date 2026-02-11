@@ -1,9 +1,11 @@
+import { ApiTags } from '@nestjs/swagger';
 import { CookiesAuthGuard } from '@common/guards';
 import { WithCountResponse } from '@common/types';
 import { TransactionService } from '../services/transaction.service';
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { type CreateTransactionDto, type Transaction } from '../dto/transaction.dto';
 
+@ApiTags('Transactions')
 @Controller('accounts')
 @UseGuards(CookiesAuthGuard)
 export class TransactionController {
