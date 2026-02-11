@@ -19,7 +19,10 @@ export class TransactionService {
     async getTransactionsByAccountId(accountId: string): Promise<Transaction[]> {
         await this.confirmWalletExists(accountId);
 
-        return this.db.transaction.findMany({ where: { accountId } });
+        return this.db.transaction.findMany({
+            where: { accountId },
+            select: { id: true, type: true, category: true, amount: true, date: true },
+        });
     }
 
     async createTransactionByAccountId(
@@ -45,6 +48,7 @@ export class TransactionService {
                 accountId,
                 ...transformedDto,
             },
+            select: { id: true, type: true, category: true, amount: true, date: true },
         });
     }
 

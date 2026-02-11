@@ -19,6 +19,10 @@ export class Transaction {
     type!: string;
 
     @Expose()
+    @ApiProperty({ example: 'Groceries', description: 'The type of the transaction' })
+    category!: string;
+
+    @Expose()
     @ApiProperty({ example: 1000, description: 'The amount of the transaction' })
     amount!: number;
 

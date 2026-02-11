@@ -57,6 +57,21 @@ export class TransactionController {
     }
 
     @Post(':accountId/transactions')
+    @ApiOperation({
+        summary: 'Create account transaction',
+        description: 'Create a new transaction for the specific account',
+    })
+    @ApiParam({
+        required: true,
+        name: 'accountId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the account to be updated with the new transaction.',
+    })
+    @ApiResponse({
+        status: 201,
+        type: Transaction,
+        description: 'Returns the created transaction.',
+    })
     createTransactionByAccountId(
         @Param('accountId') accountId: string,
         @Body() createTransactionDto: CreateTransactionDto,
