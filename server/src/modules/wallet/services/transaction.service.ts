@@ -1,22 +1,25 @@
 import { TransactionType } from '@prisma/client';
-import { CreateTransactionDto, Transaction } from '../dto/transaction.dto';
+import { plainToInstance } from 'class-transformer';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { CreateTransactionDto, Transaction, TransactionWithAccount } from '../dto/transaction.dto';
 
 @Injectable()
 export class TransactionService {
     constructor(private readonly db: DatabaseService) {}
 
-    async getAllTransactions(): Promise<Transaction[]> {
-        return this.db.transaction.findMany({});
+    async getAllTransactions(): Promise<TransactionWithAccount[]> {
+        const transactions = await this.db.transaction.findMany({
+            include: { account: { select: { id: true, name: true } } },
+        });
+
+        return plainToInstance(TransactionWithAccount, transactions);
     }
 
     async getTransactionsByAccountId(accountId: string): Promise<Transaction[]> {
         await this.confirmWalletExists(accountId);
 
-        return this.db.transaction.findMany({
-            where: { accountId },
-        });
+        return this.db.transaction.findMany({ where: { accountId } });
     }
 
     async createTransactionByAccountId(

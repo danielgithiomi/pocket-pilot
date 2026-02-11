@@ -92,7 +92,7 @@ export class AccountController {
         const accountWithTransactions = await this.accountService.getAccountAndTransactions(user.id!, accountId);
 
         return {
-            transactionCount: accountWithTransactions.transactions.length,
+            count: accountWithTransactions.transactions.length,
             data: accountWithTransactions,
         };
     }
