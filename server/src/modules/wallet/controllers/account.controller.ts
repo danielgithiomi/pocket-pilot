@@ -1,17 +1,20 @@
 import { CookiesAuthGuard } from '@common/guards';
+import { DeleteResourceResponse } from '@common/types';
 import { type User } from '@modules/identity/dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { AccountService } from '../services/account.service';
-import { DeleteResourceResponse, WithCountResponse } from '@common/types';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     Account,
-    AccountClass,
     CreateAccountDto,
     AccountWithHolder,
+    AccountsResponseDto,
+    AccountWithHolderDto,
     AccountWithTransactions,
+    UserAccountsResponseDto,
 } from '../dto/account.dto';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags('Accounts')
 @Controller('accounts')
@@ -21,24 +24,29 @@ export class AccountController {
     constructor(private readonly accountService: AccountService) {}
 
     @Get('all')
-    async getAllAccounts(): Promise<WithCountResponse<AccountWithHolder>> {
+    @ApiOperation({ summary: 'Retrieve all accounts', description: 'Get all created accounts in the database.' })
+    @ApiResponse({
+        status: 200,
+        type: AccountsResponseDto,
+        description: 'Accounts fetched successfully',
+    })
+    async getAllAccounts(): Promise<AccountsResponseDto> {
         const allAccounts: AccountWithHolder[] = await this.accountService.getAllAccounts();
 
         return {
             count: allAccounts.length,
-            data: allAccounts,
+            data: plainToInstance(AccountWithHolderDto, allAccounts),
         };
     }
 
     @ApiOperation({ summary: 'Get User Accounts', description: 'Get all accounts of the logged in user' })
     @ApiResponse({
         status: 200,
-        isArray: true,
-        type: AccountClass,
+        type: UserAccountsResponseDto,
         description: 'Accounts fetched successfully',
     })
     @Get()
-    async getUserAccounts(@UserInRequest() user: User): Promise<WithCountResponse<Account>> {
+    async getUserAccounts(@UserInRequest() user: User): Promise<UserAccountsResponseDto> {
         const userAccounts: Account[] = await this.accountService.getUserAccounts(user.id!);
 
         return {
@@ -57,7 +65,7 @@ export class AccountController {
     @ApiResponse({
         status: 200,
         isArray: false,
-        type: AccountClass,
+        type: Account,
         description: 'Account fetched successfully',
     })
     @Get(':accountId')
@@ -93,7 +101,7 @@ export class AccountController {
     @ApiResponse({
         status: 201,
         isArray: false,
-        type: AccountClass,
+        type: Account,
         description: 'Account created successfully',
     })
     @Post()

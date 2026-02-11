@@ -1,7 +1,7 @@
 import { Account } from '@prisma/client';
-import { CreateAccountDto, AccountWithHolder, AccountWithTransactions } from '../dto/account.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { CreateAccountDto, AccountWithHolder, AccountWithTransactions } from '../dto/account.dto';
 
 @Injectable()
 export class AccountService {
@@ -9,9 +9,7 @@ export class AccountService {
 
     getAllAccounts(): Promise<AccountWithHolder[]> {
         return this.db.account.findMany({
-            include: {
-                holder: true,
-            },
+            include: { holder: { select: { name: true, email: true } } },
         });
     }
 
@@ -30,9 +28,7 @@ export class AccountService {
 
         const account = await this.db.account.findUnique({
             where: { id: foundAccount.id },
-            include: {
-                transactions: true,
-            },
+            include: { transactions: true },
         });
 
         if (!account) {
@@ -46,12 +42,7 @@ export class AccountService {
     }
 
     createAccount(userId: string, data: CreateAccountDto): Promise<Account> {
-        return this.db.account.create({
-            data: {
-                name: data.name,
-                holderId: userId,
-            },
-        });
+        return this.db.account.create({ data: { name: data.name, holderId: userId } });
     }
 
     async deleteAccountById(userId: string, accountId: string): Promise<Account> {

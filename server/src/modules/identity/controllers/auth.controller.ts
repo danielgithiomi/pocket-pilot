@@ -16,7 +16,7 @@ export class AuthController {
     @ApiResponse({ status: 200, description: 'User logged in successfully.', type: UserResponseDto, isArray: false })
     @Summary('User Login Successful.', 'The user is authenticated and token stored in the cookies.')
     @ApiOperation({
-        summary: 'User log in',
+        summary: 'Log in a registered user',
         description: 'Log in as a registered user and store the access and refresh tokens in the cookies.',
     })
     async login(@Body() loginDto: LoginInputDto, @Res({ passthrough: true }) res: Response) {
@@ -31,6 +31,10 @@ export class AuthController {
     @ApiCookieAuth('access_token')
     @ApiResponse({ status: 200, description: 'User logged out successfully.', type: MessageResponse })
     @Summary('User Logout Successful.', 'The user is logged out and token is cleared from the cookies.')
+    @ApiOperation({
+        summary: 'Log out current user',
+        description: 'Log out the current user and clear the access and refresh tokens from the cookies.',
+    })
     logout(@Res({ passthrough: true }) res: Response) {
         res.clearCookie('access_token');
         res.clearCookie('refresh_token');
