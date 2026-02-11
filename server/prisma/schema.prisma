@@ -69,6 +69,7 @@ model Transaction {
     type     TransactionType
     amount   Float           @default(0)
     category CategoryType    @default(UNASSIGNED)
+    date     DateTime        @default(now())
 
     // Link to account - one-to-many
     account   Account @relation(fields: [accountId], references: [id])

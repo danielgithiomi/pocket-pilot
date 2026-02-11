@@ -11,6 +11,18 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
+    async me(userId: string): Promise<FullUser> {
+        const user: FullUser | null = await this.db.user.findUnique({ where: { id: userId } });
+
+        if (!user)
+            throw new NotFoundException({
+                message: 'User not found',
+                details: `No user found in the database with the ID: ${userId}`,
+            });
+
+        return user;
+    }
+
     async login(data: LoginInputDto): Promise<LoginOutputDto> {
         const { email, password } = data;
 

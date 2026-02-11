@@ -22,4 +22,8 @@ export class UserService {
 
         return user;
     }
+
+    deleteUserById(userId: string) {
+        return this.db.user.delete({ where: { id: userId } });
+    }
 }

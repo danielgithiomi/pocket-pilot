@@ -1,4 +1,6 @@
 import { FullUser } from './user.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export interface ValidationResult {
     isValid: boolean;
@@ -19,5 +21,17 @@ export interface JWTPayload {
 }
 
 // INPUT DTOs
-export type LoginInputDto = Pick<FullUser, 'email' | 'password'>;
+export class LoginInputDto {
+    @IsString()
+    @IsNotEmpty()
+    @IsEmail()
+    @ApiProperty({ example: 'user@example.com' })
+    email!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ example: 'P@55w0rd' })
+    password!: string;
+}
+
 export type RegisterInputDto = Pick<FullUser, 'name' | 'email' | 'password'>;
