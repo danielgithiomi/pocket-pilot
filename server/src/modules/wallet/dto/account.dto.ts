@@ -132,10 +132,10 @@ export class Transaction {
     @ApiProperty({ example: 1000, description: 'The amount of the transaction' })
     amount!: number;
 
-    // @Expose()
-    // @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'The date of the transaction' })
-    // @Type(() => Date)
-    // date!: Date;
+    @Expose()
+    @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'The date of the transaction' })
+    @Type(() => Date)
+    date!: Date;
 }
 
 @Exclude()

@@ -29,7 +29,7 @@ export class AccountService {
 
         const account = await this.db.account.findUnique({
             where: { id: foundAccount.id },
-            include: { transactions: { select: { id: true, amount: true, type: true } } },
+            include: { transactions: { select: { id: true, amount: true, type: true, date: true } } },
         });
 
         if (!account) {
