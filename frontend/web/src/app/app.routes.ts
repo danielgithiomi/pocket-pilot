@@ -1,3 +1,20 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
+import {Home} from './pages/home/home';
+import {Login} from './pages/auth/login/login';
+import {Register} from './pages/auth/register/register';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  {
+    path: '/',
+    component: Home
+  },
+  {
+    path: '/auth',
+    component: Login
+  },
+  {
+    path: '**',
+    redirectTo: '/',
+    component: Register
+  }
+];
