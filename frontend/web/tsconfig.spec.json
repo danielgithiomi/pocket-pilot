@@ -8,6 +8,7 @@
       "vitest/globals"
     ]
   },
+  "files": [],
   "include": [
     "src/**/*.d.ts",
     "src/**/*.spec.ts"
