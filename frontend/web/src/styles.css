@@ -79,4 +79,7 @@ main {
 }
 
 @layer utilities {
+  .daniel {
+    @apply bg-red-600;
+  }
 }
