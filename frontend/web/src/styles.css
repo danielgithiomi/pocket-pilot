@@ -1,6 +1,57 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/geist_mono/GeistMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/geist_mono/GeistMono-Medium.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/geist_mono/GeistMono-Bold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: block;
+}
 
 :root {
+  /* Base Colors */
+  --color-primary: #5235ef;
+  --color-secondary: #8771ff;
+  --color-transparent: transparent;
+
+  /* Dark */
+  --color-dark: #101011;
+  --color-black: #000000;
+  --color-gray1: #2b2b2c;
+  --color-gray2: #606266;
+
+  /* Light */
+  --color-gray3: #a7a7a7;
+  --color-gray4: #d9d9d9;
+  --color-white: #ffffff;
+  --color-image-bg: #F0F2F6;
+  --color-alternate-white: #f0f2f6;
+
+  /* Style Variables */
+  --body-background: var(--color-white);
+  --color-primaryText: var(--color-dark);
+  --inverted-background: var(--color-dark);
+  --color-invertedText: var(--color-white);
+  --color-alternateText: var(--color-gray1);
+  --alternate-background: var(--color-gray3);
+
   --bright-blue: oklch(51.01% 0.274 263.83);
   --electric-violet: oklch(53.18% 0.28 296.97);
   --french-violet: oklch(47.66% 0.246 305.88);
@@ -24,21 +75,58 @@
 
   --pill-accent: var(--bright-blue);
 
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  --font-family: "Geist Mono", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
   Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
   "Segoe UI Symbol";
-  box-sizing: border-box;
+  --box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+
+  --color-body-background: var(--body-background);
+  --color-alternate-background: var(--alternate-background);
+  --color-inverted-background: var(--inverted-background);
+  --color-primary-text: var(--color-primary-text);
+  --color-alternate-text: var(--color-alternate-text);
+  --color-inverted-text: var(--color-inverted-text);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --body-background: var(--color-white);
+    --alternate-background: var(--color-alternate-white);
+    --inverted-background: var(--color-dark);
+    --color-primary-text: var(--color-dark);
+    --color-inverted-text: var(--color-white);
+    --color-alternate-text: var(--color-gray1);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --body-background: var(--color-dark);
+    --alternate-background: var(--color-gray1);
+    --inverted-background: var(--color-alternate-white);
+    --color-primary-text: var(--color-white);
+    --color-inverted-text: var(--color-black);
+    --color-alternate-text: var(--color-gray4);
+  }
 }
 
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: var(--box-sizing);
 }
 
 body {
+  font-family: 'Geist Mono', monospace;
   background-image: radial-gradient(circle at 50% 50%, #ffffff 0%, #f3f4f6 100%);
 }
 
