@@ -17,7 +17,9 @@
     "baseUrl": "./",
     "paths": {
       "@pages/*": ["src/app/pages/*"],
+      "@types/*": ["src/app/libs/types/*"],
       "@components/*": ["src/app/components/*"],
+      "@constants/*": ["src/app/libs/constants/*"],
       "@layouts/*": ["src/app/components/layouts/*"],
     }
   },

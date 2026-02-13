@@ -5,7 +5,21 @@
     </div>
 
     <div id="content">
-      <p>Content</p>
+      <img alt="app-logo" height="50" ngSrc="/images/branding/logo.png" width="50"/>
+
+      <div class="flex flex-col gap-8 text-balance">
+        <h1 class="text-white">Pocket Pilot</h1>
+
+        <p>Take control of your finances with intuitive tracking, instant insights, and easy-to-manage accounts.</p>
+
+        <ul>
+          @for (feature of features; track feature.id) {
+            <auth-feature [feature]="feature.name"></auth-feature>
+          }
+        </ul>
+      </div>
+
+      <p class="text-gray-500 text-sm">Copyright &copy; {{ year() }}. All Rights Reserved.</p>
     </div>
   </div>
 
