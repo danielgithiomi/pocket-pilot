@@ -47,14 +47,23 @@ main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
   box-sizing: inherit;
   position: relative;
 }
 
 @layer base {
+  /* HEADER START */
+  header {
+    @apply w-full bg-(----electric-violet) inset-0 h-[8vh] flex items-center;
+  }
+  /* HEADER END */
+
+  /* SECTION START */
+  section {
+    @apply w-full flex flex-col;
+  }
+  /* SECTION END */
+
   /* HEADINGS START */
   h1 {
     font-size: 3.125rem;
@@ -70,8 +79,7 @@ main {
   /* HEADINGS END */
 
   p {
-    margin: 0;
-    color: var(--gray-700);
+    @apply m-0 text-white;
   }
 }
 
