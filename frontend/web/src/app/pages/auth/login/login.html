@@ -1,1 +1,55 @@
-<p>login works!</p>
+<section class="flex flex-row min-h-screen" id="login">
+
+  <div id="branding">
+    <div id="background">
+    </div>
+
+    <div id="content">
+      <img alt="app-logo" height="50" ngSrc="/images/branding/logo.png" width="50"/>
+
+      <div class="flex flex-col gap-8 text-balance">
+        <h1>Pocket Pilot</h1>
+
+        <p>Take control of your finances with intuitive tracking, instant insights, and easy-to-manage accounts.</p>
+
+        <ul class="flex flex-col gap-2">
+          @for (feature of features; track feature.id) {
+            <auth-feature [feature]="feature.name"></auth-feature>
+          }
+        </ul>
+      </div>
+
+      <p class="text-muted-text text-sm">Copyright &copy; {{ year() }}. All Rights Reserved.</p>
+    </div>
+  </div>
+
+  <div id="form">
+
+    <div class="flex flex-col items-start w-3/4">
+
+      <div class="space-y-4">
+        <h3>Welcome Back</h3>
+        <p>Sign in to your account to continue</p>
+      </div>
+
+      <div class="flex flex-row items-center gap-6 w-full text-sm my-10">
+        <hr />
+        <p class="text-muted-text capitalize">Secure Login</p>
+        <hr />
+      </div>
+
+      <div class="two-factor-card">
+        <div></div>
+
+        <div class="space-y-2">
+          <p>Protected by two-factor authentication</p>
+          <p class="text-muted-text">Your account security is our priority. You may be asked to verify your identity.</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
