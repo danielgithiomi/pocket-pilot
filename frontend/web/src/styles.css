@@ -2,24 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
 
 @font-face {
-  font-family: "Geist Mono";
-  src: url("/assets/fonts/geist_mono/GeistMono-Regular.ttf") format("truetype");
+  font-family: Geist Mono;
+  src: url("./assets/fonts/geist_mono/GeistMono-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: block;
 }
 
 @font-face {
-  font-family: "Geist Mono";
-  src: url("/assets/fonts/geist_mono/GeistMono-Medium.ttf") format("truetype");
+  font-family: Geist Mono;
+  src: url("./assets/fonts/geist_mono/GeistMono-Medium.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
   font-display: block;
 }
 
 @font-face {
-  font-family: "Geist Mono";
-  src: url("/assets/fonts/geist_mono/GeistMono-Bold.ttf") format("truetype");
+  font-family: Geist Mono;
+  src: url("./assets/fonts/geist_mono/GeistMono-Bold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
   font-display: block;
@@ -75,7 +75,7 @@
 
   --pill-accent: var(--bright-blue);
 
-  --font-family: "Geist Mono", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  --font-family: Geist Mono, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
   Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
   "Segoe UI Symbol";
   --box-sizing: border-box;
@@ -126,7 +126,7 @@
 }
 
 body {
-  font-family: 'Geist Mono', monospace;
+  font-family: var(--font-family);
   background-image: radial-gradient(circle at 50% 50%, #ffffff 0%, #f3f4f6 100%);
 }
 
@@ -154,15 +154,11 @@ main {
 
   /* HEADINGS START */
   h1 {
-    font-size: 3.125rem;
-    color: var(--gray-900);
-    font-weight: 500;
-    line-height: 100%;
-    letter-spacing: -0.125rem;
+    @apply tracking-wider;
     margin: 0;
-    font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
+    font-weight: 600;
+    line-height: 100%;
+    font-size: 3.125rem;
   }
   /* HEADINGS END */
 

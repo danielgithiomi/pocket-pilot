@@ -1,14 +1,14 @@
-import {Home} from '@pages/home/home';
-import {Routes} from '@angular/router';
-import {Auth} from '@pages/auth/auth/auth';
-import {Login} from '@pages/auth/login/login';
-import {Register} from '@pages/auth/register/register';
-import {NotFound} from '@pages/shared/not-found/not-found';
+import { Home } from '@pages/home/home';
+import { Routes } from '@angular/router';
+import { Auth } from '@pages/auth/auth/auth';
+import { Login } from '@pages/auth/login/login';
+import { Register } from '@pages/auth/register/register';
+import { NotFound } from '@pages/shared/not-found/not-found';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Home
+    component: Home,
   },
   {
     path: 'auth',
@@ -16,20 +16,16 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        component: Login
+        component: Login,
       },
       {
         path: 'register',
-        component: Register
-      }
-    ]
-  },
-  {
-    path: 'register',
-    component: Register
+        component: Register,
+      },
+    ],
   },
   {
     path: '**',
-    component: NotFound
-  }
+    component: NotFound,
+  },
 ];
