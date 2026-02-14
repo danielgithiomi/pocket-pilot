@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
 
 @font-face {
   font-family: Geist Mono;
@@ -51,6 +50,7 @@
   --color-invertedText: var(--color-white);
   --color-alternateText: var(--color-gray1);
   --alternate-background: var(--color-gray3);
+  --color-muted-text: var(--color-gray2);
 
   --bright-blue: oklch(51.01% 0.274 263.83);
   --electric-violet: oklch(53.18% 0.28 296.97);
@@ -93,6 +93,7 @@
   --color-primary-text: var(--color-primary-text);
   --color-alternate-text: var(--color-alternate-text);
   --color-inverted-text: var(--color-inverted-text);
+  --color-muted-text: var(--color-muted-text);
 }
 
 @media (prefers-color-scheme: light) {
@@ -104,6 +105,7 @@
     --color-primary-text: var(--color-dark);
     --color-inverted-text: var(--color-white);
     --color-alternate-text: var(--color-gray1);
+    --color-muted-text: var(--color-gray2);
   }
 }
 
@@ -116,18 +118,21 @@
     --color-primary-text: var(--color-white);
     --color-inverted-text: var(--color-black);
     --color-alternate-text: var(--color-gray4);
+    --color-muted-text: var(--color-gray2);
   }
 }
 
-* {
+body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
   box-sizing: var(--box-sizing);
-}
-
-body {
   font-family: var(--font-family);
-  background-image: radial-gradient(circle at 50% 50%, #ffffff 0%, #f3f4f6 100%);
+  background-color: var(--body-background);
 }
 
 main {
@@ -153,17 +158,33 @@ main {
   /* SECTION END */
 
   /* HEADINGS START */
-  h1 {
+  h1, h2 {
     @apply tracking-wider;
     margin: 0;
     font-weight: 600;
     line-height: 100%;
     font-size: 3.125rem;
   }
+
+  h3, h4 {
+    @apply tracking-wide;
+    margin: 0;
+    font-weight: 500;
+    line-height: 80%;
+    font-size: 2rem;
+  }
+
+  h5, h6 {
+    @apply tracking-normal;
+    margin: 0;
+    font-weight: 500;
+    line-height: 60%;
+    font-size: 1.5rem;
+  }
   /* HEADINGS END */
 
   p {
-    @apply m-0 text-white;
+    color: var(--color-primary-text);
   }
 }
 
@@ -171,7 +192,4 @@ main {
 }
 
 @layer utilities {
-  .daniel {
-    @apply bg-red-600;
-  }
 }
