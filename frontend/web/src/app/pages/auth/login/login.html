@@ -1,16 +1,17 @@
 <section class="flex flex-row min-h-screen" id="login">
-
   <div id="branding">
-    <div id="background">
-    </div>
+    <div id="background"></div>
 
     <div id="content">
-      <img alt="app-logo" height="50" ngSrc="/images/branding/logo.png" width="50"/>
+      <img alt="app-logo" height="50" ngSrc="/images/branding/logo.png" width="50" />
 
       <div class="flex flex-col gap-8 text-balance">
         <h1>Pocket Pilot</h1>
 
-        <p>Take control of your finances with intuitive tracking, instant insights, and easy-to-manage accounts.</p>
+        <p>
+          Take control of your finances with intuitive tracking, instant insights, and
+          easy-to-manage accounts.
+        </p>
 
         <ul class="flex flex-col gap-2">
           @for (feature of features; track feature.id) {
@@ -24,9 +25,7 @@
   </div>
 
   <div id="form">
-
     <div class="flex flex-col items-start w-3/4">
-
       <div class="space-y-4">
         <h3>Welcome Back</h3>
         <p>Sign in to your account to continue</p>
@@ -43,13 +42,11 @@
 
         <div class="space-y-2">
           <p>Protected by two-factor authentication</p>
-          <p class="text-muted-text">Your account security is our priority. You may be asked to verify your identity.</p>
+          <p class="text-muted-text">
+            Your account security is our priority. You may be asked to verify your identity.
+          </p>
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </section>
