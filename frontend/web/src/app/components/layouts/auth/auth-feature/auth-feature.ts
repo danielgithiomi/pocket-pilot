@@ -1,12 +1,12 @@
-import {Component, input} from '@angular/core';
+import { Component, Input, input } from '@angular/core';
+import { ArrowedCircle } from '@atoms/icons/ArrowedCircle';
 
 @Component({
-  imports: [],
+  imports: [ArrowedCircle],
   selector: 'auth-feature',
-  templateUrl: './auth-feature.html'
+  templateUrl: './auth-feature.html',
 })
 export class AuthFeature {
-
   feature = input.required<string>();
-
+  @Input() textColor: string = 'text-white';
 }
