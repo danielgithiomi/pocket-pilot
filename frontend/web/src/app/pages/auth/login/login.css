@@ -32,6 +32,6 @@
   }
 
   .two-factor-card {
-    @apply text-xs flex flex-row gap-4 border border-(--color-gray2) rounded-lg p-6 w-full;
+    @apply text-xs flex flex-row items-start gap-3 border border-(--color-gray2) rounded-lg p-6 w-full;
   }
 }

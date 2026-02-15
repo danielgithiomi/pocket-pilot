@@ -16,8 +16,8 @@
     "module": "preserve",
     "baseUrl": "./",
     "paths": {
+      "@libs/*": ["src/app/libs/*"],
       "@pages/*": ["src/app/pages/*"],
-      "@types/*": ["src/app/libs/types/*"],
       "@components/*": ["src/app/components/*"],
       "@constants/*": ["src/app/libs/constants/*"],
       "@atoms/*": ["src/app/components/ui/atoms/*"],
