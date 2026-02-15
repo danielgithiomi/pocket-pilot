@@ -1,8 +1,8 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @font-face {
   font-family: Geist Mono;
-  src: url("./assets/fonts/geist_mono/GeistMono-Regular.ttf") format("truetype");
+  src: url('./assets/fonts/geist_mono/GeistMono-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: block;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: Geist Mono;
-  src: url("./assets/fonts/geist_mono/GeistMono-Medium.ttf") format("truetype");
+  src: url('./assets/fonts/geist_mono/GeistMono-Medium.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: block;
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: Geist Mono;
-  src: url("./assets/fonts/geist_mono/GeistMono-Bold.ttf") format("truetype");
+  src: url('./assets/fonts/geist_mono/GeistMono-Bold.ttf') format('truetype');
   font-weight: 800;
   font-style: normal;
   font-display: block;
@@ -26,21 +26,33 @@
 
 :root {
   /* Base Colors */
-  --color-primary: #5235ef;
-  --color-secondary: #8771ff;
+  --color-primary: #e6ff2b;
+  --color-secondary: #0b4650;
+  --color-tertiary: #c6ff33;
+  --color-quaternary: #fe7f2d;
   --color-transparent: transparent;
+
+  /* State Colors */
+  --color-success: #22c55d;
+  --color-warning: #fbbf24;
+  --color-danger: #fa2c05;
 
   /* Dark */
   --color-dark: #101011;
   --color-black: #000000;
   --color-gray1: #2b2b2c;
   --color-gray2: #606266;
+  --color-mirage: #16232a;
+  --color-dark-card-bg: #233d4d;
+  --color-tertiary-dark: #898a8d;
 
   /* Light */
   --color-gray3: #a7a7a7;
   --color-gray4: #d9d9d9;
   --color-white: #ffffff;
-  --color-image-bg: #F0F2F6;
+  --color-wild-sand: #e4eef0;
+  --color-light-card-bg: #e8d8c9;
+  --color-tertiary-white: #f9f7f2;
   --color-alternate-white: #f0f2f6;
 
   /* Style Variables */
@@ -52,35 +64,12 @@
   --alternate-background: var(--color-gray3);
   --color-muted-text: var(--color-gray2);
 
-  --bright-blue: oklch(51.01% 0.274 263.83);
-  --electric-violet: oklch(53.18% 0.28 296.97);
-  --french-violet: oklch(47.66% 0.246 305.88);
-  --vivid-pink: oklch(69.02% 0.277 332.77);
-  --hot-red: oklch(61.42% 0.238 15.34);
-  --orange-red: oklch(63.32% 0.24 31.68);
-
-  --gray-900: oklch(19.37% 0.006 300.98);
-  --gray-700: oklch(36.98% 0.014 302.71);
-  --gray-400: oklch(70.9% 0.015 304.04);
-
-  --red-to-pink-to-purple-vertical-gradient: linear-gradient(180deg,
-  var(--orange-red) 0%,
-  var(--vivid-pink) 50%,
-  var(--electric-violet) 100%);
-
-  --red-to-pink-to-purple-horizontal-gradient: linear-gradient(90deg,
-  var(--orange-red) 0%,
-  var(--vivid-pink) 50%,
-  var(--electric-violet) 100%);
-
-  --pill-accent: var(--bright-blue);
-
-  --font-family: Geist Mono, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-  "Segoe UI Symbol";
   --box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --font-family:
+    Geist Mono, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 @theme inline {
@@ -158,7 +147,8 @@ main {
   /* SECTION END */
 
   /* HEADINGS START */
-  h1, h2 {
+  h1,
+  h2 {
     @apply tracking-wider;
     margin: 0;
     font-weight: 600;
@@ -166,7 +156,8 @@ main {
     font-size: 3.125rem;
   }
 
-  h3, h4 {
+  h3,
+  h4 {
     @apply tracking-wide;
     margin: 0;
     font-weight: 500;
@@ -174,7 +165,8 @@ main {
     font-size: 2rem;
   }
 
-  h5, h6 {
+  h5,
+  h6 {
     @apply tracking-normal;
     margin: 0;
     font-weight: 500;

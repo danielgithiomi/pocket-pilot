@@ -16,5 +16,5 @@ import { Component, Input } from '@angular/core';
 })
 export class FilledCircle {
   @Input() size: number = 18;
-  @Input() color: string = '#ffffff';
+  @Input() color: string = 'var(--color-primary)';
 }

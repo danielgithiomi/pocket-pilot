@@ -30,7 +30,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ArrowedCircle {
   @Input() size: number = 20;
-  @Input() color: string = 'red';
   @Input() filled: boolean = false;
   @Input() fillColor: string = 'red';
+  @Input() color: string = 'var(--color-primary)';
 }

@@ -31,7 +31,7 @@ import { Component, Input } from '@angular/core';
 })
 export class WarningIcon {
   @Input() size: number = 20;
-  @Input() color: string = 'red';
   @Input() filled: boolean = false;
+  @Input() color: string = 'var(--color-primary)';
   @Input() fillColor: string = 'var(--inverted-background)';
 }
