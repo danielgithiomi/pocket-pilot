@@ -27,18 +27,30 @@
 #form {
   @apply flex-1 grid place-items-center;
 
-  #login-form {
-    @apply my-10 w-full;
+  .form-wrapper {
+    @apply flex flex-col items-start w-3/4 xl:w-1/2;
 
-    .input-field {
-      @apply flex flex-col gap-4 w-full my-6;
+    #login-form {
+      @apply my-4 w-full;
 
-      .input-field-errors-wrapper {
-        @apply flex flex-col gap-2;
+      .input-field {
+        @apply flex flex-col gap-2 w-full my-6;
 
-        .input-field-error {
-          @apply text-red-600 text-xs;
+        input {
+          @apply rounded-lg border-none focus:border-none focus:outline px-4 py-2;
         }
+
+        .input-field-errors-wrapper {
+          @apply flex flex-col gap-2;
+
+          .input-field-error {
+            @apply text-red-600 text-xs;
+          }
+        }
+      }
+
+      button {
+        @apply cursor-pointer w-full rounded-lg px-4 py-2 shadow disabled:shadow-none disabled:cursor-not-allowed enabled:hover:scale-101 duration-300 ease-in-out;
       }
     }
   }

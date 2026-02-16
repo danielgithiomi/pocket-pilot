@@ -25,7 +25,7 @@
   </div>
 
   <div id="form">
-    <div class="flex flex-col items-start w-3/4">
+    <div class="form-wrapper">
       <div class="space-y-4">
         <h3>Welcome Back</h3>
         <p>Sign in to your account to continue</p>
@@ -36,7 +36,7 @@
 
         <div class="input-field">
           <label for="email">Email</label>
-          <input [formField]="loginForm.email" class="bg-alternate-background border-none focus:border-none focus:outline-2 focus:outline-secondary" id="email" placeholder="Email Address" type="email" />
+          <input [formField]="loginForm.email" class="bg-alternate-background focus:outline-primary" id="email" placeholder="Email Address" type="email" />
 
           @if (loginForm.email().invalid() && loginForm.email().touched()){
             <div class="input-field-errors-wrapper">
@@ -49,7 +49,7 @@
 
         <div class="input-field">
           <label for="password">Password</label>
-          <input [formField]="loginForm.password" id="password" placeholder="Password" type="password" />
+          <input [formField]="loginForm.password" class="bg-alternate-background focus:outline-primary" id="password" placeholder="Password" type="password" />
 
           @if (loginForm.password().invalid() && loginForm.password().touched()){
             <div class="input-field-errors-wrapper">
@@ -60,7 +60,7 @@
           }
         </div>
 
-        <button [disabled]="loginForm().invalid()" type="submit">
+        <button [disabled]="loginForm().invalid()" class="bg-primary text-inverted-text shadow-primary disabled:bg-primary/50" type="submit">
           Log In
         </button>
 
@@ -73,7 +73,7 @@
         <hr class="border-muted"/>
       </div>
 
-      <div class="two-factor-card">
+      <div class="two-factor-card border-primary">
         <icon-warning [size]="20"/>
 
         <div class="space-y-2">
