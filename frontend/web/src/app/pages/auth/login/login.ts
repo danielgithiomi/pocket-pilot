@@ -1,6 +1,7 @@
-import {Component, signal} from '@angular/core';
+import {Router} from '@angular/router';
 import {WarningIcon} from '@atoms/icons/Warning';
-import {AuthBranding} from '@pages/auth/branding';
+import {Component, inject, signal} from '@angular/core';
+import {AuthBranding} from '@layouts/auth/auth-branding/branding';
 import {email, form, FormField, min, required} from '@angular/forms/signals';
 
 @Component({
@@ -10,6 +11,7 @@ import {email, form, FormField, min, required} from '@angular/forms/signals';
   imports: [WarningIcon, FormField, AuthBranding],
 })
 export class Login {
+
   protected loginFormModel = signal<LoginSchema>(initialFormState);
 
   protected loginForm = form(
@@ -23,6 +25,10 @@ export class Login {
       required(root.password, { message: '"The password is required field!"'});
       min(root.password, 8, { message: "The password cannot be less than 8 characters!"})
     })
+
+  private readonly router = inject(Router);
+
+  routeToRegistration = () => this.router.navigate(['/auth/register']);
 }
 
 export interface LoginSchema {
