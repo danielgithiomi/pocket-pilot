@@ -1,20 +1,20 @@
 import {Auth_Feature} from "@libs/types";
 import {APP_FEATURES} from '@libs/constants';
-import {NgOptimizedImage} from '@angular/common';
-import {Component, signal, WritableSignal} from '@angular/core';
+import {NgClass, NgOptimizedImage} from '@angular/common';
 import {AuthFeature} from '@layouts/auth/auth-feature/auth-feature';
+import {Component, Input, signal, WritableSignal} from '@angular/core';
 
 @Component({
   selector: 'auth-branding',
-  imports: [AuthFeature, NgOptimizedImage],
+  imports: [AuthFeature, NgOptimizedImage, NgClass],
   template: `
     <div id="branding" class="h-full">
       <div id="background"></div>
 
-      <div id="content">
+      <div id="content" [ngClass]="contentAlign == 'right' ? 'items-end' : 'items-start'">
         <img alt="app-logo" height="50" ngSrc="/images/branding/logo.png" width="50"/>
 
-        <div class="flex flex-col gap-8 text-balance">
+        <div class="flex flex-col gap-8 text-balance" [ngClass]="contentAlign == 'right' ? 'items-end text-end' : 'items-start text-start'">
           <h1>Pocket Pilot</h1>
 
           <p>
@@ -24,7 +24,7 @@ import {AuthFeature} from '@layouts/auth/auth-feature/auth-feature';
 
           <ul class="flex flex-col gap-2">
             @for (feature of features; track feature.id) {
-              <auth-feature [feature]="feature.name"></auth-feature>
+              <auth-feature [contentOrder]="contentAlign == 'right' ? 'reversed' : 'normal'" [feature]="feature.name"></auth-feature>
             }
           </ul>
         </div>
@@ -36,6 +36,8 @@ import {AuthFeature} from '@layouts/auth/auth-feature/auth-feature';
   styleUrl: './branding.css',
 })
 export class AuthBranding {
+  @Input({ required: true }) contentAlign: 'right' | 'left' = 'left';
+
   protected readonly features: Auth_Feature[] = APP_FEATURES;
   protected year: WritableSignal<number> = signal(new Date().getFullYear());
 }

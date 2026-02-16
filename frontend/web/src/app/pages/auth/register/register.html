@@ -11,7 +11,7 @@
       <form id="login-form">
 
         <div class="input-field">
-          <label for="email">Email</label>
+          <label for="email">Email:</label>
           <input [formField]="registerForm.email" class="bg-alternate-background focus:outline-primary" id="email" placeholder="Email Address" type="email" />
 
           @if (registerForm.email().invalid() && registerForm.email().touched()){
@@ -24,7 +24,7 @@
         </div>
 
         <div class="input-field">
-          <label for="username">Username</label>
+          <label for="username">Username:</label>
           <input [formField]="registerForm.username" class="bg-alternate-background focus:outline-primary" id="username" placeholder="Username" type="text" />
 
           @if (registerForm.username().invalid() && registerForm.username().touched()){
@@ -37,7 +37,7 @@
         </div>
 
         <div class="input-field">
-          <label for="password">Password</label>
+          <label for="password">Password:</label>
           <input [formField]="registerForm.password" class="bg-alternate-background focus:outline-primary" id="password" placeholder="Password" type="password" />
 
           @if (registerForm.password().invalid() && registerForm.password().touched()){
@@ -67,6 +67,6 @@
     </div>
   </div>
 
-  <auth-branding class="flex-1" />
+  <auth-branding class="flex-1" contentAlign="right" />
 
 </section>

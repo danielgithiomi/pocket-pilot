@@ -20,6 +20,6 @@
   }
 
   #content {
-    @apply absolute inset-0 z-1 h-screen p-12 flex flex-col items-start justify-between;
+    @apply absolute inset-0 z-1 h-screen p-12 flex flex-col justify-between;
   }
 }

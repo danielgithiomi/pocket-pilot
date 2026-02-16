@@ -1,6 +1,6 @@
 <section class="flex flex-row min-h-screen" id="login">
 
-  <auth-branding class="flex-1" />
+  <auth-branding class="flex-1" contentAlign="left" />
 
   <div id="form">
     <div class="form-wrapper">
@@ -13,7 +13,7 @@
       <form id="login-form">
 
         <div class="input-field">
-          <label for="email">Email</label>
+          <label for="email">Email:</label>
           <input [formField]="loginForm.email" class="bg-alternate-background focus:outline-primary" id="email" placeholder="Email Address" type="email" />
 
           @if (loginForm.email().invalid() && loginForm.email().touched()){
@@ -26,7 +26,7 @@
         </div>
 
         <div class="input-field">
-          <label for="password">Password</label>
+          <label for="password">Password:</label>
           <input [formField]="loginForm.password" class="bg-alternate-background focus:outline-primary" id="password" placeholder="Password" type="password" />
 
           @if (loginForm.password().invalid() && loginForm.password().touched()){
