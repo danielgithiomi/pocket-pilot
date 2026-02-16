@@ -1,18 +1,50 @@
-import {Auth_Feature} from './../../../libs/types/auth.types';
-import {NgOptimizedImage} from '@angular/common';
-import {APP_FEATURES} from '@constants/auth.constants';
-import {Component, signal, WritableSignal} from '@angular/core';
-import {AuthFeature} from '@layouts/auth/auth-feature/auth-feature';
+import {Router} from '@angular/router';
+import {WarningIcon} from '@atoms/icons/Warning';
+import {Component, inject, signal} from '@angular/core';
+import {AuthBranding} from '@layouts/auth/auth-branding/branding';
+import {email, form, FormField, min, required} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-login',
   styleUrl: './login.css',
-  imports: [NgOptimizedImage, AuthFeature],
   templateUrl: './login.html',
+  imports: [WarningIcon, FormField, AuthBranding],
 })
 export class Login {
 
-  protected readonly features: Auth_Feature[] = APP_FEATURES;
-  protected year: WritableSignal<number> = signal(new Date().getFullYear());
+  protected loginFormModel = signal<LoginSchema>(initialFormState);
 
+  protected loginForm = form(
+    this.loginFormModel,
+    (root) => {
+      // Email
+      email(root.email, { message: "The email address format is invalid!"});
+      required(root.email, { message: "The email address is required field!"});
+
+      // Password
+      required(root.password, { message: "The password is required field!"});
+      min(root.password, 8, { message: "The password cannot be less than 8 characters!"})
+    })
+
+  private readonly router = inject(Router);
+
+  routeToRegistration = () => this.router.navigate(['/auth/register']);
+
+  submitLoginForm = (event: Event) => {
+    event.preventDefault();
+
+    const {email, password} = this.loginFormModel();
+
+    console.log(email, password);
+  }
 }
+
+export interface LoginSchema {
+  email: string;
+  password: string;
+}
+
+export const initialFormState: LoginSchema = {
+  email: '',
+  password: '',
+};

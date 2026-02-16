@@ -1,37 +1,45 @@
 @reference "tailwindcss";
 
-#background::after {
-  inset: 0;
-  z-index: -1;
-  content: "";
-  width: 100%;
-  height: 100%;
-  filter: blur(10px);
-  position: absolute;
-  transform: scale(1.05);
-  background-color: rgba(0, 0, 0, 0.925);
-}
-
-#branding {
-  @apply relative overflow-hidden flex-1 hidden md:block pointer-events-none text-white;
-
-  #background {
-    @apply absolute inset-0 z-[-2] w-full h-full bg-[url('/images/background.jpg')] bg-cover bg-center;
-  }
-
-  #content {
-    @apply absolute inset-0 z-1 h-screen p-12 flex flex-col items-start justify-between;
-  }
-}
-
 #form {
   @apply flex-1 grid place-items-center;
 
+  .form-wrapper {
+    @apply flex flex-col items-start w-3/4 xl:w-1/2;
+
+    #login-form {
+      @apply my-4 w-full;
+
+      .input-field {
+        @apply flex flex-col gap-2 w-full my-6;
+
+        input {
+          @apply rounded-lg border-none focus:border-none focus:outline px-4 py-2;
+        }
+
+        .input-field-errors-wrapper {
+          @apply flex flex-col gap-2;
+
+          .input-field-error {
+            @apply text-red-600 text-xs;
+          }
+        }
+      }
+
+      button {
+        @apply cursor-pointer w-full rounded-lg px-4 py-2 shadow disabled:shadow-none disabled:cursor-not-allowed enabled:hover:scale-101 duration-300 ease-in-out;
+      }
+    }
+  }
+
+  .to-register-text {
+    @apply mt-2 text-sm text-center w-full underline underline-offset-2 cursor-pointer duration-300 ease-in-out
+  }
+
   hr {
-    @apply flex-1 border-(--color-gray2);
+    @apply flex-1;
   }
 
   .two-factor-card {
-    @apply text-xs flex flex-row gap-4 border border-(--color-gray2) rounded-lg p-6 w-full;
+    @apply text-xs flex flex-row items-start gap-3 border rounded-lg p-6 w-full;
   }
 }

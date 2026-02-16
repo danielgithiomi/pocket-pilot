@@ -16,11 +16,12 @@
     "module": "preserve",
     "baseUrl": "./",
     "paths": {
+      "@libs/*": ["src/app/libs/*"],
       "@pages/*": ["src/app/pages/*"],
-      "@types/*": ["src/app/libs/types/*"],
       "@components/*": ["src/app/components/*"],
       "@constants/*": ["src/app/libs/constants/*"],
-      "@layouts/*": ["src/app/components/layouts/*"],
+      "@atoms/*": ["src/app/components/ui/atoms/*"],
+      "@layouts/*": ["src/app/components/layouts/*"]
     }
   },
   "angularCompilerOptions": {
@@ -37,5 +38,5 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ],
+  ]
 }
