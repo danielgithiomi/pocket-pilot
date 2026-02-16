@@ -12,7 +12,7 @@ import {Component, Input, signal, WritableSignal} from '@angular/core';
       <div id="background"></div>
 
       <div id="content" [ngClass]="contentAlign == 'right' ? 'items-end' : 'items-start'">
-        <img alt="app-logo" height="50" ngSrc="/images/branding/logo.png" width="50"/>
+        <img alt="app-logo" height="70" ngSrc="/images/branding/logo.png" width="70"/>
 
         <div class="flex flex-col gap-8 text-balance" [ngClass]="contentAlign == 'right' ? 'items-end text-end' : 'items-start text-start'">
           <h1>Pocket Pilot</h1>

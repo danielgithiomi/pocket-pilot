@@ -8,11 +8,11 @@
       </div>
 
       <!--   FORM START   -->
-      <form id="login-form">
+      <form (submit)="submitRegistrationForm($event)" id="login-form">
 
         <div class="input-field">
           <label for="email">Email:</label>
-          <input [formField]="registerForm.email" class="bg-alternate-background focus:outline-primary" id="email" placeholder="Email Address" type="email" />
+          <input [formField]="registerForm.email" autocomplete="email" class="bg-alternate-background focus:outline-primary" id="email" placeholder="Email Address" type="email" />
 
           @if (registerForm.email().invalid() && registerForm.email().touched()){
             <div class="input-field-errors-wrapper">
@@ -25,7 +25,7 @@
 
         <div class="input-field">
           <label for="username">Username:</label>
-          <input [formField]="registerForm.username" class="bg-alternate-background focus:outline-primary" id="username" placeholder="Username" type="text" />
+          <input [formField]="registerForm.username" autocomplete="username" class="bg-alternate-background focus:outline-primary" id="username" placeholder="Username" type="text" />
 
           @if (registerForm.username().invalid() && registerForm.username().touched()){
             <div class="input-field-errors-wrapper">
@@ -38,11 +38,24 @@
 
         <div class="input-field">
           <label for="password">Password:</label>
-          <input [formField]="registerForm.password" class="bg-alternate-background focus:outline-primary" id="password" placeholder="Password" type="password" />
+          <input [formField]="registerForm.password" autocomplete="new-password" class="bg-alternate-background focus:outline-primary" id="password" placeholder="Password" type="password" />
 
           @if (registerForm.password().invalid() && registerForm.password().touched()){
             <div class="input-field-errors-wrapper">
               @for (error of registerForm.password().errors(); track error.kind) {
+                <p class="input-field-error">{{ error.message }}</p>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="input-field">
+          <label for="password">Confirm Password:</label>
+          <input [formField]="registerForm.confirmPassword" autocomplete="new-password" class="bg-alternate-background focus:outline-primary" id="confirm_password" placeholder="Confirm Password" type="password" />
+
+          @if (registerForm.confirmPassword().invalid() && registerForm.confirmPassword().touched()){
+            <div class="input-field-errors-wrapper">
+              @for (error of registerForm.confirmPassword().errors(); track error.kind) {
                 <p class="input-field-error">{{ error.message }}</p>
               }
             </div>
@@ -67,6 +80,6 @@
     </div>
   </div>
 
-  <auth-branding class="flex-1" contentAlign="right" />
+  <auth-branding class="flex-1 hidden md:block" contentAlign="right" />
 
 </section>

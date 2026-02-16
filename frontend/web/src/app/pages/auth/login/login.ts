@@ -29,6 +29,14 @@ export class Login {
   private readonly router = inject(Router);
 
   routeToRegistration = () => this.router.navigate(['/auth/register']);
+
+  submitLoginForm = (event: Event) => {
+    event.preventDefault();
+
+    const {email, password} = this.loginFormModel();
+
+    console.log(email, password);
+  }
 }
 
 export interface LoginSchema {
