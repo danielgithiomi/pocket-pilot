@@ -155,11 +155,6 @@ main {
 }
 
 @layer base {
-  /* CLASSES INIT */
-  .init {
-    @apply bg-primary text-primary-text;
-  }
-
   /* HEADER START */
   header {
     @apply w-full bg-primary inset-0 h-[8vh] flex items-center;
@@ -201,7 +196,6 @@ main {
   }
 
   /* HEADINGS END */
-
   p {
     color: var(--color-primary-text);
   }
@@ -209,11 +203,9 @@ main {
   hr {
     @apply flex-1 border border-muted;
   }
-}
-
-@layer components {
 
   form {
+    @apply overflow-hidden;
 
     .input-field {
       @apply flex flex-col gap-2 w-full my-6;
@@ -235,7 +227,9 @@ main {
       @apply bg-primary text-inverted-text shadow-primary disabled:bg-primary/50 cursor-pointer w-full rounded-lg px-4 py-2 shadow disabled:shadow-none disabled:cursor-not-allowed enabled:hover:scale-101 duration-300 ease-in-out;
     }
   }
+}
 
+@layer components {
 }
 
 @layer utilities {
@@ -245,5 +239,37 @@ main {
 
   .bordered-card {
     @apply text-xs flex flex-row items-start gap-3 border rounded-lg p-6 w-full border-primary;
+  }
+
+  /* ANIMATIONS START */
+  .animate-left {
+    animation: slideLeft 750ms ease-out forwards;
+  }
+
+  .animate-right {
+    animation: slideRight 750ms ease-out forwards;
+  }
+  /* ANIMATIONS END */
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
