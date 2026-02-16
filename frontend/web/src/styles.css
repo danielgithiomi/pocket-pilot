@@ -35,7 +35,7 @@
   /* State Colors */
   --success: #22c55d;
   --warning: #fbbf24;
-  --danger: #fa2c05;
+  --error: #fa2c05;
 
   /* Dark Palette */
   --dark: #101011;
@@ -110,7 +110,7 @@
   /* State */
   --color-success: var(--success);
   --color-warning: var(--warning);
-  --color-danger: var(--danger);
+  --color-error: var(--error);
   --color-muted: var(--muted-text);
 
   /* Raw Palette */
@@ -201,13 +201,49 @@ main {
   }
 
   /* HEADINGS END */
+
   p {
     color: var(--color-primary-text);
+  }
+
+  hr {
+    @apply flex-1 border border-muted;
   }
 }
 
 @layer components {
+
+  form {
+
+    .input-field {
+      @apply flex flex-col gap-2 w-full my-6;
+
+      .input-field-errors-wrapper {
+        @apply flex flex-col gap-2;
+
+        .input-field-error {
+          @apply text-error text-xs;
+        }
+      }
+    }
+
+    input {
+      @apply bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline px-4 py-2;
+    }
+
+    button {
+      @apply bg-primary text-inverted-text shadow-primary disabled:bg-primary/50 cursor-pointer w-full rounded-lg px-4 py-2 shadow disabled:shadow-none disabled:cursor-not-allowed enabled:hover:scale-101 duration-300 ease-in-out;
+    }
+  }
+
 }
 
 @layer utilities {
+  .form-redirect-text {
+    @apply mt-2 text-sm text-center w-full underline underline-offset-2 cursor-pointer duration-300 ease-in-out text-muted hover:text-primary;
+  }
+
+  .bordered-card {
+    @apply text-xs flex flex-row items-start gap-3 border rounded-lg p-6 w-full border-primary;
+  }
 }
