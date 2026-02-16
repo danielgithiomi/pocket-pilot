@@ -5,7 +5,7 @@
   <div id="form">
     <div class="form-wrapper">
       <div class="space-y-4">
-        <h3>Welcome Back</h3>
+        <h3>Welcome back,</h3>
         <p>Sign in to your account to continue</p>
       </div>
 
@@ -45,7 +45,7 @@
       </form>
       <!--   FORM END   -->
 
-      <p class="to-register-text text-muted hover:text-primary">Don't have an account? <a href="/register">Sign Up</a></p>
+      <p (click)="routeToRegistration()" class="to-register-text text-muted hover:text-primary">Don't have an account? Sign Up</p>
 
       <div class="flex flex-row items-center gap-6 w-full text-sm my-10">
         <hr class="border-muted"/>

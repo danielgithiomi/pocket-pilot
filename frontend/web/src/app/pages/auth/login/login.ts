@@ -18,11 +18,11 @@ export class Login {
     this.loginFormModel,
     (root) => {
       // Email
-      email(root.email, { message: '"The email address format is invalid!"'});
-      required(root.email, { message: '"The email address is required field!"'});
+      email(root.email, { message: "The email address format is invalid!"});
+      required(root.email, { message: "The email address is required field!"});
 
       // Password
-      required(root.password, { message: '"The password is required field!"'});
+      required(root.password, { message: "The password is required field!"});
       min(root.password, 8, { message: "The password cannot be less than 8 characters!"})
     })
 
