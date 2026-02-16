@@ -26,91 +26,112 @@
 
 :root {
   /* Base Colors */
-  --color-primary: #e6ff2b;
-  --color-secondary: #0b4650;
-  --color-tertiary: #c6ff33;
-  --color-quaternary: #fe7f2d;
-  --color-transparent: transparent;
+  --primary: #e6ff2b;
+  --secondary: #0b4650;
+  --tertiary: #c6ff33;
+  --quaternary: #fe7f2d;
+  --transparent: transparent;
 
   /* State Colors */
-  --color-success: #22c55d;
-  --color-warning: #fbbf24;
-  --color-danger: #fa2c05;
+  --success: #22c55d;
+  --warning: #fbbf24;
+  --danger: #fa2c05;
 
-  /* Dark */
-  --color-dark: #101011;
-  --color-black: #000000;
-  --color-gray1: #2b2b2c;
-  --color-gray2: #606266;
-  --color-mirage: #16232a;
-  --color-dark-card-bg: #233d4d;
-  --color-tertiary-dark: #898a8d;
+  /* Dark Palette */
+  --dark: #101011;
+  --black: #000000;
+  --gray1: #2b2b2c;
+  --gray2: #606266;
+  --mirage: #16232a;
+  --dark-card-bg: #233d4d;
+  --tertiary-dark: #898a8d;
 
-  /* Light */
-  --color-gray3: #a7a7a7;
-  --color-gray4: #d9d9d9;
-  --color-white: #ffffff;
-  --color-wild-sand: #e4eef0;
-  --color-light-card-bg: #e8d8c9;
-  --color-tertiary-white: #f9f7f2;
-  --color-alternate-white: #f0f2f6;
+  /* Light Palette */
+  --gray3: #a7a7a7;
+  --gray4: #d9d9d9;
+  --white: #ffffff;
+  --wild-sand: #e4eef0;
+  --light-card-bg: #e8d8c9;
+  --tertiary-white: #f9f7f2;
+  --alternate-white: #f0f2f6;
 
-  /* Style Variables */
-  --body-background: var(--color-white);
-  --color-primaryText: var(--color-dark);
-  --inverted-background: var(--color-dark);
-  --color-invertedText: var(--color-white);
-  --color-alternateText: var(--color-gray1);
-  --alternate-background: var(--color-gray3);
-  --color-muted-text: var(--color-gray2);
+  /* Semantic Colors */
+  --body-background: var(--white);
+  --alternate-background: var(--gray3);
+  --inverted-background: var(--dark);
 
+  --primary-text: var(--dark);
+  --alternate-text: var(--gray1);
+  --inverted-text: var(--white);
+  --muted-text: var(--gray2);
+
+  /* Font & Styles */
   --box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --font-family:
-    Geist Mono, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-family: 'Geist Mono', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
-@theme inline {
-  --color-primary: var(--color-primary);
-  --color-secondary: var(--color-secondary);
-
-  --color-body-background: var(--body-background);
-  --color-alternate-background: var(--alternate-background);
-  --color-inverted-background: var(--inverted-background);
-  --color-primary-text: var(--color-primary-text);
-  --color-alternate-text: var(--color-alternate-text);
-  --color-inverted-text: var(--color-inverted-text);
-  --color-muted-text: var(--color-muted-text);
-}
-
+/* Light/Dark Mode Variables */
 @media (prefers-color-scheme: light) {
   :root {
     color-scheme: light;
     --body-background: var(--color-white);
-    --alternate-background: var(--color-alternate-white);
-    --inverted-background: var(--color-dark);
-    --color-primary-text: var(--color-dark);
-    --color-inverted-text: var(--color-white);
-    --color-alternate-text: var(--color-gray1);
-    --color-muted-text: var(--color-gray2);
+    --alternate-background: var(--alternate-white);
+    --inverted-background: var(--dark);
+    --primary-text: var(--dark);
+    --inverted-text: var(--white);
+    --alternate-text: var(--gray1);
+    --muted-text: var(--gray2);
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --body-background: var(--color-dark);
-    --alternate-background: var(--color-gray1);
-    --inverted-background: var(--color-alternate-white);
-    --color-primary-text: var(--color-white);
-    --color-inverted-text: var(--color-black);
-    --color-alternate-text: var(--color-gray4);
-    --color-muted-text: var(--color-gray2);
+    --body-background: var(--dark);
+    --alternate-background: var(--gray1);
+    --inverted-background: var(--alternate-white);
+    --primary-text: var(--white);
+    --inverted-text: var(--black);
+    --alternate-text: var(--gray4);
+    --muted-text: var(--gray2);
   }
 }
 
+@theme inline {
+  /* Brand */
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-quaternary: var(--quaternary);
+
+  /* State */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-muted: var(--muted-text);
+
+  /* Raw Palette */
+  --color-dark: var(--dark);
+  --color-black: var(--black);
+  --color-gray1: var(--gray1);
+  --color-gray2: var(--gray2);
+  --color-gray3: var(--gray3);
+  --color-gray4: var(--gray4);
+  --color-white: var(--white);
+
+  --color-body-background: var(--body-background);
+  --color-alternate-background: var(--alternate-background);
+  --color-inverted-background: var(--inverted-background);
+  --color-primary-text: var(--primary-text);
+  --color-alternate-text: var(--alternate-text);
+  --color-inverted-text: var(--inverted-text);
+  --color-muted-text: var(--muted-text);
+}
+
+/* Body & Layout */
 body {
   margin: 0;
   padding: 0;
@@ -120,8 +141,8 @@ body {
   overflow-x: hidden;
   position: relative;
   box-sizing: var(--box-sizing);
-  font-family: var(--font-family);
   background-color: var(--body-background);
+  font-family: var(--font-family), sans-serif;
 }
 
 main {
@@ -134,18 +155,23 @@ main {
 }
 
 @layer base {
+  /* CLASSES INIT */
+  .init {
+    @apply bg-primary text-primary-text;
+  }
+
   /* HEADER START */
   header {
-    @apply w-full bg-(----electric-violet) inset-0 h-[8vh] flex items-center;
+    @apply w-full bg-primary inset-0 h-[8vh] flex items-center;
   }
-  /* HEADER END */
 
+  /* HEADER END */
   /* SECTION START */
   section {
     @apply w-full flex flex-col;
   }
-  /* SECTION END */
 
+  /* SECTION END */
   /* HEADINGS START */
   h1,
   h2 {
@@ -173,8 +199,8 @@ main {
     line-height: 60%;
     font-size: 1.5rem;
   }
-  /* HEADINGS END */
 
+  /* HEADINGS END */
   p {
     color: var(--color-primary-text);
   }

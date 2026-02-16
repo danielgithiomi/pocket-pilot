@@ -3,7 +3,7 @@
 #background::after {
   inset: 0;
   z-index: -1;
-  content: "";
+  content: '';
   width: 100%;
   height: 100%;
   filter: blur(10px);
@@ -27,11 +27,27 @@
 #form {
   @apply flex-1 grid place-items-center;
 
+  #login-form {
+    @apply my-10 w-full;
+
+    .input-field {
+      @apply flex flex-col gap-4 w-full my-6;
+
+      .input-field-errors-wrapper {
+        @apply flex flex-col gap-2;
+
+        .input-field-error {
+          @apply text-red-600 text-xs;
+        }
+      }
+    }
+  }
+
   hr {
-    @apply flex-1 border-(--color-gray2);
+    @apply flex-1;
   }
 
   .two-factor-card {
-    @apply text-xs flex flex-row items-start gap-3 border border-(--color-gray2) rounded-lg p-6 w-full;
+    @apply text-xs flex flex-row items-start gap-3 border rounded-lg p-6 w-full;
   }
 }

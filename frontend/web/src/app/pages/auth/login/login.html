@@ -3,7 +3,7 @@
     <div id="background"></div>
 
     <div id="content">
-      <img alt="app-logo" height="50" ngSrc="/images/branding/logo.png" width="50" />
+      <img alt="app-logo" height="50" ngSrc="/images/branding/logo.png" width="50"/>
 
       <div class="flex flex-col gap-8 text-balance">
         <h1>Pocket Pilot</h1>
@@ -31,14 +31,50 @@
         <p>Sign in to your account to continue</p>
       </div>
 
+      <!--   FORM START   -->
+      <form id="login-form">
+
+        <div class="input-field">
+          <label for="email">Email</label>
+          <input [formField]="loginForm.email" class="bg-alternate-background border-none focus:border-none focus:outline-2 focus:outline-secondary" id="email" placeholder="Email Address" type="email" />
+
+          @if (loginForm.email().invalid() && loginForm.email().touched()){
+            <div class="input-field-errors-wrapper">
+              @for (error of loginForm.email().errors(); track error.kind) {
+                <p class="input-field-error">{{ error.message }}</p>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="input-field">
+          <label for="password">Password</label>
+          <input [formField]="loginForm.password" id="password" placeholder="Password" type="password" />
+
+          @if (loginForm.password().invalid() && loginForm.password().touched()){
+            <div class="input-field-errors-wrapper">
+              @for (error of loginForm.password().errors(); track error.kind) {
+                <p class="input-field-error">{{ error.message }}</p>
+              }
+            </div>
+          }
+        </div>
+
+        <button [disabled]="loginForm().invalid()" type="submit">
+          Log In
+        </button>
+
+      </form>
+      <!--   FORM END   -->
+
       <div class="flex flex-row items-center gap-6 w-full text-sm my-10">
-        <hr />
-        <p class="text-muted-text capitalize">Secure Login</p>
-        <hr />
+        <hr class="border-muted"/>
+        <p class="text-muted capitalize">Secure Login</p>
+        <hr class="border-muted"/>
       </div>
 
       <div class="two-factor-card">
-        <icon-warning [size]="18" />
+        <icon-warning [size]="20"/>
 
         <div class="space-y-2">
           <p>Protected by two-factor authentication!</p>
