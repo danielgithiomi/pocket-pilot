@@ -1,21 +1,15 @@
-import {Auth_Feature} from '@libs/types';
+import {Component, signal} from '@angular/core';
 import {WarningIcon} from '@atoms/icons/Warning';
-import {NgOptimizedImage} from '@angular/common';
-import {APP_FEATURES} from '@constants/auth.constants';
-import {Component, signal, WritableSignal} from '@angular/core';
-import {AuthFeature} from '@layouts/auth/auth-feature/auth-feature';
+import {AuthBranding} from '@pages/auth/branding';
 import {email, form, FormField, min, required} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
-  imports: [NgOptimizedImage, AuthFeature, WarningIcon, FormField],
+  imports: [WarningIcon, FormField, AuthBranding],
 })
 export class Login {
-  protected readonly features: Auth_Feature[] = APP_FEATURES;
-  protected year: WritableSignal<number> = signal(new Date().getFullYear());
-
   protected loginFormModel = signal<LoginSchema>(initialFormState);
 
   protected loginForm = form(
@@ -29,7 +23,6 @@ export class Login {
       required(root.password, { message: '"The password is required field!"'});
       min(root.password, 8, { message: "The password cannot be less than 8 characters!"})
     })
-
 }
 
 export interface LoginSchema {
