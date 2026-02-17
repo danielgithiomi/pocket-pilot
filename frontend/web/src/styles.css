@@ -205,8 +205,6 @@ main {
   }
 
   form {
-    @apply overflow-hidden;
-
     .input-field {
       @apply flex flex-col gap-2 w-full my-6;
 
