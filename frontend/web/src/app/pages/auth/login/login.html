@@ -1,8 +1,8 @@
 <section class="flex flex-row min-h-screen" id="login">
 
-  <auth-branding class="flex-1 hidden md:block" contentAlign="left" />
+  <auth-branding class="flex-1 hidden md:block animate-left" contentAlign="left" />
 
-  <div id="form">
+  <div class="animate-right flex-1" id="form">
     <div class="form-wrapper">
       <div class="space-y-4">
         <h3>Welcome back,</h3>
@@ -14,7 +14,7 @@
 
         <div class="input-field">
           <label for="email">Email:</label>
-          <input [formField]="loginForm.email" autocomplete="email" class="bg-alternate-background focus:outline-primary" id="email" placeholder="Email Address" type="email" />
+          <input [formField]="loginForm.email" autocomplete="email" id="email" placeholder="Email Address" type="email" />
 
           @if (loginForm.email().invalid() && loginForm.email().touched()){
             <div class="input-field-errors-wrapper">
@@ -27,7 +27,7 @@
 
         <div class="input-field">
           <label for="password">Password:</label>
-          <input [formField]="loginForm.password" autocomplete="current-password" class="bg-alternate-background focus:outline-primary" id="password" placeholder="Password" type="password" />
+          <input [formField]="loginForm.password" autocomplete="current-password" id="password" placeholder="Password" type="password" />
 
           @if (loginForm.password().invalid() && loginForm.password().touched()){
             <div class="input-field-errors-wrapper">
@@ -38,22 +38,22 @@
           }
         </div>
 
-        <button [disabled]="loginForm().invalid()" class="bg-primary text-inverted-text shadow-primary disabled:bg-primary/50" type="submit">
+        <button [disabled]="loginForm().invalid()" class="" type="submit">
           Log In
         </button>
 
       </form>
       <!--   FORM END   -->
 
-      <p (click)="routeToRegistration()" class="to-register-text text-muted hover:text-primary">Don't have an account? Sign Up</p>
+      <p (click)="routeToRegistration()" class="form-redirect-text">Don't have an account? Sign Up</p>
 
       <div class="flex flex-row items-center gap-6 w-full text-sm my-10">
-        <hr class="border-muted"/>
+        <hr />
         <p class="text-muted capitalize">Secure Login</p>
-        <hr class="border-muted"/>
+        <hr />
       </div>
 
-      <div class="two-factor-card border-primary">
+      <div class="bordered-card">
         <icon-warning [size]="20"/>
 
         <div class="space-y-2">

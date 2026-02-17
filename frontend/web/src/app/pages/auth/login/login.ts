@@ -1,8 +1,9 @@
 import {Router} from '@angular/router';
 import {WarningIcon} from '@atoms/icons/Warning';
+import {form, FormField} from '@angular/forms/signals';
 import {Component, inject, signal} from '@angular/core';
 import {AuthBranding} from '@layouts/auth/auth-branding/branding';
-import {email, form, FormField, min, required} from '@angular/forms/signals';
+import {initialLoginFormState, loginFormValidationSchema, LoginSchema} from '@libs/types';
 
 @Component({
   selector: 'app-login',
@@ -12,19 +13,9 @@ import {email, form, FormField, min, required} from '@angular/forms/signals';
 })
 export class Login {
 
-  protected loginFormModel = signal<LoginSchema>(initialFormState);
+  protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
 
-  protected loginForm = form(
-    this.loginFormModel,
-    (root) => {
-      // Email
-      email(root.email, { message: "The email address format is invalid!"});
-      required(root.email, { message: "The email address is required field!"});
-
-      // Password
-      required(root.password, { message: "The password is required field!"});
-      min(root.password, 8, { message: "The password cannot be less than 8 characters!"})
-    })
+  protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
 
   private readonly router = inject(Router);
 
@@ -38,13 +29,3 @@ export class Login {
     console.log(email, password);
   }
 }
-
-export interface LoginSchema {
-  email: string;
-  password: string;
-}
-
-export const initialFormState: LoginSchema = {
-  email: '',
-  password: '',
-};
