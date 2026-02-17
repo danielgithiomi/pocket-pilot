@@ -132,6 +132,10 @@
 }
 
 /* Body & Layout */
+* {
+  box-sizing: var(--box-sizing);
+}
+
 body {
   margin: 0;
   padding: 0;
