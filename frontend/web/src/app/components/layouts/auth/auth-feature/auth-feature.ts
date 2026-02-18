@@ -1,13 +1,13 @@
 import {NgClass} from '@angular/common';
-import {ArrowedCircle} from '@atoms/icons/ArrowedCircle';
 import {Component, Input, input, InputSignal} from '@angular/core';
+import {CircleCheck} from '@atoms/icons';
 
 @Component({
-  imports: [ArrowedCircle, NgClass],
+  imports: [NgClass, CircleCheck],
   selector: 'auth-feature',
   template: `
     <div class="flex flex-row items-center gap-3" [ngClass]="contentOrder == 'reversed' ? 'flex-row-reverse' : 'flex-row'">
-      <icon-arrowed-circle [ngClass]="contentOrder === 'normal' ? 'rotate-0' : 'rotate-180'"/>
+      <icon-circle-check [ngClass]="contentOrder === 'normal' ? 'rotate-0' : 'rotate-180'"/>
       <p [class]="textColor">{{ feature() }}</p>
     </div>
   `,
