@@ -1,8 +1,45 @@
-import { ApiProperty } from '@nestjs/swagger';
+import {ApiProperty} from '@nestjs/swagger';
 
-export interface WithCountResponse<T> {
-    count: number;
-    data: T[];
+// TOKENS
+export interface IRequestCookies {
+    access_token: string;
+    refresh_token: string;
+}
+
+// RESPONSE SUMMARY
+export interface IResponseSummary {
+    message: string;
+    description?: string;
+}
+
+// RESPONSE STRUCTURE
+export interface IGlobalResponse<T> {
+    body: T;
+    success: true;
+    statusCode: number;
+    summary: IResponseSummary;
+    metadata: {
+        endpoint: string;
+        timestamp: string;
+        requestId: string;
+    };
+}
+
+// EXCEPTION STRUCTURE
+export interface IGlobalError {
+    success: false;
+    statusCode: number;
+    error: {
+        type: string;
+        name?: string;
+        message?: string;
+        details?: unknown;
+    };
+    metadata: {
+        endpoint: string;
+        timestamp: string;
+        requestId: string;
+    };
 }
 
 export class MessageResponse {

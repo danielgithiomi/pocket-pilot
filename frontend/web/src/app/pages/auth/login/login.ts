@@ -12,11 +12,8 @@ import {initialLoginFormState, loginFormValidationSchema, LoginSchema} from '@li
   imports: [WarningIcon, FormField, AuthBranding],
 })
 export class Login {
-
   protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
-
   protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
-
   private readonly router = inject(Router);
 
   routeToRegistration = () => this.router.navigate(['/auth/register']);
