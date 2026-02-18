@@ -10,9 +10,9 @@
  * framework-level exception shapes (NestJS HttpException, validation errors).
  */
 
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
-import { randomUUID } from 'crypto';
-import { IGlobalExceptionFilter } from '@common/constants';
+import {randomUUID} from 'crypto';
+import {IGlobalError} from '@common/types';
+import {ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus} from '@nestjs/common';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -54,6 +54,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
                 timestamp: new Date().toISOString(),
                 requestId: randomUUID(),
             },
-        } as IGlobalExceptionFilter);
+        } as IGlobalError);
     }
 }
