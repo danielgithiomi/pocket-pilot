@@ -1,3 +1,4 @@
+export * from './Logo';
 export * from './Warning';
 export * from './EmptyCircle';
 export * from './FilledCircle';

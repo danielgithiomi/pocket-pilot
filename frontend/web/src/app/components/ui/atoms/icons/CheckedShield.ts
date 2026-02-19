@@ -27,6 +27,6 @@ export class CheckedShield {
   @Input() size: number = 20;
   @Input() filled: boolean = false;
   @Input() strokeWidth: number = 1;
-  @Input() fillColor: string = 'red';
   @Input() color: string = 'var(--color-primary)';
+  @Input() fillColor: string = 'var(--background)';
 }
