@@ -23,6 +23,13 @@ export interface IGlobalResponse<T> {
   };
 }
 
+export interface IStandardResponse<T> {
+  data: T;
+  endpoint: string;
+  statusCode: number;
+  summary: ResponseSummary;
+}
+
 // EXCEPTION STRUCTURE
 export interface IGlobalException {
   success: false;
