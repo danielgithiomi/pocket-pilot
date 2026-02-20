@@ -25,8 +25,7 @@
       "@constants/*": ["src/app/libs/constants/*"],
       "@atoms/*": ["src/app/components/ui/atoms/*"],
       "@layouts/*": ["src/app/components/layouts/*"],
-      // Infrastructure
-      "@interceptors/*": ["src/app/infrastructure/interceptors/*"],
+      "@infrastructure/*": ["src/app/infrastructure/*"]
     }
   },
   "angularCompilerOptions": {

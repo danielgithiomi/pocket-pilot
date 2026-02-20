@@ -2,7 +2,7 @@ import { catchError, throwError } from 'rxjs';
 import { IGlobalException, IStandardError } from '@global/types';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 
-export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       const apiError = error.error as IGlobalException;
