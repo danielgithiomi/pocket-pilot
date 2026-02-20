@@ -19,12 +19,14 @@
       "@libs/*": ["src/app/libs/*"],
       "@pages/*": ["src/app/pages/*"],
       "@global/*": ["../../shared/*"],
-      "@services/*": ["src/app/services/*"],
+      "@services/*": ["src/app/api/services/*"],
       "@components/*": ["src/app/components/*"],
       "@environments/*": ["src/environments/*"],
       "@constants/*": ["src/app/libs/constants/*"],
       "@atoms/*": ["src/app/components/ui/atoms/*"],
-      "@layouts/*": ["src/app/components/layouts/*"]
+      "@layouts/*": ["src/app/components/layouts/*"],
+      // Infrastructure
+      "@interceptors/*": ["src/app/infrastructure/interceptors/*"],
     }
   },
   "angularCompilerOptions": {

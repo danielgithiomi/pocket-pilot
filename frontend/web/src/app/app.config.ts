@@ -1,12 +1,13 @@
-import {routes} from './app.routes';
-import {provideHttpClient, withFetch} from '@angular/common/http';
-import {provideRouter, withComponentInputBinding} from '@angular/router';
-import {ApplicationConfig, provideBrowserGlobalErrorListeners} from '@angular/core';
+import { routes } from './app.routes';
+import { CookiesInterceptor } from '@interceptors/cookies.interceptor';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withFetch()),
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes, withComponentInputBinding())
-  ]
+    provideRouter(routes, withComponentInputBinding()),
+    provideHttpClient(withFetch(), withInterceptors([CookiesInterceptor])),
+  ],
 };
