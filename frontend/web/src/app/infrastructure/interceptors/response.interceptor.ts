@@ -7,14 +7,16 @@ export const ResponseInterceptor: HttpInterceptorFn = (req, next) => {
     map((event) => {
       if (event instanceof HttpResponse) {
         const response = event.body as IGlobalResponse<unknown>;
+        const matchesBackendContract: boolean =
+          response && response.success === true && 'body' in response;
 
-        // Only unwrap if it matches your backend contract
-        if (response && response.success === true && 'body' in response) {
+        if (matchesBackendContract) {
           const standardResponse: IStandardResponse<unknown> = {
             data: response.body,
             endpoint: response.metadata.endpoint,
             statusCode: response.statusCode,
             summary: response.summary,
+            timestamp: response.metadata.timestamp,
           };
 
           return event.clone({

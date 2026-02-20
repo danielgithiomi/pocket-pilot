@@ -1,10 +1,10 @@
 import { Router } from '@angular/router';
+import { LoginService } from '@api/services';
 import { CheckedShield } from '@atoms/icons';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { AuthBranding } from '@layouts/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
-import { LoginService } from 'src/app/api/services/auth';
 
 @Component({
   selector: 'app-login',

@@ -26,6 +26,7 @@ export interface IGlobalResponse<T> {
 export interface IStandardResponse<T> {
   data: T;
   endpoint: string;
+  timestamp: string;
   statusCode: number;
   summary: ResponseSummary;
 }
