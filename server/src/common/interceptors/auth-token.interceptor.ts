@@ -1,11 +1,11 @@
-import {Observable} from 'rxjs';
-import type {Request} from 'express';
-import {JwtService} from '@nestjs/jwt';
-import {IRequestCookies} from '@common/types';
-import {User} from '@modules/identity/dto/user.dto';
-import {JWTPayload} from '@modules/identity/dto/auth.dto';
-import {UserService} from '@modules/identity/services/user.service';
-import {type CallHandler, type ExecutionContext, type NestInterceptor, UnauthorizedException} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import type { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { IRequestCookies } from '@common/types';
+import { User } from '@modules/identity/dto/user.dto';
+import { JWTPayload } from '@modules/identity/dto/auth.dto';
+import { UserService } from '@modules/identity/services/user.service';
+import { type CallHandler, type ExecutionContext, type NestInterceptor, UnauthorizedException } from '@nestjs/common';
 
 export class AuthTokenInterceptor implements NestInterceptor {
     constructor(
