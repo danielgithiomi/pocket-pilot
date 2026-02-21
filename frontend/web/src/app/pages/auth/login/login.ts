@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { LoginService } from '@api/services';
+import { LoginService } from '@api/auth';
 import { CheckedShield } from '@atoms/icons';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';

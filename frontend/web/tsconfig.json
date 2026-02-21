@@ -16,10 +16,10 @@
     "module": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@api/*": ["src/app/api/*"],
       "@libs/*": ["src/app/libs/*"],
       "@pages/*": ["src/app/pages/*"],
       "@global/*": ["../../shared/*"],
+      "@api/*": ["src/app/api/services/*"],
       "@components/*": ["src/app/components/*"],
       "@environments/*": ["src/environments/*"],
       "@constants/*": ["src/app/libs/constants/*"],

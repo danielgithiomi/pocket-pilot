@@ -4,7 +4,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import {
   ErrorInterceptor,
-  CookiesInterceptor,
+  RequestInterceptor,
   ResponseInterceptor,
 } from '@infrastructure/interceptors';
 
@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(
       withFetch(),
-      withInterceptors([CookiesInterceptor, ErrorInterceptor, ResponseInterceptor]),
+      withInterceptors([RequestInterceptor, ErrorInterceptor, ResponseInterceptor]),
     ),
   ],
 };
