@@ -1,10 +1,11 @@
 import { Router } from '@angular/router';
 import { CheckedShield } from '@atoms/icons';
+import { AuthService } from '@api/auth.service';
+import { UserService } from '@api/user.service';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { AuthBranding } from '@layouts/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
-import { LoginService } from 'src/app/api/services/auth';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class Login {
   protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
   protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
   private readonly router = inject(Router);
-  private readonly loginService = inject(LoginService);
+  private readonly authService = inject(AuthService);
+  private readonly userService = inject(UserService);
 
   routeToRegistration = () => this.router.navigate(['/auth/register']);
 
@@ -26,6 +28,6 @@ export class Login {
     const { email, password } = this.loginFormModel();
 
     console.log(email, password);
-    this.loginService.login();
+    this.authService.login({ email, password });
   };
 }

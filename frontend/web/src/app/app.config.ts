@@ -1,13 +1,20 @@
 import { routes } from './app.routes';
-import { CookiesInterceptor } from '@interceptors/cookies.interceptor';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+  ErrorInterceptor,
+  RequestInterceptor,
+  ResponseInterceptor,
+} from '@infrastructure/interceptors';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(withFetch(), withInterceptors([CookiesInterceptor])),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([RequestInterceptor, ErrorInterceptor, ResponseInterceptor]),
+    ),
   ],
 };
