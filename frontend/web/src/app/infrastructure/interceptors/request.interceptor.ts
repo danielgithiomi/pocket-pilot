@@ -3,7 +3,6 @@ import { HttpInterceptorFn } from '@angular/common/http';
 export const RequestInterceptor: HttpInterceptorFn = (req, next) => {
   const cloned = req.clone({
     responseType: 'json',
-    withCredentials: true,
     reportProgress: false,
     credentials: 'include',
     setHeaders: {

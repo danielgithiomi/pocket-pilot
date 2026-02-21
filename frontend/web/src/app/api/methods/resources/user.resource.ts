@@ -1,19 +1,17 @@
-import { inject } from "@angular/core";
-import { ApiClient } from "../api-client";
-import { httpResource } from "@angular/common/http";
+import { httpResource } from '@angular/common/http';
+import { environment } from '@environments/environment';
+import { Injectable } from '@angular/core';
 
-const apiClient = inject(ApiClient);
+const BASE_URL = environment.API_BASE_URL;
 
-export const UserResource = {
-    
-    me() {
-        return apiClient.get('/user/me');
-    },
+@Injectable({
+  providedIn: 'root',
+})
+export class UserResource {
 
-    root() {
-        return httpResource(() => ({
-            url: '',
-            method: 'GET',
-        }));
-    }
-};
+  readonly rootResource = httpResource(() => ({
+    url: `${BASE_URL}`,
+    method: 'GET',
+  }));
+  
+}

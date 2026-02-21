@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
-import { UserResource as resource } from '@methods/resources';
+import { inject } from '@angular/core';
+import { UserResource } from '@methods/resources/user.resource';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  me() {
-    return resource.root();
+
+  private readonly resource = inject(UserResource);
+  
+  root() {
+    const me = this.resource.rootResource;
+    console.log(me.value());
+    return me.value();
   }
 }
