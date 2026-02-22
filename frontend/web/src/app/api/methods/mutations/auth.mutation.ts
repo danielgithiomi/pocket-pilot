@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
 import { ILoginRequest, ILoginResponse } from '@global/types';
