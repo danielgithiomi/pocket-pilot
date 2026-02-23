@@ -27,7 +27,20 @@ export class Login {
   submitLoginForm = (event: Event) => {
     event.preventDefault();
 
+    console.log('Password errors:', this.loginForm.password().errors());
+    console.log('Password valid:', this.loginForm.password().valid());
+    console.log('Password touched:', this.loginForm.password().touched());
+
     const { email, password } = this.loginFormModel();
+
+    if (!this.loginForm().valid()) {
+      this.toastService.show({
+        title: 'Form Invalid',
+        message: 'Please fill in all the fields',
+        variant: 'error',
+      });
+      return;
+    }
 
     this.toastService.show({
       title: 'Login',

@@ -10,7 +10,6 @@ export class AuthMutation {
 
   login(request: ILoginRequest) {
     const response = this.client.post<ILoginResponse, ILoginRequest>('/auth/login', request);
-    console.log('Methods: ', response);
     return response;
   }
 }

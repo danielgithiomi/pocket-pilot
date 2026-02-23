@@ -10,7 +10,6 @@ export class AuthService {
   private readonly mutation = inject(AuthMutation)
 
   login(request: ILoginRequest) {
-    console.log('Login service');
     this.mutation.login(request).subscribe((response) => {
       console.log("Service: ", response);
     });
