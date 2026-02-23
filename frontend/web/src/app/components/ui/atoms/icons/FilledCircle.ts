@@ -1,9 +1,10 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'icon-filled-circle',
   template: `
     <svg
+      class="atom-icon"
       fill="none"
       [attr.width]="size"
       [attr.height]="size"
@@ -11,7 +12,11 @@ import {Component, Input} from '@angular/core';
       [attr.stroke-width]="strokeWidth"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path [attr.fill]="color" d="M8 0a8 8 0 100 16A8 8 0 008 0z" [attr.stroke-width]="strokeWidth" />
+      <path
+        [attr.fill]="color"
+        d="M8 0a8 8 0 100 16A8 8 0 008 0z"
+        [attr.stroke-width]="strokeWidth"
+      />
     </svg>
   `,
 })

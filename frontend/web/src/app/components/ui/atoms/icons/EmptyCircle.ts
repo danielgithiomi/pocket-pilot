@@ -1,9 +1,10 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'icon-empty-circle',
   template: `
     <svg
+      class="atom-icon"
       fill="none"
       [attr.width]="size"
       [attr.height]="size"

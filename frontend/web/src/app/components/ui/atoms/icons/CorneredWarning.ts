@@ -1,9 +1,10 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'icon-cornered-warning',
   template: `
     <svg
+      class="atom-icon"
       [attr.width]="size"
       [attr.height]="size"
       viewBox="0 0 24 24"

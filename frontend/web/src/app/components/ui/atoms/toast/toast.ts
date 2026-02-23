@@ -1,4 +1,5 @@
 import { ToastInternal } from './toast.types';
+import { CrossedCircle, CheckedCircle, CrossIcon } from '@components/ui/atoms/icons';
 import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
 
 @Component({
@@ -8,12 +9,17 @@ import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
       <div class="content">
         <div class="text">
           @if (toast().title) {
-            <p class="title">{{ toast().title }}</p>
+            <div class="flex flex-row gap-2 items-center">
+              <icon-checked-circle />
+              <p class="title text-inverted-text">{{ toast().title }}</p>
+            </div>
           }
-          <p class="message">{{ toast().message }}</p>
+          <p class="message text-muted-text">{{ toast().message }}</p>
         </div>
 
-        <button class="close" (click)="close()">✕</button>
+        <button class="close" (click)="close()">
+          <icon-cross />
+        </button>
       </div>
 
       <div
@@ -24,6 +30,7 @@ import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
     </div>
   `,
   styleUrl: './toast.css',
+  imports: [CheckedCircle, CrossIcon],
 })
 export class Toast implements OnInit, OnDestroy {
   toast = input.required<ToastInternal>();

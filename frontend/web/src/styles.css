@@ -69,8 +69,9 @@
   --box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --font-family: 'Geist Mono', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-  Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-family:
+    'Geist Mono', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 /* Light/Dark Mode Variables */
@@ -83,7 +84,7 @@
     --primary-text: var(--dark);
     --inverted-text: var(--white);
     --alternate-text: var(--gray1);
-    --muted-text: var(--gray2);
+    --muted-text: var(--gray3);
   }
 }
 
@@ -232,6 +233,9 @@ main {
 }
 
 @layer components {
+  .atom-icon {
+    @apply cursor-pointer hover:scale-101 duration-300 ease-in-out;
+  }
 }
 
 @layer utilities {
