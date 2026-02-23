@@ -10,8 +10,6 @@ export class AuthMutation {
   private readonly client = inject(ApiClient);
 
   login(request: ILoginRequest) {
-    const response = this.client.post<IAuthResponse, ILoginRequest>(endpoints.login, request);
-    return response;
+    return this.client.post<IAuthResponse, ILoginRequest>(endpoints.login, request);
   }
-
 }

@@ -1,10 +1,11 @@
 import { Router } from '@angular/router';
 import { CheckedShield } from '@atoms/icons';
 import { AuthService } from '@api/auth.service';
-import { UserService } from '@api/user.service';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { ToastService } from '@components/ui/atoms/toast';
+import { WEB_ROUTES } from '@global/constants/routes.constants';
+import { IAuthResponse, IStandardResponse } from '@global/types';
 import { AuthBranding } from '@layouts/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
 
@@ -19,22 +20,25 @@ export class Login {
   protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
-  private readonly userService = inject(UserService);
   private readonly toastService = inject(ToastService);
 
-  routeToRegistration = () => this.router.navigate(['/auth/register']);
+  routeToRegistration = () => this.router.navigate([WEB_ROUTES.register]);
 
   submitLoginForm = (event: Event) => {
     event.preventDefault();
 
     const { email, password } = this.loginFormModel();
 
-    this.toastService.show({
-      title: 'Login',
-      message: 'Login successful',
-      variant: 'success',
-    });
+    this.authService.login({ email, password }).subscribe((response: IStandardResponse<IAuthResponse>) => {
+      console.log('Login Component: ', response);
+      this.toastService.show({
+        title: response.summary.message,
+        message: response.summary.description!,
+        variant: 'success',
+      });
 
-    this.authService.login({ email, password });
+      // Redirect to dashboard
+      this.router.navigate([WEB_ROUTES.dashboard]);
+    });
   };
 }

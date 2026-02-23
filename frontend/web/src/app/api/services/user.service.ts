@@ -19,7 +19,8 @@ export class UserService {
   }
 
   register(request: IRegisterRequest) {
-    const response = this.mutation.register(request);
-    return response;
+    return this.mutation.register(request).subscribe((response) => {
+      console.log("Service: ", response);
+    });
   }
 }

@@ -1,7 +1,8 @@
 import { Router } from '@angular/router';
-import { AuthService } from '@api/auth.service';
+import { UserService } from '@api/user.service';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
+import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { AuthBranding } from '@layouts/auth/auth-branding/branding';
 import {
   RegisterSchema,
@@ -22,10 +23,10 @@ export class Register {
 
   // INJECTS
   private readonly router = inject(Router);
-  private readonly authService = inject(AuthService);
+  private readonly userService = inject(UserService);
 
   // METHODS
-  routeToLogin = () => this.router.navigate(['/auth/login']);
+  routeToLogin = () => this.router.navigate([WEB_ROUTES.login]);
 
   submitRegistrationForm = (event: Event) => {
     event.preventDefault();
