@@ -1,33 +1,5 @@
-// import { Component, input } from '@angular/core';
-// import { ToastVariant, ToastDuration } from './toast.types';
-
-import { OnDestroy, Component, ChangeDetectionStrategy, input, output, OnInit } from '@angular/core';
 import { ToastInternal } from './toast.types';
-
-// @Component({
-//   selector: 'atom-toast',
-//   standalone: true,
-//   imports: [],
-//   template: `
-//     <div class="toast">
-//       <p>Toast</p>
-//     </div>
-//   `,
-//   styles: `
-//     .toast {
-//       background-color: #f3f4f6;
-//       padding: 1rem;
-//       border-radius: 0.5rem;
-//     }
-//   `,
-// })
-// export class Toast {
-//   // Component Props
-//   title = input.required<string>();
-//   type = input<ToastVariant>('info');
-//   message = input.required<string>();
-//   duration = input<ToastDuration>('short');
-// }
+import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
 
 @Component({
   selector: 'atom-toast',
@@ -51,80 +23,9 @@ import { ToastInternal } from './toast.types';
       ></div>
     </div>
   `,
-  styles: [
-    `
-      .toast {
-        width: 360px;
-        border-radius: 12px;
-        background: #1f2937;
-        color: white;
-        overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-        will-change: transform, opacity;
-      }
-
-      .content {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding: 12px 14px;
-        gap: 12px;
-      }
-
-      .text {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-
-      .title {
-        font-weight: 600;
-        font-size: 0.95rem;
-      }
-
-      .message {
-        font-size: 0.875rem;
-        opacity: 0.9;
-      }
-
-      .close {
-        background: transparent;
-        border: none;
-        color: white;
-        cursor: pointer;
-        opacity: 0.7;
-        font-size: 16px;
-      }
-
-      .progress {
-        height: 3px;
-        background: #22c55e;
-        width: 100%;
-        transform-origin: left;
-        animation-name: shrink;
-        animation-timing-function: linear;
-        animation-fill-mode: forwards;
-      }
-
-      .progress.paused {
-        animation-play-state: paused;
-      }
-
-      @keyframes shrink {
-        from {
-          transform: scaleX(1);
-        }
-        to {
-          transform: scaleX(0);
-        }
-      }
-    `,
-  ],
+  styleUrl: './toast.css',
 })
 export class Toast implements OnInit, OnDestroy {
-  // @Input({ required: true }) toast!: ToastInternal;
-  // @Output() closed = new EventEmitter<void>();
-
   toast = input.required<ToastInternal>();
   closed = output<void>();
 
@@ -136,7 +37,7 @@ export class Toast implements OnInit, OnDestroy {
   remaining = 4000;
 
   private get durationMs() {
-    return this.toast().duration === 'long' ? 7000 : 4000;
+    return this.toast().duration === 'long' ? 7000 : 40000;
   }
 
   ngOnInit() {

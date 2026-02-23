@@ -1,0 +1,68 @@
+@reference "tailwindcss";
+
+.toast {
+  @apply bg-[--alternate-background] text-[--primary-text];
+  width: 360px;
+  cursor: default;
+  overflow: hidden;
+  border-radius: 12px;
+  will-change: transform, opacity;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px 14px;
+  gap: 12px;
+}
+
+.text {
+  gap: 2px;
+  display: flex;
+  cursor: default;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.message {
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.close {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  opacity: 0.7;
+  font-size: 16px;
+}
+
+.progress {
+  height: 3px;
+  background: #22c55e;
+  width: 100%;
+  transform-origin: left;
+  animation-name: shrink;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.progress.paused {
+  animation-play-state: paused;
+}
+
+@keyframes shrink {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
