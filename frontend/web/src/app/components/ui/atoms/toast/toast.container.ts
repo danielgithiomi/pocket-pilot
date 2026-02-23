@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
 import { Toast } from './toast';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { ToastService } from './toast.service';
+import { Component } from '@angular/core';
 import { ToastInternal } from './toast.types';
+import { ToastService } from './toast.service';
+import { CommonModule } from '@angular/common';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'toast-container',

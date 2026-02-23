@@ -1,7 +1,7 @@
 // import { Component, input } from '@angular/core';
 // import { ToastVariant, ToastDuration } from './toast.types';
 
-import { EventEmitter, Input, OnDestroy, OnInit, Output, Component, ChangeDetectionStrategy } from '@angular/core';
+import { OnDestroy, Component, ChangeDetectionStrategy, input, output, OnInit } from '@angular/core';
 import { ToastInternal } from './toast.types';
 
 // @Component({
@@ -31,16 +31,14 @@ import { ToastInternal } from './toast.types';
 
 @Component({
   selector: 'atom-toast',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="toast" (mouseenter)="pause()" (mouseleave)="resume()">
       <div class="content">
         <div class="text">
-          @if (toast.title) {
-            <p class="title">{{ toast.title }}</p>
+          @if (toast().title) {
+            <p class="title">{{ toast().title }}</p>
           }
-          <p class="message">{{ toast.message }}</p>
+          <p class="message">{{ toast().message }}</p>
         </div>
 
         <button class="close" (click)="close()">✕</button>
@@ -124,8 +122,11 @@ import { ToastInternal } from './toast.types';
   ],
 })
 export class Toast implements OnInit, OnDestroy {
-  @Input({ required: true }) toast!: ToastInternal;
-  @Output() closed = new EventEmitter<void>();
+  // @Input({ required: true }) toast!: ToastInternal;
+  // @Output() closed = new EventEmitter<void>();
+
+  toast = input.required<ToastInternal>();
+  closed = output<void>();
 
   private timeoutId?: ReturnType<typeof setTimeout>;
   private startTime = 0;
@@ -135,7 +136,7 @@ export class Toast implements OnInit, OnDestroy {
   remaining = 4000;
 
   private get durationMs() {
-    return this.toast.duration === 'long' ? 7000 : 4000;
+    return this.toast().duration === 'long' ? 7000 : 4000;
   }
 
   ngOnInit() {

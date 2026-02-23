@@ -226,7 +226,7 @@ main {
     }
 
     button {
-      @apply bg-primary text-inverted-text shadow-primary disabled:bg-primary/50 cursor-pointer w-full rounded-lg px-4 py-2 shadow disabled:shadow-none disabled:cursor-not-allowed enabled:hover:scale-101 duration-300 ease-in-out;
+      @apply bg-primary text-primary-text shadow-primary disabled:bg-primary/50 cursor-pointer w-full rounded-lg px-4 py-2 shadow disabled:shadow-none disabled:cursor-not-allowed enabled:hover:scale-101 duration-300 ease-in-out;
     }
   }
 }
