@@ -1,8 +1,16 @@
-import {Router} from '@angular/router';
-import {form, FormField} from '@angular/forms/signals';
-import {Component, inject, signal} from '@angular/core';
-import {AuthBranding} from '@layouts/auth/auth-branding/branding';
-import {initialRegisterFormState, registerFormValidationSchema, RegisterSchema} from '@libs/types';
+import { Router } from '@angular/router';
+import { UserService } from '@api/user.service';
+import { form, FormField } from '@angular/forms/signals';
+import { Component, inject, signal } from '@angular/core';
+import { ToastService } from '@components/ui/atoms/toast';
+import { WEB_ROUTES } from '@global/constants/routes.constants';
+import { IAuthResponse, IStandardResponse } from '@global/types';
+import { AuthBranding } from '@layouts/auth/auth-branding/branding';
+import {
+  RegisterSchema,
+  initialRegisterFormState,
+  registerFormValidationSchema,
+} from '@libs/types';
 
 @Component({
   selector: 'app-register',
@@ -14,15 +22,30 @@ export class Register {
   // FORM
   protected registerFormModel = signal<RegisterSchema>(initialRegisterFormState);
   protected registerForm = form(this.registerFormModel, registerFormValidationSchema);
-  private readonly router = inject(Router);
 
-  routeToLogin = () => this.router.navigate(['/auth/login']);
+  // INJECTS
+  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
+  private readonly toastService = inject(ToastService);
+
+  // METHODS
+  routeToLogin = () => this.router.navigate([WEB_ROUTES.login]);
 
   submitRegistrationForm = (event: Event) => {
     event.preventDefault();
 
-    const {email, username, password} = this.registerFormModel();
+    const { email, name, password } = this.registerFormModel();
 
-    console.log(email, username, password);
-  }
+    this.userService
+      .register({ name, email, password })
+      .subscribe((response: IStandardResponse<IAuthResponse>) => {
+        this.toastService.show({
+          variant: 'success',
+          title: 'Registration Successful',
+          message: 'You can now log in to your account',
+        });
+
+        this.router.navigateByUrl(WEB_ROUTES.login);
+      });
+  };
 }

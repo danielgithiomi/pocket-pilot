@@ -1,4 +1,4 @@
-import {email, min, required, schema, validate} from '@angular/forms/signals';
+import {email, min, minLength, required, schema, validate} from '@angular/forms/signals';
 
 export interface Auth_Feature {
   id: number;
@@ -19,26 +19,26 @@ export const initialLoginFormState: LoginSchema = {
 export const loginFormValidationSchema = schema<LoginSchema>(
   (root) => {
     // Email
-    email(root.email, { message: "The email address format is invalid!"});
     required(root.email, { message: "The email address is required field!"});
+    email(root.email, { message: "The email address format is invalid!"});
 
     // Password
-    required(root.password, { message: "The password is required field!"});
-    min(root.password, 8, { message: "The password cannot be less than 8 characters!"})
+    required(root.password, { message: "The password is required field!"})
+    minLength(root.password, 8, { message: "The password cannot be less than 8 characters!"})
   }
 )
 
 // REGISTRATION
 export interface RegisterSchema {
+  name: string;
   email: string;
-  username: string;
   password: string;
   confirmPassword: string;
 }
 
 export const initialRegisterFormState: RegisterSchema = {
+  name: '',
   email: '',
-  username: '',
   password: '',
   confirmPassword: ''
 };
@@ -50,23 +50,23 @@ export const registerFormValidationSchema = schema<RegisterSchema>(
     required(root.email, { message: "The email address is required field!"});
 
     // Username
-    required(root.username, { message: "The username is required field!"});
-    min(root.username, 6, { message: "The username cannot be less than 6 characters!"});
+    required(root.name, { message: "The username is required field!"});
+    minLength(root.name, 6, { message: "The username cannot be less than 6 characters!"});
 
     // Password
     required(root.password, { message: "The password is required field!"});
-    min(root.password, 8, { message: "The password cannot be less than 8 characters!"});
+    minLength(root.password, 8, { message: "The password cannot be less than 8 characters!"});
 
     // Confirm Password
     required(root.confirmPassword, { message: "The confirm password is required field!"});
-    min(root.confirmPassword, 8, { message: "The confirm password cannot be less than 8 characters!"});
+    minLength(root.confirmPassword, 8, { message: "The confirm password cannot be less than 8 characters!"});
     validate(root.confirmPassword, (context) => {
       const confirmPassword = context.value();
       const password = context.valueOf(root.password);
       if (confirmPassword === password) return null;
       return {
         kind: 'password-mismatch',
-        message: "The passwords entered do not match"
+        message: "The passwords entered do not match!"
       }
     })
   }

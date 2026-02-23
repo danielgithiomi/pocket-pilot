@@ -1,5 +1,4 @@
 <section class="flex flex-row min-h-screen" id="register">
-
   <div class="animate-left flex-1" id="form">
     <div class="form-wrapper">
       <div class="space-y-4">
@@ -9,12 +8,17 @@
 
       <!--   FORM START   -->
       <form (submit)="submitRegistrationForm($event)" id="login-form">
-
         <div class="input-field">
           <label for="email">Email:</label>
-          <input [formField]="registerForm.email" autocomplete="email" id="email" placeholder="Email Address" type="email" />
+          <input
+            [formField]="registerForm.email"
+            autocomplete="email"
+            id="email"
+            placeholder="Email Address"
+            type="email"
+          />
 
-          @if (registerForm.email().invalid() && registerForm.email().touched()){
+          @if (registerForm.email().invalid() && registerForm.email().touched()) {
             <div class="input-field-errors-wrapper">
               @for (error of registerForm.email().errors(); track error.kind) {
                 <p class="input-field-error">{{ error.message }}</p>
@@ -25,11 +29,17 @@
 
         <div class="input-field">
           <label for="username">Username:</label>
-          <input [formField]="registerForm.username" autocomplete="username" id="username" placeholder="Username" type="text" />
+          <input
+            [formField]="registerForm.name"
+            autocomplete="username"
+            id="username"
+            placeholder="Username"
+            type="text"
+          />
 
-          @if (registerForm.username().invalid() && registerForm.username().touched()){
+          @if (registerForm.name().invalid() && registerForm.name().touched()) {
             <div class="input-field-errors-wrapper">
-              @for (error of registerForm.username().errors(); track error.kind) {
+              @for (error of registerForm.name().errors(); track error.kind) {
                 <p class="input-field-error">{{ error.message }}</p>
               }
             </div>
@@ -38,9 +48,15 @@
 
         <div class="input-field">
           <label for="password">Password:</label>
-          <input [formField]="registerForm.password" autocomplete="new-password" id="password" placeholder="Password" type="password" />
+          <input
+            [formField]="registerForm.password"
+            autocomplete="new-password"
+            id="password"
+            placeholder="Password"
+            type="password"
+          />
 
-          @if (registerForm.password().invalid() && registerForm.password().touched()){
+          @if (registerForm.password().invalid() && registerForm.password().touched()) {
             <div class="input-field-errors-wrapper">
               @for (error of registerForm.password().errors(); track error.kind) {
                 <p class="input-field-error">{{ error.message }}</p>
@@ -51,9 +67,17 @@
 
         <div class="input-field">
           <label for="password">Confirm Password:</label>
-          <input [formField]="registerForm.confirmPassword" autocomplete="new-password" id="confirm_password" placeholder="Confirm Password" type="password" />
+          <input
+            [formField]="registerForm.confirmPassword"
+            autocomplete="new-password"
+            id="confirm_password"
+            placeholder="Confirm Password"
+            type="password"
+          />
 
-          @if (registerForm.confirmPassword().invalid() && registerForm.confirmPassword().touched()){
+          @if (
+            registerForm.confirmPassword().invalid() && registerForm.confirmPassword().touched()
+          ) {
             <div class="input-field-errors-wrapper">
               @for (error of registerForm.confirmPassword().errors(); track error.kind) {
                 <p class="input-field-error">{{ error.message }}</p>
@@ -62,24 +86,19 @@
           }
         </div>
 
-        <button [disabled]="registerForm().invalid()" type="submit">
-          Register
-        </button>
-
+        <button [disabled]="registerForm().invalid()" type="submit">Register</button>
       </form>
       <!--   FORM END   -->
 
       <p (click)="routeToLogin()" class="form-redirect-text">Already have an account? Log in</p>
 
-      <div class="flex flex-row items-center gap-6 w-full text-sm my-10">
+      <div class="secure-auth">
         <hr />
         <p class="text-muted capitalize">Secure Registration</p>
         <hr />
       </div>
-
     </div>
   </div>
 
   <auth-branding class="flex-1 hidden md:block animate-right" contentAlign="right" />
-
 </section>

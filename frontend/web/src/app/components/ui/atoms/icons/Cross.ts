@@ -1,27 +1,27 @@
 import { Component, input } from '@angular/core';
 
 @Component({
-  selector: 'icon-filled-circle',
+  selector: 'icon-cross',
   template: `
     <svg
       class="atom-icon"
       fill="none"
+      version="1.1"
+      viewBox="0 0 16 16"
       [attr.width]="size()"
       [attr.height]="size()"
-      viewBox="0 0 20 20"
+      [attr.stroke]="color()"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       [attr.stroke-width]="strokeWidth()"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        [attr.fill]="color()"
-        d="M8 0a8 8 0 100 16A8 8 0 008 0z"
-        [attr.stroke-width]="strokeWidth()"
-      />
+      <path d="m11.25 4.75-6.5 6.5m0-6.5 6.5 6.5" />
     </svg>
   `,
 })
-export class FilledCircle {
-  size = input<number>(20);
+export class CrossIcon {
+  size = input<number>(24);
   strokeWidth = input<number>(2);
-  color = input<string>('var(--color-primary)');
+  color = input<string>('var(--primary)');
 }

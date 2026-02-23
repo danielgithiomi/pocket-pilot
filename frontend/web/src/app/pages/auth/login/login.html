@@ -1,5 +1,4 @@
 <section class="flex flex-row min-h-screen" id="login">
-
   <auth-branding class="flex-1 hidden md:block animate-left" contentAlign="left" />
 
   <div class="animate-right flex-1" id="form">
@@ -11,12 +10,17 @@
 
       <!--   FORM START   -->
       <form (submit)="submitLoginForm($event)" id="login-form">
-
         <div class="input-field">
           <label for="email">Email:</label>
-          <input [formField]="loginForm.email" autocomplete="email" id="email" placeholder="Email Address" type="email" />
+          <input
+            [formField]="loginForm.email"
+            autocomplete="email"
+            id="email"
+            placeholder="Email Address"
+            type="email"
+          />
 
-          @if (loginForm.email().invalid() && loginForm.email().touched()){
+          @if (loginForm.email().invalid() && loginForm.email().touched()) {
             <div class="input-field-errors-wrapper">
               @for (error of loginForm.email().errors(); track error.kind) {
                 <p class="input-field-error">{{ error.message }}</p>
@@ -27,9 +31,15 @@
 
         <div class="input-field">
           <label for="password">Password:</label>
-          <input [formField]="loginForm.password" autocomplete="current-password" id="password" placeholder="Password" type="password" />
+          <input
+            [formField]="loginForm.password"
+            autocomplete="current-password"
+            id="password"
+            placeholder="Password"
+            type="password"
+          />
 
-          @if (loginForm.password().invalid() && loginForm.password().touched()){
+          @if (loginForm.password().invalid() && loginForm.password().touched()) {
             <div class="input-field-errors-wrapper">
               @for (error of loginForm.password().errors(); track error.kind) {
                 <p class="input-field-error">{{ error.message }}</p>
@@ -38,23 +48,22 @@
           }
         </div>
 
-        <button [disabled]="loginForm().invalid()" class="" type="submit">
-          Log In
-        </button>
-
+        <button [disabled]="loginForm().invalid()" type="submit">Log In</button>
       </form>
       <!--   FORM END   -->
 
-      <p (click)="routeToRegistration()" class="form-redirect-text">Don't have an account? Sign Up</p>
+      <p (click)="routeToRegistration()" class="form-redirect-text">
+        Don't have an account? Sign Up
+      </p>
 
-      <div class="flex flex-row items-center gap-6 w-full text-sm my-10">
+      <div class="secure-auth">
         <hr />
         <p class="text-muted capitalize">Secure Login</p>
         <hr />
       </div>
 
       <div class="bordered-card">
-        <icon-checked-shield/>
+        <icon-checked-shield />
 
         <div class="space-y-2">
           <p>Protected by two-factor authentication!</p>

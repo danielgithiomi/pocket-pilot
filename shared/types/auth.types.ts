@@ -4,10 +4,17 @@ export interface ILoginRequest {
   password: string;
 }
 
-export interface ILoginResponse {
+export interface IAuthResponse {
   id: string;
   email: string;
   name: string;
   createdAt: string;
   updatedAt: string;
+}
+
+// REGISTER
+export interface IRegisterRequest {
+  name: string;
+  email: string;
+  password: string;
 }

@@ -54,3 +54,10 @@ export interface IStandardError {
   type: string;
   details?: unknown;
 }
+
+// ENDPOINTS
+export interface Endpoints {
+  root: string;
+  login: string;
+  register: string;
+}
