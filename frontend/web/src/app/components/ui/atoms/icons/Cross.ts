@@ -22,6 +22,6 @@ import { Component, input } from '@angular/core';
 })
 export class CrossIcon {
   size = input<number>(24);
-  strokeWidth = input<number>(1.5);
+  strokeWidth = input<number>(2);
   color = input<string>('var(--primary)');
 }

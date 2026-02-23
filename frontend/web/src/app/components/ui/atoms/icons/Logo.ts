@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'icon-logo',
@@ -6,16 +6,16 @@ import { Component, Input } from '@angular/core';
     <svg
       class="atom-icon"
       xmlns="http://www.w3.org/2000/svg"
-      [attr.width]="size"
-      [attr.height]="size"
+      [attr.width]="size()"
+      [attr.height]="size()"
       viewBox="0 0 500.000000 500.000000"
       preserveAspectRatio="xMidYMid meet"
     >
       <g
         transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
-        [attr.fill]="filled && fillColor ? fillColor : 'red'"
-        [attr.stroke-width]="strokeWidth"
-        [attr.stroke]="color"
+        [attr.fill]="filled() && fillColor() ? fillColor() : 'red'"
+        [attr.stroke-width]="strokeWidth()"
+        [attr.stroke]="color()"
       >
         <path
           d="M1444 4098 c-4 -7 -4 -10 1 -6 4 4 15 2 24 -5 14 -11 14 -10 2 6 -16 20 -18 21 -27 5z"
@@ -112,9 +112,9 @@ import { Component, Input } from '@angular/core';
   `,
 })
 export class LogoIcon {
-  @Input() size: number = 50;
-  @Input() filled: boolean = false;
-  @Input() strokeWidth: number = 50;
-  @Input() color: string = 'var(--color-primary)';
-  @Input() fillColor: string = 'var(--inverted-background)';
+  size = input<number>(50);
+  filled = input<boolean>(false);
+  strokeWidth = input<number>(50);
+  color = input<string>('var(--color-primary)');
+  fillColor = input<string>('var(--inverted-background)');
 }

@@ -26,7 +26,8 @@
 
 :root {
   /* Base Colors */
-  --primary: #e6ff2b;
+  /* --primary: #e6ff2b; */
+  --primary: #5b9279;
   --secondary: #0b4650;
   --tertiary: #c6ff33;
   --quaternary: #fe7f2d;
@@ -84,7 +85,7 @@
     --primary-text: var(--dark);
     --inverted-text: var(--white);
     --alternate-text: var(--gray1);
-    --muted-text: var(--gray3);
+    --muted-text: var(--gray2);
   }
 }
 
@@ -244,7 +245,7 @@ main {
   }
 
   .bordered-card {
-    @apply text-xs flex flex-row items-start gap-3 border rounded-lg p-6 w-full border-primary pointer-events-none;
+    @apply text-xs flex flex-row items-start gap-3 rounded-lg p-6 w-full border-2 border-primary pointer-events-none;
   }
 
   /* ANIMATIONS START */
