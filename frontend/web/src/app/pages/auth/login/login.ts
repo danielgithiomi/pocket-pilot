@@ -16,12 +16,16 @@ import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@
   imports: [FormField, AuthBranding, CheckedShield],
 })
 export class Login {
+  // FORM
   protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
   protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
+
+  // INJECTS
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
 
+  // METHODS
   routeToRegistration = () => this.router.navigate([WEB_ROUTES.register]);
 
   submitLoginForm = (event: Event) => {
@@ -38,7 +42,7 @@ export class Login {
       });
 
       // Redirect to dashboard
-      this.router.navigate([WEB_ROUTES.dashboard]);
+      this.router.navigateByUrl(WEB_ROUTES.dashboard);
     });
   };
 }

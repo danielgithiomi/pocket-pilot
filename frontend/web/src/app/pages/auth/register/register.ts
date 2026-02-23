@@ -2,7 +2,9 @@ import { Router } from '@angular/router';
 import { UserService } from '@api/user.service';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
+import { ToastService } from '@components/ui/atoms/toast';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
+import { IAuthResponse, IStandardResponse } from '@global/types';
 import { AuthBranding } from '@layouts/auth/auth-branding/branding';
 import {
   RegisterSchema,
@@ -24,6 +26,7 @@ export class Register {
   // INJECTS
   private readonly router = inject(Router);
   private readonly userService = inject(UserService);
+  private readonly toastService = inject(ToastService);
 
   // METHODS
   routeToLogin = () => this.router.navigate([WEB_ROUTES.login]);
@@ -31,8 +34,20 @@ export class Register {
   submitRegistrationForm = (event: Event) => {
     event.preventDefault();
 
-    const { email, username, password } = this.registerFormModel();
+    const { email, name, password } = this.registerFormModel();
 
-    console.log(email, username, password);
+    console.log(email, name, password);
+
+    this.userService.register({ name, email, password }).subscribe((response: IStandardResponse<IAuthResponse>) => {
+      console.log("Service: ", response);
+      this.toastService.show({
+        title: response.summary.message,
+        message: response.summary.description!,
+        variant: 'success',
+      });
+
+      // Redirect to login
+      this.router.navigateByUrl(WEB_ROUTES.login);
+    });
   };
 }
