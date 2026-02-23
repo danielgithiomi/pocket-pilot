@@ -27,10 +27,10 @@
 :root {
   /* Base Colors */
   /* --primary: #e6ff2b; */
-  --primary: #5b9279;
-  --secondary: #0b4650;
-  --tertiary: #c6ff33;
-  --quaternary: #fe7f2d;
+  --primary: #5b9279; /* Jungle Teal */
+  --secondary: #0b4650; /* Blue */
+  --tertiary: #c6ff33; /* Yellow */
+  --quaternary: #fe7f2d; /* Orange */
   --transparent: transparent;
 
   /* State Colors */

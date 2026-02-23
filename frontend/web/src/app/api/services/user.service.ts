@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
 import { inject } from '@angular/core';
-import { UserResource } from '@methods/resources/user.resource';
+import { Injectable } from '@angular/core';
+import { IRegisterRequest } from '@global/types';
+import { UserMutation } from '@methods/mutations';
+import { UserResource } from '@methods/resources';
 
 @Injectable({
   providedIn: 'root',
@@ -8,10 +10,16 @@ import { UserResource } from '@methods/resources/user.resource';
 export class UserService {
 
   private readonly resource = inject(UserResource);
+  private readonly mutation = inject(UserMutation);
   
   root() {
     const me = this.resource.rootResource;
     console.log(me.value());
     return me.value();
+  }
+
+  register(request: IRegisterRequest) {
+    const response = this.mutation.register(request);
+    return response;
   }
 }

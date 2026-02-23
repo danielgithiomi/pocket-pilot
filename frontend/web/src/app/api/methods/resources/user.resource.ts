@@ -1,6 +1,6 @@
+import { Injectable } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { Injectable } from '@angular/core';
 
 const BASE_URL = environment.API_BASE_URL;
 
