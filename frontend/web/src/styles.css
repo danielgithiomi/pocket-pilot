@@ -224,7 +224,7 @@ main {
     }
 
     input {
-      @apply bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline px-4 py-2;
+      @apply bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 px-4 py-2;
     }
 
     button {
@@ -246,6 +246,10 @@ main {
 
   .bordered-card {
     @apply text-xs flex flex-row items-start gap-3 rounded-lg p-6 w-full border-2 border-primary pointer-events-none;
+  }
+
+  .secure-auth {
+    @apply pointer-events-none flex flex-row items-center gap-6 w-full text-sm my-10;
   }
 
   /* ANIMATIONS START */

@@ -51,22 +51,22 @@ export const registerFormValidationSchema = schema<RegisterSchema>(
 
     // Username
     required(root.username, { message: "The username is required field!"});
-    min(root.username, 6, { message: "The username cannot be less than 6 characters!"});
+    minLength(root.username, 6, { message: "The username cannot be less than 6 characters!"});
 
     // Password
     required(root.password, { message: "The password is required field!"});
-    min(root.password, 8, { message: "The password cannot be less than 8 characters!"});
+    minLength(root.password, 8, { message: "The password cannot be less than 8 characters!"});
 
     // Confirm Password
     required(root.confirmPassword, { message: "The confirm password is required field!"});
-    min(root.confirmPassword, 8, { message: "The confirm password cannot be less than 8 characters!"});
+    minLength(root.confirmPassword, 8, { message: "The confirm password cannot be less than 8 characters!"});
     validate(root.confirmPassword, (context) => {
       const confirmPassword = context.value();
       const password = context.valueOf(root.password);
       if (confirmPassword === password) return null;
       return {
         kind: 'password-mismatch',
-        message: "The passwords entered do not match"
+        message: "The passwords entered do not match!"
       }
     })
   }
