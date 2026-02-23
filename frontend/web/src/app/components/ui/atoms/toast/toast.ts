@@ -5,16 +5,16 @@ import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
 @Component({
   selector: 'atom-toast',
   template: `
-    <div class="toast" (mouseenter)="pause()" (mouseleave)="resume()">
+    <div class="toast bg-alternate-background" (mouseenter)="pause()" (mouseleave)="resume()">
       <div class="content">
         <div class="text">
           @if (toast().title) {
             <div class="flex flex-row gap-2 items-center">
               <icon-checked-circle />
-              <p class="title text-inverted-text">{{ toast().title }}</p>
+              <p class="title">{{ toast().title }}</p>
             </div>
           }
-          <p class="message text-muted-text">{{ toast().message }}</p>
+          <p class="message">{{ toast().message }}</p>
         </div>
 
         <button class="close" (click)="close()">
@@ -41,10 +41,10 @@ export class Toast implements OnInit, OnDestroy {
   private elapsed = 0;
 
   isPaused = false;
-  remaining = 4000;
+  remaining = 3500;
 
   private get durationMs() {
-    return this.toast().duration === 'long' ? 7000 : 40000;
+    return this.toast().duration === 'long' ? 7000 : 3500;
   }
 
   ngOnInit() {

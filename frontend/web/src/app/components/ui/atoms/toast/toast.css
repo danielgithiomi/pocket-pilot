@@ -1,7 +1,6 @@
 @reference 'tailwindcss';
 
 .toast {
-  @apply bg-[var(--inverted-background)] text-[var(--primary-text)];
   width: 360px;
   cursor: default;
   overflow: hidden;
@@ -32,6 +31,7 @@
 
 .message {
   @apply p-1;
+  opacity: 0.8;
   font-size: 0.8rem;
 }
 
