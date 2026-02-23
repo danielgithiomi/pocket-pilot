@@ -34,14 +34,12 @@ export class Login {
     const { email, password } = this.loginFormModel();
 
     this.authService.login({ email, password }).subscribe((response: IStandardResponse<IAuthResponse>) => {
-      console.log('Login Component: ', response);
       this.toastService.show({
         title: response.summary.message,
         message: response.summary.description!,
         variant: 'success',
       });
 
-      // Redirect to dashboard
       this.router.navigateByUrl(WEB_ROUTES.dashboard);
     });
   };

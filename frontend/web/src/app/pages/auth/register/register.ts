@@ -36,18 +36,16 @@ export class Register {
 
     const { email, name, password } = this.registerFormModel();
 
-    console.log(email, name, password);
+    this.userService
+      .register({ name, email, password })
+      .subscribe((response: IStandardResponse<IAuthResponse>) => {
+        this.toastService.show({
+          variant: 'success',
+          title: 'Registration Successful',
+          message: 'You can now log in to your account',
+        });
 
-    this.userService.register({ name, email, password }).subscribe((response: IStandardResponse<IAuthResponse>) => {
-      console.log("Service: ", response);
-      this.toastService.show({
-        title: response.summary.message,
-        message: response.summary.description!,
-        variant: 'success',
+        this.router.navigateByUrl(WEB_ROUTES.login);
       });
-
-      // Redirect to login
-      this.router.navigateByUrl(WEB_ROUTES.login);
-    });
   };
 }
