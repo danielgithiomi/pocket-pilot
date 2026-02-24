@@ -20,7 +20,7 @@ export class AuthService {
             throw new NotFoundException({
                 name: 'User not found.',
                 title: 'User not found.',
-                details: `No user found with the ID: ${userId}!`,
+                details: `No user found with the ID: {${userId}}!`,
             });
 
         return user;
@@ -57,7 +57,7 @@ export class AuthService {
             throw new NotFoundException({
                 name: 'User not found.',
                 title: 'User not found.',
-                details: `No user found with the email: ${email}!`,
+                details: `No user found with the email: {${email}}!`,
             });
 
         return {
