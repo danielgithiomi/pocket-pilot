@@ -66,10 +66,10 @@ export class UserResponseDto {
 
 // SWAGGER
 @ApiExtraModels(UserResponseDto)
-export class UsersWithCountResponseDto{
-    @ApiProperty({type: Number, example: 1})
+export class UsersWithCountResponseDto {
+    @ApiProperty({ type: Number, example: 1 })
     count!: number;
 
-    @ApiProperty({type: 'array', items: { $ref: getSchemaPath(UserResponseDto) }})
+    @ApiProperty({ type: 'array', items: { $ref: getSchemaPath(UserResponseDto) } })
     data!: UserResponseDto[];
 }
