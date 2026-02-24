@@ -48,7 +48,13 @@
           }
         </div>
 
-        <button [disabled]="loginForm().invalid()" type="submit">Log In</button>
+        <atom-button
+          id="login"
+          type="submit"
+          label="Log In"
+          [isLoading]="isSubmitting()"
+          [disabled]="loginForm().invalid() || isSubmitting()"
+        />
       </form>
       <!--   FORM END   -->
 

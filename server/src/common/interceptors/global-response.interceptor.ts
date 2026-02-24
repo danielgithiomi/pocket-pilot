@@ -46,8 +46,8 @@ export class GlobalResponseInterceptor<T> implements NestInterceptor<T, IGlobalR
                 statusCode: response.statusCode,
                 body: body ?? {},
                 summary: {
-                    message: summary.message,
-                    description: summary.description,
+                    title: summary.title,
+                    details: summary.details,
                 },
                 metadata: {
                     endpoint: request.url,

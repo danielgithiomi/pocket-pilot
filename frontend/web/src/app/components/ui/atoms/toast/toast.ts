@@ -1,5 +1,5 @@
 import { ToastInternal } from './toast.types';
-import { CrossedCircle, CheckedCircle, CrossIcon } from '@components/ui/atoms/icons';
+import { CheckedCircle, CrossIcon } from '@atoms/icons';
 import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
 
 @Component({
