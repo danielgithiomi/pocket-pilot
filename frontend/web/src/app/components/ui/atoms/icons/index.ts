@@ -1,6 +1,7 @@
 export * from './Logo';
 export * from './Cross';
 export * from './Warning';
+export * from './InfoCircle';
 export * from './EmptyCircle';
 export * from './FilledCircle';
 export * from './CheckedShield';

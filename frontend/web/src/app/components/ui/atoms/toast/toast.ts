@@ -1,6 +1,6 @@
-import { CheckedCircle, CrossIcon } from '@atoms/icons';
-import { TOAST_THEMES, ToastInternal, ToastTheme, ToastVariant } from './toast.types';
+import { TOAST_THEMES, ToastInternal, ToastTheme } from './toast.types';
 import { input, output, OnInit, OnDestroy, Component, computed } from '@angular/core';
+import { CheckedCircle, CrossIcon, CorneredWarningIcon, InfoCircle, CrossedCircle } from '@atoms/icons';
 
 @Component({
   selector: 'atom-toast',
@@ -10,7 +10,24 @@ import { input, output, OnInit, OnDestroy, Component, computed } from '@angular/
         <div class="text">
           @if (toast().title) {
             <div class="flex flex-row gap-2 items-center">
-              <icon-checked-circle [color]="theme().color" />
+              @switch (theme().icon) {
+                @case ('success') {
+                  <icon-checked-circle [color]="theme().color" />
+                }
+                @case ('error') {
+                  <icon-crossed-circle [color]="theme().color" />
+                }
+                @case ('warning') {
+                  <icon-cornered-warning [color]="theme().color" />
+                }
+                @case ('info') {
+                  <icon-info-circle [color]="theme().color" />
+                }
+                @default {
+                  null;
+                }
+              }
+
               <p class="title">{{ toast().title }}</p>
             </div>
           }
@@ -31,7 +48,7 @@ import { input, output, OnInit, OnDestroy, Component, computed } from '@angular/
     </div>
   `,
   styleUrl: './toast.css',
-  imports: [CheckedCircle, CrossIcon],
+  imports: [CheckedCircle, CrossIcon, CorneredWarningIcon, InfoCircle, CrossedCircle],
 })
 export class Toast implements OnInit, OnDestroy {
   closed = output<void>();
