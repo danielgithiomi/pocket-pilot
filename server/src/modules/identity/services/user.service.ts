@@ -1,3 +1,4 @@
+import * as argon from 'argon2';
 import { User } from '../dto/user.dto';
 import { RegisterInputDto } from '../dto/auth.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
@@ -15,8 +16,10 @@ export class UserService {
                 title: 'User Already Exists.',
                 details: `A user with the same email address already exists!`,
             });
+            
+        const hashedPassword = await argon.hash(data.password);  
 
-        return this.db.user.create({ data });
+        return this.db.user.create({ data: { ...data, password: hashedPassword } });
     }
 
     async findUserById(userId: string): Promise<User> {
@@ -40,6 +43,7 @@ export class UserService {
         return this.db.user.delete({ where: { id: userId } });
     }
 
+    // HELPER FUNCTIONS
     private async validateUserExists(email: string): Promise<boolean> {
         const user: User | null = await this.findUserByEmail(email);
         return !!user;

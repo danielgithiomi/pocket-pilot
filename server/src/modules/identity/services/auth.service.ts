@@ -1,3 +1,4 @@
+import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { FullUser } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
@@ -36,19 +37,34 @@ export class AuthService {
                 details: `Incorrect email or password. Please confirm and try again!`,
             });
 
-        const payload: JWTPayload = {
+        const payload: JWTPayload = this.createPayload(user);
+
+        const { access_token, refresh_token } = this.generateTokens(payload);
+
+        return {
+            user,
+            access_token,
+            refresh_token,
+        };
+    }
+
+    // HELPER FUNCTIONS
+    private createPayload(user: FullUser): JWTPayload {
+        return {
             sub: user.id!,
             username: user.name,
             email: user.email,
             iat: Date.now(),
         };
+    }
 
+    private generateTokens(payload: JWTPayload): { access_token: string; refresh_token: string } {
         let access_token: string;
         let refresh_token: string;
 
         try {
             access_token = this.jwtService.sign(payload, { expiresIn: '1h' });
-            refresh_token = this.jwtService.sign({ sub: user.id }, { expiresIn: '1d' });
+            refresh_token = this.jwtService.sign({ sub: payload.sub }, { expiresIn: '1d' });
         } catch (error) {
             throw new InternalServerErrorException({
                 name: 'JWT Token Generation Error',
@@ -57,11 +73,7 @@ export class AuthService {
             });
         }
 
-        return {
-            user,
-            refresh_token,
-            access_token,
-        };
+        return { access_token, refresh_token };
     }
 
     private async validateUser(email: string, password: string): Promise<ValidationResult> {
@@ -75,8 +87,12 @@ export class AuthService {
             });
 
         return {
-            isValid: password === user.password,
+            isValid: await this.validatePassword(password, user.password),
             user,
         };
+    }
+
+    private async validatePassword(password: string, hashedPassword: string): Promise<boolean> {
+        return argon.verify(hashedPassword, password);
     }
 }
