@@ -20,11 +20,21 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
         );
       }
 
+      // SERVER ERROR
+      if(error.status.toString().startsWith('5')){
+        return throwError(() => ({
+          title: 'SERVER_ERROR',
+          statusCode: error.status || 500,
+          details: 'A server error occurred. Please contact support for assistance!'
+        }))
+      }
+
       // Network / CORS / unknown errors
       return throwError(() => ({
+        title: 'NETWORK_ERROR',
         statusCode: error.status,
-        message: error.message || 'Network error',
-        type: 'NETWORK_ERROR',
+        details: 'An network error occurred. Ensure you have an internet connection!',
+        // details: error.message || 'Network error',
       }));
     }),
   );

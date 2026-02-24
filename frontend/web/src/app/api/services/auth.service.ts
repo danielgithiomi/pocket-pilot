@@ -23,7 +23,7 @@ export class AuthService {
   // HELPER FUNCTIONS
   private renderToast = (error: IStandardError) => {
     const { title, details } = error;
-
+    console.log(error);
     this.toastService.show({
       title,
       details: details as string,
