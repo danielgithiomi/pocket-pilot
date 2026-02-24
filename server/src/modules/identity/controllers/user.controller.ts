@@ -1,3 +1,4 @@
+import { Summary } from '@common/decorators';
 import { UserService } from '../services/user.service';
 import { DeleteResourceResponse } from '@common/types';
 import { CreateUserDto, UserResponseDto } from '../dto/user.dto';
@@ -11,6 +12,7 @@ export class UserController {
 
     @Post()
     @ApiBody({ type: CreateUserDto })
+    @Summary('User Registration Successful.', 'The user is registered successfully.')
     @ApiResponse({ status: 201, description: 'User registered successfully', type: UserResponseDto })
     @ApiOperation({
         summary: 'Register a new user',

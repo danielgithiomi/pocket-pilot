@@ -16,8 +16,9 @@ export class AuthService {
 
         if (!user)
             throw new NotFoundException({
-                message: 'User not found',
-                details: `No user found in the database with the ID: ${userId}`,
+                name: 'User not found.',
+                title: 'User not found.',
+                details: `No user found with the ID: ${userId}!`,
             });
 
         return user;
@@ -30,8 +31,9 @@ export class AuthService {
 
         if (!isValid)
             throw new UnauthorizedException({
-                message: 'Invalid credentials',
-                details: `The provided email and password combination is incorrect`,
+                name: 'Invalid Credentials',
+                title: 'Invalid Credentials.',
+                details: `The provided email and password are incorrect!`,
             });
 
         const payload: JWTPayload = {
@@ -50,7 +52,7 @@ export class AuthService {
         } catch (error) {
             throw new InternalServerErrorException({
                 name: 'JWT Token Generation Error',
-                message: 'Failed to generate tokens',
+                title: 'Failed to generate tokens',
                 details: `An error occurred while generating the access and refresh tokens: ${error}`,
             });
         }
@@ -67,12 +69,13 @@ export class AuthService {
 
         if (!user)
             throw new NotFoundException({
-                message: 'User not found',
-                details: `No user found in the database with the email: ${email}`,
+                name: 'User not found.',
+                title: 'User not found.',
+                details: `No user found with the email: ${email}!`,
             });
 
         return {
-            isValid: password === 'P@55w0rd',
+            isValid: password === user.password,
             user,
         };
     }

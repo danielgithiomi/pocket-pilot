@@ -6,8 +6,8 @@ export interface RequestCookies {
 
 // RESPONSE SUMMARY
 export interface ResponseSummary {
-  message: string;
-  description?: string;
+  title: string;
+  details?: string;
 }
 
 // RESPONSE STRUCTURE
@@ -38,7 +38,7 @@ export interface IGlobalException {
   error: {
     type: string;
     name?: string;
-    message?: string;
+    title?: string;
     details?: unknown;
   };
   metadata: {
@@ -49,10 +49,10 @@ export interface IGlobalException {
 }
 
 export interface IStandardError {
-  statusCode: number;
-  message: string;
   type: string;
+  title: string;
   details?: unknown;
+  statusCode: number;
 }
 
 // ENDPOINTS

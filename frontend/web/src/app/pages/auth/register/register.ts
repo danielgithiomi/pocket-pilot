@@ -42,7 +42,7 @@ export class Register {
         this.toastService.show({
           variant: 'success',
           title: 'Registration Successful',
-          message: 'You can now log in to your account',
+          details: 'You can now log in to your account',
         });
 
         this.router.navigateByUrl(WEB_ROUTES.login);

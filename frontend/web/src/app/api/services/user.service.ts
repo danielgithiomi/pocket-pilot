@@ -32,9 +32,10 @@ export class UserService {
 
   // HELPER FUNCTIONS
   private renderToast = (error: IStandardError) => {
+    const { title, details } = error;
     this.toastService.show({
-      title: error.message,
-      message: error.details as string,
+      title,
+      details: details as string,
       variant: 'error',
     });
   };

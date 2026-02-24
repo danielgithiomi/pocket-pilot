@@ -8,8 +8,8 @@ export interface IRequestCookies {
 
 // RESPONSE SUMMARY
 export interface IResponseSummary {
-    message: string;
-    description?: string;
+    title: string;
+    details?: string;
 }
 
 // RESPONSE STRUCTURE
@@ -32,7 +32,7 @@ export interface IGlobalError {
     error: {
         type: string;
         name?: string;
-        message?: string;
+        title?: string;
         details?: unknown;
     };
     metadata: {
