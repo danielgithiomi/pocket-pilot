@@ -30,8 +30,8 @@ export class AuthController {
 
     @Post('login')
     @ApiBody({ type: LoginInputDto, required: true })
+    @Summary('Login Successful.', 'The user is authenticated and tokens are stored in the cookies.')
     @ApiResponse({ status: 200, description: 'User logged in successfully.', type: UserResponseDto, isArray: false })
-    @Summary('User Login Successful.', 'The user is authenticated and token stored in the cookies.')
     @ApiOperation({
         summary: 'Log in a registered user',
         description: 'Log in as a registered user and store the access and refresh tokens in the cookies.',

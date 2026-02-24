@@ -43,9 +43,9 @@ export class Login {
       this.authService.login({ email, password }).subscribe({
         next: (response: IStandardResponse<IAuthResponse>) => {
           this.toastService.show({
-            title: response.summary.title,
-            details: response.summary.details!,
             variant: 'success',
+            title: response.summary.title,
+            details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
           });
 
           this.router.navigateByUrl(WEB_ROUTES.dashboard);
