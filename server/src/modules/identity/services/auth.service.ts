@@ -33,7 +33,7 @@ export class AuthService {
             throw new UnauthorizedException({
                 name: 'Invalid Credentials',
                 title: 'Invalid Credentials.',
-                details: `The provided email and password are incorrect!`,
+                details: `Incorrect email or password. Please confirm and try again!`,
             });
 
         const payload: JWTPayload = {
