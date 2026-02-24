@@ -86,7 +86,13 @@
           }
         </div>
 
-        <button [disabled]="registerForm().invalid()" type="submit">Register</button>
+        <atom-button
+          id="register"
+          type="submit"
+          label="Register"
+          [isLoading]="isSubmitting()"
+          [disabled]="registerForm().invalid() || isSubmitting()"
+        />
       </form>
       <!--   FORM END   -->
 

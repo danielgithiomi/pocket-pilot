@@ -11,14 +11,18 @@ import {
   initialRegisterFormState,
   registerFormValidationSchema,
 } from '@libs/types';
+import { Button } from '@components/ui/atoms/button';
 
 @Component({
   selector: 'app-register',
   styleUrl: './register.css',
   templateUrl: './register.html',
-  imports: [AuthBranding, FormField],
+  imports: [AuthBranding, FormField, Button],
 })
 export class Register {
+  // SIGNALS
+  protected isSubmitting = signal<boolean>(false);
+
   // FORM
   protected registerFormModel = signal<RegisterSchema>(initialRegisterFormState);
   protected registerForm = form(this.registerFormModel, registerFormValidationSchema);
@@ -34,11 +38,12 @@ export class Register {
   submitRegistrationForm = (event: Event) => {
     event.preventDefault();
 
+    this.isSubmitting.set(true);
+
     const { email, name, password } = this.registerFormModel();
 
-    this.userService
-      .register({ name, email, password })
-      .subscribe((response: IStandardResponse<IAuthResponse>) => {
+    this.userService.register({ name, email, password }).subscribe({
+      next: (response: IStandardResponse<IAuthResponse>) => {
         this.toastService.show({
           variant: 'success',
           title: 'Registration Successful',
@@ -46,6 +51,9 @@ export class Register {
         });
 
         this.router.navigateByUrl(WEB_ROUTES.login);
-      });
+      },
+      error: () => this.isSubmitting.set(false),
+      complete: () => this.isSubmitting.set(false),
+    });
   };
 }

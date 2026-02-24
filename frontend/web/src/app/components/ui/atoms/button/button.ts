@@ -1,7 +1,6 @@
-import { ButtonType } from './button.types';
+import { NgClass } from '@angular/common';
+import { ButtonType, ButtonVariant } from './button.types';
 import { Component, computed, input, output } from '@angular/core';
-
-type ButtonVariant = 'primary' | 'secondary';
 
 @Component({
   selector: 'atom-button',
@@ -22,7 +21,7 @@ type ButtonVariant = 'primary' | 'secondary';
       }
 
       <!-- Label / Content -->
-      <span class="relative z-0">
+      <span class="relative z-0" [ngClass]="variant() == 'primary' ? 'text-white' : 'text-black'">
         @if (hasProjectedContent()) {
           <ng-content></ng-content>
         } @else {
@@ -32,18 +31,19 @@ type ButtonVariant = 'primary' | 'secondary';
     </button>
   `,
   styleUrl: './button.css',
+  imports: [NgClass],
 })
 export class Button {
   // =========================
   // Inputs (Signals API - Angular v21 style)
   // =========================
-  id = input.required<string>();
   label = input<string>('');
+  id = input.required<string>();
+  className = input<string>('');
+  disabled = input<boolean>(false);
+  isLoading = input<boolean>(false);
   type = input<ButtonType>('button');
   variant = input<ButtonVariant>('primary');
-  isLoading = input<boolean>(false);
-  disabled = input<boolean>(false);
-  className = input<string>('');
 
   // =========================
   // Outputs
@@ -56,13 +56,12 @@ export class Button {
   prefixedId = computed(() => `btn-${this.id()}`);
 
   buttonClasses = computed(() => {
-    const base = 'button overflow-hidden relative transition-all duration-200';
+    const base = 'button overflow-hidden relative transition-all duration-250';
 
-    const variantClasses = this.variant() === 'primary' ? 'bg-primary' : 'bg-inverted-background';
-
-    const loadingClasses = this.isLoading() ? 'opacity-85 cursor-progress' : '';
-
-    const disabledClasses = this.disabled() ? 'opacity-85 cursor-not-allowed' : 'hover:scale-101';
+    const loadingClasses = this.isLoading() ? 'opacity-80 cursor-progress' : '';
+    const variantClasses =
+      this.variant() === 'primary' ? 'bg-primary' : 'bg-inverted-background text-white';
+    const disabledClasses = this.disabled() ? 'opacity-80 cursor-not-allowed' : 'hover:scale-101';
 
     return [base, variantClasses, loadingClasses, disabledClasses, this.className()]
       .filter(Boolean)
