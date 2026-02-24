@@ -6,6 +6,7 @@ import { describe, beforeEach, it, expect } from '@jest/globals';
 import { UserService } from '@modules/identity/services/user.service';
 import { AccountController } from '../controllers/account.controller';
 import { DatabaseModule } from '@infrastructure/database/database.module';
+import { CookiesService } from '@modules/identity/services/cookies.service';
 
 describe('AccountController', () => {
     let controller: AccountController;
@@ -14,7 +15,7 @@ describe('AccountController', () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [DatabaseModule],
             controllers: [AccountController],
-            providers: [AccountService, JwtService, UserService, CookiesAuthGuard],
+            providers: [AccountService, JwtService, UserService, CookiesAuthGuard, CookiesService],
         }).compile();
 
         controller = module.get<AccountController>(AccountController);

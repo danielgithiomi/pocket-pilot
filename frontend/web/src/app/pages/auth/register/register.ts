@@ -47,10 +47,10 @@ export class Register {
         this.toastService.show({
           variant: 'success',
           title: 'Registration Successful',
-          details: 'You can now log in to your account',
+          details: 'You are now part of the Pocket Pilot family!',
         });
 
-        this.router.navigateByUrl(WEB_ROUTES.login);
+        this.router.navigateByUrl(WEB_ROUTES.dashboard);
       },
       error: () => this.isSubmitting.set(false),
       complete: () => this.isSubmitting.set(false),

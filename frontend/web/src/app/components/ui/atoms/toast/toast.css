@@ -1,12 +1,14 @@
 @reference 'tailwindcss';
 
 .toast {
-  width: 360px;
+  width: 350px;
   cursor: default;
   overflow: hidden;
   border-radius: 12px;
   will-change: transform;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .content {
@@ -42,7 +44,6 @@
 
 .progress {
   height: 3px;
-  background: #22c55e;
   width: 100%;
   transform-origin: left;
   animation-name: shrink;

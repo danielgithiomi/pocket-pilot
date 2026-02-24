@@ -4,15 +4,18 @@ import { CookiesAuthGuard } from '@common/guards';
 import { LoginInputDto } from './../dto/auth.dto';
 import { plainToInstance } from 'class-transformer';
 import { AuthService } from '../services/auth.service';
-import { type User, UserResponseDto } from '../dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
+import { type User, UserResponseDto } from '../dto/user.dto';
+import { CookiesService } from '../services/cookies.service';
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { JWT_ACCESS_TOKEN_VALIDITY_MINUTES, JWT_REFRESH_TOKEN_VALIDITY_DAYS } from '@common/constants';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+    constructor(
+        private readonly authService: AuthService,
+        private readonly cookiesService: CookiesService,
+    ) {}
 
     @Get('me')
     @UseGuards(CookiesAuthGuard)
@@ -27,8 +30,8 @@ export class AuthController {
 
     @Post('login')
     @ApiBody({ type: LoginInputDto, required: true })
+    @Summary('Login Successful.', 'The user is authenticated and tokens are stored in the cookies.')
     @ApiResponse({ status: 200, description: 'User logged in successfully.', type: UserResponseDto, isArray: false })
-    @Summary('User Login Successful.', 'The user is authenticated and token stored in the cookies.')
     @ApiOperation({
         summary: 'Log in a registered user',
         description: 'Log in as a registered user and store the access and refresh tokens in the cookies.',
@@ -36,7 +39,7 @@ export class AuthController {
     async login(@Body() loginDto: LoginInputDto, @Res({ passthrough: true }) res: Response) {
         const { user, access_token, refresh_token } = await this.authService.login(loginDto);
 
-        this.setResponseCookies(res, access_token, refresh_token);
+        this.cookiesService.setResponseCookies(res, access_token, refresh_token);
 
         return user;
     }
@@ -57,24 +60,5 @@ export class AuthController {
         return {
             message: 'User logged out successfully',
         };
-    }
-
-    private setResponseCookies(res: Response, access_token: string, refresh_token: string): void {
-        const access_token_max_age = JWT_ACCESS_TOKEN_VALIDITY_MINUTES * 60 * 1000;
-        const refresh_token_max_age = JWT_REFRESH_TOKEN_VALIDITY_DAYS * 24 * 60 * 60 * 1000;
-
-        res.cookie('access_token', access_token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-            maxAge: access_token_max_age,
-        });
-
-        res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-            maxAge: refresh_token_max_age,
-        });
     }
 }

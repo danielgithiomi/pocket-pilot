@@ -18,5 +18,5 @@ import { Component, input } from '@angular/core';
 export class EmptyCircle {
   size = input<number>(20);
   strokeWidth = input<number>(2);
-  color = input<string>('var(--color-primary)');
+  color = input<string>('var(--primary)');
 }

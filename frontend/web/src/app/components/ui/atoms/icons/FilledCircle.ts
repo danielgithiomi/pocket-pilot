@@ -23,5 +23,5 @@ import { Component, input } from '@angular/core';
 export class FilledCircle {
   size = input<number>(20);
   strokeWidth = input<number>(2);
-  color = input<string>('var(--color-primary)');
+  color = input<string>('var(--primary)');
 }

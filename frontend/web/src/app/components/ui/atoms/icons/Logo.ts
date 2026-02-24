@@ -115,6 +115,6 @@ export class LogoIcon {
   size = input<number>(50);
   filled = input<boolean>(false);
   strokeWidth = input<number>(50);
-  color = input<string>('var(--color-primary)');
+  color = input<string>('var(--primary)');
   fillColor = input<string>('var(--inverted-background)');
 }

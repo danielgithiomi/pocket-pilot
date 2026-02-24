@@ -1,6 +1,6 @@
-import { ToastInternal } from './toast.types';
 import { CheckedCircle, CrossIcon } from '@atoms/icons';
-import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
+import { TOAST_THEMES, ToastInternal, ToastTheme, ToastVariant } from './toast.types';
+import { input, output, OnInit, OnDestroy, Component, computed } from '@angular/core';
 
 @Component({
   selector: 'atom-toast',
@@ -10,7 +10,7 @@ import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
         <div class="text">
           @if (toast().title) {
             <div class="flex flex-row gap-2 items-center">
-              <icon-checked-circle />
+              <icon-checked-circle [color]="theme().color" />
               <p class="title">{{ toast().title }}</p>
             </div>
           }
@@ -18,14 +18,15 @@ import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
         </div>
 
         <button class="close" (click)="close()">
-          <icon-cross />
+          <icon-cross [color]="theme().color" />
         </button>
       </div>
 
       <div
         class="progress"
-        [style.animationDuration.ms]="remaining"
         [class.paused]="isPaused"
+        [style.backgroundColor]="theme().color"
+        [style.animationDuration.ms]="remaining"
       ></div>
     </div>
   `,
@@ -33,8 +34,9 @@ import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
   imports: [CheckedCircle, CrossIcon],
 })
 export class Toast implements OnInit, OnDestroy {
-  toast = input.required<ToastInternal>();
   closed = output<void>();
+  toast = input.required<ToastInternal>();
+  theme = computed<ToastTheme>(() => TOAST_THEMES[this.toast().variant]);
 
   private timeoutId?: ReturnType<typeof setTimeout>;
   private startTime = 0;
