@@ -33,14 +33,18 @@ export class Login {
 
     const { email, password } = this.loginFormModel();
 
-    this.authService.login({ email, password }).subscribe((response: IStandardResponse<IAuthResponse>) => {
-      this.toastService.show({
-        title: response.summary.message,
-        message: response.summary.description!,
-        variant: 'success',
-      });
+    setTimeout(() => {
+      this.authService
+        .login({ email, password })
+        .subscribe((response: IStandardResponse<IAuthResponse>) => {
+          this.toastService.show({
+            title: response.summary.message,
+            message: response.summary.description!,
+            variant: 'success',
+          });
 
-      this.router.navigateByUrl(WEB_ROUTES.dashboard);
-    });
+          this.router.navigateByUrl(WEB_ROUTES.dashboard);
+        });
+    }, 5000);
   };
 }

@@ -33,10 +33,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
         const name = typeof exceptionResponse === 'string' ? exceptionResponse : undefined;
 
-        const message =
+        const title =
             typeof exceptionResponse === 'string'
                 ? exceptionResponse
-                : ((exceptionResponse as any)?.message ?? 'An unexpected error occurred');
+                : ((exceptionResponse as any)?.title ?? 'An unexpected error occurred');
 
         const details = typeof exceptionResponse === 'object' ? (exceptionResponse as any)?.details : undefined;
 
@@ -46,7 +46,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             error: {
                 name,
                 type,
-                message,
+                title,
                 details,
             },
             metadata: {

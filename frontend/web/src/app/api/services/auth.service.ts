@@ -1,8 +1,8 @@
 import { catchError, EMPTY, of } from 'rxjs';
-import { ILoginRequest, IStandardError } from '@global/types';
 import { AuthMutation } from '@methods/mutations';
 import { inject, Injectable } from '@angular/core';
 import { ToastService } from '@components/ui/atoms/toast';
+import { ILoginRequest, IStandardError } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,7 @@ export class AuthService {
   // HELPER FUNCTIONS
   private renderToast = (error: IStandardError) => {
     this.toastService.show({
-      title: error.message,
+      title: error.title,
       message: error.details as string,
       variant: 'error',
     })
