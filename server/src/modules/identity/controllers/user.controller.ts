@@ -12,7 +12,7 @@ import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiUnautho
 export class UserController {
     constructor(
         private readonly userService: UserService,
-        private readonly cookiesService: CookiesService
+        private readonly cookiesService: CookiesService,
     ) {}
 
     @Post()

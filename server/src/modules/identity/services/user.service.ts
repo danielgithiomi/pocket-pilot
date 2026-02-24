@@ -34,7 +34,7 @@ export class UserService {
         return {
             user: plainToInstance(UserResponseDto, createdUser),
             access_token,
-            refresh_token
+            refresh_token,
         } satisfies RegisterOutputDto;
     }
 
