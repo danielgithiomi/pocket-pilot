@@ -1,0 +1,18 @@
+.button {
+  @apply px-4 py-2 rounded-md font-medium text-white;
+}
+
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 2px solid white;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,8 +1,8 @@
 import { Router } from '@angular/router';
+import { ToastService } from '@atoms/toast';
 import { UserService } from '@api/user.service';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
-import { ToastService } from '@components/ui/atoms/toast';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { IAuthResponse, IStandardResponse } from '@global/types';
 import { AuthBranding } from '@layouts/auth/auth-branding/branding';

@@ -1,11 +1,11 @@
 import { inject } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { ToastService } from '@atoms/toast';
 import { IStandardError } from '@global/types';
 import { IRegisterRequest } from '@global/types';
 import { UserMutation } from '@methods/mutations';
 import { UserResource } from '@methods/resources';
-import { ToastService } from '@components/ui/atoms/toast';
 
 @Injectable({
   providedIn: 'root',

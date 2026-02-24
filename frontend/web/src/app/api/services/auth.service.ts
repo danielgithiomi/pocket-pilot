@@ -1,7 +1,7 @@
-import { catchError, EMPTY, of } from 'rxjs';
+import { catchError, EMPTY } from 'rxjs';
+import { ToastService } from '@atoms/toast';
 import { AuthMutation } from '@methods/mutations';
 import { inject, Injectable } from '@angular/core';
-import { ToastService } from '@components/ui/atoms/toast';
 import { ILoginRequest, IStandardError } from '@global/types';
 
 @Injectable({
