@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from '../controllers/user.controller';
 import { UserService } from '../services/user.service';
-import { DatabaseService } from '../../../infrastructure/database/database.service';
+import { UserController } from '../controllers/user.controller';
 import { describe, beforeEach, it, expect } from '@jest/globals';
+import { DatabaseService } from '@infrastructure/database/database.service';
 
 describe('UserController', () => {
     let controller: UserController;

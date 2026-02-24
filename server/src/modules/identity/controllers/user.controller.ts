@@ -1,14 +1,19 @@
+import type { Response } from 'express';
 import { Summary } from '@common/decorators';
 import { UserService } from '../services/user.service';
 import { DeleteResourceResponse } from '@common/types';
+import { CookiesService } from '../services/cookies.service';
 import { CreateUserDto, UserResponseDto } from '../dto/user.dto';
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Res } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiUnauthorizedResponse({ description: 'Authentication required!' })
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    constructor(
+        private readonly userService: UserService,
+        private readonly cookiesService: CookiesService
+    ) {}
 
     @Post()
     @ApiBody({ type: CreateUserDto })
@@ -18,8 +23,12 @@ export class UserController {
         summary: 'Register a new user',
         description: 'Creates a new user account with the provided credentials.',
     })
-    registerUser(@Body() user: CreateUserDto) {
-        return this.userService.registerUser(user);
+    async registerUser(@Body() user: CreateUserDto, @Res({ passthrough: true }) res: Response) {
+        const { user: createdUser, access_token, refresh_token } = await this.userService.registerUser(user);
+
+        this.cookiesService.setResponseCookies(res, access_token, refresh_token);
+
+        return createdUser;
     }
 
     @Get(':userId')

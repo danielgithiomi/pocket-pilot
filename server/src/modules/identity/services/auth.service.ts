@@ -1,15 +1,16 @@
 import * as argon from 'argon2';
-import { JwtService } from '@nestjs/jwt';
-import { FullUser } from '../dto/user.dto';
+import { CookiesService } from './cookies.service';
+import { plainToInstance } from 'class-transformer';
+import { FullUser, UserResponseDto } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JWTPayload, LoginInputDto, LoginOutputDto, ValidationResult } from '../dto/auth.dto';
-import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly db: DatabaseService,
-        private readonly jwtService: JwtService,
+        private readonly cookiesService: CookiesService,
     ) {}
 
     async me(userId: string): Promise<FullUser> {
@@ -37,45 +38,18 @@ export class AuthService {
                 details: `Incorrect email or password. Please confirm and try again!`,
             });
 
-        const payload: JWTPayload = this.createPayload(user);
+        const payload: JWTPayload = this.cookiesService.generatePayload(user);
 
-        const { access_token, refresh_token } = this.generateTokens(payload);
+        const { access_token, refresh_token } = this.cookiesService.generateTokens(payload);
 
         return {
-            user,
             access_token,
             refresh_token,
-        };
+            user: plainToInstance(UserResponseDto, user),
+        } satisfies LoginOutputDto;
     }
 
     // HELPER FUNCTIONS
-    private createPayload(user: FullUser): JWTPayload {
-        return {
-            sub: user.id!,
-            username: user.name,
-            email: user.email,
-            iat: Date.now(),
-        };
-    }
-
-    private generateTokens(payload: JWTPayload): { access_token: string; refresh_token: string } {
-        let access_token: string;
-        let refresh_token: string;
-
-        try {
-            access_token = this.jwtService.sign(payload, { expiresIn: '1h' });
-            refresh_token = this.jwtService.sign({ sub: payload.sub }, { expiresIn: '1d' });
-        } catch (error) {
-            throw new InternalServerErrorException({
-                name: 'JWT Token Generation Error',
-                title: 'Failed to generate tokens',
-                details: `An error occurred while generating the access and refresh tokens: ${error}`,
-            });
-        }
-
-        return { access_token, refresh_token };
-    }
-
     private async validateUser(email: string, password: string): Promise<ValidationResult> {
         const user: FullUser | null = await this.db.user.findUnique({ where: { email } });
 
