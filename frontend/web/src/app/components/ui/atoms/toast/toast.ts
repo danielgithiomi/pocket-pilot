@@ -14,7 +14,7 @@ import { input, output, OnInit, OnDestroy, Component } from '@angular/core';
               <p class="title">{{ toast().title }}</p>
             </div>
           }
-          <p class="message">{{ toast().message }}</p>
+          <p class="message">{{ toast().details }}</p>
         </div>
 
         <button class="close" (click)="close()">

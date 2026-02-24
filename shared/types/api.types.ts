@@ -6,8 +6,8 @@ export interface RequestCookies {
 
 // RESPONSE SUMMARY
 export interface ResponseSummary {
-  message: string;
-  description?: string;
+  title: string;
+  details?: string;
 }
 
 // RESPONSE STRUCTURE

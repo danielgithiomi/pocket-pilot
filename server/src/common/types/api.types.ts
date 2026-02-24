@@ -8,8 +8,8 @@ export interface IRequestCookies {
 
 // RESPONSE SUMMARY
 export interface IResponseSummary {
-    message: string;
-    description?: string;
+    title: string;
+    details?: string;
 }
 
 // RESPONSE STRUCTURE
