@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
@@ -62,4 +62,14 @@ export class UserResponseDto {
         description: 'Date and time when the user was last updated',
     })
     updatedAt!: Date;
+}
+
+// SWAGGER
+@ApiExtraModels(UserResponseDto)
+export class UsersWithCountResponseDto{
+    @ApiProperty({type: Number, example: 1})
+    count!: number;
+
+    @ApiProperty({type: 'array', items: { $ref: getSchemaPath(UserResponseDto) }})
+    data!: UserResponseDto[];
 }

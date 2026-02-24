@@ -1,10 +1,11 @@
 import type { Response } from 'express';
 import { Summary } from '@common/decorators';
+import { plainToInstance } from 'class-transformer';
 import { UserService } from '../services/user.service';
 import { DeleteResourceResponse } from '@common/types';
 import { CookiesService } from '../services/cookies.service';
-import { CreateUserDto, UserResponseDto } from '../dto/user.dto';
 import { Body, Controller, Delete, Get, Param, Post, Res } from '@nestjs/common';
+import { CreateUserDto, UserResponseDto, UsersWithCountResponseDto } from '../dto/user.dto';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('users')
@@ -29,6 +30,20 @@ export class UserController {
         this.cookiesService.setResponseCookies(res, access_token, refresh_token);
 
         return createdUser;
+    }
+
+    @Get()
+    @Summary('All Users Found.', 'All users are found successfully.')
+    @ApiOperation({ summary: 'Get all users', description: 'Retrieves all users in the database.' })
+    @ApiResponse({ status: 200, description: 'All users found successfully', type: UsersWithCountResponseDto })
+    async getAllUsers(): Promise<UsersWithCountResponseDto> {
+        const users = await this.userService.getAllUsers();
+        const userDtos = users.map(user => plainToInstance(UserResponseDto, user));
+
+        return {
+            data: userDtos,
+            count: userDtos.length,
+        };
     }
 
     @Get(':userId')
