@@ -34,6 +34,6 @@ export class CorneredWarningIcon {
   size = input<number>(20);
   filled = input<boolean>(false);
   strokeWidth = input<number>(2);
-  color = input<string>('var(--color-primary)');
+  color = input<string>('var(--primary)');
   fillColor = input<string>('var(--background)');
 }

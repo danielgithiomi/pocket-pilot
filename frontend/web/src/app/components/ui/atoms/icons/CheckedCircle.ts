@@ -28,5 +28,5 @@ export class CheckedCircle {
   filled = input<boolean>(false);
   strokeWidth = input<number>(2);
   fillColor = input<string>('red');
-  color = input<string>('var(--color-primary)');
+  color = input<string>('var(--primary)');
 }

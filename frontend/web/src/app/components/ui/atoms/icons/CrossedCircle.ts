@@ -29,6 +29,6 @@ export class CrossedCircle {
   size = input<number>(22);
   filled = input<boolean>(false);
   strokeWidth = input<number>(20);
-  color = input<string>('var(--color-primary)');
-  fillColor = input<string>('var(--color-primary)');
+  color = input<string>('var(--primary)');
+  fillColor = input<string>('var(--primary)');
 }

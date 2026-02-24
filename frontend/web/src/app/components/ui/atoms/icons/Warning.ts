@@ -35,6 +35,6 @@ export class WarningIcon {
   size = input<number>(24);
   filled = input<boolean>(false);
   strokeWidth = input<number>(1);
-  color = input<string>('var(--color-primary)');
+  color = input<string>('var(--primary)');
   fillColor = input<string>('var(--inverted-background)');
 }
