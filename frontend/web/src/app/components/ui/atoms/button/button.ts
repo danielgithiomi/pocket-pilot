@@ -1,3 +1,4 @@
+import { ButtonType } from './button.types';
 import { Component, computed, input, output } from '@angular/core';
 
 type ButtonVariant = 'primary' | 'secondary';
@@ -7,15 +8,15 @@ type ButtonVariant = 'primary' | 'secondary';
   standalone: true,
   template: `
     <button
+      [type]="type()"
       [id]="prefixedId()"
-      [disabled]="disabled() || isLoading()"
-      [class]="buttonClasses()"
       (click)="handleClick()"
-      type="button"
+      [class]="buttonClasses()"
+      [disabled]="disabled() || isLoading()"
     >
       <!-- Loader Overlay -->
       @if (isLoading()) {
-        <div class="absolute inset-0 grid place-items-center z-10" [class]="loaderOverlayClasses()">
+        <div class="absolute inset-0 grid place-items-center z-1" [class]="loaderOverlayClasses()">
           <div class="loader"></div>
         </div>
       }
@@ -38,6 +39,7 @@ export class Button {
   // =========================
   id = input.required<string>();
   label = input<string>('');
+  type = input<ButtonType>('button');
   variant = input<ButtonVariant>('primary');
   isLoading = input<boolean>(false);
   disabled = input<boolean>(false);
