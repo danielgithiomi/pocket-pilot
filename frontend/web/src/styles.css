@@ -37,7 +37,8 @@
   --success: #22c55d;
   --warning: #fbbf24;
   --error: #fa2c05;
-  --info: #6290c8; /* Dusty Denim */
+  --info: #009cbc; /* Cyan */
+  /* --info: #6290c8; Dusty Denim */
 
   /* Dark Palette */
   --dark: #101011;
@@ -56,6 +57,10 @@
   --light-card-bg: #e8d8c9;
   --tertiary-white: #f9f7f2;
   --alternate-white: #f0f2f6;
+
+  /* Alternative Colors */
+  --jet-black: #272d2d;
+  --jungle-teal: #5b9279;
 
   /* Semantic Colors */
   --body-background: var(--white);
@@ -164,7 +169,7 @@ main {
 @layer base {
   /* HEADER START */
   header {
-    @apply w-full bg-primary inset-0 h-[8vh] flex items-center;
+    @apply w-full bg-primary inset-0 h-[8vh] flex flex-row items-center;
   }
 
   /* HEADER END */

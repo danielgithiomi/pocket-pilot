@@ -38,6 +38,10 @@ export class UserService {
         } satisfies RegisterOutputDto;
     }
 
+    async getAllUsers(): Promise<UserResponseDto[]> {
+        return await this.db.user.findMany({});
+    }
+
     async findUserById(userId: string): Promise<UserResponseDto> {
         const user: FullUser | null = await this.db.user.findUnique({ where: { id: userId } });
 

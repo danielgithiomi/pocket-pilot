@@ -1,0 +1,13 @@
+@reference 'tailwindcss';
+
+.main-layout {
+  @apply relative min-h-screen flex flex-row;
+}
+
+.header {
+  @apply absolute w-full inset-0 h-full;
+}
+
+.main-content {
+  @apply absolute inset-0 top-[8vh] w-full flex flex-row;
+}
