@@ -12,8 +12,8 @@ export const routes: Routes = [
     component: MainLayout,
     children: [
       {
-        title: 'Dashboard | Pocket Pilot',
-        path: WEB_ROUTES.dashboard,
+        title: 'Home | Pocket Pilot',
+        path: WEB_ROUTES.home,
         loadComponent: () => import('@pages/home/home').then((m) => m.Home)
       },
       {

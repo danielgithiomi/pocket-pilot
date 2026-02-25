@@ -33,7 +33,7 @@ export class UserController {
     }
 
     @Get()
-    @Summary('All Users Found.', 'All users are found successfully.')
+    @Summary('Users Found.', 'All users retrieved from the database successfully.')
     @ApiOperation({ summary: 'Get all users', description: 'Retrieves all users in the database.' })
     @ApiResponse({ status: 200, description: 'All users found successfully', type: UsersWithCountResponseDto })
     async getAllUsers(): Promise<UsersWithCountResponseDto> {

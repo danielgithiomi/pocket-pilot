@@ -37,7 +37,8 @@
   --success: #22c55d;
   --warning: #fbbf24;
   --error: #fa2c05;
-  --info: #6290c8; /* Dusty Denim */
+  --info: #009cbc; /* Cyan */
+  /* --info: #6290c8; Dusty Denim */
 
   /* Dark Palette */
   --dark: #101011;
@@ -164,7 +165,7 @@ main {
 @layer base {
   /* HEADER START */
   header {
-    @apply w-full bg-primary inset-0 h-[8vh] flex items-center;
+    @apply w-full bg-primary inset-0 h-[8vh] flex flex-row items-center;
   }
 
   /* HEADER END */
