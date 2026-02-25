@@ -58,6 +58,10 @@
   --tertiary-white: #f9f7f2;
   --alternate-white: #f0f2f6;
 
+  /* Alternative Colors */
+  --jet-black: #272d2d;
+  --jungle-teal: #5b9279;
+
   /* Semantic Colors */
   --body-background: var(--white);
   --alternate-background: var(--gray3);
