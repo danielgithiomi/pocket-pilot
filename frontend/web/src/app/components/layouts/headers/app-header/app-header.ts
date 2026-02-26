@@ -7,4 +7,7 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './app-header.css',
   templateUrl: './app-header.html',
 })
-export class AppHeader {}
+export class AppHeader {
+  protected readonly logoSize: number = 140;
+  protected readonly logoPath = '/images/branding/logo.png';
+}
