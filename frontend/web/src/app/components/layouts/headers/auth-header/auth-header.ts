@@ -4,7 +4,6 @@ import { NgOptimizedImage } from '@angular/common';
 @Component({
   selector: 'auth-header',
   imports: [NgOptimizedImage],
-  styleUrl: './auth-header.css',
   templateUrl: './auth-header.html',
 })
 export class AuthHeader {
