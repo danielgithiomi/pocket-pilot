@@ -14,13 +14,17 @@ export class AuthService {
     ) {}
 
     async me(userId: string): Promise<FullUser> {
-        const user: FullUser | null = await this.db.user.findUnique({ where: { id: userId } });
+        let user: FullUser | null = null;
+
+        await new Promise(resolve => setTimeout(resolve, 5000));
+
+        user = await this.db.user.findUnique({ where: { id: userId } });
 
         if (!user)
-            throw new NotFoundException({
+            throw new UnauthorizedException({
                 name: 'User not found.',
-                title: 'User not found.',
-                details: `No user found with the ID: {${userId}}!`,
+                title: 'User not authorized.',
+                details: `No user found in the request with the ID: {${userId}}!`,
             });
 
         return user;
