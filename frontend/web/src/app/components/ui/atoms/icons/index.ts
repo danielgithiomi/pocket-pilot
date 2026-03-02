@@ -9,3 +9,4 @@ export * from './CheckedCircle';
 export * from './ArrowedCircle';
 export * from './CrossedCircle';
 export * from './CorneredWarning';
+export * from './NotificationBell';
