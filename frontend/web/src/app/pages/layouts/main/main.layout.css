@@ -1,13 +1,21 @@
 @reference 'tailwindcss';
 
 .main-layout {
-  @apply relative min-h-screen flex flex-row;
-}
+  @apply min-h-screen flex flex-row;
 
-.header {
-  @apply absolute w-full inset-0 h-full;
-}
+  aside {
+    @apply hidden md:block w-1/4;
+  }
 
-.main-content {
-  @apply absolute inset-0 top-[8vh] w-full flex flex-row;
+  .main {
+    @apply relative w-full flex flex-row;
+
+    .header {
+      @apply absolute w-full inset-0;
+    }
+
+    #content {
+      @apply absolute top-[8vh] w-full;
+    }
+  }
 }
