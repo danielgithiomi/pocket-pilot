@@ -1,20 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AppHeader } from '@components/layouts/headers/app-header/app-header';
-import { ToastService } from '@components/ui/atoms/toast';
 
 @Component({
   selector: 'main-layout',
-  imports: [RouterOutlet, AppHeader],
   styleUrl: './main.layout.css',
+  imports: [RouterOutlet, AppHeader],
   template: `
     <section id="main-layout" class="main-layout">
-      <app-header class="header"></app-header>
+      <aside id="aside" class="bg-secondary"></aside>
 
-      <section class="main-content">
-        <div class="hidden md:block w-1/6 bg-secondary"></div>
+      <section class="main">
+        <app-header class="header"></app-header>
 
-        <div class="flex-1">
+        <div id="content" class="flex-1">
           <router-outlet class="flex-1 w-full" />
         </div>
       </section>
