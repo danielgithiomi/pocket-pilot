@@ -4,6 +4,7 @@ import { Component, input } from '@angular/core';
   selector: 'icon-notification-bell',
   template: `
     <svg
+      class="atom-icon"
       viewBox="0 0 24 24"
       [attr.width]="size()"
       [attr.height]="size()"

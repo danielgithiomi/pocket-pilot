@@ -4,7 +4,7 @@ import { Component, input } from '@angular/core';
   selector: 'icon-info-circle',
   template: `
     <svg
-    viewBox="0 0 16 16"
+      viewBox="0 0 16 16"
       [attr.width]="size()"
       [attr.height]="size()"
       [attr.fill]="color()"
