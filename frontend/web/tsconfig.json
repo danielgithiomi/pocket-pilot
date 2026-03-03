@@ -21,12 +21,13 @@
       "@global/*": ["../../shared/*"],
       "@api/*": ["src/app/api/services/*"],
       "@methods/*": ["src/app/api/methods/*"],
+      "@layouts/*": ["src/app/pages/layouts/*"],
       "@components/*": ["src/app/components/*"],
       "@environments/*": ["src/environments/*"],
       "@constants/*": ["src/app/libs/constants/*"],
       "@atoms/*": ["src/app/components/ui/atoms/*"],
-      "@layouts/*": ["src/app/components/layouts/*"],
-      "@infrastructure/*": ["src/app/infrastructure/*"]
+      "@infrastructure/*": ["src/app/infrastructure/*"],
+      "@structural/*": ["src/app/components/structural/*"]
     }
   },
   "angularCompilerOptions": {

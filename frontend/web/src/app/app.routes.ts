@@ -1,7 +1,7 @@
-import { Routes } from '@angular/router';
-import { MainLayout } from '@pages/layouts';
-import { Login } from '@pages/auth/login/login';
 import { AuthLayout } from '@pages/layouts/auth';
+import { MainLayout } from '@pages/layouts/main';
+import { Routes } from '@angular/router';
+import { Login } from '@pages/auth/login/login';
 import { NotFound } from '@pages/shared/not-found/not-found';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
 
@@ -13,14 +13,14 @@ export const routes: Routes = [
       {
         title: 'Dashboard | Pocket Pilot',
         path: WEB_ROUTES.dashboard,
-        loadComponent: () => import('@pages/main/dashboard/dashboard').then((m) => m.Dashboard)
+        loadComponent: () => import('@pages/main/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
         title: 'Profile | Pocket Pilot',
         path: WEB_ROUTES.profile,
-        loadComponent: () => import('@pages/main/profile/profile').then((m) => m.Profile)
-      }
-    ]
+        loadComponent: () => import('@pages/main/profile/profile').then((m) => m.Profile),
+      },
+    ],
   },
   {
     path: 'auth',
