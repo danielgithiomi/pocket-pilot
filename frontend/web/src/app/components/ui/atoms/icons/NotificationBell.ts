@@ -3,6 +3,7 @@ import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'icon-notification-bell',
+  imports: [NgClass],
   template: `
     <div class="icon-wrapper">
       @if (showBadge()) {
@@ -28,7 +29,6 @@ import { Component, input } from '@angular/core';
       </svg>
     </div>
   `,
-  imports: [NgClass],
 })
 export class NotificationBell {
   size = input<number>(20);
