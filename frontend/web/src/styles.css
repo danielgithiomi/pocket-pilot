@@ -240,9 +240,19 @@ main {
 }
 
 @layer components {
+  /* ICONS START */
+  .icon-wrapper {
+    @apply relative;
+
+    .badge {
+      @apply absolute -top-1 right-0 size-2.5 rounded-full;
+    }
+  }
+
   .atom-icon {
     @apply cursor-pointer hover:scale-101 duration-300 ease-in-out;
   }
+  /* ICONS END */
 }
 
 @layer utilities {
