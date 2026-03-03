@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NotificationBell } from "@components/ui/atoms/icons";
+import { NotificationBell, SettingsIcon } from "@components/ui/atoms/icons";
 
 @Component({
   selector: 'app-header',
   styleUrl: './app-header.css',
   templateUrl: './app-header.html',
-  imports: [NotificationBell],
+  imports: [NotificationBell, SettingsIcon],
 })
 export class AppHeader {}
