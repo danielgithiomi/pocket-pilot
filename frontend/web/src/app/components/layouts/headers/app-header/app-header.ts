@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
+import { NotificationBell, SettingsIcon } from "@components/ui/atoms/icons";
 
 @Component({
   selector: 'app-header',
-  imports: [NgOptimizedImage],
   styleUrl: './app-header.css',
   templateUrl: './app-header.html',
+  imports: [NotificationBell, SettingsIcon],
 })
-export class AppHeader {
-  protected readonly logoSize: number = 140;
-  protected readonly logoPath = '/images/branding/logo.png';
-}
+export class AppHeader {}

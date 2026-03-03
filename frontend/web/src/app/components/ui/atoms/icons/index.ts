@@ -1,6 +1,7 @@
 export * from './Logo';
 export * from './Cross';
 export * from './Warning';
+export * from './Settings';
 export * from './InfoCircle';
 export * from './EmptyCircle';
 export * from './FilledCircle';
@@ -9,3 +10,4 @@ export * from './CheckedCircle';
 export * from './ArrowedCircle';
 export * from './CrossedCircle';
 export * from './CorneredWarning';
+export * from './NotificationBell';

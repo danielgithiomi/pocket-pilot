@@ -1,9 +1,13 @@
 <header>
-  <img
-    class="px-10"
-    alt="app-logo"
-    [ngSrc]="logoPath"
-    [width]="logoSize"
-    [height]="logoSize"
-  />
+  <div>Daniel</div>
+
+  <div class="flex gap-2">
+    <div class="header-icon">
+      <icon-notification-bell [showBadge]="true" />
+    </div>
+
+    <div class="header-icon">
+      <icon-settings />
+    </div>
+  </div>
 </header>
