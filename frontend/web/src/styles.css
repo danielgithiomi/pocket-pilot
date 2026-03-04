@@ -250,7 +250,7 @@ main {
   }
 
   .atom-icon {
-    @apply cursor-pointer hover:scale-101 duration-300 ease-in-out;
+    @apply cursor-pointer hover:scale-110 duration-300 ease-in-out;
   }
   /* ICONS END */
 }
