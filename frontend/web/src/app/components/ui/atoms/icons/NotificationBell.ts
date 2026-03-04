@@ -1,11 +1,13 @@
+import { NgClass } from '@angular/common';
 import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'icon-notification-bell',
+  imports: [NgClass],
   template: `
-    <div class="icon-wrapper relative">
+    <div class="icon-wrapper">
       @if (showBadge()) {
-        <div class="absolute -top-1 right-0 w-2 h-2 bg-red-500 rounded-full"></div>
+        <div [ngClass]="['badge', badgeColor()]"></div>
       }
 
       <!-- SVG -->
@@ -33,6 +35,7 @@ export class NotificationBell {
   filled = input<boolean>(true);
   strokeWidth = input<number>(0.1);
   showBadge = input<boolean>(false);
+  badgeColor = input<string>('bg-[var(--warning)]');
   color = input<string>('var(--color-primary-text)');
   fillColor = input<string>('var(--color-primary-text)');
 }
