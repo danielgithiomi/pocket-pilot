@@ -3,7 +3,7 @@
 .main-layout {
   @apply min-h-screen flex flex-row;
 
-  aside {
+  .drawer {
     @apply hidden md:block w-1/4;
   }
 
