@@ -9,7 +9,7 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
   imports: [RouterOutlet, AppHeader, Drawer],
   template: `
     <section id="main-layout" class="main-layout">
-      <app-drawer id="aside" class="drawer bg-secondary" />
+      <app-drawer id="drawer" class="drawer bg-secondary" />
 
       <section class="main">
         <app-header class="header"></app-header>
