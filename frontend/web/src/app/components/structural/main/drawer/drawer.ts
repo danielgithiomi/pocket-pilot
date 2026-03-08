@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ImageDimensions } from '@libs/types';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
@@ -8,5 +9,7 @@ import { NgOptimizedImage } from '@angular/common';
   imports: [NgOptimizedImage],
 })
 export class Drawer {
+  
   protected readonly logoUrl: string = '/images/branding/logo.png';
+  protected readonly logoDimensions: ImageDimensions = { width: 70, height: 70 };
 }
