@@ -1,13 +1,21 @@
 <header>
-  <img
-    priority
-    class="m-2"
-    id="drawer-logo"
-    [ngSrc]="logoUrl"
-    alt="Pocket Pilot Logo"
-    [width]="logoDimensions.width"
-    [height]="logoDimensions.height"
-  />
+  <div class="flex flex-row items-center gap-2">
+    <img
+      priority
+      id="drawer-logo"
+      [ngSrc]="logoUrl"
+      class="header-logo"
+      alt="Pocket Pilot Logo"
+      [width]="logoDimensions.width"
+      [height]="logoDimensions.height"
+    />
+
+    <div class="flex flex-row items-center space-x-4">
+      <div class="vertical-separator h-8"></div>
+
+      <h1 class="text-xl font-bold">Pocket Pilot</h1>
+    </div>
+  </div>
 
   <div class="flex gap-4">
     <icon-notification-bell />

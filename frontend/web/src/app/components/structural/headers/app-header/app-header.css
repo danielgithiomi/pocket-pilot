@@ -2,4 +2,9 @@
 
 header {
   @apply w-full px-6 flex items-center justify-between;
+
+  .header-logo {
+    @apply m-2 block md:hidden;
+    animation: animateInBottomLeft 400ms ease-out forwards;
+  }
 }

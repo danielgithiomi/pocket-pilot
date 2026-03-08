@@ -186,7 +186,7 @@ main {
     margin: 0;
     font-weight: 600;
     line-height: 100%;
-    font-size: 3.125rem;
+    font-size: 2rem;
   }
 
   h3,
@@ -195,7 +195,7 @@ main {
     margin: 0;
     font-weight: 500;
     line-height: 80%;
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   h5,
@@ -204,7 +204,7 @@ main {
     margin: 0;
     font-weight: 500;
     line-height: 60%;
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 
   /* HEADINGS END */
@@ -268,6 +268,10 @@ main {
     @apply pointer-events-none flex flex-row items-center gap-6 w-full text-sm my-10;
   }
 
+  .vertical-separator {
+    @apply flex w-0.5 bg-inverted-background;
+  }
+
   /* ANIMATIONS START */
   .animate-left {
     animation: slideLeft 750ms ease-out forwards;
@@ -297,6 +301,28 @@ main {
   }
   to {
     transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes animateInBottomLeft {
+  from {
+    transform: translateX(-50%) translateY(50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes animateInTopRight {
+  from {
+    transform: translateX(50%) translateY(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) translateY(0);
     opacity: 1;
   }
 }
