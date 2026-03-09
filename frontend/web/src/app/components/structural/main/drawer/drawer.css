@@ -1,1 +1,7 @@
 @reference "tailwindcss";
+
+.drawer-logo {
+    @apply m-4;
+    animation: animateInTopRight 400ms ease-in-out;
+}
+
