@@ -7,6 +7,7 @@ import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { IAuthResponse, IStandardResponse } from '@global/types';
+import { STORED_AUTH_USER_KEY } from '@constants/auth.constants';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
 
@@ -39,20 +40,21 @@ export class Login {
 
     this.isSubmitting.set(true);
 
-    setTimeout(() => {
-      this.authService.login({ email, password }).subscribe({
-        next: (response: IStandardResponse<IAuthResponse>) => {
-          this.toastService.show({
-            variant: 'success',
-            title: response.summary.title,
-            details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
-          });
+    this.authService.login({ email, password }).subscribe({
+      next: (response: IStandardResponse<IAuthResponse>) => {
+        this.toastService.show({
+          variant: 'success',
+          title: response.summary.title,
+          details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
+        });
 
-          this.router.navigateByUrl(WEB_ROUTES.dashboard);
-        },
-        error: () => this.isSubmitting.set(false),
-        complete: () => this.isSubmitting.set(false),
-      });
-    }, 5000);
+        // store the username in session storage
+        cookieStore.set(STORED_AUTH_USER_KEY, response.data.email);
+
+        this.router.navigateByUrl(WEB_ROUTES.dashboard);
+      },
+      error: () => this.isSubmitting.set(false),
+      complete: () => this.isSubmitting.set(false),
+    });
   };
 }

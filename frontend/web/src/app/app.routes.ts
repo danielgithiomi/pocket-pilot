@@ -1,6 +1,6 @@
+import { Routes } from '@angular/router';
 import { AuthLayout } from '@pages/layouts/auth';
 import { MainLayout } from '@pages/layouts/main';
-import { Routes } from '@angular/router';
 import { Login } from '@pages/auth/login/login';
 import { NotFound } from '@pages/shared/not-found/not-found';
 import { WEB_ROUTES } from '@global/constants/routes.constants';

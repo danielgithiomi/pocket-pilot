@@ -1,20 +1,22 @@
-import {Auth_Feature} from './../types/auth.types';
+import { Auth_Feature } from './../types/auth.types';
+
+export const STORED_AUTH_USER_KEY: string = 'PP_AUTH_USER';
 
 export const APP_FEATURES: Auth_Feature[] = [
   {
     id: 1,
-    name: "Expense & Revenue Tracking"
+    name: 'Expense & Revenue Tracking',
   },
   {
     id: 2,
-    name: "Real-time Account Balances",
+    name: 'Real-time Account Balances',
   },
   {
     id: 3,
-    name: "Smart Insights & Analytics"
+    name: 'Smart Insights & Analytics',
   },
   {
     id: 4,
-    name: "Secure Authentication"
-  }
-]
+    name: 'Secure Authentication',
+  },
+];
