@@ -10,6 +10,6 @@ export class AuthService {
   constructor() {
     const cached = sessionStorage.getItem(STORED_AUTH_USER_KEY);
 
-    this.userSignal.set(cached ?? 'unknown');
+    if (cached) this.userSignal.set(cached);
   }
 }

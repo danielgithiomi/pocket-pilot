@@ -41,11 +41,6 @@ export const routes: Routes = [
     ],
   },
   {
-    pathMatch: 'full',
-    path: WEB_ROUTES.root,
-    redirectTo: WEB_ROUTES.dashboard,
-  },
-  {
     path: '**',
     title: '404 | Page Not Found',
     component: NotFound,
