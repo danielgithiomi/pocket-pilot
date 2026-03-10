@@ -6,5 +6,5 @@
 }
 
 .drawer-toggler {
-  @apply absolute bg-(--alternate-background) w-4 h-10 top-1/2 -right-4 rounded-r-lg opacity-75 grid place-items-center;
+  @apply absolute bg-(--alternate-background) w-5 h-10 top-1/2 -right-5 rounded-r-lg opacity-75 grid place-items-center cursor-pointer;
 }

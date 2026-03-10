@@ -1,7 +1,11 @@
-<aside id="drawer" class="relative h-full">
+<aside id="drawer" class="relative h-full z-10">
   
-  <div id="close-drawer" class="drawer-toggler">
-    <icon-chevron [size]="10" direction="left" color="white" />
+  <div id="drawer-toggler" class="drawer-toggler" (click)="toggleDrawer()">
+    <icon-chevron
+      [size]="10"
+      color="white"
+      [direction]="drawerOpen() ? 'left' : 'right'"
+    />
   </div>
 
   <img
