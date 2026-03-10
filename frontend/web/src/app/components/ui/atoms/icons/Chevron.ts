@@ -43,9 +43,9 @@ export class Chevron {
   size = input<number>(20);
   filled = input<boolean>(true);
   strokeWidth = input<number>(1);
-  color = input<string>('var(--tertiary)');
+  color = input<string>('var(--primary)');
   direction = input<IconDirection>('right');
-  fillColor = input<string>('var(--quaternary)');
+  fillColor = input<string>('var(--inverted-background)');
 
   protected rotation = computed(() => ROTATION_MAP[this.direction()]);
 }
