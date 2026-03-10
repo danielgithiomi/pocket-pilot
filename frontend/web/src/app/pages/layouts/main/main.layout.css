@@ -4,7 +4,7 @@
   @apply min-h-screen flex flex-row;
 
   .drawer {
-    @apply hidden md:block w-1/4;
+    @apply h-screen hidden md:block w-1/4;
   }
 
   .main {

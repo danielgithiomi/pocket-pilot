@@ -1,7 +1,10 @@
 @reference "tailwindcss";
 
 .drawer-logo {
-    @apply m-4;
-    animation: animateInTopRight 400ms ease-in-out;
+  @apply m-4;
+  animation: animateInTopRight 400ms ease-in-out;
 }
 
+.drawer-toggler {
+  @apply absolute bg-(--alternate-background) w-4 h-10 top-1/2 -right-4 rounded-r-lg opacity-75 grid place-items-center;
+}
