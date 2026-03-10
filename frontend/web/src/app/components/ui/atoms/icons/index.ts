@@ -1,6 +1,7 @@
 export * from './Logo';
 export * from './Cross';
 export * from './Warning';
+export * from './Chevron';
 export * from './Settings';
 export * from './InfoCircle';
 export * from './EmptyCircle';
