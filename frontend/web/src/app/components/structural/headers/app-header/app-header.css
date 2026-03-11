@@ -3,8 +3,12 @@
 header {
   @apply w-full px-6 flex items-center justify-between;
 
-  .header-logo {
-    @apply m-2 block md:hidden;
-    animation: animateInBottomLeft 400ms ease-out forwards;
+  .hamburger-wrapper {
+    @apply block md:hidden p-2 mr-3 cursor-pointer hover:bg-(--alternate-background) transition-all duration-400 rounded-md;
+
+    .hamburger-icon {
+      @apply group-hover:scale-105 transition-all duration-400;
+      animation: animateInBottomLeft 400ms ease-out forwards;
+    }
   }
 }

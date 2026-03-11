@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
-import { ImageDimensions } from '@libs/types';
-import { NgOptimizedImage } from '@angular/common';
+import { Component, input, output } from '@angular/core';
+import { LucideAngularModule, Menu} from 'lucide-angular';
 import { NotificationBell, SettingsIcon } from '@components/ui/atoms/icons';
 
 @Component({
   selector: 'app-header',
   styleUrl: './app-header.css',
   templateUrl: './app-header.html',
-  imports: [NotificationBell, SettingsIcon, NgOptimizedImage],
+  imports: [NotificationBell, SettingsIcon, LucideAngularModule],
 })
 export class AppHeader {
-  protected readonly logoUrl: string = '/images/branding/logo.png';
-  protected readonly logoDimensions: ImageDimensions = { width: 50, height: 50 };
+  protected readonly Menu = Menu;
+  hamburgerClickEmitter = output<void>();
 }

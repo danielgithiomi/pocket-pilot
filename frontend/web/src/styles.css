@@ -269,7 +269,7 @@ main {
   }
 
   .vertical-separator {
-    @apply flex w-0.5 bg-inverted-background;
+    @apply flex w-px bg-inverted-background;
   }
 
   /* ANIMATIONS START */
