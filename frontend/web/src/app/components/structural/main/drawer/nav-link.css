@@ -1,13 +1,21 @@
 @reference "tailwindcss";
 
 .navigation-link {
-  @apply w-full cursor-pointer hover:bg-(--muted-text) hover:scale-101 transition-all duration-300 p-2 rounded-lg flex flex-row items-center gap-3;
+  @apply w-full cursor-pointer hover:bg-(--muted-text) hover:scale-102 transition-all duration-300 p-2 rounded-lg flex flex-row justify-between items-center;
 }
 
-.icon-wrapper {
-  @apply p-2 flex items-center justify-center bg-(--body-background) rounded-lg;
+.navigation-content {
+  @apply flex flex-row items-center gap-3;
+
+  .icon-wrapper {
+    @apply p-2 flex items-center justify-center bg-(--body-background) rounded-lg;
+  }
+
+  .link-text {
+    @apply group-hover:dark:invert-0 group-hover:invert transition-all duration-300;
+  }
 }
 
-.link-text {
-  @apply group-hover:dark:invert-0 group-hover:invert transition-all duration-300;
+.navigation-arrow {
+  @apply opacity-0 group-hover:opacity-100 transition-opacity duration-300;
 }

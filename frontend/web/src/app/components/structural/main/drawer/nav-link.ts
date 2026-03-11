@@ -1,27 +1,52 @@
 import { Router } from '@angular/router';
 import { DrawerNavigationLink } from '@libs/types';
-import { Component, inject, input } from '@angular/core';
-import { LucideAngularModule, LayoutDashboard, UserRoundCog, House } from 'lucide-angular';
+import { Component, computed, inject, input } from '@angular/core';
+import {
+  House,
+  UserRoundCog,
+  ChevronRight,
+  LayoutDashboard,
+  LucideAngularModule,
+} from 'lucide-angular';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'nav-link',
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, NgClass],
   styleUrl: './nav-link.css',
   template: `
-    <div class="navigation-link group" (click)="navigate()">
-      <div class="icon-wrapper">
-        <lucide-angular [size]="iconSize" [name]="link().name" [img]="iconMap[link().icon]" />
-      </div>
-
-      <p class="link-text">{{ link().name }}</p>
+    <div
+      (click)="navigate()"
+      class="navigation-link group"
+      [ngClass]="{ 'justify-center!': !isDrawerExpanded() }"
+    >
+      @if (isDrawerExpanded()) {
+        <div class="navigation-content">
+          <div class="icon-wrapper">
+            <lucide-angular [size]="iconSize()" [name]="link().name" [img]="iconMap[link().icon]" />
+          </div>
+          <p class="link-text">{{ link().name }}</p>
+        </div>
+        <div class="navigation-arrow">
+          <lucide-angular name="chevron-right" [size]="14" [img]="chevronRight" />
+        </div>
+      } @else {
+        <div class="navigation-content">
+          <div class="icon-wrapper">
+            <lucide-angular [size]="iconSize()" [name]="link().name" [img]="iconMap[link().icon]" />
+          </div>
+        </div>
+      }
     </div>
   `,
 })
 export class NavLink {
   private readonly router = inject(Router);
+  isDrawerExpanded = input.required<boolean>();
   link = input.required<DrawerNavigationLink>();
 
-  protected iconSize = 16;
+  protected iconSize = computed(() => (this.isDrawerExpanded() ? 16 : 20));
+  protected readonly chevronRight = ChevronRight;
   protected readonly iconMap: Record<DrawerNavigationLink['icon'], any> = {
     home: House,
     profile: UserRoundCog,

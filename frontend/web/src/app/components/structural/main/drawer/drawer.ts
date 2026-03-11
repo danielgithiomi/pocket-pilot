@@ -1,6 +1,6 @@
 import { NavLink } from './nav-link';
 import { ImageDimensions } from '@libs/types';
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, NgClass } from '@angular/common';
 import { Chevron } from '@components/ui/atoms/icons';
 import { Component, input, output } from '@angular/core';
 import { DrawerNavigationLinks as links } from '@libs/constants';
@@ -9,7 +9,7 @@ import { DrawerNavigationLinks as links } from '@libs/constants';
   selector: 'app-drawer',
   styleUrl: './drawer.css',
   templateUrl: './drawer.html',
-  imports: [NgOptimizedImage, Chevron, NavLink],
+  imports: [NgOptimizedImage, Chevron, NavLink, NgClass],
 })
 export class Drawer {
   drawerOpen = input.required<boolean>();

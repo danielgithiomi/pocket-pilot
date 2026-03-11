@@ -18,12 +18,21 @@
   <div class="drawer-content">
     <div class="links">
       @for (link of links; track link.name) {
-        <nav-link [link]="link"></nav-link>
+        <nav-link [isDrawerExpanded]="drawerOpen()" [link]="link"></nav-link>
       }
     </div>
   </div>
 
   <div class="drawer-footer">
-    <p>Footer</p>
+    <div class="bordered-card p-3! items-center!" [ngClass]="{ 'justify-center!': !drawerOpen() }">
+      <div class="relative">
+        <span class="h-2 w-2 rounded-full bg-success block"></span>
+        <span class="absolute inset-0 h-2 w-2 rounded-full bg-success animate-ping"></span>
+      </div>
+
+      @if (drawerOpen()) {
+        <p>System Online</p>
+      }
+    </div>
   </div>
 </aside>
