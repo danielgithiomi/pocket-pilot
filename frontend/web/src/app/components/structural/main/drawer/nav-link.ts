@@ -28,7 +28,7 @@ import {
           <p class="link-text">{{ link().name }}</p>
         </div>
         <div class="navigation-arrow">
-          <lucide-angular name="chevron-right" [size]="12" [img]="chevronRight" />
+          <lucide-angular name="chevron-right" [size]="12" [img]="chevronRight" color="white" />
         </div>
       } @else {
         <div class="navigation-content">

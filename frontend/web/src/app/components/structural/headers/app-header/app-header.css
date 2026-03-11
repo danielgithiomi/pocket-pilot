@@ -4,10 +4,10 @@ header {
   @apply w-full px-6 flex items-center justify-between;
 
   .hamburger-wrapper {
-    @apply block md:hidden p-2 mr-3 cursor-pointer hover:bg-(--alternate-background) transition-all duration-400 rounded-md;
+    @apply block md:hidden p-2 mr-3 cursor-pointer hover:bg-(--inverted-background) transition-all duration-400 rounded-md;
 
     .hamburger-icon {
-      @apply group-hover:scale-105 transition-all duration-400;
+      @apply group-hover:scale-105 group-hover:invert-100 transition-all duration-400;
       animation: animateInBottomLeft 400ms ease-out forwards;
     }
   }

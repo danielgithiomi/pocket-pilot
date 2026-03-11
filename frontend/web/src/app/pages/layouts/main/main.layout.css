@@ -11,13 +11,13 @@
     }
 
     .secondary-drawer {
-      @apply absolute top-0 left-0 w-[270px] h-screen bg-(--alternate-background);
+      @apply absolute top-0 left-0 w-[270px] h-screen bg-(--inverted-background);
       animation: slideLeft 400ms ease-in-out;
     }
   }
 
   .drawer {
-    @apply h-screen hidden md:block flex-col bg-(--alternate-background) transition-all duration-300 ease-in-out;
+    @apply h-screen hidden md:block flex-col bg-(--inverted-background) transition-all duration-300 ease-in-out;
   }
 
   .expanded {
