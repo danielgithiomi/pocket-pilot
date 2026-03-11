@@ -13,9 +13,11 @@ import { DrawerNavigationLinks as links } from '@libs/constants';
   imports: [NgOptimizedImage, Chevron, NavLink, NgClass, LucideAngularModule],
 })
 export class Drawer {
+  linkClicked = output<void>();
   isMobile = input.required<boolean>();
   drawerOpen = input.required<boolean>();
-  protected toggleOutput = output<void>();
+  protected mobileDrawerCloseOutput = output<void>();
+  protected desktopDrawerCloseOutput = output<void>();
 
   protected readonly X = X;
   protected readonly links = links;

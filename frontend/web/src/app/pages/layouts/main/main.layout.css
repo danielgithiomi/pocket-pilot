@@ -11,7 +11,7 @@
     }
 
     .secondary-drawer {
-      @apply absolute top-0 left-0 w-[300px] h-screen bg-(--alternate-background);
+      @apply absolute top-0 left-0 w-[270px] h-screen bg-(--alternate-background);
       animation: slideLeft 400ms ease-in-out;
     }
   }

@@ -15,7 +15,13 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
         <div id="mobile-drawer" class="mobile-drawer">
           <div class="overlay" (click)="closeMobileDrawer()"></div>
           <div class="secondary-drawer">
-            <app-drawer [isMobile]="true" class="w-full" [drawerOpen]="true" />
+            <app-drawer
+              class="w-full"
+              [isMobile]="true"
+              [drawerOpen]="true"
+              (linkClicked)="closeAllDrawers()"
+              (mobileDrawerCloseOutput)="closeMobileDrawer()"
+            />
           </div>
         </div>
       }
@@ -25,11 +31,12 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
         class="drawer"
         [isMobile]="false"
         [drawerOpen]="drawerOpen()"
-        (toggleOutput)="toggleDrawerState()"
         [ngClass]="{
           expanded: drawerOpen(),
           collapsed: !drawerOpen(),
         }"
+        (linkClicked)="closeAllDrawers()"
+        (desktopDrawerCloseOutput)="toggleDrawerState()"
       />
 
       <section class="main">
@@ -59,6 +66,11 @@ export class MainLayout {
   }
 
   closeMobileDrawer() {
+    this.mobileDrawerOpen.set(false);
+  }
+
+  closeAllDrawers() {
+    this.drawerOpen.set(false);
     this.mobileDrawerOpen.set(false);
   }
 }

@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { DrawerNavigationLink } from '@libs/types';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import {
   House,
   UserRoundCog,
@@ -41,6 +41,7 @@ import {
   `,
 })
 export class NavLink {
+  navLinkClicked = output<void>();
   private readonly router = inject(Router);
   isDrawerExpanded = input.required<boolean>();
   link = input.required<DrawerNavigationLink>();
@@ -54,6 +55,7 @@ export class NavLink {
   };
 
   protected navigate() {
+    this.navLinkClicked.emit();
     this.router.navigate([this.link().path]);
   }
 }
