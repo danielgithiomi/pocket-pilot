@@ -1,11 +1,6 @@
-<aside id="drawer" class="relative h-full z-10">
-  
+<aside id="drawer" class="relative h-full z-1">
   <div id="drawer-toggler" class="drawer-toggler" (click)="toggleDrawer()">
-    <icon-chevron
-      [size]="10"
-      color="white"
-      [direction]="drawerOpen() ? 'left' : 'right'"
-    />
+    <icon-chevron [size]="10" color="white" [direction]="drawerOpen() ? 'left' : 'right'" />
   </div>
 
   <img
@@ -17,4 +12,6 @@
     [width]="logoDimensions.width"
     [height]="logoDimensions.height"
   />
+
+  <div class="bg-red-600"></div>
 </aside>
