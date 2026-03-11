@@ -1,19 +1,13 @@
 <header>
   <div class="flex flex-row items-center gap-2">
-    <img
-      priority
-      id="drawer-logo"
-      [ngSrc]="logoUrl"
-      class="header-logo"
-      alt="Pocket Pilot Logo"
-      [width]="logoDimensions.width"
-      [height]="logoDimensions.height"
-    />
+    <div class="hamburger-wrapper group">
+      <lucide-angular name="menu" size="24" [img]="Menu" class="hamburger-icon" />
+    </div>
 
     <div class="flex flex-row items-center space-x-4">
       <div class="vertical-separator h-8"></div>
 
-      <h1 class="text-xl font-bold">Pocket Pilot</h1>
+      <h1 class="text-lg font-bold">Pocket Pilot</h1>
     </div>
   </div>
 

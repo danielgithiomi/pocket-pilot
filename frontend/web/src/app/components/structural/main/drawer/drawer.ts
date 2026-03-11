@@ -1,8 +1,8 @@
 import { NavLink } from './nav-link';
 import { ImageDimensions } from '@libs/types';
-import { NgOptimizedImage, NgClass } from '@angular/common';
 import { Chevron } from '@components/ui/atoms/icons';
 import { Component, input, output } from '@angular/core';
+import { NgOptimizedImage, NgClass } from '@angular/common';
 import { DrawerNavigationLinks as links } from '@libs/constants';
 
 @Component({

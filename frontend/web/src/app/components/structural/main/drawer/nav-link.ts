@@ -1,4 +1,5 @@
 import { Router } from '@angular/router';
+import { NgClass } from '@angular/common';
 import { DrawerNavigationLink } from '@libs/types';
 import { Component, computed, inject, input } from '@angular/core';
 import {
@@ -8,7 +9,6 @@ import {
   LayoutDashboard,
   LucideAngularModule,
 } from 'lucide-angular';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'nav-link',
@@ -28,7 +28,7 @@ import { NgClass } from '@angular/common';
           <p class="link-text">{{ link().name }}</p>
         </div>
         <div class="navigation-arrow">
-          <lucide-angular name="chevron-right" [size]="14" [img]="chevronRight" />
+          <lucide-angular name="chevron-right" [size]="12" [img]="chevronRight" />
         </div>
       } @else {
         <div class="navigation-content">
@@ -45,8 +45,8 @@ export class NavLink {
   isDrawerExpanded = input.required<boolean>();
   link = input.required<DrawerNavigationLink>();
 
-  protected iconSize = computed(() => (this.isDrawerExpanded() ? 16 : 20));
   protected readonly chevronRight = ChevronRight;
+  protected iconSize = computed(() => (this.isDrawerExpanded() ? 16 : 20));
   protected readonly iconMap: Record<DrawerNavigationLink['icon'], any> = {
     home: House,
     profile: UserRoundCog,
