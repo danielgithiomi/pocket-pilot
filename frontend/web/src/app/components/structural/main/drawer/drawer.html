@@ -1,16 +1,29 @@
-<aside id="drawer" class="relative h-full z-1">
-  
+<aside id="drawer" class="drawer">
   <div class="drawer-toggler" (click)="toggleOutput.emit()">
     <icon-chevron [size]="10" color="white" [direction]="drawerOpen() ? 'left' : 'right'" />
   </div>
 
-  <img
-    priority
-    id="drawer-logo"
-    [ngSrc]="logoUrl"
-    class="drawer-logo"
-    alt="Pocket Pilot Logo"
-    [width]="logoDimensions.width"
-    [height]="logoDimensions.height"
-  />
+  <div class="drawer-header">
+    <img
+      priority
+      id="drawer-logo"
+      [ngSrc]="logoUrl"
+      class="drawer-logo"
+      alt="Pocket Pilot Logo"
+      [width]="logoDimensions.width"
+      [height]="logoDimensions.height"
+    />
+  </div>
+
+  <div id="links">
+    <ul>
+      @for (link of links(); track link.name) {
+        <li>{{ link.name }}</li>
+      }
+    </ul>
+  </div>
+
+  <div class="drawer-footer">
+    <p>Footer</p>
+  </div>
 </aside>

@@ -1,10 +1,26 @@
 @reference "tailwindcss";
 
-.drawer-logo {
-  @apply p-2;
-  animation: animateInTopRight 400ms ease-in-out;
-}
+.drawer {
+  @apply relative h-full z-1 flex flex-col justify-between;
 
-.drawer-toggler {
-  @apply absolute bg-(--alternate-background) w-5 h-10 top-1/2 -right-5 rounded-r-lg opacity-75 grid place-items-center cursor-pointer;
+  .drawer-logo {
+    @apply p-2;
+    animation: animateInTopRight 400ms ease-in-out;
+  }
+
+  .drawer-toggler {
+    @apply absolute bg-(--alternate-background) w-5 h-10 top-1/2 -right-5 rounded-r-lg opacity-75 grid place-items-center cursor-pointer;
+  }
+
+  .drawer-header {
+    @apply h-[8vh] flex items-center flex-row overflow-hidden border-b border-(--muted-text);
+  }
+
+  .drawer-content {
+    @apply flex-1 overflow-y-auto;
+  }
+
+  .drawer-footer {
+    @apply h-[8vh] flex items-center flex-row overflow-hidden border-t border-(--muted-text);
+  }
 }
