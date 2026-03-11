@@ -1,10 +1,10 @@
 @reference 'tailwindcss';
 
 .main-layout {
-  @apply h-screen w-full flex overflow-hidden;
+  @apply h-screen w-full flex flex-row overflow-hidden;
 
   .drawer {
-    @apply h-screen flex flex-col bg-(--secondary) transition-all duration-300 ease-in-out;
+    @apply h-screen hidden md:block flex flex-col bg-(--secondary) transition-all duration-300 ease-in-out;
   }
 
   .expanded {
@@ -16,10 +16,10 @@
   }
 
   .main {
-    @apply flex flex-col flex-1 h-screen overflow-hidden bg-red-600;
+    @apply flex flex-col flex-1 h-screen overflow-hidden;
 
     .header {
-      @apply w-full h-[8vh] flex-shrink-0;
+      @apply w-full h-[8vh];
     }
 
     #content {
