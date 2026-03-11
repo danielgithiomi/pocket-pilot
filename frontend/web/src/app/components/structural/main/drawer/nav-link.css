@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+.navigation-link {
+  @apply w-full cursor-pointer hover:bg-(--muted-text) hover:scale-101 transition-all duration-200;
+}

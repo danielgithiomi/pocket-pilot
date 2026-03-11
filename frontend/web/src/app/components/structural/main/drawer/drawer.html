@@ -1,6 +1,6 @@
 <aside id="drawer" class="drawer">
   <div class="drawer-toggler" (click)="toggleOutput.emit()">
-    <icon-chevron [size]="10" color="white" [direction]="drawerOpen() ? 'left' : 'right'" />
+    <icon-chevron [size]="10" [direction]="drawerOpen() ? 'left' : 'right'" />
   </div>
 
   <div class="drawer-header">
@@ -8,10 +8,10 @@
       priority
       id="drawer-logo"
       [ngSrc]="logoUrl"
-      class="drawer-logo"
       alt="Pocket Pilot Logo"
       [width]="logoDimensions.width"
       [height]="logoDimensions.height"
+      class="drawer-logo invert dark:invert-0"
     />
   </div>
 

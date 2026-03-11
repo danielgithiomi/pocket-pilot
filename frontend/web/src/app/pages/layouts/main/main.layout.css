@@ -4,7 +4,7 @@
   @apply h-screen w-full flex flex-row overflow-hidden;
 
   .drawer {
-    @apply h-screen hidden md:block flex-col bg-(--secondary) transition-all duration-300 ease-in-out;
+    @apply h-screen hidden md:block flex-col bg-(--alternate-background) transition-all duration-300 ease-in-out;
   }
 
   .expanded {

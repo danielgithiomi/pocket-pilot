@@ -17,7 +17,7 @@
   }
 
   .drawer-content {
-    @apply flex-1 overflow-y-auto;
+    @apply flex-1 overflow-y-auto pl-2;
 
     .links {
       @apply flex flex-col gap-2 p-2;
