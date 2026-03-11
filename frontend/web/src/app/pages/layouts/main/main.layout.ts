@@ -10,7 +10,7 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
   imports: [RouterOutlet, AppHeader, Drawer, NgClass],
   template: `
     <section id="main-layout" class="main-layout relative">
-      <!-- Mobile Drawer -->
+      <!-- Mobile Drawer Start -->
       @if (mobileDrawerOpen()) {
         <div id="mobile-drawer" class="mobile-drawer">
           <div class="overlay" (click)="closeMobileDrawer()"></div>
@@ -25,6 +25,7 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
           </div>
         </div>
       }
+      <!-- Mobile Drawer End -->
 
       <app-drawer
         id="drawer"
@@ -40,11 +41,7 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
       />
 
       <section class="main">
-        <app-header
-          [isMobileDrawerOpen]="mobileDrawerOpen()"
-          (hamburgerClickEmitter)="toggleMobileDrawer()"
-          class="header"
-        ></app-header>
+        <app-header class="header" (hamburgerClickEmitter)="toggleMobileDrawer()"></app-header>
 
         <div id="content" class="flex-1">
           <router-outlet class="flex-1 w-full" />

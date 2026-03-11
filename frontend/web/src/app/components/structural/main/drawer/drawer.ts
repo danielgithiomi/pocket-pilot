@@ -1,7 +1,7 @@
 import { NavLink } from './nav-link';
 import { ImageDimensions } from '@libs/types';
 import { Chevron } from '@components/ui/atoms/icons';
-import { LucideAngularModule, X } from "lucide-angular";
+import { LucideAngularModule, X } from 'lucide-angular';
 import { Component, input, output } from '@angular/core';
 import { NgOptimizedImage, NgClass } from '@angular/common';
 import { DrawerNavigationLinks as links } from '@libs/constants';
