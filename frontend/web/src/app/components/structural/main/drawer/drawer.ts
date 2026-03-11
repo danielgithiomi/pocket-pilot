@@ -1,6 +1,7 @@
 import { NavLink } from './nav-link';
 import { ImageDimensions } from '@libs/types';
 import { Chevron } from '@components/ui/atoms/icons';
+import { LucideAngularModule, X } from "lucide-angular";
 import { Component, input, output } from '@angular/core';
 import { NgOptimizedImage, NgClass } from '@angular/common';
 import { DrawerNavigationLinks as links } from '@libs/constants';
@@ -9,12 +10,14 @@ import { DrawerNavigationLinks as links } from '@libs/constants';
   selector: 'app-drawer',
   styleUrl: './drawer.css',
   templateUrl: './drawer.html',
-  imports: [NgOptimizedImage, Chevron, NavLink, NgClass],
+  imports: [NgOptimizedImage, Chevron, NavLink, NgClass, LucideAngularModule],
 })
 export class Drawer {
+  isMobile = input.required<boolean>();
   drawerOpen = input.required<boolean>();
   protected toggleOutput = output<void>();
 
+  protected readonly X = X;
   protected readonly links = links;
   protected readonly logoUrl: string = '/images/branding/logo.png';
   protected readonly logoDimensions: ImageDimensions = { width: 70, height: 70 };

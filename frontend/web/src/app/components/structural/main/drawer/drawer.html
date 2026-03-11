@@ -1,7 +1,9 @@
 <aside id="drawer" class="drawer">
-  <div class="drawer-toggler" (click)="toggleOutput.emit()">
+  @if (!isMobile()){
+    <div class="drawer-toggler" (click)="toggleOutput.emit()">
     <icon-chevron [size]="10" [direction]="drawerOpen() ? 'left' : 'right'" />
   </div>
+  }
 
   <div class="drawer-header">
     <img
@@ -13,6 +15,12 @@
       [height]="logoDimensions.height"
       class="drawer-logo invert dark:invert-0"
     />
+
+    @if (isMobile()){
+      <div class="close-icon-wrapper">
+        <lucide-angular name="close-mobile-drawer" [img]="X" />
+      </div>
+    }
   </div>
 
   <div class="drawer-content">

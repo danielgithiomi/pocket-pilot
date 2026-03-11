@@ -1,7 +1,12 @@
 <header>
   <div class="flex flex-row items-center gap-2">
-    <div class="hamburger-wrapper group">
-      <lucide-angular name="menu" size="24" [img]="Menu" class="hamburger-icon" />
+    <div class="hamburger-wrapper group" (click)="hamburgerClickEmitter.emit()">
+      <lucide-angular
+        size="24"
+        name="hamburger-icon"
+        class="hamburger-icon"
+        [img]="isMobileDrawerOpen() ? X : Menu"
+      />
     </div>
 
     <div class="flex flex-row items-center space-x-4">

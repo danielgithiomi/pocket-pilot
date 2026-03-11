@@ -3,6 +3,19 @@
 .main-layout {
   @apply h-screen w-full flex flex-row overflow-hidden;
 
+  .mobile-drawer {
+    @apply absolute md:hidden inset-0 w-screen h-screen z-9999;
+
+    .overlay {
+      @apply absolute inset-0 bg-black opacity-50;
+    }
+
+    .secondary-drawer {
+      @apply absolute top-0 left-0 w-[300px] h-screen bg-(--alternate-background);
+      animation: slideLeft 400ms ease-in-out;
+    }
+  }
+
   .drawer {
     @apply h-screen hidden md:block flex-col bg-(--alternate-background) transition-all duration-300 ease-in-out;
   }

@@ -9,10 +9,21 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
   styleUrl: './main.layout.css',
   imports: [RouterOutlet, AppHeader, Drawer, NgClass],
   template: `
-    <section id="main-layout" class="main-layout">
+    <section id="main-layout" class="main-layout relative">
+      <!-- Mobile Drawer -->
+      @if (mobileDrawerOpen()) {
+        <div id="mobile-drawer" class="mobile-drawer">
+          <div class="overlay" (click)="closeMobileDrawer()"></div>
+          <div class="secondary-drawer">
+            <app-drawer [isMobile]="true" class="w-full" [drawerOpen]="true" />
+          </div>
+        </div>
+      }
+
       <app-drawer
         id="drawer"
         class="drawer"
+        [isMobile]="false"
         [drawerOpen]="drawerOpen()"
         (toggleOutput)="toggleDrawerState()"
         [ngClass]="{
@@ -22,7 +33,11 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
       />
 
       <section class="main">
-        <app-header class="header"></app-header>
+        <app-header
+          [isMobileDrawerOpen]="mobileDrawerOpen()"
+          (hamburgerClickEmitter)="toggleMobileDrawer()"
+          class="header"
+        ></app-header>
 
         <div id="content" class="flex-1">
           <router-outlet class="flex-1 w-full" />
@@ -33,8 +48,17 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
 })
 export class MainLayout {
   protected readonly drawerOpen = signal<boolean>(true);
+  protected readonly mobileDrawerOpen = signal<boolean>(false);
 
   toggleDrawerState() {
     this.drawerOpen.set(!this.drawerOpen());
+  }
+
+  toggleMobileDrawer() {
+    this.mobileDrawerOpen.set(!this.mobileDrawerOpen());
+  }
+
+  closeMobileDrawer() {
+    this.mobileDrawerOpen.set(false);
   }
 }

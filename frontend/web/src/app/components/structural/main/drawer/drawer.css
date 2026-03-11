@@ -13,7 +13,11 @@
   }
 
   .drawer-header {
-    @apply h-[8vh] flex items-center flex-row overflow-hidden border-b border-(--muted-text);
+    @apply h-[8vh] flex items-center justify-between flex-row overflow-hidden border-b border-(--muted-text);
+
+    .close-icon-wrapper {
+      @apply mr-4 hover:bg-(--body-background) cursor-pointer p-2 transition-all duration-400 rounded-md;
+    }
   }
 
   .drawer-content {
