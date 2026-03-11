@@ -1,21 +1,29 @@
 @reference 'tailwindcss';
 
 .main-layout {
-  @apply min-h-screen flex flex-row;
+  @apply h-screen w-full flex overflow-hidden;
 
   .drawer {
-    @apply h-screen hidden md:block w-1/4;
+    @apply h-screen flex flex-col bg-(--secondary) transition-all duration-300 ease-in-out;
+  }
+
+  .expanded {
+    width: 280px;
+  }
+
+  .collapsed {
+    width: 72px;
   }
 
   .main {
-    @apply relative w-full flex flex-row;
+    @apply flex flex-col flex-1 h-screen overflow-hidden bg-red-600;
 
     .header {
-      @apply absolute w-full top-0 left-0 h-fit;
+      @apply w-full h-[8vh] flex-shrink-0;
     }
 
     #content {
-      @apply absolute top-[8vh] w-full;
+      @apply flex-1 overflow-y-auto w-full;
     }
   }
 }

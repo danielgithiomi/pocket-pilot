@@ -1,8 +1,8 @@
 import { ImageDimensions } from '@libs/types';
 import { WEB_ROUTES } from '@global/constants';
-import { Component, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { Chevron } from '@components/ui/atoms/icons';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-drawer',
@@ -11,13 +11,11 @@ import { Chevron } from '@components/ui/atoms/icons';
   imports: [NgOptimizedImage, Chevron],
 })
 export class Drawer {
-  protected readonly drawerOpen = signal<boolean>(true);
+  drawerOpen = input.required<boolean>();
+  protected toggleOutput = output<void>();
+
+  protected readonly links = WEB_ROUTES;
   protected readonly logoUrl: string = '/images/branding/logo.png';
   protected readonly logoDimensions: ImageDimensions = { width: 70, height: 70 };
 
-  protected readonly links = WEB_ROUTES;
-
-  toggleDrawer() {
-    this.drawerOpen.set(!this.drawerOpen());
-  }
 }
