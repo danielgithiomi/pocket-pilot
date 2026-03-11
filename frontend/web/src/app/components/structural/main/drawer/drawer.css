@@ -18,6 +18,10 @@
 
   .drawer-content {
     @apply flex-1 overflow-y-auto;
+
+    .links {
+      @apply flex flex-col gap-2 p-2;
+    }
   }
 
   .drawer-footer {

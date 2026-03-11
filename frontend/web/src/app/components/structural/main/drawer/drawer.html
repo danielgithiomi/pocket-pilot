@@ -15,12 +15,12 @@
     />
   </div>
 
-  <div id="links">
-    <ul>
-      @for (link of links(); track link.name) {
-        <li>{{ link.name }}</li>
+  <div class="drawer-content">
+    <div class="links">
+      @for (link of links; track link.name) {
+        <nav-link [link]="link"></nav-link>
       }
-    </ul>
+    </div>
   </div>
 
   <div class="drawer-footer">
