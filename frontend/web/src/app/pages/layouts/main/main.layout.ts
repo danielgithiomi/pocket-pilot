@@ -19,7 +19,7 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
               class="w-full"
               [isMobile]="true"
               [drawerOpen]="true"
-              (linkClicked)="closeAllDrawers()"
+              (linkClicked)="closeMobileDrawer()"
               (mobileDrawerCloseOutput)="closeMobileDrawer()"
             />
           </div>
@@ -36,7 +36,6 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
           expanded: drawerOpen(),
           collapsed: !drawerOpen(),
         }"
-        (linkClicked)="closeAllDrawers()"
         (desktopDrawerCloseOutput)="toggleDrawerState()"
       />
 
@@ -63,11 +62,6 @@ export class MainLayout {
   }
 
   closeMobileDrawer() {
-    this.mobileDrawerOpen.set(false);
-  }
-
-  closeAllDrawers() {
-    this.drawerOpen.set(false);
     this.mobileDrawerOpen.set(false);
   }
 }
