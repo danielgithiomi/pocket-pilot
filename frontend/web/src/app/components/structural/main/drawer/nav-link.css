@@ -4,6 +4,14 @@
   @apply w-full cursor-pointer hover:bg-(--muted-text) hover:scale-102 transition-all duration-300 p-2 rounded-lg flex flex-row justify-between items-center;
 }
 
+.active {
+  @apply bg-(--muted-text);
+
+  .navigation-arrow {
+    @apply opacity-100;
+  }
+}
+
 .navigation-content {
   @apply flex flex-row items-center gap-3;
 

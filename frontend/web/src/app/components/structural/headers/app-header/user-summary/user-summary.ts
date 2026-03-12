@@ -14,8 +14,8 @@ import { LucideAngularModule, ChevronDown } from 'lucide-angular';
   template: `
     <div
       id="user-summary"
-      [ngClass]="{ group: isDropdownOpen() }"
       (click)="isDropdownOpen.set(!isDropdownOpen())"
+      [ngClass]="{ 'group bg-body-background': isDropdownOpen() }"
       class="relative flex flex-row items-center gap-2 min-w-50 hover:bg-body-background transition-all duration-300 cursor-pointer rounded-lg px-2 py-1"
     >
       <!-- ABS: Dropdown Chevron Start  -->
@@ -45,5 +45,5 @@ export class UserSummary {
   protected readonly ChevronDown = ChevronDown;
   protected isDropdownOpen = signal<boolean>(false);
   protected readonly username = Math.random().toString(36).substring(2, 15);
-  protected initial = computed(() => this.username.substring(0, 2).toUpperCase());
+  protected initial = computed(() => this.username.substring(0, 1).toUpperCase());
 }
