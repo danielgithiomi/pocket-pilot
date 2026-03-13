@@ -1,1 +1,21 @@
-<p>profile works!</p>
+<section id="profile-page" class="page">
+  <p class="page-title">Profile</p>
+
+  <div class="page-container flex flex-row gap-4">
+    <div class="page-card w-1/2">
+      <div class="card-header">
+        <p class="title">Personal Information.</p>
+        <p class="subtitle">Your account details and information.</p>
+      </div>
+
+      <div class="card-content p-2">
+        <profile-detail detailVariant="name" detailValue="Daniel Githiomi"></profile-detail>
+        <profile-detail detailVariant="email" detailValue="danielgithiomi@gmail.com"></profile-detail>
+        <profile-detail detailVariant="name" detailValue="Daniel Githiomi"></profile-detail>
+        <profile-detail detailVariant="name" detailValue="Daniel Githiomi"></profile-detail>
+        <profile-detail detailVariant="name" detailValue="Daniel Githiomi" [isLast]="true"></profile-detail>
+      </div>
+    </div>
+    <div class="page-card w-1/2"></div>
+  </div>
+</section>

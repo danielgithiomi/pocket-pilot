@@ -1,0 +1,29 @@
+@reference 'tailwindcss';
+
+.page {
+  @apply p-4;
+
+  .page-title {
+    @apply text-3xl font-semibold mb-4;
+  }
+
+  .page-container {
+    @apply w-full;
+
+    .page-card {
+      @apply bg-(--alternate-background) rounded-lg p-4 shadow shadow-[0_1px_2px_var(--inverted-background)];
+
+      .card-header {
+        @apply flex flex-col space-y-2 mb-2;
+
+        .title {
+          @apply font-semibold;
+        }
+
+        .subtitle {
+          @apply text-sm text-(--muted-text);
+        }
+      }
+    }
+  }
+}
