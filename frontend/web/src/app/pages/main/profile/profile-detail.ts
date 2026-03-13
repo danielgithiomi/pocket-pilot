@@ -16,39 +16,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
 @Component({
   imports: [LucideAngularModule, NgClass],
   selector: 'profile-detail',
-  styles: `
-    .profile-detail {
-      gap: 1rem;
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      padding-block: 1.5rem;
-
-      .icon {
-        width: 2.5rem;
-        height: 2.5rem;
-        display: grid;
-        border-radius: 50%;
-        place-items: center;
-        background-color: var(--body-background);
-      }
-
-      .info {
-        display: flex;
-        gap: 0.25rem;
-        flex-direction: column;
-
-        .title {
-          font-weight: 500;
-          color: var(--muted-text);
-        }
-
-        .value {
-          font-size: 0.875rem;
-        }
-      }
-    }
-  `,
+  styleUrl: './profile-detail.css',
   template: ` <div
     id="profile-detail"
     class="profile-detail"
@@ -65,7 +33,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
     </div>
 
     <div class="info">
-      <p class="title text-xs">{{ detailTitle() }}</p>
+      <p class="title">{{ detailTitle() }}</p>
       <p class="value">{{ detailValue() }}</p>
     </div>
   </div>`,
@@ -89,8 +57,6 @@ export class ProfileDetail {
         return 'Account Status';
       case 'last-login':
         return 'Last Login';
-      default:
-        return '';
     }
   });
 
