@@ -1,8 +1,7 @@
+import { User } from '@global/types';
 import { Injectable } from '@angular/core';
+import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
-import { environment } from '@environments/environment';
-
-const BASE_URL = environment.API_BASE_URL;
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +9,13 @@ const BASE_URL = environment.API_BASE_URL;
 export class UserResource {
 
   readonly rootResource = httpResource(() => ({
-    url: `${BASE_URL}`,
     method: 'GET',
+    url: concatUrl(),
   }));
-  
+
+  readonly me = httpResource<User>(() => ({
+    method: 'GET',
+    credentials: 'include',
+    url: concatUrl('auth/me'),
+  }));
 }

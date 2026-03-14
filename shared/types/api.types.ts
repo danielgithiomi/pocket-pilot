@@ -57,6 +57,7 @@ export interface IStandardError {
 
 // ENDPOINTS
 export interface Endpoints {
+  me: string;
   root: string;
   login: string;
   register: string;

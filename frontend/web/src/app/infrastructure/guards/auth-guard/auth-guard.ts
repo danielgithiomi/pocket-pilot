@@ -1,15 +1,12 @@
 import { inject } from '@angular/core';
-import { CanMatchFn } from '@angular/router';
-import { AuthService } from '@infrastructure/services';
+import { AuthService } from '@api/auth.service';
+import { CanMatchFn, Router } from '@angular/router';
 
-export const AuthGuard: CanMatchFn = () => {
+export const AuthGuard: CanMatchFn = async () => {
+  const router = inject(Router);
   const authService: AuthService = inject(AuthService);
 
-  const email = authService.userSignal();
+  const allowed = await authService.checkSession();
 
-  console.log('User found: ', email);
-
-  if (email) return false;
-
-  return true;
+  return allowed ? true : router.createUrlTree(['/auth/login']);
 };
