@@ -1,11 +1,10 @@
+import { GuestGuard } from './guest-guard';
+import { CanMatchFn } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
-
-import { guestGuard } from './guest-guard';
 
 describe('guestGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => guestGuard(...guardParameters));
+  const executeGuard: CanMatchFn = (...guardParameters) =>
+    TestBed.runInInjectionContext(() => GuestGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
