@@ -231,7 +231,7 @@ main {
     }
 
     input {
-      @apply bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 px-4 py-2;
+      @apply bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 px-4 py-2 shadow-lg;
     }
 
     button {

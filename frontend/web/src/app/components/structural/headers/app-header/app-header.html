@@ -4,7 +4,7 @@
       <lucide-angular size="24" [img]="Menu" name="hamburger-icon" class="hamburger-icon" />
     </div>
 
-    <div class="hidden sm:flex flex-row items-center space-x-4 ">
+    <div class="hidden sm:flex flex-row items-center space-x-4">
       <div class="vertical-separator h-8"></div>
 
       <h1 class="text-lg font-bold">Pocket Pilot</h1>
@@ -13,8 +13,8 @@
 
   <div class="flex flex-row items-center gap-4">
     <div class="hidden sm:flex gap-4 md:hidden lg:flex">
-      <icon-notification-bell />
-      <icon-settings />
+      <lucide-icon class="atom-icon" [name]="Bell" [img]="Bell" [size]="iconSize" />
+      <lucide-icon class="atom-icon" [name]="Settings" [img]="Settings" [size]="iconSize" />
     </div>
 
     <div class="vertical-separator h-8 md:hidden! lg:flex!"></div>

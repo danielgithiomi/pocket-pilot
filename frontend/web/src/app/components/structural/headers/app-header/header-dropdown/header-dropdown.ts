@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { WEB_ROUTES } from '@global/constants';
 import { AuthService } from '@api/auth.service';
-import { Component, inject } from '@angular/core';
 import { Button } from '@components/ui/atoms/button';
 import { DrawerService } from '@infrastructure/services';
-import { LucideAngularModule, Bell, Settings2 } from 'lucide-angular';
+import { Component, inject, signal } from '@angular/core';
+import { LucideAngularModule, Bell, Settings2, LogOut } from 'lucide-angular';
 
 @Component({
   selector: 'header-dropdown',
@@ -42,7 +42,17 @@ import { LucideAngularModule, Bell, Settings2 } from 'lucide-angular';
       </div>
 
       <div class="dropdown-logout">
-        <atom-button id="logout" label="Logout" className="w-full" (click)="logout()" />
+        <atom-button
+          id="logout"
+          className="w-full"
+          (click)="logout()"
+          [isLoading]="isLogoutLoading()"
+        >
+          <div class="w-full flex flex-row items-center justify-center gap-3">
+            <lucide-icon [img]="LogOut" [name]="LogOut" class="atom-icon" [size]="iconSize" />
+            <p>Logout</p>
+          </div>
+        </atom-button>
       </div>
     </div>
   `,
@@ -50,20 +60,28 @@ import { LucideAngularModule, Bell, Settings2 } from 'lucide-angular';
 export class HeaderDropdown {
   protected readonly Bell = Bell;
   protected readonly iconSize = 20;
+  protected readonly LogOut = LogOut;
   protected readonly Settings = Settings2;
   protected readonly router = inject(Router);
   protected readonly authService = inject(AuthService);
+  protected readonly isLogoutLoading = signal<boolean>(false);
   protected readonly drawerService: DrawerService = inject(DrawerService);
 
   protected logout(): void {
-    this.authService
-      .logout()
-      .pipe(
-        tap(() => {
-          this.drawerService.closeDropDown();
-          this.router.navigateByUrl(WEB_ROUTES.login);
-        })
-      )
-      .subscribe();
+    this.isLogoutLoading.set(true);
+
+    setTimeout(() => {
+      this.authService
+        .logout()
+        .pipe(
+          tap(() => {
+            this.drawerService.closeDropDown();
+            this.router.navigateByUrl(WEB_ROUTES.login);
+          }),
+        )
+        .subscribe({
+          complete: () => this.isLogoutLoading.set(false),
+        });
+    }, 3000);
   }
 }
