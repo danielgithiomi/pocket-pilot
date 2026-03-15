@@ -56,7 +56,7 @@ export class Button {
   prefixedId = computed(() => `btn-${this.id()}`);
 
   buttonClasses = computed(() => {
-    const base = 'button overflow-hidden relative transition-all duration-250';
+    const base = 'button overflow-hidden relative transition-all duration-250 cursor-pointer';
 
     const loadingClasses = this.isLoading() ? 'opacity-80 cursor-progress' : '';
     const variantClasses =

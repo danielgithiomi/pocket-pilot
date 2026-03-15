@@ -27,10 +27,7 @@ export class AuthService {
   private readonly userSignal = signal<User | null>(null);
 
   // Public signals
-  user = computed(() => {
-    console.log('user', this.userSignal());
-    return this.userSignal();
-  });
+  user = computed(() => this.userSignal());
   isLoading = computed(() => {
     console.log('isLoading', this.sessionLoading());
     return this.sessionLoading();

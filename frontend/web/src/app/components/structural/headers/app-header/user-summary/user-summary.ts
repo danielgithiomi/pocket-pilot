@@ -1,4 +1,5 @@
 import { NgClass } from '@angular/common';
+import { AuthService } from '@api/auth.service';
 import { DrawerService } from '@infrastructure/services';
 import { Component, computed, inject } from '@angular/core';
 import { LucideAngularModule, ChevronDown } from 'lucide-angular';
@@ -49,9 +50,10 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
   `,
 })
 export class UserSummary {
+  protected readonly authService: AuthService = inject(AuthService);
   protected readonly drawerService: DrawerService = inject(DrawerService);
 
   protected readonly ChevronDown = ChevronDown;
-  protected readonly username = Math.random().toString(36).substring(2, 15);
+  protected readonly username = this.authService.user()!.name;
   protected initial = computed(() => this.username.substring(0, 1).toUpperCase());
 }
