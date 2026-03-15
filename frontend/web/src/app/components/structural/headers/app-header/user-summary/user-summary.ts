@@ -1,11 +1,11 @@
 import { NgClass } from '@angular/common';
-import { SummaryDropdown } from './summary-dropdown';
 import { Component, computed, signal } from '@angular/core';
 import { LucideAngularModule, ChevronDown } from 'lucide-angular';
+import { HeaderDropdown } from '../header-dropdown/header-dropdown';
 
 @Component({
   selector: 'user-summary',
-  imports: [LucideAngularModule, NgClass, SummaryDropdown],
+  imports: [LucideAngularModule, NgClass, HeaderDropdown],
   styles: `
     p {
       pointer-events: none !important;
@@ -16,21 +16,21 @@ import { LucideAngularModule, ChevronDown } from 'lucide-angular';
       id="user-summary"
       (click)="isDropdownOpen.set(!isDropdownOpen())"
       [ngClass]="{ 'group bg-body-background': isDropdownOpen() }"
-      class="relative flex flex-row items-center gap-2 min-w-50 hover:bg-body-background transition-all duration-300 cursor-pointer rounded-lg px-2 py-1"
+      class="relative flex flex-row items-center gap-2 min-w-50 hover:bg-body-background transition-all duration-300 cursor-pointer rounded-lg py-1 px-2"
     >
       <!-- ABS: Dropdown Chevron Start  -->
       <div
         id="profile-chevron"
         [ngClass]="{ 'rotate-180': isDropdownOpen() }"
-        class="absolute top-1/2 -translate-y-1/2 right-1 transition-transform duration-300"
+        class="absolute top-1/2 -translate-y-1/2 right-2 transition-transform duration-300"
       >
         <lucide-angular [size]="12" [img]="ChevronDown" name="profile-chevron" />
       </div>
       <!-- ABS: Dropdown Chevron End -->
 
-      <summary-dropdown [isDropdownOpen]="isDropdownOpen()" />
+      <header-dropdown [isDropdownOpen]="isDropdownOpen()" />
 
-      <div id="avatar" class="size-9 bg-primary grid place-items-center rounded-full">
+      <div id="avatar" class="size-8 bg-primary grid place-items-center rounded-full">
         <p class="text-white">{{ initial() }}</p>
       </div>
 

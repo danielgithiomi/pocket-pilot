@@ -4,11 +4,9 @@ import { computed, Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class DrawerService {
-  private readonly mobileDrawer$ = signal(false);
   private readonly drawerCollapsed$ = signal(false);
   private readonly isMobileDrawerOpen$ = signal(false);
 
-  isMobileDrawer = computed(() => this.mobileDrawer$());
   isDrawerCollapsed = computed(() => this.drawerCollapsed$());
   isMobileDrawerOpen = computed(() => this.isMobileDrawerOpen$());
 

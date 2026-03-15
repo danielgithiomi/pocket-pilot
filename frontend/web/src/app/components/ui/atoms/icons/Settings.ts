@@ -32,7 +32,7 @@ import { Component, input } from '@angular/core';
     </div>
   `,
 })
-export class SettingsIcon {
+export class Settings {
   size = input<number>(20);
   filled = input<boolean>(true);
   strokeWidth = input<number>(1);

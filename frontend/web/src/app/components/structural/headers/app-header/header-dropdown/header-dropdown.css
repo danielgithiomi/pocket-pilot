@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+#header-dropdown {
+  @apply w-full flex flex-col bg-(--inverted-background) absolute top-full right-0 mt-3 z-10 rounded-lg shadow-xl;
+
+  .separator {
+    @apply h-px bg-(--body-background) my-2;
+  }
+
+  .dropdown-arrow {
+    @apply size-3 bg-(--inverted-background) rotate-45 -top-1 right-1.5 absolute;
+  }
+
+  .dropdown-notifications {
+    @apply flex flex-row w-full items-center sm:hidden md:flex lg:hidden;
+  }
+}
