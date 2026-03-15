@@ -5,4 +5,5 @@ export const API_ENDPOINTS = {
   me: "auth/me",
   register: "users",
   login: "auth/login",
+  logout: "auth/logout",
 } satisfies Endpoints;

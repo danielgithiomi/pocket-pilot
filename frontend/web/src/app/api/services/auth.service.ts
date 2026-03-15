@@ -3,9 +3,15 @@ import { AuthMutation } from '@methods/mutations';
 import { HttpClient } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
 import { STORED_AUTH_USER_KEY } from '@libs/constants';
-import { catchError, EMPTY, firstValueFrom } from 'rxjs';
-import { ILoginRequest, IStandardError, User } from '@global/types';
+import { catchError, EMPTY, firstValueFrom, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
+import {
+  User,
+  IAuthResponse,
+  ILoginRequest,
+  IStandardError,
+  IStandardResponse,
+} from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -61,14 +67,15 @@ export class AuthService {
     this.sessionLoading.set(true);
 
     try {
-      const user = await firstValueFrom(
-        this.http.get<User>(concatUrl('auth/me'), {
+      const response = await firstValueFrom(
+        this.http.get<IStandardResponse<IAuthResponse>>(concatUrl('auth/me'), {
           credentials: 'include',
         }),
       );
 
-      if (!user) throw new Error('Auth Service Init: User not found');
+      if (!response) throw new Error('Auth Service Init: No response found');
 
+      const { data: user } = response;
       this.userSignal.set(user);
       sessionStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
     } catch (error) {
@@ -115,6 +122,25 @@ export class AuthService {
 
   login(request: ILoginRequest) {
     return this.mutation.login(request).pipe(
+      tap((response: IStandardResponse<IAuthResponse>) => {
+        this.userSignal.set(response.data);
+        sessionStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(response.data));
+      }),
+      tap(() => this.initializeSession()),
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  }
+
+  logout() {
+    return this.mutation.logout().pipe(
+      tap(() => {
+        this.userSignal.set(null);
+        sessionStorage.removeItem(STORED_AUTH_USER_KEY);
+      }),
+      tap(() => this.initializeSession()),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

@@ -60,5 +60,6 @@ export interface Endpoints {
   me: string;
   root: string;
   login: string;
+  logout: string;
   register: string;
 }

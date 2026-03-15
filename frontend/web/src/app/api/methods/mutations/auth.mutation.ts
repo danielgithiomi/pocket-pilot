@@ -12,4 +12,8 @@ export class AuthMutation {
   login(request: ILoginRequest) {
     return this.client.post<IAuthResponse, ILoginRequest>(endpoints.login, request);
   }
+
+  logout() {
+    return this.client.post<{ message: string }, void>(endpoints.logout, undefined);
+  }
 }

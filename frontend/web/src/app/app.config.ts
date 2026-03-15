@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(
       withFetch(),
-      withInterceptors([RequestInterceptor, ErrorInterceptor, ResponseInterceptor]),
+      withInterceptors([RequestInterceptor, ResponseInterceptor, ErrorInterceptor]),
     ),
     {
       provide: APP_INITIALIZER,
