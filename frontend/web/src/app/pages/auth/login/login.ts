@@ -39,18 +39,20 @@ export class Login {
 
     this.isSubmitting.set(true);
 
-    this.authService.login({ email, password }).subscribe({
-      next: (response: IStandardResponse<IAuthResponse>) => {
-        this.toastService.show({
-          variant: 'success',
-          title: response.summary.title,
-          details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
-        });
+    setTimeout(() => {
+      this.authService.login({ email, password }).subscribe({
+        next: (response: IStandardResponse<IAuthResponse>) => {
+          this.toastService.show({
+            variant: 'success',
+            title: response.summary.title,
+            details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
+          });
 
-        this.router.navigateByUrl(WEB_ROUTES.dashboard);
-      },
-      error: () => this.isSubmitting.set(false),
-      complete: () => this.isSubmitting.set(false),
-    });
+          this.router.navigateByUrl(WEB_ROUTES.dashboard);
+        },
+        error: () => this.isSubmitting.set(false),
+        complete: () => this.isSubmitting.set(false),
+      });
+    }, 3000);
   };
 }

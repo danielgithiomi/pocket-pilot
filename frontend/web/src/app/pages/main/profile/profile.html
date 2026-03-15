@@ -12,15 +12,15 @@
       </div>
 
       <div class="card-content p-2">
-        <profile-detail detailVariant="name" detailValue="Daniel Githiomi"></profile-detail>
-        <profile-detail detailVariant="email" detailValue="daniel@gmail.com"></profile-detail>
-        <profile-detail detailVariant="phone" detailValue="+254 700 000 000"></profile-detail>
-        <profile-detail detailVariant="role" detailValue="Admin"></profile-detail>
-        <profile-detail detailVariant="status" detailValue="Active"></profile-detail>
+        <profile-detail detailVariant="name" [detailValue]="user.name"></profile-detail>
+        <profile-detail detailVariant="email" [detailValue]="user.email"></profile-detail>
+        <profile-detail detailVariant="phone" [detailValue]="user.id"></profile-detail>
+        <profile-detail detailVariant="role" [detailValue]="user.updatedAt"></profile-detail>
+        <profile-detail detailVariant="status" detailValue="active"></profile-detail>
         <profile-detail
           [isLast]="true"
           detailVariant="last-login"
-          detailValue="2025-10-15 12:00:00"
+          [detailValue]="user.createdAt"
         ></profile-detail>
       </div>
     </div>
