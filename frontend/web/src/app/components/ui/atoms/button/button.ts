@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { ButtonType, ButtonVariant } from './button.types';
-import { Component, computed, input, output } from '@angular/core';
+import { input, output, computed, Component } from '@angular/core';
 
 @Component({
   selector: 'atom-button',
@@ -20,12 +20,12 @@ import { Component, computed, input, output } from '@angular/core';
         </div>
       }
 
-      <!-- Label / Content -->
-      <span class="relative z-0" [ngClass]="variant() == 'primary' ? 'text-white' : 'text-black'">
-        @if (hasProjectedContent()) {
-          <ng-content></ng-content>
-        } @else {
+      <!-- Label / Projected Content -->
+      <span class="relative z-0" [ngClass]="variant() === 'primary' ? 'text-white' : 'text-black'">
+        @if (label()) {
           {{ label() }}
+        } @else {
+          <ng-content></ng-content>
         }
       </span>
     </button>
@@ -35,7 +35,7 @@ import { Component, computed, input, output } from '@angular/core';
 })
 export class Button {
   // =========================
-  // Inputs (Signals API - Angular v21 style)
+  // Inputs (Signals API)
   // =========================
   label = input<string>('');
   id = input.required<string>();
@@ -57,7 +57,6 @@ export class Button {
 
   buttonClasses = computed(() => {
     const base = 'button overflow-hidden relative transition-all duration-250 cursor-pointer';
-
     const loadingClasses = this.isLoading() ? 'opacity-80 cursor-progress' : '';
     const variantClasses =
       this.variant() === 'primary' ? 'bg-primary' : 'bg-inverted-background text-white';
@@ -78,10 +77,5 @@ export class Button {
   handleClick(): void {
     if (this.disabled() || this.isLoading()) return;
     this.clicked.emit();
-  }
-
-  hasProjectedContent(): boolean {
-    // Allows label OR ng-content (like React children)
-    return false;
   }
 }

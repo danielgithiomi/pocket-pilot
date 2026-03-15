@@ -1,15 +1,17 @@
 import { Component, output } from '@angular/core';
 import { UserSummary } from './user-summary/user-summary';
-import { LucideAngularModule, Menu } from 'lucide-angular';
-import { NotificationBell, Settings } from '@components/ui/atoms/icons';
+import { LucideAngularModule, Menu, Settings2, Bell } from 'lucide-angular';
 
 @Component({
   selector: 'app-header',
   styleUrl: './app-header.css',
   templateUrl: './app-header.html',
-  imports: [NotificationBell, Settings, LucideAngularModule, UserSummary],
+  imports: [LucideAngularModule, UserSummary],
 })
 export class AppHeader {
   protected readonly Menu = Menu;
+  protected readonly Bell = Bell;
+  protected readonly iconSize = 20;
+  protected readonly Settings = Settings2;
   hamburgerClickEmitter = output<void>();
 }
