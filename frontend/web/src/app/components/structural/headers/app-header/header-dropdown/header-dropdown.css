@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 #header-dropdown {
-  @apply w-full flex flex-col bg-(--inverted-background) absolute top-full right-0 mt-3 z-10 rounded-lg shadow-xl pointer-events-none;
+  @apply w-full flex flex-col bg-(--inverted-background) absolute top-full right-0 mt-3 z-10 rounded-lg shadow-xl;
 
   .separator {
     @apply h-px bg-(--body-background) my-2;

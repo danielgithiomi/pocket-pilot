@@ -9,7 +9,8 @@ import { DrawerService } from '@infrastructure/services';
   styleUrl: './header-dropdown.css',
   imports: [NotificationBell, Settings, NgClass, Button],
   template: `
-    <div id="header-dropdown" [ngClass]="{ 'hidden!': !drawerService.isDropdownOpen() }">
+    <div id="header-dropdown"
+    (click)="$event.stopPropagation()" [ngClass]="{ 'hidden!': !drawerService.isDropdownOpen() }">
       <div class="dropdown-arrow"></div>
 
       <div class="dropdown-notifications">

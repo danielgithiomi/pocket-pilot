@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { DrawerService } from '@infrastructure/services';
+import { Component, computed, inject } from '@angular/core';
 import { LucideAngularModule, ChevronDown } from 'lucide-angular';
-import { Component, computed, inject, signal } from '@angular/core';
 import { HeaderDropdown } from '../header-dropdown/header-dropdown';
 
 @Component({
@@ -52,7 +52,6 @@ export class UserSummary {
   protected readonly drawerService: DrawerService = inject(DrawerService);
 
   protected readonly ChevronDown = ChevronDown;
-  protected isDropdownOpen = signal<boolean>(false);
   protected readonly username = Math.random().toString(36).substring(2, 15);
   protected initial = computed(() => this.username.substring(0, 1).toUpperCase());
 }
