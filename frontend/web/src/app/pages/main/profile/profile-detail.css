@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 .profile-detail {
-  @apply flex flex-row items-center gap-4 py-6;
+  @apply flex flex-row items-center gap-4 py-6 pointer-events-none;
 
   .icon {
     @apply size-10 rounded-full bg-(--body-background) grid place-items-center;

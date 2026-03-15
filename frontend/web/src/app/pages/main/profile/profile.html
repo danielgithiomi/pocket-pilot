@@ -2,7 +2,10 @@
   <p class="page-title">Profile</p>
 
   <div class="page-container flex flex-row gap-4">
-    <div class="page-card w-full md:w-1/2">
+    <div
+      class="page-card w-full md:w-1/2"
+      [ngClass]="{ 'md:w-full lg:w-1/2': !drawerService.isDrawerCollapsed() }"
+    >
       <div class="card-header">
         <p class="title">Personal Information.</p>
         <p class="subtitle">Your account details and information.</p>

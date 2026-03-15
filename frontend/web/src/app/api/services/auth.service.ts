@@ -1,21 +1,19 @@
-import { catchError, EMPTY, firstValueFrom } from 'rxjs';
 import { ToastService } from '@atoms/toast';
 import { AuthMutation } from '@methods/mutations';
-import { STORED_AUTH_USER_KEY } from '@libs/constants';
-import { ILoginRequest, IStandardError, User } from '@global/types';
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { UserResource } from '@methods/resources';
 import { HttpClient } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
+import { STORED_AUTH_USER_KEY } from '@libs/constants';
+import { catchError, EMPTY, firstValueFrom } from 'rxjs';
+import { ILoginRequest, IStandardError, User } from '@global/types';
+import { computed, inject, Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly http: HttpClient = inject(HttpClient);
   private readonly mutation = inject(AuthMutation);
-  private readonly resource = inject(UserResource);
   private readonly toastService = inject(ToastService);
+  private readonly http: HttpClient = inject(HttpClient);
 
   private sessionLoaded = signal<boolean>(false);
   private sessionLoading = signal<boolean>(false);
@@ -23,9 +21,18 @@ export class AuthService {
   private readonly userSignal = signal<User | null>(null);
 
   // Public signals
-  user = computed(() => this.userSignal());
-  isLoading = computed(() => this.sessionLoading());
-  isAuthenticated = computed(() => !!this.userSignal());
+  user = computed(() => {
+    console.log('user', this.userSignal());
+    return this.userSignal();
+  });
+  isLoading = computed(() => {
+    console.log('isLoading', this.sessionLoading());
+    return this.sessionLoading();
+  });
+  isAuthenticated = computed(() => {
+    console.log('isAuthenticated', !!this.userSignal());
+    return !!this.userSignal();
+  });
 
   constructor() {
     // Get cached user from session storage
@@ -58,7 +65,7 @@ export class AuthService {
         this.http.get<User>(concatUrl('auth/me'), {
           credentials: 'include',
         }),
-      );;
+      );
 
       if (!user) throw new Error('Auth Service Init: User not found');
 

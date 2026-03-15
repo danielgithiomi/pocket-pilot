@@ -7,7 +7,6 @@ import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { IAuthResponse, IStandardResponse } from '@global/types';
-import { STORED_AUTH_USER_KEY } from '@constants/auth.constants';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
 
@@ -47,9 +46,6 @@ export class Login {
           title: response.summary.title,
           details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
         });
-
-        // store the username in session storage
-        cookieStore.set(STORED_AUTH_USER_KEY, response.data.email);
 
         this.router.navigateByUrl(WEB_ROUTES.dashboard);
       },
