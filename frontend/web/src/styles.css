@@ -54,6 +54,7 @@
   --gray4: #d9d9d9;
   --white: #ffffff;
   --wild-sand: #e4eef0;
+  --mild-white: #f3f4f6;
   --light-card-bg: #e8d8c9;
   --tertiary-white: #f9f7f2;
   --alternate-white: #f0f2f6;
@@ -85,8 +86,8 @@
 @media (prefers-color-scheme: light) {
   :root {
     color-scheme: light;
-    --body-background: var(--color-white);
-    --alternate-background: var(--alternate-white);
+    --body-background: var(--alternate-white);
+    --alternate-background: var(--white);
     --inverted-background: var(--dark);
     --primary-text: var(--dark);
     --inverted-text: var(--white);
@@ -100,7 +101,7 @@
     color-scheme: dark;
     --body-background: var(--dark);
     --alternate-background: var(--gray1);
-    --inverted-background: var(--alternate-white);
+    --inverted-background: var(--mild-white);
     --primary-text: var(--white);
     --inverted-text: var(--black);
     --alternate-text: var(--gray4);
@@ -169,7 +170,7 @@ main {
 @layer base {
   /* HEADER START */
   header {
-    @apply w-full bg-primary inset-0 h-[8vh] flex flex-row items-center;
+    @apply w-full bg-alternate-background inset-0 h-[8vh] flex flex-row items-center;
   }
 
   /* HEADER END */
@@ -240,6 +241,36 @@ main {
 }
 
 @layer components {
+  /* PAGES START */
+  .page {
+    @apply p-4;
+
+    .page-title {
+      @apply text-3xl font-semibold mb-4;
+    }
+
+    .page-container {
+      @apply w-full;
+
+      .page-card {
+        @apply bg-(--alternate-background) rounded-xl p-4 shadow shadow-[0_1px_2px_var(--inverted-background)] hover:shadow-[0_1px_4px_var(--inverted-background)] transition-all duration-300;
+
+        .card-header {
+          @apply flex flex-col space-y-2 mt-2;
+
+          .title {
+            @apply font-semibold;
+          }
+
+          .subtitle {
+            @apply text-sm text-(--muted-text);
+          }
+        }
+      }
+    }
+  }
+  /* PAGES END */
+
   /* ICONS START */
   .icon-wrapper {
     @apply relative;

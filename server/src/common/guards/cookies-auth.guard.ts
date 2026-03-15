@@ -17,15 +17,24 @@ export class CookiesAuthGuard implements CanActivate {
         const request: Request = context.switchToHttp().getRequest();
         const endpoint: string = request.url;
 
-        const { access_token, refresh_token } = request.cookies as IRequestCookies;
+        const { access_token } = request.cookies as IRequestCookies;
 
-        if (!access_token || !refresh_token) {
+        if (!access_token) {
             throw new UnauthorizedException({
                 name: 'Unauthorized',
+                title: 'Missing access token',
                 message: `Missing authentication cookies`,
-                details: `Both the access and refresh tokens are required in the cookies to access ${endpoint}`,
+                details: `The access token is required in the cookies to access ${endpoint}`,
             });
         }
+
+        // if (!access_token || !refresh_token) {
+        //     throw new UnauthorizedException({
+        //         name: 'Unauthorized',
+        //         message: `Missing authentication cookies`,
+        //         details: `Both the access and refresh tokens are required in the cookies to access ${endpoint}`,
+        //     });
+        // }
 
         try {
             const decoded_payload: JWTPayload = this.jwtService.verify(access_token);
@@ -38,6 +47,7 @@ export class CookiesAuthGuard implements CanActivate {
         } catch (error) {
             throw new UnauthorizedException({
                 name: 'JWT Decode Error',
+                title: 'Invalid authentication cookies',
                 message: `Invalid authentication cookies`,
                 details: `Could not decode the access token to get the payload. ${error}`,
             });

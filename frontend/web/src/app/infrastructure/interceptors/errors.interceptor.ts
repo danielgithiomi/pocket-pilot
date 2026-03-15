@@ -8,7 +8,6 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
       const apiError = error.error as IGlobalException;
 
       if (apiError && apiError.success === false) {
-        console.log(apiError);
         return throwError(
           () =>
             ({
@@ -21,12 +20,12 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       // SERVER ERROR
-      if(error.status.toString().startsWith('5')){
+      if (error.status.toString().startsWith('5')) {
         return throwError(() => ({
           title: 'SERVER_ERROR',
           statusCode: error.status || 500,
-          details: 'A server error occurred. Please contact support for assistance!'
-        }))
+          details: 'A server error occurred. Please contact support for assistance!',
+        }));
       }
 
       // Network / CORS / unknown errors

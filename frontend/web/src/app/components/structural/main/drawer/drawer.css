@@ -9,14 +9,18 @@
   }
 
   .drawer-toggler {
-    @apply absolute bg-(--alternate-background) w-5 h-10 top-1/2 -right-5 rounded-r-lg opacity-75 grid place-items-center cursor-pointer;
+    @apply absolute bg-(--inverted-background) w-5 h-9 top-1/2 -right-5 rounded-r-lg grid place-items-center cursor-pointer;
   }
 
   .drawer-header {
     @apply h-[8vh] flex items-center justify-between flex-row overflow-hidden border-b border-(--muted-text);
 
     .close-icon-wrapper {
-      @apply mr-4 hover:bg-(--body-background) cursor-pointer p-2 transition-all duration-400 rounded-md;
+      @apply mr-4 hover:bg-(--alternate-background) cursor-pointer p-2 transition-all duration-400 rounded-md;
+
+      .close-icon {
+        @apply group-hover:invert-100 transition-all duration-400;
+      }
     }
   }
 
@@ -30,5 +34,9 @@
 
   .drawer-footer {
     @apply h-[8vh] flex items-center flex-row overflow-hidden border-t border-(--muted-text) p-4;
+
+    p {
+      @apply text-(--inverted-text);
+    }
   }
 }

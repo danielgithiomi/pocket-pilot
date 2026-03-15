@@ -12,13 +12,16 @@ import {
 
 @Component({
   selector: 'nav-link',
-  imports: [LucideAngularModule, NgClass],
   styleUrl: './nav-link.css',
+  imports: [LucideAngularModule, NgClass],
   template: `
     <div
       (click)="navigate()"
       class="navigation-link group"
-      [ngClass]="{ 'justify-center!': !isDrawerExpanded() }"
+      [ngClass]="{
+        active: router.url === link().path,
+        'justify-center!': !isDrawerExpanded(),
+      }"
     >
       @if (isDrawerExpanded()) {
         <div class="navigation-content">
@@ -28,7 +31,7 @@ import {
           <p class="link-text">{{ link().name }}</p>
         </div>
         <div class="navigation-arrow">
-          <lucide-angular name="chevron-right" [size]="12" [img]="chevronRight" />
+          <lucide-angular name="chevron-right" [size]="12" [img]="chevronRight" color="white" />
         </div>
       } @else {
         <div class="navigation-content">
@@ -42,7 +45,7 @@ import {
 })
 export class NavLink {
   navLinkClicked = output<void>();
-  private readonly router = inject(Router);
+  protected readonly router = inject(Router);
   isDrawerExpanded = input.required<boolean>();
   link = input.required<DrawerNavigationLink>();
 

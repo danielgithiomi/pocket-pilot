@@ -1,8 +1,13 @@
 <aside id="drawer" class="drawer">
-  @if (!isMobile()){
+  @if (!isMobile()) {
     <div class="drawer-toggler" (click)="desktopDrawerCloseOutput.emit()">
-    <icon-chevron [size]="10" [direction]="drawerOpen() ? 'left' : 'right'" />
-  </div>
+      <icon-chevron
+        [size]="10"
+        color="var(--body-background)"
+        fillColor="var(--body-background)"
+        [direction]="drawerOpen() ? 'left' : 'right'"
+      />
+    </div>
   }
 
   <div class="drawer-header">
@@ -13,12 +18,17 @@
       alt="Pocket Pilot Logo"
       [width]="logoDimensions.width"
       [height]="logoDimensions.height"
-      class="drawer-logo invert dark:invert-0"
+      class="drawer-logo dark:invert-100"
     />
 
-    @if (isMobile()){
-      <div class="close-icon-wrapper" (click)="mobileDrawerCloseOutput.emit()">
-        <lucide-angular name="close-mobile-drawer" [img]="X" />
+    @if (isMobile()) {
+      <div class="close-icon-wrapper group" (click)="mobileDrawerCloseOutput.emit()">
+        <lucide-angular
+          [img]="X"
+          class="close-icon"
+          name="close-mobile-drawer"
+          color="var(--inverted-text)"
+        />
       </div>
     }
   </div>
@@ -26,7 +36,11 @@
   <div class="drawer-content">
     <div class="links">
       @for (link of links; track link.name) {
-        <nav-link [isDrawerExpanded]="drawerOpen()" [link]="link" (navLinkClicked)="linkClicked.emit()"></nav-link>
+        <nav-link
+          [link]="link"
+          [isDrawerExpanded]="drawerOpen()"
+          (navLinkClicked)="linkClicked.emit()"
+        ></nav-link>
       }
     </div>
   </div>
@@ -41,7 +55,7 @@
       @if (drawerOpen()) {
         <div class="flex-1 flex flex-row items-center justify-between">
           <p>System Online</p>
-          <p class="text-muted-text">v1.0.0</p>
+          <p class="text-muted-text!">v1.0.0</p>
         </div>
       }
     </div>

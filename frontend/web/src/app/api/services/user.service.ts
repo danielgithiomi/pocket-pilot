@@ -5,21 +5,13 @@ import { ToastService } from '@atoms/toast';
 import { IStandardError } from '@global/types';
 import { IRegisterRequest } from '@global/types';
 import { UserMutation } from '@methods/mutations';
-import { UserResource } from '@methods/resources';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private readonly resource = inject(UserResource);
   private readonly mutation = inject(UserMutation);
   private readonly toastService = inject(ToastService);
-
-  root() {
-    const me = this.resource.rootResource;
-    console.log(me.value());
-    return me.value();
-  }
 
   register(request: IRegisterRequest) {
     return this.mutation.register(request).pipe(

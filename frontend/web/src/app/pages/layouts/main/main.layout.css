@@ -6,18 +6,18 @@
   .mobile-drawer {
     @apply absolute md:hidden inset-0 w-screen h-screen z-9999;
 
-    .overlay {
+    .mobile-drawer-overlay {
       @apply absolute inset-0 bg-black opacity-50;
     }
 
     .secondary-drawer {
-      @apply absolute top-0 left-0 w-[270px] h-screen bg-(--alternate-background);
+      @apply absolute top-0 left-0 w-[270px] h-screen bg-(--inverted-background);
       animation: slideLeft 400ms ease-in-out;
     }
   }
 
   .drawer {
-    @apply h-screen hidden md:block flex-col bg-(--alternate-background) transition-all duration-300 ease-in-out;
+    @apply h-screen hidden md:block flex-col bg-(--inverted-background) transition-all duration-300 ease-in-out;
   }
 
   .expanded {
@@ -29,14 +29,18 @@
   }
 
   .main {
-    @apply flex flex-col flex-1 h-screen overflow-hidden;
+    @apply relative flex flex-col flex-1 h-screen overflow-hidden;
 
     .header {
       @apply w-full h-[8vh];
     }
 
     #content {
-      @apply flex-1 overflow-y-auto w-full;
+      @apply flex-1 overflow-y-auto w-full p-5;
     }
+  }
+
+  .dropdown-overlay {
+    @apply absolute inset-0 bg-black opacity-50 cursor-default z-999;
   }
 }

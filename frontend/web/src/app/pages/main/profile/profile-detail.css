@@ -1,0 +1,21 @@
+@reference 'tailwindcss';
+
+.profile-detail {
+  @apply flex flex-row items-center gap-4 py-6 pointer-events-none;
+
+  .icon {
+    @apply size-10 rounded-full bg-(--body-background) grid place-items-center;
+  }
+
+  .info {
+    @apply flex flex-col gap-2;
+
+    .title {
+      @apply font-medium text-xs text-(--muted-text);
+    }
+
+    .value {
+      @apply text-sm font-semibold;
+    }
+  }
+}
