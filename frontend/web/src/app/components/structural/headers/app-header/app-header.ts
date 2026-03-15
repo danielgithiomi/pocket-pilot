@@ -1,6 +1,6 @@
-import { UserSummary } from "./user-summary";
 import { Component, output } from '@angular/core';
-import { LucideAngularModule, Menu} from 'lucide-angular';
+import { UserSummary } from './user-summary/user-summary';
+import { LucideAngularModule, Menu } from 'lucide-angular';
 import { NotificationBell, Settings } from '@components/ui/atoms/icons';
 
 @Component({

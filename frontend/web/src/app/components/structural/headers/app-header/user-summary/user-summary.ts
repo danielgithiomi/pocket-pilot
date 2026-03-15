@@ -1,12 +1,19 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import { DrawerService } from '@infrastructure/services';
 import { LucideAngularModule, ChevronDown } from 'lucide-angular';
+import { Component, computed, inject, signal } from '@angular/core';
 import { HeaderDropdown } from '../header-dropdown/header-dropdown';
 
 @Component({
   selector: 'user-summary',
   imports: [LucideAngularModule, NgClass, HeaderDropdown],
   styles: `
+    @reference "tailwindcss";
+
+    .user-summary {
+      @apply relative flex flex-row items-center gap-2 min-w-50 hover:bg-(--body-background) transition-all duration-300 cursor-pointer rounded-lg py-1 px-2 z-999;
+    }
+
     p {
       pointer-events: none !important;
     }
@@ -14,21 +21,19 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
   template: `
     <div
       id="user-summary"
-      (click)="isDropdownOpen.set(!isDropdownOpen())"
-      [ngClass]="{ 'group bg-body-background': isDropdownOpen() }"
-      class="relative flex flex-row items-center gap-2 min-w-50 hover:bg-body-background transition-all duration-300 cursor-pointer rounded-lg py-1 px-2"
+      class="user-summary"
+      (click)="drawerService.toggleDropdown()"
+      [ngClass]="{ 'group bg-body-background': drawerService.isDropdownOpen() }"
     >
       <!-- ABS: Dropdown Chevron Start  -->
       <div
         id="profile-chevron"
-        [ngClass]="{ 'rotate-180': isDropdownOpen() }"
+        [ngClass]="{ 'rotate-180': drawerService.isDropdownOpen() }"
         class="absolute top-1/2 -translate-y-1/2 right-2 transition-transform duration-300"
       >
         <lucide-angular [size]="12" [img]="ChevronDown" name="profile-chevron" />
       </div>
       <!-- ABS: Dropdown Chevron End -->
-
-      <header-dropdown [isDropdownOpen]="isDropdownOpen()" />
 
       <div id="avatar" class="size-8 bg-primary grid place-items-center rounded-full">
         <p class="text-white">{{ initial() }}</p>
@@ -38,10 +43,14 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
         <p class="text-sm font-medium">{{ username }}</p>
         <p class="text-xs text-muted-text uppercase">User</p>
       </div>
+
+      <header-dropdown />
     </div>
   `,
 })
 export class UserSummary {
+  protected readonly drawerService: DrawerService = inject(DrawerService);
+
   protected readonly ChevronDown = ChevronDown;
   protected isDropdownOpen = signal<boolean>(false);
   protected readonly username = Math.random().toString(36).substring(2, 15);

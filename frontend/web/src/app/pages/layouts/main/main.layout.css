@@ -6,7 +6,7 @@
   .mobile-drawer {
     @apply absolute md:hidden inset-0 w-screen h-screen z-9999;
 
-    .overlay {
+    .mobile-drawer-overlay {
       @apply absolute inset-0 bg-black opacity-50;
     }
 
@@ -29,7 +29,7 @@
   }
 
   .main {
-    @apply flex flex-col flex-1 h-screen overflow-hidden;
+    @apply relative flex flex-col flex-1 h-screen overflow-hidden;
 
     .header {
       @apply w-full h-[8vh];
@@ -38,5 +38,9 @@
     #content {
       @apply flex-1 overflow-y-auto w-full p-5;
     }
+  }
+
+  .dropdown-overlay {
+    @apply absolute inset-0 bg-black opacity-50 cursor-default z-999;
   }
 }

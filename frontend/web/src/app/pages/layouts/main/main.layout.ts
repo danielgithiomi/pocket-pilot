@@ -14,7 +14,7 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
       <!-- Mobile Drawer Start -->
       @if (drawerService.isMobileDrawerOpen()) {
         <div id="mobile-drawer" class="mobile-drawer">
-          <div class="overlay" (click)="drawerService.closeMobileDrawer()"></div>
+          <div class="mobile-drawer-overlay" (click)="drawerService.closeMobileDrawer()"></div>
           <div class="secondary-drawer">
             <app-drawer
               class="w-full"
@@ -27,6 +27,10 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
         </div>
       }
       <!-- Mobile Drawer End -->
+
+      @if (drawerService.isDropdownOpen()) {
+        <div class="dropdown-overlay" (click)="drawerService.closeDropDown()"></div>
+      }
 
       <app-drawer
         id="drawer"
@@ -41,10 +45,7 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
       />
 
       <section class="main">
-        <app-header
-          class="header"
-          (hamburgerClickEmitter)="drawerService.openMobileDrawer()"
-        ></app-header>
+        <app-header class="header" (hamburgerClickEmitter)="drawerService.openMobileDrawer()" />
 
         <div id="content" class="flex-1">
           <router-outlet class="flex-1 w-full" />
