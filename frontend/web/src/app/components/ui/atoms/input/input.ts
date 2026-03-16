@@ -1,4 +1,4 @@
-import { NgClass } from "@angular/common";
+import { NgClass } from '@angular/common';
 import { InputType, AutoComplete } from './input.types';
 import { FormField, FieldTree } from '@angular/forms/signals';
 import { Component, input, signal, computed, output } from '@angular/core';
@@ -11,9 +11,7 @@ import { Eye, EyeOff, X, LucideAngularModule } from 'lucide-angular';
   imports: [LucideAngularModule, FormField, NgClass],
 })
 export class Input {
-  /* ======================
-     INPUTS
-  ====================== */
+  /* INPUTS */
   id = input.required<string>();
   label = input.required<string>();
   allowEndIcon = input<boolean>(true);
@@ -24,27 +22,19 @@ export class Input {
 
   formField = input.required<FieldTree<string, string>>();
 
-  /* ======================
-     OUTPUTS
-  ====================== */
+  /* OUTPUTS */
   clearOutput = output<void>();
 
-  /* ======================
-     ICONS
-  ====================== */
+  /* ICONS */
   readonly X = X;
   readonly Eye = Eye;
   readonly iconSize = 18;
   readonly EyeOff = EyeOff;
 
-  /* ======================
-     SIGNALS
-  ====================== */
+  /* SIGNALS */
   protected isPasswordVisible = signal(false);
 
-  /* ======================
-     COMPUTED
-  ====================== */
+  /* COMPUTED */
   inputId = computed<string>(() => `input-field-${this.id()}`);
 
   inputType = computed<InputType>(() => {
@@ -52,11 +42,9 @@ export class Input {
     return this.isPasswordVisible() ? 'text' : 'password';
   });
 
-  fieldState = computed(() => this.formField()())
+  fieldState = computed(() => this.formField()());
 
-  /* ======================
-     METHODS
-  ====================== */
+  /* METHODS */
   togglePasswordVisibility() {
     this.isPasswordVisible.update((curr) => !curr);
   }
