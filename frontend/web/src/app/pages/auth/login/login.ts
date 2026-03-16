@@ -10,12 +10,13 @@ import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { IAuthResponse, IStandardResponse } from '@global/types';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
+import { Input } from "@components/ui/atoms/input";
 
 @Component({
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
-  imports: [FormField, AuthBranding, CheckedShield, Button, LucideAngularModule],
+  imports: [FormField, AuthBranding, CheckedShield, Button, LucideAngularModule, Input],
 })
 export class Login {
   // ICONS
