@@ -1,5 +1,6 @@
 import { Button } from '@atoms/button';
 import { Router } from '@angular/router';
+import { Eye, EyeOff, LucideAngularModule } from 'lucide-angular';
 import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
 import { AuthService } from '@api/auth.service';
@@ -14,9 +15,14 @@ import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
-  imports: [FormField, AuthBranding, CheckedShield, Button],
+  imports: [FormField, AuthBranding, CheckedShield, Button, LucideAngularModule],
 })
 export class Login {
+  // ICONS
+  protected readonly Eye = Eye;
+  protected readonly iconSize = 18;
+  protected readonly EyeOff = EyeOff;
+  
   // FORM
   protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
   protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
@@ -28,8 +34,15 @@ export class Login {
 
   // SIGNALS
   readonly isSubmitting = signal<boolean>(false);
+  protected isPasswordVisible = signal<boolean>(false);
 
   // METHODS
+
+  togglePasswordVisibility = () => {
+    this.isPasswordVisible.set(!this.isPasswordVisible());
+  };
+
+  routeToDashboard = () => this.router.navigate([WEB_ROUTES.dashboard]);
   routeToRegistration = () => this.router.navigate([WEB_ROUTES.register]);
 
   submitLoginForm = (event: Event) => {
@@ -48,7 +61,7 @@ export class Login {
             details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
           });
 
-          this.router.navigateByUrl(WEB_ROUTES.dashboard);
+          this.routeToDashboard();
         },
         error: () => this.isSubmitting.set(false),
         complete: () => this.isSubmitting.set(false),

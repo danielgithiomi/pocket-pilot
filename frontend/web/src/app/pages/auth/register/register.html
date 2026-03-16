@@ -11,11 +11,11 @@
         <div class="input-field">
           <label for="email">Email:</label>
           <input
-            [formField]="registerForm.email"
-            autocomplete="email"
             id="email"
-            placeholder="Email Address"
             type="email"
+            autocomplete="email"
+            placeholder="Email Address"
+            [formField]="registerForm.email"
           />
 
           @if (registerForm.email().invalid() && registerForm.email().touched()) {
@@ -30,11 +30,11 @@
         <div class="input-field">
           <label for="username">Username:</label>
           <input
-            [formField]="registerForm.name"
-            autocomplete="username"
-            id="username"
-            placeholder="Username"
             type="text"
+            id="username"
+            autocomplete="username"
+            placeholder="Username"
+            [formField]="registerForm.name"
           />
 
           @if (registerForm.name().invalid() && registerForm.name().touched()) {
@@ -49,11 +49,11 @@
         <div class="input-field">
           <label for="password">Password:</label>
           <input
-            [formField]="registerForm.password"
-            autocomplete="new-password"
             id="password"
-            placeholder="Password"
             type="password"
+            placeholder="Password"
+            autocomplete="new-password"
+            [formField]="registerForm.password"
           />
 
           @if (registerForm.password().invalid() && registerForm.password().touched()) {
@@ -68,11 +68,11 @@
         <div class="input-field">
           <label for="password">Confirm Password:</label>
           <input
-            [formField]="registerForm.confirmPassword"
-            autocomplete="new-password"
-            id="confirm_password"
-            placeholder="Confirm Password"
             type="password"
+            id="confirm_password"
+            autocomplete="new-password"
+            placeholder="Confirm Password"
+            [formField]="registerForm.confirmPassword"
           />
 
           @if (

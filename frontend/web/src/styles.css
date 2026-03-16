@@ -221,6 +221,18 @@ main {
     .input-field {
       @apply flex flex-col gap-2 w-full my-6;
 
+      .input-wrapper {
+        @apply w-full relative;
+
+        .input-icon-wrapper {
+          @apply absolute right-2 top-1/2 -translate-y-1/2;
+
+          .input-icon {
+            @apply cursor-pointer hover:text-primary hover:scale-105 transition-all duration-300 ease-in-out;
+          }
+        }
+      }
+
       .input-field-errors-wrapper {
         @apply flex flex-col gap-2;
 
@@ -231,7 +243,7 @@ main {
     }
 
     input {
-      @apply bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 px-4 py-2 shadow-lg;
+      @apply w-full bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
     }
 
     button {

@@ -12,13 +12,15 @@
       <form (submit)="submitLoginForm($event)" id="login-form">
         <div class="input-field">
           <label for="email">Email:</label>
-          <input
-            [formField]="loginForm.email"
-            autocomplete="email"
-            id="email"
-            placeholder="Email Address"
-            type="email"
-          />
+          <div class="input-wrapper">
+            <input
+              id="email"
+              type="email"
+              autocomplete="email"
+              placeholder="Email Address"
+              [formField]="loginForm.email"
+            />
+          </div>
 
           @if (loginForm.email().invalid() && loginForm.email().touched()) {
             <div class="input-field-errors-wrapper">
@@ -31,13 +33,25 @@
 
         <div class="input-field">
           <label for="password">Password:</label>
-          <input
-            [formField]="loginForm.password"
-            autocomplete="current-password"
-            id="password"
-            placeholder="Password"
-            type="password"
-          />
+          <div class="input-wrapper">
+            <input
+              id="password"
+              placeholder="Password"
+              autocomplete="current-password"
+              [formField]="loginForm.password"
+              [type]="isPasswordVisible() ? 'text' : 'password'"
+            />
+
+            <div class="input-icon-wrapper">
+              <lucide-icon
+                [size]="iconSize"
+                name="password-eye"
+                class="input-icon"
+                (click)="togglePasswordVisibility()"
+                [img]="isPasswordVisible() ? EyeOff : Eye"
+              />
+            </div>
+          </div>
 
           @if (loginForm.password().invalid() && loginForm.password().touched()) {
             <div class="input-field-errors-wrapper">
