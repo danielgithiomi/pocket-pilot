@@ -39,6 +39,11 @@ export const routes: Routes = [
         path: WEB_ROUTES.profile,
         loadComponent: () => import('@pages/main/profile/profile').then((m) => m.Profile),
       },
+      {
+        path: '**',
+        component: NotFound,
+        title: '404 | Page Not Found',
+      },
     ],
   },
   {
