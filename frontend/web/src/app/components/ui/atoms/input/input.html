@@ -1,0 +1,45 @@
+<div class="input-field">
+  <label [for]="inputId()"> {{ label() }}: </label>
+
+  <div class="input-wrapper">
+    <input
+      [id]="inputId()"
+      [type]="inputType()"
+      [formField]="formField()"
+      [placeholder]="placeholder()"
+      [autocomplete]="autocomplete()"
+    />
+
+    @if (allowEndIcon()) {
+      <div class="input-icon-wrapper" [ngClass]="{ hidden: !fieldState().value() }">
+        @if (type() === 'password') {
+          <lucide-icon
+            [size]="iconSize"
+            name="password-eye"
+            class="input-icon"
+            (click)="togglePasswordVisibility()"
+            [img]="isPasswordVisible() ? EyeOff : Eye"
+          />
+        } @else {
+          <lucide-icon
+            [img]="X"
+            [size]="iconSize"
+            name="field-clear"
+            class="input-icon"
+            (click)="clearOutput.emit()"
+          />
+        }
+      </div>
+    }
+  </div>
+
+  @if (formField()().invalid() && formField()().touched()) {
+    <div class="input-field-errors-wrapper">
+      @for (error of formField()().errors(); track error.kind) {
+        <p class="input-field-error">
+          {{ error.message }}
+        </p>
+      }
+    </div>
+  }
+</div>

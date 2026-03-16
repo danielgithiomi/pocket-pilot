@@ -1,83 +1,51 @@
-import {Component, computed, forwardRef, inject, Input, signal} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl} from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { InputType, AutoComplete } from './input.types';
+import { FormField, FieldTree } from '@angular/forms/signals';
+import { Component, input, signal, computed, output } from '@angular/core';
+import { Eye, EyeOff, X, LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'atom-input',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => InputComponent),
-      multi: true,
-    },
-  ],
-  template: `
-    <div class="flex flex-col gap-1">
-      <label [for]="id" class="text-sm font-medium">
-        {{ label }}
-      </label>
-
-      <input
-        [id]="id"
-        [type]="type"
-        [placeholder]="placeholder"
-        [value]="value()"
-        (input)="onInput($event)"
-        (blur)="onTouched()"
-        class="border rounded px-3 py-2 outline-none"
-        [class.border-red-500]="invalid()"
-      />
-
-<!--      <atom-error-->
-<!--        [errors]="control?.errors"-->
-<!--        [touched]="control?.touched ?? false"-->
-<!--        [dirty]="control?.dirty ?? false"-->
-<!--      />-->
-    </div>
-  `,
+  styleUrl: './input.css',
+  templateUrl: './input.html',
+  imports: [LucideAngularModule, FormField, NgClass],
 })
-export class InputComponent implements ControlValueAccessor {
+export class Input {
+  /* INPUTS */
+  id = input.required<string>();
+  label = input.required<string>();
+  allowEndIcon = input<boolean>(true);
 
-  @Input({ required: true}) id: string = "";
-  @Input({ required: true }) label: string = "";
-  @Input({ required: true }) type: string = "text";
-  @Input({ required: true, alias: 'hint' }) placeholder: string = "";
-  value = signal('');
-  invalid = computed(() => {
-    if (!this.control) return false;
-    return this.control.invalid && (this.control.touched || this.control.dirty);
+  type = input<InputType>('text');
+  placeholder = input.required<string>();
+  autocomplete = input.required<AutoComplete>();
+
+  formField = input.required<FieldTree<string, string>>();
+
+  /* OUTPUTS */
+  clearOutput = output<void>();
+
+  /* ICONS */
+  readonly X = X;
+  readonly Eye = Eye;
+  readonly iconSize = 18;
+  readonly EyeOff = EyeOff;
+
+  /* SIGNALS */
+  protected isPasswordVisible = signal(false);
+
+  /* COMPUTED */
+  inputId = computed<string>(() => `input-field-${this.id()}`);
+
+  inputType = computed<InputType>(() => {
+    if (this.type() !== 'password') return this.type();
+    return this.isPasswordVisible() ? 'text' : 'password';
   });
-  private ngControl = inject(NgControl, { optional: true });
-  control = this.ngControl?.control ?? null;
 
-  constructor() {
-    if (this.ngControl) {
-      this.ngControl.valueAccessor = this;
-    }
+  fieldState = computed(() => this.formField()());
+
+  /* METHODS */
+  togglePasswordVisibility() {
+    this.isPasswordVisible.update((curr) => !curr);
   }
-
-  writeValue(value: string): void {
-    this.value.set(value ?? '');
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouchedFn = fn;
-  }
-
-  onInput(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    this.value.set(value);
-    this.onChange(value);
-  }
-
-  onTouched() {
-    this.onTouchedFn();
-  }
-
-  private onChange = (value: string) => {};
-
-  private onTouchedFn = () => {};
 }

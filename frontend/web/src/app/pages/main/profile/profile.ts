@@ -1,6 +1,7 @@
 import { NgClass } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AuthService } from '@api/auth.service';
 import { ProfileDetail } from './profile-detail';
+import { Component, inject } from '@angular/core';
 import { DrawerService } from '@infrastructure/services';
 
 @Component({
@@ -9,7 +10,8 @@ import { DrawerService } from '@infrastructure/services';
   imports: [ProfileDetail, NgClass],
 })
 export class Profile {
-
+  protected readonly authService = inject(AuthService);
   protected readonly drawerService: DrawerService = inject(DrawerService);
 
+  protected readonly user = this.authService.user()!;
 }

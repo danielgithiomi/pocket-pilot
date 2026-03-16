@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import {
   User,
@@ -9,7 +10,6 @@ import {
   ShieldEllipsis,
   LucideAngularModule,
 } from 'lucide-angular';
-import { NgClass } from '@angular/common';
 
 type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-login';
 

@@ -12,12 +12,13 @@ import {
   registerFormValidationSchema,
 } from '@libs/types';
 import { Button } from '@components/ui/atoms/button';
+import { Input } from "@components/ui/atoms/input";
 
 @Component({
   selector: 'app-register',
   styleUrl: './register.css',
   templateUrl: './register.html',
-  imports: [AuthBranding, FormField, Button],
+  imports: [AuthBranding, FormField, Button, Input],
 })
 export class Register {
   // SIGNALS

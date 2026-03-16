@@ -1,5 +1,6 @@
 import { Button } from '@atoms/button';
 import { Router } from '@angular/router';
+import { Eye, EyeOff, LucideAngularModule } from 'lucide-angular';
 import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
 import { AuthService } from '@api/auth.service';
@@ -9,14 +10,20 @@ import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { IAuthResponse, IStandardResponse } from '@global/types';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
+import { Input } from "@components/ui/atoms/input";
 
 @Component({
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
-  imports: [FormField, AuthBranding, CheckedShield, Button],
+  imports: [FormField, AuthBranding, CheckedShield, Button, LucideAngularModule, Input],
 })
 export class Login {
+  // ICONS
+  protected readonly Eye = Eye;
+  protected readonly iconSize = 18;
+  protected readonly EyeOff = EyeOff;
+  
   // FORM
   protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
   protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
@@ -28,8 +35,15 @@ export class Login {
 
   // SIGNALS
   readonly isSubmitting = signal<boolean>(false);
+  protected isPasswordVisible = signal<boolean>(false);
 
   // METHODS
+
+  togglePasswordVisibility = () => {
+    this.isPasswordVisible.set(!this.isPasswordVisible());
+  };
+
+  routeToDashboard = () => this.router.navigate([WEB_ROUTES.dashboard]);
   routeToRegistration = () => this.router.navigate([WEB_ROUTES.register]);
 
   submitLoginForm = (event: Event) => {
@@ -39,18 +53,20 @@ export class Login {
 
     this.isSubmitting.set(true);
 
-    this.authService.login({ email, password }).subscribe({
-      next: (response: IStandardResponse<IAuthResponse>) => {
-        this.toastService.show({
-          variant: 'success',
-          title: response.summary.title,
-          details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
-        });
+    setTimeout(() => {
+      this.authService.login({ email, password }).subscribe({
+        next: (response: IStandardResponse<IAuthResponse>) => {
+          this.toastService.show({
+            variant: 'success',
+            title: response.summary.title,
+            details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
+          });
 
-        this.router.navigateByUrl(WEB_ROUTES.dashboard);
-      },
-      error: () => this.isSubmitting.set(false),
-      complete: () => this.isSubmitting.set(false),
-    });
+          this.routeToDashboard();
+        },
+        error: () => this.isSubmitting.set(false),
+        complete: () => this.isSubmitting.set(false),
+      });
+    }, 3000);
   };
 }

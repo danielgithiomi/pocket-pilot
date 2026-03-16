@@ -8,45 +8,25 @@
         <p>Sign in to your account to continue</p>
       </div>
 
-      <!--   FORM START   -->
       <form (submit)="submitLoginForm($event)" id="login-form">
-        <div class="input-field">
-          <label for="email">Email:</label>
-          <input
-            [formField]="loginForm.email"
-            autocomplete="email"
-            id="email"
-            placeholder="Email Address"
-            type="email"
-          />
+        <atom-input
+          id="email"
+          type="email"
+          autocomplete="email"
+          label="Email Address"
+          placeholder="Email Address"
+          [formField]="loginForm.email"
+          (clearOutput)="loginForm.email().setControlValue('')"
+        />
 
-          @if (loginForm.email().invalid() && loginForm.email().touched()) {
-            <div class="input-field-errors-wrapper">
-              @for (error of loginForm.email().errors(); track error.kind) {
-                <p class="input-field-error">{{ error.message }}</p>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="input-field">
-          <label for="password">Password:</label>
-          <input
-            [formField]="loginForm.password"
-            autocomplete="current-password"
-            id="password"
-            placeholder="Password"
-            type="password"
-          />
-
-          @if (loginForm.password().invalid() && loginForm.password().touched()) {
-            <div class="input-field-errors-wrapper">
-              @for (error of loginForm.password().errors(); track error.kind) {
-                <p class="input-field-error">{{ error.message }}</p>
-              }
-            </div>
-          }
-        </div>
+        <atom-input
+          id="password"
+          type="password"
+          label="Password"
+          placeholder="Email Address"
+          autocomplete="current-password"
+          [formField]="loginForm.password"
+        />
 
         <atom-button
           id="login"
@@ -56,7 +36,6 @@
           [disabled]="loginForm().invalid() || isSubmitting()"
         />
       </form>
-      <!--   FORM END   -->
 
       <p (click)="routeToRegistration()" class="form-redirect-text">
         Don't have an account? Sign Up
