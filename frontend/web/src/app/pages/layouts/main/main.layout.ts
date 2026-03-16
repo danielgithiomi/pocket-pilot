@@ -1,26 +1,59 @@
 import { NgClass } from '@angular/common';
-import { MainContent } from './main.content';
-import { AuthService } from '@api/auth.service';
-import { Component, computed, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { DrawerService } from '@infrastructure/services';
+import { Drawer } from '@components/structural/main/drawer/drawer';
+import { AppHeader } from '@components/structural/headers/app-header/app-header';
 
 @Component({
   selector: 'main-layout',
   styleUrl: './main.layout.css',
-  imports: [MainContent, NgClass],
+  imports: [Drawer, AppHeader, RouterOutlet, NgClass],
   template: `
-    <section id="application-wrapper" [ngClass]="{ 'grid! place-items-center!': isLoading() }">
-      @if (isLoading()) {
-        <div class="loader-container">
-          <div class="loader"></div>
-          <p>Loading. Please wait...</p>
+    <section id="main-layout" class="main-layout">
+      <!-- Mobile Drawer Start -->
+      @if (drawerService.isMobileDrawerOpen()) {
+        <div id="mobile-drawer" class="mobile-drawer">
+          <div class="mobile-drawer-overlay" (click)="drawerService.closeMobileDrawer()"></div>
+          <div class="secondary-drawer">
+            <app-drawer
+              class="w-full"
+              [isMobile]="true"
+              [drawerOpen]="true"
+              (linkClicked)="drawerService.closeMobileDrawer()"
+              (mobileDrawerCloseOutput)="drawerService.closeMobileDrawer()"
+            />
+          </div>
         </div>
-      } @else {
-        <main-content />
       }
+      <!-- Mobile Drawer End -->
+
+      @if (drawerService.isDropdownOpen()) {
+        <div class="dropdown-overlay" (click)="drawerService.closeDropDown()"></div>
+      }
+
+      <app-drawer
+        id="drawer"
+        class="drawer"
+        [isMobile]="false"
+        [drawerOpen]="!drawerService.isDrawerCollapsed()"
+        [ngClass]="{
+          expanded: !drawerService.isDrawerCollapsed(),
+          collapsed: drawerService.isDrawerCollapsed(),
+        }"
+        (desktopDrawerCloseOutput)="drawerService.toggleDesktopDrawer()"
+      />
+
+      <section class="main">
+        <app-header class="header" (hamburgerClickEmitter)="drawerService.openMobileDrawer()" />
+
+        <div id="content" class="flex-1">
+          <router-outlet class="flex-1 w-full" />
+        </div>
+      </section>
     </section>
   `,
 })
 export class MainLayout {
-  protected readonly authService: AuthService = inject(AuthService);
-  protected isLoading = computed<boolean>(() => this.authService.isLoading());
+  protected readonly drawerService = inject(DrawerService);
 }

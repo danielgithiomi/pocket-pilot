@@ -1,46 +1,46 @@
-@reference "tailwindcss";
+@reference 'tailwindcss';
 
-#application-wrapper {
-  @apply h-screen w-screen;
+.main-layout {
+  @apply relative h-screen w-full flex flex-row overflow-hidden;
 
-  .loader-container {
-    @apply flex flex-col items-center gap-6 p-4;
-    animation: slideHalfDown 0.5s ease-in-out;
+  .mobile-drawer {
+    @apply absolute md:hidden inset-0 w-screen h-screen z-9999;
 
-    p {
-      @apply font-medium text-center;
+    .mobile-drawer-overlay {
+      @apply absolute inset-0 bg-black opacity-50;
+    }
+
+    .secondary-drawer {
+      @apply absolute top-0 left-0 w-[270px] h-screen bg-(--inverted-background);
+      animation: slideLeft 400ms ease-in-out;
     }
   }
-}
 
-/* HTML: <div class="loader"></div> */
-.loader {
-  width: 50px;
-  aspect-ratio: 1;
-  display: grid;
-  border-radius: 50%;
-  border: 4px solid var(--body-background);
-  border-right-color: var(--primary);
-  animation: l15 1s infinite linear;
-}
+  .drawer {
+    @apply h-screen hidden md:block flex-col bg-(--inverted-background) transition-all duration-300 ease-in-out;
+  }
 
-.loader::before,
-.loader::after {
-  content: '';
-  grid-area: 1/1;
-  margin: 2px;
-  border: inherit;
-  border-radius: 50%;
-  animation: l15 2s infinite;
-}
+  .expanded {
+    width: 280px;
+  }
 
-.loader::after {
-  margin: 8px;
-  animation-duration: 3s;
-}
+  .collapsed {
+    width: 72px;
+  }
 
-@keyframes l15 {
-  100% {
-    transform: rotate(1turn);
+  .main {
+    @apply relative flex flex-col flex-1 h-screen overflow-hidden;
+
+    .header {
+      @apply w-full h-[8vh];
+    }
+
+    #content {
+      @apply flex-1 overflow-y-auto w-full p-5;
+    }
+  }
+
+  .dropdown-overlay {
+    @apply absolute inset-0 bg-black opacity-50 cursor-default z-999;
   }
 }

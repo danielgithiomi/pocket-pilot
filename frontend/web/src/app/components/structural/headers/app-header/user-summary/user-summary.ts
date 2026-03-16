@@ -41,8 +41,8 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
       </div>
 
       <div class="flex flex-col space-y-0.5 overflow-hidden mr-4">
-        <p class="text-sm line-clamp-1 truncate font-medium">{{ username }}</p>
-        <p class="text-xs text-muted-text line-clamp-1 truncate">{{ email }}</p>
+        <p class="text-sm line-clamp-1 truncate font-medium">{{ username() }}</p>
+        <p class="text-xs text-muted-text line-clamp-1 truncate">{{ email() }}</p>
       </div>
 
       <header-dropdown />
@@ -54,7 +54,13 @@ export class UserSummary {
   protected readonly drawerService: DrawerService = inject(DrawerService);
 
   protected readonly ChevronDown = ChevronDown;
-  protected readonly email = this.authService.user()!.email;
-  protected readonly username = this.authService.user()!.name;
-  protected initial = computed(() => this.username.substring(0, 1).toUpperCase());
+  protected readonly user = this.authService.user;
+
+  protected readonly email = computed(() => this.user()?.email ?? '');
+  protected readonly username = computed(() => this.user()?.name ?? '');
+
+  protected readonly initial = computed(() => {
+    const name = this.username();
+    return name ? name.substring(0, 1).toUpperCase() : '';
+  });
 }

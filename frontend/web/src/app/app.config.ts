@@ -1,5 +1,6 @@
 import player from 'lottie-web';
 import { routes } from './app.routes';
+import { AuthService } from '@api/auth.service';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideCacheableAnimationLoader, provideLottieOptions } from 'ngx-lottie';
@@ -14,7 +15,6 @@ import {
   RequestInterceptor,
   ResponseInterceptor,
 } from '@infrastructure/interceptors';
-import { AuthService } from '@api/auth.service';
 
 function initializeAuth(authService: AuthService) {
   return () => authService.initializeSession();
@@ -31,11 +31,5 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([RequestInterceptor, ResponseInterceptor, ErrorInterceptor]),
     ),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeAuth,
-      deps: [AuthService],
-      multi: true,
-    },
   ],
 };

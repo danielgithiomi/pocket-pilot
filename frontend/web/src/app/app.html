@@ -1,4 +1,13 @@
 <main class="root" id="app-root">
-  <router-outlet />
-  <toast-container />
+  @if (isLoading()) {
+    <div class="loader-container">
+      <div class="loader-content">
+        <div class="loader"></div>
+        <p>Loading. Please wait...</p>
+      </div>
+    </div>
+  } @else {
+    <router-outlet />
+    <toast-container />
+  }
 </main>
