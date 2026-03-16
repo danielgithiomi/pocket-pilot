@@ -8,83 +8,43 @@
 
       <!--   FORM START   -->
       <form (submit)="submitRegistrationForm($event)" id="login-form">
-        <div class="input-field">
-          <label for="email">Email:</label>
-          <input
-            id="email"
-            type="email"
-            autocomplete="email"
-            placeholder="Email Address"
-            [formField]="registerForm.email"
-          />
+        <atom-input
+          id="email"
+          type="email"
+          autocomplete="email"
+          label="Email Address"
+          placeholder="Email Address"
+          [formField]="registerForm.email"
+          (clearOutput)="registerForm.email().setControlValue('')"
+        />
 
-          @if (registerForm.email().invalid() && registerForm.email().touched()) {
-            <div class="input-field-errors-wrapper">
-              @for (error of registerForm.email().errors(); track error.kind) {
-                <p class="input-field-error">{{ error.message }}</p>
-              }
-            </div>
-          }
-        </div>
+        <atom-input
+          type="text"
+          id="username"
+          label="Username"
+          placeholder="Username"
+          autocomplete="username"
+          [formField]="registerForm.name"
+          (clearOutput)="registerForm.name().setControlValue('')"
+        />
 
-        <div class="input-field">
-          <label for="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            autocomplete="username"
-            placeholder="Username"
-            [formField]="registerForm.name"
-          />
+        <atom-input
+          id="password"
+          type="password"
+          label="Password"
+          placeholder="Password"
+          autocomplete="new-password"
+          [formField]="registerForm.password"
+        />
 
-          @if (registerForm.name().invalid() && registerForm.name().touched()) {
-            <div class="input-field-errors-wrapper">
-              @for (error of registerForm.name().errors(); track error.kind) {
-                <p class="input-field-error">{{ error.message }}</p>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="input-field">
-          <label for="password">Password:</label>
-          <input
-            id="password"
-            type="password"
-            placeholder="Password"
-            autocomplete="new-password"
-            [formField]="registerForm.password"
-          />
-
-          @if (registerForm.password().invalid() && registerForm.password().touched()) {
-            <div class="input-field-errors-wrapper">
-              @for (error of registerForm.password().errors(); track error.kind) {
-                <p class="input-field-error">{{ error.message }}</p>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="input-field">
-          <label for="password">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirm_password"
-            autocomplete="new-password"
-            placeholder="Confirm Password"
-            [formField]="registerForm.confirmPassword"
-          />
-
-          @if (
-            registerForm.confirmPassword().invalid() && registerForm.confirmPassword().touched()
-          ) {
-            <div class="input-field-errors-wrapper">
-              @for (error of registerForm.confirmPassword().errors(); track error.kind) {
-                <p class="input-field-error">{{ error.message }}</p>
-              }
-            </div>
-          }
-        </div>
+        <atom-input
+          type="password"
+          id="confirm-password"
+          label="Confirm Password"
+          autocomplete="new-password"
+          placeholder="Confirm Password"
+          [formField]="registerForm.confirmPassword"
+        />
 
         <atom-button
           id="register"
