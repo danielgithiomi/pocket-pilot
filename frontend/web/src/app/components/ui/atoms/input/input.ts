@@ -52,6 +52,8 @@ export class Input {
     return this.isPasswordVisible() ? 'text' : 'password';
   });
 
+  fieldState = computed(() => this.formField()())
+
   /* ======================
      METHODS
   ====================== */

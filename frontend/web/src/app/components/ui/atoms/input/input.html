@@ -29,7 +29,7 @@
             name="field-clear"
             class="input-icon"
             (click)="clearInputField()"
-            [ngClass]="{ 'hidden': !formField()().value()}"
+            [ngClass]="{ 'hidden': !fieldState().value()}"
           />
         }
       </div>

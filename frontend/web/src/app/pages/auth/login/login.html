@@ -16,7 +16,7 @@
           label="Email Address"
           placeholder="Email Address"
           [formField]="loginForm.email"
-          (clearOutput)="loginForm.password().reset()"
+          (clearOutput)="loginForm.email().setControlValue('')"
         />
 
         <atom-input
