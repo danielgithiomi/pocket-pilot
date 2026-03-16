@@ -1,7 +1,5 @@
 <div class="input-field">
-  <label [for]="inputId()">
-    {{ label() }}:
-  </label>
+  <label [for]="inputId()"> {{ label() }}: </label>
 
   <div class="input-wrapper">
     <input
@@ -13,7 +11,7 @@
     />
 
     @if (allowEndIcon()) {
-      <div class="input-icon-wrapper">
+      <div class="input-icon-wrapper" [ngClass]="{ hidden: !fieldState().value() }">
         @if (type() === 'password') {
           <lucide-icon
             [size]="iconSize"
@@ -29,7 +27,6 @@
             name="field-clear"
             class="input-icon"
             (click)="clearInputField()"
-            [ngClass]="{ 'hidden': !fieldState().value()}"
           />
         }
       </div>
