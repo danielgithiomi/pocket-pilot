@@ -50,7 +50,7 @@ import { LucideAngularModule, Bell, Settings2, LogOut } from 'lucide-angular';
         >
           <div class="w-full flex flex-row items-center justify-center gap-3">
             <lucide-icon [img]="LogOut" [name]="LogOut" class="atom-icon" [size]="iconSize" />
-            <p>Logout</p>
+            <p class="text-white">Logout</p>
           </div>
         </atom-button>
       </div>

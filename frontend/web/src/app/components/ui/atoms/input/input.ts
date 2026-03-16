@@ -48,9 +48,4 @@ export class Input {
   togglePasswordVisibility() {
     this.isPasswordVisible.update((curr) => !curr);
   }
-
-  clearInputField() {
-    console.log(`Clearing field: ${this.id()}`);
-    this.clearOutput.emit();
-  }
 }
