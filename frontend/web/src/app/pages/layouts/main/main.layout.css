@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 .main-layout {
-  @apply h-screen w-full flex flex-row overflow-hidden;
+  @apply relative h-screen w-full flex flex-row overflow-hidden;
 
   .mobile-drawer {
     @apply absolute md:hidden inset-0 w-screen h-screen z-9999;

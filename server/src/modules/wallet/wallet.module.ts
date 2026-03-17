@@ -6,9 +6,10 @@ import { AccountController } from './controllers/account.controller';
 import { UserService } from '@modules/identity/services/user.service';
 import { TransactionController } from './controllers/transaction.controller';
 import { CookiesService } from '@modules/identity/services/cookies.service';
+import { UserRepository } from '@modules/identity/repositories/user.repository';
 
 @Module({
     controllers: [AccountController, TransactionController],
-    providers: [AccountService, TransactionService, UserService, CookiesAuthGuard, CookiesService],
+    providers: [AccountService, TransactionService, UserService, CookiesAuthGuard, CookiesService, UserRepository],
 })
 export class WalletModule {}

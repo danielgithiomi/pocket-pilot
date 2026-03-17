@@ -14,16 +14,16 @@
           type="email"
           autocomplete="email"
           label="Email Address"
-          placeholder="Email Address"
+          placeholder="johndoe@gmail.com"
           [formField]="loginForm.email"
-          (clearOutput)="loginForm.email().setControlValue('')"
+          (clearOutput)="loginForm.email().controlValue.set('')"
         />
 
         <atom-input
           id="password"
           type="password"
           label="Password"
-          placeholder="Email Address"
+          placeholder="••••••••"
           autocomplete="current-password"
           [formField]="loginForm.password"
         />

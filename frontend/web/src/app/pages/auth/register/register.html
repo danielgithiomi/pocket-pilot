@@ -13,26 +13,26 @@
           type="email"
           autocomplete="email"
           label="Email Address"
-          placeholder="Email Address"
+          placeholder="johndoe@gmail.com"
           [formField]="registerForm.email"
-          (clearOutput)="registerForm.email().setControlValue('')"
+          (clearOutput)="registerForm.email().controlValue.set('')"
         />
 
         <atom-input
           type="text"
           id="username"
           label="Username"
-          placeholder="Username"
+          placeholder="John Doe"
           autocomplete="username"
           [formField]="registerForm.name"
-          (clearOutput)="registerForm.name().setControlValue('')"
+          (clearOutput)="registerForm.name().controlValue.set('')"
         />
 
         <atom-input
           id="password"
           type="password"
           label="Password"
-          placeholder="Password"
+          placeholder="••••••••"
           autocomplete="new-password"
           [formField]="registerForm.password"
         />
@@ -40,9 +40,9 @@
         <atom-input
           type="password"
           id="confirm-password"
+          placeholder="••••••••"
           label="Confirm Password"
           autocomplete="new-password"
-          placeholder="Confirm Password"
           [formField]="registerForm.confirmPassword"
         />
 

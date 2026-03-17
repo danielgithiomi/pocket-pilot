@@ -62,6 +62,27 @@ export class UserResponseDto {
         description: 'Date and time when the user was last updated',
     })
     updatedAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        example: '2022-01-01T00:00:00.000Z',
+        description: 'Date and time when the user last logged in',
+    })
+    lastLoginAt!: Date | null;
+
+    @Expose()
+    @ApiProperty({
+        example: 0,
+        description: 'Number of failed login attempts',
+    })
+    failedLoginAttempts!: number;
+
+    @Expose()
+    @ApiProperty({
+        example: false,
+        description: 'Whether the account is locked',
+    })
+    isAccountLocked!: boolean;
 }
 
 // SWAGGER

@@ -2,23 +2,22 @@ import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
 import { FullUser, UserResponseDto } from '../dto/user.dto';
-import { DatabaseService } from '@infrastructure/database/database.service';
+import { UserRepository } from '../repositories/user.repository';
+import { LockedException } from '@common/exceptions/locked.exception';
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JWTPayload, LoginInputDto, LoginOutputDto, ValidationResult } from '../dto/auth.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly db: DatabaseService,
         private readonly cookiesService: CookiesService,
+        private readonly userRepository: UserRepository,
     ) {}
 
     async me(userId: string): Promise<FullUser> {
         let user: FullUser | null = null;
 
-        await new Promise(resolve => setTimeout(resolve, 5000));
-
-        user = await this.db.user.findUnique({ where: { id: userId } });
+        user = await this.userRepository.findUserById(userId);
 
         if (!user)
             throw new UnauthorizedException({
@@ -35,16 +34,35 @@ export class AuthService {
 
         const { isValid, user } = await this.validateUser(email, password);
 
-        if (!isValid)
+        if (!isValid) {
+            const currentFailedAttempts = user.failedLoginAttempts!;
+
+            if (currentFailedAttempts >= 3) {
+                await this.userRepository.lockAccount(email);
+
+                throw new LockedException({
+                    name: 'USER_ACCOUNT_LOCKED',
+                    title: 'YOUR ACCOUNT IS LOCKED',
+                    message: 'Your account has been locked due to too many failed login attempts.',
+                    details:
+                        'Your account has been locked due to too many failed login attempts. Please contact support at support@pocket-pilot.com.',
+                });
+            }
+
+            await this.userRepository.incrementFailedLoginAttempts(email);
+
             throw new UnauthorizedException({
                 name: 'Invalid Credentials',
                 title: 'Invalid Credentials.',
                 details: `Incorrect email or password. Please confirm and try again!`,
             });
+        }
 
         const payload: JWTPayload = this.cookiesService.generatePayload(user);
 
         const { access_token, refresh_token } = this.cookiesService.generateTokens(payload);
+
+        await this.userRepository.resetFailedLoginAttemptsOnSuccessfulLogin(email);
 
         return {
             access_token,
@@ -55,7 +73,7 @@ export class AuthService {
 
     // HELPER FUNCTIONS
     private async validateUser(email: string, password: string): Promise<ValidationResult> {
-        const user: FullUser | null = await this.db.user.findUnique({ where: { email } });
+        const user: FullUser | null = await this.userRepository.findUserByEmail(email);
 
         if (!user)
             throw new NotFoundException({

@@ -8,9 +8,9 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
 @Component({
   selector: 'main-layout',
   styleUrl: './main.layout.css',
-  imports: [RouterOutlet, AppHeader, Drawer, NgClass],
+  imports: [Drawer, AppHeader, RouterOutlet, NgClass],
   template: `
-    <section id="main-layout" class="main-layout relative">
+    <section id="main-layout" class="main-layout">
       <!-- Mobile Drawer Start -->
       @if (drawerService.isMobileDrawerOpen()) {
         <div id="mobile-drawer" class="mobile-drawer">
@@ -55,5 +55,5 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
   `,
 })
 export class MainLayout {
-  drawerService = inject(DrawerService);
+  protected readonly drawerService = inject(DrawerService);
 }

@@ -12,7 +12,7 @@ import {
   registerFormValidationSchema,
 } from '@libs/types';
 import { Button } from '@components/ui/atoms/button';
-import { Input } from "@components/ui/atoms/input";
+import { Input } from '@components/ui/atoms/input';
 
 @Component({
   selector: 'app-register',
@@ -45,10 +45,11 @@ export class Register {
 
     this.userService.register({ name, email, password }).subscribe({
       next: (response: IStandardResponse<IAuthResponse>) => {
+        const { data: user } = response;
         this.toastService.show({
           variant: 'success',
-          title: 'Registration Successful',
-          details: 'You are now part of the Pocket Pilot family!',
+          title: 'Registration Successful!',
+          details: `Welcome ${user.name}! You are now part of the Pocket Pilot family!`,
         });
 
         this.router.navigateByUrl(WEB_ROUTES.dashboard);
