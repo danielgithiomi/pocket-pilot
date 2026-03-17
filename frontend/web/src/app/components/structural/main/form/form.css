@@ -1,14 +1,14 @@
 @reference "tailwindcss";
 
 .hover-form {
-  @apply absolute inset-0 overflow-hidden grid place-items-center px-6 lg:px-0;
+  @apply absolute inset-0 overflow-hidden grid place-items-center px-6 lg:px-0 z-9997;
 
   .overlay {
-    @apply absolute inset-0 w-full h-full bg-black/50 cursor-default;
+    @apply absolute inset-0 w-full h-full bg-black/75 cursor-default;
   }
 
   .form {
-    @apply w-full md:w-1/2 h-3/4 bg-(--body-background) z-1 rounded-xl p-6;
+    @apply w-full md:w-1/2 h-3/4 bg-(--alternate-background) z-9998 rounded-xl p-6;
 
     .form-header {
       @apply flex flex-row items-start justify-between;

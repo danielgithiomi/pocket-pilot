@@ -27,3 +27,7 @@
 .navigation-arrow {
   @apply opacity-0 group-hover:opacity-100 transition-opacity duration-300;
 }
+
+.active-icon {
+  @apply text-(--primary);
+}

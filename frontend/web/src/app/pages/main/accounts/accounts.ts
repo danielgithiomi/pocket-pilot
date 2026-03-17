@@ -1,5 +1,6 @@
 import { Button } from "@components/ui/atoms/button";
 import { AccountsService } from '@api/accounts.service';
+import { Form } from "@components/structural/main/form/form";
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
@@ -8,7 +9,7 @@ import { NoData } from '@components/structural/main/no-data/no-data';
   selector: 'accounts',
   styleUrl: './accounts.css',
   templateUrl: './accounts.html',
-  imports: [NoData, Button, LucideAngularModule],
+  imports: [NoData, Button, LucideAngularModule, Form],
 })
 export class Accounts {
   protected readonly iconSize: number = 18;

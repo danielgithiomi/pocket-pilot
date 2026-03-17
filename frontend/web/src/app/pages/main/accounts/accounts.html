@@ -14,3 +14,12 @@
     <no-data message="No accounts found!" />
   </div>
 </section>
+
+@if (isFormOpen()) {
+  <app-form
+    id="accounts"
+    title="Add Account"
+    description="Create a new account"
+    (closeForm)="isFormOpen.set(false)"
+  />
+}
