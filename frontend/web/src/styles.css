@@ -74,6 +74,8 @@
   --muted-text: var(--gray2);
 
   /* Font & Styles */
+  --filter-blur: 2px;
+  --overlay-background: rgba(0, 0, 0, 0.5);
   --box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -270,7 +272,8 @@ main {
       @apply w-full;
 
       .page-card {
-        @apply bg-(--alternate-background) rounded-xl p-4 shadow shadow-[0_1px_2px_var(--inverted-background)] hover:shadow-[0_1px_4px_var(--inverted-background)] transition-all duration-300;
+        @apply relative bg-(--alternate-background)/75 overflow-hidden rounded-xl p-4 shadow-[0_1px_2px_var(--inverted-background)] hover:shadow-[0_1px_4px_var(--inverted-background)] transition-all duration-300;
+        backdrop-filter: blur(25px);
 
         .card-header {
           @apply flex flex-col space-y-2 mt-2;
@@ -286,6 +289,7 @@ main {
       }
     }
   }
+
   /* PAGES END */
 
   /* ICONS START */
@@ -298,7 +302,7 @@ main {
   }
 
   .atom-icon {
-    @apply cursor-pointer hover:scale-105 duration-300 ease-in-out hover:text-(--primary);
+    @apply cursor-pointer hover:scale-105 duration-300 ease-in-out hover:text-primary;
   }
   /* ICONS END */
 }

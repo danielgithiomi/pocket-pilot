@@ -5,7 +5,10 @@
   animation: slideDown 250ms ease-in-out;
 
   .overlay {
-    @apply absolute inset-0 w-full h-full bg-black/75 cursor-default;
+    @apply absolute inset-0 w-full h-full cursor-default;
+    background: var(--overlay-background);
+    backdrop-filter: blur(var(--filter-blur));
+    -webkit-backdrop-filter: blur(var(--filter-blur));
   }
 
   .form {
