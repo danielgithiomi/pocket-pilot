@@ -19,7 +19,7 @@
       @apply flex flex-row items-start justify-between;
 
       .form-title {
-        @apply text-2xl font-semibold;
+        @apply text-2xl font-semibold text-(--primary);
       }
 
       .form-description {
@@ -28,7 +28,7 @@
     }
 
     .form-content {
-      @apply flex-1 px-4;
+      @apply flex-1 px-2;
     }
 
     .form-footer {

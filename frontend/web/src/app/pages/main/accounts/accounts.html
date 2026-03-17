@@ -10,20 +10,26 @@
     </atom-button>
   </div>
 
-  <div class="page-container flex-1 grid place-items-center">
-    @let response = accountsWithCount.value()?.data;
-    @if (response?.count != 0) {
-      <p>Accounts found: {{ response?.count }}</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        @for (account of response?.data; track account.id) {
-          <div class="bg-alternate-background rounded-lg p-4">
-            <h3 class="text-lg font-semibold">{{ account.name }}</h3>
-            <p class="text-muted-foreground">{{ account.balance }}</p>
-          </div>
-        }
-      </div>
-    } @else {
+  @let response = accountsWithCount.value()?.data;
+  @let count = response?.count;
+  <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': count === 0 }">
+    @if (count === 0) {
       <no-data message="No accounts found!" />
+    } @else {
+      <div class="py-4">
+        <p>
+          You have <span class="font-semibold text-primary">{{ count }}</span> active
+          {{ count! > 1 ? 'accounts' : 'account' }}!
+        </p>
+        <div class="grid py-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          @for (account of response?.data; track account.id) {
+            <div class="bg-alternate-background rounded-lg p-4">
+              <h3 class="text-lg font-semibold">{{ account.name }}</h3>
+              <p class="text-muted-foreground">{{ account.balance }}</p>
+            </div>
+          }
+        </div>
+      </div>
     }
   </div>
 </section>

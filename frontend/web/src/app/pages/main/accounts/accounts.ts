@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { form } from '@angular/forms/signals';
 import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
@@ -17,7 +18,7 @@ import {
   selector: 'accounts',
   styleUrl: './accounts.css',
   templateUrl: './accounts.html',
-  imports: [NoData, Button, LucideAngularModule, Form, Input],
+  imports: [NoData, Button, LucideAngularModule, Form, Input, NgClass],
 })
 export class Accounts {
   protected readonly iconSize: number = 18;
