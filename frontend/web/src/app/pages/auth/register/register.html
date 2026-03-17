@@ -15,7 +15,7 @@
           label="Email Address"
           placeholder="johndoe@gmail.com"
           [formField]="registerForm.email"
-          (clearOutput)="registerForm.email().setControlValue('')"
+          (clearOutput)="registerForm.email().controlValue.set('')"
         />
 
         <atom-input
@@ -25,7 +25,7 @@
           placeholder="John Doe"
           autocomplete="username"
           [formField]="registerForm.name"
-          (clearOutput)="registerForm.name().setControlValue('')"
+          (clearOutput)="registerForm.name().controlValue.set('')"
         />
 
         <atom-input

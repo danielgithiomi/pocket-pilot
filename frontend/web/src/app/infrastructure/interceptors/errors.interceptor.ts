@@ -27,7 +27,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
           const { name, title, type, details } = apiError.error;
 
-          if (name && CLEAR_SESSION_ERROR_NAME.includes(name)) {
+          if (name && CLEAR_SESSION_ERROR_NAME[name]) {
             authService.clearSession();
             router.navigateByUrl(WEB_ROUTES.login);
 

@@ -16,7 +16,7 @@
           label="Email Address"
           placeholder="johndoe@gmail.com"
           [formField]="loginForm.email"
-          (clearOutput)="loginForm.email().setControlValue('')"
+          (clearOutput)="loginForm.email().controlValue.set('')"
         />
 
         <atom-input
