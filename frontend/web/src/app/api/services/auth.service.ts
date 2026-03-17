@@ -69,8 +69,7 @@ export class AuthService {
       );
 
       const { data: user } = response;
-      this.userSignal.set(user);
-      localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
+      this.createSession(user);
     } catch (error) {
       this.clearSession();
     } finally {
@@ -95,8 +94,7 @@ export class AuthService {
         );
 
         const { data: user } = response;
-        this.userSignal.set(user);
-        localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
+        this.createSession(user);
         return true;
       } catch {
         this.clearSession();
@@ -139,6 +137,11 @@ export class AuthService {
   clearSession() {
     this.userSignal.set(null);
     localStorage.removeItem(STORED_AUTH_USER_KEY);
+  }
+
+  createSession(user: User) {
+    this.userSignal.set(user);
+    localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
   }
 
   private renderToast = (error: IStandardError) => {

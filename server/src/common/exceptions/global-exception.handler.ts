@@ -58,7 +58,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         // =========================
         // HTTP EXCEPTIONS (NestJS)
         // =========================
-        const castException = exception as HttpException;
+        const castException = exception;
         const statusCode = castException.getStatus();
         const exceptionResponse = castException.getResponse();
 
