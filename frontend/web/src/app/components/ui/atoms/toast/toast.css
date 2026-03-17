@@ -1,7 +1,8 @@
 @reference 'tailwindcss';
 
 .toast {
-  width: 350px;
+  width: 100%;
+  max-width: 300px;
   cursor: default;
   overflow: hidden;
   border-radius: 12px;

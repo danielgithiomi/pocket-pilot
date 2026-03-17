@@ -1,6 +1,6 @@
 import { Button } from "@components/ui/atoms/button";
 import { AccountsService } from '@api/accounts.service';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
 
@@ -15,12 +15,9 @@ export class Accounts {
   protected readonly Plus = ListFilterPlus;
   protected readonly accountsService = inject(AccountsService);
 
+  protected isFormOpen = signal<boolean>(false);
   protected readonly accountsWithCount = computed(() => {
     const result = this.accountsService.getUserWallets();
     return result.value()?.data;
   });
-
-  addAccount() {
-    console.log('Add account');
-  }
 }

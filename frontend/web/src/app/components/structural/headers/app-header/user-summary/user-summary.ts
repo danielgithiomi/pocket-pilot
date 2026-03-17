@@ -12,7 +12,15 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
     @reference "tailwindcss";
 
     .user-summary {
-      @apply relative flex flex-row items-center gap-2 w-50 hover:bg-(--body-background) transition-all duration-300 cursor-pointer rounded-lg py-1 px-2 z-999;
+      @apply relative flex flex-row items-center gap-2 min-w-10 max-w-50 hover:bg-(--body-background) transition-all duration-300 cursor-pointer rounded-lg py-1 px-2 z-999;
+    }
+
+    .avatar {
+      @apply size-8 bg-(--primary) grid place-items-center rounded-full shrink-0 mr-4 sm:mr-0;
+    }
+
+    .content {
+      @apply flex-col space-y-0.5 overflow-hidden mr-4 hidden sm:flex;
     }
 
     p {
@@ -36,11 +44,11 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
       </div>
       <!-- ABS: Dropdown Chevron End -->
 
-      <div id="avatar" class="size-8 bg-primary grid place-items-center rounded-full shrink-0">
+      <div id="avatar" class="avatar">
         <p class="text-white">{{ initial() }}</p>
       </div>
 
-      <div class="flex flex-col space-y-0.5 overflow-hidden mr-4">
+      <div class="content">
         <p class="text-sm line-clamp-1 truncate font-medium">{{ username() }}</p>
         <p class="text-xs text-muted-text line-clamp-1 truncate">{{ email() }}</p>
       </div>

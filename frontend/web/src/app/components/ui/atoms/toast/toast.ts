@@ -1,9 +1,17 @@
 import { TOAST_THEMES, ToastInternal, ToastTheme } from './toast.types';
 import { input, output, OnInit, OnDestroy, Component, computed } from '@angular/core';
-import { CheckedCircle, CrossIcon, CorneredWarningIcon, InfoCircle, CrossedCircle } from '@atoms/icons';
+import {
+  CrossIcon,
+  InfoCircle,
+  CrossedCircle,
+  CheckedCircle,
+  CorneredWarningIcon,
+} from '@atoms/icons';
 
 @Component({
   selector: 'atom-toast',
+  styleUrl: './toast.css',
+  imports: [CheckedCircle, CrossIcon, CorneredWarningIcon, InfoCircle, CrossedCircle],
   template: `
     <div class="toast bg-alternate-background" (mouseenter)="pause()" (mouseleave)="resume()">
       <div class="content">
@@ -47,8 +55,6 @@ import { CheckedCircle, CrossIcon, CorneredWarningIcon, InfoCircle, CrossedCircl
       ></div>
     </div>
   `,
-  styleUrl: './toast.css',
-  imports: [CheckedCircle, CrossIcon, CorneredWarningIcon, InfoCircle, CrossedCircle],
 })
 export class Toast implements OnInit, OnDestroy {
   closed = output<void>();
