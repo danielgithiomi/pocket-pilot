@@ -20,7 +20,7 @@
   }
 
   .link-text {
-    @apply text-(--inverted-text) group-hover:dark:invert-100 transition-all duration-300;
+    @apply text-sm text-(--inverted-text) group-hover:dark:invert-100 transition-all duration-300;
   }
 }
 
