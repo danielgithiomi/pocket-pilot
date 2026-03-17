@@ -9,6 +9,7 @@ import { input, output, computed, Component } from '@angular/core';
     <button
       [type]="type()"
       [id]="prefixedId()"
+      [attr.form]="form()"
       (click)="handleClick()"
       [class]="buttonClasses()"
       [disabled]="disabled() || isLoading()"
@@ -37,6 +38,7 @@ export class Button {
   // =========================
   // Inputs (Signals API)
   // =========================
+  form = input<string>('');
   label = input<string>('');
   id = input.required<string>();
   className = input<string>('');

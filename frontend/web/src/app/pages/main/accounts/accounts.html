@@ -22,5 +22,27 @@
   description="Create a new account"
   (closeForm)="isFormOpen.set(false)"
 >
-  
+  <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">
+    <atom-input
+      id="name"
+      type="text"
+      [inverted]="true"
+      autocomplete="name"
+      label="Account Name"
+      [formField]="accountsForm.name"
+      placeholder="Eg: Savings Account"
+      (clearOutput)="accountsForm.name().controlValue.set('')"
+    />
+  </form>
+
+  <div slot="footer">
+    <atom-button
+      type="submit"
+      form="accounts-form"
+      label="Create Account"
+      id="submit-account-form"
+      isLoading]="isSubmitting()"
+      [disabled]="accountsForm().invalid() || isSubmitting()"
+    />
+  </div>
 </app-form>
