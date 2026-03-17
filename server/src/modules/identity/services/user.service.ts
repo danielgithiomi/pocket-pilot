@@ -25,7 +25,14 @@ export class UserService {
 
         const hashedPassword = await argon.hash(data.password);
 
-        const createdUser: FullUser = await this.db.user.create({ data: { ...data, password: hashedPassword } });
+        const now = new Date();
+        const newUser = {
+            ...data,
+            lastLoginAt: now,
+            password: hashedPassword,
+        };
+
+        const createdUser: FullUser = await this.db.user.create({ data: newUser });
 
         const payload: JWTPayload = this.cookiesService.generatePayload(createdUser);
 

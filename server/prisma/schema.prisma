@@ -63,6 +63,7 @@ model User {
     // Account locking
     lastLoginAt         DateTime?
     failedLoginAttempts Int       @default(0)
+    isAccountLocked     Boolean   @default(false)
 
     // Link to accounts - one-to-many
     accounts Account[]
