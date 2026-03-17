@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.hover-form {
+  @apply absolute inset-0 overflow-hidden grid place-items-center px-6 lg:px-0;
+
+  .overlay {
+    @apply absolute inset-0 w-full h-full bg-black/50 cursor-default;
+  }
+
+  .form {
+    @apply w-full md:w-1/2 h-3/4 bg-(--body-background) z-1 rounded-xl p-6;
+
+    .form-header {
+      @apply flex flex-row items-start justify-between;
+
+      .form-title {
+        @apply text-2xl font-semibold;
+      }
+
+      .form-description {
+        @apply text-sm text-(--muted-text);
+      }
+    }
+  }
+}

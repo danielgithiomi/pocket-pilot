@@ -1,0 +1,17 @@
+<div [id]="id()" class="hover-form">
+  <div class="overlay" (click)="closeForm.emit()"></div>
+
+  <div
+    class="form"
+    [ngClass]="{ 'w-full! lg:w-3/4! xl:w-1/2!': !drawerService.isDrawerCollapsed() }"
+  >
+    <div class="form-header">
+      <div class="space-y-1">
+        <p class="form-title">{{ title() }}</p>
+        <p class="form-description">{{ description() }}</p>
+      </div>
+
+      <lucide-icon class="atom-icon" name="x" [img]="X" [size]="24" (click)="closeForm.emit()" />
+    </div>
+  </div>
+</div>

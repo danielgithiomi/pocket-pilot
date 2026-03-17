@@ -4,8 +4,13 @@ import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 @Component({
   selector: 'no-data',
   imports: [LottieComponent],
+  styles: `
+    .no-data {
+      animation: slideHalfDown 0.3s ease-in-out;
+    }
+  `,
   template: `
-    <div class="flex flex-col items-center justify-center">
+    <div class="no-data flex flex-col items-center justify-center">
       <ng-lottie
         [options]="options"
         [width]="animationDimensions()"

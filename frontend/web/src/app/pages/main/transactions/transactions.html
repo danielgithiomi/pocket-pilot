@@ -14,3 +14,12 @@
     <no-data message="No transactions found!" />
   </div>
 </section>
+
+@if (isFormOpen()) {
+  <app-form
+    id="transactions"
+    title="Add Transaction"
+    description="Add a new transaction"
+    (closeForm)="isFormOpen.set(false)"
+  />
+}

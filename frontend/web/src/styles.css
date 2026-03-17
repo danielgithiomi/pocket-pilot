@@ -259,9 +259,10 @@ main {
 
     .page-header {
       @apply flex flex-row items-center justify-between mb-4;
+      animation: slideHalfDown 0.3s ease-in-out;
 
       .page-title {
-        @apply text-3xl font-semibold;
+        @apply text-2xl lg:text-3xl font-semibold;
       }
     }
 
@@ -297,7 +298,7 @@ main {
   }
 
   .atom-icon {
-    @apply cursor-pointer hover:scale-105 duration-300 ease-in-out;
+    @apply cursor-pointer hover:scale-105 duration-300 ease-in-out hover:text-(--primary);
   }
   /* ICONS END */
 }
