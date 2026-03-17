@@ -54,7 +54,7 @@ export class Accounts {
         next: () => {
           this.toastService.show({
             variant: 'success',
-            title: 'Account created successfully',
+            title: 'Account created!',
             details: 'Your account has been created successfully.',
           });
           this.accountsWithCount.reload();
