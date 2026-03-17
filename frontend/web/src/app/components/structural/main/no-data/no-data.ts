@@ -17,7 +17,8 @@ import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 })
 export class NoData {
   readonly message = input.required<string>();
-  readonly animationDimensions = input<string>('350px');
+  readonly animationDimensions = input<string>('300px');
+
   protected readonly options: AnimationOptions = {
     loop: true,
     autoplay: true,

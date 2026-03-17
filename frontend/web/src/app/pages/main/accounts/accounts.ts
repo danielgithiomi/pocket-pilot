@@ -1,18 +1,26 @@
-import { Component, computed, inject } from '@angular/core';
+import { Button } from "@components/ui/atoms/button";
 import { AccountsService } from '@api/accounts.service';
-import { NoData } from "@components/structural/main/no-data/no-data";
+import { Component, computed, inject } from '@angular/core';
+import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
+import { NoData } from '@components/structural/main/no-data/no-data';
 
 @Component({
   selector: 'accounts',
   styleUrl: './accounts.css',
   templateUrl: './accounts.html',
-  imports: [NoData],
+  imports: [NoData, Button, LucideAngularModule],
 })
 export class Accounts {
+  protected readonly iconSize: number = 18;
+  protected readonly Plus = ListFilterPlus;
   protected readonly accountsService = inject(AccountsService);
 
   protected readonly accountsWithCount = computed(() => {
     const result = this.accountsService.getUserWallets();
     return result.value()?.data;
   });
+
+  addAccount() {
+    console.log('Add account');
+  }
 }

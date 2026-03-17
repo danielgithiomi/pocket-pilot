@@ -257,8 +257,12 @@ main {
   .page {
     @apply p-4 h-full;
 
-    .page-title {
-      @apply text-3xl font-semibold mb-4;
+    .page-header {
+      @apply flex flex-row items-center justify-between mb-4;
+
+      .page-title {
+        @apply text-3xl font-semibold;
+      }
     }
 
     .page-container {
