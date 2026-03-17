@@ -1,9 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { AccountsService } from '@api/accounts.service';
 
 @Component({
   selector: 'accounts',
-  imports: [],
-  templateUrl: './accounts.html',
   styleUrl: './accounts.css',
+  templateUrl: './accounts.html',
 })
-export class Accounts {}
+export class Accounts {
+  protected readonly accountsService = inject(AccountsService);
+
+  protected readonly accountsWithCount = computed(() => {
+    const result = this.accountsService.getUserWallets();
+    return result.value()?.data;
+  });
+}

@@ -1,1 +1,10 @@
-<p>accounts works!</p>
+<div>
+  <h1>Accounts</h1>
+
+  @if (accountsWithCount()?.accounts) {
+    <p>Found accounts</p>
+  }
+  @else {
+    <p>No accounts found</p>
+  }
+</div>
