@@ -4,11 +4,13 @@ import { UserService } from './services/user.service';
 import { CookiesService } from './services/cookies.service';
 import { UserController } from './controllers/user.controller';
 import { AuthController } from './controllers/auth.controller';
+import { UserRepository } from './repositories/user.repository';
 import { DatabaseModule } from '@infrastructure/database/database.module';
 
 @Module({
     imports: [DatabaseModule],
+    exports: [UserRepository],
     controllers: [UserController, AuthController],
-    providers: [UserService, AuthService, CookiesService],
+    providers: [UserService, AuthService, CookiesService, UserRepository],
 })
 export class IdentityModule {}

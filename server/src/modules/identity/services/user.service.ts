@@ -1,16 +1,16 @@
 import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
+import { UserRepository } from '../repositories/user.repository';
 import { FullUser, User, UserResponseDto } from '../dto/user.dto';
-import { DatabaseService } from '@infrastructure/database/database.service';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
     constructor(
-        private readonly db: DatabaseService,
         private readonly cookiesService: CookiesService,
+        private readonly userRepository: UserRepository,
     ) {}
 
     async registerUser(data: RegisterInputDto): Promise<RegisterOutputDto> {
@@ -25,14 +25,7 @@ export class UserService {
 
         const hashedPassword = await argon.hash(data.password);
 
-        const now = new Date();
-        const newUser = {
-            ...data,
-            lastLoginAt: now,
-            password: hashedPassword,
-        };
-
-        const createdUser: FullUser = await this.db.user.create({ data: newUser });
+        const createdUser: FullUser = await this.userRepository.createNewUser(data, hashedPassword);
 
         const payload: JWTPayload = this.cookiesService.generatePayload(createdUser);
 
@@ -46,11 +39,15 @@ export class UserService {
     }
 
     async getAllUsers(): Promise<UserResponseDto[]> {
-        return await this.db.user.findMany({});
+        return await this.userRepository.getAllUsers();
+    }
+
+    async deleteUserById(userId: string) {
+        return this.userRepository.deleteUserById(userId);
     }
 
     async findUserById(userId: string): Promise<UserResponseDto> {
-        const user: FullUser | null = await this.db.user.findUnique({ where: { id: userId } });
+        const user: FullUser | null = await this.userRepository.findUserById(userId);
 
         if (!user)
             throw new NotFoundException({
@@ -62,17 +59,9 @@ export class UserService {
         return plainToInstance(UserResponseDto, user);
     }
 
-    async findUserByEmail(email: string): Promise<User | null> {
-        return this.db.user.findUnique({ where: { email } });
-    }
-
-    async deleteUserById(userId: string) {
-        return this.db.user.delete({ where: { id: userId } });
-    }
-
     // HELPER FUNCTIONS
     private async validateUserExists(email: string): Promise<boolean> {
-        const user: User | null = await this.findUserByEmail(email);
+        const user: User | null = await this.userRepository.findUserByEmail(email);
         return !!user;
     }
 }

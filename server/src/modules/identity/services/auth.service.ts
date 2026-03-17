@@ -2,22 +2,22 @@ import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
 import { FullUser, UserResponseDto } from '../dto/user.dto';
+import { UserRepository } from '../repositories/user.repository';
 import { LockedException } from '@common/exceptions/locked.exception';
-import { DatabaseService } from '@infrastructure/database/database.service';
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JWTPayload, LoginInputDto, LoginOutputDto, ValidationResult } from '../dto/auth.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly db: DatabaseService,
         private readonly cookiesService: CookiesService,
+        private readonly userRepository: UserRepository,
     ) {}
 
     async me(userId: string): Promise<FullUser> {
         let user: FullUser | null = null;
 
-        user = await this.db.user.findUnique({ where: { id: userId } });
+        user = await this.userRepository.findUserById(userId);
 
         if (!user)
             throw new UnauthorizedException({
@@ -30,7 +30,6 @@ export class AuthService {
     }
 
     async login(data: LoginInputDto): Promise<LoginOutputDto> {
-        const now = new Date();
         const { email, password } = data;
 
         const { isValid, user } = await this.validateUser(email, password);
@@ -39,12 +38,7 @@ export class AuthService {
             const currentFailedAttempts = user.failedLoginAttempts!;
 
             if (currentFailedAttempts >= 3) {
-                await this.db.user.update({
-                    where: { email },
-                    data: {
-                        isAccountLocked: true,
-                    },
-                });
+                await this.userRepository.lockAccount(email);
 
                 throw new LockedException({
                     name: 'USER_ACCOUNT_LOCKED',
@@ -55,12 +49,7 @@ export class AuthService {
                 });
             }
 
-            await this.db.user.update({
-                where: { email },
-                data: {
-                    failedLoginAttempts: currentFailedAttempts + 1,
-                },
-            });
+            await this.userRepository.incrementFailedLoginAttempts(email);
 
             throw new UnauthorizedException({
                 name: 'Invalid Credentials',
@@ -73,14 +62,7 @@ export class AuthService {
 
         const { access_token, refresh_token } = this.cookiesService.generateTokens(payload);
 
-        // Reset the failed login attempts
-        await this.db.user.update({
-            where: { email },
-            data: {
-                lastLoginAt: now,
-                failedLoginAttempts: 0,
-            },
-        });
+        await this.userRepository.resetFailedLoginAttemptsOnSuccessfulLogin(email);
 
         return {
             access_token,
@@ -91,7 +73,7 @@ export class AuthService {
 
     // HELPER FUNCTIONS
     private async validateUser(email: string, password: string): Promise<ValidationResult> {
-        const user: FullUser | null = await this.db.user.findUnique({ where: { email } });
+        const user: FullUser | null = await this.userRepository.findUserByEmail(email);
 
         if (!user)
             throw new NotFoundException({
