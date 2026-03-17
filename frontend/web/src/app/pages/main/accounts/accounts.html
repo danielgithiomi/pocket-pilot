@@ -1,10 +1,7 @@
-<div>
-  <h1>Accounts</h1>
+<section id="accounts-page" class="page">
+  <h1 class="page-title">Accounts</h1>
 
-  @if (accountsWithCount()?.accounts) {
-    <p>Found accounts</p>
-  }
-  @else {
-    <p>No accounts found</p>
-  }
-</div>
+  <div class="page-container flex-1 grid place-items-center">
+    <no-data message="No accounts found" />
+  </div>
+</section>

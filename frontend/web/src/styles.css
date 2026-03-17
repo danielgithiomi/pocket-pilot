@@ -255,7 +255,7 @@ main {
 @layer components {
   /* PAGES START */
   .page {
-    @apply p-4;
+    @apply p-4 h-full;
 
     .page-title {
       @apply text-3xl font-semibold mb-4;
