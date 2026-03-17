@@ -23,6 +23,7 @@ export class AccountsService {
   }
 
   getUserAccounts() {
+    console.log('Fetching user accounts...');
     return this.accountsResource.userAccounts;
   }
 

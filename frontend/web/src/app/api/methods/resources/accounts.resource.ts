@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { AuthService } from '@api/auth.service';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
+import { computed, inject, Injectable } from '@angular/core';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { IStandardResponse, UserAccountsWithCount } from '@global/types';
 
@@ -8,8 +9,15 @@ import { IStandardResponse, UserAccountsWithCount } from '@global/types';
   providedIn: 'root',
 })
 export class AccountsResource {
-  userAccounts = httpResource<IStandardResponse<UserAccountsWithCount>>(() => ({
-    method: 'GET',
-    url: concatUrl(endpoints.accounts),
-  }));
+  private readonly authService: AuthService = inject(AuthService);
+
+  userAccounts = httpResource<IStandardResponse<UserAccountsWithCount>>(() => {
+    this.authService.user();
+
+    return {
+      method: 'GET',
+      cache: 'no-cache',
+      url: concatUrl(endpoints.accounts),
+    };
+  });
 }
