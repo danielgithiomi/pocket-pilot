@@ -7,6 +7,7 @@ import {
   Wallet,
   UserRoundCog,
   ChevronRight,
+  ArrowLeftRight,
   LayoutDashboard,
   LucideAngularModule,
 } from 'lucide-angular';
@@ -57,6 +58,7 @@ export class NavLink {
     accounts: Wallet,
     profile: UserRoundCog,
     dashboard: LayoutDashboard,
+    transactions: ArrowLeftRight,
   };
 
   protected navigate() {
