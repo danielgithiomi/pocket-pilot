@@ -21,32 +21,78 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         const request = ctx.getRequest();
         const response = ctx.getResponse();
 
-        const isHttpException: boolean = exception instanceof HttpException;
+        // Determine if the exception is an HttpException
+        const isHttpException = exception instanceof HttpException;
 
-        const statusCode = isHttpException
-            ? (exception as HttpException).getStatus()
-            : HttpStatus.INTERNAL_SERVER_ERROR;
+        // =========================
+        // NON-HTTP EXCEPTIONS
+        // =========================
+        if (!isHttpException) {
+            const anyException = exception as any;
+            const upstreamError = anyException?.response?.data?.error;
+            const nativeError = exception instanceof Error ? exception : undefined;
 
-        const exceptionResponse = isHttpException ? (exception as HttpException).getResponse() : null;
+            const name = upstreamError?.name ?? upstreamError?.code ?? nativeError?.name ?? undefined;
+            const message = upstreamError?.message ?? nativeError?.message ?? 'An unexpected error occurred';
+            const details = upstreamError?.details ?? undefined;
+            const type = upstreamError?.type ?? 'Internal Server Error';
+            const statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
 
-        const type = isHttpException ? (exception as HttpException).name : 'Internal Server Error';
+            return response.status(statusCode).json({
+                success: false,
+                statusCode,
+                error: {
+                    type,
+                    name,
+                    message,
+                    details,
+                },
+                metadata: {
+                    endpoint: request.url,
+                    timestamp: new Date().toISOString(),
+                    requestId: randomUUID(),
+                },
+            } as IGlobalError);
+        }
 
-        const name = typeof exceptionResponse === 'string' ? exceptionResponse : undefined;
+        // =========================
+        // HTTP EXCEPTIONS (NestJS)
+        // =========================
+        const castException = exception as HttpException;
+        const statusCode = castException.getStatus();
+        const exceptionResponse = castException.getResponse();
 
-        const title =
-            typeof exceptionResponse === 'string'
-                ? exceptionResponse
-                : ((exceptionResponse as any)?.title ?? 'An unexpected error occurred');
+        // Extract structured information
+        let name: string | undefined;
+        let title: string | undefined;
+        let message: string | undefined;
+        let details: unknown;
+        let type: string;
 
-        const details = typeof exceptionResponse === 'object' ? (exceptionResponse as any)?.details : undefined;
+        if (typeof exceptionResponse === 'string') {
+            message = exceptionResponse;
+            type = castException.name;
+            name = exceptionResponse;
+        } else if (typeof exceptionResponse === 'object') {
+            const err = exceptionResponse as any;
+            name = err.name ?? err.code ?? undefined;
+            title = err.title ?? 'Internal Http Exception Error';
+            message = err.message ?? 'An unexpected error occurred';
+            details = err.details;
+            type = castException.name;
+        } else {
+            type = castException.name;
+            message = 'An unexpected error occurred';
+        }
 
         response.status(statusCode).json({
             success: false,
             statusCode,
             error: {
-                name,
                 type,
+                name,
                 title,
+                message,
                 details,
             },
             metadata: {

@@ -1,22 +1,51 @@
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+import { AuthService } from '@api/auth.service';
 import { IGlobalException, IStandardError } from '@global/types';
+import { CLEAR_SESSION_ERROR_NAME, WEB_ROUTES } from '@global/constants';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 
 export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
+  const router = inject(Router);
+  const authService = inject(AuthService);
+
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       const apiError = error.error as IGlobalException;
 
       if (apiError && apiError.success === false) {
-        return throwError(
-          () =>
-            ({
+        return throwError(() => {
+          if (!apiError.error) {
+            return {
+              type: 'unexpected',
               statusCode: apiError.statusCode,
-              title: apiError.error?.title ?? 'An unexpected error occurred',
-              type: apiError.error?.type,
-              details: apiError.error?.details,
-            }) satisfies IStandardError,
-        );
+              title: 'An unexpected error occurred',
+              details: 'No error object found in the response!',
+            } satisfies IStandardError;
+          }
+
+          const { name, title, type, details } = apiError.error;
+
+          if (name && CLEAR_SESSION_ERROR_NAME.includes(name)) {
+            authService.clearSession();
+            router.navigateByUrl(WEB_ROUTES.login);
+
+            return {
+              type,
+              details: 'Your user session has expired! Please login again.',
+              statusCode: 401,
+              title: 'Session Expired!',
+            } satisfies IStandardError;
+          }
+
+          return {
+            type: type,
+            details: details,
+            statusCode: apiError.statusCode,
+            title: title ?? 'An unexpected error occurred',
+          } satisfies IStandardError;
+        });
       }
 
       // SERVER ERROR

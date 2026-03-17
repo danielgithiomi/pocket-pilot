@@ -33,6 +33,7 @@ export interface IGlobalError {
         type: string;
         name?: string;
         title?: string;
+        message?: string;
         details?: unknown;
     };
     metadata: {

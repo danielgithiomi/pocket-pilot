@@ -21,7 +21,7 @@ export class CookiesAuthGuard implements CanActivate {
 
         if (!access_token) {
             throw new UnauthorizedException({
-                name: 'Unauthorized',
+                name: 'MISSING_ACCESS_TOKEN',
                 title: 'Missing access token',
                 message: `Missing authentication cookies`,
                 details: `The access token is required in the cookies to access ${endpoint}`,

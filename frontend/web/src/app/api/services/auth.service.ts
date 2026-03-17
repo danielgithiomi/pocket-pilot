@@ -72,8 +72,7 @@ export class AuthService {
       this.userSignal.set(user);
       localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
     } catch (error) {
-      this.userSignal.set(null);
-      localStorage.removeItem(STORED_AUTH_USER_KEY);
+      this.clearSession();
     } finally {
       this.sessionLoaded.set(true);
       this.sessionLoading.set(false);
@@ -100,9 +99,7 @@ export class AuthService {
         localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
         return true;
       } catch {
-        this.userSignal.set(null);
-        localStorage.removeItem(STORED_AUTH_USER_KEY);
-
+        this.clearSession();
         return false;
       } finally {
         this.sessionLoaded.set(true);
@@ -129,11 +126,9 @@ export class AuthService {
 
   logout() {
     return this.mutation.logout().pipe(
-      tap(() => {
-        this.userSignal.set(null);
-        localStorage.removeItem(STORED_AUTH_USER_KEY);
-      }),
+      tap(() => this.clearSession()),
       catchError((error: IStandardError) => {
+        console.error('Logout error:', error);
         this.renderToast(error);
         return EMPTY;
       }),
@@ -141,6 +136,11 @@ export class AuthService {
   }
 
   // HELPER FUNCTIONS
+  clearSession() {
+    this.userSignal.set(null);
+    localStorage.removeItem(STORED_AUTH_USER_KEY);
+  }
+
   private renderToast = (error: IStandardError) => {
     const { title, details } = error;
     this.toastService.show({
