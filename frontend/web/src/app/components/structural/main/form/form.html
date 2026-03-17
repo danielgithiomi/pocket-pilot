@@ -5,6 +5,8 @@
     class="form"
     [ngClass]="{ 'w-full! lg:w-3/4! xl:w-1/2!': !drawerService.isDrawerCollapsed() }"
   >
+
+    <!-- HEADER -->
     <div class="form-header">
       <div class="space-y-1">
         <p class="form-title">{{ title() }}</p>
@@ -13,5 +15,16 @@
 
       <lucide-icon class="atom-icon" name="x" [img]="X" [size]="24" (click)="closeForm.emit()" />
     </div>
+
+    <!-- CONTENT -->
+    <div class="form-content">
+      <ng-content select="[slot=content]"></ng-content>
+    </div>
+
+    <!-- FOOTER -->
+    <!-- <div class="form-footer">
+      <ng-content select="[footer]"></ng-content>
+    </div> -->
+
   </div>
 </div>

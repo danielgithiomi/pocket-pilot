@@ -15,11 +15,12 @@
   </div>
 </section>
 
-@if (isFormOpen()) {
-  <app-form
-    id="accounts"
-    title="Add Account"
-    description="Create a new account"
-    (closeForm)="isFormOpen.set(false)"
-  />
-}
+<app-form
+  id="accounts"
+  title="Add Account"
+  [class.hidden]="!isFormOpen()"
+  description="Create a new account"
+  (closeForm)="isFormOpen.set(false)"
+>
+  
+</app-form>
