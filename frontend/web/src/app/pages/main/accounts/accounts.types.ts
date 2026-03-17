@@ -1,8 +1,7 @@
 import { minLength, required, schema } from '@angular/forms/signals';
+import { CreateAccountRequest } from '@global/types';
 
-export interface AccountsSchema {
-  name: string;
-}
+export type AccountsSchema = CreateAccountRequest;
 
 export const initialAccountsFormState: AccountsSchema = {
   name: '',

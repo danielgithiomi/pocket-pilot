@@ -1,9 +1,10 @@
 import { form } from '@angular/forms/signals';
-import { Input } from "@components/ui/atoms/input";
+import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
 import { AccountsService } from '@api/accounts.service';
+import { ToastService } from '@components/ui/atoms/toast';
+import { Component, inject, signal } from '@angular/core';
 import { Form } from '@components/structural/main/form/form';
-import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import {
@@ -21,32 +22,47 @@ import {
 export class Accounts {
   protected readonly iconSize: number = 18;
   protected readonly Plus = ListFilterPlus;
+
+  // Services
+  private readonly toastService = inject(ToastService);
   protected readonly accountsService = inject(AccountsService);
 
   // States
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
-
-  protected readonly accountsWithCount = computed(() => {
-    const result = this.accountsService.getUserWallets();
-    return result.value()?.data;
-  });
+  protected readonly accountsWithCount = this.accountsService.getUserAccounts();
 
   // Form
   protected accountsFormModel = signal<AccountsSchema>(initialAccountsFormState);
   protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
-  
+
+  resetAccountsForm = () => {
+    this.accountsForm().reset();
+    this.accountsFormModel.set(initialAccountsFormState);
+  };
+
   submitAccountsForm = (event: Event) => {
     event.preventDefault();
-    
+
     const { name } = this.accountsFormModel();
-    
-    console.log(name);
-    
+
     this.isSubmitting.set(true);
-    
-    // TODO: Call API to create account
-    
-    this.isSubmitting.set(false);
+
+    setTimeout(() => {
+      this.accountsService.createNewAccount({ name }).subscribe({
+        next: () => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Account created successfully',
+            details: 'Your account has been created successfully.',
+          });
+          this.accountsWithCount.reload();
+          this.isFormOpen.set(false);
+          this.resetAccountsForm();
+        },
+        error: () => this.isSubmitting.set(false),
+        complete: () => this.isSubmitting.set(false),
+      });
+    }, 3000);
   };
 }

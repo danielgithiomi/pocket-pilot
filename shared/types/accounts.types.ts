@@ -1,3 +1,7 @@
+export interface CreateAccountRequest {
+  name: string;
+}
+
 export interface Account {
   id: string;
   name: string;
@@ -7,6 +11,6 @@ export interface Account {
 }
 
 export interface UserAccountsWithCount {
-  accounts: Account[];
+  data: Account[];
   count: number;
 }

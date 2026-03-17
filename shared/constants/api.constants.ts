@@ -10,5 +10,6 @@ export const API_ENDPOINTS = {
   me: "auth/me",
   register: "users",
   login: "auth/login",
+  accounts: "accounts",
   logout: "auth/logout",
 } satisfies Endpoints;
