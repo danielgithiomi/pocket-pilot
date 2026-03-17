@@ -4,6 +4,7 @@ import { DrawerNavigationLink } from '@libs/types';
 import { Component, computed, inject, input, output } from '@angular/core';
 import {
   House,
+  Wallet,
   UserRoundCog,
   ChevronRight,
   LayoutDashboard,
@@ -53,6 +54,7 @@ export class NavLink {
   protected iconSize = computed(() => (this.isDrawerExpanded() ? 16 : 20));
   protected readonly iconMap: Record<DrawerNavigationLink['icon'], any> = {
     home: House,
+    accounts: Wallet,
     profile: UserRoundCog,
     dashboard: LayoutDashboard,
   };

@@ -40,6 +40,11 @@ export const routes: Routes = [
         loadComponent: () => import('@pages/main/profile/profile').then((m) => m.Profile),
       },
       {
+        title: 'Accounts | Pocket Pilot',
+        path: WEB_ROUTES.accounts,
+        loadComponent: () => import('@pages/main/accounts/accounts').then((m) => m.Accounts),
+      },
+      {
         path: '**',
         component: NotFound,
         title: '404 | Page Not Found',
