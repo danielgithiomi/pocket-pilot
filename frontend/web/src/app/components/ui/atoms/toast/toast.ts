@@ -13,7 +13,7 @@ import {
   styleUrl: './toast.css',
   imports: [CheckedCircle, CrossIcon, CorneredWarningIcon, InfoCircle, CrossedCircle],
   template: `
-    <div class="toast bg-alternate-background" (mouseenter)="pause()" (mouseleave)="resume()">
+    <div class="toast" (mouseenter)="pause()" (mouseleave)="resume()">
       <div class="content">
         <div class="text">
           @if (toast().title) {
@@ -30,9 +30,6 @@ import {
                 }
                 @case ('info') {
                   <icon-info-circle [color]="theme().color" />
-                }
-                @default {
-                  null;
                 }
               }
 

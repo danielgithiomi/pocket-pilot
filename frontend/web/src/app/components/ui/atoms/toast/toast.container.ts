@@ -51,6 +51,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
       .toast-wrapper > * {
         pointer-events: auto;
       }
+
+      @media (width >= 48rem) {
+        .toast-wrapper {
+          bottom: 1.5rem;
+          right: 1.5rem;
+        }
+      }
     `,
   ],
 })
