@@ -1,14 +1,14 @@
-import { httpResource } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IEnumResponse, IStandardResponse } from '@global/types';
+import { httpResource } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { IEnumResponse, IStandardResponse, TransactionsWithAccountWithCount } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionsResource {
-  allTransactions = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
+  allTransactions = httpResource<IStandardResponse<TransactionsWithAccountWithCount>>(() => ({
     method: 'GET',
     url: concatUrl(endpoints.all_transactions),
   }));

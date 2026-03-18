@@ -10,8 +10,24 @@
     </atom-button>
   </div>
 
-  <div class="page-container flex-1 grid place-items-center">
-    <no-data message="No transactions found!" />
+  @let response = transactions.value()?.data;
+  @let count = response?.count;
+  <div class="page-container flex-1">
+    @if (count === 0) {
+      <no-data message="No transactions found!" />
+    } @else {
+      <div class="py-4">
+        <p>
+          You have <span class="font-semibold text-primary">{{ count }}</span>
+          {{ count! > 1 ? 'total transactions' : 'transaction' }}!
+        </p>
+        <div class="flex flex-col w-full gap-4">
+          @for (account of response?.data; track account.id) {
+            <p>Transaction: {{ account.amount }} - {{ account.type }} - {{ account.category }}</p>
+          }
+        </div>
+      </div>
+    }
   </div>
 </section>
 
