@@ -1,7 +1,9 @@
 import { ImageDimensions } from '@libs/types';
 import { NgOptimizedImage } from '@angular/common';
 import { AccountsService } from '@api/accounts.service';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { ToastService } from '@components/ui/atoms/toast';
+import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import {
   Nfc,
   Trash,
@@ -9,8 +11,6 @@ import {
   LucideAngularModule,
   Infinity as InfinityIcon,
 } from 'lucide-angular';
-import { ToastService } from '@components/ui/atoms/toast';
-import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
 
 @Component({
   selector: 'account-card',
@@ -19,10 +19,14 @@ import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
   imports: [NgOptimizedImage, LucideAngularModule],
 })
 export class Account {
+  // Inputs
   id = input.required<string>();
   name = input.required<string>();
   balance = input<number>(3000);
   currency = input<string>('MUR');
+
+  // Outputs
+  onAccountDelete = output<void>();
 
   // Images
   protected NFC = Nfc;
@@ -65,9 +69,10 @@ export class Account {
           });
         },
         complete: () => {
+          this.onAccountDelete.emit();
           this.isDeleting.set(false);
         },
       });
-    }, 4000);
+    }, 2000);
   }
 }

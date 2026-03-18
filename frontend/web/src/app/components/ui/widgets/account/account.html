@@ -1,5 +1,5 @@
 <section [id]="accountId()">
-  <div class="container" (mouseleave)="isOptionsOpen.set(false)">
+  <div class="container" (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)">
     <div class="card">
       <div class="header">
         <img
@@ -35,7 +35,7 @@
                 @if (isDeleting()) {
                   <div class="loader"></div>
                 } @else {
-                  <lucide-icon name="delete" [img]="Trash" [size]="18" class="delete" />
+                  <lucide-icon name="delete" [img]="Trash" [size]="16" class="delete" />
                 }
               </div>
             }

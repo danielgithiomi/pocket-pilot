@@ -38,6 +38,8 @@ export class Accounts {
   protected accountsFormModel = signal<AccountsSchema>(initialAccountsFormState);
   protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
 
+
+  // Methods
   resetAccountsForm = () => {
     this.accountsForm().reset();
     this.accountsFormModel.set(initialAccountsFormState);
@@ -56,7 +58,7 @@ export class Accounts {
           this.toastService.show({
             variant: 'success',
             title: 'Account created!',
-            details: 'Your account has been created successfully.',
+            details: `Your [${name}] account has been created successfully.`,
           });
           this.accountsWithCount.reload();
           this.isFormOpen.set(false);

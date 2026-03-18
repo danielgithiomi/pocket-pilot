@@ -23,7 +23,12 @@
         </p>
         <div class="grid py-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           @for (account of response?.data; track account.id) {
-            <account-card [id]="account.id" [name]="account.name" [balance]="account.balance" />
+            <account-card
+              [id]="account.id"
+              [name]="account.name"
+              [balance]="account.balance"
+              (onAccountDelete)="accountsWithCount.reload()"
+            />
           }
         </div>
       </div>
