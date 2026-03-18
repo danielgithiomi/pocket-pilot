@@ -1,3 +1,4 @@
+import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
 import { form } from '@angular/forms/signals';
 import { Input } from '@components/ui/atoms/input';
@@ -5,7 +6,6 @@ import { Button } from '@components/ui/atoms/button';
 import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
 import { Component, inject, signal } from '@angular/core';
-import { Form } from '@components/structural/main/form/form';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import {

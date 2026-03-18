@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { Button } from '@components/ui/atoms/button';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
-import { Form } from "@components/structural/main/form/form";
+import { Form } from '@components/ui/organisms/form/form';
 
 @Component({
   selector: 'app-transactions',
