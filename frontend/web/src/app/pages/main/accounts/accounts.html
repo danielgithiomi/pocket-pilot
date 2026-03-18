@@ -9,7 +9,7 @@
       </div>
     </atom-button>
   </div>
-
+  
   @let response = accountsWithCount.value()?.data;
   @let count = response?.count;
   <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': count === 0 }">

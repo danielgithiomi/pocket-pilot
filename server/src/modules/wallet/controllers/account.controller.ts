@@ -14,7 +14,9 @@ import {
     AccountWithHolderDto,
     UserAccountsResponseDto,
     AccountWithTransactionsResponseDto,
+    AccountTypeDto,
 } from '../dto/account.dto';
+import { AccountType } from '@prisma/client';
 
 @ApiTags('Accounts')
 @Controller('accounts')
@@ -22,6 +24,14 @@ import {
 @ApiCookieAuth('access_token')
 export class AccountController {
     constructor(private readonly accountService: AccountService) {}
+
+    @Get('types')
+    async getAccountTypes(): Promise<AccountTypeDto[]> {
+        return Promise.resolve(Object.values(AccountType).map(type => ({
+            value: type,
+            label: this.accountService.formatAccountTypeLabel(type),
+        })));
+    }
 
     @Get('all')
     @ApiOperation({ summary: 'Retrieve all accounts', description: 'Get all created accounts in the database.' })

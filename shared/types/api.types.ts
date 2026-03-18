@@ -68,4 +68,5 @@ export interface Endpoints {
   logout: string;
   register: string;
   accounts: string;
+  account_types: string
 }

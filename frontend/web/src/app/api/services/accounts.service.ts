@@ -13,6 +13,10 @@ export class AccountsService {
   private readonly accountsMutation = inject(AccountsMutation);
   private readonly accountsResource = inject(AccountsResource);
 
+  getAccountTypes() {
+    return this.accountsResource.accountTypes;
+  }
+
   createNewAccount(payload: CreateAccountRequest) {
     return this.accountsMutation.createAccount(payload).pipe(
       catchError((error: IStandardError) => {

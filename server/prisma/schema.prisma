@@ -38,7 +38,7 @@ enum CategoryType {
 
 model Account {
     id        String      @id @default(uuid())
-    type      AccountType @default(CURRENT)
+    type      AccountType
     name      String
     createdAt DateTime    @default(now())
     updatedAt DateTime    @updatedAt

@@ -14,3 +14,8 @@ export interface UserAccountsWithCount {
   data: Account[];
   count: number;
 }
+
+export interface AccountTypeDto {
+  value: string;
+  label: string;
+}

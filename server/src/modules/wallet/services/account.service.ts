@@ -1,5 +1,5 @@
-import { Account, Prisma } from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
+import { Account, Prisma, AccountType } from '@prisma/client';
 import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { CreateAccountDto, AccountWithHolder, AccountWithTransactionsDto } from '../dto/account.dto';
@@ -105,5 +105,9 @@ export class AccountService {
             return error.code === 'P2002';
         }
         return false;
+    }
+
+    formatAccountTypeLabel(type: AccountType): string {
+        return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
     }
 }

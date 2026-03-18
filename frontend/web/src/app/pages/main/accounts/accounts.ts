@@ -32,12 +32,12 @@ export class Accounts {
   // States
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
+  protected readonly accountTypes = this.accountsService.getAccountTypes();
   protected readonly accountsWithCount = this.accountsService.getUserAccounts();
 
   // Form
   protected accountsFormModel = signal<AccountsSchema>(initialAccountsFormState);
   protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
-
 
   // Methods
   resetAccountsForm = () => {
