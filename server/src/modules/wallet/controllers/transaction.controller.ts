@@ -1,12 +1,15 @@
+import { ExposeEnumDto } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
+import { UserInRequest } from '@common/decorators';
+import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { TransactionService } from '../services/transaction.service';
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     Transaction,
+    CreateTransactionDto,
     TransactionWithAccount,
     TransactionsResponseDto,
-    type CreateTransactionDto,
     TransactionsWithAccountResponseDto,
 } from '../dto/transaction.dto';
 
@@ -16,6 +19,46 @@ import {
 @UseGuards(CookiesAuthGuard)
 export class TransactionController {
     constructor(private readonly transactionService: TransactionService) {}
+
+    @Get('transactions/categories')
+    @ApiOperation({ summary: 'Get transaction categories', description: 'Get all transaction categories' })
+    @ApiResponse({
+        status: 200,
+        isArray: true,
+        type: ExposeEnumDto,
+        description: 'Returns all transaction categories.',
+    })
+    async getTransactionCategories(): Promise<ExposeEnumDto[]> {
+        return this.transactionService.getTransactionCategories();
+    }
+
+    @Get('transactions/types')
+    @ApiOperation({ summary: 'Get transaction types', description: 'Get all transaction types' })
+    @ApiResponse({
+        status: 200,
+        isArray: true,
+        type: ExposeEnumDto,
+        description: 'Returns all transaction types.',
+    })
+    async getTransactionTypes(): Promise<ExposeEnumDto[]> {
+        return this.transactionService.getTransactionTypes();
+    }
+
+    @Get('transactions/user')
+    @ApiOperation({ summary: 'Get all user transactions', description: 'Get all transactions for the current user' })
+    @ApiResponse({
+        status: 200,
+        type: TransactionsWithAccountResponseDto,
+        description: 'Returns all database transactions.',
+    })
+    async getUserTransactions(@UserInRequest() user: UserResponseDto): Promise<TransactionsWithAccountResponseDto> {
+        const userTransactions: TransactionWithAccount[] = await this.transactionService.getUserTransactions(user.id);
+
+        return {
+            count: userTransactions.length,
+            data: userTransactions,
+        };
+    }
 
     @Get('transactions/all')
     @ApiOperation({ summary: 'Get global transactions', description: 'Get all transactions from all accounts' })
@@ -69,13 +112,15 @@ export class TransactionController {
     })
     @ApiResponse({
         status: 201,
-        type: Transaction,
-        description: 'Returns the created transaction.',
+        type: TransactionWithAccount,
+        description: 'Returns the created transaction with minimal account data.',
     })
     createTransactionByAccountId(
         @Param('accountId') accountId: string,
+        @UserInRequest() currentUser: UserResponseDto,
         @Body() createTransactionDto: CreateTransactionDto,
-    ): Promise<Transaction> {
-        return this.transactionService.createTransactionByAccountId(accountId, createTransactionDto);
+    ): Promise<TransactionWithAccount> {
+        const { id: userId } = currentUser;
+        return this.transactionService.createTransactionByAccountId(userId, accountId, createTransactionDto);
     }
 }

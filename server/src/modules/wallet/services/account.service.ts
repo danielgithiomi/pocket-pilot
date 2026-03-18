@@ -1,3 +1,4 @@
+import { formatEnumForFrontend } from '@libs/utils';
 import { plainToInstance } from 'class-transformer';
 import { Account, Prisma, AccountType } from '@prisma/client';
 import { AccountRepository } from '../repositories/account.repository';
@@ -19,7 +20,7 @@ export class AccountService {
     ) {}
 
     async getAccountTypes(): Promise<AccountTypeDto[]> {
-        return Promise.resolve(Object.values(AccountType).map(this.formatAccountTypeLabel.bind(this)));
+        return Promise.resolve(Object.values(AccountType).map(formatEnumForFrontend));
     }
 
     async getAllAccounts(): Promise<AccountWithHolder[]> {
@@ -48,7 +49,8 @@ export class AccountService {
 
         if (!account) {
             throw new NotFoundException({
-                message: 'Account Not Found',
+                name: 'ACCOUNT_NOT_FOUND',
+                title: 'Account Not Found',
                 details: `The account with id: {${accountId}} was not found.`,
             });
         }
@@ -58,7 +60,12 @@ export class AccountService {
 
     async createAccount(userId: string, data: CreateAccountDto): Promise<Account> {
         try {
-            return await this.accountRepository.createNewAccount(userId, data);
+            const newAccountData: CreateAccountDto = {
+                ...data,
+                name: data.name.toLowerCase(),
+            };
+
+            return await this.accountRepository.createNewAccount(userId, newAccountData);
         } catch (error) {
             if (this.isPrismaUniqueConstraintError(error)) {
                 throw new ConflictException({
@@ -67,6 +74,7 @@ export class AccountService {
                     details: `You already have an account with the name: {${data.name}}.`,
                 });
             }
+            console.error('Error creating account:', error);
             throw new InternalServerErrorException({
                 name: 'ACCOUNT_CREATION_FAILED',
                 title: 'Failed to create account!',
@@ -88,7 +96,8 @@ export class AccountService {
 
         if (!accountExists)
             throw new NotFoundException({
-                message: 'Account Not Found',
+                name: 'ACCOUNT_NOT_FOUND',
+                title: 'Account Not Found',
                 details: `The account you are trying to access with id: {${accountId}} does not exist.`,
             });
 
@@ -96,7 +105,8 @@ export class AccountService {
 
         if (!isAccountOwner)
             throw new ForbiddenException({
-                message: 'Account Access Forbidden',
+                name: 'ACCOUNT_ACCESS_FORBIDDEN',
+                title: 'Account Access Forbidden',
                 details: `You do not have permission to access the account with id: {${accountId}}`,
             });
 
@@ -109,12 +119,5 @@ export class AccountService {
             return error.code === 'P2002';
         }
         return false;
-    }
-
-    formatAccountTypeLabel(type: AccountType): AccountTypeDto {
-        return {
-            value: type,
-            label: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase(),
-        };
     }
 }

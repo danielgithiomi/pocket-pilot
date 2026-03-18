@@ -1,11 +1,11 @@
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { IRequestCookies } from '@common/types';
-import { User, UserResponseDto } from '@modules/identity/dto/user.dto';
+import { plainToInstance } from 'class-transformer';
 import { JWTPayload } from '@modules/identity/dto/auth.dto';
 import { UserService } from '@modules/identity/services/user.service';
+import { User, UserResponseDto } from '@modules/identity/dto/user.dto';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class CookiesAuthGuard implements CanActivate {

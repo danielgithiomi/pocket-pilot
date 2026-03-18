@@ -18,11 +18,11 @@ import {
 
 @Component({
   selector: 'accounts',
-  styleUrl: './accounts.css',
   templateUrl: './accounts.html',
   imports: [NoData, Button, LucideAngularModule, Form, Input, NgClass, Account, Select],
 })
 export class Accounts {
+  // Icons
   protected readonly iconSize: number = 18;
   protected readonly Plus = ListFilterPlus;
 
@@ -33,6 +33,8 @@ export class Accounts {
   // States
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
+
+  // Data
   protected readonly accountTypes = this.accountsService.getAccountTypes();
   protected readonly accountsWithCount = this.accountsService.getUserAccounts();
 
@@ -41,17 +43,17 @@ export class Accounts {
   protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
 
   // Methods
-  resetAccountsForm = () => {
+  private resetAccountsForm() {
     this.accountsForm().reset();
     this.accountsFormModel.set(initialAccountsFormState);
-  };
+  }
 
-  handleCloseForm = (source: 'icon' | 'overlay') => {
+  protected handleCloseForm(source: 'icon' | 'overlay') {
     if (source === 'icon') this.resetAccountsForm();
     this.isFormOpen.set(false);
-  };
+  }
 
-  submitAccountsForm = (event: Event) => {
+  protected submitAccountsForm = (event: Event) => {
     event.preventDefault();
 
     const { name, type } = this.accountsFormModel();
@@ -67,10 +69,10 @@ export class Accounts {
             details: `Your [${name}] account has been created successfully.`,
           });
           this.accountsWithCount.reload();
-          this.isFormOpen.set(false);
           this.resetAccountsForm();
+          this.isFormOpen.set(false);
         },
-        error: () => this.isSubmitting.set(false),
+        error: (error) => console.error('Account creation failed:', error),
         complete: () => this.isSubmitting.set(false),
       });
     }, 3000);

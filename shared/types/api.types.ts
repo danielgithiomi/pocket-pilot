@@ -60,6 +60,12 @@ export interface IDeletedResourceResponse {
   details: string;
 }
 
+// ENUMS
+export interface IEnumResponse {
+  value: string;
+  label: string;
+}
+
 // ENDPOINTS
 export interface Endpoints {
   me: string;
@@ -68,5 +74,9 @@ export interface Endpoints {
   logout: string;
   register: string;
   accounts: string;
-  account_types: string
+  account_types: string;
+  all_transactions: string;
+  user_transactions: string;
+  transaction_types: string;
+  transaction_categories: string;
 }

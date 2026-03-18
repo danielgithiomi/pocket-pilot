@@ -25,8 +25,7 @@ enum TransactionType {
     EXPENSE
 }
 
-enum CategoryType {
-    UNASSIGNED
+enum TransactionCategory {
     HOUSEHOLD
     GROCERIES
     TRANSPORTATION
@@ -72,11 +71,11 @@ model User {
 }
 
 model Transaction {
-    id       String          @id() @default(uuid())
+    id       String              @id() @default(uuid())
+    amount   Float
     type     TransactionType
-    amount   Float           @default(0)
-    category CategoryType    @default(UNASSIGNED)
-    date     DateTime        @default(now())
+    category TransactionCategory
+    date     DateTime            @default(now())
 
     // Link to account - one-to-many
     account   Account @relation(fields: [accountId], references: [id])

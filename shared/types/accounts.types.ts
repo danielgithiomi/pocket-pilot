@@ -17,9 +17,4 @@ export interface UserAccountsWithCount {
   count: number;
 }
 
-export interface AccountTypeDto {
-  value: string;
-  label: string;
-}
-
 export type AccountType = "WALLET" | "BANK" | "SAVINGS" | "CREDIT" | "CURRENT";

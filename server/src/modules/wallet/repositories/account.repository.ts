@@ -8,7 +8,10 @@ export class AccountRepository {
 
     async createNewAccount(userId: string, data: CreateAccountDto) {
         const { name, type } = data;
-        const normalizedName = name.toLowerCase();
-        return this.db.account.create({ data: { name: normalizedName, holderId: userId, type } });
+        return this.db.account.create({ data: { name, type, holderId: userId } });
+    }
+
+    async getAccountById(accountId: string) {
+        return this.db.account.findUnique({ where: { id: accountId } });
     }
 }

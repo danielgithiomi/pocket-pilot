@@ -2,7 +2,7 @@
   <div class="page-header">
     <h1 class="page-title">Transactions</h1>
 
-    <atom-button id="add-transaction" variant="primary" (clicked)="isFormOpen.set(true)">
+    <atom-button id="add-transaction" variant="primary" (clicked)="handleOpenForm()">
       <div class="w-full flex flex-row items-center justify-between gap-4">
         <lucide-icon name="create-transaction" [img]="Plus" [size]="iconSize"></lucide-icon>
         <span class="hidden sm:block">Add Transaction</span>
@@ -10,8 +10,24 @@
     </atom-button>
   </div>
 
-  <div class="page-container flex-1 grid place-items-center">
-    <no-data message="No transactions found!" />
+  @let response = transactions.value()?.data;
+  @let count = response?.count;
+  <div class="page-container flex-1">
+    @if (count === 0) {
+      <no-data message="No transactions found!" />
+    } @else {
+      <div class="py-4">
+        <p>
+          You have <span class="font-semibold text-primary">{{ count }}</span>
+          {{ count! > 1 ? 'total transactions' : 'transaction' }}!
+        </p>
+        <div class="flex flex-col w-full gap-4">
+          @for (account of response?.data; track account.id) {
+            <p>Transaction: {{ account.amount }} - {{ account.type }} - {{ account.category }} - {{ account.account.name }} </p>
+          }
+        </div>
+      </div>
+    }
   </div>
 </section>
 
@@ -19,7 +35,61 @@
   <app-form
     id="transactions"
     title="Add Transaction"
+    [class.hidden]="!isFormOpen()"
     description="Create a new transaction"
-    (closeForm)="isFormOpen.set(false)"
-  />
+    (closeForm)="handleCloseForm($event)"
+  >
+    @let types = transactionTypes.value()?.data;
+    @let categories = transactionCategories.value()?.data;
+    <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
+      <atom-input
+        id="name"
+        type="number"
+        [inverted]="true"
+        autocomplete="name"
+        placeholder="Eg: 100"
+        label="Transaction Amount"
+        [formField]="transactionForm.amount"
+        (clearOutput)="transactionForm.amount().controlValue.set(0)"
+      />
+
+      <atom-select
+        id="type"
+        [inverted]="true"
+        label="Transaction Type"
+        [formField]="transactionForm.type"
+        placeholder="Select a transaction type"
+        [options]="types || [{ value: '', label: 'No transaction types found' }]"
+      />
+
+      <atom-select
+        id="categories"
+        [inverted]="true"
+        label="Transaction Category"
+        [formField]="transactionForm.category"
+        placeholder="Select a transaction category"
+        [options]="categories || [{ value: '', label: 'No transaction categories found' }]"
+      />
+
+      <atom-select
+        id="account"
+        [inverted]="true"
+        label="Associated Account"
+        [formField]="transactionForm.accountId"
+        placeholder="Select an associated account"
+        [options]="accountsDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
+      />
+    </form>
+
+    <div slot="footer">
+      <atom-button
+        type="submit"
+        form="transactions-form"
+        label="Create Transaction"
+        id="submit-transaction-form"
+        [isLoading]="isSubmitting()"
+        [disabled]="transactionForm().invalid() || isSubmitting()"
+      />
+    </div>
+  </app-form>
 }

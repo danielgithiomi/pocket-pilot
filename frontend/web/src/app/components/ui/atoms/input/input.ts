@@ -21,7 +21,7 @@ export class Input {
   placeholder = input.required<string>();
   autocomplete = input.required<AutoComplete>();
 
-  formField = input.required<FieldTree<string, string>>();
+  formField = input.required<FieldTree<string | number, string | number>>();
 
   /* OUTPUTS */
   clearOutput = output<void>();

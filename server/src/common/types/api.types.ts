@@ -66,3 +66,11 @@ export class WithCountResponseClass<T> {
     @ApiProperty({ type: 'array', items: { type: 'object' } })
     data!: T[];
 }
+
+export class ExposeEnumDto {
+    @ApiProperty({ description: 'The value of the enum' })
+    value!: string;
+
+    @ApiProperty({ description: 'The label of the enum' })
+    label!: string;
+}

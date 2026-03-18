@@ -23,6 +23,7 @@
         "strictBindCallApply": false,
         "noFallthroughCasesInSwitch": false,
         "paths": {
+            "@libs/*": ["./src/libs/*"],
             "@global/*": ["./../shared/*"],
             "@common/*": ["./src/common/*"],
             "@modules/*": ["./src/modules/*"],
