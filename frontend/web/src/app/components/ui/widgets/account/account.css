@@ -61,7 +61,7 @@ section:hover {
   @apply flex flex-row items-center justify-between;
 }
 .card-details {
-  @apply flex-1 mt-6 flex flex-col items-start justify-between;
+  @apply flex-1 mt-8 flex flex-col items-start justify-between;
 
   .balance {
     @apply flex flex-row items-center gap-2;
@@ -97,7 +97,7 @@ section:hover {
         }
 
         .delete {
-          @apply text-red-500 z-10 cursor-pointer!;
+          @apply text-(--error) z-10 cursor-pointer!;
         }
       }
     }
@@ -106,5 +106,19 @@ section:hover {
       @apply transition-all duration-400;
       background-color: color-mix(in srgb, var(--quaternary) 50%, transparent);
     }
+  }
+}
+
+.loader {
+  width: 12px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid;
+  border-color: var(--error) transparent;
+  animation: l1 1s infinite;
+}
+@keyframes l1 {
+  to {
+    transform: rotate(0.5turn);
   }
 }

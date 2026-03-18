@@ -55,6 +55,11 @@ export interface IStandardError {
   statusCode: number;
 }
 
+export interface IDeletedResourceResponse {
+  message: string;
+  details: string;
+}
+
 // ENDPOINTS
 export interface Endpoints {
   me: string;

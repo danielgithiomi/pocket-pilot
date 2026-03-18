@@ -5,9 +5,9 @@
         <img
           [ngSrc]="logoUrl"
           alt="Account Card Logo"
+          class="invert dark:invert-0"
           [width]="imageDimensions.width"
           [height]="imageDimensions.height"
-          class="invert dark:invert-0"
         />
         <lucide-icon name="nfc" [img]="NFC" [size]="22" />
       </div>
@@ -31,7 +31,12 @@
             @if (isOptionsOpen()) {
               <div class="dropdown" (click)="deleteAccount()">
                 <div class="pointer"></div>
-                <lucide-icon name="delete" [img]="Trash" [size]="18" class="delete" />
+
+                @if (isDeleting()) {
+                  <div class="loader"></div>
+                } @else {
+                  <lucide-icon name="delete" [img]="Trash" [size]="18" class="delete" />
+                }
               </div>
             }
           </div>

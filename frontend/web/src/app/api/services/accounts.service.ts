@@ -26,6 +26,15 @@ export class AccountsService {
     return this.accountsResource.userAccounts;
   }
 
+  deleteAccountById(accountId: string) {
+    return this.accountsMutation.deleteAccountById(accountId).pipe(
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  }
+
   // HELPER FUNCTIONS
   private renderToast = (error: IStandardError) => {
     const { title, details } = error;
