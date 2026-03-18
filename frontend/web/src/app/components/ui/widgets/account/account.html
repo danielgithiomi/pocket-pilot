@@ -20,8 +20,11 @@
 
         <div class="identity">
           <div class="account-name">
-            <lucide-icon name="infinity" [img]="Infinity" [size]="12" />
-            <p>{{ name() }}</p>
+            <lucide-icon name="identity-icon" [img]="IdentityIcon" [size]="12" class="mt-0.5" />
+            <div class="flex flex-col">
+              <p class="capitalize text-sm">{{ name() }}</p>
+              <p class="text-[10px] text-muted-text">{{ type() }}</p>
+            </div>
           </div>
 
           <div class="card-options">

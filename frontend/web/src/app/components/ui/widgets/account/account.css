@@ -61,7 +61,7 @@ section:hover {
   @apply flex flex-row items-center justify-between;
 }
 .card-details {
-  @apply flex-1 mt-8 flex flex-col items-start justify-between;
+  @apply flex-1 mt-6 flex flex-col items-start justify-between;
 
   .balance {
     @apply flex flex-row items-center gap-2;
@@ -79,11 +79,7 @@ section:hover {
     @apply w-full flex flex-row items-center justify-between;
 
     .account-name {
-      @apply flex flex-row items-center gap-3;
-
-      p {
-        @apply capitalize text-sm;
-      }
+      @apply flex flex-row items-start gap-1.5;
     }
 
     .card-options {

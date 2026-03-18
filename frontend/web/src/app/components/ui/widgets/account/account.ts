@@ -2,14 +2,14 @@ import { ImageDimensions } from '@libs/types';
 import { NgOptimizedImage } from '@angular/common';
 import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
-import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { AccountType, IDeletedResourceResponse, IStandardResponse } from '@global/types';
 import {
   Nfc,
   Trash,
   EllipsisVertical,
   LucideAngularModule,
-  Infinity as InfinityIcon,
+  FingerprintPattern,
 } from 'lucide-angular';
 
 @Component({
@@ -21,9 +21,10 @@ import {
 export class Account {
   // Inputs
   id = input.required<string>();
-  name = input.required<string>();
-  balance = input<number>(3000);
   currency = input<string>('MUR');
+  name = input.required<string>();
+  balance = input.required<number>();
+  type = input.required<AccountType>();
 
   // Outputs
   onAccountDelete = output<void>();
@@ -31,8 +32,8 @@ export class Account {
   // Images
   protected NFC = Nfc;
   protected Trash = Trash;
-  protected Infinity = InfinityIcon;
   protected Options = EllipsisVertical;
+  protected IdentityIcon = FingerprintPattern;
   protected logoUrl = '/images/branding/logo.png';
   protected imageDimensions: ImageDimensions = {
     width: 30,

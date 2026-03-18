@@ -21,8 +21,8 @@ export class Select {
   formField = input.required<FieldTree<string, string>>();
 
   /* ICONS */
-  readonly ChevronDown = ChevronDown;
   readonly iconSize = 18;
+  readonly ChevronDown = ChevronDown;
 
   /* COMPUTED */
   selectId = computed<string>(() => `select-field-${this.id()}`);

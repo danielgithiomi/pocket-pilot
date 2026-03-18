@@ -26,6 +26,7 @@
             <account-card
               [id]="account.id"
               [name]="account.name"
+              [type]="account.type"
               [balance]="account.balance"
               (onAccountDelete)="accountsWithCount.reload()"
             />
@@ -51,8 +52,8 @@
       [inverted]="true"
       autocomplete="name"
       label="Account Name"
+      placeholder="Eg: Expenditure"
       [formField]="accountsForm.name"
-      placeholder="Eg: Savings Account"
       (clearOutput)="accountsForm.name().controlValue.set('')"
     />
 
@@ -60,9 +61,9 @@
       id="type"
       [inverted]="true"
       label="Account Type"
-      [options]="types || []"
       [formField]="accountsForm.type"
-      placeholder="Select account type"
+      placeholder="Select an account type"
+      [options]="types || [{ value: '', label: 'No account types found' }]"
     />
   </form>
 
