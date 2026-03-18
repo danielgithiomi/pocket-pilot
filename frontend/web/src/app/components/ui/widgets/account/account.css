@@ -1,0 +1,110 @@
+@reference "tailwindcss";
+
+section {
+  position: relative;
+  width: 100%;
+  min-width: 250px;
+  background: var(--body-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  overflow: hidden;
+  border-radius: 25px;
+}
+section::before {
+  content: '';
+  position: absolute;
+  height: 240px;
+  width: 240px;
+  border-radius: 50%;
+  transform: translate(-150px, -100px);
+  background: linear-gradient(90deg, var(--primary), var(--alternate-background));
+}
+section::after {
+  content: '';
+  position: absolute;
+  height: 240px;
+  width: 240px;
+  border-radius: 50%;
+  transform: translate(150px, 100px);
+  background: linear-gradient(90deg, var(--alternate-background), var(--quaternary));
+}
+.container {
+  height: 200px;
+  width: 100%;
+  z-index: 100;
+  transition: 0.6s;
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer !important;
+  background-color: color-mix(in srgb, var(--alternate-background) 35%, transparent);
+}
+
+section:hover {
+  @apply scale-101 transition-transform ease-in-out duration-400;
+}
+
+.container .card {
+  @apply flex flex-col;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  border-radius: 25px;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--primary);
+  backdrop-filter: blur(8px);
+}
+
+.header {
+  @apply flex flex-row items-center justify-between;
+}
+.card-details {
+  @apply flex-1 mt-6 flex flex-col items-start justify-between;
+
+  .balance {
+    @apply flex flex-row items-center gap-2;
+
+    .currency {
+      @apply text-sm italic;
+    }
+
+    .value {
+      @apply text-3xl md:text-4xl font-semibold;
+    }
+  }
+
+  .identity {
+    @apply w-full flex flex-row items-center justify-between;
+
+    .account-name {
+      @apply flex flex-row items-center gap-3;
+
+      p {
+        @apply text-sm;
+      }
+    }
+
+    .card-options {
+      @apply relative p-1 rounded-md;
+
+      .dropdown {
+        @apply absolute cursor-pointer! bottom-full -right-1 mb-2 size-8 bg-(--inverted-background) rounded-md shadow-lg z-5 grid place-items-center;
+
+        .pointer {
+          @apply size-3 bg-(--inverted-background) rotate-45 -bottom-1 right-2.5 absolute;
+        }
+
+        .delete {
+          @apply text-red-500 z-10 cursor-pointer!;
+        }
+      }
+    }
+
+    .card-options:hover {
+      @apply transition-all duration-400;
+      background-color: color-mix(in srgb, var(--quaternary) 50%, transparent);
+    }
+  }
+}
