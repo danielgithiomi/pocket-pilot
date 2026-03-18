@@ -1,4 +1,4 @@
-import { CreateAccountRequest, AccountType } from '@global/types';
+import { CreateAccountRequest } from '@global/types';
 import { minLength, required, schema, validate } from '@angular/forms/signals';
 
 export type AccountsSchema = CreateAccountRequest;

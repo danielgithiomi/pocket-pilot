@@ -41,7 +41,7 @@
   title="Add Account"
   [class.hidden]="!isFormOpen()"
   description="Create a new account"
-  (closeForm)="isFormOpen.set(false)"
+  (closeForm)="handleCloseForm($event)"
 >
   @let types = accountTypes.value()?.data;
   <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">

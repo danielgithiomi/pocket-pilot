@@ -1,5 +1,5 @@
 <div [id]="id()" class="hover-form">
-  <div class="overlay" (click)="closeForm.emit()"></div>
+  <div class="overlay" (click)="closeForm.emit('overlay')"></div>
 
   <div
     class="form"
@@ -17,7 +17,7 @@
         [img]="X"
         [size]="24"
         class="atom-icon"
-        (click)="closeForm.emit()"
+        (click)="closeForm.emit('icon')"
         color="var(--inverted-text)"
       />
     </div>

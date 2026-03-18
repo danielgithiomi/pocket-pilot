@@ -3,19 +3,19 @@
     {{ label() }}:
   </label>
 
-  <div class="select-wrapper" [ngClass]="sizeClasses()">
-    <select [id]="selectId()" [formField]="formField()" class="select-input">
+  <div class="select-wrapper">
+    <select [id]="selectId()" [formField]="formField()">
       @if (placeholder()) {
         <option value="" disabled selected>{{ placeholder() }}</option>
       }
       @for (option of options(); track option.value) {
-        <option [value]="option.value" [disabled]="option.disabled">
+        <option [value]="option.value">
           {{ option.label }}
         </option>
       }
     </select>
 
-    <div class="select-icon-wrapper">
+    <div class="select-dropdown-wrapper">
       <lucide-icon
         [img]="ChevronDown"
         [size]="iconSize"
@@ -26,9 +26,9 @@
   </div>
 
   @if (formField()().invalid() && formField()().touched()) {
-    <div class="select-field-errors-wrapper">
+    <div class="input-field-errors-wrapper">
       @for (error of formField()().errors(); track error.kind) {
-        <p class="select-field-error">
+        <p class="input-field-error">
           {{ error.message }}
         </p>
       }

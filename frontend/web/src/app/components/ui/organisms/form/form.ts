@@ -18,7 +18,7 @@ export class Form {
   protected readonly drawerService: DrawerService = inject(DrawerService);
 
   // Outputs
-  protected readonly closeForm = output<void>();
+  protected readonly closeForm = output<'icon' | 'overlay'>();
 
   // Inputs
   id = input.required<string>();

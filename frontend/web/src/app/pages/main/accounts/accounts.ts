@@ -4,6 +4,7 @@ import { Account } from '@widgets/account';
 import { form } from '@angular/forms/signals';
 import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
+import { Select } from '@components/ui/atoms/select';
 import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
 import { Component, inject, signal } from '@angular/core';
@@ -14,7 +15,6 @@ import {
   initialAccountsFormState,
   accountsFormValidationSchema,
 } from './accounts.types';
-import { Select } from "@components/ui/atoms/select";
 
 @Component({
   selector: 'accounts',
@@ -44,6 +44,11 @@ export class Accounts {
   resetAccountsForm = () => {
     this.accountsForm().reset();
     this.accountsFormModel.set(initialAccountsFormState);
+  };
+
+  handleCloseForm = (source: 'icon' | 'overlay') => {
+    if (source === 'icon') this.resetAccountsForm();
+    this.isFormOpen.set(false);
   };
 
   submitAccountsForm = (event: Event) => {
