@@ -72,8 +72,8 @@ model User {
 
 model Transaction {
     id       String              @id() @default(uuid())
+    amount   Float
     type     TransactionType
-    amount   Float               @default(0)
     category TransactionCategory
     date     DateTime            @default(now())
 

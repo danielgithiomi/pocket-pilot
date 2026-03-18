@@ -1,14 +1,20 @@
 import { ExposeEnumDto } from '@common/types';
 import { plainToInstance } from 'class-transformer';
 import { formatEnumForFrontend } from '@libs/utils';
+import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { TransactionCategory, TransactionType, Account } from '@prisma/client';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { TransactionRepository } from '../repositories/transaction.respository';
 import { Transaction, CreateTransactionDto, TransactionWithAccount } from '../dto/transaction.dto';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class TransactionService {
-    constructor(private readonly db: DatabaseService) {}
+    constructor(
+        private readonly db: DatabaseService,
+        private readonly accountRepository: AccountRepository,
+        private readonly transactionRepository: TransactionRepository,
+    ) {}
 
     async getTransactionTypes(): Promise<ExposeEnumDto[]> {
         return await Promise.resolve(Object.values(TransactionType).map(formatEnumForFrontend));
@@ -19,15 +25,13 @@ export class TransactionService {
     }
 
     async getAllTransactions(): Promise<TransactionWithAccount[]> {
-        const transactions = await this.db.transaction.findMany({
-            include: { account: { select: { id: true, name: true } } },
-        });
+        const transactions = await this.transactionRepository.getAllTransactionsAndAccountData();
 
         return plainToInstance(TransactionWithAccount, transactions);
     }
 
     async getTransactionsByAccountId(accountId: string): Promise<Transaction[]> {
-        await this.confirmWalletExists(accountId);
+        await this.confirmAccountExists(accountId);
 
         return this.db.transaction.findMany({
             where: { accountId },
@@ -36,46 +40,57 @@ export class TransactionService {
     }
 
     async createTransactionByAccountId(
+        userId: string,
         accountId: string,
         createTransactionDto: CreateTransactionDto,
-    ): Promise<Transaction> {
+    ): Promise<TransactionWithAccount> {
         const transformedDto: CreateTransactionDto = {
+            // type, category, amount
             ...createTransactionDto,
             type: createTransactionDto.type.toUpperCase() as TransactionType,
+            category: createTransactionDto.category.toUpperCase() as TransactionCategory,
         };
 
-        if (transformedDto.type !== TransactionType.EXPENSE && transformedDto.type !== TransactionType.INCOME)
+        if (!this.isTransactionTypeValid(transformedDto.type)) {
             throw new BadRequestException({
                 name: 'INVALID_TRANSACTION_TYPE',
                 title: 'Invalid transaction type!',
-                message: `The transaction type ${createTransactionDto.type.toUpperCase()} is not valid.`,
+                message: `The transaction type ${transformedDto.type} is not valid.`,
             });
+        }
 
-        const account = await this.confirmWalletExists(accountId);
-        console.log('Transaction service - account:', account);
+        const account = await this.confirmAccountExists(accountId);
 
-        return this.db.transaction.create({
-            data: {
-                accountId,
-                ...transformedDto,
-            },
-            select: { id: true, type: true, category: true, amount: true, date: true },
-        });
+        if (!this.isAccountOwnedByUser(userId, account.holderId)) {
+            throw new ForbiddenException({
+                name: 'CREATION_FORBIDDEN',
+                title: 'Failed to create the transaction!',
+                message: 'You are not allowed to create a transaction for this account.',
+            });
+        }
+
+        return this.transactionRepository.createNewTransactionAndUpdateBalance(accountId, transformedDto);
     }
 
-    private async confirmWalletExists(accountId: string): Promise<Account> {
-        const account: Account | null = await this.db.account.findUnique({
-            where: { id: accountId },
-        });
+    private async confirmAccountExists(accountId: string): Promise<Account> {
+        const account: Account | null = await this.accountRepository.getAccountById(accountId);
 
-        if (!account) {
+        if (!account)
             throw new NotFoundException({
                 name: 'ACCOUNT_NOT_FOUND',
                 title: 'Account not found!',
                 message: `Couldn't create a transaction because the account with ID: {${accountId}} does not exist.`,
-            });
-        }
+            });    
 
         return account;
+    }
+
+    // HELPER FUNCTIONS
+    private isAccountOwnedByUser(userId: string, accountHolderId: string){
+        return userId === accountHolderId;
+    }
+
+    private isTransactionTypeValid(type: string): boolean {
+        return type === TransactionType.EXPENSE || type === TransactionType.INCOME;
     }
 }

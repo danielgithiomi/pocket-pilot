@@ -60,7 +60,12 @@ export class AccountService {
 
     async createAccount(userId: string, data: CreateAccountDto): Promise<Account> {
         try {
-            return await this.accountRepository.createNewAccount(userId, data);
+            const newAccountData: CreateAccountDto = {
+                ...data,
+                name: data.name.toLowerCase(),
+            };
+
+            return await this.accountRepository.createNewAccount(userId, newAccountData);
         } catch (error) {
             if (this.isPrismaUniqueConstraintError(error)) {
                 throw new ConflictException({
@@ -69,6 +74,7 @@ export class AccountService {
                     details: `You already have an account with the name: {${data.name}}.`,
                 });
             }
+            console.error('Error creating account:', error);
             throw new InternalServerErrorException({
                 name: 'ACCOUNT_CREATION_FAILED',
                 title: 'Failed to create account!',

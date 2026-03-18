@@ -1,13 +1,15 @@
 import { ExposeEnumDto } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
+import { UserInRequest } from '@common/decorators';
+import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { TransactionService } from '../services/transaction.service';
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     Transaction,
+    CreateTransactionDto,
     TransactionWithAccount,
     TransactionsResponseDto,
-    type CreateTransactionDto,
     TransactionsWithAccountResponseDto,
 } from '../dto/transaction.dto';
 
@@ -99,8 +101,10 @@ export class TransactionController {
     })
     createTransactionByAccountId(
         @Param('accountId') accountId: string,
+        @UserInRequest() currentUser: UserResponseDto,
         @Body() createTransactionDto: CreateTransactionDto,
-    ): Promise<Transaction> {
-        return this.transactionService.createTransactionByAccountId(accountId, createTransactionDto);
+    ): Promise<TransactionWithAccount> {
+        const { id: userId } = currentUser;
+        return this.transactionService.createTransactionByAccountId(userId, accountId, createTransactionDto);
     }
 }
