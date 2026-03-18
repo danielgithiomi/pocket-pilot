@@ -1,7 +1,7 @@
-import { User } from '@modules/identity/dto/user.dto';
+import { UserResponseDto } from '@modules/identity/dto/user.dto';
 
 declare module 'express' {
     export interface Request {
-        user?: User;
+        user?: UserResponseDto;
     }
 }

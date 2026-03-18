@@ -1,0 +1,50 @@
+<section [id]="accountId()">
+  <div class="container" (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)">
+    <div class="card">
+      <div class="header">
+        <img
+          [ngSrc]="logoUrl"
+          alt="Account Card Logo"
+          class="invert dark:invert-0"
+          [width]="imageDimensions.width"
+          [height]="imageDimensions.height"
+        />
+        <lucide-icon name="nfc" [img]="NFC" [size]="22" />
+      </div>
+
+      <div class="card-details">
+        <div class="balance">
+          <span class="currency">{{ currency() }}</span>
+          <span class="value">{{ formattedBalance() }}</span>
+        </div>
+
+        <div class="identity">
+          <div class="account-name">
+            <lucide-icon name="identity-icon" [img]="IdentityIcon" [size]="12" class="mt-0.5" />
+            <div class="flex flex-col">
+              <p class="capitalize text-sm">{{ name() }}</p>
+              <p class="text-[10px] text-muted-text">{{ type() }}</p>
+            </div>
+          </div>
+
+          <div class="card-options">
+            <lucide-icon [size]="16" name="options" [img]="Options" (click)="toggleOptions()" />
+
+            <!-- Card Options Drop Down -->
+            @if (isOptionsOpen()) {
+              <div class="dropdown" (click)="deleteAccount()">
+                <div class="pointer"></div>
+
+                @if (isDeleting()) {
+                  <div class="loader"></div>
+                } @else {
+                  <lucide-icon name="delete" [img]="Trash" [size]="16" class="delete" />
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

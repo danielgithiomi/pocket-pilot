@@ -39,8 +39,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
     `
       .toast-wrapper {
         position: fixed;
-        bottom: 1rem;
-        right: 1rem;
+        bottom: 0.5rem;
+        right: 0.5rem;
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
@@ -50,6 +50,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
       .toast-wrapper > * {
         pointer-events: auto;
+      }
+
+      @media (width >= 48rem) {
+        .toast-wrapper {
+          bottom: 1.5rem;
+          right: 1.5rem;
+        }
       }
     `,
   ],

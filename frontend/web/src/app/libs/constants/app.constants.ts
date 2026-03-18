@@ -16,4 +16,14 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
     name: 'Dashboard',
     path: '/dashboard',
   },
+  {
+    icon: 'accounts',
+    name: 'Accounts',
+    path: '/accounts',
+  },
+  {
+    icon: 'transactions',
+    name: 'Transactions',
+    path: '/transactions',
+  },
 ];

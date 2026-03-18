@@ -7,7 +7,7 @@
       </div>
 
       <!--   FORM START   -->
-      <form (submit)="submitRegistrationForm($event)" id="login-form">
+      <form (submit)="submitRegistrationForm($event)" id="register-form">
         <atom-input
           id="email"
           type="email"
@@ -50,6 +50,7 @@
           id="register"
           type="submit"
           label="Register"
+          form="register-form"
           [isLoading]="isSubmitting()"
           [disabled]="registerForm().invalid() || isSubmitting()"
         />

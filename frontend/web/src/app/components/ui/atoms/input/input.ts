@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
 import { InputType, AutoComplete } from './input.types';
 import { FormField, FieldTree } from '@angular/forms/signals';
-import { Component, input, signal, computed, output } from '@angular/core';
 import { Eye, EyeOff, X, LucideAngularModule } from 'lucide-angular';
+import { Component, input, signal, computed, output } from '@angular/core';
 
 @Component({
   selector: 'atom-input',
@@ -14,6 +14,7 @@ export class Input {
   /* INPUTS */
   id = input.required<string>();
   label = input.required<string>();
+  inverted = input<boolean>(false);
   allowEndIcon = input<boolean>(true);
 
   type = input<InputType>('text');

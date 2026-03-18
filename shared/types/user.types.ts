@@ -4,4 +4,7 @@ export interface User {
   email: string;
   createdAt: Date;
   updatedAt: Date;
+  lastLoginAt: Date;
+  isAccountLocked: boolean;
+  failedLoginAttempts: number;
 }

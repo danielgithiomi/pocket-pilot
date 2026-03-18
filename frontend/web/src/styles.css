@@ -74,6 +74,8 @@
   --muted-text: var(--gray2);
 
   /* Font & Styles */
+  --filter-blur: 3px;
+  --overlay-background: rgba(0, 0, 0, 0.5);
   --box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -218,16 +220,20 @@ main {
   }
 
   form {
-    .input-field {
+    .input-field,
+    .select-field {
       @apply flex flex-col gap-2 w-full my-6;
 
-      .input-wrapper {
+      .input-wrapper,
+      .select-wrapper {
         @apply w-full relative;
 
-        .input-icon-wrapper {
+        .input-icon-wrapper,
+        .select-dropdown-wrapper {
           @apply absolute right-2 top-1/2 -translate-y-1/2;
 
-          .input-icon {
+          .input-icon,
+          .select-icon {
             @apply cursor-pointer hover:text-primary hover:scale-105 transition-all duration-300 ease-in-out;
           }
         }
@@ -242,8 +248,17 @@ main {
       }
     }
 
-    input {
+    input,
+    select {
       @apply w-full bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
+    }
+
+    select {
+      @apply cursor-pointer! appearance-none;
+
+      & option[value=''] {
+        color: var(--muted-text);
+      }
     }
 
     button {
@@ -255,17 +270,23 @@ main {
 @layer components {
   /* PAGES START */
   .page {
-    @apply p-4;
+    @apply p-4 h-full;
 
-    .page-title {
-      @apply text-3xl font-semibold mb-4;
+    .page-header {
+      @apply flex flex-row items-center justify-between mb-4;
+      animation: slideHalfDown 0.3s ease-in-out;
+
+      .page-title {
+        @apply text-2xl lg:text-3xl font-semibold;
+      }
     }
 
     .page-container {
       @apply w-full;
 
       .page-card {
-        @apply bg-(--alternate-background) rounded-xl p-4 shadow shadow-[0_1px_2px_var(--inverted-background)] hover:shadow-[0_1px_4px_var(--inverted-background)] transition-all duration-300;
+        @apply relative bg-(--alternate-background)/75 overflow-hidden rounded-xl p-4 shadow-[0_1px_2px_var(--inverted-background)] hover:shadow-[0_1px_4px_var(--inverted-background)] transition-all duration-300;
+        backdrop-filter: blur(25px);
 
         .card-header {
           @apply flex flex-col space-y-2 mt-2;
@@ -281,6 +302,7 @@ main {
       }
     }
   }
+
   /* PAGES END */
 
   /* ICONS START */
@@ -293,7 +315,7 @@ main {
   }
 
   .atom-icon {
-    @apply cursor-pointer hover:scale-105 duration-300 ease-in-out;
+    @apply cursor-pointer hover:scale-105 duration-300 ease-in-out hover:text-primary;
   }
   /* ICONS END */
 }

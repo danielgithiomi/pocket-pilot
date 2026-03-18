@@ -4,13 +4,13 @@ import { Eye, EyeOff, LucideAngularModule } from 'lucide-angular';
 import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
 import { AuthService } from '@api/auth.service';
+import { Input } from "@components/ui/atoms/input";
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { IAuthResponse, IStandardResponse } from '@global/types';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
-import { Input } from "@components/ui/atoms/input";
 
 @Component({
   selector: 'app-login',
@@ -38,7 +38,6 @@ export class Login {
   protected isPasswordVisible = signal<boolean>(false);
 
   // METHODS
-
   togglePasswordVisibility = () => {
     this.isPasswordVisible.set(!this.isPasswordVisible());
   };

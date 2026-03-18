@@ -112,8 +112,7 @@ export class AuthService {
   login(request: ILoginRequest) {
     return this.mutation.login(request).pipe(
       tap((response: IStandardResponse<IAuthResponse>) => {
-        this.userSignal.set(response.data);
-        localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(response.data));
+        this.createSession(response.data);
       }),
       catchError((error: IStandardError) => {
         this.renderToast(error);

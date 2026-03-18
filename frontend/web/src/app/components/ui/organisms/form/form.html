@@ -1,0 +1,35 @@
+<div [id]="id()" class="hover-form">
+  <div class="overlay" (click)="closeForm.emit('overlay')"></div>
+
+  <div
+    class="form"
+    [ngClass]="{ 'w-full! lg:w-3/4! xl:w-1/2!': !drawerService.isDrawerCollapsed() }"
+  >
+    <!-- HEADER -->
+    <div class="form-header">
+      <div class="space-y-1">
+        <p class="form-title">{{ title() }}</p>
+        <p class="form-description">{{ description() }}</p>
+      </div>
+
+      <lucide-icon
+        name="x"
+        [img]="X"
+        [size]="24"
+        class="atom-icon"
+        (click)="closeForm.emit('icon')"
+        color="var(--inverted-text)"
+      />
+    </div>
+
+    <!-- CONTENT -->
+    <div class="form-content">
+      <ng-content select="[slot=content]"></ng-content>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="form-footer">
+      <ng-content select="[slot=footer]"></ng-content>
+    </div>
+  </div>
+</div>

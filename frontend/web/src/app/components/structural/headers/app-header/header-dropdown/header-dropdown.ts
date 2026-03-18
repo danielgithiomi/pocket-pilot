@@ -44,8 +44,8 @@ import { LucideAngularModule, Bell, Settings2, LogOut } from 'lucide-angular';
       <div class="dropdown-logout">
         <atom-button
           id="logout"
-          className="w-full"
           (click)="logout()"
+          className="w-full mb-2 sm:mb-0"
           [isLoading]="isLogoutLoading()"
         >
           <div class="w-full flex flex-row items-center justify-center gap-3">

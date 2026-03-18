@@ -1,5 +1,5 @@
 <div class="input-field">
-  <label [for]="inputId()"> {{ label() }}: </label>
+  <label [ngClass]="{ 'text-inverted-text': inverted() }" [for]="inputId()"> {{ label() }}: </label>
 
   <div class="input-wrapper">
     <input

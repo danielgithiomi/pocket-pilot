@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client';
 import { Transaction } from './transaction.dto';
+import { AccountType, Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
@@ -14,9 +14,22 @@ export class CreateAccountDto {
     @MaxLength(25, { message: 'Account name must be at most 25 characters long' })
     @ApiProperty({ example: 'Expenditure Account', description: 'The name of the account' })
     name!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ enum: AccountType, description: 'The type of the account' })
+    type!: AccountType;
 }
 
 // OUTPUT
+export class AccountTypeDto {
+    @ApiProperty({ example: 'CURRENT', description: 'The value of the account type' })
+    value!: string;
+
+    @ApiProperty({ example: 'Current', description: 'The label of the account type' })
+    label!: string;
+}
+
 @Exclude()
 export class Account {
     @Expose()
@@ -32,6 +45,13 @@ export class Account {
         description: 'The name of the account',
     })
     name!: string;
+
+    @Expose()
+    @ApiProperty({
+        enum: AccountType,
+        description: 'The type of the account',
+    })
+    type!: AccountType;
 
     @Expose()
     @ApiProperty({
@@ -88,8 +108,8 @@ export class AccountWithHolderDto {
     name!: string;
 
     @Expose()
-    @ApiProperty({ example: 'Savings Account', description: 'The type of the account' })
-    type!: string;
+    @ApiProperty({ enum: AccountType, description: 'The type of the account' })
+    type!: AccountType;
 
     @Expose()
     @ApiProperty({ example: 1000, description: 'The balance of the account' })

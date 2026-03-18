@@ -6,7 +6,7 @@
   .form-wrapper {
     @apply flex flex-col items-start w-3/4 xl:w-1/2;
 
-    #login-form {
+    #register-form {
       @apply my-4 w-full;
 
       .input-field {

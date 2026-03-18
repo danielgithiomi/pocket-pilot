@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+.hover-form {
+  @apply absolute inset-0 overflow-hidden grid place-items-center px-6 lg:px-0 z-9997;
+  animation: slideDown 250ms ease-in-out;
+
+  .overlay {
+    @apply absolute inset-0 w-full h-full cursor-default;
+    background: var(--overlay-background);
+    backdrop-filter: blur(var(--filter-blur));
+    -webkit-backdrop-filter: blur(var(--filter-blur));
+  }
+
+  .form {
+    @apply w-full md:w-1/2 h-3/4 bg-(--inverted-background) z-9998 rounded-xl p-6 flex flex-col gap-1 border border-(--primary);
+
+    p {
+      @apply text-(--inverted-text);
+    }
+
+    .form-header {
+      @apply flex flex-row items-start justify-between;
+
+      .form-title {
+        @apply text-2xl font-semibold text-(--primary);
+      }
+
+      .form-description {
+        @apply text-sm text-(--muted-text);
+      }
+    }
+
+    .form-content {
+      @apply flex-1 px-2;
+    }
+
+    .form-footer {
+      @apply flex flex-row items-center justify-end gap-2;
+    }
+  }
+}

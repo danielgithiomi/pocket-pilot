@@ -1,0 +1,80 @@
+<section id="accounts-page" class="page">
+  <div class="page-header">
+    <h1 class="page-title">Accounts</h1>
+
+    <atom-button id="add-account" variant="primary" (clicked)="isFormOpen.set(true)">
+      <div class="w-full flex flex-row items-center justify-between gap-4">
+        <lucide-icon name="create-wallet" [img]="Plus" [size]="iconSize"></lucide-icon>
+        <span class="hidden sm:block">Add Account</span>
+      </div>
+    </atom-button>
+  </div>
+
+  @let response = accountsWithCount.value()?.data;
+  @let count = response?.count;
+  <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': count === 0 }">
+    @if (count === 0) {
+      <no-data message="No accounts found!" />
+    } @else {
+      <div class="py-4">
+        <p>
+          You have <span class="font-semibold text-primary">{{ count }}</span> active
+          {{ count! > 1 ? 'accounts' : 'account' }}!
+        </p>
+        <div class="grid py-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          @for (account of response?.data; track account.id) {
+            <account-card
+              [id]="account.id"
+              [name]="account.name"
+              [type]="account.type"
+              [balance]="account.balance"
+              (onAccountDelete)="accountsWithCount.reload()"
+            />
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<app-form
+  id="accounts"
+  title="Add Account"
+  [class.hidden]="!isFormOpen()"
+  description="Create a new account"
+  (closeForm)="handleCloseForm($event)"
+>
+  @let types = accountTypes.value()?.data;
+  <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">
+    <atom-input
+      id="name"
+      type="text"
+      [inverted]="true"
+      autocomplete="name"
+      label="Account Name"
+      placeholder="Eg: Expenditure"
+      [formField]="accountsForm.name"
+      (clearOutput)="accountsForm.name().controlValue.set('')"
+    />
+
+    <atom-select
+      id="type"
+      [inverted]="true"
+      label="Account Type"
+      [formField]="accountsForm.type"
+      placeholder="Select an account type"
+      [options]="types || [{ value: '', label: 'No account types found' }]"
+    />
+  </form>
+
+  <div slot="footer">
+    <atom-button
+      type="submit"
+      form="accounts-form"
+      label="Create Account"
+      id="submit-account-form"
+      [isLoading]="isSubmitting()"
+      [disabled]="accountsForm().invalid() || isSubmitting()"
+    />
+  </div>
+</app-form>

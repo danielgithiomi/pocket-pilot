@@ -7,7 +7,10 @@
     @apply absolute md:hidden inset-0 w-screen h-screen z-9999;
 
     .mobile-drawer-overlay {
-      @apply absolute inset-0 bg-black opacity-50;
+      @apply absolute inset-0;
+      background: var(--overlay-background);
+      backdrop-filter: blur(var(--filter-blur));
+      -webkit-backdrop-filter: blur(var(--filter-blur));
     }
 
     .secondary-drawer {
@@ -41,6 +44,9 @@
   }
 
   .dropdown-overlay {
-    @apply absolute inset-0 bg-black opacity-50 cursor-default z-999;
+    @apply absolute inset-0 cursor-default z-999;
+    background: var(--overlay-background);
+    backdrop-filter: blur(var(--filter-blur));
+    -webkit-backdrop-filter: blur(var(--filter-blur));
   }
 }

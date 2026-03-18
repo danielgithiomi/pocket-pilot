@@ -9,7 +9,7 @@
   }
 
   .drawer-toggler {
-    @apply absolute bg-(--inverted-background) w-5 h-9 top-1/2 -right-5 rounded-r-lg grid place-items-center cursor-pointer;
+    @apply absolute bg-(--inverted-background) w-5 h-9 top-1/2 -right-5 rounded-r-lg grid place-items-center cursor-pointer z-1;
   }
 
   .drawer-header {
