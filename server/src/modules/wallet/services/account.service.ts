@@ -2,7 +2,7 @@ import { plainToInstance } from 'class-transformer';
 import { Account, Prisma, AccountType } from '@prisma/client';
 import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { CreateAccountDto, AccountWithHolder, AccountWithTransactionsDto } from '../dto/account.dto';
+import { CreateAccountDto, AccountWithHolder, AccountWithTransactionsDto, AccountTypeDto } from '../dto/account.dto';
 import {
     Injectable,
     ConflictException,
@@ -17,6 +17,10 @@ export class AccountService {
         private readonly db: DatabaseService,
         private readonly accountRepository: AccountRepository,
     ) {}
+
+    async getAccountTypes(): Promise<AccountTypeDto[]> {
+        return Promise.resolve(Object.values(AccountType).map(this.formatAccountTypeLabel.bind(this)));
+    }
 
     async getAllAccounts(): Promise<AccountWithHolder[]> {
         return this.db.account.findMany({
@@ -107,7 +111,10 @@ export class AccountService {
         return false;
     }
 
-    formatAccountTypeLabel(type: AccountType): string {
-        return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
+    formatAccountTypeLabel(type: AccountType): AccountTypeDto {
+        return {
+            value: type,
+            label: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase(),
+        };
     }
 }

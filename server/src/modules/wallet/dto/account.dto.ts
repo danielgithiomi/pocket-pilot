@@ -22,9 +22,12 @@ export class CreateAccountDto {
 }
 
 // OUTPUT
-export interface AccountTypeDto {
-    value: string;
-    label: string;
+export class AccountTypeDto {
+    @ApiProperty({ example: 'CURRENT', description: 'The value of the account type' })
+    value!: string;
+
+    @ApiProperty({ example: 'Current', description: 'The label of the account type' })
+    label!: string;
 }
 
 @Exclude()

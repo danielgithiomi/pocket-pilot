@@ -1,5 +1,6 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { plainToInstance } from 'class-transformer';
+import { AccountTypeDto } from '../dto/account.dto';
 import { DeleteResourceResponse } from '@common/types';
 import { type User } from '@modules/identity/dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
@@ -14,9 +15,7 @@ import {
     AccountWithHolderDto,
     UserAccountsResponseDto,
     AccountWithTransactionsResponseDto,
-    AccountTypeDto,
 } from '../dto/account.dto';
-import { AccountType } from '@prisma/client';
 
 @ApiTags('Accounts')
 @Controller('accounts')
@@ -26,11 +25,14 @@ export class AccountController {
     constructor(private readonly accountService: AccountService) {}
 
     @Get('types')
+    @ApiOperation({ summary: 'Get Account Types', description: 'Get all available account types' })
+    @ApiResponse({
+        status: 200,
+        type: [AccountTypeDto],
+        description: 'Account types fetched successfully',
+    })
     async getAccountTypes(): Promise<AccountTypeDto[]> {
-        return Promise.resolve(Object.values(AccountType).map(type => ({
-            value: type,
-            label: this.accountService.formatAccountTypeLabel(type),
-        })));
+        return await this.accountService.getAccountTypes();
     }
 
     @Get('all')

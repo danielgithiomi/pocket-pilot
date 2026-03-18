@@ -9,7 +9,7 @@
       </div>
     </atom-button>
   </div>
-  
+
   @let response = accountsWithCount.value()?.data;
   @let count = response?.count;
   <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': count === 0 }">
@@ -43,6 +43,7 @@
   description="Create a new account"
   (closeForm)="isFormOpen.set(false)"
 >
+  @let types = accountTypes.value()?.data;
   <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">
     <atom-input
       id="name"
@@ -54,6 +55,12 @@
       placeholder="Eg: Savings Account"
       (clearOutput)="accountsForm.name().controlValue.set('')"
     />
+
+    <select>
+      @for (type of types; track type.value) {
+        <option [value]="type.value">{{ type.label }}</option>
+      }
+    </select>
   </form>
 
   <div slot="footer">
