@@ -23,6 +23,48 @@
     description="Create a new transaction"
     (closeForm)="handleCloseForm($event)"
   >
-  
-</app-form>
+    @let types = transactionTypes.value()?.data;
+    @let categories = transactionCategories.value()?.data;
+    <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
+      <atom-input
+        id="name"
+        type="number"
+        [inverted]="true"
+        autocomplete="name"
+        label="Account Name"
+        placeholder="Eg: Expenditure"
+        [formField]="transactionForm.amount"
+        (clearOutput)="transactionForm.amount().controlValue.set(0)"
+      />
+
+      <atom-select
+        id="type"
+        [inverted]="true"
+        label="Transaction Type"
+        [formField]="transactionForm.type"
+        placeholder="Select a transaction type"
+        [options]="types || [{ value: '', label: 'No transaction types found' }]"
+      />
+
+      <atom-select
+        id="categories"
+        [inverted]="true"
+        label="Transaction Category"
+        [formField]="transactionForm.category"
+        placeholder="Select a transaction category"
+        [options]="categories || [{ value: '', label: 'No transaction categories found' }]"
+      />
+    </form>
+
+    <div slot="footer">
+      <atom-button
+        type="submit"
+        form="transactions-form"
+        label="Create Transaction"
+        id="submit-transaction-form"
+        [isLoading]="isSubmitting()"
+        [disabled]="transactionForm().invalid() || isSubmitting()"
+      />
+    </div>
+  </app-form>
 }
