@@ -1,12 +1,40 @@
-import { Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { Prisma, TransactionType, TransactionCategory } from '@prisma/client';
 
 export type FullTransaction = Prisma.TransactionCreateInput;
 
-// export type Transaction = Omit<FullTransaction, 'account'>;
+export class CreateTransactionDto {
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ enum: TransactionType, description: 'The type of the transaction' })
+    type!: TransactionType;
 
-export type CreateTransactionDto = Pick<FullTransaction, 'type' | 'amount'>;
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ enum: TransactionCategory, description: 'The category of the transaction' })
+    category!: TransactionCategory;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ example: 1000, description: 'The amount of the transaction' })
+    amount!: number;
+}
+
+export class TransactionTypeDto {
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(3, { message: 'Transaction type name must be at least 3 characters long' })
+    @MaxLength(25, { message: 'Transaction type name must be at most 25 characters long' })
+    @ApiProperty({ example: 'Income', description: 'The name of the transaction type' })
+    name!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ enum: TransactionCategory, description: 'The category of the transaction type' })
+    type!: TransactionCategory;
+}
 
 @Exclude()
 export class Transaction {

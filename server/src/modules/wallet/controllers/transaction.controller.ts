@@ -1,3 +1,4 @@
+import { ExposeEnumDto } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { TransactionService } from '../services/transaction.service';
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
@@ -16,6 +17,30 @@ import {
 @UseGuards(CookiesAuthGuard)
 export class TransactionController {
     constructor(private readonly transactionService: TransactionService) {}
+
+    @Get('transactions/categories')
+    @ApiOperation({ summary: 'Get transaction categories', description: 'Get all transaction categories' })
+    @ApiResponse({
+        status: 200,
+        isArray: true,
+        type: ExposeEnumDto,
+        description: 'Returns all transaction categories.',
+    })
+    async getTransactionCategories(): Promise<ExposeEnumDto[]> {
+        return this.transactionService.getTransactionCategories();
+    }
+
+    @Get('transactions/types')
+    @ApiOperation({ summary: 'Get transaction types', description: 'Get all transaction types' })
+    @ApiResponse({
+        status: 200,
+        isArray: true,
+        type: ExposeEnumDto,
+        description: 'Returns all transaction types.',
+    })
+    async getTransactionTypes(): Promise<ExposeEnumDto[]> {
+        return this.transactionService.getTransactionTypes();
+    }
 
     @Get('transactions/all')
     @ApiOperation({ summary: 'Get global transactions', description: 'Get all transactions from all accounts' })
