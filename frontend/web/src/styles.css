@@ -244,8 +244,44 @@ main {
       }
     }
 
+    .select-field {
+      @apply flex flex-col gap-2 w-full my-6;
+
+      .select-wrapper {
+        @apply w-full relative;
+
+        .select-icon-wrapper {
+          @apply absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none;
+
+          .select-icon {
+            @apply text-muted-text;
+          }
+        }
+
+        &.select-sm select {
+          @apply px-2 py-1 text-sm;
+        }
+
+        &.select-lg select {
+          @apply px-4 py-3 text-lg;
+        }
+      }
+
+      .select-field-errors-wrapper {
+        @apply flex flex-col gap-2;
+
+        .select-field-error {
+          @apply text-error text-xs;
+        }
+      }
+    }
+
     input {
       @apply w-full bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
+    }
+
+    select {
+      @apply w-full bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg appearance-none;
     }
 
     button {

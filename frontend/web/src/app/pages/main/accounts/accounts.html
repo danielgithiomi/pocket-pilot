@@ -56,11 +56,14 @@
       (clearOutput)="accountsForm.name().controlValue.set('')"
     />
 
-    <select>
-      @for (type of types; track type.value) {
-        <option [value]="type.value">{{ type.label }}</option>
-      }
-    </select>
+    <atom-select
+      id="type"
+      [inverted]="true"
+      label="Account Type"
+      [options]="types || []"
+      [formField]="accountsForm.type"
+      placeholder="Select account type"
+    />
   </form>
 
   <div slot="footer">

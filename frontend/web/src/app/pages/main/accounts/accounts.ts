@@ -14,12 +14,13 @@ import {
   initialAccountsFormState,
   accountsFormValidationSchema,
 } from './accounts.types';
+import { Select } from "@components/ui/atoms/select";
 
 @Component({
   selector: 'accounts',
   styleUrl: './accounts.css',
   templateUrl: './accounts.html',
-  imports: [NoData, Button, LucideAngularModule, Form, Input, NgClass, Account],
+  imports: [NoData, Button, LucideAngularModule, Form, Input, NgClass, Account, Select],
 })
 export class Accounts {
   protected readonly iconSize: number = 18;
@@ -48,12 +49,12 @@ export class Accounts {
   submitAccountsForm = (event: Event) => {
     event.preventDefault();
 
-    const { name } = this.accountsFormModel();
+    const { name, type } = this.accountsFormModel();
 
     this.isSubmitting.set(true);
 
     setTimeout(() => {
-      this.accountsService.createNewAccount({ name }).subscribe({
+      this.accountsService.createNewAccount({ name, type }).subscribe({
         next: () => {
           this.toastService.show({
             variant: 'success',

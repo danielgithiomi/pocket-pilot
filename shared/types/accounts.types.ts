@@ -1,5 +1,6 @@
 export interface CreateAccountRequest {
   name: string;
+  type: AccountType | '';
 }
 
 export interface Account {
@@ -19,3 +20,5 @@ export interface AccountTypeDto {
   value: string;
   label: string;
 }
+
+export type AccountType = "WALLET" | "BANK" | "SAVINGS" | "CREDIT" | "CURRENT";

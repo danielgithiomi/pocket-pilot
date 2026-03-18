@@ -1,0 +1,46 @@
+@reference 'tailwindcss';
+
+:host {
+  display: contents;
+}
+
+.select-field {
+  @apply flex flex-col gap-2 w-full my-6;
+}
+
+.select-wrapper {
+  @apply w-full relative;
+
+  .select-input {
+    @apply w-full appearance-none bg-background border border-border rounded-md px-3 py-2 pr-10 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ease-in-out;
+    
+    &:disabled {
+      @apply opacity-50 cursor-not-allowed;
+    }
+  }
+
+  .select-icon-wrapper {
+    @apply absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none;
+    
+    .select-icon {
+      @apply text-muted-foreground;
+    }
+  }
+
+  /* Size variants */
+  &.select-sm .select-input {
+    @apply px-2 py-1 text-sm;
+  }
+
+  &.select-lg .select-input {
+    @apply px-4 py-3 text-lg;
+  }
+}
+
+.select-field-errors-wrapper {
+  @apply flex flex-col gap-2;
+
+  .select-field-error {
+    @apply text-error text-xs;
+  }
+}
