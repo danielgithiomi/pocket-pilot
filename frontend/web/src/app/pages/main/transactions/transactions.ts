@@ -32,6 +32,7 @@ export class Transactions {
 
   // Data
   protected readonly accounts = this.accountsService.getUserAccounts();
+  protected readonly transactions = this.transactionsService.getAllTransactions();
   protected readonly transactionTypes = this.transactionsService.getTransactionTypes();
   protected readonly transactionCategories = this.transactionsService.getTransactionCategories();
 
@@ -57,10 +58,15 @@ export class Transactions {
     this.transactionFormModel.set(initialTransactionFormState);
   }
 
+  private reloadResources() {
+    this.accounts.reload();
+    this.transactions.reload();
+  }
+
   protected handleOpenForm() {
     if (this.accounts.value()?.data?.count === 0) {
       this.toastService.show({
-        variant: 'info',
+        variant: 'warning',
         title: 'No accounts found!',
         details: 'Please create an account first to add transactions.',
       });
@@ -78,12 +84,28 @@ export class Transactions {
     event.preventDefault();
     this.isSubmitting.set(true);
 
-    const { amount, type, category, accountId } = this.transactionFormModel();
-
-    console.log(amount, type, category, accountId);
+    const { accountId, ...transactionPayload } = this.transactionFormModel();
+    const availableBalance: number =
+      this.accounts.value()?.data?.data?.find((account) => account.id === accountId)?.balance ?? 0;
 
     setTimeout(() => {
-      this.isSubmitting.set(false);
+      this.transactionsService
+        .createTransaction(accountId, availableBalance, transactionPayload)
+        .subscribe({
+          next: () => {
+            this.toastService.show({
+              variant: 'success',
+              title: 'Transaction created!',
+              details: `Your [${transactionPayload.type.toUpperCase()}] transaction has been logged successfully.`,
+            });
+
+            this.reloadResources();
+            this.resetTransactionForm();
+            this.isFormOpen.set(false);
+          },
+          error: (error) => console.error('Transaction creation failed:', error),
+          complete: () => this.isSubmitting.set(false),
+        });
     }, 3000);
   }
 }

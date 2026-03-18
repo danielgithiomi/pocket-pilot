@@ -69,10 +69,10 @@ export class Accounts {
             details: `Your [${name}] account has been created successfully.`,
           });
           this.accountsWithCount.reload();
-          this.isFormOpen.set(false);
           this.resetAccountsForm();
+          this.isFormOpen.set(false);
         },
-        error: () => this.isSubmitting.set(false),
+        error: (error) => console.error('Account creation failed:', error),
         complete: () => this.isSubmitting.set(false),
       });
     }, 3000);
