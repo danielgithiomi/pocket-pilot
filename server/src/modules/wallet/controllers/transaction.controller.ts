@@ -96,8 +96,8 @@ export class TransactionController {
     })
     @ApiResponse({
         status: 201,
-        type: Transaction,
-        description: 'Returns the created transaction.',
+        type: TransactionWithAccount,
+        description: 'Returns the created transaction with minimal account data.',
     })
     createTransactionByAccountId(
         @Param('accountId') accountId: string,

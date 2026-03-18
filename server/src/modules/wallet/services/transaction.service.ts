@@ -45,7 +45,6 @@ export class TransactionService {
         createTransactionDto: CreateTransactionDto,
     ): Promise<TransactionWithAccount> {
         const transformedDto: CreateTransactionDto = {
-            // type, category, amount
             ...createTransactionDto,
             type: createTransactionDto.type.toUpperCase() as TransactionType,
             category: createTransactionDto.category.toUpperCase() as TransactionCategory,
@@ -80,13 +79,13 @@ export class TransactionService {
                 name: 'ACCOUNT_NOT_FOUND',
                 title: 'Account not found!',
                 message: `Couldn't create a transaction because the account with ID: {${accountId}} does not exist.`,
-            });    
+            });
 
         return account;
     }
 
     // HELPER FUNCTIONS
-    private isAccountOwnedByUser(userId: string, accountHolderId: string){
+    private isAccountOwnedByUser(userId: string, accountHolderId: string) {
         return userId === accountHolderId;
     }
 

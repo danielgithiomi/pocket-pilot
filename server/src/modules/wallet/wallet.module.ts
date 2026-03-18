@@ -20,7 +20,7 @@ import { UserRepository } from '@modules/identity/repositories/user.repository';
         CookiesAuthGuard,
         AccountRepository,
         TransactionService,
-        TransactionRepository
+        TransactionRepository,
     ],
 })
 export class WalletModule {}

@@ -29,20 +29,11 @@ export class TransactionRepository {
                     type: true,
                     category: true,
                     date: true,
-                    account: {
-                        select: {
-                            id: true,
-                            name: true,
-                        },
-                    },
+                    account: { select: { id: true, name: true, holderId: true } },
                 },
             });
 
-            console.log('Created transaction:', createdTransaction);
-
-            // Update the corresponding account's balance
             if (transaction.type === TransactionType.INCOME) {
-                console.log('Updating balance for income transaction');
                 await prisma.account.update({
                     where: { id: accountId },
                     data: {
@@ -52,7 +43,6 @@ export class TransactionRepository {
                     },
                 });
             } else if (transaction.type === TransactionType.EXPENSE) {
-                console.log('Updating balance for expense transaction');
                 await prisma.account.update({
                     where: { id: accountId },
                     data: {
