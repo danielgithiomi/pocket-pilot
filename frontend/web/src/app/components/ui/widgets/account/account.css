@@ -3,7 +3,7 @@
 section {
   position: relative;
   width: 100%;
-  min-width: 250px;
+  min-width: 200px;
   background: var(--body-background);
   display: flex;
   align-items: center;
@@ -64,14 +64,14 @@ section:hover {
   @apply flex-1 mt-6 flex flex-col items-start justify-between;
 
   .balance {
-    @apply flex flex-row items-center gap-2;
+    @apply flex flex-row items-center gap-2 w-full overflow-hidden;
 
     .currency {
       @apply text-xs italic;
     }
 
     .value {
-      @apply text-3xl md:text-4xl font-semibold;
+      @apply text-3xl md:text-4xl font-semibold truncate;
     }
   }
 
@@ -79,7 +79,7 @@ section:hover {
     @apply w-full flex flex-row items-center justify-between;
 
     .account-name {
-      @apply flex flex-row items-start gap-1.5;
+      @apply flex flex-row items-start gap-2;
     }
 
     .card-options {
