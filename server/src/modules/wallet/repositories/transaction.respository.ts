@@ -29,7 +29,7 @@ export class TransactionRepository {
                     type: true,
                     category: true,
                     date: true,
-                    account: { select: { id: true, name: true, holderId: true } },
+                    account: { select: { id: true, name: true } },
                 },
             });
 

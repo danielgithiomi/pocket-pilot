@@ -60,6 +60,12 @@ export interface IDeletedResourceResponse {
   details: string;
 }
 
+// ENUMS
+export interface IEnumResponse {
+  value: string;
+  label: string;
+}
+
 // ENDPOINTS
 export interface Endpoints {
   me: string;

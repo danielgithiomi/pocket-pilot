@@ -19,7 +19,10 @@
   <app-form
     id="transactions"
     title="Add Transaction"
+    [class.hidden]="!isFormOpen()"
     description="Create a new transaction"
-    (closeForm)="isFormOpen.set(false)"
-  />
+    (closeForm)="handleCloseForm($event)"
+  >
+  
+</app-form>
 }
