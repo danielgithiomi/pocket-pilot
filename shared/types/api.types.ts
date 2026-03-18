@@ -76,6 +76,7 @@ export interface Endpoints {
   accounts: string;
   account_types: string;
   all_transactions: string;
+  user_transactions: string;
   transaction_types: string;
   transaction_categories: string;
 }

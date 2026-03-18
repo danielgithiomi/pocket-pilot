@@ -32,7 +32,7 @@ export class Transactions {
 
   // Data
   protected readonly accounts = this.accountsService.getUserAccounts();
-  protected readonly transactions = this.transactionsService.getAllTransactions();
+  protected readonly transactions = this.transactionsService.getUserTransactions();
   protected readonly transactionTypes = this.transactionsService.getTransactionTypes();
   protected readonly transactionCategories = this.transactionsService.getTransactionCategories();
 

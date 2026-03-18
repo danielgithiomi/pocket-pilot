@@ -13,6 +13,13 @@ export class TransactionRepository {
         });
     }
 
+    async getUserTransactionsAndAccountData(userId: string) {
+        return this.db.transaction.findMany({
+            where: { account: { holderId: userId } },
+            include: { account: { select: { id: true, name: true } } },
+        });
+    }
+
     async createNewTransactionAndUpdateBalance(
         accountId: string,
         transaction: CreateTransactionDto,

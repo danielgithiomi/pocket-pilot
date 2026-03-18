@@ -44,6 +44,22 @@ export class TransactionController {
         return this.transactionService.getTransactionTypes();
     }
 
+    @Get('transactions/user')
+    @ApiOperation({ summary: 'Get all user transactions', description: 'Get all transactions for the current user' })
+    @ApiResponse({
+        status: 200,
+        type: TransactionsWithAccountResponseDto,
+        description: 'Returns all database transactions.',
+    })
+    async getUserTransactions(@UserInRequest() user: UserResponseDto): Promise<TransactionsWithAccountResponseDto> {
+        const userTransactions: TransactionWithAccount[] = await this.transactionService.getUserTransactions(user.id);
+
+        return {
+            count: userTransactions.length,
+            data: userTransactions,
+        };
+    }
+
     @Get('transactions/all')
     @ApiOperation({ summary: 'Get global transactions', description: 'Get all transactions from all accounts' })
     @ApiResponse({

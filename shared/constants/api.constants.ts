@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
 
   // transactions
   all_transactions: "accounts/transactions/all",
+  user_transactions: "accounts/transactions/user",
   transaction_types: "accounts/transactions/types",
   transaction_categories: "accounts/transactions/categories",
 } satisfies Endpoints;

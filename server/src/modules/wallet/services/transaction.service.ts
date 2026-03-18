@@ -30,6 +30,12 @@ export class TransactionService {
         return plainToInstance(TransactionWithAccount, transactions);
     }
 
+    async getUserTransactions(userId: string): Promise<TransactionWithAccount[]> {
+        const transactions = await this.transactionRepository.getUserTransactionsAndAccountData(userId);
+
+        return plainToInstance(TransactionWithAccount, transactions);
+    }
+
     async getTransactionsByAccountId(accountId: string): Promise<Transaction[]> {
         await this.confirmAccountExists(accountId);
 

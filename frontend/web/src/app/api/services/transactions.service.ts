@@ -17,6 +17,10 @@ export class TransactionsService {
     return this.transactionsResource.allTransactions;
   }
 
+  getUserTransactions() {
+    return this.transactionsResource.userTransactions;
+  }
+
   getTransactionTypes() {
     return this.transactionsResource.transactionTypes;
   }

@@ -13,6 +13,11 @@ export class TransactionsResource {
     url: concatUrl(endpoints.all_transactions),
   }));
 
+  userTransactions = httpResource<IStandardResponse<TransactionsWithAccountWithCount>>(() => ({
+    method: 'GET',
+    url: concatUrl(endpoints.user_transactions),
+  }));
+
   transactionTypes = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
     method: 'GET',
     url: concatUrl(endpoints.transaction_types),
