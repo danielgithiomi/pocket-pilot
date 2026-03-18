@@ -2,9 +2,10 @@ import { Observable } from 'rxjs';
 import type { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { IRequestCookies } from '@common/types';
-import { User } from '@modules/identity/dto/user.dto';
+import { plainToInstance } from 'class-transformer';
 import { JWTPayload } from '@modules/identity/dto/auth.dto';
 import { UserService } from '@modules/identity/services/user.service';
+import { User, UserResponseDto } from '@modules/identity/dto/user.dto';
 import { type CallHandler, type ExecutionContext, type NestInterceptor, UnauthorizedException } from '@nestjs/common';
 
 export class AuthTokenInterceptor implements NestInterceptor {
@@ -38,7 +39,7 @@ export class AuthTokenInterceptor implements NestInterceptor {
 
             const user: User = await this.userService.findUserById(decoded_payload.sub);
 
-            request.user = user;
+            request.user = plainToInstance(UserResponseDto, user);
 
             return next.handle();
         } catch (error) {

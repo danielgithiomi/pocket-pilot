@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
 export type FullUser = Prisma.UserCreateInput;
 

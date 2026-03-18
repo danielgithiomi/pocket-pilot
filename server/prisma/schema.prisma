@@ -50,6 +50,8 @@ model Account {
 
     // Link to transaction - one-to-many
     transactions Transaction[]
+
+    @@unique([name, holderId])
 }
 
 model User {

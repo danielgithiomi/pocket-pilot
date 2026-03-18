@@ -1,20 +1,30 @@
-import { Account } from '@prisma/client';
+import { Account, Prisma } from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
+import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAccountDto, AccountWithHolder, AccountWithTransactionsDto } from '../dto/account.dto';
+import {
+    Injectable,
+    ConflictException,
+    NotFoundException,
+    ForbiddenException,
+    InternalServerErrorException,
+} from '@nestjs/common';
 
 @Injectable()
 export class AccountService {
-    constructor(private readonly db: DatabaseService) {}
+    constructor(
+        private readonly db: DatabaseService,
+        private readonly accountRepository: AccountRepository,
+    ) {}
 
-    getAllAccounts(): Promise<AccountWithHolder[]> {
+    async getAllAccounts(): Promise<AccountWithHolder[]> {
         return this.db.account.findMany({
             include: { holder: { select: { name: true, email: true } } },
         });
     }
 
-    getUserAccounts(holderId: string): Promise<Account[]> {
+    async getUserAccounts(holderId: string): Promise<Account[]> {
         return this.db.account.findMany({ where: { holderId } });
     }
 
@@ -42,8 +52,23 @@ export class AccountService {
         return plainToInstance(AccountWithTransactionsDto, account);
     }
 
-    createAccount(userId: string, data: CreateAccountDto): Promise<Account> {
-        return this.db.account.create({ data: { name: data.name, holderId: userId } });
+    async createAccount(userId: string, data: CreateAccountDto): Promise<Account> {
+        try {
+            return await this.accountRepository.createNewAccount(userId, data);
+        } catch (error) {
+            if (this.isPrismaUniqueConstraintError(error)) {
+                throw new ConflictException({
+                    name: 'ACCOUNT_NAME_CONFLICT',
+                    title: 'Account Already Exists!',
+                    details: `You already have an account with the name: {${data.name}}.`,
+                });
+            }
+            throw new InternalServerErrorException({
+                name: 'ACCOUNT_CREATION_FAILED',
+                title: 'Failed to create account!',
+                details: 'An unexpected error occurred while creating the account.',
+            });
+        }
     }
 
     async deleteAccountById(userId: string, accountId: string): Promise<Account> {
@@ -72,5 +97,13 @@ export class AccountService {
             });
 
         return accountExists;
+    }
+
+    // HELPER FUNCTIONS
+    private isPrismaUniqueConstraintError(error: unknown): boolean {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            return error.code === 'P2002';
+        }
+        return false;
     }
 }
