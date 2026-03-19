@@ -13,6 +13,7 @@ export class DashboardCard {
   title = input.required<string>();
   value = input.required<string>();
   subtitle = input.required<string>();
+  isLoading = input.required<boolean>();
   icon = input.required<LucideIconData>();
 
   // Computed

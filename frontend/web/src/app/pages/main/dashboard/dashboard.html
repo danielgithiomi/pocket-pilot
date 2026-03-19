@@ -1,48 +1,59 @@
-<section id="dashboard">
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-    <!-- Accounts -->
-    <dashboard-card
-      id="accounts"
-      title="Accounts"
-      [icon]="walletIcon"
-      [value]="accountsCount()"
-      subtitle="Active accounts"
-    />
+<section id="dashboard" class="page">
+  <div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+  </div>
 
-    <!-- Transactions -->
-    <dashboard-card
-      id="transactions"
-      title="Transactions"
-      [icon]="transactionIcon"
-      [value]="transactionsCount()"
-      subtitle="Recent transactions"
-    />
+  <div class="page-container flex-1">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <!-- Accounts -->
+      <dashboard-card
+        id="accounts"
+        title="Accounts"
+        [icon]="walletIcon"
+        [value]="accountsCount()"
+        subtitle="Active accounts"
+        [isLoading]="isDataLoading()"
+      />
 
-    <!-- Net Cash Flow -->
-    <dashboard-card
-      id="net-cash-flow"
-      title="Net Cash Flow"
-      [icon]="handCoinsIcon"
-      [value]="netCashFlow()"
-      subtitle="Moved around this month"
-    />
+      <!-- Transactions -->
+      <dashboard-card
+        id="transactions"
+        title="Transactions"
+        [icon]="transactionIcon"
+        [value]="transactionsCount()"
+        subtitle="Recent transactions"
+        [isLoading]="isDataLoading()"
+      />
 
-    <!-- Incomes -->
-    <dashboard-card
-      id="incomes"
-      title="Incomes"
-      [icon]="incomeIcon"
-      subtitle="Total income this month"
-      [value]="formatCurrency(totalIncome())"
-    />
+      <!-- Net Cash Flow -->
+      <dashboard-card
+        id="net-cash-flow"
+        title="Net Cash Flow"
+        [icon]="handCoinsIcon"
+        [value]="netCashFlow()"
+        [isLoading]="isDataLoading()"
+        subtitle="Moved around this month"
+      />
 
-    <!-- Expenses -->
-    <dashboard-card
-      id="expenses"
-      title="Expenses"
-      [icon]="expenseIcon"
-      subtitle="Total expenses this month"
-      [value]="formatCurrency(totalExpenses())"
-    />
+      <!-- Incomes -->
+      <dashboard-card
+        id="incomes"
+        title="Incomes"
+        [icon]="incomeIcon"
+        [isLoading]="isDataLoading()"
+        subtitle="Total income this month"
+        [value]="formatCurrency(totalIncome())"
+      />
+
+      <!-- Expenses -->
+      <dashboard-card
+        id="expenses"
+        title="Expenses"
+        [icon]="expenseIcon"
+        [isLoading]="isDataLoading()"
+        subtitle="Total expenses this month"
+        [value]="formatCurrency(totalExpenses())"
+      />
+    </div>
   </div>
 </section>

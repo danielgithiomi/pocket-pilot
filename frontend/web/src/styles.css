@@ -282,7 +282,7 @@ main {
     @apply p-4 h-full;
 
     .page-header {
-      @apply flex flex-row items-center justify-between mb-4;
+      @apply flex flex-row items-center justify-between mb-6;
       animation: slideHalfDown 0.3s ease-in-out;
 
       .page-title {
@@ -340,6 +340,10 @@ main {
 
   .secure-auth {
     @apply pointer-events-none flex flex-row items-center gap-6 w-full text-sm my-10;
+  }
+
+  .skeleton {
+    @apply animate-pulse rounded-md bg-muted-text;
   }
 
   .vertical-separator {
