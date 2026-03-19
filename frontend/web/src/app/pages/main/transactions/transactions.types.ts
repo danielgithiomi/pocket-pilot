@@ -51,3 +51,15 @@ export const transactionFormValidationSchema = schema<TransactionSchema>((root) 
     return null;
   });
 });
+
+// SKELETON
+export const skeletonData: TransactionRow[] = Array(10).fill({
+  fullId: '<div class="table-skeleton"></div>',
+  type: '<div class="table-skeleton"></div>',
+  category: '<div class="table-skeleton"></div>',
+  accountId: '<div class="table-skeleton"></div>',
+  date: '<div class="table-skeleton"></div>',
+  id: '<div class="table-skeleton"></div>',
+  amount: '<div class="table-skeleton"></div>',
+  accountName: '<div class="table-skeleton"></div>',
+});

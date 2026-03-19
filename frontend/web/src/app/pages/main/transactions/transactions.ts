@@ -11,15 +11,16 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { TableColumn } from '@components/ui/organisms/table/table.types';
+import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
+import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
 import {
+  skeletonData,
   TransactionRow,
   TransactionSchema,
   initialTransactionFormState,
   transactionFormValidationSchema,
 } from './transactions.types';
-import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
-import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 
 @Component({
   selector: 'app-transactions',
@@ -30,6 +31,7 @@ export class Transactions {
   // Icons
   protected readonly iconSize: number = 18;
   protected readonly Plus = ListFilterPlus;
+  protected readonly skeletonData = skeletonData;
 
   // Services
   private readonly toastService = inject(ToastService);
@@ -132,17 +134,6 @@ export class Transactions {
       width: '1fr',
     },
   ];
-
-  protected skeletonData: TransactionRow[] = Array(5).fill({
-    fullId: '<div class="table-skeleton"></div>',
-    type: '<div class="table-skeleton"></div>',
-    category: '<div class="table-skeleton"></div>',
-    accountId: '<div class="table-skeleton"></div>',
-    date: '<div class="table-skeleton"></div>',
-    id: '<div class="table-skeleton"></div>',
-    amount: '<div class="table-skeleton"></div>',
-    accountName: '<div class="table-skeleton"></div>',
-  });
 
   protected formattedTransactions = computed<TransactionRow[]>(() => {
     return (
