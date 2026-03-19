@@ -77,6 +77,20 @@ export class TransactionService {
         return this.transactionRepository.createNewTransactionAndUpdateBalance(accountId, transformedDto);
     }
 
+    async deleteTransactionByAccountId(userId: string, accountId: string, transactionId: string): Promise<void> {
+        const account = await this.confirmAccountExists(accountId);
+
+        if (!this.isAccountOwnedByUser(userId, account.holderId)) {
+            throw new ForbiddenException({
+                name: 'DELETION_FORBIDDEN',
+                title: 'Failed to delete the transaction!',
+                message: 'You are not allowed to delete a transaction for this account.',
+            });
+        }
+
+        await this.transactionRepository.deleteTransactionById(transactionId);
+    }
+
     private async confirmAccountExists(accountId: string): Promise<Account> {
         const account: Account | null = await this.accountRepository.getAccountById(accountId);
 

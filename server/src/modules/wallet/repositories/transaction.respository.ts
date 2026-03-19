@@ -69,4 +69,10 @@ export class TransactionRepository {
             return createdTransaction;
         });
     }
+
+    async deleteTransactionById(transactionId: string): Promise<void> {
+        await this.db.transaction.delete({
+            where: { id: transactionId },
+        });
+    }
 }
