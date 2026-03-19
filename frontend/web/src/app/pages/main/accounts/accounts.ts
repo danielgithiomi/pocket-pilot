@@ -7,9 +7,10 @@ import { Button } from '@components/ui/atoms/button';
 import { Select } from '@components/ui/atoms/select';
 import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
+import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import {
   AccountsSchema,
   initialAccountsFormState,
@@ -19,7 +20,14 @@ import {
 @Component({
   selector: 'accounts',
   templateUrl: './accounts.html',
-  imports: [NoData, Button, LucideAngularModule, Form, Input, NgClass, Account, Select],
+  styles: `
+    @reference 'tailwindcss';
+
+    .account-grid {
+      @apply grid py-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+    }
+  `,
+  imports: [NoData, Button, LucideAngularModule, Form, Input, NgClass, Account, Select, FetchError],
 })
 export class Accounts {
   // Icons
@@ -33,6 +41,9 @@ export class Accounts {
   // States
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
+
+  // Computed
+  protected isLoadingAccounts = computed<boolean>(() => this.accountsWithCount.isLoading());
 
   // Data
   protected readonly accountTypes = this.accountsService.getAccountTypes();
