@@ -18,6 +18,7 @@ import {
   initialTransactionFormState,
   transactionFormValidationSchema,
 } from './transactions.types';
+import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
 
 @Component({
   selector: 'app-transactions',
@@ -41,6 +42,7 @@ export class Transactions {
   protected readonly transactionCategories = this.transactionsService.getTransactionCategories();
 
   // States
+  protected isDeleting = signal<boolean>(false);
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
 
@@ -129,21 +131,36 @@ export class Transactions {
   protected formattedTransactions = computed<TransactionRow[]>(() => {
     return (
       this.transactions.value()?.data?.data?.map((transaction) => ({
-        id: splitTransactionId(transaction.id),
-        date: formatDate(transaction.date),
-        amount: formatCurrency(transaction.amount),
-        accountName: capitalize(transaction.account.name),
+        fullId: transaction.id,
         type: transaction.type,
         category: transaction.category,
+        accountId: transaction.account.id,
+        date: formatDate(transaction.date),
+        id: splitTransactionId(transaction.id),
+        amount: formatCurrency(transaction.amount),
+        accountName: capitalize(transaction.account.name),
       })) || []
     );
   });
 
   protected deleteDataRow(row: TransactionRow) {
-    console.log('Deleting row with ID:', row.id);
-  }
+    this.isDeleting.set(true);
+    const { accountId, fullId: transactionId } = row;
 
-  protected trackByTransaction = (index: number, item: TransactionRow) => item.id;
+    this.transactionsService.deleteTransaction(accountId, transactionId).subscribe({
+      next: (response: IStandardResponse<IDeletedResourceResponse>) => {
+        const { message, details } = response.data;
+        this.toastService.show({
+          details,
+          title: message,
+          variant: 'success',
+        });
+        this.reloadResources();
+      },
+      error: (error) => console.error(error),
+      complete: () => this.isDeleting.set(false),
+    });
+  }
 
   // FORM
   protected handleOpenForm() {

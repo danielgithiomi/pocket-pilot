@@ -5,7 +5,9 @@ import { min, required, schema, validate } from '@angular/forms/signals';
 export interface TransactionRow {
   id: string;
   date: string;
+  fullId: string;
   amount: string;
+  accountId: string;
   accountName: string;
   type: TransactionType;
   category: TransactionCategory;
