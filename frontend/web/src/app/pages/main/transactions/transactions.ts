@@ -182,6 +182,18 @@ export class Transactions {
 
   protected submitTransactionForm(event: Event) {
     event.preventDefault();
+
+    const { amount } = this.transactionFormModel();
+
+    if (!amount) {
+      this.toastService.show({
+        variant: 'error',
+        title: 'Amount is required!',
+        details: 'Please enter a valid amount.',
+      });
+      return;
+    }
+
     this.isSubmitting.set(true);
 
     const { accountId, ...transactionPayload } = this.transactionFormModel();

@@ -1,0 +1,14 @@
+<div [id]="cardId()" class="group dashboard-card">
+  <div class="header">
+    <p class="title">{{ title() }}</p>
+    <lucide-icon [name]="id()" [size]="iconSize()" [img]="icon()" />
+  </div>
+
+  <div class="body">
+    <h2 class="value">{{ value() }}</h2>
+  </div>
+
+  <div class="footer">
+    <p class="subtitle">{{ subtitle() }}</p>
+  </div>
+</div>

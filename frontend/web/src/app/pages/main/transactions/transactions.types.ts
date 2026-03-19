@@ -20,7 +20,7 @@ export type TransactionSchema = CreateTransactionRequest & {
 
 export const initialTransactionFormState: TransactionSchema = {
   type: '',
-  amount: 0,
+  amount: null,
   category: '',
   accountId: '',
 };

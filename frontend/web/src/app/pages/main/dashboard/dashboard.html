@@ -1,3 +1,31 @@
 <section id="dashboard">
-  <p>This is the section for the dashboard</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    
+    <!-- Accounts -->
+    <dashboard-card
+      id="accounts"
+      title="Accounts"
+      [icon]="walletIcon"
+      [value]="accountsCount()"
+      subtitle="Active accounts"
+    />
+
+    <!-- Transactions -->
+    <dashboard-card
+      id="transactions"
+      title="Transactions"
+      [icon]="transactionIcon"
+      [value]="transactionsCount()"
+      subtitle="Recent transactions"
+    />
+
+    <!-- Net Cash Flow -->
+    <dashboard-card
+      id="net-cash-flow"
+      title="Net Cash Flow"
+      [icon]="handCoinsIcon"
+      [value]="netCashFlow()"
+      subtitle="Moved around this month"
+    />
+  </div>
 </section>
