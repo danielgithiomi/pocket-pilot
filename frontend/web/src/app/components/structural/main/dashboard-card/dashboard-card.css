@@ -12,7 +12,7 @@
   }
 
   .value {
-    @apply text-3xl font-semibold tracking-tighter group-hover:text-(--primary) transition-all duration-300 overflow-hidden line-clamp-1 truncate;
+    @apply text-3xl group-hover:scale-102 font-semibold tracking-tighter group-hover:text-(--primary) transition-all duration-300 overflow-hidden line-clamp-1 truncate;
   }
 
   .footer {

@@ -54,7 +54,7 @@ export class Accounts {
   protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
 
   // Methods
-  private resetAccountsForm() {
+  protected resetAccountsForm() {
     this.accountsForm().reset();
     this.accountsFormModel.set(initialAccountsFormState);
   }

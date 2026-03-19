@@ -231,7 +231,7 @@ main {
   form {
     .input-field,
     .select-field {
-      @apply flex flex-col gap-2 w-full my-6;
+      @apply flex flex-col gap-2 w-full my-4;
 
       .input-wrapper,
       .select-wrapper {
@@ -283,7 +283,7 @@ main {
 
     .page-header {
       @apply flex flex-row items-center justify-between mb-6;
-      animation: slideHalfDown 0.3s ease-in-out;
+      animation: slideDown 0.3s ease-in-out;
 
       .page-title {
         @apply text-2xl lg:text-3xl font-semibold;

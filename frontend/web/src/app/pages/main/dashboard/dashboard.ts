@@ -2,6 +2,7 @@ import { formatCurrency } from '@libs/utils';
 import { AccountsService } from '@api/accounts.service';
 import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
+import { DashboardCard } from '@components/structural/main/dashboard-card/dashboard-card';
 import {
   LucideAngularModule,
   Wallet,
@@ -10,7 +11,6 @@ import {
   TrendingDown,
   TrendingUp,
 } from 'lucide-angular';
-import { DashboardCard } from '@components/structural/main/dashboard-card/dashboard-card';
 
 @Component({
   selector: 'app-dashboard',

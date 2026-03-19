@@ -59,7 +59,7 @@ export class Transactions {
   protected transactionForm = form(this.transactionFormModel, transactionFormValidationSchema);
 
   // Methods
-  private resetTransactionForm() {
+  protected resetTransactionForm() {
     this.transactionForm().reset();
     this.transactionFormModel.set(initialTransactionFormState);
   }
