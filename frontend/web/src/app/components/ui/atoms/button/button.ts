@@ -61,7 +61,7 @@ export class Button {
     const loadingClasses = this.isLoading() ? 'opacity-80 cursor-progress' : '';
     const variantClasses =
       this.variant() === 'primary' ? 'bg-primary text-white' : this.inverted() ? 'bg-body-background text-primary-text' : 'bg-inverted-background text-inverted-text';
-    const disabledClasses = this.disabled() ? 'opacity-80 cursor-not-allowed' : 'hover:scale-101';
+    const disabledClasses = this.disabled() ? 'opacity-70 !cursor-not-allowed' : 'hover:scale-101';
 
     return [base, variantClasses, loadingClasses, disabledClasses, this.className()]
       .filter(Boolean)

@@ -19,11 +19,12 @@ import {
   transactionFormValidationSchema,
 } from './transactions.types';
 import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
+import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.html',
-  imports: [Button, LucideAngularModule, NoData, Form, Input, Select, Table],
+  imports: [Button, LucideAngularModule, NoData, Form, Input, Select, Table, FetchError],
 })
 export class Transactions {
   // Icons
@@ -47,6 +48,10 @@ export class Transactions {
   protected isSubmitting = signal<boolean>(false);
 
   // Computed
+  protected isFetching = computed(() => {
+    return this.accounts.isLoading() || this.transactions.isLoading();
+  });
+
   protected accountsDropdown = computed(() => {
     return this.accounts.value()?.data?.data?.map((account) => ({
       value: account.id,
@@ -87,7 +92,7 @@ export class Transactions {
         if (transaction.type === 'INCOME') classes += ' bg-(--income)';
         else classes += ' bg-(--expense)';
 
-        return `<span class="${classes}">${transaction.type}</span>`;
+        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.type}</span>`;
       },
     },
     {
@@ -96,7 +101,7 @@ export class Transactions {
       width: '2fr',
       cellTemplate: (transaction: TransactionRow) => {
         let classes = 'font-semibold';
-        return `<span class="${classes}">${transaction.amount}</span>`;
+        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.amount}</span>`;
       },
     },
     {
@@ -107,7 +112,7 @@ export class Transactions {
         let classes =
           'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis bg-(--body-background)';
 
-        return `<span class="${classes}">${transaction.category}</span>`;
+        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.category}</span>`;
       },
     },
     {
@@ -127,6 +132,17 @@ export class Transactions {
       width: '1fr',
     },
   ];
+
+  protected skeletonData: TransactionRow[] = Array(5).fill({
+    fullId: '<div class="table-skeleton"></div>',
+    type: '<div class="table-skeleton"></div>',
+    category: '<div class="table-skeleton"></div>',
+    accountId: '<div class="table-skeleton"></div>',
+    date: '<div class="table-skeleton"></div>',
+    id: '<div class="table-skeleton"></div>',
+    amount: '<div class="table-skeleton"></div>',
+    accountName: '<div class="table-skeleton"></div>',
+  });
 
   protected formattedTransactions = computed<TransactionRow[]>(() => {
     return (

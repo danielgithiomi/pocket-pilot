@@ -10,24 +10,34 @@
     </atom-button>
   </div>
 
-  @let response = transactions.value()?.data;
-  @let count = response?.count;
   <div class="page-container flex-1">
-    @if (count === 0) {
-      <no-data message="No transactions found!" />
+    @if (transactions.error()) {
+      <fetch-error message="Failed to retrieve your transactions" />
+    } @else if (isFetching()) {
+      <div class="skeleton w-1/4 h-5 mb-6"></div>
+
+      <organism-table [isLoading]="true" [data]="skeletonData" [columns]="transactionColumns" />
     } @else {
-      <div>
-        <p class="mb-6">
-          You have <span class="font-semibold text-primary">{{ count }}</span>
-          {{ count! > 1 ? 'total transactions' : 'transaction' }}!
-        </p>
-        <organism-table
-          [columns]="transactionColumns"
-          [data]="formattedTransactions()"
-          (deleteRow)="deleteDataRow($event)"
-          emptyMessage="You have no transactions yet!"
-        />
-      </div>
+      @let response = transactions.value()?.data;
+      @let count = response?.count;
+
+      @if (count === 0) {
+        <no-data message="No transactions found!" />
+      } @else {
+        <div>
+          <p class="mb-6">
+            You have <span class="font-semibold text-primary">{{ count }}</span>
+            {{ count! > 1 ? 'total transactions' : 'transaction' }}!
+          </p>
+          <organism-table
+            [isLoading]="isFetching()"
+            [columns]="transactionColumns"
+            [data]="formattedTransactions()"
+            (deleteRow)="deleteDataRow($event)"
+            emptyMessage="You have no transactions yet!"
+          />
+        </div>
+      }
     }
   </div>
 </section>

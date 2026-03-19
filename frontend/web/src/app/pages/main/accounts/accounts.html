@@ -40,7 +40,7 @@
       [ngClass]="{ 'grid place-items-center': count === 0 || accountsWithCount.error() }"
     >
       @if (accountsWithCount.error()) {
-        <fetch-error message="Failed to load accounts" />
+        <fetch-error message="Failed to retrieve your accounts." />
       } @else if (count === 0) {
         <no-data message="No accounts found!" />
       } @else {

@@ -346,6 +346,10 @@ main {
     @apply animate-pulse rounded-md bg-muted-text;
   }
 
+  .table-skeleton {
+    @apply animate-pulse rounded-xl bg-muted-text h-5 w-3/4 my-1;
+  }
+
   .vertical-separator {
     @apply flex w-px bg-inverted-background;
   }

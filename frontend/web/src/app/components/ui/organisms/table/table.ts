@@ -1,7 +1,7 @@
 import { NgClass, CommonModule } from '@angular/common';
 import { TableColumn, TableAlign } from './table.types';
-import { Component, input, output, computed } from '@angular/core';
 import { Trash2, LucideAngularModule } from 'lucide-angular';
+import { Component, input, output, computed } from '@angular/core';
 
 @Component({
   selector: 'organism-table',
@@ -12,6 +12,7 @@ import { Trash2, LucideAngularModule } from 'lucide-angular';
 export class Table<T extends object> {
   /* INPUTS */
   data = input.required<T[]>();
+  isLoading = input<boolean>(true);
   columns = input.required<TableColumn<T>[]>();
   emptyMessage = input<string>('No data available');
 
@@ -50,5 +51,14 @@ export class Table<T extends object> {
 
   isActionsColumn(column: TableColumn<T>): boolean {
     return column.key === 'actions';
+  }
+
+  shouldRenderAsHtml(item: T, column: TableColumn<T>): boolean {
+    if (column.cellTemplate) {
+      return true;
+    }
+
+    const value = item[column.key as keyof T];
+    return typeof value === 'string' && value.includes('<div');
   }
 }

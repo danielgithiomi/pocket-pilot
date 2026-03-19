@@ -4,12 +4,12 @@ import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
 import { DashboardCard } from '@components/structural/main/dashboard-card/dashboard-card';
 import {
-  LucideAngularModule,
   Wallet,
-  Move3d,
   HandCoins,
-  TrendingDown,
   TrendingUp,
+  TrendingDown,
+  ArrowLeftRight,
+  LucideAngularModule,
 } from 'lucide-angular';
 
 @Component({
@@ -22,9 +22,9 @@ export class Dashboard {
   // Icons
   protected readonly walletIcon = Wallet;
   protected readonly incomeIcon = TrendingUp;
-  protected readonly transactionIcon = Move3d;
   protected readonly handCoinsIcon = HandCoins;
   protected readonly expenseIcon = TrendingDown;
+  protected readonly transactionIcon = ArrowLeftRight;
 
   // Services
   private readonly accountsService = inject(AccountsService);
@@ -54,7 +54,7 @@ export class Dashboard {
     return accounts.reduce((total, account) => total + account.balance, 0).toString();
   });
 
-  protected readonly totalIncome = computed(() => {
+  protected readonly totalRevenue = computed(() => {
     const transactions = this.transactions.value()?.data.data;
     if (!transactions) return '0';
     return transactions
@@ -73,9 +73,9 @@ export class Dashboard {
   });
 
   protected readonly netCashFlow = computed(() => {
-    const income = Number(this.totalIncome());
+    const revenue = Number(this.totalRevenue());
     const expenses = Number(this.totalExpenses());
-    return formatCurrency(income + expenses);
+    return formatCurrency(revenue + expenses);
   });
 
   // Methods
