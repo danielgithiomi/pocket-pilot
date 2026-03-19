@@ -20,6 +20,12 @@ export class TransactionRepository {
         });
     }
 
+    async getTransactionCountByAccountId(accountId: string): Promise<number> {
+        return this.db.transaction.count({
+            where: { accountId },
+        });
+    }
+
     async createNewTransactionAndUpdateBalance(
         accountId: string,
         transaction: CreateTransactionDto,
