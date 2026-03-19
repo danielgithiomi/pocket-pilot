@@ -1,0 +1,60 @@
+@reference 'tailwindcss';
+:host {
+  display: contents;
+}
+
+.table-container {
+  @apply w-full overflow-hidden rounded-lg border border-border bg-background;
+}
+
+.table-header {
+  @apply grid items-center bg-muted/50 border-b border-border px-4 py-3 font-medium text-sm text-foreground;
+}
+
+.header-cell {
+  @apply font-semibold;
+}
+
+.text-left {
+  @apply text-left;
+}
+
+.text-center {
+  @apply text-center;
+}
+
+.text-right {
+  @apply text-right;
+}
+
+.table-body {
+  @apply divide-y divide-border;
+}
+
+.table-row {
+  @apply grid items-center px-4 py-3 transition-colors hover:bg-muted/30;
+}
+
+.table-cell {
+  @apply text-sm text-foreground;
+}
+
+.actions-container {
+  @apply flex justify-center;
+}
+
+.action-icon {
+  @apply cursor-pointer rounded p-1 text-muted-foreground transition-colors hover:text-destructive hover:bg-destructive/10;
+}
+
+.delete-icon:hover {
+  @apply scale-105;
+}
+
+.empty-state {
+  @apply flex items-center justify-center py-12;
+}
+
+.empty-message {
+  @apply text-muted-text text-center;
+}

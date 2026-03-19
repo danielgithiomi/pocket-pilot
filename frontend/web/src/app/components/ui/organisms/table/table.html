@@ -1,0 +1,41 @@
+<div class="table-container">
+  <!-- Table Header -->
+  <div class="table-header" [ngStyle]="{ 'grid-template-columns': gridTemplateColumns() }">
+    @for (column of columns(); track column.key) {
+      <div class="header-cell" [ngClass]="'text-' + getCellAlignment(column.align)">
+        {{ column.label }}
+      </div>
+    }
+  </div>
+
+  <!-- Table Body -->
+  <div class="table-body">
+    @if (data().length === 0) {
+      <div class="empty-state">
+        <p class="empty-message">{{ emptyMessage() }}</p>
+      </div>
+    } @else {
+      @for (item of data(); track trackByFn()) {
+        <div class="table-row" [ngStyle]="{ 'grid-template-columns': gridTemplateColumns() }">
+          @for (column of columns(); track column.key) {
+            <div class="table-cell" [ngClass]="'text-' + getCellAlignment(column.align)">
+              @if (isActionsColumn(column)) {
+                <div class="actions-container">
+                  <lucide-icon
+                    [name]="'delete-row'"
+                    [img]="Trash2"
+                    [size]="iconSize"
+                    class="action-icon delete-icon"
+                    (click)="handleDelete(item)"
+                  />
+                </div>
+              } @else {
+                {{ getCellValue(item, column) }}
+              }
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>
