@@ -1,7 +1,13 @@
 <div [id]="cardId()" class="group dashboard-card">
   <div class="header">
     <p class="title">{{ title() }}</p>
-    <lucide-icon [name]="id()" [size]="iconSize()" [img]="icon()" />
+
+    <lucide-icon
+      [name]="id()"
+      [img]="icon()"
+      [size]="iconSize()"
+      class="group-hover:text-primary"
+    />
   </div>
 
   <div class="body">

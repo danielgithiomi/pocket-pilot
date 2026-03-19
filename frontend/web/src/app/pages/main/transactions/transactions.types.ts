@@ -1,5 +1,5 @@
-import { CreateTransactionRequest, TransactionCategory, TransactionType } from '@global/types';
 import { min, required, schema, validate } from '@angular/forms/signals';
+import { CreateTransactionRequest, TransactionCategory, TransactionType } from '@global/types';
 
 // TABLE
 export interface TransactionRow {

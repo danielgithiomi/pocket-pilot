@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import { LucideIconData, LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -16,5 +16,5 @@ export class DashboardCard {
   icon = input.required<LucideIconData>();
 
   // Computed
-  cardId = computed(() => `${this.id()}-dashboard-card`);
+  protected cardId = computed(() => `${this.id()}-dashboard-card`);
 }

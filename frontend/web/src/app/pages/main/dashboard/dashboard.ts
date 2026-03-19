@@ -2,20 +2,29 @@ import { formatCurrency } from '@libs/utils';
 import { AccountsService } from '@api/accounts.service';
 import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
-import { LucideAngularModule, Wallet, Move3d, HandCoins } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  Wallet,
+  Move3d,
+  HandCoins,
+  TrendingDown,
+  TrendingUp,
+} from 'lucide-angular';
 import { DashboardCard } from '@components/structural/main/dashboard-card/dashboard-card';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [DashboardCard, LucideAngularModule],
-  templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
+  templateUrl: './dashboard.html',
+  imports: [DashboardCard, LucideAngularModule],
 })
 export class Dashboard {
   // Icons
   protected readonly walletIcon = Wallet;
+  protected readonly incomeIcon = TrendingUp;
   protected readonly transactionIcon = Move3d;
   protected readonly handCoinsIcon = HandCoins;
+  protected readonly expenseIcon = TrendingDown;
 
   // Services
   private readonly accountsService = inject(AccountsService);
@@ -48,13 +57,19 @@ export class Dashboard {
   protected readonly totalIncome = computed(() => {
     const transactions = this.transactions.value()?.data.data;
     if (!transactions) return '0';
-    return transactions.reduce((total, transaction) => total + transaction.amount, 0).toString();
+    return transactions
+      .filter((transaction) => transaction.type === 'INCOME')
+      .reduce((total, transaction) => total + transaction.amount, 0)
+      .toString();
   });
 
   protected readonly totalExpenses = computed(() => {
     const transactions = this.transactions.value()?.data.data;
     if (!transactions) return '0';
-    return transactions.reduce((total, transaction) => total + transaction.amount, 0).toString();
+    return transactions
+      .filter((transaction) => transaction.type === 'EXPENSE')
+      .reduce((total, transaction) => total + transaction.amount, 0)
+      .toString();
   });
 
   protected readonly netCashFlow = computed(() => {
@@ -62,4 +77,9 @@ export class Dashboard {
     const expenses = Number(this.totalExpenses());
     return formatCurrency(income + expenses);
   });
+
+  // Methods
+  protected formatCurrency(value: string) {
+    return formatCurrency(Number(value));
+  }
 }

@@ -1,6 +1,5 @@
 <section id="dashboard">
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-    
     <!-- Accounts -->
     <dashboard-card
       id="accounts"
@@ -26,6 +25,24 @@
       [icon]="handCoinsIcon"
       [value]="netCashFlow()"
       subtitle="Moved around this month"
+    />
+
+    <!-- Incomes -->
+    <dashboard-card
+      id="incomes"
+      title="Incomes"
+      [icon]="incomeIcon"
+      subtitle="Total income this month"
+      [value]="formatCurrency(totalIncome())"
+    />
+
+    <!-- Expenses -->
+    <dashboard-card
+      id="expenses"
+      title="Expenses"
+      [icon]="expenseIcon"
+      subtitle="Total expenses this month"
+      [value]="formatCurrency(totalExpenses())"
     />
   </div>
 </section>
