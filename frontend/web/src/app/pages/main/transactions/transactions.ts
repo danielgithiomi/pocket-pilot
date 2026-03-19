@@ -1,4 +1,5 @@
 import { form } from '@angular/forms/signals';
+import { Table } from '@components/ui/organisms';
 import { Input } from '@components/ui/atoms/input';
 import { Select } from '@components/ui/atoms/select';
 import { Button } from '@components/ui/atoms/button';
@@ -9,7 +10,10 @@ import { TransactionsService } from '@api/transactions.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
+import { TableColumn } from '@components/ui/organisms/table/table.types';
+import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
 import {
+  TransactionRow,
   TransactionSchema,
   initialTransactionFormState,
   transactionFormValidationSchema,
@@ -18,7 +22,7 @@ import {
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.html',
-  imports: [Button, LucideAngularModule, NoData, Form, Input, Select],
+  imports: [Button, LucideAngularModule, NoData, Form, Input, Select, Table],
 })
 export class Transactions {
   // Icons
@@ -63,6 +67,59 @@ export class Transactions {
     this.transactions.reload();
   }
 
+  // TABLE
+  protected transactionColumns: TableColumn<TransactionRow>[] = [
+    {
+      key: 'id',
+      label: 'ID',
+    },
+    {
+      key: 'type',
+      label: 'Type',
+    },
+    {
+      key: 'category',
+      label: 'Category',
+    },
+    {
+      key: 'amount',
+      label: 'Amount',
+    },
+    {
+      key: 'accountName',
+      label: 'Account',
+    },
+    {
+      key: 'date',
+      label: 'Date',
+    },
+    {
+      key: 'actions',
+      label: 'Actions',
+      width: '70px',
+    },
+  ];
+
+  protected formattedTransactions = computed<TransactionRow[]>(() => {
+    return (
+      this.transactions.value()?.data?.data?.map((transaction) => ({
+        id: splitTransactionId(transaction.id),
+        date: formatDate(transaction.date),
+        amount: formatCurrency(transaction.amount),
+        accountName: capitalize(transaction.account.name),
+        type: transaction.type,
+        category: transaction.category,
+      })) || []
+    );
+  });
+
+  protected deleteDataRow(row: TransactionRow) {
+    console.log('Deleting row with ID:', row.id);
+  }
+
+  protected trackByTransaction = (index: number, item: TransactionRow) => item.id;
+
+  // FORM
   protected handleOpenForm() {
     if (this.accounts.value()?.data?.count === 0) {
       this.toastService.show({

@@ -4,15 +4,15 @@
 }
 
 .table-container {
-  @apply w-full overflow-hidden rounded-lg border border-border bg-background;
+  @apply w-full overflow-hidden rounded border border-(--primary) bg-(--alternate-background);
 }
 
 .table-header {
-  @apply grid items-center bg-muted/50 border-b border-border px-4 py-3 font-medium text-sm text-foreground;
+  @apply grid items-center bg-(--primary)/50 border-b border-(--secondary) p-4 font-medium text-sm text-(--primary-text);
 }
 
 .header-cell {
-  @apply font-semibold;
+  @apply font-semibold overflow-hidden line-clamp-1 truncate pr-2;
 }
 
 .text-left {
@@ -28,27 +28,27 @@
 }
 
 .table-body {
-  @apply divide-y divide-border;
+  @apply divide-y divide-(--muted-text)/30;
 }
 
 .table-row {
-  @apply grid items-center px-4 py-3 transition-colors hover:bg-muted/30;
+  @apply grid cursor-pointer hover:scale-x-[1.0025] items-center px-4 py-3 transition-all duration-300 hover:bg-(--muted-text)/30;
 }
 
 .table-cell {
-  @apply text-sm text-foreground;
+  @apply text-sm text-(--alternate-text) overflow-hidden line-clamp-1 truncate pr-2;
 }
 
 .actions-container {
-  @apply flex justify-center;
+  @apply flex justify-center items-center;
 }
 
 .action-icon {
-  @apply cursor-pointer rounded p-1 text-muted-foreground transition-colors hover:text-destructive hover:bg-destructive/10;
+  @apply cursor-pointer rounded p-1 text-(--muted-text) transition-colors;
 }
 
 .delete-icon:hover {
-  @apply scale-105;
+  @apply scale-101 transition-transform duration-300 text-(--error);
 }
 
 .empty-state {
@@ -56,5 +56,5 @@
 }
 
 .empty-message {
-  @apply text-muted-text text-center;
+  @apply text-(--muted-text) text-center;
 }

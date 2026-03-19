@@ -1,6 +1,17 @@
-import { CreateTransactionRequest } from '@global/types';
+import { CreateTransactionRequest, TransactionCategory, TransactionType } from '@global/types';
 import { min, required, schema, validate } from '@angular/forms/signals';
 
+// TABLE
+export interface TransactionRow {
+  id: string;
+  date: string;
+  amount: string;
+  accountName: string;
+  type: TransactionType;
+  category: TransactionCategory;
+}
+
+// FORM
 export type TransactionSchema = CreateTransactionRequest & {
   accountId: string;
 };
