@@ -39,6 +39,8 @@
   --error: #fa2c05;
   --info: #009cbc; /* Cyan */
   /* --info: #6290c8; Dusty Denim */
+  --income: var(--emerald);
+  --expense: var(--apple-red);
 
   /* Dark Palette */
   --dark: #101011;
@@ -62,6 +64,13 @@
   /* Alternative Colors */
   --jet-black: #272d2d;
   --jungle-teal: #5b9279;
+  --torch-red: #fb2b37;
+  --malachite: #00c951;
+  --burgundy: #88292f;
+  --emerald: #7ebc89;
+  --spicy-paprika: #ec4e20;
+  --red-emerald: #e53935;
+  --apple-red: #ff3b30;
 
   /* Semantic Colors */
   --body-background: var(--white);

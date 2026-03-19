@@ -1,5 +1,4 @@
 <div class="table-container">
-  <!-- Table Header -->
   <div class="table-header" [ngStyle]="{ 'grid-template-columns': gridTemplateColumns() }">
     @for (column of columns(); track column.key) {
       <div class="header-cell" [ngClass]="'text-' + getCellAlignment(column.align)">
@@ -8,7 +7,6 @@
     }
   </div>
 
-  <!-- Table Body -->
   <div class="table-body">
     @if (data().length === 0) {
       <div class="empty-state">
@@ -30,7 +28,11 @@
                   />
                 </div>
               } @else {
-                {{ getCellValue(item, column) }}
+                @if (column.cellTemplate) {
+                  <span [innerHTML]="getCellValue(item, column)"></span>
+                } @else {
+                  {{ getCellValue(item, column) }}
+                }
               }
             </div>
           }

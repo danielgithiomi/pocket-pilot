@@ -13,10 +13,6 @@ export class Table<T extends object> {
   /* INPUTS */
   data = input.required<T[]>();
   columns = input.required<TableColumn<T>[]>();
-  trackByFn = input<(index: number, item: T) => any>(() => (index: number, item: T) => {
-    // Try to use id property if available, otherwise use index
-    return (item as any).id || index;
-  });
   emptyMessage = input<string>('No data available');
 
   /* OUTPUTS */
@@ -44,7 +40,7 @@ export class Table<T extends object> {
     return align || 'left';
   }
 
-  getCellValue(item: T, column: TableColumn<T>): string {
+  getCellValue(item: T, column: TableColumn<T>): string | HTMLElement {
     if (column.cellTemplate) {
       return column.cellTemplate(item);
     }

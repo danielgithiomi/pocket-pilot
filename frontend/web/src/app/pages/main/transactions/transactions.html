@@ -24,7 +24,6 @@
         <organism-table
           [columns]="transactionColumns"
           [data]="formattedTransactions()"
-          [trackByFn]="trackByTransaction"
           (deleteRow)="deleteDataRow($event)"
           emptyMessage="You have no transactions yet!"
         />

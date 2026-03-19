@@ -72,31 +72,57 @@ export class Transactions {
     {
       key: 'id',
       label: 'ID',
+      width: '1fr',
     },
     {
       key: 'type',
       label: 'Type',
-    },
-    {
-      key: 'category',
-      label: 'Category',
+      width: '1fr',
+      cellTemplate: (transaction: TransactionRow) => {
+        let classes =
+          'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis dark:text-(--inverted-text)';
+
+        if (transaction.type === 'INCOME') classes += ' bg-(--income)';
+        else classes += ' bg-(--expense)';
+
+        return `<span class="${classes}">${transaction.type}</span>`;
+      },
     },
     {
       key: 'amount',
       label: 'Amount',
+      width: '2fr',
+      cellTemplate: (transaction: TransactionRow) => {
+        let classes = 'font-semibold';
+        return `<span class="${classes}">${transaction.amount}</span>`;
+      },
+    },
+    {
+      key: 'category',
+      label: 'Category',
+      width: '2fr',
+      cellTemplate: (transaction: TransactionRow) => {
+        let classes =
+          'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis bg-(--body-background)';
+
+        return `<span class="${classes}">${transaction.category}</span>`;
+      },
     },
     {
       key: 'accountName',
       label: 'Account',
+      width: '2fr',
     },
     {
       key: 'date',
       label: 'Date',
+      width: '1fr',
     },
     {
       key: 'actions',
       label: 'Actions',
-      width: '70px',
+      align: 'right',
+      width: '1fr',
     },
   ];
 

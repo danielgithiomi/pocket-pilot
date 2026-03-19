@@ -36,11 +36,11 @@
 }
 
 .table-cell {
-  @apply text-sm text-(--alternate-text) overflow-hidden line-clamp-1 truncate pr-2;
+  @apply text-sm text-(--alternate-text) overflow-hidden line-clamp-1 truncate mr-2;
 }
 
 .actions-container {
-  @apply flex justify-center items-center;
+  @apply flex justify-end items-center;
 }
 
 .action-icon {
@@ -48,7 +48,7 @@
 }
 
 .delete-icon:hover {
-  @apply scale-101 transition-transform duration-300 text-(--error);
+  @apply scale-101 transition-transform duration-300 text-(--apple-red);
 }
 
 .empty-state {
