@@ -343,11 +343,11 @@ main {
   }
 
   .skeleton {
-    @apply animate-pulse rounded-md bg-muted-text;
+    @apply animate-pulse rounded-md bg-primary/50;
   }
 
   .table-skeleton {
-    @apply animate-pulse rounded-xl bg-muted-text h-5 w-3/4 my-1;
+    @apply animate-pulse rounded-xl bg-primary/50 h-5 w-3/4 my-1;
   }
 
   .vertical-separator {
