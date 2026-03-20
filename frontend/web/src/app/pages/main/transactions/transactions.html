@@ -29,6 +29,15 @@
             You have <span class="font-semibold text-primary">{{ count }}</span>
             {{ count! > 1 ? 'total transactions' : 'transaction' }}!
           </p>
+
+          <div class="mb-6">
+            <atom-tab-list
+              [items]="tabListItems"
+              [activeItem]="activeTabIndex()"
+              (selectedIndex)="onTabSelected($event)"
+            />
+          </div>
+          
           <organism-table
             [isLoading]="isFetching()"
             [columns]="transactionColumns"
