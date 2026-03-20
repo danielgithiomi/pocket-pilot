@@ -3,7 +3,81 @@
     <h1 class="page-title">Profile</h1>
   </div>
 
-  <div class="page-container flex flex-row gap-4">
+  <div
+    class="page-container flex flex-col md:flex-row gap-4"
+    [ngClass]="{
+      'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
+    }"
+  >
+    <!-- Left Column - Profile Picture -->
+    <div
+      class="w-full md:w-1/2 flex-1 flex flex-col gap-6"
+      [ngClass]="{
+        'md:w-full': !drawerService.isDrawerCollapsed(),
+      }"
+    >
+      <div class="page-card"></div>
+
+      <div class="page-card grow flex flex-col justify-between">
+        <div class="card-header">
+          <p class="title">Change your password.</p>
+          <p class="subtitle">Update your password to remain secure.</p>
+        </div>
+
+        <div class="card-content">
+          <form id="change-password-form" (submit)="onSubmitChangePassword()">
+            <!-- Hidden username for accessibility -->
+            <input
+              type="text"
+              class="hidden"
+              name="username"
+              [value]="user.email"
+              autocomplete="username"
+            />
+
+            <atom-input
+              id="current-password"
+              type="password"
+              label="Current Password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              [formField]="changePasswordForm.currentPassword"
+            />
+
+            <atom-input
+              id="new-password"
+              type="password"
+              label="New Password"
+              placeholder="••••••••"
+              autocomplete="new-password"
+              [formField]="changePasswordForm.newPassword"
+            />
+
+            <atom-input
+              id="confirm-new-password"
+              type="password"
+              label="Confirm New Password"
+              placeholder="••••••••"
+              autocomplete="new-password"
+              [formField]="changePasswordForm.confirmNewPassword"
+            />
+          </form>
+        </div>
+
+        <div class="flex flex-row items-center justify-end w-full mt-6">
+          <atom-button
+            type="submit"
+            label="Change Password"
+            id="submit-change-password"
+            form="change-password-form"
+            [isLoading]="isSubmittingChangePassword()"
+            [disabled]="changePasswordForm().invalid() || isSubmittingChangePassword()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column - Profile Details -->
     <div
       class="page-card w-full md:w-1/2"
       [ngClass]="{ 'md:w-full lg:w-1/2': !drawerService.isDrawerCollapsed() }"
@@ -13,13 +87,38 @@
         <p class="subtitle">Your account details and information.</p>
       </div>
 
-      <div class="card-content p-2">
-        <profile-detail detailVariant="name" [detailValue]="user.name" />
-        <profile-detail detailVariant="email" [detailValue]="user.email" />
-        <profile-detail detailVariant="phone" [detailValue]="user.id" />
-        <profile-detail detailVariant="role" [detailValue]="user.updatedAt" />
-        <profile-detail detailVariant="status" [detailValue]="user.isAccountLocked ? 'Locked' : 'Active'" />
-        <profile-detail [isLast]="true" detailVariant="last-login" [detailValue]="user.createdAt" />
+      <div class="card-content">
+        <profile-detail
+          [isLoading]="isFetchingProfileData()"
+          detailVariant="name"
+          [detailValue]="user.name"
+        />
+        <profile-detail
+          [isLoading]="isFetchingProfileData()"
+          detailVariant="email"
+          [detailValue]="user.email"
+        />
+        <profile-detail
+          [isLoading]="isFetchingProfileData()"
+          detailVariant="phone"
+          [detailValue]="user.id"
+        />
+        <profile-detail
+          [isLoading]="isFetchingProfileData()"
+          detailVariant="role"
+          [detailValue]="user.updatedAt"
+        />
+        <profile-detail
+          [isLoading]="isFetchingProfileData()"
+          detailVariant="status"
+          [detailValue]="user.isAccountLocked ? 'Locked' : 'Active'"
+        />
+        <profile-detail
+          [isLoading]="isFetchingProfileData()"
+          [isLast]="true"
+          detailVariant="last-login"
+          [detailValue]="user.createdAt"
+        />
       </div>
     </div>
   </div>

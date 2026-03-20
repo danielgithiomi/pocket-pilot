@@ -34,11 +34,24 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
 
     <div class="info">
       <p class="title">{{ detailTitle() }}</p>
-      <p class="value">{{ detailValue() }}</p>
+      @if (isLoading()) {
+        <div
+          class="skeleton h-5"
+          [ngClass]="{
+            'w-1/2': detailVariant() === 'name' || detailVariant() === 'email' || detailVariant() === 'last-login',
+            'w-1/3': detailVariant() === 'phone',
+            'w-1/5': detailVariant() === 'role',
+            'w-1/6': detailVariant() === 'status',
+          }"
+        ></div>
+      } @else {
+        <p class="value">{{ detailValue() }}</p>
+      }
     </div>
   </div>`,
 })
 export class ProfileDetail {
+  isLoading = input(true);
   isLast = input<boolean>(false);
   detailValue = input.required();
   detailVariant = input.required<DetailVariant>();

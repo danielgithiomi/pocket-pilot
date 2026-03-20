@@ -308,6 +308,10 @@ main {
             @apply text-sm text-(--muted-text);
           }
         }
+
+        .card-content {
+          @apply p-2;
+        }
       }
     }
   }
