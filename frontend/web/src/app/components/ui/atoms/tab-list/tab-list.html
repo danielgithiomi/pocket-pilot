@@ -1,0 +1,13 @@
+<div class="tab-list">
+  @for (item of items(); track item.value; let index = $index) {
+    <div
+      [class]="getTabClasses(item)"
+      (click)="selectTab(item, index)"
+      role="tab"
+      [attr.aria-selected]="isActive(item)"
+      [attr.aria-disabled]="disabled()"
+    >
+      {{ item.label }}
+    </div>
+  }
+</div>
