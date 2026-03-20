@@ -70,6 +70,6 @@ export class TransactionsService {
   };
 
   private isNegativeBalance(availableBalance: number, payload: CreateTransactionRequest) {
-    return availableBalance > 0 && payload.amount > availableBalance && payload.type === 'EXPENSE';
+    return availableBalance > 0 && payload.amount! > availableBalance && payload.type === 'EXPENSE';
   }
 }

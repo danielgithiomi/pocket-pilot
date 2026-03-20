@@ -231,7 +231,7 @@ main {
   form {
     .input-field,
     .select-field {
-      @apply flex flex-col gap-2 w-full my-6;
+      @apply flex flex-col gap-2 w-full my-4;
 
       .input-wrapper,
       .select-wrapper {
@@ -282,8 +282,8 @@ main {
     @apply p-4 h-full;
 
     .page-header {
-      @apply flex flex-row items-center justify-between mb-4;
-      animation: slideHalfDown 0.3s ease-in-out;
+      @apply flex flex-row items-center justify-between mb-6;
+      animation: slideDown 0.3s ease-in-out;
 
       .page-title {
         @apply text-2xl lg:text-3xl font-semibold;
@@ -340,6 +340,14 @@ main {
 
   .secure-auth {
     @apply pointer-events-none flex flex-row items-center gap-6 w-full text-sm my-10;
+  }
+
+  .skeleton {
+    @apply animate-pulse rounded-md bg-primary/50;
+  }
+
+  .table-skeleton {
+    @apply animate-pulse rounded-xl bg-primary/50 h-5 w-3/4 my-1;
   }
 
   .vertical-separator {

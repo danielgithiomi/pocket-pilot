@@ -1,0 +1,24 @@
+<div [id]="cardId()" class="group dashboard-card">
+  <div class="header">
+    <p class="title">{{ title() }}</p>
+
+    <lucide-icon
+      [name]="id()"
+      [img]="icon()"
+      [size]="iconSize()"
+      class="group-hover:text-primary"
+    />
+  </div>
+
+  <div class="body">
+    @if (isLoading()) {
+      <div class="skeleton w-2/5 h-8 group-hover:scale-100"></div>
+    } @else {
+      <h2 class="value">{{ value() }}</h2>
+    }
+  </div>
+
+  <div class="footer">
+    <p class="subtitle">{{ subtitle() }}</p>
+  </div>
+</div>

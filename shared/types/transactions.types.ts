@@ -1,5 +1,5 @@
 export interface CreateTransactionRequest {
-  amount: number;
+  amount: number | null;
   type: TransactionType | "";
   category: TransactionCategory | "";
 }

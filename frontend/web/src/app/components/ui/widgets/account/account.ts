@@ -25,6 +25,7 @@ export class Account {
   name = input.required<string>();
   balance = input.required<number>();
   type = input.required<AccountType>();
+  isLoading = input.required<boolean>();
 
   // Outputs
   onAccountDelete = output<void>();

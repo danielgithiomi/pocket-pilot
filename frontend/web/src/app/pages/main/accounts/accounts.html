@@ -2,7 +2,12 @@
   <div class="page-header">
     <h1 class="page-title">Accounts</h1>
 
-    <atom-button id="add-account" variant="primary" (clicked)="isFormOpen.set(true)">
+    <atom-button
+      id="add-account"
+      variant="primary"
+      (clicked)="isFormOpen.set(true)"
+      [disabled]="isLoadingAccounts()"
+    >
       <div class="w-full flex flex-row items-center justify-between gap-4">
         <lucide-icon name="create-wallet" [img]="Plus" [size]="iconSize"></lucide-icon>
         <span class="hidden sm:block">Add Account</span>
@@ -10,31 +15,57 @@
     </atom-button>
   </div>
 
-  @let response = accountsWithCount.value()?.data;
-  @let count = response?.count;
-  <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': count === 0 }">
-    @if (count === 0) {
-      <no-data message="No accounts found!" />
-    } @else {
-      <div class="py-4">
-        <p>
-          You have <span class="font-semibold text-primary">{{ count }}</span> active
-          {{ count! > 1 ? 'accounts' : 'account' }}!
-        </p>
-        <div class="grid py-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          @for (account of response?.data; track account.id) {
-            <account-card
-              [id]="account.id"
-              [name]="account.name"
-              [type]="account.type"
-              [balance]="account.balance"
-              (onAccountDelete)="accountsWithCount.reload()"
-            />
-          }
-        </div>
+  @if (isLoadingAccounts()) {
+    <div class="page-container flex-1">
+      <div class="skeleton w-1/4 h-4"></div>
+
+      <div class="account-grid">
+        @for (i of [1, 2, 3]; track i) {
+          <account-card
+            [balance]="0"
+            type="CURRENT"
+            [id]="i.toString()"
+            [name]="'Account ' + i"
+            [isLoading]="isLoadingAccounts()"
+            (onAccountDelete)="accountsWithCount.reload()"
+          />
+        }
       </div>
-    }
-  </div>
+    </div>
+  } @else {
+    @let response = accountsWithCount.value()?.data;
+    @let count = response?.count;
+    <div
+      class="page-container flex-1"
+      [ngClass]="{ 'grid place-items-center': count === 0 || accountsWithCount.error() }"
+    >
+      @if (accountsWithCount.error()) {
+        <fetch-error message="Failed to retrieve your accounts." />
+      } @else if (count === 0) {
+        <no-data message="No accounts found!" />
+      } @else {
+        <div>
+          <p>
+            You have <span class="font-semibold text-primary">{{ count }}</span> active
+            {{ count! > 1 ? 'accounts' : 'account' }}!
+          </p>
+
+          <div class="account-grid">
+            @for (account of response?.data; track account.id) {
+              <account-card
+                [id]="account.id"
+                [name]="account.name"
+                [type]="account.type"
+                [balance]="account.balance"
+                [isLoading]="isLoadingAccounts()"
+                (onAccountDelete)="accountsWithCount.reload()"
+              />
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
 </section>
 
 <app-form
@@ -67,11 +98,22 @@
     />
   </form>
 
-  <div slot="footer">
+  <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+    <atom-button
+      type="reset"
+      [inverted]="true"
+      label="Reset Form"
+      variant="secondary"
+      form="accounts-form"
+      id="reset-account-form"
+      (clicked)="resetAccountsForm()"
+      [disabled]="!accountsForm().dirty() || isSubmitting()"
+    />
+
     <atom-button
       type="submit"
       form="accounts-form"
-      label="Create Account"
+      label="Create A New Account"
       id="submit-account-form"
       [isLoading]="isSubmitting()"
       [disabled]="accountsForm().invalid() || isSubmitting()"

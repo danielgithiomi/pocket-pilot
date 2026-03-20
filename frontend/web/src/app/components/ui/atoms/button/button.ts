@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { ButtonType, ButtonVariant } from './button.types';
 import { input, output, computed, Component } from '@angular/core';
 
@@ -22,7 +21,7 @@ import { input, output, computed, Component } from '@angular/core';
       }
 
       <!-- Label / Projected Content -->
-      <span class="relative z-0" [ngClass]="variant() === 'primary' ? 'text-white' : 'text-black'">
+      <span class="relative z-0">
         @if (label()) {
           {{ label() }}
         } @else {
@@ -32,7 +31,6 @@ import { input, output, computed, Component } from '@angular/core';
     </button>
   `,
   styleUrl: './button.css',
-  imports: [NgClass],
 })
 export class Button {
   // =========================
@@ -42,6 +40,7 @@ export class Button {
   label = input<string>('');
   id = input.required<string>();
   className = input<string>('');
+  inverted = input<boolean>(false);
   disabled = input<boolean>(false);
   isLoading = input<boolean>(false);
   type = input<ButtonType>('button');
@@ -61,8 +60,8 @@ export class Button {
     const base = 'button overflow-hidden relative transition-all duration-250 cursor-pointer';
     const loadingClasses = this.isLoading() ? 'opacity-80 cursor-progress' : '';
     const variantClasses =
-      this.variant() === 'primary' ? 'bg-primary' : 'bg-inverted-background text-white';
-    const disabledClasses = this.disabled() ? 'opacity-80 cursor-not-allowed' : 'hover:scale-101';
+      this.variant() === 'primary' ? 'bg-primary text-white' : this.inverted() ? 'bg-body-background text-primary-text' : 'bg-inverted-background text-inverted-text';
+    const disabledClasses = this.disabled() ? 'opacity-70 !cursor-not-allowed' : 'hover:scale-101';
 
     return [base, variantClasses, loadingClasses, disabledClasses, this.className()]
       .filter(Boolean)

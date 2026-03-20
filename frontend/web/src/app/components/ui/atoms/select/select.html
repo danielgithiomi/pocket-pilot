@@ -8,7 +8,7 @@
       @if (placeholder()) {
         <option value="" disabled selected>{{ placeholder() }}</option>
       }
-      @for (option of options(); track option.value) {
+      @for (option of formattedOptions(); track option.value) {
         <option [value]="option.value">
           {{ option.label }}
         </option>

@@ -1,3 +1,59 @@
-<section id="dashboard">
-  <p>This is the section for the dashboard</p>
+<section id="dashboard" class="page">
+  <div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+  </div>
+
+  <div class="page-container flex-1">
+    <div class="grid pb-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <!-- Accounts -->
+      <dashboard-card
+        id="accounts"
+        title="Accounts"
+        [icon]="walletIcon"
+        [value]="accountsCount()"
+        subtitle="Active accounts"
+        [isLoading]="isDataLoading()"
+      />
+
+      <!-- Transactions -->
+      <dashboard-card
+        id="transactions"
+        title="Transactions"
+        [icon]="transactionIcon"
+        [value]="transactionsCount()"
+        subtitle="Recent transactions"
+        [isLoading]="isDataLoading()"
+      />
+
+      <!-- Net Cash Flow -->
+      <dashboard-card
+        id="net-cash-flow"
+        title="Net Cash Flow"
+        [icon]="handCoinsIcon"
+        [value]="netCashFlow()"
+        [isLoading]="isDataLoading()"
+        subtitle="Moved around this month"
+      />
+
+      <!-- Incomes -->
+      <dashboard-card
+        id="incomes"
+        title="Revenue"
+        [icon]="incomeIcon"
+        [isLoading]="isDataLoading()"
+        subtitle="Total revenue this month"
+        [value]="formatCurrency(totalRevenue())"
+      />
+
+      <!-- Expenses -->
+      <dashboard-card
+        id="expenses"
+        title="Expenses"
+        [icon]="expenseIcon"
+        [isLoading]="isDataLoading()"
+        subtitle="Total expenses this month"
+        [value]="formatCurrency(totalExpenses())"
+      />
+    </div>
+  </div>
 </section>

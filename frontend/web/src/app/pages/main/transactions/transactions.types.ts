@@ -1,5 +1,5 @@
-import { CreateTransactionRequest, TransactionCategory, TransactionType } from '@global/types';
 import { min, required, schema, validate } from '@angular/forms/signals';
+import { CreateTransactionRequest, TransactionCategory, TransactionType } from '@global/types';
 
 // TABLE
 export interface TransactionRow {
@@ -20,7 +20,7 @@ export type TransactionSchema = CreateTransactionRequest & {
 
 export const initialTransactionFormState: TransactionSchema = {
   type: '',
-  amount: 0,
+  amount: null,
   category: '',
   accountId: '',
 };
@@ -50,4 +50,16 @@ export const transactionFormValidationSchema = schema<TransactionSchema>((root) 
     }
     return null;
   });
+});
+
+// SKELETON
+export const skeletonData: TransactionRow[] = Array(10).fill({
+  fullId: '<div class="table-skeleton"></div>',
+  type: '<div class="table-skeleton"></div>',
+  category: '<div class="table-skeleton"></div>',
+  accountId: '<div class="table-skeleton"></div>',
+  date: '<div class="table-skeleton"></div>',
+  id: '<div class="table-skeleton"></div>',
+  amount: '<div class="table-skeleton"></div>',
+  accountName: '<div class="table-skeleton"></div>',
 });
