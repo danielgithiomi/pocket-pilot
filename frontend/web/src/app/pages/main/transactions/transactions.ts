@@ -48,10 +48,10 @@ export class Transactions {
   protected readonly transactionCategories = this.transactionsService.getTransactionCategories();
 
   // States
+  protected activeTabIndex = signal<number>(0);
   protected isDeleting = signal<boolean>(false);
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
-  protected activeTabIndex = signal<number>(0);
 
   // Computed
   protected isFetching = computed(() => {
@@ -63,6 +63,19 @@ export class Transactions {
       value: account.id,
       label: account.name,
     }));
+  });
+
+  protected filteredTransactions = computed(() => {
+    const transactions = this.transactions.value()?.data?.data;
+    const activeTabIndex = this.activeTabIndex();
+    const activeTabValue = this.tabListItems[activeTabIndex].value;
+
+    if (!transactions) return [];
+
+    return transactions.filter((transaction) => {
+      if (activeTabIndex === 0) return true;
+      return transaction.type.toLowerCase() === activeTabValue;
+    });
   });
 
   // Form
@@ -144,8 +157,10 @@ export class Transactions {
   ];
 
   protected formattedTransactions = computed<TransactionRow[]>(() => {
+    const transactionsToFormat = this.filteredTransactions();
+
     return (
-      this.transactions.value()?.data?.data?.map((transaction) => ({
+      transactionsToFormat?.map((transaction) => ({
         fullId: transaction.id,
         type: transaction.type,
         category: transaction.category,
@@ -154,7 +169,7 @@ export class Transactions {
         id: splitTransactionId(transaction.id),
         amount: formatCurrency(transaction.amount),
         accountName: capitalize(transaction.account.name),
-      })) || []
+      })) || skeletonData
     );
   });
 

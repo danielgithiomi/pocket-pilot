@@ -54,16 +54,29 @@ export const transactionFormValidationSchema = schema<TransactionSchema>((root) 
 });
 
 // SKELETON
-export const skeletonData: TransactionRow[] = Array(10).fill({
-  fullId: '<div class="table-skeleton"></div>',
-  type: '<div class="table-skeleton"></div>',
-  category: '<div class="table-skeleton"></div>',
-  accountId: '<div class="table-skeleton"></div>',
-  date: '<div class="table-skeleton"></div>',
-  id: '<div class="table-skeleton"></div>',
-  amount: '<div class="table-skeleton"></div>',
-  accountName: '<div class="table-skeleton"></div>',
-});
+interface SkeletonTransactionRow {
+  fullId: string;
+  type: string;
+  category: string;
+  accountId: string;
+  date: string;
+  id: string;
+  amount: string;
+  accountName: string;
+}
+
+export const skeletonData = Array(10)
+  .fill(null)
+  .map((_, index) => ({
+    fullId: `<div class="table-skeleton skeleton-${index}"></div>`,
+    type: `<div class="table-skeleton skeleton-${index}"></div>`,
+    category: `<div class="table-skeleton skeleton-${index}"></div>`,
+    accountId: `<div class="table-skeleton skeleton-${index}"></div>`,
+    date: `<div class="table-skeleton skeleton-${index}"></div>`,
+    id: `<div class="table-skeleton skeleton-${index}"></div>`,
+    amount: `<div class="table-skeleton skeleton-${index}"></div>`,
+    accountName: `<div class="table-skeleton skeleton-${index}"></div>`,
+  })) as unknown as TransactionRow[];
 
 // TAB LIST
 export const tabListItems: TabListItem[] = [
