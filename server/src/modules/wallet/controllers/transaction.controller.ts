@@ -1,9 +1,9 @@
-import { ExposeEnumDto } from '@common/types';
+import { DeleteResourceResponse, ExposeEnumDto } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { TransactionService } from '../services/transaction.service';
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     Transaction,
@@ -122,5 +122,41 @@ export class TransactionController {
     ): Promise<TransactionWithAccount> {
         const { id: userId } = currentUser;
         return this.transactionService.createTransactionByAccountId(userId, accountId, createTransactionDto);
+    }
+
+    @Delete(':accountId/transactions/:transactionId')
+    @ApiOperation({
+        summary: 'Delete account transaction',
+        description: 'Delete a transaction for the specific account',
+    })
+    @ApiParam({
+        required: true,
+        name: 'accountId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the account to be updated with the new transaction.',
+    })
+    @ApiParam({
+        required: true,
+        name: 'transactionId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the transaction to be deleted.',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Returns the deleted transaction.',
+    })
+    async deleteTransactionByAccountId(
+        @Param('accountId') accountId: string,
+        @Param('transactionId') transactionId: string,
+        @UserInRequest() currentUser: UserResponseDto,
+    ): Promise<DeleteResourceResponse> {
+        const { id: userId } = currentUser;
+
+        await this.transactionService.deleteTransactionByAccountId(userId, accountId, transactionId);
+
+        return {
+            message: 'Transaction Deleted!',
+            details: `The transaction with id: {${transactionId}} has been deleted successfully.`,
+        };
     }
 }

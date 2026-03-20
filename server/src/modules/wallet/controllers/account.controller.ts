@@ -144,7 +144,7 @@ export class AccountController {
         await this.accountService.deleteAccountById(user.id!, accountId);
 
         return {
-            message: 'Account Deleted',
+            message: 'Account Deleted!',
             details: `The account with id: {${accountId}} has been deleted successfully.`,
         };
     }

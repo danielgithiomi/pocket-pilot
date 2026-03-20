@@ -50,6 +50,15 @@ export class TransactionsService {
     );
   }
 
+  deleteTransaction(accountId: string, transactionId: string) {
+    return this.transactionsMutation.deleteTransaction(accountId, transactionId).pipe(
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  }
+
   // HELPER FUNCTIONS
   private renderToast = (error: IStandardError) => {
     const { title, details } = error;

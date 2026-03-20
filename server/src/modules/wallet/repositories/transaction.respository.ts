@@ -20,6 +20,12 @@ export class TransactionRepository {
         });
     }
 
+    async getTransactionCountByAccountId(accountId: string): Promise<number> {
+        return this.db.transaction.count({
+            where: { accountId },
+        });
+    }
+
     async createNewTransactionAndUpdateBalance(
         accountId: string,
         transaction: CreateTransactionDto,
@@ -61,6 +67,12 @@ export class TransactionRepository {
             }
 
             return createdTransaction;
+        });
+    }
+
+    async deleteTransactionById(transactionId: string): Promise<void> {
+        await this.db.transaction.delete({
+            where: { id: transactionId },
         });
     }
 }

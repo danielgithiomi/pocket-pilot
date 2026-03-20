@@ -3,6 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { Account, Prisma, AccountType } from '@prisma/client';
 import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
+import { TransactionRepository } from '../repositories/transaction.respository';
 import { CreateAccountDto, AccountWithHolder, AccountWithTransactionsDto, AccountTypeDto } from '../dto/account.dto';
 import {
     Injectable,
@@ -17,6 +18,7 @@ export class AccountService {
     constructor(
         private readonly db: DatabaseService,
         private readonly accountRepository: AccountRepository,
+        private readonly transactionRepository: TransactionRepository,
     ) {}
 
     async getAccountTypes(): Promise<AccountTypeDto[]> {
@@ -67,14 +69,14 @@ export class AccountService {
 
             return await this.accountRepository.createNewAccount(userId, newAccountData);
         } catch (error) {
-            if (this.isPrismaUniqueConstraintError(error)) {
+            if (this.isPrismaError(error) === 'unique-constraint') {
                 throw new ConflictException({
                     name: 'ACCOUNT_NAME_CONFLICT',
                     title: 'Account Already Exists!',
-                    details: `You already have an account with the name: {${data.name}}.`,
+                    details: `You already have an account with the name: [${data.name}].`,
                 });
             }
-            console.error('Error creating account:', error);
+
             throw new InternalServerErrorException({
                 name: 'ACCOUNT_CREATION_FAILED',
                 title: 'Failed to create account!',
@@ -87,6 +89,14 @@ export class AccountService {
         const accounts: Account[] = await this.getUserAccounts(userId);
 
         const foundAccount = this.verifyAccountAndOwnership(accounts, userId, accountId);
+
+        if (await this.accountHasTransactions(foundAccount.id)) {
+            throw new ConflictException({
+                name: 'ACCOUNT_DELETE_FAILED',
+                title: 'Account Delete Failed!',
+                details: 'This account has transactions and cannot be deleted.',
+            });
+        }
 
         return this.db.account.delete({ where: { id: foundAccount.id, holderId: userId } });
     }
@@ -114,10 +124,22 @@ export class AccountService {
     }
 
     // HELPER FUNCTIONS
-    private isPrismaUniqueConstraintError(error: unknown): boolean {
+    private isPrismaError(error: unknown): string {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            return error.code === 'P2002';
+            switch (error.code) {
+                case 'P2002':
+                    return 'unique-constraint';
+                case 'P2003':
+                    return 'relation-constraint';
+                default:
+                    return 'unknown';
+            }
         }
-        return false;
+        return 'non-prisma';
+    }
+
+    private async accountHasTransactions(accountId: string): Promise<boolean> {
+        const accountTransactionCount = await this.transactionRepository.getTransactionCountByAccountId(accountId);
+        return accountTransactionCount > 0;
     }
 }
