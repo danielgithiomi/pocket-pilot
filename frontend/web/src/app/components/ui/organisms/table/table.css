@@ -8,7 +8,7 @@
 }
 
 .table-header {
-  @apply grid items-center bg-(--primary)/50 border-b border-(--secondary) p-4 font-medium text-sm text-(--primary-text);
+  @apply grid items-center bg-(--primary)/75 border-b border-(--secondary) p-4 font-medium text-sm text-(--primary-text);
 }
 
 .header-cell {

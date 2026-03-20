@@ -62,6 +62,7 @@
   --alternate-white: #f0f2f6;
 
   /* Alternative Colors */
+  --muted: #e5e7eb;
   --jet-black: #272d2d;
   --jungle-teal: #5b9279;
   --torch-red: #fb2b37;
@@ -80,6 +81,7 @@
   --primary-text: var(--dark);
   --alternate-text: var(--gray1);
   --inverted-text: var(--white);
+  --muted: var(--muted);
   --muted-text: var(--gray2);
 
   /* Font & Styles */
@@ -103,6 +105,7 @@
     --primary-text: var(--dark);
     --inverted-text: var(--white);
     --alternate-text: var(--gray1);
+    --muted: var(--muted);
     --muted-text: var(--gray2);
   }
 }
@@ -116,6 +119,7 @@
     --primary-text: var(--white);
     --inverted-text: var(--black);
     --alternate-text: var(--gray4);
+    --muted: var(--muted);
     --muted-text: var(--gray2);
   }
 }
@@ -148,6 +152,7 @@
   --color-primary-text: var(--primary-text);
   --color-alternate-text: var(--alternate-text);
   --color-inverted-text: var(--inverted-text);
+  --color-muted: var(--muted);
   --color-muted-text: var(--muted-text);
 }
 
@@ -183,14 +188,14 @@ main {
   header {
     @apply w-full bg-alternate-background inset-0 h-[8vh] flex flex-row items-center;
   }
-
   /* HEADER END */
+
   /* SECTION START */
   section {
     @apply w-full flex flex-col;
   }
-
   /* SECTION END */
+
   /* HEADINGS START */
   h1,
   h2 {

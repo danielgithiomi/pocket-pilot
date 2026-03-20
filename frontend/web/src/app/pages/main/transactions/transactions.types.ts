@@ -1,4 +1,5 @@
 import { min, required, schema, validate } from '@angular/forms/signals';
+import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
 import { CreateTransactionRequest, TransactionCategory, TransactionType } from '@global/types';
 
 // TABLE
@@ -63,3 +64,19 @@ export const skeletonData: TransactionRow[] = Array(10).fill({
   amount: '<div class="table-skeleton"></div>',
   accountName: '<div class="table-skeleton"></div>',
 });
+
+// TAB LIST
+export const tabListItems: TabListItem[] = [
+  {
+    value: 'all',
+    label: 'All',
+  },
+  {
+    value: 'income',
+    label: 'Income',
+  },
+  {
+    value: 'expense',
+    label: 'Expense',
+  },
+];

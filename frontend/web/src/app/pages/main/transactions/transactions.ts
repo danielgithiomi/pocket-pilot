@@ -7,6 +7,7 @@ import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
 import { Form } from '@components/ui/organisms/form/form';
 import { TransactionsService } from '@api/transactions.service';
+import { TabList } from '@components/ui/atoms/tab-list/tab-list';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
@@ -16,6 +17,7 @@ import { FetchError } from '@components/structural/main/fetch-error/fetch-error'
 import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
 import {
   skeletonData,
+  tabListItems,
   TransactionRow,
   TransactionSchema,
   initialTransactionFormState,
@@ -25,13 +27,14 @@ import {
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.html',
-  imports: [Button, LucideAngularModule, NoData, Form, Input, Select, Table, FetchError],
+  imports: [Button, LucideAngularModule, NoData, Form, Input, Select, Table, FetchError, TabList],
 })
 export class Transactions {
   // Icons
   protected readonly iconSize: number = 18;
   protected readonly Plus = ListFilterPlus;
   protected readonly skeletonData = skeletonData;
+  protected readonly tabListItems = tabListItems;
 
   // Services
   private readonly toastService = inject(ToastService);
@@ -48,6 +51,7 @@ export class Transactions {
   protected isDeleting = signal<boolean>(false);
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
+  protected activeTabIndex = signal<number>(0);
 
   // Computed
   protected isFetching = computed(() => {
@@ -69,6 +73,10 @@ export class Transactions {
   protected resetTransactionForm() {
     this.transactionForm().reset();
     this.transactionFormModel.set(initialTransactionFormState);
+  }
+
+  protected onTabSelected(index: number) {
+    this.activeTabIndex.set(index);
   }
 
   private reloadResources() {
