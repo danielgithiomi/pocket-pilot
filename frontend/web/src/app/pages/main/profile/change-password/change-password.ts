@@ -24,7 +24,7 @@ import {
       <p class="subtitle">Update your password to remain secure.</p>
     </div>
 
-    <div class="card-content">
+    <div class="card-content overflow-y-scroll no-scrollbar">
       <form id="change-password-form" (submit)="onSubmitChangePassword()">
         <!-- Start Hidden username for accessibility -->
         <input
