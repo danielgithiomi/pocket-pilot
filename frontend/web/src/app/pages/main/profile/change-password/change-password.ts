@@ -39,28 +39,34 @@ import {
         <atom-input
           type="password"
           id="current-password"
-          label="Current Password"
           placeholder="••••••••"
+          [invertedIcon]="true"
+          label="Current Password"
           autocomplete="current-password"
           [formField]="changePasswordForm.currentPassword"
+          inputClassName="bg-inverted-background text-inverted-text"
         />
 
         <atom-input
           type="password"
           id="new-password"
           label="New Password"
+          [invertedIcon]="true"
           placeholder="••••••••"
           autocomplete="new-password"
           [formField]="changePasswordForm.newPassword"
+          inputClassName="bg-inverted-background text-inverted-text"
         />
 
         <atom-input
-          id="confirm-new-password"
           type="password"
-          label="Confirm New Password"
+          [invertedIcon]="true"
           placeholder="••••••••"
+          id="confirm-new-password"
           autocomplete="new-password"
+          label="Confirm New Password"
           [formField]="changePasswordForm.confirmNewPassword"
+          inputClassName="bg-inverted-background text-inverted-text"
         />
       </form>
     </div>

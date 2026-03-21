@@ -13,12 +13,13 @@ import {
 } from '@libs/types';
 import { Button } from '@components/ui/atoms/button';
 import { Input } from '@components/ui/atoms/input';
+import { CheckedShield } from "@components/ui/atoms/icons";
 
 @Component({
   selector: 'app-register',
   styleUrl: './register.css',
   templateUrl: './register.html',
-  imports: [AuthBranding, FormField, Button, Input],
+  imports: [AuthBranding, FormField, Button, Input, CheckedShield],
 })
 export class Register {
   // SIGNALS

@@ -4,7 +4,7 @@
   </div>
 
   <div
-    class="page-container flex flex-col md:flex-row gap-6 pb-6"
+    class="page-container flex flex-col md:flex-row gap-6"
     [ngClass]="{
       'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
     }"
@@ -20,7 +20,7 @@
         <profile-summary (editProfileClicked)="isEditFormOpen.set(true)" />
       </div>
 
-      <div class="page-card flex-3">
+      <div class="page-card flex-4">
         <change-password [userEmail]="user.email" />
       </div>
     </div>
@@ -74,12 +74,57 @@
 
 <!-- Edit Profile Form -->
 @if (isEditFormOpen()) {
-  <app-form
+  <organism-form
     id="edit-profile"
     title="Edit Profile"
     [class.hidden]="!isEditFormOpen()"
     (closeForm)="isEditFormOpen.set(false)"
     description="Update your profile information"
   >
-  </app-form>
+    <form slot="content" id="edit-user-profile" (submit)="submitEditProfileForm($event)">
+      <atom-input
+        type="text"
+        id="update-name"
+        label="Full Name"
+        [inverted]="true"
+        autocomplete="name"
+        placeholder="John Doe"
+        [formField]="editProfileForm.name"
+        (clearOutput)="editProfileForm.name().controlValue.set('')"
+      />
+
+      <atom-input
+        type="email"
+        id="update-email"
+        [inverted]="true"
+        autocomplete="email"
+        label="Email Address"
+        placeholder="john.doe@example.com"
+        [formField]="editProfileForm.email"
+        (clearOutput)="editProfileForm.email().controlValue.set('')"
+      />
+
+      <atom-input
+        id="update-phone-number"
+        type="text"
+        [inverted]="true"
+        label="Phone Number"
+        placeholder="+123 4567890"
+        autocomplete="phone-number"
+        [formField]="editProfileForm.phoneNumber"
+        (clearOutput)="editProfileForm.phoneNumber().controlValue.set('')"
+      />
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      <atom-button
+        type="submit"
+        label="Update Profile"
+        form="edit-user-profile"
+        id="submit-edit-profile-form"
+        [isLoading]="isSubmittingEditProfileForm()"
+        [disabled]="editProfileForm().invalid() || isSubmittingEditProfileForm()"
+      />
+    </div>
+  </organism-form>
 }

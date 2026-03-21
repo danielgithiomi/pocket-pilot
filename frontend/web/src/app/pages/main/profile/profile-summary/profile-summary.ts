@@ -6,6 +6,7 @@ import { Component, inject, output } from '@angular/core';
 @Component({
   selector: 'profile-summary',
   imports: [ProfilePicture, Button],
+  templateUrl: './profile-summary.html',
   styles: `
     @reference 'tailwindcss';
 
@@ -13,7 +14,6 @@ import { Component, inject, output } from '@angular/core';
       @apply px-2 w-full h-full flex flex-row items-center gap-6;
     }
   `,
-  templateUrl: './profile-summary.html',
 })
 export class ProfileSummary {
 

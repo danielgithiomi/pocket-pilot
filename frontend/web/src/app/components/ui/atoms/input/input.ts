@@ -6,7 +6,6 @@ import { Component, input, signal, computed, output } from '@angular/core';
 
 @Component({
   selector: 'atom-input',
-  styleUrl: './input.css',
   templateUrl: './input.html',
   imports: [LucideAngularModule, FormField, NgClass],
 })
@@ -16,6 +15,10 @@ export class Input {
   label = input.required<string>();
   inverted = input<boolean>(false);
   allowEndIcon = input<boolean>(true);
+  invertLabel = input<boolean>(false);
+  invertedIcon = input<boolean>(false);
+
+  inputClassName = input<string>('');
 
   type = input<InputType>('text');
   placeholder = input.required<string>();
@@ -36,14 +39,12 @@ export class Input {
   protected isPasswordVisible = signal(false);
 
   /* COMPUTED */
+  fieldState = computed(() => this.formField()());
   inputId = computed<string>(() => `input-field-${this.id()}`);
-
   inputType = computed<InputType>(() => {
     if (this.type() !== 'password') return this.type();
     return this.isPasswordVisible() ? 'text' : 'password';
   });
-
-  fieldState = computed(() => this.formField()());
 
   /* METHODS */
   togglePasswordVisibility() {

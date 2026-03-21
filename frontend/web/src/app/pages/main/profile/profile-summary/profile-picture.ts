@@ -9,7 +9,7 @@ import { Component, computed, inject, input, signal } from '@angular/core';
     @reference 'tailwindcss';
 
     .profile-picture {
-      @apply relative size-30 bg-(--inverted-background) cursor-pointer rounded-full overflow-hidden hover:scale-101 transition-all duration-300;
+      @apply relative size-25 bg-(--inverted-background) cursor-pointer rounded-full overflow-hidden hover:scale-101 transition-all duration-300;
     }
 
     .overlay {
