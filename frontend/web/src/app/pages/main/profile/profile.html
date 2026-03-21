@@ -18,63 +18,8 @@
     >
       <div class="page-card"></div>
 
-      <div class="page-card grow flex flex-col justify-between">
-        <div class="card-header">
-          <p class="title">Change your password.</p>
-          <p class="subtitle">Update your password to remain secure.</p>
-        </div>
-
-        <div class="card-content">
-          <form id="change-password-form" (submit)="onSubmitChangePassword()">
-            <!-- Start Hidden username for accessibility -->
-            <input
-              type="text"
-              class="hidden"
-              name="username"
-              [value]="user.email"
-              autocomplete="username"
-            />
-            <!-- End of hidden username for accessibility -->
-
-            <atom-input
-              type="password"
-              id="current-password"
-              label="Current Password"
-              placeholder="••••••••"
-              autocomplete="current-password"
-              [formField]="changePasswordForm.currentPassword"
-            />
-
-            <atom-input
-              type="password"
-              id="new-password"
-              label="New Password"
-              placeholder="••••••••"
-              autocomplete="new-password"
-              [formField]="changePasswordForm.newPassword"
-            />
-
-            <atom-input
-              id="confirm-new-password"
-              type="password"
-              label="Confirm New Password"
-              placeholder="••••••••"
-              autocomplete="new-password"
-              [formField]="changePasswordForm.confirmNewPassword"
-            />
-          </form>
-        </div>
-
-        <div class="flex flex-row items-center justify-end w-full mt-6">
-          <atom-button
-            type="submit"
-            label="Change Password"
-            id="submit-change-password"
-            form="change-password-form"
-            [isLoading]="isSubmittingChangePassword()"
-            [disabled]="changePasswordForm().invalid() || isSubmittingChangePassword()"
-          />
-        </div>
+      <div class="page-card grow">
+        <change-password [userEmail]="user.email" />
       </div>
     </div>
 
