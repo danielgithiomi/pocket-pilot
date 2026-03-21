@@ -230,6 +230,13 @@ export class Transactions {
     const availableBalance: number =
       this.accounts.value()?.data?.data?.find((account) => account.id === accountId)?.balance ?? 0;
 
+    if (this.transactionsService.isNegativeBalance(availableBalance, transactionPayload))
+      this.toastService.show({
+        variant: 'warning',
+        title: 'Exceeded available balance!',
+        details: 'This transaction will result in a negative balance in your account.',
+      });
+
     setTimeout(() => {
       this.transactionsService
         .createTransaction(accountId, availableBalance, transactionPayload)
@@ -248,6 +255,6 @@ export class Transactions {
           error: (error) => console.error('Transaction creation failed:', error),
           complete: () => this.isSubmitting.set(false),
         });
-    }, 3000);
+    }, 3500);
   }
 }

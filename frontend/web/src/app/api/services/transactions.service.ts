@@ -34,13 +34,6 @@ export class TransactionsService {
     availableBalance: number,
     payload: CreateTransactionRequest,
   ) {
-    // Give warning if transaction would result in negative balance
-    if (this.isNegativeBalance(availableBalance, payload))
-      this.toastService.show({
-        variant: 'warning',
-        title: 'Exceeding available balance!',
-        details: 'This transaction would result in a negative account balance.',
-      });
 
     return this.transactionsMutation.createTransaction(accountId, payload).pipe(
       catchError((error: IStandardError) => {
@@ -69,7 +62,9 @@ export class TransactionsService {
     });
   };
 
-  private isNegativeBalance(availableBalance: number, payload: CreateTransactionRequest) {
-    return availableBalance > 0 && payload.amount! > availableBalance && payload.type === 'EXPENSE';
+  isNegativeBalance(availableBalance: number, payload: CreateTransactionRequest) {
+    return (
+      availableBalance >= 0 && payload.amount! > availableBalance && payload.type === 'EXPENSE'
+    );
   }
 }

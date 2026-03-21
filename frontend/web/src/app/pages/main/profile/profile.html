@@ -26,7 +26,7 @@
 
         <div class="card-content">
           <form id="change-password-form" (submit)="onSubmitChangePassword()">
-            <!-- Hidden username for accessibility -->
+            <!-- Start Hidden username for accessibility -->
             <input
               type="text"
               class="hidden"
@@ -34,10 +34,11 @@
               [value]="user.email"
               autocomplete="username"
             />
+            <!-- End of hidden username for accessibility -->
 
             <atom-input
-              id="current-password"
               type="password"
+              id="current-password"
               label="Current Password"
               placeholder="••••••••"
               autocomplete="current-password"
@@ -45,8 +46,8 @@
             />
 
             <atom-input
-              id="new-password"
               type="password"
+              id="new-password"
               label="New Password"
               placeholder="••••••••"
               autocomplete="new-password"
