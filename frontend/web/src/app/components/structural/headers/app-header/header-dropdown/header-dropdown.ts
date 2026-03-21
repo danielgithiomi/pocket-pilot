@@ -6,7 +6,7 @@ import { AuthService } from '@api/auth.service';
 import { Button } from '@components/ui/atoms/button';
 import { DrawerService } from '@infrastructure/services';
 import { Component, inject, signal } from '@angular/core';
-import { LucideAngularModule, Bell, Settings2, LogOut } from 'lucide-angular';
+import { LucideAngularModule, Bell, Settings2, LogOut, UserLock } from 'lucide-angular';
 
 @Component({
   selector: 'header-dropdown',
@@ -38,7 +38,15 @@ import { LucideAngularModule, Bell, Settings2, LogOut } from 'lucide-angular';
           />
         </div>
 
-        <div class="separator"></div>
+        <div class="separator mb-0!"></div>
+      </div>
+
+      <div class="dropdown-view-profile">
+        <div class="wrapper" aria-label="View profile" (click)="routeToProfile()">
+          <lucide-icon [img]="UserLock" [name]="UserLock" [size]="iconSize" class="profile-icon" />
+          <p class="to-profile-text">View Profile</p>
+        </div>
+        <div class="separator mt-2! mb-3!"></div>
       </div>
 
       <div class="dropdown-logout">
@@ -61,11 +69,17 @@ export class HeaderDropdown {
   protected readonly Bell = Bell;
   protected readonly iconSize = 20;
   protected readonly LogOut = LogOut;
+  protected readonly UserLock = UserLock;
   protected readonly Settings = Settings2;
   protected readonly router = inject(Router);
   protected readonly authService = inject(AuthService);
   protected readonly isLogoutLoading = signal<boolean>(false);
   protected readonly drawerService: DrawerService = inject(DrawerService);
+
+  protected routeToProfile(): void {
+    this.router.navigateByUrl(WEB_ROUTES.profile);
+    this.drawerService.closeDropDown();
+  }
 
   protected logout(): void {
     this.isLogoutLoading.set(true);

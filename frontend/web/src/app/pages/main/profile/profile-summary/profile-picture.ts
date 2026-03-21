@@ -9,7 +9,7 @@ import { Component, computed, inject, input, signal } from '@angular/core';
     @reference 'tailwindcss';
 
     .profile-picture {
-      @apply relative size-20 sm:size-25 bg-(--inverted-background) cursor-pointer rounded-full overflow-hidden hover:scale-101 transition-all duration-300;
+      @apply relative size-20 sm:size-25 bg-(--primary) cursor-pointer rounded-full overflow-hidden hover:scale-101 transition-all duration-300;
     }
 
     .overlay {
@@ -45,7 +45,7 @@ import { Component, computed, inject, input, signal } from '@angular/core';
         <img [src]="profilePictureUrl()" alt="Profile Picture" class="w-full h-full object-cover" />
       } @else {
         <div class="flex items-center justify-center h-full">
-          <p class="text-primary text-5xl">{{ initial() }}</p>
+          <p class="text-white text-5xl">{{ initial() }}</p>
         </div>
       }
     </div>
