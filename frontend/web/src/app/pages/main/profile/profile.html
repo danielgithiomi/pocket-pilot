@@ -17,7 +17,7 @@
       }"
     >
       <div class="page-card flex-1">
-        <profile-summary />
+        <profile-summary (editProfileClicked)="isEditFormOpen.set(true)" />
       </div>
 
       <div class="page-card flex-3">
@@ -71,3 +71,15 @@
     </div>
   </div>
 </section>
+
+<!-- Edit Profile Form -->
+@if (isEditFormOpen()) {
+  <app-form
+    id="edit-profile"
+    title="Edit Profile"
+    [class.hidden]="!isEditFormOpen()"
+    (closeForm)="isEditFormOpen.set(false)"
+    description="Update your profile information"
+  >
+  </app-form>
+}

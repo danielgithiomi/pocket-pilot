@@ -36,7 +36,7 @@
 }
 
 .table-cell {
-  @apply text-sm text-(--alternate-text) overflow-hidden rounded-xl line-clamp-1 truncate mr-2;
+  @apply text-sm text-(--alternate-text) overflow-hidden rounded-xl pr-1 line-clamp-1 truncate mr-2;
 }
 
 .actions-container {

@@ -1,7 +1,7 @@
 import { Button } from '@atoms/button';
 import { AuthService } from '@api/auth.service';
-import { Component, inject } from '@angular/core';
 import { ProfilePicture } from './profile-picture';
+import { Component, inject, output } from '@angular/core';
 
 @Component({
   selector: 'profile-summary',
@@ -13,24 +13,13 @@ import { ProfilePicture } from './profile-picture';
       @apply px-2 w-full h-full flex flex-row items-center gap-6;
     }
   `,
-  template: `
-    <profile-picture />
-
-    <!-- User Info -->
-    <div class="flex flex-col justify-between gap-2 h-30 grow">
-      <div>
-        <p class="text-primary text-lg font-semibold">{{ authService.user()?.name }}</p>
-        <p class="text-xs text-muted-text font-semibold">{{ authService.user()?.email }}</p>
-      </div>
-
-      <div class="flex flex-row items-center gap-4">
-        <atom-button id="go-to-edit-profile" label="Edit" />
-        <atom-button id="go-to-notifications" label="Notifications" />
-      </div>
-    </div>
-  `,
+  templateUrl: './profile-summary.html',
 })
 export class ProfileSummary {
+
+  // OUTPUTS
+  editProfileClicked = output<void>();
+
   // SERVICES
   protected readonly authService = inject(AuthService);
 }
