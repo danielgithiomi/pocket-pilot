@@ -2,7 +2,7 @@ import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
 import { UserRepository } from '../repositories/user.repository';
-import { FullUser, User, UserResponseDto } from '../dto/user.dto';
+import { FullUser, UpdateUserDto, User, UserResponseDto } from '../dto/user.dto';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -57,6 +57,11 @@ export class UserService {
             });
 
         return plainToInstance(UserResponseDto, user);
+    }
+
+    async updateUserById(userId: string, user: UpdateUserDto) {
+        const updatedUser = await this.userRepository.updateUserById(userId, user);
+        return plainToInstance(UserResponseDto, updatedUser);
     }
 
     // HELPER FUNCTIONS

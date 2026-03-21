@@ -1,10 +1,14 @@
 import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
+import { formatFullDate } from '@libs/utils';
 import { form } from '@angular/forms/signals';
+import { IAuthResponse } from '@global/types';
 import { AuthService } from '@api/auth.service';
+import { UserService } from '@api/user.service';
 import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
 import { DrawerService } from '@infrastructure/services';
+import { ToastService } from '@components/ui/atoms/toast';
 import { ProfileDetail } from './profile-detail/profile-detail';
 import { ChangePassword } from './change-password/change-password';
 import { ProfileSummary } from './profile-summary/profile-summary';
@@ -13,7 +17,6 @@ import {
   EditProfileSchema,
   editProfileFormValidationSchema,
 } from './profile-summary/profile-summary.types';
-import { formatDate, formatFullDate } from '@libs/utils';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +26,8 @@ import { formatDate, formatFullDate } from '@libs/utils';
 export class Profile {
   // SERVICES
   protected readonly authService = inject(AuthService);
+  protected readonly userService = inject(UserService);
+  protected readonly toastService = inject(ToastService);
   protected readonly drawerService: DrawerService = inject(DrawerService);
 
   // STATES
@@ -30,16 +35,16 @@ export class Profile {
   protected readonly isSubmittingEditProfileForm = signal(false);
 
   // DATA
-  protected readonly user = this.authService.user()!;
+  protected readonly user = this.authService.user;
   protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => ({
-    name: this.user.name,
-    email: this.user.email,
+    name: this.user()!.name,
+    email: this.user()!.email,
     phoneNumber: '+123 4567890',
   }));
 
   // COMPUTED
   protected readonly formattedDate = computed<string>(() => {
-    return formatFullDate(this.user.lastLoginAt.toString());
+    return formatFullDate(this.user()!.lastLoginAt.toString());
   });
   protected readonly isFetchingProfileData = computed(() => this.authService.isLoading());
 
@@ -61,7 +66,27 @@ export class Profile {
   protected submitEditProfileForm(event: Event) {
     event.preventDefault();
 
-    const { name, email, phoneNumber } = this.editProfileFormModel();
-    console.log(name, email, phoneNumber);
+    const { id } = this.user()!;
+    const { phoneNumber, ...payload } = this.editProfileFormModel();
+
+    this.isSubmittingEditProfileForm.set(true);
+
+    setTimeout(() => {
+      this.userService.update(id, payload).subscribe({
+        next: (user: IAuthResponse) => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Update Successful!',
+            details: 'Your profile has been updated successfully.',
+          });
+
+          // Update state & reset form
+          this.authService.refreshSession(user);
+          this.isEditFormOpen.set(false);
+          this.resetEditProfileForm();
+        },
+        complete: () => this.isSubmittingEditProfileForm.set(false),
+      });
+    }, 3500);
   }
 }

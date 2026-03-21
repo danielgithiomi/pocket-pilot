@@ -1,4 +1,4 @@
-import { User } from "@global/types";
+import { User } from "../types/user.types";
 
 // LOGIN
 export interface ILoginRequest {
@@ -7,10 +7,3 @@ export interface ILoginRequest {
 }
 
 export type IAuthResponse = User;
-
-// REGISTER
-export interface IRegisterRequest {
-  name: string;
-  email: string;
-  password: string;
-}

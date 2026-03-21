@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RegisterInputDto } from '../dto/auth.dto';
-import { FullUser, User, UserResponseDto } from '../dto/user.dto';
+import { FullUser, UpdateUserDto, UserResponseDto } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()
@@ -29,38 +29,11 @@ export class UserRepository {
         return this.db.user.findUnique({ where: { email } });
     }
 
+    async updateUserById(userId: string, data: UpdateUserDto): Promise<FullUser> {
+        return this.db.user.update({ where: { id: userId }, data });
+    }
+
     async deleteUserById(userId: string) {
         return this.db.user.delete({ where: { id: userId } });
-    }
-
-    async incrementFailedLoginAttempts(email: string): Promise<User> {
-        return await this.db.user.update({
-            where: { email },
-            data: {
-                failedLoginAttempts: {
-                    increment: 1,
-                },
-            },
-        });
-    }
-
-    async lockAccount(email: string): Promise<User> {
-        return await this.db.user.update({
-            where: { email },
-            data: {
-                isAccountLocked: true,
-            },
-        });
-    }
-
-    async resetFailedLoginAttemptsOnSuccessfulLogin(email: string): Promise<User> {
-        const now = new Date();
-        return await this.db.user.update({
-            where: { email },
-            data: {
-                lastLoginAt: now,
-                failedLoginAttempts: 0,
-            },
-        });
     }
 }

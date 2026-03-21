@@ -21,7 +21,7 @@
       </div>
 
       <div class="page-card flex-4">
-        <change-password [userEmail]="user.email" />
+        <change-password [userEmail]="user()?.email || ''" />
       </div>
     </div>
 
@@ -37,35 +37,35 @@
 
       <div class="card-content">
         <profile-detail
-          [isLoading]="isFetchingProfileData()"
           detailVariant="name"
-          [detailValue]="user.name"
+          [detailValue]="user()?.name"
+          [isLoading]="isFetchingProfileData()"
         />
         <profile-detail
-          [isLoading]="isFetchingProfileData()"
           detailVariant="email"
-          [detailValue]="user.email"
+          [detailValue]="user()?.email"
+          [isLoading]="isFetchingProfileData()"
         />
         <profile-detail
-          [isLoading]="isFetchingProfileData()"
           detailVariant="phone"
-          [detailValue]="user.id"
+          [detailValue]="user()?.id"
+          [isLoading]="isFetchingProfileData()"
         />
         <profile-detail
-          [isLoading]="isFetchingProfileData()"
+          detailValue="USER"
           detailVariant="role"
-          [detailValue]="user.updatedAt"
+          [isLoading]="isFetchingProfileData()"
         />
         <profile-detail
           detailVariant="status"
           [isLoading]="isFetchingProfileData()"
-          [detailValue]="user.isAccountLocked ? 'Locked' : 'Active'"
+          [detailValue]="user()?.isAccountLocked ? 'Locked' : 'Active'"
         />
         <profile-detail
-          [isLoading]="isFetchingProfileData()"
           [isLast]="true"
           detailVariant="last-login"
           [detailValue]="formattedDate()"
+          [isLoading]="isFetchingProfileData()"
         />
       </div>
     </div>

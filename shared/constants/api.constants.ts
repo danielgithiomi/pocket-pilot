@@ -7,9 +7,12 @@ export const CLEAR_SESSION_ERROR_NAME: Record<string, string> = {
 
 export const API_ENDPOINTS = {
   root: "",
+
+  // users
+  register: "users",
+
   // auth
   me: "auth/me",
-  register: "users",
   login: "auth/login",
   logout: "auth/logout",
 

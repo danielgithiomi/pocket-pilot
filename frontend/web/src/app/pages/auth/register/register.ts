@@ -1,3 +1,5 @@
+import { Input } from '@atoms/input';
+import { Button } from '@atoms/button';
 import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
 import { UserService } from '@api/user.service';
@@ -11,15 +13,12 @@ import {
   initialRegisterFormState,
   registerFormValidationSchema,
 } from '@libs/types';
-import { Button } from '@components/ui/atoms/button';
-import { Input } from '@components/ui/atoms/input';
-import { CheckedShield } from "@components/ui/atoms/icons";
 
 @Component({
   selector: 'app-register',
   styleUrl: './register.css',
   templateUrl: './register.html',
-  imports: [AuthBranding, FormField, Button, Input, CheckedShield],
+  imports: [AuthBranding, FormField, Button, Input],
 })
 export class Register {
   // SIGNALS

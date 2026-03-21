@@ -4,8 +4,8 @@ import { plainToInstance } from 'class-transformer';
 import { UserService } from '../services/user.service';
 import { DeleteResourceResponse } from '@common/types';
 import { CookiesService } from '../services/cookies.service';
-import { Body, Controller, Delete, Get, Param, Post, Res } from '@nestjs/common';
-import { CreateUserDto, UserResponseDto, UsersWithCountResponseDto } from '../dto/user.dto';
+import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
+import { CreateUserDto, UpdateUserDto, UserResponseDto, UsersWithCountResponseDto } from '../dto/user.dto';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('users')
@@ -54,6 +54,16 @@ export class UserController {
     @ApiOperation({ summary: 'Get user by ID', description: 'Retrieves a user by their unique identifier.' })
     findUserById(@Param('userId') userId: string) {
         return this.userService.findUserById(userId);
+    }
+    
+    @Put(':userId')
+    @ApiCookieAuth('access_token')
+    @ApiParam({ name: 'userId', description: 'The ID of the user to update' })
+    @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
+    @ApiResponse({ status: 200, description: 'User updated successfully', type: UserResponseDto })
+    @ApiOperation({ summary: 'Update user by ID', description: 'Updates a user by their unique identifier.' })
+    updateUserById(@Param('userId') userId: string, @Body() user: UpdateUserDto): Promise<UserResponseDto> {
+        return this.userService.updateUserById(userId, user);
     }
 
     @Delete(':userId')

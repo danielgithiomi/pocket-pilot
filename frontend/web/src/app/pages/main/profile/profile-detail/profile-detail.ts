@@ -20,7 +20,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
   template: ` <div
     id="profile-detail"
     class="profile-detail"
-    [ngClass]="{ 'border-b border-primary': !isLast() }"
+    [ngClass]="{ 'border-b border-muted-text': !isLast() }"
   >
     <div class="icon shrink-0">
       <lucide-icon
@@ -38,14 +38,31 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
         <div
           class="skeleton h-5"
           [ngClass]="{
-            'w-1/2': detailVariant() === 'name' || detailVariant() === 'email' || detailVariant() === 'last-login',
+            'w-1/2':
+              detailVariant() === 'name' ||
+              detailVariant() === 'email' ||
+              detailVariant() === 'last-login',
             'w-1/3': detailVariant() === 'phone',
-            'w-1/5': detailVariant() === 'role',
-            'w-1/6': detailVariant() === 'status',
+            'w-1/6': detailVariant() === 'role',
+            'w-1/5': detailVariant() === 'status',
           }"
         ></div>
       } @else {
-        <p class="value truncate-text">{{ detailValue() }}</p>
+        @switch (detailVariant()) {
+          @case ('status') {
+            <div class="bg-primary/50 py-0.5 px-3 rounded-full w-fit!">
+              <p class="value truncate-text">{{ detailValue() }}</p>
+            </div>
+          }
+          @case ('role') {
+            <div class="bg-muted-text/50 py-0.5 px-3 rounded-full w-fit!">
+              <p class="value truncate-text">{{ detailValue() }}</p>
+            </div>
+          }
+          @default {
+            <p class="value truncate-text">{{ detailValue() }}</p>
+          }
+        }
       }
     </div>
   </div>`,

@@ -16,12 +16,8 @@
     .wrapper {
       @apply p-2 hover:bg-(--muted-text) rounded-md transition-all duration-300 w-full flex flex-row items-center justify-start gap-3;
 
-      .profile-icon {
-        @apply text-(--inverted-text);
-      }
-
       .to-profile-text {
-        @apply text-sm text-(--inverted-text);
+        @apply text-sm;
       }
     }
   }

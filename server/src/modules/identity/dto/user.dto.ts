@@ -23,6 +23,18 @@ export class CreateUserDto {
     password!: string;
 }
 
+export class UpdateUserDto {
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    name!: string;
+
+    @IsEmail()
+    @IsNotEmpty()
+    @ApiProperty()
+    email!: string;
+}
+
 // OUTPUT DTOs
 export type User = Omit<FullUser, 'password'>;
 

@@ -36,7 +36,7 @@ export class AuthService {
 
   constructor() {
     // Get cached user from session storage
-    const cachedUser = sessionStorage.getItem(STORED_AUTH_USER_KEY);
+    const cachedUser = localStorage.getItem(STORED_AUTH_USER_KEY);
     if (cachedUser) {
       this.sessionLoaded.set(true);
       this.userSignal.set(JSON.parse(cachedUser));
@@ -133,6 +133,11 @@ export class AuthService {
   }
 
   // HELPER FUNCTIONS
+  refreshSession(user: User) {
+    this.clearSession();
+    this.createSession(user);
+  }
+  
   clearSession() {
     this.userSignal.set(null);
     localStorage.removeItem(STORED_AUTH_USER_KEY);
