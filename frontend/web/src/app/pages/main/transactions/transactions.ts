@@ -12,7 +12,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { TableColumn } from '@components/ui/organisms/table/table.types';
-import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
+import { IVoidResourceResponse, IStandardResponse } from '@global/types';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
 import {
@@ -179,7 +179,7 @@ export class Transactions {
     const { accountId, fullId: transactionId } = row;
 
     this.transactionsService.deleteTransaction(accountId, transactionId).subscribe({
-      next: (response: IStandardResponse<IDeletedResourceResponse>) => {
+      next: (response: IStandardResponse<IVoidResourceResponse>) => {
         const { message, details } = response.data;
         this.toastService.show({
           details,
@@ -213,7 +213,7 @@ export class Transactions {
 
   protected submitTransactionForm(event: Event) {
     event.preventDefault();
-    
+
     this.isSubmitting.set(true);
 
     const { accountId, ...transactionPayload } = this.transactionFormModel();

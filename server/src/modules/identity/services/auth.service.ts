@@ -91,6 +91,6 @@ export class AuthService {
     }
 
     private async validatePassword(password: string, hashedPassword: string): Promise<boolean> {
-        return argon.verify(hashedPassword, password);
+        return await argon.verify(hashedPassword, password);
     }
 }

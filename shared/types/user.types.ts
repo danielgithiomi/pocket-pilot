@@ -21,3 +21,8 @@ export interface IUpdateUserRequest {
   name: string;
   email: string;
 }
+
+export interface IChangePasswordRequest {
+  newPassword: string;
+  currentPassword: string;
+}

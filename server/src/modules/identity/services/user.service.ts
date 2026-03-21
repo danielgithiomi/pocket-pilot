@@ -2,9 +2,9 @@ import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
 import { UserRepository } from '../repositories/user.repository';
-import { FullUser, UpdateUserDto, User, UserResponseDto } from '../dto/user.dto';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ChangePasswordDto, FullUser, UpdateUserDto, User, UserResponseDto } from '../dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -51,9 +51,9 @@ export class UserService {
 
         if (!user)
             throw new NotFoundException({
-                name: 'User Not Found.',
-                title: 'User Not Found.',
-                details: `No user found with the ID: {${userId}}!`,
+                name: 'USER_NOT_FOUND!',
+                title: 'User Not Found!',
+                details: `No user found with the ID: [${userId}].`,
             });
 
         return plainToInstance(UserResponseDto, user);
@@ -64,9 +64,39 @@ export class UserService {
         return plainToInstance(UserResponseDto, updatedUser);
     }
 
+    async changePassword(userId: string, payload: ChangePasswordDto) {
+        const user: FullUser | null = await this.userRepository.findUserById(userId);
+
+        if (!user) {
+            throw new NotFoundException({
+                name: 'USER_NOT_FOUND!',
+                title: 'User Not Found!',
+                details: `No user found with the ID: [${userId}].`,
+            });
+        }
+
+        const passwordsMatch = await this.confirmOldPasswordMatch(user.password, payload.currentPassword);
+
+        if (!passwordsMatch) {
+            throw new ConflictException({
+                name: 'PASSWORD_MISMATCH',
+                title: 'Password mismatch!',
+                details: `Your old password does not match our records. Please try again.`,
+            });
+        }
+
+        const hashedPassword = await argon.hash(payload.newPassword);
+
+        await this.userRepository.updateUserPassword(userId, hashedPassword);
+    }
+
     // HELPER FUNCTIONS
     private async validateUserExists(email: string): Promise<boolean> {
         const user: User | null = await this.userRepository.findUserByEmail(email);
         return !!user;
+    }
+
+    private async confirmOldPasswordMatch(hashedPassword: string, password: string): Promise<boolean> {
+        return await argon.verify(hashedPassword, password);
     }
 }

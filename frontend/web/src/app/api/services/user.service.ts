@@ -10,6 +10,8 @@ import {
   IRegisterRequest,
   IStandardResponse,
   IUpdateUserRequest,
+  IChangePasswordRequest,
+  IVoidResourceResponse,
 } from '@global/types';
 
 @Injectable({
@@ -35,6 +37,18 @@ export class UserService {
   update(userId: string, payload: IUpdateUserRequest): Observable<IAuthResponse> {
     return this.mutation.update(userId, payload).pipe(
       map((response: IStandardResponse<IAuthResponse>) => {
+        return response.data;
+      }),
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  }
+
+  changePassword(userId: string, payload: IChangePasswordRequest): Observable<IVoidResourceResponse> {
+    return this.mutation.changePassword(userId, payload).pipe(
+      map((response: IStandardResponse<IVoidResourceResponse>) => {
         return response.data;
       }),
       catchError((error: IStandardError) => {

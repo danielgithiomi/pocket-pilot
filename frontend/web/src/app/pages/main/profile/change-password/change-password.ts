@@ -1,12 +1,16 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { form } from '@angular/forms/signals';
-import { Component, input, signal } from '@angular/core';
+import { UserService } from '@api/user.service';
+import { ToastService } from '@components/ui/atoms/toast';
+import { Component, inject, input, signal } from '@angular/core';
 import {
   ChangePasswordSchema,
   changePasswordValidationSchema,
   initialChangePasswordFormState,
 } from './change-password.types';
+import { AuthService } from '@api/auth.service';
+import { IVoidResourceResponse } from '@global/types';
 
 @Component({
   selector: 'change-password',
@@ -25,7 +29,7 @@ import {
     </div>
 
     <div class="card-content overflow-y-scroll no-scrollbar">
-      <form id="change-password-form" (submit)="onSubmitChangePassword()">
+      <form id="change-password-form" (submit)="onSubmitChangePassword($event)">
         <!-- Start Hidden username for accessibility -->
         <input
           type="text"
@@ -87,6 +91,11 @@ export class ChangePassword {
   // INPUTS
   userEmail = input.required<string>();
 
+  // SERVICES
+  private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
+  private readonly toastService = inject(ToastService);
+
   // STATES
   protected readonly isSubmittingChangePassword = signal<boolean>(false);
 
@@ -94,7 +103,36 @@ export class ChangePassword {
   protected changePasswordFormModel = signal<ChangePasswordSchema>(initialChangePasswordFormState);
   protected changePasswordForm = form(this.changePasswordFormModel, changePasswordValidationSchema);
 
-  protected onSubmitChangePassword() {
-    console.log('Submit change password');
+  // METHODS
+  private resetChangePasswordForm() {
+    this.changePasswordForm().reset();
+    this.changePasswordFormModel.set(initialChangePasswordFormState);
+  }
+
+  protected onSubmitChangePassword(event: Event) {
+    event.preventDefault();
+
+    const { id } = this.authService.user()!;
+    const { confirmNewPassword, ...payload } = this.changePasswordFormModel();
+
+    console.log(payload);
+
+    this.isSubmittingChangePassword.set(true);
+
+    setTimeout(() => {
+      this.userService.changePassword(id, payload).subscribe({
+        next: (reponse: IVoidResourceResponse) => {
+          const { message, details } = reponse;
+          this.toastService.show({
+            details,
+            title: message,
+            variant: 'success',
+          });
+
+          this.resetChangePasswordForm();
+        },
+        complete: () => this.isSubmittingChangePassword.set(false),
+      });
+    }, 3000);
   }
 }

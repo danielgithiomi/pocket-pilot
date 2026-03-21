@@ -33,6 +33,10 @@ export class UserRepository {
         return this.db.user.update({ where: { id: userId }, data });
     }
 
+    async updateUserPassword(userId: string, password: string): Promise<FullUser> {
+        return this.db.user.update({ where: { id: userId }, data: { password } });
+    }
+
     async deleteUserById(userId: string) {
         return this.db.user.delete({ where: { id: userId } });
     }

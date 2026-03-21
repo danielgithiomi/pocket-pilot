@@ -230,7 +230,7 @@ main {
   }
 
   hr {
-    @apply flex-1 border border-muted;
+    @apply flex-1 border border-muted-text;
   }
 
   form {

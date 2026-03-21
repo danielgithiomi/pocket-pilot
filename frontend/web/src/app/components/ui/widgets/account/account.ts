@@ -3,7 +3,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { AccountType, IDeletedResourceResponse, IStandardResponse } from '@global/types';
+import { AccountType, IVoidResourceResponse, IStandardResponse } from '@global/types';
 import {
   Nfc,
   Trash,
@@ -66,7 +66,7 @@ export class Account {
 
     setTimeout(() => {
       this.accountsService.deleteAccountById(this.id()).subscribe({
-        next: (response: IStandardResponse<IDeletedResourceResponse>) => {
+        next: (response: IStandardResponse<IVoidResourceResponse>) => {
           this.toastService.show({
             variant: 'success',
             title: 'Account deleted successfully',
