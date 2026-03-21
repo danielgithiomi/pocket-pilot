@@ -32,6 +32,7 @@ export class Dashboard {
 
   // Data
   protected readonly accounts = this.accountsService.getUserAccounts();
+  protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
 
   // States
@@ -75,11 +76,11 @@ export class Dashboard {
   protected readonly netCashFlow = computed(() => {
     const revenue = Number(this.totalRevenue());
     const expenses = Number(this.totalExpenses());
-    return formatCurrency(revenue + expenses);
+    return formatCurrency(revenue + expenses, this.currency, true, false);
   });
 
   // Methods
   protected formatCurrency(value: string) {
-    return formatCurrency(Number(value));
+    return formatCurrency(Number(value), this.currency, true, false);
   }
 }

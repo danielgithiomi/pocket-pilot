@@ -27,7 +27,7 @@
 
     <!-- Right Column - Profile Details -->
     <div
-      class="page-card w-full md:w-1/2"
+      class="page-card flex-1 w-full md:w-1/2"
       [ngClass]="{ 'md:w-full lg:w-1/2': !drawerService.isDrawerCollapsed() }"
     >
       <div class="card-header">
@@ -57,15 +57,15 @@
           [detailValue]="user.updatedAt"
         />
         <profile-detail
-          [isLoading]="isFetchingProfileData()"
           detailVariant="status"
+          [isLoading]="isFetchingProfileData()"
           [detailValue]="user.isAccountLocked ? 'Locked' : 'Active'"
         />
         <profile-detail
           [isLoading]="isFetchingProfileData()"
           [isLast]="true"
           detailVariant="last-login"
-          [detailValue]="user.createdAt"
+          [detailValue]="formattedDate()"
         />
       </div>
     </div>

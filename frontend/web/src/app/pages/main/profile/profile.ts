@@ -13,6 +13,7 @@ import {
   EditProfileSchema,
   editProfileFormValidationSchema,
 } from './profile-summary/profile-summary.types';
+import { formatDate, formatFullDate } from '@libs/utils';
 
 @Component({
   selector: 'app-profile',
@@ -37,6 +38,9 @@ export class Profile {
   }));
 
   // COMPUTED
+  protected readonly formattedDate = computed<string>(() => {
+    return formatFullDate(this.user.lastLoginAt.toString());
+  });
   protected readonly isFetchingProfileData = computed(() => this.authService.isLoading());
 
   // FORM

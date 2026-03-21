@@ -43,6 +43,7 @@ export class Transactions {
 
   // Data
   protected readonly accounts = this.accountsService.getUserAccounts();
+  protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
   protected readonly transactionTypes = this.transactionsService.getTransactionTypes();
   protected readonly transactionCategories = this.transactionsService.getTransactionCategories();
@@ -167,8 +168,8 @@ export class Transactions {
         accountId: transaction.account.id,
         date: formatDate(transaction.date),
         id: splitTransactionId(transaction.id),
-        amount: formatCurrency(transaction.amount),
         accountName: capitalize(transaction.account.name),
+        amount: formatCurrency(transaction.amount, this.currency, true, false),
       })) || skeletonData
     );
   });

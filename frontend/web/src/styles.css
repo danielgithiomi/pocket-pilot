@@ -363,6 +363,10 @@ main {
     @apply flex w-px bg-inverted-background;
   }
 
+  .truncate-text {
+    @apply w-full overflow-hidden truncate line-clamp-1;
+  }
+
   /* ANIMATIONS START */
   .animate-left {
     animation: slideLeft 750ms ease-out forwards;

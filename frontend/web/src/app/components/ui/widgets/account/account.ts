@@ -11,6 +11,7 @@ import {
   LucideAngularModule,
   FingerprintPattern,
 } from 'lucide-angular';
+import { formatCurrency } from '@libs/utils';
 
 @Component({
   selector: 'account-card',
@@ -21,7 +22,6 @@ import {
 export class Account {
   // Inputs
   id = input.required<string>();
-  currency = input<string>('MUR');
   name = input.required<string>();
   balance = input.required<number>();
   type = input.required<AccountType>();
@@ -49,9 +49,12 @@ export class Account {
   private readonly toastService = inject(ToastService);
   private readonly accountsService = inject(AccountsService);
 
+  // Data
+  protected readonly currency = this.accountsService.getDefaultCurrency();
+
   // Computed signals
-  accountId = computed(() => `account-${this.id()}`);
-  formattedBalance = computed(() => `${this.balance().toFixed(2)}`);
+  protected accountId = computed(() => `account-${this.id()}`);
+  protected formattedBalance = computed(() => formatCurrency(this.balance(), this.currency));
 
   // Methods
   toggleOptions() {

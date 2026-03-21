@@ -22,7 +22,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
     class="profile-detail"
     [ngClass]="{ 'border-b border-primary': !isLast() }"
   >
-    <div class="icon">
+    <div class="icon shrink-0">
       <lucide-icon
         [size]="18"
         [strokeWidth]="2.5"
@@ -45,7 +45,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
           }"
         ></div>
       } @else {
-        <p class="value">{{ detailValue() }}</p>
+        <p class="value truncate-text">{{ detailValue() }}</p>
       }
     </div>
   </div>`,

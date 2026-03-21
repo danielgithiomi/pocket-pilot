@@ -11,12 +11,11 @@ import { Component, inject, output } from '@angular/core';
     @reference 'tailwindcss';
 
     :host {
-      @apply px-2 w-full h-full flex flex-row items-center gap-6;
+      @apply px-2 w-full h-full flex flex-row items-center gap-6 overflow-hidden;
     }
   `,
 })
 export class ProfileSummary {
-
   // OUTPUTS
   editProfileClicked = output<void>();
 
