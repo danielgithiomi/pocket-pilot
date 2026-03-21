@@ -39,7 +39,7 @@
     }
 
     #content {
-      @apply flex-1 overflow-y-auto w-full p-5;
+      @apply flex-1 overflow-y-auto w-full p-5 pr-3;
     }
   }
 

@@ -4,7 +4,7 @@
   </div>
 
   <div
-    class="page-container flex flex-col md:flex-row gap-4"
+    class="page-container flex flex-col md:flex-row gap-6 pb-6"
     [ngClass]="{
       'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
     }"
@@ -16,9 +16,11 @@
         'md:w-full': !drawerService.isDrawerCollapsed(),
       }"
     >
-      <div class="page-card"></div>
+      <div class="page-card flex-1">
+        <profile-summary />
+      </div>
 
-      <div class="page-card grow">
+      <div class="page-card flex-3">
         <change-password [userEmail]="user.email" />
       </div>
     </div>

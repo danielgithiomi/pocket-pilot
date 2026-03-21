@@ -299,7 +299,7 @@ main {
       @apply w-full;
 
       .page-card {
-        @apply relative bg-(--alternate-background)/75 overflow-hidden rounded-xl p-4 shadow-[0_1px_2px_var(--inverted-background)] hover:shadow-[0_1px_4px_var(--inverted-background)] transition-all duration-300;
+        @apply relative bg-(--alternate-background)/75 overflow-hidden rounded-xl p-4 shadow-[0_1px_2px_var(--primary)] hover:shadow-[0_1px_4px_var(--primary)] transition-all duration-300;
         backdrop-filter: blur(25px);
 
         .card-header {
@@ -371,6 +371,10 @@ main {
   .animate-right {
     animation: slideRight 750ms ease-out forwards;
   }
+
+  .animate-fade-in {
+    animation: fadeIn 200ms ease-in-out;
+  }
   /* ANIMATIONS END */
 }
 
@@ -436,6 +440,15 @@ main {
   }
   to {
     transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
     opacity: 1;
   }
 }

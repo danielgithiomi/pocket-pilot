@@ -4,11 +4,12 @@ import { DrawerService } from '@infrastructure/services';
 import { Component, computed, inject } from '@angular/core';
 import { ProfileDetail } from './profile-detail/profile-detail';
 import { ChangePassword } from './change-password/change-password';
+import { ProfileSummary } from './profile-summary/profile-summary';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.html',
-  imports: [ProfileDetail, NgClass, ChangePassword],
+  imports: [ProfileDetail, NgClass, ChangePassword, ProfileSummary],
 })
 export class Profile {
   protected readonly authService = inject(AuthService);
