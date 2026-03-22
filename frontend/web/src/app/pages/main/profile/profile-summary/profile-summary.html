@@ -8,6 +8,11 @@
   </div>
 
   <div class="flex flex-row items-center justify-start gap-4">
-    <atom-button id="go-to-edit-profile" label="Edit Profile" (click)="editProfileClicked.emit()" />
+    <atom-button
+      label="Edit Profile"
+      id="go-to-edit-profile"
+      [disabled]="isFetching()"
+      (click)="editProfileClicked.emit()"
+    />
   </div>
 </div>

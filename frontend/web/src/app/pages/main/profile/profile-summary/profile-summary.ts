@@ -1,7 +1,7 @@
 import { Button } from '@atoms/button';
 import { AuthService } from '@api/auth.service';
 import { ProfilePicture } from './profile-picture';
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 
 @Component({
   selector: 'profile-summary',
@@ -16,6 +16,10 @@ import { Component, inject, output } from '@angular/core';
   `,
 })
 export class ProfileSummary {
+
+  // INPUTS
+  isFetching = input<boolean>(false);
+
   // OUTPUTS
   editProfileClicked = output<void>();
 

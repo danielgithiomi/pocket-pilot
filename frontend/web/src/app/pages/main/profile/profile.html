@@ -17,7 +17,10 @@
       }"
     >
       <div class="page-card flex-1">
-        <profile-summary (editProfileClicked)="isEditFormOpen.set(true)" />
+        <profile-summary
+          [isFetching]="isFetchingProfileData()"
+          (editProfileClicked)="isEditFormOpen.set(true)"
+        />
       </div>
 
       <div class="page-card flex-4">
