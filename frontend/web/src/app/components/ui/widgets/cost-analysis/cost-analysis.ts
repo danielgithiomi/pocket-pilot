@@ -118,7 +118,7 @@ const DEFAULT_CATEGORIES: SpendingCategory[] = [
 
       <!-- Total Amount -->
       <div class="total-amount">
-        {{ formattedTotal() }}
+        {{ totalMonthlySpending() }}
       </div>
 
       <!-- Segmented Progress Bar -->
@@ -126,10 +126,9 @@ const DEFAULT_CATEGORIES: SpendingCategory[] = [
         @for (segment of animatedSegments(); track segment.id; let i = $index) {
           <div
             class="progress-segment"
-            [style.width.%]="segment.animatedPercentage"
-            [style.--segment-color]="segment.color"
-            [style.--stripe-color]="getStripeColor(segment.color)"
             [class.first]="i === 0"
+            [style.--segment-color]="segment.color"
+            [style.width.%]="segment.animatedPercentage"
             [class.last]="i === animatedSegments().length - 1"
           >
             <div class="stripe-pattern"></div>
@@ -154,6 +153,7 @@ const DEFAULT_CATEGORIES: SpendingCategory[] = [
 })
 export class CostAnalysis {
   // Inputs
+  readonly totalMonthlySpending = input.required<string>();
   readonly categories = input<SpendingCategory[]>(DEFAULT_CATEGORIES);
 
   /** Currency symbol */
@@ -270,12 +270,6 @@ export class CostAnalysis {
         this.animateSegments(categories, duration);
       }
     });
-  }
-
-  /** Generate stripe overlay color (lighter version of base) */
-  getStripeColor(baseColor: string): string {
-    // Create a slightly lighter/transparent version for stripes
-    return `${baseColor}50`; // 50% opacity
   }
 
   /** Handle month dropdown change */

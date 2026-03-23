@@ -109,17 +109,17 @@
       <!-- Analysis Card -->
       <dashboard-card
         id="analysis"
-        class="col-span-1 md:col-span-2"
         [icon]="ratioIcon"
         [isLoading]="false"
-        title="Expense Analysis"
-        subtitle="Your spending analysis"
+        title="Spending Analysis"
+        class="col-span-1 md:col-span-2"
+        subtitle="Your monthly spending analysis"
       >
         <div custom-content class="min-h-[350px] w-full grid place-items-center">
           @if (isDataLoading()) {
             <div class="analysis-loader"></div>
           } @else {
-            <widget-cost-analysis />
+            <widget-cost-analysis [totalMonthlySpending]="formatCurrency(totalExpenses().toString())" />
           }
         </div>
       </dashboard-card>
