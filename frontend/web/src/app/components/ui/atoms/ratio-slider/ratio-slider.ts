@@ -47,7 +47,7 @@ const DEFAULT_COLORS: RatioSliderColors = {
 };
 
 @Component({
-  selector: 'ratio-slider',
+  selector: 'atom-ratio-slider',
   template: `
     <div class="ratio-slider-card">
       <!-- SVG Circular Progress -->

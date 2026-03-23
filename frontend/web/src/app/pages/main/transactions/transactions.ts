@@ -169,7 +169,7 @@ export class Transactions {
         date: formatDate(transaction.date),
         id: splitTransactionId(transaction.id),
         accountName: capitalize(transaction.account.name),
-        amount: formatCurrency(transaction.amount, this.currency, true, false),
+        amount: formatCurrency(transaction.amount, this.currency, 2, true, false),
       })) || skeletonData
     );
   });

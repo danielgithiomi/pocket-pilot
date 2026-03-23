@@ -132,6 +132,7 @@
   --color-tertiary: var(--tertiary);
   --color-quaternary: var(--quaternary);
 
+  --color-muted: var(--muted);
   --color-loader-primary: var(--loader-primary);
 
   /* State */

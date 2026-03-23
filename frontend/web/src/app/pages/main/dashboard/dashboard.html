@@ -54,6 +54,23 @@
         subtitle="Total expenses this month"
         [value]="formatCurrency(totalExpenses().toString())"
       />
+
+      <!-- Spending Limits -->
+      <dashboard-card
+        id="spending-limits"
+        title="Spending Limit"
+        [icon]="spendingLimitIcon"
+        [isLoading]="isDataLoading()"
+        subtitle="Your monthly spending limit"
+      >
+        <div custom-content class="w-full grid place-items-center">
+          @if (isDataLoading()) {
+            <div class="loader"></div>
+          } @else {
+            <atom-progress-bar [maxValue]="maximumSpendingLimit()" [currentValue]="60" />
+          }
+        </div>
+      </dashboard-card>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -71,7 +88,7 @@
             <div class="loader"></div>
           } @else {
             <div class="flex flex-row md:flex-col items-center gap-6 md:gap-0">
-              <ratio-slider [value]="90" [size]="150" />
+              <atom-ratio-slider [value]="90" [size]="150" />
 
               <div class="legend">
                 <div class="legend-item justify-start">

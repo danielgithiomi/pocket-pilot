@@ -1,5 +1,6 @@
 import { formatCurrency } from '@libs/utils';
 import { RatioSlider } from '@atoms/ratio-slider';
+import { ProgressBar } from '@atoms/progress-bar';
 import { AccountsService } from '@api/accounts.service';
 import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
@@ -11,6 +12,7 @@ import {
   TrendingUp,
   TrendingDown,
   ArrowLeftRight,
+  BrickWallShield,
   LucideAngularModule,
 } from 'lucide-angular';
 
@@ -18,7 +20,7 @@ import {
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
-  imports: [DashboardCard, LucideAngularModule, RatioSlider],
+  imports: [DashboardCard, LucideAngularModule, RatioSlider, ProgressBar],
 })
 export class Dashboard {
   // Icons
@@ -28,6 +30,7 @@ export class Dashboard {
   protected readonly handCoinsIcon = HandCoins;
   protected readonly expenseIcon = TrendingDown;
   protected readonly transactionIcon = ArrowLeftRight;
+  protected readonly spendingLimitIcon = BrickWallShield;
 
   // Services
   private readonly accountsService = inject(AccountsService);
@@ -37,6 +40,9 @@ export class Dashboard {
   protected readonly accounts = this.accountsService.getUserAccounts();
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
+
+  // Signals
+  protected readonly maximumSpendingLimit = this.accountsService.getMaximumSpendingLimit();
 
   // States
   protected readonly isDataLoading = computed(
@@ -75,7 +81,7 @@ export class Dashboard {
   protected readonly netCashFlow = computed(() => {
     const revenue = this.totalRevenue();
     const expenses = this.totalExpenses();
-    return formatCurrency(revenue + expenses, this.currency, true, false);
+    return formatCurrency(revenue + expenses, this.currency, 2, true, false);
   });
 
   protected readonly spendingRatio = computed<number>(() => {
@@ -91,6 +97,6 @@ export class Dashboard {
 
   // Methods
   protected formatCurrency(value: string) {
-    return formatCurrency(Number(value), this.currency, true, false);
+    return formatCurrency(Number(value), this.currency, 2, true, false);
   }
 }

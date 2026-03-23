@@ -1,0 +1,135 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.spending-card {
+  @apply w-full flex flex-row items-center gap-4;
+}
+
+.spending-card.vertical {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  min-height: 200px;
+}
+
+.spending-card.vertical .header {
+  flex-direction: column;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.progress-container {
+  @apply grow;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.edit-icon {
+  @apply cursor-pointer text-(--muted-text) hover:text-(--primary);
+}
+
+.progress-container.vertical {
+  flex: 1;
+  flex-direction: row;
+  gap: 0.75rem;
+}
+
+.progress-track {
+  height: 1.75rem;
+  overflow: hidden;
+  position: relative;
+  border-radius: 0.25rem;
+  border: 0.5px solid var(--primary);
+}
+
+.progress-container.vertical .progress-track {
+  width: 2.5rem;
+  height: 100%;
+  min-height: 120px;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  width: var(--progress);
+  border-radius: 0.25rem 0 0 0.25rem;
+  background-color: var(--fill-color);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-fill.vertical {
+  left: 0;
+  bottom: 0;
+  top: auto;
+  width: 100%;
+  height: var(--progress);
+  border-radius: 0 0 0.25rem 0.25rem;
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stripe-pattern {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 5px,
+    var(--stripe-color) 5px,
+    var(--stripe-color) 10px
+  );
+}
+
+.percentage-badge {
+  @apply shadow-lg rounded-full;
+  top: 50%;
+  left: 50%;
+  font-weight: 600;
+  font-size: 0.65rem;
+  position: absolute;
+  white-space: nowrap;
+  padding: 0.05rem 0.3rem;
+  transform: translate(-50%, -50%);
+  background: var(--body-background);
+}
+
+.percentage-badge.vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  padding: 0.5rem 0.125rem;
+}
+
+.value-labels {
+  @apply text-xs;
+  display: flex;
+  justify-content: space-between;
+}
+
+.value-labels.vertical {
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 120px;
+}
+
+.current-value {
+  @apply font-semibold;
+}
+
+.max-value {
+  @apply font-normal opacity-80;
+}
