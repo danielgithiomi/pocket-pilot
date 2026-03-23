@@ -8,3 +8,21 @@ export interface User {
   isAccountLocked: boolean;
   failedLoginAttempts: number;
 }
+
+// REGISTER
+export interface IRegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
+// UPDATE
+export interface IUpdateUserRequest {
+  name: string;
+  email: string;
+}
+
+export interface IChangePasswordRequest {
+  newPassword: string;
+  currentPassword: string;
+}

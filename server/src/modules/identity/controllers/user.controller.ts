@@ -2,11 +2,17 @@ import type { Response } from 'express';
 import { Summary } from '@common/decorators';
 import { plainToInstance } from 'class-transformer';
 import { UserService } from '../services/user.service';
-import { DeleteResourceResponse } from '@common/types';
+import { VoidResourceResponse } from '@common/types';
 import { CookiesService } from '../services/cookies.service';
-import { Body, Controller, Delete, Get, Param, Post, Res } from '@nestjs/common';
-import { CreateUserDto, UserResponseDto, UsersWithCountResponseDto } from '../dto/user.dto';
+import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+    CreateUserDto,
+    UpdateUserDto,
+    UserResponseDto,
+    ChangePasswordDto,
+    UsersWithCountResponseDto,
+} from '../dto/user.dto';
 
 @Controller('users')
 @ApiUnauthorizedResponse({ description: 'Authentication required!' })
@@ -56,11 +62,39 @@ export class UserController {
         return this.userService.findUserById(userId);
     }
 
+    @Put(':userId')
+    @ApiCookieAuth('access_token')
+    @ApiParam({ name: 'userId', description: 'The ID of the user to update' })
+    @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
+    @ApiResponse({ status: 200, description: 'User updated successfully', type: UserResponseDto })
+    @ApiOperation({ summary: 'Update user by ID', description: 'Updates a user by their unique identifier.' })
+    updateUserById(@Param('userId') userId: string, @Body() user: UpdateUserDto): Promise<UserResponseDto> {
+        return this.userService.updateUserById(userId, user);
+    }
+
+    @Put(':userId/change-password')
+    @ApiCookieAuth('access_token')
+    @ApiParam({ name: 'userId', description: 'The ID of the user to update' })
+    @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
+    @ApiResponse({ status: 200, description: 'User updated successfully', type: UserResponseDto })
+    @ApiOperation({ summary: 'Update user by ID', description: 'Updates a user by their unique identifier.' })
+    async changePassword(
+        @Param('userId') userId: string,
+        @Body() payload: ChangePasswordDto,
+    ): Promise<VoidResourceResponse> {
+        await this.userService.changePassword(userId, payload);
+
+        return {
+            message: 'Password changed!',
+            details: 'Your password has been changed successfully.',
+        };
+    }
+
     @Delete(':userId')
     @ApiCookieAuth('access_token')
     @ApiParam({ name: 'userId', description: 'The ID of the user to delete' })
     @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
-    @ApiResponse({ status: 200, description: 'User deleted successfully', type: DeleteResourceResponse })
+    @ApiResponse({ status: 200, description: 'User deleted successfully', type: VoidResourceResponse })
     @ApiOperation({ summary: 'Delete user by ID', description: 'Deletes a user by their unique identifier.' })
     deleteUserById(@Param('userId') userId: string) {
         return this.userService.deleteUserById(userId);

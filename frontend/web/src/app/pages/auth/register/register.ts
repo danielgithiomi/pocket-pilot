@@ -1,3 +1,5 @@
+import { Input } from '@atoms/input';
+import { Button } from '@atoms/button';
 import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
 import { UserService } from '@api/user.service';
@@ -11,8 +13,6 @@ import {
   initialRegisterFormState,
   registerFormValidationSchema,
 } from '@libs/types';
-import { Button } from '@components/ui/atoms/button';
-import { Input } from '@components/ui/atoms/input';
 
 @Component({
   selector: 'app-register',

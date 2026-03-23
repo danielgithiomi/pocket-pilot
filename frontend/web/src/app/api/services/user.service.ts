@@ -1,11 +1,18 @@
 import { inject } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { ToastService } from '@atoms/toast';
-import { catchError, EMPTY, tap } from 'rxjs';
 import { AuthService } from '@api/auth.service';
-import { IRegisterRequest } from '@global/types';
 import { UserMutation } from '@methods/mutations';
-import { IAuthResponse, IStandardError, IStandardResponse } from '@global/types';
+import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
+import {
+  IAuthResponse,
+  IStandardError,
+  IRegisterRequest,
+  IStandardResponse,
+  IUpdateUserRequest,
+  IChangePasswordRequest,
+  IVoidResourceResponse,
+} from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +27,30 @@ export class UserService {
       tap((response: IStandardResponse<IAuthResponse>) =>
         this.authService.createSession(response.data),
       ),
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  }
+
+  update(userId: string, payload: IUpdateUserRequest): Observable<IAuthResponse> {
+    return this.mutation.update(userId, payload).pipe(
+      map((response: IStandardResponse<IAuthResponse>) => {
+        return response.data;
+      }),
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  }
+
+  changePassword(userId: string, payload: IChangePasswordRequest): Observable<IVoidResourceResponse> {
+    return this.mutation.changePassword(userId, payload).pipe(
+      map((response: IStandardResponse<IVoidResourceResponse>) => {
+        return response.data;
+      }),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

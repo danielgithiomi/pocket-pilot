@@ -4,7 +4,7 @@ import {
   IStandardResponse,
   TransactionWithAccount,
   CreateTransactionRequest,
-  IDeletedResourceResponse,
+  IVoidResourceResponse,
 } from '@global/types';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class TransactionsMutation {
   }
 
   deleteTransaction(accountId: string, transactionId: string) {
-    return this.client.delete<IStandardResponse<IDeletedResourceResponse>>(
+    return this.client.delete<IStandardResponse<IVoidResourceResponse>>(
       `accounts/${accountId}/transactions/${transactionId}`,
     );
   }

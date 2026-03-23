@@ -5,7 +5,7 @@ import {
   Account,
   IStandardResponse,
   CreateAccountRequest,
-  IDeletedResourceResponse,
+  IVoidResourceResponse,
 } from '@global/types';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class AccountsMutation {
   }
 
   deleteAccountById(accountId: string) {
-    return this.client.delete<IStandardResponse<IDeletedResourceResponse>>(
+    return this.client.delete<IStandardResponse<IVoidResourceResponse>>(
       `${endpoints.accounts}/${accountId}`,
     );
   }

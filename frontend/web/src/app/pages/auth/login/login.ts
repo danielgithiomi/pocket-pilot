@@ -1,6 +1,5 @@
 import { Button } from '@atoms/button';
 import { Router } from '@angular/router';
-import { Eye, EyeOff, LucideAngularModule } from 'lucide-angular';
 import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
 import { AuthService } from '@api/auth.service';
@@ -9,6 +8,7 @@ import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { IAuthResponse, IStandardResponse } from '@global/types';
+import { Eye, EyeOff, LucideAngularModule } from 'lucide-angular';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
 
@@ -42,8 +42,7 @@ export class Login {
     this.isPasswordVisible.set(!this.isPasswordVisible());
   };
 
-  routeToDashboard = () => this.router.navigate([WEB_ROUTES.dashboard]);
-  routeToRegistration = () => this.router.navigate([WEB_ROUTES.register]);
+  routeTo = (route: string) => this.router.navigate([route]);
 
   submitLoginForm = (event: Event) => {
     event.preventDefault();
@@ -61,7 +60,7 @@ export class Login {
             details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
           });
 
-          this.routeToDashboard();
+          this.routeTo(WEB_ROUTES.dashboard);
         },
         error: () => this.isSubmitting.set(false),
         complete: () => this.isSubmitting.set(false),

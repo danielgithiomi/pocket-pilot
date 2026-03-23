@@ -12,6 +12,16 @@
     @apply size-3 bg-(--inverted-background) rotate-45 -top-1 right-1.5 absolute;
   }
 
+  .dropdown-view-profile {
+    .wrapper {
+      @apply p-2 hover:bg-(--muted-text) rounded-md transition-all duration-300 w-full flex flex-row items-center justify-start gap-3;
+
+      .to-profile-text {
+        @apply text-sm;
+      }
+    }
+  }
+
   .dropdown-notifications {
     @apply flex flex-col w-full sm:hidden md:flex lg:hidden py-2;
   }

@@ -55,7 +55,7 @@ export interface IStandardError {
   statusCode: number;
 }
 
-export interface IDeletedResourceResponse {
+export interface IVoidResourceResponse {
   message: string;
   details: string;
 }

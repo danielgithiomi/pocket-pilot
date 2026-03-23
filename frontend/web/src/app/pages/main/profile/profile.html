@@ -3,9 +3,34 @@
     <h1 class="page-title">Profile</h1>
   </div>
 
-  <div class="page-container flex flex-row gap-4">
+  <div
+    class="page-container flex flex-col md:flex-row gap-6"
+    [ngClass]="{
+      'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
+    }"
+  >
+    <!-- Left Column - Profile Picture -->
     <div
-      class="page-card w-full md:w-1/2"
+      class="w-full md:w-1/2 flex-1 flex flex-col gap-6"
+      [ngClass]="{
+        'md:w-full': !drawerService.isDrawerCollapsed(),
+      }"
+    >
+      <div class="page-card flex-1">
+        <profile-summary
+          [isFetching]="isFetchingProfileData()"
+          (editProfileClicked)="isEditFormOpen.set(true)"
+        />
+      </div>
+
+      <div class="page-card flex-4">
+        <change-password [userEmail]="user()?.email || ''" />
+      </div>
+    </div>
+
+    <!-- Right Column - Profile Details -->
+    <div
+      class="page-card flex-1 w-full md:w-1/2"
       [ngClass]="{ 'md:w-full lg:w-1/2': !drawerService.isDrawerCollapsed() }"
     >
       <div class="card-header">
@@ -13,14 +38,96 @@
         <p class="subtitle">Your account details and information.</p>
       </div>
 
-      <div class="card-content p-2">
-        <profile-detail detailVariant="name" [detailValue]="user.name" />
-        <profile-detail detailVariant="email" [detailValue]="user.email" />
-        <profile-detail detailVariant="phone" [detailValue]="user.id" />
-        <profile-detail detailVariant="role" [detailValue]="user.updatedAt" />
-        <profile-detail detailVariant="status" [detailValue]="user.isAccountLocked ? 'Locked' : 'Active'" />
-        <profile-detail [isLast]="true" detailVariant="last-login" [detailValue]="user.createdAt" />
+      <div class="card-content">
+        <profile-detail
+          detailVariant="name"
+          [detailValue]="user()?.name"
+          [isLoading]="isFetchingProfileData()"
+        />
+        <profile-detail
+          detailVariant="email"
+          [detailValue]="user()?.email"
+          [isLoading]="isFetchingProfileData()"
+        />
+        <profile-detail
+          detailVariant="phone"
+          [detailValue]="defaultNumber"
+          [isLoading]="isFetchingProfileData()"
+        />
+        <profile-detail
+          detailValue="USER"
+          detailVariant="role"
+          [isLoading]="isFetchingProfileData()"
+        />
+        <profile-detail
+          detailVariant="status"
+          [isLoading]="isFetchingProfileData()"
+          [detailValue]="user()?.isAccountLocked ? 'Locked' : 'Active'"
+        />
+        <profile-detail
+          [isLast]="true"
+          detailVariant="last-login"
+          [detailValue]="formattedDate()"
+          [isLoading]="isFetchingProfileData()"
+        />
       </div>
     </div>
   </div>
 </section>
+
+<!-- Edit Profile Form -->
+@if (isEditFormOpen()) {
+  <organism-form
+    id="edit-profile"
+    title="Edit Profile"
+    [class.hidden]="!isEditFormOpen()"
+    (closeForm)="isEditFormOpen.set(false)"
+    description="Update your profile information"
+  >
+    <form slot="content" id="edit-user-profile" (submit)="submitEditProfileForm($event)">
+      <atom-input
+        type="text"
+        id="update-name"
+        label="Full Name"
+        [inverted]="true"
+        autocomplete="name"
+        placeholder="John Doe"
+        [formField]="editProfileForm.name"
+        (clearOutput)="editProfileForm.name().controlValue.set('')"
+      />
+
+      <atom-input
+        type="email"
+        id="update-email"
+        [inverted]="true"
+        autocomplete="email"
+        label="Email Address"
+        placeholder="john.doe@example.com"
+        [formField]="editProfileForm.email"
+        (clearOutput)="editProfileForm.email().controlValue.set('')"
+      />
+
+      <atom-input
+        id="update-phone-number"
+        type="text"
+        [inverted]="true"
+        label="Phone Number"
+        placeholder="+123 4567890"
+        autocomplete="phone-number"
+        [formField]="editProfileForm.phoneNumber"
+        (clearOutput)="editProfileForm.phoneNumber().controlValue.set('')"
+      />
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      <atom-button
+        type="submit"
+        label="Update Profile"
+        form="edit-user-profile"
+        id="submit-edit-profile-form"
+        [isLoading]="isSubmittingEditProfileForm()"
+        [disabled]="editProfileForm().invalid() || isSubmittingEditProfileForm()"
+      />
+    </div>
+  </organism-form>
+}

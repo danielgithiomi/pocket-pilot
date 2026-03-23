@@ -48,7 +48,7 @@ export class MessageResponse {
     message!: string;
 }
 
-export class DeleteResourceResponse {
+export class VoidResourceResponse {
     @ApiProperty({ description: 'Message', example: 'Resource deleted successfully.' })
     message!: string;
 

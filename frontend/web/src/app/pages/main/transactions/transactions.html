@@ -37,7 +37,7 @@
               (selectedIndex)="onTabSelected($event)"
             />
           </div>
-          
+
           <organism-table
             [isLoading]="isFetching()"
             [columns]="transactionColumns"
@@ -52,7 +52,7 @@
 </section>
 
 @if (isFormOpen()) {
-  <app-form
+  <organism-form
     id="transactions"
     title="Add Transaction"
     [class.hidden]="!isFormOpen()"
@@ -126,5 +126,5 @@
         [disabled]="transactionForm().invalid() || isSubmitting()"
       />
     </div>
-  </app-form>
+  </organism-form>
 }

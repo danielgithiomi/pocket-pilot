@@ -1,17 +1,93 @@
+import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
+import { formatFullDate } from '@libs/utils';
+import { form } from '@angular/forms/signals';
+import { IAuthResponse } from '@global/types';
 import { AuthService } from '@api/auth.service';
-import { ProfileDetail } from './profile-detail';
-import { Component, inject } from '@angular/core';
+import { UserService } from '@api/user.service';
+import { Input } from '@components/ui/atoms/input';
+import { Button } from '@components/ui/atoms/button';
 import { DrawerService } from '@infrastructure/services';
+import { ToastService } from '@components/ui/atoms/toast';
+import { ProfileDetail } from './profile-detail/profile-detail';
+import { ChangePassword } from './change-password/change-password';
+import { ProfileSummary } from './profile-summary/profile-summary';
+import { Component, computed, inject, signal } from '@angular/core';
+import {
+  EditProfileSchema,
+  editProfileFormValidationSchema,
+} from './profile-summary/profile-summary.types';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.html',
-  imports: [ProfileDetail, NgClass],
+  imports: [ProfileDetail, NgClass, ChangePassword, ProfileSummary, Form, Input, Button],
 })
 export class Profile {
+  // SERVICES
   protected readonly authService = inject(AuthService);
+  protected readonly userService = inject(UserService);
+  protected readonly toastService = inject(ToastService);
   protected readonly drawerService: DrawerService = inject(DrawerService);
 
-  protected readonly user = this.authService.user()!;
+  // STATES
+  protected readonly isEditFormOpen = signal(false);
+  protected readonly isSubmittingEditProfileForm = signal(false);
+
+  // DATA
+  protected readonly defaultNumber = '+01234567890';
+  protected readonly user = this.authService.user;
+  protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => ({
+    name: this.user()!.name,
+    email: this.user()!.email,
+    phoneNumber: this.defaultNumber,
+  }));
+
+  // COMPUTED
+  protected readonly formattedDate = computed<string>(() => {
+    return formatFullDate(this.user()!.lastLoginAt.toString());
+  });
+  protected readonly isFetchingProfileData = computed(() => this.authService.isLoading());
+
+  // FORM
+  protected readonly editProfileFormModel = signal<EditProfileSchema>(
+    this.initialEditProfileFormData(),
+  );
+  protected readonly editProfileForm = form(
+    this.editProfileFormModel,
+    editProfileFormValidationSchema,
+  );
+
+  // METHODS
+  protected resetEditProfileForm() {
+    this.editProfileForm().reset();
+    this.editProfileFormModel.set(this.initialEditProfileFormData());
+  }
+
+  protected submitEditProfileForm(event: Event) {
+    event.preventDefault();
+
+    const { id } = this.user()!;
+    const { phoneNumber, ...payload } = this.editProfileFormModel();
+
+    this.isSubmittingEditProfileForm.set(true);
+
+    setTimeout(() => {
+      this.userService.update(id, payload).subscribe({
+        next: (user: IAuthResponse) => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Update Successful!',
+            details: 'Your profile has been updated successfully.',
+          });
+
+          // Update state & reset form
+          this.authService.refreshSession(user);
+          this.isEditFormOpen.set(false);
+          this.resetEditProfileForm();
+        },
+        complete: () => this.isSubmittingEditProfileForm.set(false),
+      });
+    }, 3500);
+  }
 }

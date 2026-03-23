@@ -1,7 +1,7 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { plainToInstance } from 'class-transformer';
 import { AccountTypeDto } from '../dto/account.dto';
-import { DeleteResourceResponse } from '@common/types';
+import { VoidResourceResponse } from '@common/types';
 import { type User } from '@modules/identity/dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { AccountService } from '../services/account.service';
@@ -132,7 +132,7 @@ export class AccountController {
     @ApiResponse({
         status: 200,
         isArray: false,
-        type: DeleteResourceResponse,
+        type: VoidResourceResponse,
         description: 'Account deleted successfully',
     })
     @Summary('Delete Successful!', 'You have successfully deleted the account.')
@@ -140,7 +140,7 @@ export class AccountController {
     async deleteAccountById(
         @UserInRequest() user: User,
         @Param('accountId') accountId: string,
-    ): Promise<DeleteResourceResponse> {
+    ): Promise<VoidResourceResponse> {
         await this.accountService.deleteAccountById(user.id!, accountId);
 
         return {

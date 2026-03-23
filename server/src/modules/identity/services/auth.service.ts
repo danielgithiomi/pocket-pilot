@@ -3,6 +3,7 @@ import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
 import { FullUser, UserResponseDto } from '../dto/user.dto';
 import { UserRepository } from '../repositories/user.repository';
+import { AuthRepository } from '../repositories/auth.repository';
 import { LockedException } from '@common/exceptions/locked.exception';
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JWTPayload, LoginInputDto, LoginOutputDto, ValidationResult } from '../dto/auth.dto';
@@ -12,6 +13,7 @@ export class AuthService {
     constructor(
         private readonly cookiesService: CookiesService,
         private readonly userRepository: UserRepository,
+        private readonly authRepository: AuthRepository,
     ) {}
 
     async me(userId: string): Promise<FullUser> {
@@ -38,7 +40,7 @@ export class AuthService {
             const currentFailedAttempts = user.failedLoginAttempts!;
 
             if (currentFailedAttempts >= 3) {
-                await this.userRepository.lockAccount(email);
+                await this.authRepository.lockAccount(email);
 
                 throw new LockedException({
                     name: 'USER_ACCOUNT_LOCKED',
@@ -49,7 +51,7 @@ export class AuthService {
                 });
             }
 
-            await this.userRepository.incrementFailedLoginAttempts(email);
+            await this.authRepository.incrementFailedLoginAttempts(email);
 
             throw new UnauthorizedException({
                 name: 'Invalid Credentials',
@@ -62,7 +64,7 @@ export class AuthService {
 
         const { access_token, refresh_token } = this.cookiesService.generateTokens(payload);
 
-        await this.userRepository.resetFailedLoginAttemptsOnSuccessfulLogin(email);
+        await this.authRepository.resetFailedLoginAttemptsOnSuccessfulLogin(email);
 
         return {
             access_token,
@@ -89,6 +91,6 @@ export class AuthService {
     }
 
     private async validatePassword(password: string, hashedPassword: string): Promise<boolean> {
-        return argon.verify(hashedPassword, password);
+        return await argon.verify(hashedPassword, password);
     }
 }

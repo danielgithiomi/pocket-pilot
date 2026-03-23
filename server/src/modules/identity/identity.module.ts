@@ -5,12 +5,13 @@ import { CookiesService } from './services/cookies.service';
 import { UserController } from './controllers/user.controller';
 import { AuthController } from './controllers/auth.controller';
 import { UserRepository } from './repositories/user.repository';
+import { AuthRepository } from './repositories/auth.repository';
 import { DatabaseModule } from '@infrastructure/database/database.module';
 
 @Module({
     imports: [DatabaseModule],
     exports: [UserRepository],
     controllers: [UserController, AuthController],
-    providers: [UserService, AuthService, CookiesService, UserRepository],
+    providers: [UserService, AuthService, CookiesService, UserRepository, AuthRepository],
 })
 export class IdentityModule {}

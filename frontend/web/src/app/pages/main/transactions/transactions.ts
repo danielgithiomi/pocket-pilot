@@ -12,7 +12,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { TableColumn } from '@components/ui/organisms/table/table.types';
-import { IDeletedResourceResponse, IStandardResponse } from '@global/types';
+import { IVoidResourceResponse, IStandardResponse } from '@global/types';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
 import {
@@ -43,6 +43,7 @@ export class Transactions {
 
   // Data
   protected readonly accounts = this.accountsService.getUserAccounts();
+  protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
   protected readonly transactionTypes = this.transactionsService.getTransactionTypes();
   protected readonly transactionCategories = this.transactionsService.getTransactionCategories();
@@ -167,8 +168,8 @@ export class Transactions {
         accountId: transaction.account.id,
         date: formatDate(transaction.date),
         id: splitTransactionId(transaction.id),
-        amount: formatCurrency(transaction.amount),
         accountName: capitalize(transaction.account.name),
+        amount: formatCurrency(transaction.amount, this.currency, true, false),
       })) || skeletonData
     );
   });
@@ -178,7 +179,7 @@ export class Transactions {
     const { accountId, fullId: transactionId } = row;
 
     this.transactionsService.deleteTransaction(accountId, transactionId).subscribe({
-      next: (response: IStandardResponse<IDeletedResourceResponse>) => {
+      next: (response: IStandardResponse<IVoidResourceResponse>) => {
         const { message, details } = response.data;
         this.toastService.show({
           details,
@@ -213,22 +214,18 @@ export class Transactions {
   protected submitTransactionForm(event: Event) {
     event.preventDefault();
 
-    const { amount } = this.transactionFormModel();
-
-    if (!amount) {
-      this.toastService.show({
-        variant: 'error',
-        title: 'Amount is required!',
-        details: 'Please enter a valid amount.',
-      });
-      return;
-    }
-
     this.isSubmitting.set(true);
 
     const { accountId, ...transactionPayload } = this.transactionFormModel();
     const availableBalance: number =
       this.accounts.value()?.data?.data?.find((account) => account.id === accountId)?.balance ?? 0;
+
+    if (this.transactionsService.isNegativeBalance(availableBalance, transactionPayload))
+      this.toastService.show({
+        variant: 'warning',
+        title: 'Exceeded available balance!',
+        details: 'This transaction will result in a negative balance in your account.',
+      });
 
     setTimeout(() => {
       this.transactionsService
@@ -248,6 +245,6 @@ export class Transactions {
           error: (error) => console.error('Transaction creation failed:', error),
           complete: () => this.isSubmitting.set(false),
         });
-    }, 3000);
+    }, 3500);
   }
 }

@@ -1,4 +1,4 @@
-import {email, min, minLength, required, schema, validate} from '@angular/forms/signals';
+import {email, minLength, required, schema, validate} from '@angular/forms/signals';
 
 export interface Auth_Feature {
   id: number;

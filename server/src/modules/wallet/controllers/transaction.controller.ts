@@ -1,4 +1,4 @@
-import { DeleteResourceResponse, ExposeEnumDto } from '@common/types';
+import { VoidResourceResponse, ExposeEnumDto } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
@@ -149,7 +149,7 @@ export class TransactionController {
         @Param('accountId') accountId: string,
         @Param('transactionId') transactionId: string,
         @UserInRequest() currentUser: UserResponseDto,
-    ): Promise<DeleteResourceResponse> {
+    ): Promise<VoidResourceResponse> {
         const { id: userId } = currentUser;
 
         await this.transactionService.deleteTransactionByAccountId(userId, accountId, transactionId);

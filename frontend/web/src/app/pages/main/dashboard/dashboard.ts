@@ -32,6 +32,7 @@ export class Dashboard {
 
   // Data
   protected readonly accounts = this.accountsService.getUserAccounts();
+  protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
 
   // States
@@ -40,21 +41,25 @@ export class Dashboard {
   );
 
   // Computed
-  protected readonly accountsCount = computed(() =>
-    (this.accounts.value()?.data.count ?? 0).toString(),
-  );
+  protected readonly accountsCount = computed(() => {
+    if (this.accounts.error()) return '0';
+    return (this.accounts.value()?.data.count ?? 0).toString();
+  });
 
-  protected readonly transactionsCount = computed(() =>
-    (this.transactions.value()?.data.count ?? 0).toString(),
-  );
+  protected readonly transactionsCount = computed(() => {
+    if (this.transactions.error()) return '0';
+    return (this.transactions.value()?.data.count ?? 0).toString();
+  });
 
   protected readonly totalBalance = computed(() => {
+    if (this.accounts.error()) return '0';
     const accounts = this.accounts.value()?.data.data;
     if (!accounts) return '0';
     return accounts.reduce((total, account) => total + account.balance, 0).toString();
   });
 
   protected readonly totalRevenue = computed(() => {
+    if (this.transactions.error()) return '0';
     const transactions = this.transactions.value()?.data.data;
     if (!transactions) return '0';
     return transactions
@@ -64,6 +69,7 @@ export class Dashboard {
   });
 
   protected readonly totalExpenses = computed(() => {
+    if (this.transactions.error()) return '0';
     const transactions = this.transactions.value()?.data.data;
     if (!transactions) return '0';
     return transactions
@@ -75,11 +81,11 @@ export class Dashboard {
   protected readonly netCashFlow = computed(() => {
     const revenue = Number(this.totalRevenue());
     const expenses = Number(this.totalExpenses());
-    return formatCurrency(revenue + expenses);
+    return formatCurrency(revenue + expenses, this.currency, true, false);
   });
 
   // Methods
   protected formatCurrency(value: string) {
-    return formatCurrency(Number(value));
+    return formatCurrency(Number(value), this.currency, true, false);
   }
 }

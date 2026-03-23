@@ -60,8 +60,12 @@ export class Button {
     const base = 'button overflow-hidden relative transition-all duration-250 cursor-pointer';
     const loadingClasses = this.isLoading() ? 'opacity-80 cursor-progress' : '';
     const variantClasses =
-      this.variant() === 'primary' ? 'bg-primary text-white' : this.inverted() ? 'bg-body-background text-primary-text' : 'bg-inverted-background text-inverted-text';
-    const disabledClasses = this.disabled() ? 'opacity-70 !cursor-not-allowed' : 'hover:scale-101';
+      this.variant() === 'primary'
+        ? 'bg-primary text-white'
+        : this.inverted()
+          ? 'bg-body-background text-primary-text'
+          : 'bg-inverted-background text-inverted-text';
+    const disabledClasses = this.disabled() ? 'opacity-50 !cursor-not-allowed' : 'hover:scale-101';
 
     return [base, variantClasses, loadingClasses, disabledClasses, this.className()]
       .filter(Boolean)
