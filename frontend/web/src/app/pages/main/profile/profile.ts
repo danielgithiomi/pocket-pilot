@@ -35,11 +35,12 @@ export class Profile {
   protected readonly isSubmittingEditProfileForm = signal(false);
 
   // DATA
+  protected readonly defaultNumber = '+01234567890';
   protected readonly user = this.authService.user;
   protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => ({
     name: this.user()!.name,
     email: this.user()!.email,
-    phoneNumber: '+123 4567890',
+    phoneNumber: this.defaultNumber,
   }));
 
   // COMPUTED
