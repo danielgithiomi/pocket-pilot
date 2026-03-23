@@ -15,10 +15,19 @@
   }
 }
 
-.loader {
+.ratio-loader, .analysis-loader {
   width: 75px;
   aspect-ratio: 1;
   border: 6px solid;
+  border-radius: 50%;
+  animation: l1 1s infinite;
+  border-color: var(--loader-primary) transparent;
+}
+
+.analysis-loader{
+  width: 100px;
+  aspect-ratio: 1;
+  border: 8px solid;
   border-radius: 50%;
   animation: l1 1s infinite;
   border-color: var(--loader-primary) transparent;

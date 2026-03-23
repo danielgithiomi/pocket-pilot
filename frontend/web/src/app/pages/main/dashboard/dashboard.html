@@ -67,7 +67,7 @@
           @if (isDataLoading()) {
             <div class="loader"></div>
           } @else {
-            <atom-progress-bar [maxValue]="maximumSpendingLimit()" [currentValue]="netCashFlow()" />
+            <atom-progress-bar [maxValue]="maximumSpendingLimit()" [currentValue]="totalExpenses()" />
           }
         </div>
       </dashboard-card>
@@ -85,7 +85,7 @@
       >
         <div custom-content class="min-h-[150px] w-full grid place-items-center">
           @if (isDataLoading()) {
-            <div class="loader"></div>
+            <div class="ratio-loader"></div>
           } @else {
             <div class="flex flex-row md:flex-col items-center gap-6 md:gap-0">
               <atom-ratio-slider [value]="spendingRatio()" />
@@ -102,6 +102,24 @@
                 </div>
               </div>
             </div>
+          }
+        </div>
+      </dashboard-card>
+
+      <!-- Analysis Card -->
+      <dashboard-card
+        id="analysis"
+        class="col-span-1 md:col-span-2"
+        [icon]="ratioIcon"
+        [isLoading]="false"
+        title="Expense Analysis"
+        subtitle="Your spending analysis"
+      >
+        <div custom-content class="min-h-[350px] w-full grid place-items-center">
+          @if (isDataLoading()) {
+            <div class="analysis-loader"></div>
+          } @else {
+            <widget-cost-analysis />
           }
         </div>
       </dashboard-card>

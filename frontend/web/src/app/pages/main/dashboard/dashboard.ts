@@ -1,6 +1,7 @@
 import { formatCurrency } from '@libs/utils';
 import { RatioSlider } from '@atoms/ratio-slider';
 import { ProgressBar } from '@atoms/progress-bar';
+import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
 import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
@@ -20,7 +21,7 @@ import {
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
-  imports: [DashboardCard, LucideAngularModule, RatioSlider, ProgressBar],
+  imports: [RatioSlider, ProgressBar, CostAnalysis, DashboardCard, LucideAngularModule],
 })
 export class Dashboard {
   // Icons
