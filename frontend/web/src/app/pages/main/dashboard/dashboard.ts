@@ -81,7 +81,11 @@ export class Dashboard {
   protected readonly netCashFlow = computed(() => {
     const revenue = this.totalRevenue();
     const expenses = this.totalExpenses();
-    return formatCurrency(revenue + expenses, this.currency, 2, true, false);
+    return revenue + expenses;
+  });
+
+  protected readonly formattedNetCashFlow = computed(() => {
+    return formatCurrency(this.netCashFlow(), this.currency, 2, true, false);
   });
 
   protected readonly spendingRatio = computed<number>(() => {

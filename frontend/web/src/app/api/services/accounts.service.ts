@@ -12,7 +12,7 @@ export class AccountsService {
   private readonly toastService = inject(ToastService);
   private readonly accountsMutation = inject(AccountsMutation);
   private readonly accountsResource = inject(AccountsResource);
-  private readonly maximumSpendingLimit = signal<number>(100);
+  private readonly maximumSpendingLimit = signal<number>(20000);
   private readonly defaultCurrency: Intl.NumberFormatOptions['currency'] = 'MUR';
 
   getMaximumSpendingLimit() {

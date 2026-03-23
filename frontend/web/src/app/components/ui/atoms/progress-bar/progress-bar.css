@@ -1,8 +1,8 @@
 @reference 'tailwindcss';
 
 :host {
-  display: block;
   width: 100%;
+  display: block;
 }
 
 .spending-card {
@@ -10,11 +10,11 @@
 }
 
 .spending-card.vertical {
-  display: flex;
-  flex-direction: row;
   gap: 1.5rem;
+  display: flex;
   padding: 1.5rem;
   min-height: 200px;
+  flex-direction: row;
 }
 
 .spending-card.vertical .header {
@@ -37,7 +37,13 @@
 }
 
 .edit-icon {
-  @apply cursor-pointer text-(--muted-text) hover:text-(--primary);
+  @apply cursor-pointer;
+  color: var(--muted-text);
+}
+
+.edit-icon:hover {
+  color: var(--primary);
+  transition: color 0.2s ease;
 }
 
 .progress-container.vertical {
@@ -83,8 +89,8 @@
 }
 
 .stripe-pattern {
-  position: absolute;
   inset: 0;
+  position: absolute;
   background: repeating-linear-gradient(
     45deg,
     transparent,

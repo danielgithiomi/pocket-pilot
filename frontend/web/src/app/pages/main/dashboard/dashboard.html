@@ -30,8 +30,8 @@
         id="net-cash-flow"
         title="Net Cash Flow"
         [icon]="handCoinsIcon"
-        [value]="netCashFlow()"
         [isLoading]="isDataLoading()"
+        [value]="formattedNetCashFlow()"
         subtitle="Moved around this month"
       />
 
@@ -67,7 +67,7 @@
           @if (isDataLoading()) {
             <div class="loader"></div>
           } @else {
-            <atom-progress-bar [maxValue]="maximumSpendingLimit()" [currentValue]="60" />
+            <atom-progress-bar [maxValue]="maximumSpendingLimit()" [currentValue]="netCashFlow()" />
           }
         </div>
       </dashboard-card>
@@ -81,14 +81,14 @@
         [icon]="ratioIcon"
         [isLoading]="false"
         title="Spending Ratio"
-        subtitle="Your expenses vs revenue"
+        subtitle="Your spending so far"
       >
         <div custom-content class="min-h-[150px] w-full grid place-items-center">
           @if (isDataLoading()) {
             <div class="loader"></div>
           } @else {
             <div class="flex flex-row md:flex-col items-center gap-6 md:gap-0">
-              <atom-ratio-slider [value]="90" [size]="150" />
+              <atom-ratio-slider [value]="spendingRatio()" />
 
               <div class="legend">
                 <div class="legend-item justify-start">
