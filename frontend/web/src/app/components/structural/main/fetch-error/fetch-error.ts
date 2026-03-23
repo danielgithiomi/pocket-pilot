@@ -5,12 +5,15 @@ import { LottieComponent, AnimationOptions } from 'ngx-lottie';
   selector: 'fetch-error',
   imports: [LottieComponent],
   styles: `
+    @reference 'tailwindcss';
+
     .fetch-error {
+      @apply grid place-items-center;
       animation: slideHalfDown 0.3s ease-in-out;
     }
   `,
   template: `
-    <div class="fetch-error flex flex-col items-center justify-center mb-30">
+    <div class="fetch-error">
       <ng-lottie
         [options]="options"
         [width]="animationDimensions()"
