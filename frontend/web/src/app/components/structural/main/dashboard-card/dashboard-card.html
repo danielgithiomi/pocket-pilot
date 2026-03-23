@@ -14,7 +14,11 @@
     @if (isLoading()) {
       <div class="skeleton w-3/5 h-8 group-hover:scale-100"></div>
     } @else {
-      <h2 class="value">{{ value() }}</h2>
+      @if (value()) {
+        <h2 class="value">{{ value() }}</h2>
+      }
+
+      <ng-content select="[custom-content]"></ng-content>
     }
   </div>
 

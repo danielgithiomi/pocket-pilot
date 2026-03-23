@@ -1,13 +1,12 @@
 import {
-  Component,
   input,
-  computed,
   signal,
   effect,
-  ElementRef,
+  computed,
   viewChild,
+  Component,
+  ElementRef,
   afterNextRender,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 
 export interface RatioSliderColors {
@@ -37,7 +36,7 @@ export interface LegendItem {
 const DEFAULT_COLORS: RatioSliderColors = {
   // Income gradient (foreground progress) - cyan to blue
   progressStartColor: '#00d4ff',
-  progressEndColor: '#6366f1',
+  progressEndColor: '#6290c8',
   // Expenses gradient (background track) - purple to magenta
   trackStartColor: '#6366f1',
   trackEndColor: '#b829dd',
@@ -49,15 +48,8 @@ const DEFAULT_COLORS: RatioSliderColors = {
 
 @Component({
   selector: 'ratio-slider',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- <div class="ratio-slider-card" [style.background]="cardBackground()"> -->
     <div class="ratio-slider-card">
-      <!-- Title -->
-      <!-- <h3 class="ratio-slider-title" [style.color]="resolvedColors().textColor">
-        {{ title() }}
-      </h3> -->
-
       <!-- SVG Circular Progress -->
       <div class="ratio-slider-container">
         <svg
@@ -108,12 +100,12 @@ const DEFAULT_COLORS: RatioSliderColors = {
           <!-- Ball indicator at the end of progress -->
           <circle
             #ballIndicator
+            fill="white"
             [attr.r]="ballRadius()"
             class="ball-indicator"
             [attr.cx]="ballPosition().x"
             [attr.cy]="ballPosition().y"
             [class.visible]="animatedValue() > 0"
-            [attr.fill]="'white'"
           />
         </svg>
 
@@ -124,20 +116,6 @@ const DEFAULT_COLORS: RatioSliderColors = {
           </span>
         </div>
       </div>
-
-      <!-- Legend -->
-      <!-- @if (legendItems().length > 0) {
-        <div class="ratio-slider-legend">
-          @for (item of legendItems(); track item.label) {
-            <div class="legend-item">
-              <span class="legend-dot" [style.background-color]="item.color"></span>
-              <span class="legend-label" [style.color]="resolvedColors().secondaryTextColor">
-                {{ item.label }}
-              </span>
-            </div>
-          }
-        </div>
-      } -->
     </div>
   `,
   styles: [
@@ -147,13 +125,12 @@ const DEFAULT_COLORS: RatioSliderColors = {
       }
 
       .ratio-slider-card {
-        padding: 1.5rem;
+        padding: 0.5rem;
         border-radius: 1rem;
         display: flex;
-        flex-direction: column;
         align-items: center;
+        flex-direction: column;
         gap: 1rem;
-        min-width: 200px;
       }
 
       .ratio-slider-title {
@@ -169,6 +146,7 @@ const DEFAULT_COLORS: RatioSliderColors = {
         width: 100%;
         max-width: 160px;
         aspect-ratio: 1;
+        padding: 10px;
       }
 
       .ratio-slider-svg {
@@ -178,18 +156,18 @@ const DEFAULT_COLORS: RatioSliderColors = {
       }
 
       .progress-circle {
-        transition: stroke-dashoffset 0.05s linear;
+        filter: drop-shadow(0 1px 2px black);
+        transition: stroke-dashoffset 0.02s linear;
       }
 
       .ball-indicator {
         opacity: 0;
         transition: opacity 0.2s ease;
-        filter: drop-shadow(0 0 6px black);
+        filter: drop-shadow(0 0 2px black);
       }
-      
+
       .ball-indicator.visible {
         opacity: 1;
-        border: 2px solid white;
       }
 
       .ratio-slider-center {
@@ -202,7 +180,7 @@ const DEFAULT_COLORS: RatioSliderColors = {
 
       .ratio-slider-value {
         font-size: 2rem;
-        font-weight: 700;
+        font-weight: 600;
         letter-spacing: -0.025em;
       }
 

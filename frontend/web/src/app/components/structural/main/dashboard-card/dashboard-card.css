@@ -11,13 +11,22 @@
     }
   }
 
+  .body {
+    @apply flex flex-col justify-center;
+
+    /* Hide default value when custom content is present */
+    &:has([custom-content]) .value {
+      @apply hidden;
+    }
+  }
+
   .value {
     @apply text-3xl sm:text-2xl pl-1 group-hover:scale-102 font-semibold tracking-tighter group-hover:text-(--primary) transition-all duration-300 overflow-hidden line-clamp-1 truncate;
   }
 
   .footer {
     .subtitle {
-      @apply text-xs sm:text-sm text-(--muted-text) overflow-hidden line-clamp-1 truncate;
+      @apply text-xs text-(--muted-text) overflow-hidden line-clamp-1 truncate;
     }
   }
 }

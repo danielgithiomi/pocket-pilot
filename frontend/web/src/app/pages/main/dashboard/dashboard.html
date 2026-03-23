@@ -42,7 +42,7 @@
         [icon]="incomeIcon"
         [isLoading]="isDataLoading()"
         subtitle="Total revenue this month"
-        [value]="formatCurrency(totalRevenue())"
+        [value]="formatCurrency(totalRevenue().toString())"
       />
 
       <!-- Expenses -->
@@ -52,11 +52,42 @@
         [icon]="expenseIcon"
         [isLoading]="isDataLoading()"
         subtitle="Total expenses this month"
-        [value]="formatCurrency(totalExpenses())"
+        [value]="formatCurrency(totalExpenses().toString())"
       />
+    </div>
 
-      <!-- Ratio Test -->
-      <ratio-slider [value]="60" [size]="150" />
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <!-- Ratio Card -->
+      <dashboard-card
+        id="ratio"
+        class="col-span-1"
+        [icon]="ratioIcon"
+        [isLoading]="false"
+        title="Spending Ratio"
+        subtitle="Your expenses vs revenue"
+      >
+        <div custom-content class="min-h-[150px] w-full grid place-items-center">
+          @if (isDataLoading()) {
+            <div class="loader"></div>
+          } @else {
+            <div class="flex flex-row md:flex-col items-center gap-6 md:gap-0">
+              <ratio-slider [value]="90" [size]="150" />
+
+              <div class="legend">
+                <div class="legend-item justify-start">
+                  <span class="bg-[#b829dd]"></span>
+                  <p>Balance</p>
+                </div>
+
+                <div class="legend-item justify-end">
+                  <span class="bg-[#00d4ff]"></span>
+                  <p>Expenses</p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </dashboard-card>
     </div>
   </div>
 </section>

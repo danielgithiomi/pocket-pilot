@@ -1,12 +1,13 @@
 import { formatCurrency } from '@libs/utils';
-import { AccountsService } from '@api/accounts.service';
 import { RatioSlider } from '@atoms/ratio-slider';
+import { AccountsService } from '@api/accounts.service';
 import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
 import { DashboardCard } from '@components/structural/main/dashboard-card/dashboard-card';
 import {
   Wallet,
   HandCoins,
+  PiggyBank,
   TrendingUp,
   TrendingDown,
   ArrowLeftRight,
@@ -22,6 +23,7 @@ import {
 export class Dashboard {
   // Icons
   protected readonly walletIcon = Wallet;
+  protected readonly ratioIcon = PiggyBank;
   protected readonly incomeIcon = TrendingUp;
   protected readonly handCoinsIcon = HandCoins;
   protected readonly expenseIcon = TrendingDown;
@@ -52,37 +54,39 @@ export class Dashboard {
     return (this.transactions.value()?.data.count ?? 0).toString();
   });
 
-  protected readonly totalBalance = computed(() => {
-    if (this.accounts.error()) return '0';
-    const accounts = this.accounts.value()?.data.data;
-    if (!accounts) return '0';
-    return accounts.reduce((total, account) => total + account.balance, 0).toString();
-  });
-
-  protected readonly totalRevenue = computed(() => {
-    if (this.transactions.error()) return '0';
+  protected readonly totalRevenue = computed<number>(() => {
+    if (this.transactions.error()) return 0;
     const transactions = this.transactions.value()?.data.data;
-    if (!transactions) return '0';
+    if (!transactions) return 0;
     return transactions
       .filter((transaction) => transaction.type === 'INCOME')
-      .reduce((total, transaction) => total + transaction.amount, 0)
-      .toString();
+      .reduce((total, transaction) => total + transaction.amount, 0);
   });
 
-  protected readonly totalExpenses = computed(() => {
-    if (this.transactions.error()) return '0';
+  protected readonly totalExpenses = computed<number>(() => {
+    if (this.transactions.error()) return 0;
     const transactions = this.transactions.value()?.data.data;
-    if (!transactions) return '0';
+    if (!transactions) return 0;
     return transactions
       .filter((transaction) => transaction.type === 'EXPENSE')
-      .reduce((total, transaction) => total + transaction.amount, 0)
-      .toString();
+      .reduce((total, transaction) => total + transaction.amount, 0);
   });
 
   protected readonly netCashFlow = computed(() => {
-    const revenue = Number(this.totalRevenue());
-    const expenses = Number(this.totalExpenses());
+    const revenue = this.totalRevenue();
+    const expenses = this.totalExpenses();
     return formatCurrency(revenue + expenses, this.currency, true, false);
+  });
+
+  protected readonly spendingRatio = computed<number>(() => {
+    const expenses = this.totalExpenses();
+    const total = this.totalRevenue() + this.totalExpenses();
+
+    if (expenses <= 0 || total <= 0) return 0;
+
+    const ratio = (expenses / total) * 100;
+
+    return Math.min(100, Math.max(0, Math.round(ratio)));
   });
 
   // Methods
