@@ -212,23 +212,21 @@ const DEFAULT_COLORS: RatioSliderColors = {
 export class RatioSlider {
   // Input signals
   readonly value = input<number>(0);
-  readonly title = input<string>('Ratio Income');
-  readonly colors = input<Partial<RatioSliderColors>>({});
   readonly size = input<number>(160);
-  readonly legendItems = input<LegendItem[]>([
-    { label: 'Income', color: '#6366f1' },
-    { label: 'Expenses', color: '#b829dd' },
-  ]);
-  readonly animationDuration = input<number>(1000);
+  readonly title = input<string>('Ratio Income');
+  readonly animationDuration = input<number>(500);
+  readonly colors = input<Partial<RatioSliderColors>>({});
+
+  private animationFrameId: number | null = null;
 
   // View children
-  readonly progressCircle = viewChild<ElementRef<SVGCircleElement>>('progressCircle');
   readonly ballIndicator = viewChild<ElementRef<SVGCircleElement>>('ballIndicator');
+  readonly progressCircle = viewChild<ElementRef<SVGCircleElement>>('progressCircle');
 
   // Internal signals
-  private readonly instanceId = signal(Math.random().toString(36).substring(2, 9));
   readonly animatedValue = signal(0);
   readonly animatedDisplayValue = signal(0);
+  private readonly instanceId = signal(Math.random().toString(36).substring(2, 9));
 
   // Computed values
   readonly resolvedColors = computed<RatioSliderColors>(() => ({
@@ -236,14 +234,14 @@ export class RatioSlider {
     ...this.colors(),
   }));
 
-  readonly gradientId = computed(() => `progress-gradient-${this.instanceId()}`);
-  readonly trackGradientId = computed(() => `track-gradient-${this.instanceId()}`);
   readonly svgSize = computed(() => this.size());
   readonly center = computed(() => this.svgSize() / 2);
   readonly strokeWidth = computed(() => this.svgSize() * 0.1);
-  readonly radius = computed(() => (this.svgSize() - this.strokeWidth()) / 2 - 3);
-  readonly circumference = computed(() => 2 * Math.PI * this.radius());
   readonly ballRadius = computed(() => this.strokeWidth() / 2 + 2);
+  readonly circumference = computed(() => 2 * Math.PI * this.radius());
+  readonly gradientId = computed(() => `progress-gradient-${this.instanceId()}`);
+  readonly radius = computed(() => (this.svgSize() - this.strokeWidth()) / 2 - 3);
+  readonly trackGradientId = computed(() => `track-gradient-${this.instanceId()}`);
 
   readonly strokeDashoffset = computed(() => {
     const progress = this.animatedValue() / 100;
@@ -252,13 +250,7 @@ export class RatioSlider {
 
   readonly ballPosition = computed(() => {
     const progress = this.animatedValue() / 100;
-    // The SVG is rotated -90deg, so the stroke starts at the top (12 o'clock)
-    // and progresses clockwise. The ball needs to follow the same coordinate system.
-    // In the rotated SVG space, angle 0 is at the right (3 o'clock in normal coords)
-    // so progress * 2π gives us the arc angle in the rotated space.
     const angle = progress * 2 * Math.PI;
-    // Since SVG is rotated -90deg, we calculate in the original coordinate space
-    // then the rotation handles the visual positioning
     const x = this.center() + this.radius() * Math.cos(angle);
     const y = this.center() + this.radius() * Math.sin(angle);
     return { x, y };
@@ -268,8 +260,6 @@ export class RatioSlider {
     const colors = this.resolvedColors();
     return `linear-gradient(135deg, ${colors.cardGradientStart} 0%, ${colors.cardGradientEnd} 100%)`;
   });
-
-  private animationFrameId: number | null = null;
 
   constructor() {
     // Effect to animate when value changes
@@ -293,15 +283,14 @@ export class RatioSlider {
       cancelAnimationFrame(this.animationFrameId);
     }
 
-    const startValue = this.animatedValue();
     const startTime = performance.now();
+    const startValue = this.animatedValue();
     const duration = this.animationDuration();
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Easing function (ease-out cubic)
       const easeOutCubic = 1 - Math.pow(1 - progress, 3);
 
       const currentValue = startValue + (targetValue - startValue) * easeOutCubic;
