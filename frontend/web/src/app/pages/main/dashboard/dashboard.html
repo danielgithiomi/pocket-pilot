@@ -30,8 +30,8 @@
         id="net-cash-flow"
         title="Net Cash Flow"
         [icon]="handCoinsIcon"
-        [value]="netCashFlow()"
         [isLoading]="isDataLoading()"
+        [value]="formattedNetCashFlow()"
         subtitle="Moved around this month"
       />
 
@@ -42,7 +42,7 @@
         [icon]="incomeIcon"
         [isLoading]="isDataLoading()"
         subtitle="Total revenue this month"
-        [value]="formatCurrency(totalRevenue())"
+        [value]="formatCurrency(totalRevenue().toString())"
       />
 
       <!-- Expenses -->
@@ -52,8 +52,77 @@
         [icon]="expenseIcon"
         [isLoading]="isDataLoading()"
         subtitle="Total expenses this month"
-        [value]="formatCurrency(totalExpenses())"
+        [value]="formatCurrency(totalExpenses().toString())"
       />
+
+      <!-- Spending Limits -->
+      <dashboard-card
+        id="spending-limits"
+        title="Spending Limit"
+        [icon]="spendingLimitIcon"
+        [isLoading]="isDataLoading()"
+        subtitle="Your monthly spending limit"
+      >
+        <div custom-content class="w-full grid place-items-center">
+          @if (isDataLoading()) {
+            <div class="loader"></div>
+          } @else {
+            <atom-progress-bar [maxValue]="maximumSpendingLimit()" [currentValue]="totalExpenses()" />
+          }
+        </div>
+      </dashboard-card>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <!-- Ratio Card -->
+      <dashboard-card
+        id="ratio"
+        class="col-span-1"
+        [icon]="ratioIcon"
+        [isLoading]="false"
+        title="Spending Ratio"
+        subtitle="Your spending so far"
+      >
+        <div custom-content class="min-h-[150px] w-full grid place-items-center">
+          @if (isDataLoading()) {
+            <div class="ratio-loader"></div>
+          } @else {
+            <div class="flex flex-row md:flex-col items-center gap-6 md:gap-0">
+              <atom-ratio-slider [value]="spendingRatio()" />
+
+              <div class="legend">
+                <div class="legend-item justify-start">
+                  <span class="bg-[#b829dd]"></span>
+                  <p>Balance</p>
+                </div>
+
+                <div class="legend-item justify-end">
+                  <span class="bg-[#00d4ff]"></span>
+                  <p>Expenses</p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </dashboard-card>
+
+      <!-- Analysis Card -->
+      <dashboard-card
+        id="analysis"
+        [icon]="ratioIcon"
+        [isLoading]="false"
+        title="Spending Analysis"
+        class="col-span-1 md:col-span-2"
+        subtitle="Your monthly spending analysis"
+      >
+        <div custom-content class="min-h-[350px] w-full grid place-items-center">
+          @if (isDataLoading()) {
+            <div class="analysis-loader"></div>
+          } @else {
+            <widget-cost-analysis [totalMonthlySpending]="formatCurrency(totalExpenses().toString())" />
+          }
+        </div>
+      </dashboard-card>
     </div>
   </div>
 </section>

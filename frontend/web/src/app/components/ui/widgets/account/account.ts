@@ -1,3 +1,4 @@
+import { formatCurrency } from '@libs/utils';
 import { ImageDimensions } from '@libs/types';
 import { NgOptimizedImage } from '@angular/common';
 import { AccountsService } from '@api/accounts.service';
@@ -11,7 +12,6 @@ import {
   LucideAngularModule,
   FingerprintPattern,
 } from 'lucide-angular';
-import { formatCurrency } from '@libs/utils';
 
 @Component({
   selector: 'account-card',

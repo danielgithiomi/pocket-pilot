@@ -22,13 +22,14 @@ export function formatFullDate(date: string): string {
 export function formatCurrency(
   amount: number,
   currency: Intl.NumberFormatOptions['currency'],
+  fractionDigits: number = 2,
   showSymbol: boolean = false,
   narrow: boolean = true
 ): string {
   return new Intl.NumberFormat('en-US', {
     currency: currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
     style: showSymbol ? 'currency' : 'decimal',
     currencyDisplay: narrow ? 'narrowSymbol' : 'code',
   }).format(amount);

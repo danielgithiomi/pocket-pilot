@@ -1,4 +1,7 @@
 import { formatCurrency } from '@libs/utils';
+import { RatioSlider } from '@atoms/ratio-slider';
+import { ProgressBar } from '@atoms/progress-bar';
+import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
 import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
@@ -6,9 +9,11 @@ import { DashboardCard } from '@components/structural/main/dashboard-card/dashbo
 import {
   Wallet,
   HandCoins,
+  PiggyBank,
   TrendingUp,
   TrendingDown,
   ArrowLeftRight,
+  BrickWallShield,
   LucideAngularModule,
 } from 'lucide-angular';
 
@@ -16,15 +21,17 @@ import {
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
-  imports: [DashboardCard, LucideAngularModule],
+  imports: [RatioSlider, ProgressBar, CostAnalysis, DashboardCard, LucideAngularModule],
 })
 export class Dashboard {
   // Icons
   protected readonly walletIcon = Wallet;
+  protected readonly ratioIcon = PiggyBank;
   protected readonly incomeIcon = TrendingUp;
   protected readonly handCoinsIcon = HandCoins;
   protected readonly expenseIcon = TrendingDown;
   protected readonly transactionIcon = ArrowLeftRight;
+  protected readonly spendingLimitIcon = BrickWallShield;
 
   // Services
   private readonly accountsService = inject(AccountsService);
@@ -34,6 +41,9 @@ export class Dashboard {
   protected readonly accounts = this.accountsService.getUserAccounts();
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
+
+  // Signals
+  protected readonly maximumSpendingLimit = this.accountsService.getMaximumSpendingLimit();
 
   // States
   protected readonly isDataLoading = computed(
@@ -51,41 +61,47 @@ export class Dashboard {
     return (this.transactions.value()?.data.count ?? 0).toString();
   });
 
-  protected readonly totalBalance = computed(() => {
-    if (this.accounts.error()) return '0';
-    const accounts = this.accounts.value()?.data.data;
-    if (!accounts) return '0';
-    return accounts.reduce((total, account) => total + account.balance, 0).toString();
-  });
-
-  protected readonly totalRevenue = computed(() => {
-    if (this.transactions.error()) return '0';
+  protected readonly totalRevenue = computed<number>(() => {
+    if (this.transactions.error()) return 0;
     const transactions = this.transactions.value()?.data.data;
-    if (!transactions) return '0';
+    if (!transactions) return 0;
     return transactions
       .filter((transaction) => transaction.type === 'INCOME')
-      .reduce((total, transaction) => total + transaction.amount, 0)
-      .toString();
+      .reduce((total, transaction) => total + transaction.amount, 0);
   });
 
-  protected readonly totalExpenses = computed(() => {
-    if (this.transactions.error()) return '0';
+  protected readonly totalExpenses = computed<number>(() => {
+    if (this.transactions.error()) return 0;
     const transactions = this.transactions.value()?.data.data;
-    if (!transactions) return '0';
+    if (!transactions) return 0;
     return transactions
       .filter((transaction) => transaction.type === 'EXPENSE')
-      .reduce((total, transaction) => total + transaction.amount, 0)
-      .toString();
+      .reduce((total, transaction) => total + transaction.amount, 0);
   });
 
   protected readonly netCashFlow = computed(() => {
-    const revenue = Number(this.totalRevenue());
-    const expenses = Number(this.totalExpenses());
-    return formatCurrency(revenue + expenses, this.currency, true, false);
+    const revenue = this.totalRevenue();
+    const expenses = this.totalExpenses();
+    return revenue + expenses;
+  });
+
+  protected readonly formattedNetCashFlow = computed(() => {
+    return formatCurrency(this.netCashFlow(), this.currency, 2, true, false);
+  });
+
+  protected readonly spendingRatio = computed<number>(() => {
+    const expenses = this.totalExpenses();
+    const total = this.totalRevenue() + this.totalExpenses();
+
+    if (expenses <= 0 || total <= 0) return 0;
+
+    const ratio = (expenses / total) * 100;
+
+    return Math.min(100, Math.max(0, Math.round(ratio)));
   });
 
   // Methods
   protected formatCurrency(value: string) {
-    return formatCurrency(Number(value), this.currency, true, false);
+    return formatCurrency(Number(value), this.currency, 2, true, false);
   }
 }

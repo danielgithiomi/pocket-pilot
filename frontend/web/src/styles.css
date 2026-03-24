@@ -32,6 +32,7 @@
   --tertiary: #c6ff33; /* Yellow */
   --quaternary: #fe7f2d; /* Orange */
   --transparent: transparent;
+  --loader-primary: rgb(91, 146, 121, 50%);
 
   /* State Colors */
   --success: #22c55d;
@@ -130,6 +131,9 @@
   --color-secondary: var(--secondary);
   --color-tertiary: var(--tertiary);
   --color-quaternary: var(--quaternary);
+
+  --color-muted: var(--muted);
+  --color-loader-primary: var(--loader-primary);
 
   /* State */
   --color-success: var(--success);
@@ -352,11 +356,11 @@ main {
   }
 
   .skeleton {
-    @apply animate-pulse rounded-md bg-primary/50;
+    @apply animate-pulse rounded-md bg-loader-primary;
   }
 
   .table-skeleton {
-    @apply animate-pulse rounded-xl bg-primary/50 h-5 w-3/4 my-1;
+    @apply animate-pulse rounded-xl bg-loader-primary h-5 w-3/4 my-1;
   }
 
   .vertical-separator {

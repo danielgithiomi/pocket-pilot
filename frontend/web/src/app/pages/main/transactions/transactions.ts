@@ -1,5 +1,5 @@
+import { Table } from '@organisms/table';
 import { form } from '@angular/forms/signals';
-import { Table } from '@components/ui/organisms';
 import { Input } from '@components/ui/atoms/input';
 import { Select } from '@components/ui/atoms/select';
 import { Button } from '@components/ui/atoms/button';
@@ -169,7 +169,7 @@ export class Transactions {
         date: formatDate(transaction.date),
         id: splitTransactionId(transaction.id),
         accountName: capitalize(transaction.account.name),
-        amount: formatCurrency(transaction.amount, this.currency, true, false),
+        amount: formatCurrency(transaction.amount, this.currency, 2, true, false),
       })) || skeletonData
     );
   });
