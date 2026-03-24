@@ -98,6 +98,7 @@ const DEFAULT_CATEGORIES: SpendingCategory[] = [
               class="month-dropdown"
               [value]="selectedMonth()"
               (change)="onMonthChange($event)"
+              id="cost-analysis-month-selector"
             >
               @for (month of months(); track month.value) {
                 <option [value]="month.value">{{ month.label }}</option>

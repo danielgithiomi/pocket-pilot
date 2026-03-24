@@ -12,7 +12,7 @@
   }
 
   .form {
-    @apply w-full md:w-1/2 h-3/4 bg-(--inverted-background) z-9998 rounded-xl p-6 flex flex-col gap-1 border border-(--primary);
+    @apply w-full md:w-3/4 lg:w-2/3 xl:w-1/2 h-3/4 bg-(--inverted-background) z-9998 rounded-xl p-6 flex flex-col gap-1 border border-(--primary);
 
     p {
       @apply text-(--inverted-text);

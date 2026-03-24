@@ -32,11 +32,11 @@
 }
 
 .table-row {
-  @apply grid cursor-pointer hover:scale-x-[1.0025] items-center px-4 py-3 transition-all duration-300 hover:bg-(--muted-text)/30;
+  @apply grid cursor-pointer hover:scale-x-[1.0025] items-center px-4 py-2 transition-all duration-300 hover:bg-(--muted-text)/30;
 }
 
 .table-cell {
-  @apply text-sm text-(--alternate-text) overflow-hidden rounded-xl pr-1 line-clamp-1 truncate mr-2;
+  @apply text-sm text-(--alternate-text) overflow-hidden rounded-xl p-1 line-clamp-1 truncate mr-2;
 }
 
 .actions-container {
