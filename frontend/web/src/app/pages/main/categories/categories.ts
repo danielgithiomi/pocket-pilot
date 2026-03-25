@@ -8,15 +8,15 @@ import { form } from '@angular/forms/signals';
 import { CategoryVariant } from '@global/types';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, signal } from '@angular/core';
+import { NoData } from "@components/structural/main/no-data/no-data";
 import { LucideAngularModule, ListFilterPlus, X } from 'lucide-angular';
+import { FetchError } from "@components/structural/main/fetch-error/fetch-error";
 import {
   CategorySchema,
   categoryTabItems,
   initialCategoryFormState,
   categoryFormValidationSchema,
 } from './categories.types';
-import { FetchError } from "@components/structural/main/fetch-error/fetch-error";
-import { NoData } from "@components/structural/main/no-data/no-data";
 
 @Component({
   selector: 'app-categories',

@@ -7,6 +7,7 @@ import { Button } from '@components/ui/atoms/button';
 import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
 import { Form } from '@components/ui/organisms/form/form';
+import { CategoriesService } from '@api/categories.service';
 import { TransactionsService } from '@api/transactions.service';
 import { TabList } from '@components/ui/atoms/tab-list/tab-list';
 import { Component, computed, inject, signal } from '@angular/core';
@@ -40,6 +41,7 @@ export class Transactions {
   // Services
   private readonly toastService = inject(ToastService);
   private readonly accountsService = inject(AccountsService);
+  private readonly categoriesService = inject(CategoriesService);
   private readonly transactionsService = inject(TransactionsService);
 
   // Data
@@ -47,7 +49,7 @@ export class Transactions {
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
   protected readonly transactionTypes = this.transactionsService.getTransactionTypes();
-  protected readonly transactionCategories = this.transactionsService.getTransactionCategories();
+  protected readonly transactionCategories = this.categoriesService.getTransactionCategories();
 
   // States
   protected activeTabIndex = signal<number>(0);
@@ -68,8 +70,8 @@ export class Transactions {
   });
 
   protected filteredTransactions = computed(() => {
-    const transactions = this.transactions.value()?.data?.data;
     const activeTabIndex = this.activeTabIndex();
+    const transactions = this.transactions.value()?.data?.data;
     const activeTabValue = this.tabListItems[activeTabIndex].value;
 
     if (!transactions) return [];
@@ -246,6 +248,6 @@ export class Transactions {
           error: (error) => console.error('Transaction creation failed:', error),
           complete: () => this.isSubmitting.set(false),
         });
-    }, 3500);
+    }, 3000);
   }
 }

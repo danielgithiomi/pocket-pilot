@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { denormalizeCategoryName } from '@libs/utils';
 import { CategoriesMutation } from '@methods/mutations';
 import { CategoriesResource } from '@methods/resources';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
@@ -8,6 +9,7 @@ import {
   IStandardError,
   IStandardResponse,
   CreateCategoryRequest,
+  IEnumResponse,
 } from '@global/types';
 
 @Injectable({
@@ -28,6 +30,20 @@ export class CategoriesService {
         return EMPTY;
       }),
     );
+  }
+
+  getTransactionCategories(): IEnumResponse[] {
+    const incomeCategories = this.resource.getUserCategories.value()?.data.incomes || [];
+    const expenseCategories = this.resource.getUserCategories.value()?.data.expenses || [];
+
+    const allCategories = [...incomeCategories, ...expenseCategories];
+    const formattedCategories = allCategories.map((category) => ({
+      value: category,
+      label: denormalizeCategoryName(category),
+    }));
+
+    console.log('formattedCategories', formattedCategories);
+    return formattedCategories;
   }
 
   // HELPER FUNCTIONS

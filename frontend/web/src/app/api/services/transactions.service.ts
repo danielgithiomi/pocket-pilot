@@ -25,10 +25,6 @@ export class TransactionsService {
     return this.transactionsResource.transactionTypes;
   }
 
-  getTransactionCategories() {
-    return this.transactionsResource.transactionCategories;
-  }
-
   createTransaction(accountId: string, payload: CreateTransactionRequest) {
     return this.transactionsMutation.createTransaction(accountId, payload).pipe(
       catchError((error: IStandardError) => {

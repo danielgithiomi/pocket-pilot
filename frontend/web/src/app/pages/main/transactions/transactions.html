@@ -62,8 +62,8 @@
     description="Create a new transaction"
     (closeForm)="handleCloseForm($event)"
   >
+  @let categories = transactionCategories;
     @let types = transactionTypes.value()?.data;
-    @let categories = transactionCategories.value()?.data;
     <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
       <atom-input
         id="name"
