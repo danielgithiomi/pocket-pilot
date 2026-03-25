@@ -10,6 +10,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
+    // url      = env("DATABASE_URL")
 }
 
 enum AccountType {
@@ -86,10 +87,11 @@ model Transaction {
 }
 
 model Categories {
-    id         String   @id @default(uuid())
-    categories String[] @default([])
+    id          String   @id @default(uuid())
+    categories  String[] @default([])
+    lastUpdated DateTime @updatedAt()
 
     // Link to user - one-to-many
     user   User   @relation(fields: [userId], references: [id])
-    userId String
+    userId String @unique
 }
