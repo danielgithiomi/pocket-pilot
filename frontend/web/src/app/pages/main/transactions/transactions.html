@@ -10,20 +10,23 @@
     </atom-button>
   </div>
 
-  <div class="page-container flex-1">
-    @if (transactions.error()) {
-      <fetch-error message="Failed to retrieve your transactions" />
-    } @else if (isFetching()) {
+  @if (isFetching()) {
+    <div class="page-container flex-1">
       <div class="skeleton w-1/4 h-5 mb-6"></div>
 
       <organism-table [isLoading]="true" [data]="skeletonData" [columns]="transactionColumns" />
-    } @else {
-      @let response = transactions.value()?.data;
+    </div>
+  }@else {
+    @let response = transactions.value()?.data;
       @let count = response?.count;
-
-      @if (count === 0) {
-        <no-data message="No transactions found!" />
-      } @else {
+  <div 
+  class="page-container flex-1"
+  [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }">
+    @if (transactions.error()) {
+      <fetch-error message="Failed to retrieve your transactions" />
+    } @else if (count === 0) {
+      <no-data message="No transactions found!" />
+    } @else {
         <div>
           <p class="mb-6">
             You have <span class="font-semibold text-primary">{{ count }}</span>
@@ -47,8 +50,8 @@
           />
         </div>
       }
-    }
-  </div>
+    </div>
+  }
 </section>
 
 @if (isFormOpen()) {

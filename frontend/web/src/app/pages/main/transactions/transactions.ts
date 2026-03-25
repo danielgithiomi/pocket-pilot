@@ -1,4 +1,5 @@
 import { Table } from '@organisms/table';
+import { NgClass } from '@angular/common';
 import { form } from '@angular/forms/signals';
 import { Input } from '@components/ui/atoms/input';
 import { Select } from '@components/ui/atoms/select';
@@ -27,7 +28,7 @@ import {
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.html',
-  imports: [Button, LucideAngularModule, NoData, Form, Input, Select, Table, FetchError, TabList],
+  imports: [NgClass, Button, LucideAngularModule, NoData, Form, Input, Select, Table, FetchError, TabList],
 })
 export class Transactions {
   // Icons
