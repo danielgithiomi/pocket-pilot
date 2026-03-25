@@ -58,3 +58,22 @@ export function normalizeCategoryName(categoryName: string): string {
         .replace(/[^a-z\s-]/g, '') // allow letters, spaces, hyphens
         .replace(/\s+/g, '_'); // spaces → underscores
 }
+
+/**
+ * Denormalizes a category name from a normalized name
+ * - Replaces underscores and hyphens with spaces
+ * - Capitalizes the first letter of each word
+ *
+ * @param normalizedName The normalized category name
+ * @returns The denormalized category name
+ */
+export function denormalizeCategoryName(normalizedName: string): string {
+  return normalizedName
+    .replace(/[_-]/g, ' ') // underscores & hyphens → spaces
+    .split(' ')
+    .filter(Boolean) // remove empty strings (safety)
+    .map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join(' ');
+}

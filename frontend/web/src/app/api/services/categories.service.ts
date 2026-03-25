@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { denormalizeCategoryName } from '@libs/utils';
 import { CategoriesMutation } from '@methods/mutations';
 import { CategoriesResource } from '@methods/resources';
@@ -33,10 +33,10 @@ export class CategoriesService {
   }
 
   getTransactionCategories(): IEnumResponse[] {
-    const incomeCategories = this.resource.getUserCategories.value()?.data.incomes || [];
-    const expenseCategories = this.resource.getUserCategories.value()?.data.expenses || [];
+    const incomeCategories = computed(() => this.resource.getUserCategories.value()?.data.incomes || []);
+    const expenseCategories = computed(() => this.resource.getUserCategories.value()?.data.expenses || []);
 
-    const allCategories = [...incomeCategories, ...expenseCategories];
+    const allCategories = [...incomeCategories(), ...expenseCategories()];
     const formattedCategories = allCategories.map((category) => ({
       value: category,
       label: denormalizeCategoryName(category),

@@ -70,18 +70,19 @@ export function capitalize(string: string): string {
 
 /**
  * Denormalizes a category name from a normalized name
+ * - Replaces underscores and hyphens with spaces
+ * - Capitalizes the first letter of each word
+ *
  * @param normalizedName The normalized category name
  * @returns The denormalized category name
  */
 export function denormalizeCategoryName(normalizedName: string): string {
   return normalizedName
-    .replace(/_/g, ' ')
+    .replace(/[_-]/g, ' ') // underscores & hyphens → spaces
     .split(' ')
-    .map((word) =>
-      word
-        .split('-')
-        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-        .join('-'),
+    .filter(Boolean) // remove empty strings (safety)
+    .map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1)
     )
     .join(' ');
 }

@@ -26,16 +26,6 @@ enum TransactionType {
     EXPENSE
 }
 
-enum TransactionCategory {
-    HOUSEHOLD
-    GROCERIES
-    TRANSPORTATION
-    ENTERTAINMENT
-    UTILITIES
-    HEALTH
-    EDUCATION
-}
-
 enum CategoryType {
     INCOME
     EXPENSE
@@ -83,7 +73,7 @@ model Transaction {
     id       String              @id() @default(uuid())
     amount   Float
     type     TransactionType
-    category TransactionCategory
+    category String
     date     DateTime            @default(now())
 
     // Link to account - one-to-many
