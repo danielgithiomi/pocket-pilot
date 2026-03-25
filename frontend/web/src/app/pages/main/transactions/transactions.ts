@@ -229,7 +229,7 @@ export class Transactions {
 
     setTimeout(() => {
       this.transactionsService
-        .createTransaction(accountId, availableBalance, transactionPayload)
+        .createTransaction(accountId, transactionPayload)
         .subscribe({
           next: () => {
             this.toastService.show({

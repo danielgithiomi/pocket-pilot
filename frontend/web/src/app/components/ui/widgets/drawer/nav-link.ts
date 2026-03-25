@@ -5,6 +5,7 @@ import { Component, computed, inject, input, output } from '@angular/core';
 import {
   House,
   Wallet,
+  SquareStack,
   UserRoundCog,
   ChevronRight,
   ArrowLeftRight,
@@ -67,6 +68,7 @@ export class NavLink {
     home: House,
     accounts: Wallet,
     profile: UserRoundCog,
+    categories: SquareStack,
     dashboard: LayoutDashboard,
     transactions: ArrowLeftRight,
   };
