@@ -2,6 +2,7 @@ import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
 import { UserRepository } from '../repositories/user.repository';
+import { CategoriesService } from '@modules/wallet/services/categories.service';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { ChangePasswordDto, FullUser, UpdateUserDto, User, UserResponseDto } from '../dto/user.dto';
@@ -11,6 +12,7 @@ export class UserService {
     constructor(
         private readonly cookiesService: CookiesService,
         private readonly userRepository: UserRepository,
+        private readonly categoriesService: CategoriesService,
     ) {}
 
     async registerUser(data: RegisterInputDto): Promise<RegisterOutputDto> {
@@ -30,6 +32,8 @@ export class UserService {
         const payload: JWTPayload = this.cookiesService.generatePayload(createdUser);
 
         const { access_token, refresh_token } = this.cookiesService.generateTokens(payload);
+
+        await this.categoriesService.addDefaultCategoriesOnRegistration(createdUser.id!);
 
         return {
             user: plainToInstance(UserResponseDto, createdUser),

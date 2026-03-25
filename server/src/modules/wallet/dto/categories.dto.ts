@@ -1,7 +1,7 @@
-import { Prisma } from '@prisma/client';
+import { IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { IsArray, IsNotEmpty } from 'class-validator';
+import { CategoryType, Prisma } from '@prisma/client';
 
 export type FullCategories = Prisma.CategoriesCreateInput;
 
@@ -10,11 +10,14 @@ export type CategoriesWithUser = Prisma.CategoriesGetPayload<{
     include: { user: { select: { id: true; name: true } } };
 }>;
 
-export class CreateCategoriesDto {
-    @IsArray()
+export class CreateCategoryDto {
     @IsNotEmpty()
-    @ApiProperty({ example: ['Food', 'Transportation'], description: 'The categories of the transactions' })
-    categories!: string[];
+    @ApiProperty({ example: 'Salary', description: 'The name of the category' })
+    categoryName!: string;
+
+    @IsNotEmpty()
+    @ApiProperty({ enum: CategoryType, example: 'INCOME', description: 'The type of the category' })
+    categoryType!: CategoryType;
 }
 
 @Exclude()
@@ -47,10 +50,26 @@ export class CategoriesDto {
     @ApiProperty({
         isArray: true,
         type: [String],
-        example: ['Food', 'Transportation', 'Utilities'],
-        description: 'The categories of the transactions',
+        example: ['Salary', 'Refunds', 'Investments'],
+        description: 'The income categories of the transactions',
     })
-    categories!: string[];
+    incomes!: string[];
+
+    @Expose()
+    @ApiProperty({
+        isArray: true,
+        type: [String],
+        example: ['Food', 'Transportation', 'Entertainment'],
+        description: 'The expense categories of the transactions',
+    })
+    expenses!: string[];
+
+    @Expose()
+    @ApiProperty({
+        example: '2022-01-01T00:00:00.000Z',
+        description: 'The date the user created the category list',
+    })
+    createdAt!: Date;
 
     @Expose()
     @ApiProperty({

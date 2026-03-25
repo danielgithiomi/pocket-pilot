@@ -1,10 +1,10 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
-import { CategoriesDto, CreateCategoriesDto } from '../dto/categories.dto';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { CategoriesService } from '../services/categories.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { CategoriesDto, CreateCategoryDto } from '../dto/categories.dto';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -32,8 +32,7 @@ export class CategoriesController {
         type: CategoriesDto,
         description: 'The categories created or updated successfully by User ID',
     })
-    async createCategories(@Body() payload: CreateCategoriesDto, @UserInRequest() user: UserResponseDto) {
-        const { categories } = payload;
-        return this.categoriesService.createOrUpdateUserCategories(user.id, categories);
+    async createCategory(@Body() payload: CreateCategoryDto, @UserInRequest() user: UserResponseDto) {
+        return this.categoriesService.createCategory(user.id, payload);
     }
 }

@@ -36,6 +36,11 @@ enum TransactionCategory {
     EDUCATION
 }
 
+enum CategoryType {
+    INCOME
+    EXPENSE
+}
+
 model Account {
     id        String      @id @default(uuid())
     type      AccountType
@@ -88,7 +93,9 @@ model Transaction {
 
 model Categories {
     id          String   @id @default(uuid())
-    categories  String[] @default([])
+    incomes     String[]
+    expenses    String[]
+    createdAt   DateTime @default(now())
     lastUpdated DateTime @updatedAt()
 
     // Link to user - one-to-many

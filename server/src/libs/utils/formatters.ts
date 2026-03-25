@@ -20,7 +20,7 @@ export function formatEnumForFrontend(enumValue: string): ExposeEnumDto {
  * - Replacing spaces with underscores
  * - Removing empty strings
  * - Removing duplicates
- * 
+ *
  * @param categories - Array of category strings to normalize
  * @returns Array of normalized category strings
  */
@@ -28,14 +28,33 @@ export function normalizeCategories(categories: string[]): string[] {
     return Array.from(
         new Set(
             categories
-                .map((c) =>
-                    c
-                        .trim()
-                        .toLowerCase()
-                        .replace(/[^a-z\s-]/g, '')   // allow letters, spaces, hyphens
-                        .replace(/\s+/g, '_')        // spaces → underscores
+                .map(
+                    c =>
+                        c
+                            .trim()
+                            .toLowerCase()
+                            .replace(/[^a-z\s-]/g, '') // allow letters, spaces, hyphens
+                            .replace(/\s+/g, '_'), // spaces → underscores
                 )
-                .filter((c) => c.length > 0)        // remove empty results
-        )
+                .filter(c => c.length > 0), // remove empty results
+        ),
     );
+}
+
+/**
+ * Normalizes a category name by:
+ * - Trimming whitespace
+ * - Converting to lowercase
+ * - Replacing non-alphanumeric characters (except spaces and hyphens) with underscores
+ * - Replacing spaces with underscores
+ *
+ * @param categoryName - The category name to normalize
+ * @returns The normalized category name
+ */
+export function normalizeCategoryName(categoryName: string): string {
+    return categoryName
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z\s-]/g, '') // allow letters, spaces, hyphens
+        .replace(/\s+/g, '_'); // spaces → underscores
 }

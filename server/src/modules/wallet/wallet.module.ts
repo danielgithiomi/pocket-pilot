@@ -14,6 +14,7 @@ import { TransactionRepository } from './repositories/transaction.respository';
 import { UserRepository } from '@modules/identity/repositories/user.repository';
 
 @Module({
+    exports: [CategoriesService],
     controllers: [AccountController, TransactionController, CategoriesController],
     providers: [
         UserService,
