@@ -20,6 +20,9 @@ export const API_ENDPOINTS = {
   accounts: "accounts",
   account_types: "accounts/types",
 
+  // categories
+  categories: "categories",
+
   // transactions
   all_transactions: "accounts/transactions/all",
   user_transactions: "accounts/transactions/user",

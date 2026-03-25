@@ -1,4 +1,4 @@
-export type CategoryVariant = "INCOME" | "EXPENSE";
+export type CategoryVariant = 'INCOME' | 'EXPENSE';
 
 export interface CreateCategoryRequest {
   name: string;
