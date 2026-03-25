@@ -10,88 +10,89 @@
     </atom-button>
   </div>
 
-  @if (!isFetchingCategories()) {
+  @if (isFetchingCategories()) {
     <div class="page-container flex flex-col flex-1 pb-0!">
       <div class="skeleton w-1/4 h-5 mb-6"></div>
 
-      @let incomes = categories$.value()?.data?.incomes;
-      @let expenses = categories$.value()?.data?.expenses;
-
-      <div class="flex flex-row gap-6 flex-1">
+      <div class="flex flex-row gap-6">
         <div class="category-card group/card incomes">
-          <p>
-            Income Categories: <span class="category-card-span">{{ incomes?.length }}</span>
-          </p>
+          <div class="skeleton w-3/4 h-5"></div>
 
           <div class="categories-container">
-            @for (income of incomes; track income) {
-              <div class="category-item group/item income">
-                <p>{{ income }}</p>
-
-                <div class="category-icon atom-icon">
-                  <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
-                </div>
-              </div>
+            @for (income of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
+              <div class="skeleton skeleton-items"></div>
             }
           </div>
         </div>
 
         <div class="category-card group">
-          <p>
-            Expense Categories: <span class="category-card-span">{{ expenses?.length }}</span>
-          </p>
+          <div class="skeleton w-3/4 h-5"></div>
 
           <div class="categories-container">
-            @for (expense of expenses; track expense) {
-              <div class="category-item group/item expense">
-                <p>{{ expense }}</p>
-
-                <div class="category-icon atom-icon">
-                  <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
-                </div>
-              </div>
+            @for (income of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track $index) {
+              <div class="skeleton skeleton-items"></div>
             }
           </div>
         </div>
       </div>
     </div>
-  }
-  <!-- @else {
-    @let response = transactions.value()?.data;
-      @let count = response?.count;
-  <div 
-  class="page-container flex-1"
-  [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }">
-    @if (transactions.error()) {
-      <fetch-error message="Failed to retrieve your transactions" />
-    } @else if (count === 0) {
-      <no-data message="No transactions found!" />
-    } @else {
-        <div>
-          <p class="mb-6">
-            You have <span class="font-semibold text-primary">{{ count }}</span>
-            {{ count! > 1 ? 'total transactions' : 'transaction' }}!
-          </p>
+  } @else {
+    @let response = categories$.value()?.data;
+    @let incomeCount = response?.incomes?.length || 0;
+    @let expenseCount = response?.expenses?.length || 0;
+    @let totalCount = incomeCount + expenseCount;
+    <div
+      class="page-container flex-1"
+      [ngClass]="{ 'grid place-items-center': totalCount === 0 || categories$.error() }"
+    >
+      @if (categories$.error()) {
+        <fetch-error message="Failed to retrieve your transactions" />
+      } @else if (totalCount === 0) {
+        <no-data message="No transactions found!" />
+      } @else {
+        @let incomes = categories$.value()?.data?.incomes;
+        @let expenses = categories$.value()?.data?.expenses;
 
-          <div class="mb-6">
-            <atom-tab-list
-              [items]="tabListItems"
-              [activeItem]="activeTabIndex()"
-              (selectedIndex)="onTabSelected($event)"
-            />
+        <div class="flex flex-row gap-6 flex-1">
+          <div class="category-card group/card incomes">
+            <p>
+              Income Categories: <span class="category-card-span">{{ incomes?.length }}</span>
+            </p>
+
+            <div class="categories-container">
+              @for (income of incomes; track income) {
+                <div class="category-item group/item income">
+                  <p>{{ income }}</p>
+
+                  <div class="category-icon atom-icon">
+                    <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
+                  </div>
+                </div>
+              }
+            </div>
           </div>
 
-          <organism-table
-            [isLoading]="isFetching()"
-            [columns]="transactionColumns"
-            [data]="formattedTransactions()"
-            (deleteRow)="deleteDataRow($event)"
-            emptyMessage="You have no transactions yet!"
-          />
+          <div class="category-card group/card">
+            <p>
+              Expense Categories: <span class="category-card-span">{{ expenses?.length }}</span>
+            </p>
+
+            <div class="categories-container">
+              @for (expense of expenses; track expense) {
+                <div class="category-item group/item expense">
+                  <p>{{ expense }}</p>
+
+                  <div class="category-icon atom-icon">
+                    <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
         </div>
       }
     </div>
-  } -->
+  }
 </section>
 
 @if (isFormOpen()) {

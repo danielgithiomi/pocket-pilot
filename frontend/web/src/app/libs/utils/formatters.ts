@@ -1,7 +1,17 @@
+/**
+ * Splits a transaction ID into its components
+ * @param id The transaction ID to split
+ * @returns The first part of the transaction ID
+ */
 export function splitTransactionId(id: string): string {
   return id.split('-')[0];
 }
 
+/**
+ * Formats a date as a short date string
+ * @param date The date to format
+ * @returns The formatted date string
+ */
 export function formatDate(date: string): string {
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -10,6 +20,11 @@ export function formatDate(date: string): string {
   });
 }
 
+/**
+ * Formats a date as a full date string
+ * @param date The date to format
+ * @returns The formatted date string
+ */
 export function formatFullDate(date: string): string {
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -19,12 +34,21 @@ export function formatFullDate(date: string): string {
   });
 }
 
+/**
+ * Formats a number as currency
+ * @param amount The amount to format
+ * @param currency The currency code (e.g., 'USD', 'EUR')
+ * @param fractionDigits The number of decimal places to show (default: 2)
+ * @param showSymbol Whether to show the currency symbol (default: false)
+ * @param narrow Whether to use the narrow symbol (default: true)
+ * @returns The formatted currency string
+ */
 export function formatCurrency(
   amount: number,
   currency: Intl.NumberFormatOptions['currency'],
   fractionDigits: number = 2,
   showSymbol: boolean = false,
-  narrow: boolean = true
+  narrow: boolean = true,
 ): string {
   return new Intl.NumberFormat('en-US', {
     currency: currency,
@@ -35,6 +59,29 @@ export function formatCurrency(
   }).format(amount);
 }
 
+/**
+ * Capitalizes the first letter of a string
+ * @param string The string to capitalize
+ * @returns The capitalized string
+ */
 export function capitalize(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+/**
+ * Denormalizes a category name from a normalized name
+ * @param normalizedName The normalized category name
+ * @returns The denormalized category name
+ */
+export function denormalizeCategoryName(normalizedName: string): string {
+  return normalizedName
+    .replace(/_/g, ' ')
+    .split(' ')
+    .map((word) =>
+      word
+        .split('-')
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join('-'),
+    )
+    .join(' ');
 }

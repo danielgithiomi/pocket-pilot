@@ -2,6 +2,7 @@ import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { Form } from '@organisms/form';
 import { TabList } from '@atoms/tab-list';
+import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { CategoryVariant } from '@global/types';
@@ -14,12 +15,14 @@ import {
   initialCategoryFormState,
   categoryFormValidationSchema,
 } from './categories.types';
+import { FetchError } from "@components/structural/main/fetch-error/fetch-error";
+import { NoData } from "@components/structural/main/no-data/no-data";
 
 @Component({
   selector: 'app-categories',
   styleUrl: './categories.css',
   templateUrl: './categories.html',
-  imports: [Button, LucideAngularModule, Form, Input, TabList],
+  imports: [NgClass, Button, LucideAngularModule, Form, Input, TabList, FetchError, NoData],
 })
 export class Categories {
   // Icons
