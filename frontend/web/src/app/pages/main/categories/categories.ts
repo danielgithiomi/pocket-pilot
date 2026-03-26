@@ -8,15 +8,17 @@ import { form } from '@angular/forms/signals';
 import { CategoryVariant } from '@global/types';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, signal } from '@angular/core';
-import { NoData } from "@components/structural/main/no-data/no-data";
+import { NoData } from '@components/structural/main/no-data/no-data';
 import { LucideAngularModule, ListFilterPlus, X } from 'lucide-angular';
-import { FetchError } from "@components/structural/main/fetch-error/fetch-error";
+import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import {
   CategorySchema,
   categoryTabItems,
   initialCategoryFormState,
   categoryFormValidationSchema,
+  FormattedCategories,
 } from './categories.types';
+import { denormalizeCategoryName } from '@libs/utils';
 
 @Component({
   selector: 'app-categories',
@@ -44,6 +46,15 @@ export class Categories {
 
   // Computed
   protected readonly isFetchingCategories = computed(() => this.categories$.isLoading());
+  protected readonly formattedCategories = computed<FormattedCategories>(() => {
+    const response = this.categoriesService.getUserCategories();
+    const { incomes, expenses } = response.value()?.data!;
+    return {
+      incomes: this.denormalizeCategoryNames(incomes),
+      expenses: this.denormalizeCategoryNames(expenses),
+    };
+  });
+
 
   // Form
   protected categoryFormModel = signal<CategorySchema>(initialCategoryFormState);
@@ -102,5 +113,10 @@ export class Categories {
         complete: () => this.isSubmitting.set(false),
       });
     }, 2000);
+  }
+
+  // Helper Functions
+  private denormalizeCategoryNames(categoryNames: string[]): string[] {
+    return categoryNames.map((name) => denormalizeCategoryName(name));
   }
 }

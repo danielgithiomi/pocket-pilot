@@ -28,15 +28,14 @@ export function normalizeCategories(categories: string[]): string[] {
     return Array.from(
         new Set(
             categories
-                .map(
-                    c =>
-                        c
-                            .trim()
-                            .toLowerCase()
-                            .replace(/[^a-z\s-]/g, '') // allow letters, spaces, hyphens
-                            .replace(/\s+/g, '_'), // spaces → underscores
+                .map(c =>
+                    c
+                        .trim()
+                        .toLowerCase()
+                        .replace(/[^a-z\s-_]/g, '') // ✅ allow underscore
+                        .replace(/\s+/g, '_'),
                 )
-                .filter(c => c.length > 0), // remove empty results
+                .filter(c => c.length > 0),
         ),
     );
 }
@@ -55,8 +54,8 @@ export function normalizeCategoryName(categoryName: string): string {
     return categoryName
         .trim()
         .toLowerCase()
-        .replace(/[^a-z\s-]/g, '') // allow letters, spaces, hyphens
-        .replace(/\s+/g, '_'); // spaces → underscores
+        .replace(/[^a-z\s-_]/g, '') // ✅ allow underscore
+        .replace(/\s+/g, '_');
 }
 
 /**
@@ -68,12 +67,10 @@ export function normalizeCategoryName(categoryName: string): string {
  * @returns The denormalized category name
  */
 export function denormalizeCategoryName(normalizedName: string): string {
-  return normalizedName
-    .replace(/[_-]/g, ' ') // underscores & hyphens → spaces
-    .split(' ')
-    .filter(Boolean) // remove empty strings (safety)
-    .map(
-      (word) => word.charAt(0).toUpperCase() + word.slice(1)
-    )
-    .join(' ');
+    return normalizedName
+        .replace(/[_-]/g, ' ') // underscores & hyphens → spaces
+        .split(' ')
+        .filter(Boolean) // remove empty strings (safety)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
 }

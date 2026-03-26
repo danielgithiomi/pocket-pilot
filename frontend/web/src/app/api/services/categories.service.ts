@@ -6,10 +6,10 @@ import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { ToastService } from '@components/ui/atoms/toast';
 import {
   Categories,
+  IEnumResponse,
   IStandardError,
   IStandardResponse,
   CreateCategoryRequest,
-  IEnumResponse,
 } from '@global/types';
 
 @Injectable({

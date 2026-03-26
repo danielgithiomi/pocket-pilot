@@ -26,3 +26,9 @@ export const categoryFormValidationSchema = schema<CategorySchema>((root) => {
   required(root.categoryName, { message: 'The name is required field!' });
   minLength(root.categoryName, 3, { message: 'The name must be at least 3 characters long!' });
 });
+
+// Component Types
+export interface FormattedCategories {
+  incomes: string[];
+  expenses: string[];
+}

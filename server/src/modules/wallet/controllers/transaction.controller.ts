@@ -15,8 +15,8 @@ import {
 
 @Controller('accounts')
 @ApiTags('Transactions')
-@ApiCookieAuth('access_token')
 @UseGuards(CookiesAuthGuard)
+@ApiCookieAuth('access_token')
 export class TransactionController {
     constructor(private readonly transactionService: TransactionService) {}
 

@@ -50,8 +50,8 @@
       } @else if (totalCount === 0) {
         <no-data message="No transactions found!" />
       } @else {
-        @let incomes = categories$.value()?.data?.incomes;
-        @let expenses = categories$.value()?.data?.expenses;
+        @let incomes = formattedCategories().incomes;
+        @let expenses = formattedCategories().expenses;
 
         <div class="flex flex-row gap-6 flex-1">
           <div class="category-card group/card incomes">

@@ -48,9 +48,13 @@ export class TransactionService {
     ): Promise<TransactionWithAccount> {
         const transformedDto: CreateTransactionDto = {
             ...createTransactionDto,
-            type: createTransactionDto.type.toUpperCase() as TransactionType,
+            type: createTransactionDto.type,
             category: denormalizeCategoryName(createTransactionDto.category),
         };
+
+        // console.log('type:', createTransactionDto.type);
+        // console.log('original category:', createTransactionDto.category);
+        // console.log('denormalize:', denormalizeCategoryName(createTransactionDto.category));
 
         if (!this.isTransactionTypeValid(transformedDto.type)) {
             throw new BadRequestException({
