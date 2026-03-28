@@ -35,7 +35,7 @@
         @apply relative overflow-hidden rounded-lg px-2 py-0.5 hover:scale-105 transition-all duration-300 cursor-pointer;
 
         p {
-          @apply text-[0.8rem] cursor-default;
+          @apply text-[0.8rem] cursor-default text-white;
         }
 
         .category-icon {
