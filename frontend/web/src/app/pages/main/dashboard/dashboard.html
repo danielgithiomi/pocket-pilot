@@ -21,7 +21,7 @@
         title="Transactions"
         [icon]="transactionIcon"
         [value]="transactionsCount()"
-        subtitle="Recent transactions"
+        subtitle="Transactions made this month"
         [isLoading]="isDataLoading()"
       />
 
@@ -32,13 +32,13 @@
         [icon]="handCoinsIcon"
         [isLoading]="isDataLoading()"
         [value]="formattedNetCashFlow()"
-        subtitle="Moved around this month"
+        subtitle="Total transacted this month"
       />
 
       <!-- Incomes -->
       <dashboard-card
         id="incomes"
-        title="Revenue"
+        title="Incomes"
         [icon]="incomeIcon"
         [isLoading]="isDataLoading()"
         subtitle="Total revenue this month"
@@ -93,7 +93,7 @@
               <div class="legend">
                 <div class="legend-item justify-start">
                   <span class="bg-[#b829dd]"></span>
-                  <p>Balance</p>
+                  <p>Incomes</p>
                 </div>
 
                 <div class="legend-item justify-end">
@@ -119,7 +119,7 @@
           @if (isDataLoading()) {
             <div class="analysis-loader"></div>
           } @else {
-            <widget-cost-analysis [totalMonthlySpending]="formatCurrency(totalExpenses().toString())" />
+            <widget-cost-analysis [totalMonthlySpending]="totalExpenses()" />
           }
         </div>
       </dashboard-card>

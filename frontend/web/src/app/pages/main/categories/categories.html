@@ -1,0 +1,151 @@
+<section id="categories-page" class="page">
+  <div class="page-header">
+    <h1 class="page-title">Categories</h1>
+
+    <atom-button id="add-category" variant="primary" (clicked)="handleOpenForm()">
+      <div class="w-full flex flex-row items-center justify-between gap-4">
+        <lucide-icon name="create-category" [img]="Plus" [size]="iconSize"></lucide-icon>
+        <span class="hidden sm:block">Add Category</span>
+      </div>
+    </atom-button>
+  </div>
+
+  @if (isFetchingCategories()) {
+    <div class="page-container flex flex-col flex-1 pb-0!">
+      <div class="skeleton w-1/4 h-5 mb-6"></div>
+
+      <div class="flex flex-row gap-6">
+        <div class="category-card group/card incomes">
+          <div class="skeleton w-3/4 h-5"></div>
+
+          <div class="categories-container">
+            @for (income of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
+              <div class="skeleton skeleton-items"></div>
+            }
+          </div>
+        </div>
+
+        <div class="category-card group">
+          <div class="skeleton w-3/4 h-5"></div>
+
+          <div class="categories-container">
+            @for (income of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track $index) {
+              <div class="skeleton skeleton-items"></div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    @let response = categories$.value()?.data;
+    @let incomeCount = response?.incomes?.length || 0;
+    @let expenseCount = response?.expenses?.length || 0;
+    @let totalCount = incomeCount + expenseCount;
+    <div
+      class="page-container flex-1"
+      [ngClass]="{ 'grid place-items-center': totalCount === 0 || categories$.error() }"
+    >
+      @if (categories$.error()) {
+        <fetch-error message="Failed to retrieve your transactions" />
+      } @else if (totalCount === 0) {
+        <no-data message="No transactions found!" />
+      } @else {
+        @let incomes = formattedCategories().incomes;
+        @let expenses = formattedCategories().expenses;
+
+        <div class="flex flex-row gap-6 flex-1">
+          <div class="category-card group/card incomes">
+            <p>
+              Income Categories: <span class="category-card-span">{{ incomes?.length }}</span>
+            </p>
+
+            <div class="categories-container">
+              @for (income of incomes; track income) {
+                <div class="category-item group/item income">
+                  <p>{{ income }}</p>
+
+                  <div class="category-icon atom-icon">
+                    <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="category-card group/card">
+            <p>
+              Expense Categories: <span class="category-card-span">{{ expenses?.length }}</span>
+            </p>
+
+            <div class="categories-container">
+              @for (expense of expenses; track expense) {
+                <div class="category-item group/item expense">
+                  <p>{{ expense }}</p>
+
+                  <div class="category-icon atom-icon">
+                    <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>
+
+@if (isFormOpen()) {
+  <organism-form
+    id="transactions"
+    title="Add Transaction"
+    [class.hidden]="!isFormOpen()"
+    (closeForm)="handleCloseForm()"
+    description="Create a new transaction"
+  >
+    <form slot="content" id="category-form" (submit)="submitCategory($event)">
+      <atom-input
+        type="text"
+        id="category-name"
+        [inverted]="true"
+        autocomplete="name"
+        label="Category Name"
+        placeholder="Eg: Groceries"
+        [formField]="categoryForm.categoryName"
+        (clearOutput)="categoryForm.categoryName().controlValue.set('')"
+      />
+
+      <div class="flex flex-col items-start gap-1">
+        <p class="text-inverted-text">Category Type:</p>
+
+        <atom-tab-list
+          [items]="categoryTabItems"
+          (selectedIndex)="handleCategoryTypeSelected($event)"
+          [activeItem]="categoryFormModel().categoryType === 'INCOME' ? 0 : 1"
+        />
+      </div>
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      <atom-button
+        type="reset"
+        [inverted]="true"
+        label="Reset Form"
+        variant="secondary"
+        form="category-form"
+        id="reset-category-form"
+        (clicked)="resetCategoryForm()"
+        [disabled]="!categoryForm().dirty() || isSubmitting()"
+      />
+
+      <atom-button
+        type="submit"
+        form="category-form"
+        label="Create Category"
+        id="submit-category-form"
+        [isLoading]="isSubmitting()"
+        [disabled]="categoryForm().invalid() || isSubmitting()"
+      />
+    </div>
+  </organism-form>
+}

@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
+import { Prisma, TransactionType } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
-import { Prisma, TransactionType, TransactionCategory } from '@prisma/client';
 
 export type FullTransaction = Prisma.TransactionCreateInput;
 
@@ -13,8 +13,8 @@ export class CreateTransactionDto {
 
     @IsString()
     @IsNotEmpty()
-    @ApiProperty({ enum: TransactionCategory, description: 'The category of the transaction' })
-    category!: TransactionCategory;
+    @ApiProperty({ example: 'Groceries', description: 'The category of the transaction' })
+    category!: string;
 
     @IsNotEmpty()
     @ApiProperty({ example: 1000, description: 'The amount of the transaction' })

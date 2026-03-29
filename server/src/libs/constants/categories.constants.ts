@@ -1,0 +1,28 @@
+export const DEFAULT_INCOME_CATEGORIES = [
+    'Salary',
+    'Freelance',
+    'Business',
+    'Investments',
+    'Rental Income',
+    'Refunds',
+    'Bonuses',
+    'Gifts',
+];
+export const DEFAULT_EXPENSE_CATEGORIES = [
+    'Housing',
+    'Utilities',
+    'Groceries',
+    'Transportation',
+    'Health',
+    'Insurance',
+    'Debt Payments',
+    'Subscriptions',
+    'Entertainment',
+    'Dining',
+    'Shopping',
+    'Education',
+    'Personal Care',
+    'Travel',
+    'Gifts Donations',
+    'Miscellaneous',
+];

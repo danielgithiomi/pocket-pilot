@@ -68,16 +68,17 @@ import { SpendingCategory, CostAnalysisColors, CostAnalysis } from './cost-analy
       <!-- Example 1: Default (matches reference image) -->
       <section class="example-section">
         <h2>Default - Reference Design</h2>
-        <widget-cost-analysis (monthChange)="onMonthChange($event)" />
+        <widget-cost-analysis [totalMonthlySpending]="100.00" (monthChange)="onMonthChange($event)" />
       </section>
 
       <!-- Example 2: Custom Categories -->
       <section class="example-section">
         <h2>Custom Categories</h2>
         <widget-cost-analysis
+          [totalMonthlySpending]="100.00"
           title="Project Budget"
           subtitle="Q1 2024 allocation"
-          [categories]="projectCategories"
+          ="projectCategories"
           [showMonthSelector]="false"
         />
       </section>
@@ -86,9 +87,10 @@ import { SpendingCategory, CostAnalysisColors, CostAnalysis } from './cost-analy
       <section class="example-section">
         <h2>Euro Currency</h2>
         <widget-cost-analysis
+          [totalMonthlySpending]="100.00"
           title="Monthly Expenses"
           subtitle="European account"
-          [categories]="euroCategories"
+          ="euroCategories"
           currencySymbol="€"
           locale="de-DE"
           [showMonthSelector]="false"
@@ -99,6 +101,7 @@ import { SpendingCategory, CostAnalysisColors, CostAnalysis } from './cost-analy
       <section class="example-section dark-bg">
         <h2>Dark Theme</h2>
         <widget-cost-analysis
+          [totalMonthlySpending]="100.00"
           title="Cost analysis"
           subtitle="Dark mode view"
           [colors]="darkThemeColors"
@@ -110,9 +113,10 @@ import { SpendingCategory, CostAnalysisColors, CostAnalysis } from './cost-analy
       <section class="example-section">
         <h2>Blue Theme</h2>
         <widget-cost-analysis
+          [totalMonthlySpending]="100.00"
           title="Department Spending"
           subtitle="By team allocation"
-          [categories]="blueCategories"
+          ="blueCategories"
           [colors]="blueThemeColors"
           [showMonthSelector]="false"
         />
@@ -122,9 +126,10 @@ import { SpendingCategory, CostAnalysisColors, CostAnalysis } from './cost-analy
       <section class="example-section">
         <h2>Minimal - Two Categories</h2>
         <widget-cost-analysis
+          [totalMonthlySpending]="100.00"
           title="Income vs Expenses"
           subtitle="Monthly comparison"
-          [categories]="minimalCategories"
+          ="minimalCategories"
           [showMonthSelector]="false"
         />
       </section>
@@ -133,6 +138,7 @@ import { SpendingCategory, CostAnalysisColors, CostAnalysis } from './cost-analy
       <section class="example-section">
         <h2>Animation Disabled</h2>
         <widget-cost-analysis
+          [totalMonthlySpending]="100.00"
           title="Static View"
           subtitle="No load animation"
           [allowAnimation]="false"
@@ -144,10 +150,11 @@ import { SpendingCategory, CostAnalysisColors, CostAnalysis } from './cost-analy
       <section class="example-section">
         <h2>Interactive Month Selector</h2>
         <widget-cost-analysis
+          [totalMonthlySpending]="100.00"
           title="Monthly Overview"
           subtitle="Select a month"
           [selectedMonth]="currentMonth()"
-          [categories]="getMonthlyData(currentMonth())"
+          ="getMonthlyData(currentMonth())"
           (monthChange)="updateMonth($event)"
         />
         <p class="selected-info">
@@ -160,15 +167,17 @@ import { SpendingCategory, CostAnalysisColors, CostAnalysis } from './cost-analy
         <h2>Dashboard Layout</h2>
         <div class="dashboard-grid">
           <widget-cost-analysis
+            [totalMonthlySpending]="100.00"
             title="Personal"
             subtitle="Monthly spending"
             [showMonthSelector]="false"
             [animationDuration]="800"
           />
           <widget-cost-analysis
+            [totalMonthlySpending]="100.00"
             title="Business"
             subtitle="Operating costs"
-            [categories]="businessCategories"
+            ="businessCategories"
             [showMonthSelector]="false"
             [animationDuration]="1000"
           />

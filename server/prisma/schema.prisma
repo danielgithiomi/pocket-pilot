@@ -10,6 +10,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
+    // url      = env("DATABASE_URL")
 }
 
 enum AccountType {
@@ -25,14 +26,9 @@ enum TransactionType {
     EXPENSE
 }
 
-enum TransactionCategory {
-    HOUSEHOLD
-    GROCERIES
-    TRANSPORTATION
-    ENTERTAINMENT
-    UTILITIES
-    HEALTH
-    EDUCATION
+enum CategoryType {
+    INCOME
+    EXPENSE
 }
 
 model Account {
@@ -68,16 +64,31 @@ model User {
 
     // Link to accounts - one-to-many
     accounts Account[]
+
+    // Link to categories - one-to-many
+    categories Categories[]
 }
 
 model Transaction {
     id       String              @id() @default(uuid())
     amount   Float
     type     TransactionType
-    category TransactionCategory
+    category String
     date     DateTime            @default(now())
 
     // Link to account - one-to-many
     account   Account @relation(fields: [accountId], references: [id])
     accountId String
+}
+
+model Categories {
+    id          String   @id @default(uuid())
+    incomes     String[]
+    expenses    String[]
+    createdAt   DateTime @default(now())
+    lastUpdated DateTime @updatedAt()
+
+    // Link to user - one-to-many
+    user   User   @relation(fields: [userId], references: [id])
+    userId String @unique
 }

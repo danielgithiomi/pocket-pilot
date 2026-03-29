@@ -1,9 +1,9 @@
 import { ExposeEnumDto } from '@common/types';
 import { plainToInstance } from 'class-transformer';
-import { formatEnumForFrontend } from '@libs/utils';
+import { TransactionType, Account } from '@prisma/client';
 import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { TransactionCategory, TransactionType, Account } from '@prisma/client';
+import { denormalizeCategoryName, formatEnumForFrontend } from '@libs/utils';
 import { TransactionRepository } from '../repositories/transaction.respository';
 import { Transaction, CreateTransactionDto, TransactionWithAccount } from '../dto/transaction.dto';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
@@ -18,10 +18,6 @@ export class TransactionService {
 
     async getTransactionTypes(): Promise<ExposeEnumDto[]> {
         return await Promise.resolve(Object.values(TransactionType).map(formatEnumForFrontend));
-    }
-
-    async getTransactionCategories(): Promise<ExposeEnumDto[]> {
-        return await Promise.resolve(Object.values(TransactionCategory).map(formatEnumForFrontend));
     }
 
     async getAllTransactions(): Promise<TransactionWithAccount[]> {
@@ -52,9 +48,13 @@ export class TransactionService {
     ): Promise<TransactionWithAccount> {
         const transformedDto: CreateTransactionDto = {
             ...createTransactionDto,
-            type: createTransactionDto.type.toUpperCase() as TransactionType,
-            category: createTransactionDto.category.toUpperCase() as TransactionCategory,
+            type: createTransactionDto.type,
+            category: denormalizeCategoryName(createTransactionDto.category),
         };
+
+        // console.log('type:', createTransactionDto.type);
+        // console.log('original category:', createTransactionDto.category);
+        // console.log('denormalize:', denormalizeCategoryName(createTransactionDto.category));
 
         if (!this.isTransactionTypeValid(transformedDto.type)) {
             throw new BadRequestException({

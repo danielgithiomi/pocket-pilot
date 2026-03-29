@@ -51,13 +51,13 @@ export class AccountController {
         };
     }
 
+    @Get()
     @ApiOperation({ summary: 'Get User Accounts', description: 'Get all accounts of the logged in user' })
     @ApiResponse({
         status: 200,
         type: UserAccountsResponseDto,
         description: 'Accounts fetched successfully',
     })
-    @Get()
     async getUserAccounts(@UserInRequest() user: User): Promise<UserAccountsResponseDto> {
         const userAccounts: Account[] = await this.accountService.getUserAccounts(user.id!);
 

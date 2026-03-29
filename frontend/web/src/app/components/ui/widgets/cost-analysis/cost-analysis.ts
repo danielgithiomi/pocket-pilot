@@ -1,6 +1,11 @@
 import { MonthOption } from '@global/types';
 import { DEFAULT_MONTHS } from '@global/constants';
-import { Component, computed, effect, input, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { formatCurrency } from '@libs/utils';
+import { AccountsService } from '@api/accounts.service';
+import { CategoriesService } from '@api/categories.service';
+import { CostAnalysisCategory } from './cost-analysis.types';
+import { TransactionsService } from '@api/transactions.service';
 
 /**
  * Represents a single spending category
@@ -72,6 +77,16 @@ const DEFAULT_CATEGORIES: SpendingCategory[] = [
   { id: 'other', label: 'Other', amount: 2787, color: '#d1d5db' },
 ];
 
+const COLOR_MAP: string[] = [
+  '#f59e0b',
+  '#fbbf24',
+  '#facc15',
+  '#a3e635',
+  '#4ade80',
+  '#22c55e',
+  '#d1d5db',
+];
+
 @Component({
   selector: 'widget-cost-analysis',
   styleUrl: './cost-analysis.css',
@@ -119,7 +134,7 @@ const DEFAULT_CATEGORIES: SpendingCategory[] = [
 
       <!-- Total Amount -->
       <div class="total-amount">
-        {{ totalMonthlySpending() }}
+        {{ formattedTotalSpending() }}
       </div>
 
       <!-- Segmented Progress Bar -->
@@ -154,14 +169,8 @@ const DEFAULT_CATEGORIES: SpendingCategory[] = [
 })
 export class CostAnalysis {
   // Inputs
-  readonly totalMonthlySpending = input.required<string>();
-  readonly categories = input<SpendingCategory[]>(DEFAULT_CATEGORIES);
-
-  /** Currency symbol */
-  readonly currencySymbol = input<string>('$');
-
-  /** Locale for number formatting */
-  readonly locale = input<string>('en-US');
+  readonly totalMonthlySpending = input.required<number>();
+  // readonly categories = input<SpendingCategory[]>(DEFAULT_CATEGORIES);
 
   /** Custom color configuration */
   readonly colors = input<Partial<CostAnalysisColors>>({});
@@ -173,7 +182,8 @@ export class CostAnalysis {
   readonly months = input<MonthOption[]>(DEFAULT_MONTHS);
 
   /** Currently selected month value */
-  readonly selectedMonth = input<string>('january');
+  private readonly _currentMonth = new Date().getMonth();
+  readonly selectedMonth = input<string>(DEFAULT_MONTHS[this._currentMonth].value);
 
   /** Whether to animate on load */
   readonly allowAnimation = input<boolean>(true);
@@ -192,6 +202,9 @@ export class CostAnalysis {
   private _hasInitialized = false;
 
   // ====== Computed Values ======
+  protected readonly formattedTotalSpending = computed(() => {
+    return this.formatCurrency(this.totalMonthlySpending().toString());
+  });
 
   /** Merge provided colors with defaults */
   readonly resolvedColors = computed(
@@ -201,29 +214,75 @@ export class CostAnalysis {
     }),
   );
 
-  /** Calculate total amount from all categories */
-  readonly totalAmount = computed(() => {
-    return this.categories().reduce((sum, cat) => sum + cat.amount, 0);
+  // SERVICES
+  private readonly accountsService = inject(AccountsService);
+  private readonly categoriesService = inject(CategoriesService);
+  private readonly transactionsService = inject(TransactionsService);
+
+  // DATA
+  private readonly currency = this.accountsService.getDefaultCurrency();
+  private readonly categoriesFromService = this.categoriesService.getUserCategories();
+  private readonly transactionsFromService = this.transactionsService.getUserTransactions();
+
+  // COMPUTED
+  protected readonly loading = computed(() => this.categoriesFromService.isLoading());
+
+  protected readonly categories = computed(() => {
+    const response = this.categoriesFromService.value()?.data;
+    if (!response) return [];
+    const { incomes, expenses } = response;
+    return [...incomes, ...expenses];
   });
 
-  /** Format total as currency string */
-  readonly formattedTotal = computed(() => {
-    const total = this.totalAmount();
-    const formatted = total.toLocaleString(this.locale(), {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
-    return `${this.currencySymbol()}${formatted}`;
+  protected readonly transactions = computed(() => {
+    const transactions = this.transactionsFromService.value()?.data.data;
+    if (!transactions) return [];
+    return transactions;
   });
 
-  /** Calculate percentage for each category */
-  readonly categoriesWithPercentage = computed(() => {
-    const total = this.totalAmount();
+  /** Calculate percentage for each category based on transaction amounts */
+  readonly costAnalysisCategories = computed<CostAnalysisCategory[]>(() => {
+    const total = this.totalMonthlySpending();
     if (total === 0) return [];
 
-    return this.categories().map((cat) => ({
-      ...cat,
-      percentage: Math.round((cat.amount / total) * 100),
+    const transactions = this.transactions();
+    const categories = this.categories();
+
+    // Group transactions by category and calculate totals
+    const categoryTotals = new Map<string, number>();
+
+    transactions.forEach((transaction) => {
+      if (transaction.type === 'EXPENSE') {
+        const currentTotal = categoryTotals.get(transaction.category) || 0;
+        categoryTotals.set(transaction.category, currentTotal + transaction.amount);
+      }
+    });
+
+    // Create category analysis with percentages
+    const categoryAnalysis = categories
+      .filter((categoryName) => categoryTotals.has(categoryName))
+      .slice(0, 6)
+      .map((categoryName, index) => {
+        const categoryTotal = categoryTotals.get(categoryName) || 0;
+        return {
+          categoryName,
+          color: COLOR_MAP[index],
+          percentage: Math.round((categoryTotal / total) * 100),
+        };
+      })
+      .filter((category) => category.percentage > 0)
+      .sort((a, b) => b.percentage - a.percentage);
+
+    return categoryAnalysis;
+  });
+
+  /** Get categories with percentage for UI rendering (compatible with existing template) */
+  readonly categoriesWithPercentage = computed(() => {
+    return this.costAnalysisCategories().map((category, index) => ({
+      id: category.categoryName,
+      label: category.categoryName,
+      color: category.color,
+      percentage: category.percentage,
     }));
   });
 
@@ -237,6 +296,7 @@ export class CostAnalysis {
   });
 
   constructor() {
+    console.log("Current month:", this.selectedMonth());
     // Animate percentages when categories change
     effect(() => {
       const categories = this.categoriesWithPercentage();
@@ -316,5 +376,10 @@ export class CostAnalysis {
     };
 
     requestAnimationFrame(animate);
+  }
+
+  // Helper Methods
+  protected formatCurrency(value: string) {
+    return formatCurrency(Number(value), this.currency, 2, true, false);
   }
 }

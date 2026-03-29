@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { httpResource } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
+import { httpResource } from '@angular/common/http';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { IEnumResponse, IStandardResponse, TransactionsWithAccountWithCount } from '@global/types';
 
@@ -21,10 +21,5 @@ export class TransactionsResource {
   transactionTypes = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
     method: 'GET',
     url: concatUrl(endpoints.transaction_types),
-  }));
-
-  transactionCategories = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
-    method: 'GET',
-    url: concatUrl(endpoints.transaction_categories),
   }));
 }

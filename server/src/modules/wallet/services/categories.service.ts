@@ -1,0 +1,68 @@
+import { CategoryType } from '@prisma/client';
+import { plainToInstance } from 'class-transformer';
+import { UserResponseDto } from '@modules/identity/dto/user.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { normalizeCategories, normalizeCategoryName } from '@libs/utils';
+import { CategoriesDto, CreateCategoryDto } from '../dto/categories.dto';
+import { CategoriesRepository } from '../repositories/categories.repository';
+import { DEFAULT_INCOME_CATEGORIES, DEFAULT_EXPENSE_CATEGORIES } from '@libs/constants';
+
+@Injectable()
+export class CategoriesService {
+    constructor(private readonly categoriesRepository: CategoriesRepository) {}
+
+    async addDefaultCategoriesOnRegistration(userId: string): Promise<boolean> {
+        const normalizedIncomes = normalizeCategories(DEFAULT_INCOME_CATEGORIES);
+        const normalizedExpenses = normalizeCategories(DEFAULT_EXPENSE_CATEGORIES);
+
+        try {
+            await this.categoriesRepository.populateDefaultCategories(userId, normalizedIncomes, normalizedExpenses);
+            return true;
+        } catch (error) {
+            console.error('Error adding default categories on registration for user', userId, error);
+            return false;
+        }
+    }
+
+    async createCategory(userId: string, payload: CreateCategoryDto): Promise<CategoriesDto> {
+        if (!Object.values(CategoryType).includes(payload.categoryType))
+            throw new BadRequestException({
+                name: 'InvalidCategoryType',
+                message: 'Invalid category type',
+                details: {
+                    field: 'categoryType',
+                    value: payload.categoryType,
+                },
+            });
+
+        const normalisedName = normalizeCategoryName(payload.categoryName);
+
+        const categoryDto = await this.categoriesRepository.createCategory(
+            userId,
+            normalisedName,
+            payload.categoryType,
+        );
+
+        return plainToInstance(CategoriesDto, categoryDto);
+    }
+
+    async getAllUserCategories(user: UserResponseDto): Promise<CategoriesDto> {
+        const { id: userId, name } = user;
+        const categories = await this.categoriesRepository.getAllUserCategories(userId);
+
+        if (!categories)
+            return {
+                id: '',
+                incomes: [],
+                expenses: [],
+                createdAt: new Date(),
+                lastUpdated: null,
+                user: {
+                    id: userId,
+                    name,
+                },
+            };
+
+        return plainToInstance(CategoriesDto, categories);
+    }
+}

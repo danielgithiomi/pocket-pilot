@@ -54,17 +54,6 @@ export const transactionFormValidationSchema = schema<TransactionSchema>((root) 
 });
 
 // SKELETON
-interface SkeletonTransactionRow {
-  fullId: string;
-  type: string;
-  category: string;
-  accountId: string;
-  date: string;
-  id: string;
-  amount: string;
-  accountName: string;
-}
-
 export const skeletonData = Array(10)
   .fill(null)
   .map((_, index) => ({
@@ -77,7 +66,7 @@ export const skeletonData = Array(10)
     amount: `<div class="table-skeleton skeleton-${index}"></div>`,
     accountName: `<div class="table-skeleton skeleton-${index}"></div>`,
   })) as unknown as TransactionRow[];
-
+  
 // TAB LIST
 export const tabListItems: TabListItem[] = [
   {

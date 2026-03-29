@@ -23,9 +23,9 @@ export class AuthService {
 
         if (!user)
             throw new UnauthorizedException({
-                name: 'User not found.',
-                title: 'User not authorized.',
-                details: `No user found in the request with the ID: {${userId}}!`,
+                name: 'USER_NOT_FOUND',
+                title: 'User not found!',
+                details: `No user found in the request with the ID: {${userId}}.`,
             });
 
         return user;
@@ -54,9 +54,9 @@ export class AuthService {
             await this.authRepository.incrementFailedLoginAttempts(email);
 
             throw new UnauthorizedException({
-                name: 'Invalid Credentials',
-                title: 'Invalid Credentials.',
-                details: `Incorrect email or password. Please confirm and try again!`,
+                name: 'INVALID_CREDENTIALS',
+                title: 'Invalid Credentials!',
+                details: `Incorrect email or password. Please confirm and try again.`,
             });
         }
 
@@ -79,9 +79,9 @@ export class AuthService {
 
         if (!user)
             throw new NotFoundException({
-                name: 'User not found.',
-                title: 'User not found.',
-                details: `No user found with the email: {${email}}!`,
+                name: 'USER_NOT_FOUND',
+                title: 'Invalid email address!',
+                details: `No user in our records has the email: [${email}].`,
             });
 
         return {

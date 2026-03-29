@@ -100,7 +100,7 @@ export class Dashboard {
     return Math.min(100, Math.max(0, Math.round(ratio)));
   });
 
-  // Methods
+  // Helper Methods
   protected formatCurrency(value: string) {
     return formatCurrency(Number(value), this.currency, 2, true, false);
   }

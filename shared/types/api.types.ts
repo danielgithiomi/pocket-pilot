@@ -74,9 +74,9 @@ export interface Endpoints {
   logout: string;
   register: string;
   accounts: string;
+  categories: string;
   account_types: string;
   all_transactions: string;
   user_transactions: string;
   transaction_types: string;
-  transaction_categories: string;
 }
