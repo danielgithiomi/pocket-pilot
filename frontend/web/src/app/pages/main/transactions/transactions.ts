@@ -174,7 +174,7 @@ export class Transactions {
         accountName: capitalize(transaction.account.name),
         amount: formatCurrency(transaction.amount, this.currency, 2, true, false),
       })) || skeletonData
-    );
+    ).reverse();
   });
 
   protected deleteDataRow(row: TransactionRow) {
