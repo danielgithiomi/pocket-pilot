@@ -296,7 +296,7 @@ export class CostAnalysis {
   });
 
   constructor() {
-    console.log("Current month:", this.selectedMonth());
+    // console.log("Current month:", this.selectedMonth());
     // Animate percentages when categories change
     effect(() => {
       const categories = this.categoriesWithPercentage();
