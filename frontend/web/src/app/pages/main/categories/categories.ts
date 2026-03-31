@@ -10,15 +10,15 @@ import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { LucideAngularModule, ListFilterPlus, X } from 'lucide-angular';
+import { denormalizeCategoryName, normalizeCategoryName } from '@global/utils';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import {
   CategorySchema,
   categoryTabItems,
+  FormattedCategories,
   initialCategoryFormState,
   categoryFormValidationSchema,
-  FormattedCategories,
 } from './categories.types';
-import { denormalizeCategoryName } from '@libs/utils';
 
 @Component({
   selector: 'app-categories',
@@ -55,7 +55,6 @@ export class Categories {
     };
   });
 
-
   // Form
   protected categoryFormModel = signal<CategorySchema>(initialCategoryFormState);
   protected categoryForm = form(this.categoryFormModel, categoryFormValidationSchema);
@@ -76,6 +75,11 @@ export class Categories {
 
   protected handleCloseForm() {
     this.isFormOpen.set(false);
+  }
+
+  protected deleteCategory(categoryName: string) {
+    const formattedCategoryName = normalizeCategoryName(categoryName);
+    console.log('Deleting category:', formattedCategoryName);
   }
 
   protected handleCategoryTypeSelected(index: number) {
