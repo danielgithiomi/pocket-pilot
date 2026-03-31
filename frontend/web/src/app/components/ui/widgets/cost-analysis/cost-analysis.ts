@@ -278,7 +278,7 @@ export class CostAnalysis {
 
   /** Get categories with percentage for UI rendering (compatible with existing template) */
   readonly categoriesWithPercentage = computed(() => {
-    return this.costAnalysisCategories().map((category, index) => ({
+    return this.costAnalysisCategories().map((category, _index) => ({
       id: category.categoryName,
       label: category.categoryName,
       color: category.color,

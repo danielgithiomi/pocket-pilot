@@ -33,17 +33,18 @@ export class CategoriesService {
   }
 
   getTransactionCategories(): IEnumResponse[] {
-    const incomeCategories = computed(() => this.resource.getUserCategories.value()?.data.incomes || []);
-    const expenseCategories = computed(() => this.resource.getUserCategories.value()?.data.expenses || []);
+    const incomeCategories = computed(
+      () => this.resource.getUserCategories.value()?.data.incomes || [],
+    );
+    const expenseCategories = computed(
+      () => this.resource.getUserCategories.value()?.data.expenses || [],
+    );
 
     const allCategories = [...incomeCategories(), ...expenseCategories()];
-    const formattedCategories = allCategories.map((category) => ({
+    return allCategories.map((category) => ({
       value: category,
       label: denormalizeCategoryName(category),
     }));
-
-    console.log('formattedCategories', formattedCategories);
-    return formattedCategories;
   }
 
   // HELPER FUNCTIONS
