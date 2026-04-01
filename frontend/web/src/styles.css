@@ -267,10 +267,10 @@ main {
     }
 
     label {
-      @apply flex items-center gap-0.5;
+      @apply flex items-center gap-px;
 
       .required {
-        color: var(--expense);
+        @apply text-sm text-(--expense);
       }
     }
 
