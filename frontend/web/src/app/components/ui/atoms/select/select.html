@@ -1,5 +1,8 @@
 <div class="select-field">
   <label [ngClass]="{ 'text-inverted-text': inverted() }" [for]="selectId()">
+    @if (required()) {
+      <span class="required">*</span>
+    }
     {{ label() }}:
   </label>
 

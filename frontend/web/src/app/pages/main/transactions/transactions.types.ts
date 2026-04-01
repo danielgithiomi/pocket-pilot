@@ -1,4 +1,4 @@
-import { min, required, schema, validate } from '@angular/forms/signals';
+import { maxLength, min, required, schema, validate } from '@angular/forms/signals';
 import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
 import { CreateTransactionRequest, TransactionCategory, TransactionType } from '@global/types';
 
@@ -17,6 +17,7 @@ export interface TransactionRow {
 // FORM
 export type TransactionSchema = CreateTransactionRequest & {
   accountId: string;
+  description: string; // Make description required for the form
 };
 
 export const initialTransactionFormState: TransactionSchema = {
@@ -24,9 +25,12 @@ export const initialTransactionFormState: TransactionSchema = {
   amount: null,
   category: '',
   accountId: '',
+  description: '',
 };
 
 export const transactionFormValidationSchema = schema<TransactionSchema>((root) => {
+  maxLength(root.description, 50, { message: 'The description must be less than 50 characters!' });
+
   required(root.amount, { message: 'The amount is required field!' });
   min(root.amount, 1, { message: 'The minimum transaction amount must be at least 1!' });
 
@@ -66,7 +70,7 @@ export const skeletonData = Array(10)
     amount: `<div class="table-skeleton skeleton-${index}"></div>`,
     accountName: `<div class="table-skeleton skeleton-${index}"></div>`,
   })) as unknown as TransactionRow[];
-  
+
 // TAB LIST
 export const tabListItems: TabListItem[] = [
   {

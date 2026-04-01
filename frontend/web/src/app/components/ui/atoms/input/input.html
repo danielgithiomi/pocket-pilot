@@ -3,6 +3,9 @@
     [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
     [for]="inputId()"
   >
+    @if (required()) {
+      <span class="required">*</span>
+    }
     {{ label() }}:
   </label>
 
@@ -21,7 +24,7 @@
         class="input-icon-wrapper"
         [ngClass]="{
           hidden: !fieldState().value(),
-          'text-inverted-text': invertedIcon()
+          'text-inverted-text': invertedIcon(),
         }"
       >
         @if (type() === 'password') {

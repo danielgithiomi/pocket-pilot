@@ -266,6 +266,14 @@ main {
       }
     }
 
+    label {
+      @apply flex items-center gap-0.5;
+
+      .required {
+        color: var(--expense);
+      }
+    }
+
     input,
     select {
       @apply w-full bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;

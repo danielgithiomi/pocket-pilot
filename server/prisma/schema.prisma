@@ -70,11 +70,12 @@ model User {
 }
 
 model Transaction {
-    id       String              @id() @default(uuid())
-    amount   Float
-    type     TransactionType
-    category String
-    date     DateTime            @default(now())
+    id          String              @id() @default(uuid())
+    amount      Float
+    type        TransactionType
+    description String?
+    category    String
+    date        DateTime            @default(now())
 
     // Link to account - one-to-many
     account   Account @relation(fields: [accountId], references: [id])

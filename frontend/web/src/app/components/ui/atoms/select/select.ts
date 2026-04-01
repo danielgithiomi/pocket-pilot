@@ -14,6 +14,7 @@ export class Select {
   /* INPUTS */
   id = input.required<string>();
   size = input<SelectSize>('sm');
+  required = input<boolean>(true);
   label = input.required<string>();
   inverted = input<boolean>(false);
   placeholder = input.required<string>();
