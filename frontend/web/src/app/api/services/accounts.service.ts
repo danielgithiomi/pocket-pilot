@@ -19,6 +19,10 @@ export class AccountsService {
     return this.maximumSpendingLimit;
   }
 
+  setMaximumSpendingLimit(limit: number) {
+    this.maximumSpendingLimit.set(limit);
+  }
+
   getDefaultCurrency() {
     return this.defaultCurrency;
   }

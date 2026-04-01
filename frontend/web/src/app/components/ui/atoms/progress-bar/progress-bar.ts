@@ -2,24 +2,8 @@ import { formatCurrency } from '@libs/utils';
 import { CommonModule } from '@angular/common';
 import { AccountsService } from '@api/accounts.service';
 import { LucideAngularModule, Pencil } from 'lucide-angular';
-import { Component, computed, effect, input, signal, inject } from '@angular/core';
-
-export interface SpendingProgressBarColors {
-  /** Fill color for the progress bar (default: '#a3e635' - lime green) */
-  fillColor: string;
-  /** Stripe color overlay (default: 'rgba(255,255,255,0.3)') */
-  stripeColor: string;
-  /** Background track color (default: '#e5e7eb' - gray-200) */
-  trackColor: string;
-}
-
-const DEFAULT_COLORS: SpendingProgressBarColors = {
-  fillColor: 'var(--primary)',
-  trackColor: 'var(--body-background)',
-  stripeColor: 'var(--alternate-background)',
-};
-
-export type Variant = 'horizontal' | 'vertical';
+import { SpendingProgressBarColors, DEFAULT_COLORS, Variant } from './progress-bar.types';
+import { Component, computed, effect, input, signal, inject, output } from '@angular/core';
 
 @Component({
   selector: 'atom-progress-bar',
@@ -60,7 +44,7 @@ export type Variant = 'horizontal' | 'vertical';
       </div>
 
       @if (showEditIcon()) {
-        <button (click)="onEditClick()" aria-label="Edit spending limit">
+        <button (click)="this.editClick.emit()" aria-label="Edit spending limit">
           <lucide-angular [img]="editIcon" name="edit-limit" size="18" class="edit-icon" />
         </button>
       }
@@ -77,6 +61,9 @@ export class ProgressBar {
   readonly animationDuration = input<number>(600);
   readonly currentValue = input.required<number>();
   readonly colors = input<Partial<SpendingProgressBarColors>>({});
+
+  // Outputs
+  readonly editClick = output<void>();
 
   // Services
   private readonly accountService = inject(AccountsService);
@@ -157,9 +144,5 @@ export class ProgressBar {
     };
 
     requestAnimationFrame(animate);
-  }
-
-  onEditClick(): void {
-    console.log('Edit clicked - implement your edit logic here');
   }
 }

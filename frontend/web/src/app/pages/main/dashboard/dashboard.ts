@@ -1,12 +1,17 @@
+import { Input } from "@atoms/input";
+import { Button } from "@atoms/button";
+import { Form } from '@organisms/form';
 import { formatCurrency } from '@libs/utils';
+import { form } from '@angular/forms/signals';
 import { MONTHS_ENUM } from '@global/constants';
 import { RatioSlider } from '@atoms/ratio-slider';
 import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
-import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
+import { Component, computed, inject, signal } from '@angular/core';
 import { DashboardCard } from '@components/structural/main/dashboard-card/dashboard-card';
+import { TransactionLimitSchema, TransactionLimitValidationSchema } from './dashboard.types';
 import {
   Wallet,
   HandCoins,
@@ -22,7 +27,7 @@ import {
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
-  imports: [RatioSlider, ProgressBar, CostAnalysis, DashboardCard, LucideAngularModule],
+  imports: [RatioSlider, ProgressBar, CostAnalysis, DashboardCard, LucideAngularModule, Form, Input, Button],
 })
 export class Dashboard {
   // Icons
@@ -42,8 +47,11 @@ export class Dashboard {
   protected readonly accounts = this.accountsService.getUserAccounts();
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
+  protected readonly spendingLimit = this.accountsService.getMaximumSpendingLimit();
 
   // Signals
+  protected readonly isSubmittingEditLimitForm = signal<boolean>(false);
+  protected readonly isEditSpendingLimitFormOpen = signal<boolean>(false);
   protected readonly maximumSpendingLimit = this.accountsService.getMaximumSpendingLimit();
 
   // States
@@ -103,9 +111,35 @@ export class Dashboard {
     return Math.min(100, Math.max(0, Math.round(ratio)));
   });
 
+  // Forms
+  protected readonly initialLimitFormState = { amount: this.spendingLimit() };
+  protected editLimitFormModel = signal<TransactionLimitSchema>(this.initialLimitFormState);
+  protected editLimitForm = form(this.editLimitFormModel, TransactionLimitValidationSchema);
+
   // Methods
+  protected submitEditLimitForm(event: Event) {
+    event.preventDefault();
+
+    const { amount } = this.editLimitFormModel();
+    this.accountsService.setMaximumSpendingLimit(amount);
+  }
+
+  protected resetEditLimitForm() {
+    this.editLimitForm().reset();
+    this.isSubmittingEditLimitForm.set(false);
+    this.editLimitFormModel.set(this.initialLimitFormState);
+  }
+
+  protected onEditSpendingLimit() {
+    this.isEditSpendingLimitFormOpen.set(true);
+  }
+
   protected onMonthChange(month: string) {
     console.log('Month changed:', month);
+  }
+
+  protected handleCloseForm(source: 'icon' | 'overlay') {
+    this.isEditSpendingLimitFormOpen.set(false);
   }
 
   // Helper Methods
