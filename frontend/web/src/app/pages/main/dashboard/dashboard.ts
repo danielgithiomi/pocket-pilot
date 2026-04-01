@@ -100,6 +100,11 @@ export class Dashboard {
     return Math.min(100, Math.max(0, Math.round(ratio)));
   });
 
+  // Methods
+  protected onMonthChange(month: string) {
+    console.log('Month changed:', month);
+  }
+
   // Helper Methods
   protected formatCurrency(value: string) {
     return formatCurrency(Number(value), this.currency, 2, true, false);

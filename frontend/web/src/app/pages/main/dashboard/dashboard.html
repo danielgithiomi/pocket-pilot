@@ -67,7 +67,10 @@
           @if (isDataLoading()) {
             <div class="loader"></div>
           } @else {
-            <atom-progress-bar [maxValue]="maximumSpendingLimit()" [currentValue]="totalExpenses()" />
+            <atom-progress-bar
+              [maxValue]="maximumSpendingLimit()"
+              [currentValue]="totalExpenses()"
+            />
           }
         </div>
       </dashboard-card>
@@ -119,7 +122,10 @@
           @if (isDataLoading()) {
             <div class="analysis-loader"></div>
           } @else {
-            <widget-cost-analysis [totalMonthlySpending]="totalExpenses()" />
+            <widget-cost-analysis
+              (monthChange)="onMonthChange($event)"
+              [totalMonthlySpending]="totalExpenses()"
+            />
           }
         </div>
       </dashboard-card>

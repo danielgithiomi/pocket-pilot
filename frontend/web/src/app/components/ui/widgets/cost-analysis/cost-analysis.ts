@@ -1,218 +1,41 @@
 import { MonthOption } from '@global/types';
-import { DEFAULT_MONTHS } from '@global/constants';
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { formatCurrency } from '@libs/utils';
+import { DEFAULT_MONTHS } from '@global/constants';
+import { normalizeCategoryName } from '@global/utils';
 import { AccountsService } from '@api/accounts.service';
 import { CategoriesService } from '@api/categories.service';
-import { CostAnalysisCategory } from './cost-analysis.types';
 import { TransactionsService } from '@api/transactions.service';
-
-/**
- * Represents a single spending category
- */
-export interface SpendingCategory {
-  /** Category identifier */
-  id: string;
-  /** Display label for the category */
-  label: string;
-  /** Amount spent in this category */
-  amount: number;
-  /** Color for this category segment */
-  color: string;
-}
-
-/**
- * Color configuration for the component
- */
-export interface CostAnalysisColors {
-  /** Card background color */
-  cardBackground: string;
-  /** Card border color */
-  cardBorder: string;
-  /** Title text color */
-  titleColor: string;
-  /** Subtitle text color */
-  subtitleColor: string;
-  /** Total amount text color */
-  totalColor: string;
-  /** Legend text color */
-  legendTextColor: string;
-  /** Percentage text color */
-  percentageColor: string;
-  /** Dropdown background color */
-  dropdownBackground: string;
-  /** Dropdown text color */
-  dropdownTextColor: string;
-  /** Dropdown border color */
-  dropdownBorder: string;
-  /** Track background (for empty space) */
-  trackBackground: string;
-}
-
-/**
- * Month option for the dropdown
- */
-
-const DEFAULT_COLORS: CostAnalysisColors = {
-  cardBackground: '#ffffff',
-  cardBorder: '#e5e7eb',
-  titleColor: '#1f2937',
-  subtitleColor: '#6b7280',
-  totalColor: '#1f2937',
-  legendTextColor: '#374151',
-  percentageColor: '#6b7280',
-  dropdownBackground: '#ffffff',
-  dropdownTextColor: '#374151',
-  dropdownBorder: '#e5e7eb',
-  trackBackground: '#f3f4f6',
-};
-
-const DEFAULT_CATEGORIES: SpendingCategory[] = [
-  { id: 'housing', label: 'Housing', amount: 1521, color: '#f59e0b' },
-  { id: 'debt', label: 'Debt payments', amount: 592, color: '#fbbf24' },
-  { id: 'food', label: 'Food', amount: 507, color: '#facc15' },
-  { id: 'transportation', label: 'Transportation', amount: 761, color: '#a3e635' },
-  { id: 'healthcare', label: 'Healthcare', amount: 845, color: '#4ade80' },
-  { id: 'investments', label: 'Investments', amount: 1437, color: '#22c55e' },
-  { id: 'other', label: 'Other', amount: 2787, color: '#d1d5db' },
-];
-
-const COLOR_MAP: string[] = [
-  '#f59e0b',
-  '#fbbf24',
-  '#facc15',
-  '#a3e635',
-  '#4ade80',
-  '#22c55e',
-  '#d1d5db',
-];
+import { COLOR_MAP, CostAnalysisCategory } from './cost-analysis.types';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 
 @Component({
-  selector: 'widget-cost-analysis',
   styleUrl: './cost-analysis.css',
-  template: `
-    <div
-      class="cost-analysis-card"
-      [style.--card-bg]="resolvedColors().cardBackground"
-      [style.--card-border]="resolvedColors().cardBorder"
-      [style.--title-color]="resolvedColors().titleColor"
-      [style.--subtitle-color]="resolvedColors().subtitleColor"
-      [style.--total-color]="resolvedColors().totalColor"
-      [style.--legend-text]="resolvedColors().legendTextColor"
-      [style.--percentage-color]="resolvedColors().percentageColor"
-      [style.--dropdown-bg]="resolvedColors().dropdownBackground"
-      [style.--dropdown-text]="resolvedColors().dropdownTextColor"
-      [style.--dropdown-border]="resolvedColors().dropdownBorder"
-      [style.--track-bg]="resolvedColors().trackBackground"
-    >
-      <!-- Header -->
-      @if (showMonthSelector()) {
-        <div class="header">
-          <div class="dropdown-wrapper">
-            <select
-              class="month-dropdown"
-              [value]="selectedMonth()"
-              (change)="onMonthChange($event)"
-              id="cost-analysis-month-selector"
-            >
-              @for (month of months(); track month.value) {
-                <option [value]="month.value">{{ month.label }}</option>
-              }
-            </select>
-            <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path
-                d="M3 4.5L6 7.5L9 4.5"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-        </div>
-      }
-
-      <!-- Total Amount -->
-      <div class="total-amount">
-        {{ formattedTotalSpending() }}
-      </div>
-
-      <!-- Segmented Progress Bar -->
-      <div class="progress-track">
-        @for (segment of animatedSegments(); track segment.id; let i = $index) {
-          <div
-            class="progress-segment"
-            [class.first]="i === 0"
-            [style.--segment-color]="segment.color"
-            [style.width.%]="segment.animatedPercentage"
-            [class.last]="i === animatedSegments().length - 1"
-          >
-            <div class="stripe-pattern"></div>
-          </div>
-        }
-      </div>
-
-      <!-- Legend -->
-      <div class="legend">
-        @for (category of categoriesWithPercentage(); track category.id) {
-          <div class="legend-item">
-            <div class="legend-left">
-              <span class="legend-color" [style.background-color]="category.color"></span>
-              <span class="legend-label">{{ category.label }}</span>
-            </div>
-            <span class="legend-percentage">{{ category.percentage }}%</span>
-          </div>
-        }
-      </div>
-    </div>
-  `,
+  selector: 'widget-cost-analysis',
+  templateUrl: './cost-analysis.html',
 })
 export class CostAnalysis {
-  // Inputs
+  // INPUTS
   readonly totalMonthlySpending = input.required<number>();
-  // readonly categories = input<SpendingCategory[]>(DEFAULT_CATEGORIES);
+  protected readonly allowAnimation = input<boolean>(true);
+  protected readonly animationDuration = input<number>(500);
+  protected readonly showMonthSelector = input<boolean>(true);
 
-  /** Custom color configuration */
-  readonly colors = input<Partial<CostAnalysisColors>>({});
-
-  /** Whether to show month selector dropdown */
-  readonly showMonthSelector = input<boolean>(true);
-
-  /** Available month options */
-  readonly months = input<MonthOption[]>(DEFAULT_MONTHS);
-
-  /** Currently selected month value */
+  protected readonly months = DEFAULT_MONTHS;
   private readonly _currentMonth = new Date().getMonth();
-  readonly selectedMonth = input<string>(DEFAULT_MONTHS[this._currentMonth].value);
-
-  /** Whether to animate on load */
-  readonly allowAnimation = input<boolean>(true);
-
-  /** Animation duration in milliseconds */
-  readonly animationDuration = input<number>(600);
+  protected readonly selectedMonth = input<string>(DEFAULT_MONTHS[this._currentMonth].value);
 
   // ====== Outputs ======
-
-  /** Emitted when month selection changes */
-  readonly monthChange = output<string>();
+  protected readonly monthChange = output<string>();
 
   // ====== Private State ======
 
-  private readonly _animatedPercentages = signal<Map<string, number>>(new Map());
   private _hasInitialized = false;
+  private readonly _animatedPercentages = signal<Map<string, number>>(new Map());
 
   // ====== Computed Values ======
   protected readonly formattedTotalSpending = computed(() => {
     return this.formatCurrency(this.totalMonthlySpending().toString());
   });
-
-  /** Merge provided colors with defaults */
-  readonly resolvedColors = computed(
-    (): CostAnalysisColors => ({
-      ...DEFAULT_COLORS,
-      ...this.colors(),
-    }),
-  );
 
   // SERVICES
   private readonly accountsService = inject(AccountsService);
@@ -245,16 +68,17 @@ export class CostAnalysis {
     const total = this.totalMonthlySpending();
     if (total === 0) return [];
 
-    const transactions = this.transactions();
     const categories = this.categories();
+    const transactions = this.transactions();
 
     // Group transactions by category and calculate totals
     const categoryTotals = new Map<string, number>();
 
     transactions.forEach((transaction) => {
       if (transaction.type === 'EXPENSE') {
-        const currentTotal = categoryTotals.get(transaction.category) || 0;
-        categoryTotals.set(transaction.category, currentTotal + transaction.amount);
+        const normalizedCategoryName = normalizeCategoryName(transaction.category);
+        const currentTotal = categoryTotals.get(normalizedCategoryName) || 0;
+        categoryTotals.set(normalizedCategoryName, currentTotal + transaction.amount);
       }
     });
 
@@ -296,7 +120,6 @@ export class CostAnalysis {
   });
 
   constructor() {
-    // console.log("Current month:", this.selectedMonth());
     // Animate percentages when categories change
     effect(() => {
       const categories = this.categoriesWithPercentage();
