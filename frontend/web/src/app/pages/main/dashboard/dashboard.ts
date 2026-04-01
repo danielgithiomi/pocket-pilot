@@ -122,6 +122,7 @@ export class Dashboard {
 
     const { amount } = this.editLimitFormModel();
     this.accountsService.setMaximumSpendingLimit(amount);
+    this.isEditSpendingLimitFormOpen.set(false);
   }
 
   protected resetEditLimitForm() {

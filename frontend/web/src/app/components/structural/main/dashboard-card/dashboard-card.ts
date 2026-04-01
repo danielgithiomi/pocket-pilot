@@ -13,6 +13,7 @@ export class DashboardCard {
   iconSize = input<number>(16);
   id = input.required<string>();
   title = input.required<string>();
+  iconClassName = input<string>('');
   subtitle = input.required<string>();
   isLoading = input.required<boolean>();
   icon = input.required<LucideIconData>();

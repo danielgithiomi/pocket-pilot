@@ -62,6 +62,7 @@
         [icon]="spendingLimitIcon"
         [isLoading]="isDataLoading()"
         subtitle="Your monthly spending limit"
+        [iconClassName]="totalExpenses() > maximumSpendingLimit() ? 'group-hover:text-error!' : ''"
       >
         <div custom-content class="w-full grid place-items-center">
           @if (isDataLoading()) {
@@ -160,7 +161,7 @@
       <atom-button
         type="reset"
         [inverted]="true"
-        label="Reset Form"
+        label="Reset Limit"
         variant="secondary"
         form="transactions-form"
         id="reset-transaction-form"

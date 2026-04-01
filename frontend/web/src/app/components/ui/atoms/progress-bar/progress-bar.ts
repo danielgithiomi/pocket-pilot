@@ -14,9 +14,10 @@ import { Component, computed, effect, input, signal, inject, output } from '@ang
       <div class="progress-container" [class.vertical]="variant() === 'vertical'">
         <div
           class="progress-track"
-          [style.background-color]="resolvedColors().trackColor"
-          [style.--fill-color]="resolvedColors().fillColor"
           [style.--stripe-color]="resolvedColors().stripeColor"
+          [style.background-color]="resolvedColors().trackColor"
+          [style.--fill-color]="isExceeded() ? resolvedColors().exceededColor : resolvedColors().fillColor"
+          [style.--border-color]="isExceeded() ? resolvedColors().exceededColor : resolvedColors().fillColor"
         >
           <div
             class="progress-fill"
@@ -35,9 +36,11 @@ import { Component, computed, effect, input, signal, inject, output } from '@ang
 
         <div class="value-labels" [class.vertical]="variant() === 'vertical'">
           <span class="current-value"
-            >At:<span class="group-hover:text-primary font-bold transition-all duration-200">{{
-              formattedCurrentValue()
-            }}</span></span
+            >At:<span
+              [ngClass]="{ 'group-hover:text-error!': isExceeded() }"
+              class="group-hover:text-primary font-bold transition-all duration-200"
+              >{{ formattedCurrentValue() }}</span
+            ></span
           >
           <span class="max-value">{{ formattedMaxValue() }}</span>
         </div>
@@ -45,7 +48,13 @@ import { Component, computed, effect, input, signal, inject, output } from '@ang
 
       @if (showEditIcon()) {
         <button (click)="this.editClick.emit()" aria-label="Edit spending limit">
-          <lucide-angular [img]="editIcon" name="edit-limit" size="18" class="edit-icon" />
+          <lucide-angular
+            size="18"
+            [img]="editIcon"
+            name="edit-limit"
+            class="edit-icon"
+            [ngClass]="{ 'hover:text-error!': isExceeded() }"
+          />
         </button>
       }
     </div>
@@ -77,6 +86,7 @@ export class ProgressBar {
   private readonly _animatedPercentage = signal(0);
 
   // Computed
+  protected readonly isExceeded = computed(() => this.currentValue() > this.maxValue());
   readonly resolvedColors = computed<SpendingProgressBarColors>(() => ({
     ...DEFAULT_COLORS,
     ...this.colors(),
