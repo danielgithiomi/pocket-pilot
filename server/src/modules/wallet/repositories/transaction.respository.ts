@@ -38,10 +38,11 @@ export class TransactionRepository {
                 },
                 select: {
                     id: true,
-                    amount: true,
-                    type: true,
-                    category: true,
                     date: true,
+                    type: true,
+                    amount: true,
+                    category: true,
+                    description: true,
                     account: { select: { id: true, name: true } },
                 },
             });

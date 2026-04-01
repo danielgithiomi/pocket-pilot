@@ -30,16 +30,16 @@ import {
   selector: 'app-transactions',
   templateUrl: './transactions.html',
   imports: [
-    NgClass,
-    Button,
-    LucideAngularModule,
-    NoData,
     Form,
     Input,
-    Select,
     Table,
-    FetchError,
+    NoData,
+    Select,
+    Button,
+    NgClass,
     TabList,
+    FetchError,
+    LucideAngularModule,
   ],
 })
 export class Transactions {
@@ -152,6 +152,11 @@ export class Transactions {
       key: 'description',
       label: 'Description',
       width: '2fr',
+      cellTemplate: (transaction: TransactionRow) => {
+        let classes = 'font-semibold';
+        let description = this.isFetching() ? transaction.amount : !transaction.description ? '-' : transaction.description;
+        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${description}</span>`;
+      },
     },
     {
       key: 'accountName',

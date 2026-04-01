@@ -37,7 +37,7 @@ export class TransactionService {
 
         return this.db.transaction.findMany({
             where: { accountId },
-            select: { id: true, type: true, category: true, amount: true, date: true },
+            select: { id: true, type: true, description: true, category: true, amount: true, date: true },
         });
     }
 
@@ -51,10 +51,6 @@ export class TransactionService {
             type: createTransactionDto.type,
             category: denormalizeCategoryName(createTransactionDto.category),
         };
-
-        // console.log('type:', createTransactionDto.type);
-        // console.log('original category:', createTransactionDto.category);
-        // console.log('denormalize:', denormalizeCategoryName(createTransactionDto.category));
 
         if (!this.isTransactionTypeValid(transformedDto.type)) {
             throw new BadRequestException({
