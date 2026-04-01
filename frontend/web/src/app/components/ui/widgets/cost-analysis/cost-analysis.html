@@ -1,0 +1,61 @@
+<div class="cost-analysis-card">
+  <!-- Header -->
+  @if (showMonthSelector()) {
+    <div class="header">
+      <div class="dropdown-wrapper">
+        <select
+          class="month-dropdown"
+          [value]="currentMonth()"
+          (change)="onMonthChange($event)"
+          id="cost-analysis-month-selector"
+        >
+          @for (month of months; track month.value) {
+            <option [value]="month.value">{{ month.label }}</option>
+          }
+        </select>
+        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path
+            d="M3 4.5L6 7.5L9 4.5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+    </div>
+  }
+
+  <!-- Total Amount -->
+  <div class="total-amount">
+    {{ formattedTotalSpending() }}
+  </div>
+
+  <!-- Segmented Progress Bar -->
+  <div class="progress-track">
+    @for (segment of animatedSegments(); track segment.id; let i = $index) {
+      <div
+        class="progress-segment"
+        [class.first]="i === 0"
+        [style.--segment-color]="segment.color"
+        [style.width.%]="segment.animatedPercentage"
+        [class.last]="i === animatedSegments().length - 1"
+      >
+        <div class="stripe-pattern"></div>
+      </div>
+    }
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    @for (category of categoriesWithPercentage(); track category.id) {
+      <div class="legend-item">
+        <div class="legend-left">
+          <span class="legend-color" [style.background-color]="category.color"></span>
+          <span class="legend-label">{{ category.label }}</span>
+        </div>
+        <span class="legend-percentage">{{ category.percentage }}%</span>
+      </div>
+    }
+  </div>
+</div>

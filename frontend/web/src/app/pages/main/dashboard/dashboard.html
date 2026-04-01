@@ -62,12 +62,17 @@
         [icon]="spendingLimitIcon"
         [isLoading]="isDataLoading()"
         subtitle="Your monthly spending limit"
+        [iconClassName]="totalExpenses() > maximumSpendingLimit() ? 'group-hover:text-error!' : ''"
       >
         <div custom-content class="w-full grid place-items-center">
           @if (isDataLoading()) {
             <div class="loader"></div>
           } @else {
-            <atom-progress-bar [maxValue]="maximumSpendingLimit()" [currentValue]="totalExpenses()" />
+            <atom-progress-bar
+              [currentValue]="totalExpenses()"
+              [maxValue]="maximumSpendingLimit()"
+              (editClick)="onEditSpendingLimit()"
+            />
           }
         </div>
       </dashboard-card>
@@ -81,7 +86,7 @@
         [icon]="ratioIcon"
         [isLoading]="false"
         title="Spending Ratio"
-        subtitle="Your spending so far"
+        subtitle="Your monthly spending so far."
       >
         <div custom-content class="min-h-[150px] w-full grid place-items-center">
           @if (isDataLoading()) {
@@ -119,10 +124,59 @@
           @if (isDataLoading()) {
             <div class="analysis-loader"></div>
           } @else {
-            <widget-cost-analysis [totalMonthlySpending]="totalExpenses()" />
+            <widget-cost-analysis
+              [currentMonth]="currentMonth()"
+              (monthChange)="onMonthChange($event)"
+              [totalMonthlySpending]="totalExpenses()"
+            />
           }
         </div>
       </dashboard-card>
     </div>
   </div>
 </section>
+
+@if (isEditSpendingLimitFormOpen()) {
+  <organism-form
+    id="transactions"
+    title="Add Transaction"
+    description="Create a new transaction"
+    (closeForm)="handleCloseForm($event)"
+    [class.hidden]="!isEditSpendingLimitFormOpen()"
+  >
+    <form slot="content" id="spending-limit-form" (submit)="submitEditLimitForm($event)">
+      <atom-input
+        id="limit"
+        type="number"
+        [inverted]="true"
+        autocomplete="name"
+        placeholder="Eg: 100"
+        label="Transaction Amount"
+        [formField]="editLimitForm.amount"
+        (clearOutput)="editLimitForm.amount().controlValue.set(0)"
+      />
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      <atom-button
+        type="reset"
+        [inverted]="true"
+        label="Reset Limit"
+        variant="secondary"
+        form="spending-limit-form"
+        id="reset-spending-limit-form"
+        (clicked)="resetEditLimitForm()"
+        [disabled]="!editLimitForm().dirty() || isSubmittingEditLimitForm()"
+      />
+
+      <atom-button
+        type="submit"
+        label="Update Limit"
+        form="spending-limit-form"
+        id="submit-spending-limit-form"
+        [isLoading]="isSubmittingEditLimitForm()"
+        [disabled]="editLimitForm().invalid() || isSubmittingEditLimitForm()"
+      />
+    </div>
+  </organism-form>
+}

@@ -12,11 +12,15 @@ export class AccountsService {
   private readonly toastService = inject(ToastService);
   private readonly accountsMutation = inject(AccountsMutation);
   private readonly accountsResource = inject(AccountsResource);
-  private readonly maximumSpendingLimit = signal<number>(20000);
+  private readonly maximumSpendingLimit = signal<number>(60000);
   private readonly defaultCurrency: Intl.NumberFormatOptions['currency'] = 'MUR';
 
   getMaximumSpendingLimit() {
     return this.maximumSpendingLimit;
+  }
+
+  setMaximumSpendingLimit(limit: number) {
+    this.maximumSpendingLimit.set(limit);
   }
 
   getDefaultCurrency() {

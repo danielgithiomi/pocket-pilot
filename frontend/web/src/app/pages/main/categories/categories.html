@@ -64,9 +64,9 @@
                 <div class="category-item group/item income">
                   <p>{{ income }}</p>
 
-                  <div class="category-icon atom-icon">
+                  <button class="category-icon atom-icon" (click)="deleteCategory(income)">
                     <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
-                  </div>
+                  </button>
                 </div>
               }
             </div>
