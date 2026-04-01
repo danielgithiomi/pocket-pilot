@@ -93,12 +93,12 @@ export class Dashboard {
   });
 
   protected readonly spendingRatio = computed<number>(() => {
+    const revenue = this.totalRevenue();
     const expenses = this.totalExpenses();
-    const total = this.totalRevenue() + this.totalExpenses();
 
-    if (expenses <= 0 || total <= 0) return 0;
+    if (expenses <= 0 || revenue <= 0) return 0;
 
-    const ratio = (expenses / total) * 100;
+    const ratio = (expenses / revenue) * 100;
 
     return Math.min(100, Math.max(0, Math.round(ratio)));
   });

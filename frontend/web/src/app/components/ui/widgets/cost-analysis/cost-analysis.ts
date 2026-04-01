@@ -87,7 +87,7 @@ export class CostAnalysis {
         };
       })
       .filter((category) => category.percentage > 0)
-      .sort((a, b) => b.percentage - a.percentage);
+      .sort((a, b) => b.percentage - a.percentage); // sort in descending order
 
     return categoryAnalysis;
   });
