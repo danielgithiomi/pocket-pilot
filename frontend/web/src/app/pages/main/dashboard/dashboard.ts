@@ -1,4 +1,5 @@
 import { formatCurrency } from '@libs/utils';
+import { MONTHS_ENUM } from '@global/constants';
 import { RatioSlider } from '@atoms/ratio-slider';
 import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
@@ -51,6 +52,8 @@ export class Dashboard {
   );
 
   // Computed
+  protected readonly currentMonth = computed(() => MONTHS_ENUM[new Date().getMonth()].value);
+
   protected readonly accountsCount = computed(() => {
     if (this.accounts.error()) return '0';
     return (this.accounts.value()?.data.count ?? 0).toString();

@@ -1,6 +1,5 @@
-import { MonthOption } from '@global/types';
 import { formatCurrency } from '@libs/utils';
-import { DEFAULT_MONTHS } from '@global/constants';
+import { MONTHS_ENUM } from '@global/constants';
 import { normalizeCategoryName } from '@global/utils';
 import { AccountsService } from '@api/accounts.service';
 import { CategoriesService } from '@api/categories.service';
@@ -15,27 +14,18 @@ import { Component, computed, effect, inject, input, output, signal } from '@ang
 })
 export class CostAnalysis {
   // INPUTS
+  readonly currentMonth = input.required<string>();
   readonly totalMonthlySpending = input.required<number>();
   protected readonly allowAnimation = input<boolean>(true);
   protected readonly animationDuration = input<number>(500);
   protected readonly showMonthSelector = input<boolean>(true);
 
-  protected readonly months = DEFAULT_MONTHS;
-  private readonly _currentMonth = new Date().getMonth();
-  protected readonly selectedMonth = input<string>(DEFAULT_MONTHS[this._currentMonth].value);
-
-  // ====== Outputs ======
+  // OUTPUTS
   protected readonly monthChange = output<string>();
 
-  // ====== Private State ======
-
+  // STATES
   private _hasInitialized = false;
   private readonly _animatedPercentages = signal<Map<string, number>>(new Map());
-
-  // ====== Computed Values ======
-  protected readonly formattedTotalSpending = computed(() => {
-    return this.formatCurrency(this.totalMonthlySpending().toString());
-  });
 
   // SERVICES
   private readonly accountsService = inject(AccountsService);
@@ -43,12 +33,17 @@ export class CostAnalysis {
   private readonly transactionsService = inject(TransactionsService);
 
   // DATA
+  protected readonly months = MONTHS_ENUM;
   private readonly currency = this.accountsService.getDefaultCurrency();
   private readonly categoriesFromService = this.categoriesService.getUserCategories();
   private readonly transactionsFromService = this.transactionsService.getUserTransactions();
 
   // COMPUTED
   protected readonly loading = computed(() => this.categoriesFromService.isLoading());
+
+  protected readonly formattedTotalSpending = computed(() =>
+    this.formatCurrency(this.totalMonthlySpending().toString()),
+  );
 
   protected readonly categories = computed(() => {
     const response = this.categoriesFromService.value()?.data;
@@ -63,7 +58,6 @@ export class CostAnalysis {
     return transactions;
   });
 
-  /** Calculate percentage for each category based on transaction amounts */
   readonly costAnalysisCategories = computed<CostAnalysisCategory[]>(() => {
     const total = this.totalMonthlySpending();
     if (total === 0) return [];
@@ -71,7 +65,6 @@ export class CostAnalysis {
     const categories = this.categories();
     const transactions = this.transactions();
 
-    // Group transactions by category and calculate totals
     const categoryTotals = new Map<string, number>();
 
     transactions.forEach((transaction) => {
@@ -82,7 +75,6 @@ export class CostAnalysis {
       }
     });
 
-    // Create category analysis with percentages
     const categoryAnalysis = categories
       .filter((categoryName) => categoryTotals.has(categoryName))
       .slice(0, 6)
@@ -100,7 +92,6 @@ export class CostAnalysis {
     return categoryAnalysis;
   });
 
-  /** Get categories with percentage for UI rendering (compatible with existing template) */
   readonly categoriesWithPercentage = computed(() => {
     return this.costAnalysisCategories().map((category, _index) => ({
       id: category.categoryName,
@@ -110,7 +101,6 @@ export class CostAnalysis {
     }));
   });
 
-  /** Get animated segment data for rendering */
   readonly animatedSegments = computed(() => {
     const percentages = this._animatedPercentages();
     return this.categoriesWithPercentage().map((cat) => ({
@@ -120,14 +110,12 @@ export class CostAnalysis {
   });
 
   constructor() {
-    // Animate percentages when categories change
     effect(() => {
-      const categories = this.categoriesWithPercentage();
       const animate = this.allowAnimation();
       const duration = this.animationDuration();
+      const categories = this.categoriesWithPercentage();
 
       if (!animate) {
-        // No animation - set values immediately
         const percentages = new Map<string, number>();
         categories.forEach((cat) => {
           percentages.set(cat.id, cat.percentage);
@@ -137,7 +125,6 @@ export class CostAnalysis {
       }
 
       if (!this._hasInitialized) {
-        // First load - animate from 0 to target
         this._hasInitialized = true;
         const initialPercentages = new Map<string, number>();
         categories.forEach((cat) => {
@@ -145,24 +132,20 @@ export class CostAnalysis {
         });
         this._animatedPercentages.set(initialPercentages);
 
-        // Small delay to ensure initial 0 state renders
         requestAnimationFrame(() => {
           this.animateSegments(categories, duration);
         });
       } else {
-        // Subsequent changes - animate to new values
         this.animateSegments(categories, duration);
       }
     });
   }
 
-  /** Handle month dropdown change */
   onMonthChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
     this.monthChange.emit(select.value);
   }
 
-  /** Animate segments from current to target percentages */
   private animateSegments(
     categories: Array<{ id: string; percentage: number }>,
     duration: number,
@@ -174,7 +157,6 @@ export class CostAnalysis {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
 
       const newPercentages = new Map<string, number>();
@@ -189,7 +171,6 @@ export class CostAnalysis {
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
-        // Ensure final values are exact
         const finalPercentages = new Map<string, number>();
         categories.forEach((cat) => {
           finalPercentages.set(cat.id, cat.percentage);
@@ -201,7 +182,7 @@ export class CostAnalysis {
     requestAnimationFrame(animate);
   }
 
-  // Helper Methods
+  // HELPER METHODS
   protected formatCurrency(value: string) {
     return formatCurrency(Number(value), this.currency, 2, true, false);
   }

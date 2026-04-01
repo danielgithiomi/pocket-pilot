@@ -123,6 +123,7 @@
             <div class="analysis-loader"></div>
           } @else {
             <widget-cost-analysis
+              [currentMonth]="currentMonth()"
               (monthChange)="onMonthChange($event)"
               [totalMonthlySpending]="totalExpenses()"
             />

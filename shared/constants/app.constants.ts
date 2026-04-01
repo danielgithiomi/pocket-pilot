@@ -1,6 +1,6 @@
 import { MonthOption } from "@global/types";
 
-export const DEFAULT_MONTHS: MonthOption[] = [
+export const MONTHS_ENUM: MonthOption[] = [
   { value: "january", label: "January" },
   { value: "february", label: "February" },
   { value: "march", label: "March" },
