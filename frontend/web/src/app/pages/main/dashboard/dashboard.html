@@ -144,7 +144,7 @@
     (closeForm)="handleCloseForm($event)"
     [class.hidden]="!isEditSpendingLimitFormOpen()"
   >
-    <form slot="content" id="transactions-form" (submit)="submitEditLimitForm($event)">
+    <form slot="content" id="spending-limit-form" (submit)="submitEditLimitForm($event)">
       <atom-input
         id="limit"
         type="number"
@@ -163,17 +163,17 @@
         [inverted]="true"
         label="Reset Limit"
         variant="secondary"
-        form="transactions-form"
-        id="reset-transaction-form"
+        form="spending-limit-form"
+        id="reset-spending-limit-form"
         (clicked)="resetEditLimitForm()"
         [disabled]="!editLimitForm().dirty() || isSubmittingEditLimitForm()"
       />
 
       <atom-button
         type="submit"
-        form="transactions-form"
-        label="Create Transaction"
-        id="submit-transaction-form"
+        label="Update Limit"
+        form="spending-limit-form"
+        id="submit-spending-limit-form"
         [isLoading]="isSubmittingEditLimitForm()"
         [disabled]="editLimitForm().invalid() || isSubmittingEditLimitForm()"
       />
