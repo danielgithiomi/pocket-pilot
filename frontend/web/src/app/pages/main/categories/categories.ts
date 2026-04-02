@@ -118,7 +118,7 @@ export class Categories {
         this.toastService.show({
           variant: 'success',
           title: 'Category created!',
-          details: `Your [${categoryType.toUpperCase()}] category has been created successfully.`,
+          details: `Your [${categoryType}] category has been created successfully.`,
         });
 
         this.resetCategoryForm();
