@@ -5,10 +5,10 @@ import { TabList } from '@atoms/tab-list';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
-import { CategoryVariant } from '@global/types';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
+import { CategoryVariant, IVoidResourceResponse } from '@global/types';
 import { LucideAngularModule, ListFilterPlus, X } from 'lucide-angular';
 import { denormalizeCategoryName, normalizeCategoryName } from '@global/utils';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
@@ -43,6 +43,7 @@ export class Categories {
   // Data
   protected readonly categoryTabItems = categoryTabItems;
   protected categories$ = this.categoriesService.getUserCategories();
+  protected readonly categoryLength = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
   // Computed
   protected readonly isFetchingCategories = computed(() => this.categories$.isLoading());
@@ -77,9 +78,20 @@ export class Categories {
     this.isFormOpen.set(false);
   }
 
-  protected deleteCategory(categoryName: string) {
+  protected deleteCategory(categoryName: string, categoryType: CategoryVariant) {
     const formattedCategoryName = normalizeCategoryName(categoryName);
-    console.log('Deleting category:', formattedCategoryName);
+
+    this.categoriesService.deleteCategoryByName(formattedCategoryName, categoryType).subscribe({
+      next: (response: IVoidResourceResponse) => {
+        const { message, details } = response;
+        this.toastService.show({
+          details,
+          title: message,
+          variant: 'success',
+        });
+        this.categories$.reload();
+      },
+    });
   }
 
   protected handleCategoryTypeSelected(index: number) {
@@ -101,22 +113,20 @@ export class Categories {
 
     const { categoryName, categoryType } = this.categoryFormModel();
 
-    setTimeout(() => {
-      this.categoriesService.createNewCategory({ categoryName, categoryType }).subscribe({
-        next: () => {
-          this.toastService.show({
-            variant: 'success',
-            title: 'Category created!',
-            details: `Your [${categoryType.toUpperCase()}] category has been created successfully.`,
-          });
+    this.categoriesService.createNewCategory({ categoryName, categoryType }).subscribe({
+      next: () => {
+        this.toastService.show({
+          variant: 'success',
+          title: 'Category created!',
+          details: `Your [${categoryType.toUpperCase()}] category has been created successfully.`,
+        });
 
-          this.resetCategoryForm();
-          this.isFormOpen.set(false);
-          this.categories$.reload();
-        },
-        complete: () => this.isSubmitting.set(false),
-      });
-    }, 2000);
+        this.resetCategoryForm();
+        this.isFormOpen.set(false);
+        this.categories$.reload();
+      },
+      complete: () => this.isSubmitting.set(false),
+    });
   }
 
   // Helper Functions

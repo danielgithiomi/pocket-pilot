@@ -64,20 +64,18 @@ export class Account {
   deleteAccount() {
     this.isDeleting.set(true);
 
-    setTimeout(() => {
-      this.accountsService.deleteAccountById(this.id()).subscribe({
-        next: (response: IStandardResponse<IVoidResourceResponse>) => {
-          this.toastService.show({
-            variant: 'success',
-            title: 'Account deleted successfully',
-            details: response.data.details,
-          });
-        },
-        complete: () => {
-          this.onAccountDelete.emit();
-          this.isDeleting.set(false);
-        },
-      });
-    }, 2000);
+    this.accountsService.deleteAccountById(this.id()).subscribe({
+      next: (response: IStandardResponse<IVoidResourceResponse>) => {
+        this.toastService.show({
+          variant: 'success',
+          title: 'Account deleted successfully',
+          details: response.data.details,
+        });
+      },
+      complete: () => {
+        this.onAccountDelete.emit();
+        this.isDeleting.set(false);
+      },
+    });
   }
 }

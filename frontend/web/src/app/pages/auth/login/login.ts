@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
 import { AuthService } from '@api/auth.service';
-import { Input } from "@components/ui/atoms/input";
+import { Input } from '@components/ui/atoms/input';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
@@ -23,7 +23,7 @@ export class Login {
   protected readonly Eye = Eye;
   protected readonly iconSize = 18;
   protected readonly EyeOff = EyeOff;
-  
+
   // FORM
   protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
   protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
@@ -51,20 +51,18 @@ export class Login {
 
     this.isSubmitting.set(true);
 
-    setTimeout(() => {
-      this.authService.login({ email, password }).subscribe({
-        next: (response: IStandardResponse<IAuthResponse>) => {
-          this.toastService.show({
-            variant: 'success',
-            title: response.summary.title,
-            details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
-          });
+    this.authService.login({ email, password }).subscribe({
+      next: (response: IStandardResponse<IAuthResponse>) => {
+        this.toastService.show({
+          variant: 'success',
+          title: response.summary.title,
+          details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
+        });
 
-          this.routeTo(WEB_ROUTES.dashboard);
-        },
-        error: () => this.isSubmitting.set(false),
-        complete: () => this.isSubmitting.set(false),
-      });
-    }, 3000);
+        this.routeTo(WEB_ROUTES.dashboard);
+      },
+      error: () => this.isSubmitting.set(false),
+      complete: () => this.isSubmitting.set(false),
+    });
   };
 }

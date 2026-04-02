@@ -74,4 +74,50 @@ export class CategoriesRepository {
             });
         });
     }
+
+    async deleteCategory(userId: string, name: string, type: CategoryType) {
+        await this.db.$transaction(async prisma => {
+            const userCategories = await prisma.categories.findUnique({
+                where: { userId },
+            });
+
+            if (!userCategories) {
+                throw new NotFoundException({
+                    name: 'CATEGORIES_NOT_FOUND',
+                    title: 'Categories not found!',
+                    details: 'No categories found for this user in the database.',
+                });
+            }
+
+            let filteredIncomes: string[];
+            let filteredExpenses: string[];
+
+            switch (type) {
+                case CategoryType.INCOME: {
+                    const existingIncomes = userCategories.incomes;
+                    filteredExpenses = userCategories.expenses;
+                    filteredIncomes = existingIncomes.filter(income => income !== name);
+                    break;
+                }
+                case CategoryType.EXPENSE: {
+                    const existingExpenses = userCategories.expenses;
+                    filteredIncomes = userCategories.incomes;
+                    filteredExpenses = existingExpenses.filter(expense => expense !== name);
+                    break;
+                }
+            }
+
+            return prisma.categories.update({
+                where: { userId },
+                data: {
+                    incomes: filteredIncomes,
+                    expenses: filteredExpenses,
+                    lastUpdated: new Date(),
+                },
+                include: {
+                    user: { select: { id: true, name: true } },
+                },
+            });
+        });
+    }
 }

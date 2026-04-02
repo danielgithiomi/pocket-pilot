@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsString } from 'class-validator';
 import { Prisma, TransactionType } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
 export type FullTransaction = Prisma.TransactionCreateInput;
@@ -19,6 +19,12 @@ export class CreateTransactionDto {
     @IsNotEmpty()
     @ApiProperty({ example: 1000, description: 'The amount of the transaction' })
     amount!: number;
+
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(100, { message: 'Description must not exceed 100 characters' })
+    @ApiProperty({ example: 'Dinner with Friends', description: 'The description of the transaction' })
+    description!: string;
 }
 
 @Exclude()
@@ -43,6 +49,10 @@ export class Transaction {
     @Type(() => Date)
     @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'The date of the transaction' })
     date!: Date;
+
+    @Expose()
+    @ApiProperty({ example: 'Dinner with Friends', description: 'The description of the transaction' })
+    description!: string | null;
 }
 
 @Exclude()

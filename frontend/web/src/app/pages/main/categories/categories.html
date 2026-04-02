@@ -19,7 +19,7 @@
           <div class="skeleton w-3/4 h-5"></div>
 
           <div class="categories-container">
-            @for (income of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
+            @for (income of categoryLength.slice(0, 9); track $index) {
               <div class="skeleton skeleton-items"></div>
             }
           </div>
@@ -29,7 +29,7 @@
           <div class="skeleton w-3/4 h-5"></div>
 
           <div class="categories-container">
-            @for (income of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track $index) {
+            @for (income of categoryLength; track $index) {
               <div class="skeleton skeleton-items"></div>
             }
           </div>
@@ -64,7 +64,7 @@
                 <div class="category-item group/item income">
                   <p>{{ income }}</p>
 
-                  <button class="category-icon atom-icon" (click)="deleteCategory(income)">
+                  <button class="category-icon atom-icon" (click)="deleteCategory(income, 'INCOME')">
                     <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
                   </button>
                 </div>
@@ -82,9 +82,9 @@
                 <div class="category-item group/item expense">
                   <p>{{ expense }}</p>
 
-                  <div class="category-icon atom-icon">
+                  <button class="category-icon atom-icon" (click)="deleteCategory(expense, 'EXPENSE')">
                     <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
-                  </div>
+                  </button>
                 </div>
               }
             </div>

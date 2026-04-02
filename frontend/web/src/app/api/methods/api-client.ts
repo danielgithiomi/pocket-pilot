@@ -32,4 +32,9 @@ export class ApiClient {
     const url = `${this.baseUrl}${endpoint}`;
     return this.http.delete<T>(url);
   }
+
+  deleteWithBody<T, B>(endpoint: string, body: B): Observable<T> {
+    const url = `${this.baseUrl}${endpoint}`;
+    return this.http.delete<T>(url, { body });
+  }
 }

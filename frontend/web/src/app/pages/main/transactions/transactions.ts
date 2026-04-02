@@ -29,7 +29,18 @@ import {
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.html',
-  imports: [NgClass, Button, LucideAngularModule, NoData, Form, Input, Select, Table, FetchError, TabList],
+  imports: [
+    Form,
+    Input,
+    Table,
+    NoData,
+    Select,
+    Button,
+    NgClass,
+    TabList,
+    FetchError,
+    LucideAngularModule,
+  ],
 })
 export class Transactions {
   // Icons
@@ -104,9 +115,24 @@ export class Transactions {
   // TABLE
   protected transactionColumns: TableColumn<TransactionRow>[] = [
     {
-      key: 'id',
-      label: 'ID',
+      key: 'category',
+      label: 'Category',
       width: '1fr',
+      cellTemplate: (transaction: TransactionRow) => {
+        let classes =
+          'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis bg-(--body-background)';
+
+        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.category}</span>`;
+      },
+    },
+    {
+      key: 'amount',
+      label: 'Amount',
+      width: '2fr',
+      cellTemplate: (transaction: TransactionRow) => {
+        let classes = 'font-semibold';
+        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.amount}</span>`;
+      },
     },
     {
       key: 'type',
@@ -123,29 +149,23 @@ export class Transactions {
       },
     },
     {
-      key: 'amount',
-      label: 'Amount',
+      key: 'description',
+      label: 'Description',
       width: '2fr',
       cellTemplate: (transaction: TransactionRow) => {
         let classes = 'font-semibold';
-        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.amount}</span>`;
-      },
-    },
-    {
-      key: 'category',
-      label: 'Category',
-      width: '2fr',
-      cellTemplate: (transaction: TransactionRow) => {
-        let classes =
-          'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis bg-(--body-background)';
-
-        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.category}</span>`;
+        let description = this.isFetching()
+          ? transaction.amount
+          : !transaction.description
+            ? '-'
+            : transaction.description;
+        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${description}</span>`;
       },
     },
     {
       key: 'accountName',
       label: 'Account',
-      width: '2fr',
+      width: '1fr',
     },
     {
       key: 'date',
@@ -170,6 +190,7 @@ export class Transactions {
         category: transaction.category,
         accountId: transaction.account.id,
         date: formatDate(transaction.date),
+        description: transaction.description,
         id: splitTransactionId(transaction.id),
         accountName: capitalize(transaction.account.name),
         amount: formatCurrency(transaction.amount, this.currency, 2, true, false),
@@ -230,24 +251,20 @@ export class Transactions {
         details: 'This transaction will result in a negative balance in your account.',
       });
 
-    setTimeout(() => {
-      this.transactionsService
-        .createTransaction(accountId, transactionPayload)
-        .subscribe({
-          next: () => {
-            this.toastService.show({
-              variant: 'success',
-              title: 'Transaction created!',
-              details: `Your [${transactionPayload.type.toUpperCase()}] transaction has been logged successfully.`,
-            });
-
-            this.reloadResources();
-            this.resetTransactionForm();
-            this.isFormOpen.set(false);
-          },
-          error: (error) => console.error('Transaction creation failed:', error),
-          complete: () => this.isSubmitting.set(false),
+    this.transactionsService.createTransaction(accountId, transactionPayload).subscribe({
+      next: () => {
+        this.toastService.show({
+          variant: 'success',
+          title: 'Transaction created!',
+          details: `Your [${transactionPayload.type.toUpperCase()}] transaction has been logged successfully.`,
         });
-    }, 3000);
+
+        this.reloadResources();
+        this.resetTransactionForm();
+        this.isFormOpen.set(false);
+      },
+      error: (error) => console.error('Transaction creation failed:', error),
+      complete: () => this.isSubmitting.set(false),
+    });
   }
 }

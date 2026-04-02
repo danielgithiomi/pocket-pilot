@@ -16,17 +16,18 @@
 
       <organism-table [isLoading]="true" [data]="skeletonData" [columns]="transactionColumns" />
     </div>
-  }@else {
+  } @else {
     @let response = transactions.value()?.data;
-      @let count = response?.count;
-  <div 
-  class="page-container flex-1"
-  [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }">
-    @if (transactions.error()) {
-      <fetch-error message="Failed to retrieve your transactions" />
-    } @else if (count === 0) {
-      <no-data message="No transactions found!" />
-    } @else {
+    @let count = response?.count;
+    <div
+      class="page-container flex-1"
+      [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }"
+    >
+      @if (transactions.error()) {
+        <fetch-error message="Failed to retrieve your transactions" />
+      } @else if (count === 0) {
+        <no-data message="No transactions found!" />
+      } @else {
         <div>
           <p class="mb-6">
             You have <span class="font-semibold text-primary">{{ count }}</span>
@@ -62,7 +63,7 @@
     description="Create a new transaction"
     (closeForm)="handleCloseForm($event)"
   >
-  @let categories = transactionCategories;
+    @let categories = transactionCategories;
     @let types = transactionTypes.value()?.data;
     <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
       <atom-input
@@ -71,9 +72,21 @@
         [inverted]="true"
         autocomplete="name"
         placeholder="Eg: 100"
-        label="Transaction Amount"
+        label="Amount"
         [formField]="transactionForm.amount"
         (clearOutput)="transactionForm.amount().controlValue.set(0)"
+      />
+
+      <atom-input
+        type="text"
+        id="description"
+        [inverted]="true"
+        [required]="false"
+        autocomplete="name"
+        label="Description"
+        placeholder="Eg: Dinner with friends"
+        [formField]="transactionForm.description"
+        (clearOutput)="transactionForm.description().controlValue.set('')"
       />
 
       <div class="flex flex-col sm:flex-row gap-0 sm:gap-4">

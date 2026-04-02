@@ -42,9 +42,8 @@ export class Table<T extends object> {
   }
 
   getCellValue(item: T, column: TableColumn<T>): string | HTMLElement {
-    if (column.cellTemplate) {
-      return column.cellTemplate(item);
-    }
+    if (column.cellTemplate) return column.cellTemplate(item);
+
     const value = item[column.key as keyof T];
     return value !== undefined && value !== null ? String(value) : '';
   }
@@ -54,11 +53,9 @@ export class Table<T extends object> {
   }
 
   shouldRenderAsHtml(item: T, column: TableColumn<T>): boolean {
-    if (column.cellTemplate) {
-      return true;
-    }
+    if (column.cellTemplate) return true;
 
     const value = item[column.key as keyof T];
-    return typeof value === 'string' && value.includes('<div');
+    return typeof value === 'string' && (value.includes('<div') || value.includes('<span'));
   }
 }

@@ -9,7 +9,7 @@
     }
 
     .categories-container {
-      @apply flex flex-row flex-wrap gap-3 my-4 pt-2;
+      @apply flex flex-row flex-wrap gap-3 my-6 pt-2;
 
       .skeleton-items {
         @apply w-1/2 h-5 rounded-lg;
@@ -41,7 +41,7 @@
         .category-icon {
           @apply opacity-0 group-hover/item:block group-hover/item:text-white group-hover/item:opacity-100 absolute top-1/2 right-0 -translate-y-1/2 px-1 py-2 transition-all duration-300 cursor-pointer rounded-lg;
           backdrop-filter: blur(10px);
-          background: linear-gradient(90deg, var(--transparent), rgba(0, 0, 0, 0.5));
+          background: rgba(0, 0, 0, 0.5);
         }
       }
 
