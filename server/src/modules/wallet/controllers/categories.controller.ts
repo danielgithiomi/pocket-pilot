@@ -1,11 +1,11 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
+import { VoidResourceResponse } from '@common/types';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { CategoriesService } from '../services/categories.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';
-import { VoidResourceResponse } from '@common/types';
 
 @ApiTags('Categories')
 @Controller('categories')

@@ -1,14 +1,16 @@
 import { CategoryType } from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { normalizeCategories, normalizeCategoryName } from '@libs/utils';
-import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';
 import { CategoriesRepository } from '../repositories/categories.repository';
 import { DEFAULT_INCOME_CATEGORIES, DEFAULT_EXPENSE_CATEGORIES } from '@libs/constants';
+import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 
 @Injectable()
 export class CategoriesService {
+    private readonly logger = new Logger(CategoriesService.name);
+
     constructor(private readonly categoriesRepository: CategoriesRepository) {}
 
     async addDefaultCategoriesOnRegistration(userId: string): Promise<boolean> {
@@ -72,6 +74,7 @@ export class CategoriesService {
         try {
             await this.categoriesRepository.deleteCategory(userId, categoryName, categoryType);
         } catch (error) {
+            this.logger.error(`Error deleting category ${categoryName} for user ${userId}:`, error);
             throw new InternalServerErrorException({
                 name: 'INTERNAL_SERVER_ERROR',
                 title: 'Internal Server Error',

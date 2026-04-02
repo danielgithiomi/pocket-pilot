@@ -10,6 +10,9 @@ import {
   IStandardError,
   IStandardResponse,
   CreateCategoryRequest,
+  DeleteCategoryRequest,
+  CategoryVariant,
+  IVoidResourceResponse,
 } from '@global/types';
 
 @Injectable({
@@ -45,6 +48,20 @@ export class CategoriesService {
       value: category,
       label: denormalizeCategoryName(category),
     }));
+  }
+
+  deleteCategoryByName(
+    categoryName: string,
+    categoryType: CategoryVariant,
+  ): Observable<IVoidResourceResponse> {
+    const payload: DeleteCategoryRequest = { categoryName, categoryType };
+    return this.mutation.deleteCategory(payload).pipe(
+      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
   }
 
   // HELPER FUNCTIONS

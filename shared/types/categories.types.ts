@@ -5,6 +5,11 @@ export interface CreateCategoryRequest {
   categoryType: CategoryVariant;
 }
 
+export interface DeleteCategoryRequest {
+  categoryName: string;
+  categoryType: CategoryVariant;
+}
+
 interface UserMetaData {
   id: string;
   name: string;

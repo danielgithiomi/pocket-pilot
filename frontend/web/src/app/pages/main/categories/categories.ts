@@ -5,7 +5,7 @@ import { TabList } from '@atoms/tab-list';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
-import { CategoryVariant } from '@global/types';
+import { CategoryVariant, IVoidResourceResponse } from '@global/types';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
@@ -78,9 +78,20 @@ export class Categories {
     this.isFormOpen.set(false);
   }
 
-  protected deleteCategory(categoryName: string) {
+  protected deleteCategory(categoryName: string, categoryType: CategoryVariant) {
     const formattedCategoryName = normalizeCategoryName(categoryName);
-    console.log('Deleting category:', formattedCategoryName);
+
+    this.categoriesService.deleteCategoryByName(formattedCategoryName, categoryType).subscribe({
+      next: (response: IVoidResourceResponse) => {
+        const { message, details } = response;
+        this.toastService.show({
+          details,
+          title: message,
+          variant: 'success',
+        });
+        this.categories$.reload();
+      },
+    });
   }
 
   protected handleCategoryTypeSelected(index: number) {
