@@ -5,10 +5,10 @@ import { TabList } from '@atoms/tab-list';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
-import { CategoryVariant, IVoidResourceResponse } from '@global/types';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
+import { CategoryVariant, IVoidResourceResponse } from '@global/types';
 import { LucideAngularModule, ListFilterPlus, X } from 'lucide-angular';
 import { denormalizeCategoryName, normalizeCategoryName } from '@global/utils';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
@@ -113,22 +113,20 @@ export class Categories {
 
     const { categoryName, categoryType } = this.categoryFormModel();
 
-    setTimeout(() => {
-      this.categoriesService.createNewCategory({ categoryName, categoryType }).subscribe({
-        next: () => {
-          this.toastService.show({
-            variant: 'success',
-            title: 'Category created!',
-            details: `Your [${categoryType.toUpperCase()}] category has been created successfully.`,
-          });
+    this.categoriesService.createNewCategory({ categoryName, categoryType }).subscribe({
+      next: () => {
+        this.toastService.show({
+          variant: 'success',
+          title: 'Category created!',
+          details: `Your [${categoryType.toUpperCase()}] category has been created successfully.`,
+        });
 
-          this.resetCategoryForm();
-          this.isFormOpen.set(false);
-          this.categories$.reload();
-        },
-        complete: () => this.isSubmitting.set(false),
-      });
-    }, 2000);
+        this.resetCategoryForm();
+        this.isFormOpen.set(false);
+        this.categories$.reload();
+      },
+      complete: () => this.isSubmitting.set(false),
+    });
   }
 
   // Helper Functions

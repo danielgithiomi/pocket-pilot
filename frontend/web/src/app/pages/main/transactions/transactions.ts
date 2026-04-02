@@ -154,7 +154,11 @@ export class Transactions {
       width: '2fr',
       cellTemplate: (transaction: TransactionRow) => {
         let classes = 'font-semibold';
-        let description = this.isFetching() ? transaction.amount : !transaction.description ? '-' : transaction.description;
+        let description = this.isFetching()
+          ? transaction.amount
+          : !transaction.description
+            ? '-'
+            : transaction.description;
         return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${description}</span>`;
       },
     },
@@ -247,22 +251,20 @@ export class Transactions {
         details: 'This transaction will result in a negative balance in your account.',
       });
 
-    setTimeout(() => {
-      this.transactionsService.createTransaction(accountId, transactionPayload).subscribe({
-        next: () => {
-          this.toastService.show({
-            variant: 'success',
-            title: 'Transaction created!',
-            details: `Your [${transactionPayload.type.toUpperCase()}] transaction has been logged successfully.`,
-          });
+    this.transactionsService.createTransaction(accountId, transactionPayload).subscribe({
+      next: () => {
+        this.toastService.show({
+          variant: 'success',
+          title: 'Transaction created!',
+          details: `Your [${transactionPayload.type.toUpperCase()}] transaction has been logged successfully.`,
+        });
 
-          this.reloadResources();
-          this.resetTransactionForm();
-          this.isFormOpen.set(false);
-        },
-        error: (error) => console.error('Transaction creation failed:', error),
-        complete: () => this.isSubmitting.set(false),
-      });
-    }, 3000);
+        this.reloadResources();
+        this.resetTransactionForm();
+        this.isFormOpen.set(false);
+      },
+      error: (error) => console.error('Transaction creation failed:', error),
+      complete: () => this.isSubmitting.set(false),
+    });
   }
 }

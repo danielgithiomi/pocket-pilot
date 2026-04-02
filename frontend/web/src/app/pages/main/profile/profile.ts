@@ -72,22 +72,20 @@ export class Profile {
 
     this.isSubmittingEditProfileForm.set(true);
 
-    setTimeout(() => {
-      this.userService.update(id, payload).subscribe({
-        next: (user: IAuthResponse) => {
-          this.toastService.show({
-            variant: 'success',
-            title: 'Update Successful!',
-            details: 'Your profile has been updated successfully.',
-          });
+    this.userService.update(id, payload).subscribe({
+      next: (user: IAuthResponse) => {
+        this.toastService.show({
+          variant: 'success',
+          title: 'Update Successful!',
+          details: 'Your profile has been updated successfully.',
+        });
 
-          // Update state & reset form
-          this.authService.refreshSession(user);
-          this.isEditFormOpen.set(false);
-          this.resetEditProfileForm();
-        },
-        complete: () => this.isSubmittingEditProfileForm.set(false),
-      });
-    }, 3500);
+        // Update state & reset form
+        this.authService.refreshSession(user);
+        this.isEditFormOpen.set(false);
+        this.resetEditProfileForm();
+      },
+      complete: () => this.isSubmittingEditProfileForm.set(false),
+    });
   }
 }

@@ -90,18 +90,16 @@ export class HeaderDropdown {
   protected logout(): void {
     this.isLogoutLoading.set(true);
 
-    setTimeout(() => {
-      this.authService
-        .logout()
-        .pipe(
-          tap(() => {
-            this.drawerService.closeDropDown();
-            this.router.navigateByUrl(WEB_ROUTES.login);
-          }),
-        )
-        .subscribe({
-          complete: () => this.isLogoutLoading.set(false),
-        });
-    }, 3000);
+    this.authService
+      .logout()
+      .pipe(
+        tap(() => {
+          this.drawerService.closeDropDown();
+          this.router.navigateByUrl(WEB_ROUTES.login);
+        }),
+      )
+      .subscribe({
+        complete: () => this.isLogoutLoading.set(false),
+      });
   }
 }

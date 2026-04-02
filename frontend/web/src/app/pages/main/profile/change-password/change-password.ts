@@ -119,20 +119,18 @@ export class ChangePassword {
 
     this.isSubmittingChangePassword.set(true);
 
-    setTimeout(() => {
-      this.userService.changePassword(id, payload).subscribe({
-        next: (reponse: IVoidResourceResponse) => {
-          const { message, details } = reponse;
-          this.toastService.show({
-            details,
-            title: message,
-            variant: 'success',
-          });
+    this.userService.changePassword(id, payload).subscribe({
+      next: (reponse: IVoidResourceResponse) => {
+        const { message, details } = reponse;
+        this.toastService.show({
+          details,
+          title: message,
+          variant: 'success',
+        });
 
-          this.resetChangePasswordForm();
-        },
-        complete: () => this.isSubmittingChangePassword.set(false),
-      });
-    }, 3000);
+        this.resetChangePasswordForm();
+      },
+      complete: () => this.isSubmittingChangePassword.set(false),
+    });
   }
 }
