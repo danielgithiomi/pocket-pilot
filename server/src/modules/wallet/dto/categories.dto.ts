@@ -20,6 +20,16 @@ export class CreateCategoryDto {
     categoryType!: CategoryType;
 }
 
+export class DeleteCategoryPayload {
+    @IsNotEmpty()
+    @ApiProperty({ example: 'salary', description: 'The normalized name of the category to delete' })
+    categoryName!: string;
+
+    @IsNotEmpty()
+    @ApiProperty({ enum: CategoryType, example: 'INCOME', description: 'The type of the category to delete' })
+    categoryType!: CategoryType;
+}
+
 @Exclude()
 export class UserMetaData {
     @Expose()

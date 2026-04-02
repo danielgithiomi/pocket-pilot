@@ -3,16 +3,17 @@ import { UserInRequest } from '@common/decorators';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { CategoriesService } from '../services/categories.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { CategoriesDto, CreateCategoryDto } from '../dto/categories.dto';
+import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
+import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';
+import { VoidResourceResponse } from '@common/types';
 
 @ApiTags('Categories')
 @Controller('categories')
+@UseGuards(CookiesAuthGuard)
 export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService) {}
 
     @Get()
-    @UseGuards(CookiesAuthGuard)
     @ApiOperation({ summary: 'Get User Categories', description: 'Get all user categories' })
     @ApiResponse({
         status: 200,
@@ -25,7 +26,6 @@ export class CategoriesController {
     }
 
     @Post()
-    @UseGuards(CookiesAuthGuard)
     @ApiOperation({ summary: 'Create or Update User Categories', description: 'Create user categories' })
     @ApiResponse({
         status: 201,
@@ -34,5 +34,21 @@ export class CategoriesController {
     })
     async createCategory(@Body() payload: CreateCategoryDto, @UserInRequest() user: UserResponseDto) {
         return this.categoriesService.createCategory(user.id, payload);
+    }
+
+    @Delete()
+    @ApiOperation({ summary: 'Delete User Category', description: 'Delete user category' })
+    @ApiResponse({
+        status: 200,
+        type: VoidResourceResponse,
+        description: 'The category deleted successfully by User ID',
+    })
+    async deleteCategory(@Body() payload: DeleteCategoryPayload, @UserInRequest() user: UserResponseDto) {
+        await this.categoriesService.deleteCategoryByName(user.id, payload);
+
+        return {
+            message: 'Category deleted!',
+            details: `Your [${payload.categoryName}] category has been deleted successfully.`,
+        };
     }
 }

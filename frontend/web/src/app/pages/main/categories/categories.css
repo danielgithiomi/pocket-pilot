@@ -9,7 +9,7 @@
     }
 
     .categories-container {
-      @apply flex flex-row flex-wrap gap-3 my-4 pt-2;
+      @apply flex flex-row flex-wrap gap-3 my-6 pt-2;
 
       .skeleton-items {
         @apply w-1/2 h-5 rounded-lg;

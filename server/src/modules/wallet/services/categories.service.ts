@@ -1,9 +1,9 @@
 import { CategoryType } from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { normalizeCategories, normalizeCategoryName } from '@libs/utils';
-import { CategoriesDto, CreateCategoryDto } from '../dto/categories.dto';
+import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';
 import { CategoriesRepository } from '../repositories/categories.repository';
 import { DEFAULT_INCOME_CATEGORIES, DEFAULT_EXPENSE_CATEGORIES } from '@libs/constants';
 
@@ -64,5 +64,23 @@ export class CategoriesService {
             };
 
         return plainToInstance(CategoriesDto, categories);
+    }
+
+    async deleteCategoryByName(userId: string, payload: DeleteCategoryPayload) {
+        const { categoryName, categoryType } = payload;
+
+        try {
+            await this.categoriesRepository.deleteCategory(userId, categoryName, categoryType);
+        } catch (error) {
+            throw new InternalServerErrorException({
+                name: 'INTERNAL_SERVER_ERROR',
+                title: 'Internal Server Error',
+                message: `Error deleting your ${categoryName} category. Please try again later.`,
+                details: {
+                    field: 'categoryName',
+                    value: categoryName,
+                },
+            });
+        }
     }
 }
