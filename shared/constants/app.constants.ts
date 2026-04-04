@@ -1,4 +1,4 @@
-import { MonthOption } from "@global/types";
+import { MonthOption } from "../types";
 
 export const MONTHS_ENUM: MonthOption[] = [
   { value: "january", label: "January" },

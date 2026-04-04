@@ -5,6 +5,8 @@ import { Component, computed, inject, input, output } from '@angular/core';
 import {
   House,
   Wallet,
+  Target,
+  Headset,
   SquareStack,
   UserRoundCog,
   ChevronRight,
@@ -36,7 +38,7 @@ import {
               [ngClass]="{ 'active-icon': linkActive() }"
             />
           </div>
-          <p class="link-text">{{ link().name }}</p>
+          <p class="link-text">{{ formattedLinkName() }}</p>
         </div>
         <div class="navigation-arrow">
           <lucide-angular [size]="12" color="white" name="chevron-right" [img]="chevronRight" />
@@ -66,7 +68,9 @@ export class NavLink {
   protected iconSize = computed(() => (this.isDrawerExpanded() ? 16 : 20));
   protected readonly iconMap: Record<DrawerNavigationLink['icon'], any> = {
     home: House,
+    goals: Target,
     accounts: Wallet,
+    support: Headset,
     profile: UserRoundCog,
     categories: SquareStack,
     dashboard: LayoutDashboard,
@@ -80,5 +84,9 @@ export class NavLink {
 
   protected linkActive(): boolean {
     return this.router.url === this.link().path;
+  }
+
+  protected formattedLinkName(): string {
+    return this.link().name.replace('_', ' & ');
   }
 }

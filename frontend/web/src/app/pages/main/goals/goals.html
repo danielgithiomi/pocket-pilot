@@ -1,0 +1,45 @@
+<section id="goals-and-bills" class="page">
+  <div class="page-header">
+    <h1 class="page-title">Goals &amp; Bills</h1>
+  </div>
+
+  <div
+      class="page-container flex-1"
+      [ngClass]="{ 'grid place-items-center': false }"
+    >
+      <div class="w-full flex flex-col md:flex-row gap-6" [ngClass]="{
+        'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed()
+      }" >
+        <div class="goals-card" [ngClass]="{
+          'md:w-full!': !drawerService.isDrawerCollapsed()
+        }">
+          
+          <div class="card-header">
+            <p class="card-title">Goal Tracker</p>
+
+            <atom-button id="add-goal" variant="primary" size="sm">
+              <div class="w-full flex flex-row items-center justify-between gap-4">
+                <lucide-icon name="create-transaction" [img]="PlusIcon" [size]="iconSize"></lucide-icon>
+                <span class="hidden lg:block">Add Goal</span>
+              </div>
+            </atom-button>
+          </div>
+
+        </div>
+        <div class="bills-card" [ngClass]="{
+          'md:w-full!': !drawerService.isDrawerCollapsed()
+        }">
+          <div class="card-header">
+            <p class="card-title">Your Bills</p>
+
+            <atom-button id="add-bill" variant="primary" size="sm">
+              <div class="w-full flex flex-row items-center justify-between gap-4">
+                <lucide-icon name="create-transaction" [img]="PlusIcon" [size]="iconSize"></lucide-icon>
+                <span class="hidden lg:block">Add Bill</span>
+              </div>
+            </atom-button>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>

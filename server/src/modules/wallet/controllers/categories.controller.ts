@@ -6,6 +6,7 @@ import { CategoriesService } from '../services/categories.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';
+import { denormalizeCategoryName } from '@libs/utils';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -45,10 +46,11 @@ export class CategoriesController {
     })
     async deleteCategory(@Body() payload: DeleteCategoryPayload, @UserInRequest() user: UserResponseDto) {
         await this.categoriesService.deleteCategoryByName(user.id, payload);
+        const denormalisedCategoryName = denormalizeCategoryName(payload.categoryName);
 
         return {
             message: 'Category deleted!',
-            details: `Your [${payload.categoryName}] category has been deleted successfully.`,
+            details: `Your [${denormalisedCategoryName}] category has been deleted successfully.`,
         };
     }
 }

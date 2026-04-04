@@ -4,7 +4,7 @@ import { Chevron } from '@components/ui/atoms/icons';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { Component, input, output } from '@angular/core';
 import { NgOptimizedImage, NgClass } from '@angular/common';
-import { DrawerNavigationLinks as links } from '@libs/constants';
+import { DrawerNavigationLinks as links, AdditionalDrawerNavigationLinks as additionalLinks } from '@libs/constants';
 
 @Component({
   selector: 'app-drawer',
@@ -21,6 +21,7 @@ export class Drawer {
 
   protected readonly X = X;
   protected readonly links = links;
+  protected readonly additionalLinks = additionalLinks;
   protected readonly logoUrl: string = '/images/branding/logo.png';
   protected readonly logoDimensions: ImageDimensions = { width: 70, height: 70 };
 }
