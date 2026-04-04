@@ -27,6 +27,11 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
     path: '/categories',
   },
   {
+    icon: 'goals',
+    name: 'Goals_Bills',
+    path: '/goals',
+  },
+  {
     icon: 'profile',
     name: 'Profile',
     path: '/profile',

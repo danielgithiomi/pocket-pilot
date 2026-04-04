@@ -3,8 +3,11 @@ export interface ImageDimensions {
   height: number;
 }
 
+type AdditionalLinks = 'support';
+type UserLinks = 'home' | 'profile' | 'dashboard' | 'accounts' | 'transactions' | 'categories' | 'goals';
+
 export interface DrawerNavigationLink {
-  icon: 'home' | 'profile' | 'dashboard' | 'accounts' | 'transactions' | 'categories' | 'support';
   name: string;
   path: string;
+  icon: AdditionalLinks | UserLinks;
 }
