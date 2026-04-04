@@ -1,7 +1,7 @@
-import { formatCurrency } from '@libs/utils';
 import { MONTHS_ENUM } from '@global/constants';
 import { normalizeCategoryName } from '@global/utils';
 import { AccountsService } from '@api/accounts.service';
+import { capitalize, formatCurrency } from '@libs/utils';
 import { CategoriesService } from '@api/categories.service';
 import { TransactionsService } from '@api/transactions.service';
 import { COLOR_MAP, CostAnalysisCategory } from './cost-analysis.types';
@@ -75,14 +75,14 @@ export class CostAnalysis {
       }
     });
 
-    const categoryAnalysis = categories
+    const categoryAnalysis: CostAnalysisCategory[] = categories
       .filter((categoryName) => categoryTotals.has(categoryName))
       .slice(0, 6)
       .map((categoryName, index) => {
         const categoryTotal = categoryTotals.get(categoryName) || 0;
         return {
-          categoryName,
           color: COLOR_MAP[index],
+          categoryName: capitalize(categoryName),
           percentage: Math.round((categoryTotal / total) * 100),
         };
       })
@@ -93,7 +93,18 @@ export class CostAnalysis {
   });
 
   readonly categoriesWithPercentage = computed(() => {
-    return this.costAnalysisCategories().map((category, _index) => ({
+    const currentPercentage = this.costAnalysisCategories().reduce((sum, category) => sum + category.percentage, 0);
+    const remainingPercentage = 100 - currentPercentage;
+
+    const other: CostAnalysisCategory = {
+      categoryName: 'Other',
+      percentage: remainingPercentage,
+      color: COLOR_MAP[COLOR_MAP.length - 1],
+    };
+
+    const compositeCategories = [...this.costAnalysisCategories(), other];
+
+    return compositeCategories.map((category, _index) => ({
       id: category.categoryName,
       label: category.categoryName,
       color: category.color,
