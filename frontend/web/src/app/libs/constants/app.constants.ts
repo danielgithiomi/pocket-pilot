@@ -7,11 +7,6 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
     path: '/',
   },
   {
-    icon: 'profile',
-    name: 'Profile',
-    path: '/profile',
-  },
-  {
     icon: 'dashboard',
     name: 'Dashboard',
     path: '/dashboard',
@@ -30,5 +25,18 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
     icon: 'categories',
     name: 'Categories',
     path: '/categories',
+  },
+  {
+    icon: 'profile',
+    name: 'Profile',
+    path: '/profile',
+  },
+];
+
+export const AdditionalDrawerNavigationLinks: DrawerNavigationLink[] = [
+  {
+    icon: 'support',
+    name: 'Support',
+    path: '/support',
   },
 ];

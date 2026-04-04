@@ -5,6 +5,7 @@ import { Component, computed, inject, input, output } from '@angular/core';
 import {
   House,
   Wallet,
+  Headset,
   SquareStack,
   UserRoundCog,
   ChevronRight,
@@ -67,6 +68,7 @@ export class NavLink {
   protected readonly iconMap: Record<DrawerNavigationLink['icon'], any> = {
     home: House,
     accounts: Wallet,
+    support: Headset,
     profile: UserRoundCog,
     categories: SquareStack,
     dashboard: LayoutDashboard,

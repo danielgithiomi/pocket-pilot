@@ -4,7 +4,7 @@ export interface ImageDimensions {
 }
 
 export interface DrawerNavigationLink {
-  icon: 'home' | 'profile' | 'dashboard' | 'accounts' | 'transactions' | 'categories';
+  icon: 'home' | 'profile' | 'dashboard' | 'accounts' | 'transactions' | 'categories' | 'support';
   name: string;
   path: string;
 }

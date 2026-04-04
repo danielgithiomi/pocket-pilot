@@ -43,6 +43,18 @@
         ></nav-link>
       }
     </div>
+
+    <hr class="mx-3 my-1" />
+
+    <div class="links">
+      @for (link of additionalLinks; track link.name) {
+        <nav-link
+          [link]="link"
+          [isDrawerExpanded]="drawerOpen()"
+          (navLinkClicked)="linkClicked.emit()"
+        ></nav-link>
+      }
+    </div>
   </div>
 
   <div class="drawer-footer">
