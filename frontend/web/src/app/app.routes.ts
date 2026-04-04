@@ -55,6 +55,11 @@ export const routes: Routes = [
         loadComponent: () => import('@pages/main/categories/categories').then((m) => m.Categories),
       },
       {
+        title: 'Goals | Pocket Pilot',
+        path: WEB_ROUTES.goals,
+        loadComponent: () => import('@pages/main/goals/goals').then((m) => m.Goals),
+      },
+      {
         path: '**',
         component: NotFound,
         title: '404 | Page Not Found',
