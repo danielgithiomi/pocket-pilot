@@ -15,7 +15,9 @@ export class GoalsController {
     @HttpCode(201)
     @ApiOperation({ summary: 'Create a new goal' })
     @ApiResponse({ status: 201, type: String, description: 'Goal created successfully' })
-    createGoal(@UserInRequest() user: User, @Body() createGoalDto: CreateGoalDto) {
+    createGoal(@UserInRequest() _user: User, @Body() _createGoalDto: CreateGoalDto) {
+        console.log(_user);
+        console.log(_createGoalDto);
         return this.goalsService.createGoal();
     }
 }

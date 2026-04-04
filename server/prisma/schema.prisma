@@ -124,7 +124,7 @@ model Goal {
     endDate   DateTime
     startDate DateTime
 
-    status   GoalStatus
+    status   GoalStatus   @default(ACTIVE)
     category GoalCategory
 
     monthlyContribution Float

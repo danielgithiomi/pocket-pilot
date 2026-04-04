@@ -10,7 +10,6 @@ export interface CreateGoalRequest {
   startDate: Date;
   endDate: Date;
   category: GoalCategory;
-  status: GoalStatus;
   monthlyContribution: number;
   targetAmount: number;
 }
