@@ -1,3 +1,4 @@
+import { CategoryTypeEnum } from '@global/enums';
 import { CreateCategoryRequest } from '@global/types';
 import { minLength, required, schema } from '@angular/forms/signals';
 import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
@@ -19,7 +20,7 @@ export type CategorySchema = CreateCategoryRequest;
 
 export const initialCategoryFormState: CategorySchema = {
   categoryName: '',
-  categoryType: 'INCOME',
+  categoryType: CategoryTypeEnum.INCOME,
 };
 
 export const categoryFormValidationSchema = schema<CategorySchema>((root) => {

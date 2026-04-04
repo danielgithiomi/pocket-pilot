@@ -5,6 +5,7 @@ import { TabList } from '@atoms/tab-list';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
+import { CategoryTypeEnum } from '@global/enums';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
@@ -41,6 +42,7 @@ export class Categories {
   protected isSubmitting = signal<boolean>(false);
 
   // Data
+  protected readonly CategoryTypeEnum = CategoryTypeEnum;
   protected readonly categoryTabItems = categoryTabItems;
   protected categories$ = this.categoriesService.getUserCategories();
   protected readonly categoryLength = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];

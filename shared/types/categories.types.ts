@@ -1,4 +1,6 @@
-export type CategoryVariant = 'INCOME' | 'EXPENSE';
+import { CategoryTypeEnum } from "../enums";
+
+export type CategoryVariant = CategoryTypeEnum.INCOME | CategoryTypeEnum.EXPENSE;
 
 export interface CreateCategoryRequest {
   categoryName: string;
