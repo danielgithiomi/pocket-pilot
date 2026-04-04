@@ -12,7 +12,9 @@ export class AccountsResource {
   private readonly authService: AuthService = inject(AuthService);
 
   userAccounts = httpResource<IStandardResponse<UserAccountsWithCount>>(() => {
-    this.authService.user();
+    const user = this.authService.user();
+
+    if (!user) return undefined;
 
     return {
       method: 'GET',
