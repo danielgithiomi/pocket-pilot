@@ -28,7 +28,8 @@ export class AccountController {
     @ApiOperation({ summary: 'Get Account Types', description: 'Get all available account types' })
     @ApiResponse({
         status: 200,
-        type: [AccountTypeDto],
+        isArray: true,
+        type: AccountTypeDto,
         description: 'Account types fetched successfully',
     })
     async getAccountTypes(): Promise<AccountTypeDto[]> {
@@ -39,6 +40,7 @@ export class AccountController {
     @ApiOperation({ summary: 'Retrieve all accounts', description: 'Get all created accounts in the database.' })
     @ApiResponse({
         status: 200,
+        isArray: false,
         type: AccountsResponseDto,
         description: 'Accounts fetched successfully',
     })
@@ -55,6 +57,7 @@ export class AccountController {
     @ApiOperation({ summary: 'Get User Accounts', description: 'Get all accounts of the logged in user' })
     @ApiResponse({
         status: 200,
+        isArray: false,
         type: UserAccountsResponseDto,
         description: 'Accounts fetched successfully',
     })
@@ -114,8 +117,8 @@ export class AccountController {
     @ApiOperation({ summary: 'Create Account', description: 'Create a new account' })
     @ApiResponse({
         status: 201,
-        isArray: false,
         type: Account,
+        isArray: false,
         description: 'Account created successfully',
     })
     createAccount(@UserInRequest() user: User, @Body() accountDto: CreateAccountDto): Promise<Account> {

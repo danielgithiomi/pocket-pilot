@@ -12,7 +12,7 @@ import { CategoriesService } from '@modules/wallet/services/categories.service';
 import { CategoriesRepository } from '@modules/wallet/repositories/categories.repository';
 
 @Module({
-    exports: [UserRepository],
+    exports: [UserRepository, UserService],
     imports: [DatabaseModule, WalletModule],
     controllers: [UserController, AuthController],
     providers: [
