@@ -6,11 +6,11 @@ import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
 // DATA
 export const categoryTabItems: TabListItem[] = [
   {
-    value: 'INCOME',
+    value: CategoryTypeEnum.INCOME,
     label: 'Income',
   },
   {
-    value: 'EXPENSE',
+    value: CategoryTypeEnum.EXPENSE,
     label: 'Expense',
   },
 ];

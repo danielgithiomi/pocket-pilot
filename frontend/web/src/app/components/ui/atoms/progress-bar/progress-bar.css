@@ -96,7 +96,7 @@
     transparent,
     transparent 6px,
     var(--stripe-color) 6px,
-    var(--stripe-color) 8px
+    var(--stripe-color) 10px
   );
 }
 

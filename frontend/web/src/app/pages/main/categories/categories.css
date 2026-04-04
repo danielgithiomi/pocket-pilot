@@ -5,7 +5,7 @@
     @apply cursor-default bg-(--alternate-background) rounded-lg flex-1 w-1/2 p-6 min-h-[200px];
 
     .category-card-span {
-      @apply group-hover/card:text-(--primary) group-hover/card:font-semibold group-hover/card:scale-105 transition-all duration-300;
+      @apply group-hover/card:text-(--primary) group-hover/card:font-bold group-hover/card:scale-105 transition-all duration-300;
     }
 
     .categories-container {
