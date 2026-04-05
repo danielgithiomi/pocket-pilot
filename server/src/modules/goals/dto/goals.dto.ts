@@ -24,9 +24,9 @@ export class CreateGoalDto {
     endDate!: Date;
 
     @IsNotEmpty()
-    @IsEnum(GoalStatus)
-    @ApiProperty({ enum: GoalStatus, description: 'The status of the goal' })
-    status!: GoalStatus;
+    @IsEnum(GoalCategory)
+    @ApiProperty({ enum: GoalCategory, example: GoalCategory.TRAVEL, description: 'The category of the goal' })
+    category!: GoalCategory;
 
     @IsNotEmpty()
     @ApiProperty({ example: 1000, description: 'The monthly contribution to the goal' })
