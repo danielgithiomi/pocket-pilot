@@ -16,7 +16,7 @@ export class GoalsController {
     @ApiOperation({ summary: 'Create a new goal' })
     @ApiResponse({ status: 201, type: GoalDto, description: 'Goal created successfully' })
     async createGoal(@UserInRequest() user: User, @Body() createGoalDto: CreateGoalDto) {
-      const createdGoal: GoalDto = await this.goalsService.createGoal(user.id!, createGoalDto);
-      return createdGoal;
+        const createdGoal: GoalDto = await this.goalsService.createGoal(user.id!, createGoalDto);
+        return createdGoal;
     }
 }

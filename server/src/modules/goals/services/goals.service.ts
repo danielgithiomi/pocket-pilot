@@ -10,4 +10,3 @@ export class GoalsService {
         return this.goalsRepository.createGoal(userId, payload);
     }
 }
-
