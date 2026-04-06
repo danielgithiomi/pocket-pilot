@@ -1,15 +1,19 @@
+import { Button } from "@atoms/button";
 import { NgClass } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ToastService } from "@atoms/toast";
 import { GoalsService } from '@api/goals.service';
-import { Button } from "@components/ui/atoms/button";
+import { RadioOption, Radio } from '@atoms/radio';
 import { DrawerService } from '@infrastructure/services';
 import { LucideAngularModule, Plus } from 'lucide-angular';
+import { Component, computed, inject, signal } from '@angular/core';
+import { initalNewGoalFormState, newGoalFormValidationSchema, NewGoalSchema } from "./goals.types";
+import { form } from "@angular/forms/signals";
 
 @Component({
   selector: 'app-goals',
   styleUrl: './goals.css',
   templateUrl: './goals.html',
-  imports: [NgClass, Button, LucideAngularModule],
+  imports: [NgClass, Button, LucideAngularModule, Radio],
 })
 export class Goals {
   // [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }"
@@ -19,10 +23,46 @@ export class Goals {
   protected readonly PlusIcon = Plus;
 
   // Services
+  protected readonly toastService = inject(ToastService);
   protected readonly goalsService = inject(GoalsService);
   protected readonly drawerService = inject(DrawerService);
 
   // Data
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();
+
+  // Computed
+  protected readonly formattedGoalCategories = computed<RadioOption[]>(() => {
+
+    if (this.goalCategories$.error()) {
+      this.toastService.show({
+        variant: 'warning',
+        title: 'Error Fetching Goal Categories!',
+        details: 'There was an error fetching goal categories. Please try again later.',
+      });
+      return [];
+    }
+
+    const categories = this.goalCategories$.value()?.data;
+    if (!categories) return [];
+
+    return categories.map(category => {
+      const { value, label } = category;
+
+      return {
+        value: value,
+        label: label,
+        disabled: false,
+      };
+    });
+  });
+
+  // Form
+  protected readonly newGoalFormModel = signal<NewGoalSchema>(initalNewGoalFormState);
+  protected readonly newGoalForm = form(this.newGoalFormModel, newGoalFormValidationSchema);
+
+  // Methods
+  protected onCategoryChange(category: string) {
+    console.log('Category selected:', category);
+  }
   
 }

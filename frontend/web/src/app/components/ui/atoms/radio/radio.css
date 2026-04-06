@@ -1,0 +1,57 @@
+@reference 'tailwindcss';
+
+.radio-select-field {
+  @apply space-y-2;
+}
+
+.radio-select-field label {
+  @apply block text-sm font-medium text-gray-700;
+}
+
+.radio-select-field .required {
+  @apply text-red-500;
+}
+
+.radio-options-wrapper {
+  @apply space-y-2;
+}
+
+.radio-options-wrapper.layout-horizontal {
+  @apply flex flex-row space-x-4 space-y-0;
+}
+
+.radio-options-wrapper.layout-grid {
+  @apply grid grid-cols-2 gap-2;
+}
+
+.radio-option {
+  @apply flex items-center space-x-2 p-3 border border-gray-300 rounded-md cursor-pointer transition-colors;
+}
+
+.radio-option:hover:not(.disabled) {
+  @apply bg-gray-50 border-gray-400;
+}
+
+.radio-option.selected {
+  @apply bg-blue-50 border-blue-500;
+}
+
+.radio-option.disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.radio-icon {
+  @apply shrink-0;
+}
+
+.radio-label {
+  @apply text-sm;
+}
+
+.radio-select-errors-wrapper {
+  @apply mt-1;
+}
+
+.radio-select-error {
+  @apply text-sm text-red-600;
+}

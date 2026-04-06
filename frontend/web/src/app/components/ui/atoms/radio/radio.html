@@ -1,0 +1,63 @@
+<div class="radio-select-field">
+  <label
+    [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
+    [for]="inputId()"
+  >
+    @if (required()) {
+      <span class="required">*</span>
+    }
+    {{ label() }}:
+  </label>
+
+  <!-- Hidden input for form field binding -->
+  <input
+    [id]="inputId()"
+    [formField]="formField()"
+    type="hidden"
+  />
+
+  <div 
+    class="radio-options-wrapper"
+    [ngClass]="{
+      'layout-vertical': layout() === 'vertical',
+      'layout-horizontal': layout() === 'horizontal',
+      'layout-grid': layout() === 'grid'
+    }"
+  >
+    @for (option of options(); track option.value) {
+      <div 
+        class="radio-option"
+        [ngClass]="{
+          'selected': isOptionSelected(option)(),
+          'disabled': isOptionDisabled(option)(),
+          'text-inverted-text': inverted()
+        }"
+        (click)="onOptionClick(option)"
+      >
+        <div class="radio-icon">
+          @if (isOptionSelected(option)()) {
+            @if (isMultiple()) {
+              <lucide-icon [img]="Check" [size]="iconSize" />
+            } @else {
+              <lucide-icon [img]="CheckCircle" [size]="iconSize" />
+            }
+          } @else {
+            <lucide-icon [img]="Circle" [size]="iconSize" />
+          }
+        </div>
+        
+        <span class="radio-label">{{ option.label }}</span>
+      </div>
+    }
+  </div>
+
+  @if (formField()().invalid() && formField()().touched()) {
+    <div class="radio-select-errors-wrapper">
+      @for (error of formField()().errors(); track error.kind) {
+        <p class="radio-select-error">
+          {{ error.message }}
+        </p>
+      }
+    </div>
+  }
+</div>

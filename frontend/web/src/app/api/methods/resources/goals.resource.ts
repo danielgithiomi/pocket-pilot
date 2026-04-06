@@ -9,7 +9,7 @@ import { IEnumResponse, IStandardResponse } from '@global/types';
 })
 export class GoalsResource {
 
-    getGoalCategories = httpResource<IStandardResponse<IEnumResponse>>(() => ({
+    getGoalCategories = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET', 
         url: concatUrl(endpoints.goal_categories),
     }))
