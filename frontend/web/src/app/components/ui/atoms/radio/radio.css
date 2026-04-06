@@ -17,16 +17,16 @@
 }
 
 .radio-option {
-  @apply flex items-center border border-gray-300 rounded-md space-x-2 p-2 cursor-pointer transition-colors;
+  @apply flex items-center space-x-2 p-2 py-1 cursor-pointer transition-colors;
 }
 
-.radio-option:hover:not(.disabled) {
+/* .radio-option:hover:not(.disabled) {
   @apply border-gray-400;
 }
 
 .radio-option.selected {
   @apply border-blue-500;
-}
+} */
 
 .radio-option.disabled {
   @apply opacity-50 cursor-not-allowed;

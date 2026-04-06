@@ -29,17 +29,34 @@
       >
         <div class="radio-icon">
           @if (isOptionSelected(option)()) {
-            @if (isMultiple()) {
-              <lucide-icon [img]="Check" [size]="iconSize" />
+            <icon-checked-circle [size]="iconSize" fillColor="var(--primary)" [filled]="true" />
+            <!-- @if (isMultiple()) {
+              <lucide-icon
+                [size]="iconSize"
+                name="check-mutliple"
+                [img]="PartialCheck"
+                color="var(--primary)"
+              />
             } @else {
-              <lucide-icon [img]="CheckCircle" [size]="iconSize" />
-            }
+              <lucide-icon
+                [size]="iconSize"
+                name="check-single"
+                [img]="CompleteCheck"
+                color="var(--primary)"
+              />
+            } -->
           } @else {
-            <lucide-icon [img]="Circle" [size]="iconSize" />
+            <lucide-icon name="unchecked" [img]="Unchecked" [size]="iconSize" />
           }
         </div>
 
-        <span class="radio-label">{{ option.label }}</span>
+        <span
+          class="radio-label"
+          [ngClass]="{
+            'font-semibold': isOptionSelected(option)(),
+          }"
+          >{{ option.label }}</span
+        >
       </div>
     }
   </div>

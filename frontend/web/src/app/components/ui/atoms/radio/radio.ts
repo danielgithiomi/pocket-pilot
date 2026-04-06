@@ -1,14 +1,15 @@
+import { CheckedCircle } from '../icons';
 import { NgClass } from '@angular/common';
 import { FieldTree } from '@angular/forms/signals';
 import { Component, input, computed, output } from '@angular/core';
 import { RadioOption, SelectionMode, RadioLayout } from './radio.types';
-import { Check, CircleCheckBig, Circle, LucideAngularModule } from 'lucide-angular';
+import { Circle, CircleCheckBig, CircleMinus, LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'atom-radio',
   styleUrl: './radio.css',
   templateUrl: './radio.html',
-  imports: [LucideAngularModule, NgClass],
+  imports: [LucideAngularModule, NgClass, CheckedCircle],
 })
 export class Radio {
   /* INPUTS */
@@ -31,9 +32,9 @@ export class Radio {
 
   /* ICONS */
   readonly iconSize = 18;
-  readonly Check = Check;
-  readonly Circle = Circle;
-  readonly CheckCircle = CircleCheckBig;
+  readonly Unchecked = Circle;
+  readonly PartialCheck = CircleMinus;
+  readonly CompleteCheck = CircleCheckBig;
 
   /* COMPUTED */
   fieldState = computed(() => this.formField()());
