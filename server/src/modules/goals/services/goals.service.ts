@@ -10,7 +10,7 @@ export class GoalsService {
     constructor(private readonly goalsRepository: GoalsRepository) {}
 
     async getGoalCategories(): Promise<ExposeEnumDto[]> {
-        return Promise.resolve(Object.values(GoalCategory).map(formatEnumForFrontend));
+        return await Promise.resolve(Object.values(GoalCategory).map(formatEnumForFrontend));
     }
 
     createGoal(userId: string, payload: CreateGoalDto): Promise<GoalDto> {

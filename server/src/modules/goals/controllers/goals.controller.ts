@@ -15,17 +15,21 @@ export class GoalsController {
     @Get()
     @Public()
     @ApiOperation({ summary: 'Get all goal categories' })
-    @ApiResponse({ status: 200, type: ExposeEnumDto, isArray: true, description: 'Goal categories retrieved successfully' })
-    async getGoalCategories() {
-        return await this.goalsService.getGoalCategories();
+    @ApiResponse({
+        status: 200,
+        isArray: true,
+        type: ExposeEnumDto,
+        description: 'Goal categories retrieved successfully',
+    })
+    getGoalCategories() {
+        return this.goalsService.getGoalCategories();
     }
 
     @Post()
     @HttpCode(201)
     @ApiOperation({ summary: 'Create a new goal' })
     @ApiResponse({ status: 201, type: GoalDto, description: 'Goal created successfully' })
-    async createGoal(@UserInRequest() user: User, @Body() createGoalDto: CreateGoalDto) {
-        const createdGoal: GoalDto = await this.goalsService.createGoal(user.id!, createGoalDto);
-        return createdGoal;
+    createGoal(@UserInRequest() user: User, @Body() createGoalDto: CreateGoalDto) {
+        return this.goalsService.createGoal(user.id!, createGoalDto);
     }
 }
