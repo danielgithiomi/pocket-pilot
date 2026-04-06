@@ -7,9 +7,9 @@ import { LucideAngularModule, Plus } from 'lucide-angular';
 
 @Component({
   selector: 'app-goals',
-  imports: [NgClass, Button, LucideAngularModule],
-  templateUrl: './goals.html',
   styleUrl: './goals.css',
+  templateUrl: './goals.html',
+  imports: [NgClass, Button, LucideAngularModule],
 })
 export class Goals {
   // [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }"
@@ -23,6 +23,6 @@ export class Goals {
   protected readonly drawerService = inject(DrawerService);
 
   // Data
-  protected readonly goalCategories = this.goalsService.getGoalCategories;
+  protected readonly goalCategories$ = this.goalsService.getGoalCategories();
   
 }
