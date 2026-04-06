@@ -1,6 +1,8 @@
 import { Request } from 'express';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { IRequestCookies } from '@common/types';
+import { IS_PUBLIC_KEY } from '@common/decorators';
 import { plainToInstance } from 'class-transformer';
 import { JWTPayload } from '@modules/identity/dto/auth.dto';
 import { UserService } from '@modules/identity/services/user.service';
@@ -10,11 +12,19 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 @Injectable()
 export class CookiesAuthGuard implements CanActivate {
     constructor(
+        private readonly reflector: Reflector,
         private readonly jwtService: JwtService,
         private readonly userService: UserService,
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
+        const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+            context.getHandler(),
+            context.getClass(),
+        ]);
+
+        if (isPublic) return true;
+
         const request: Request = context.switchToHttp().getRequest();
         const endpoint: string = request.url;
 

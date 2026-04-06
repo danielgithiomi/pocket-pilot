@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { GoalsService } from '@api/goals.service';
 import { Button } from "@components/ui/atoms/button";
 import { DrawerService } from '@infrastructure/services';
 import { LucideAngularModule, Plus } from 'lucide-angular';
@@ -18,5 +19,10 @@ export class Goals {
   protected readonly PlusIcon = Plus;
 
   // Services
+  protected readonly goalsService = inject(GoalsService);
   protected readonly drawerService = inject(DrawerService);
+
+  // Data
+  protected readonly goalCategories = this.goalsService.getGoalCategories;
+  
 }

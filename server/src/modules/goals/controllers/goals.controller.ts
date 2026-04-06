@@ -12,8 +12,8 @@ import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common
 export class GoalsController {
     constructor(private readonly goalsService: GoalsService) {}
 
-    @Get()
     @Public()
+    @Get('categories')
     @ApiOperation({ summary: 'Get all goal categories' })
     @ApiResponse({
         status: 200,

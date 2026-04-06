@@ -72,11 +72,13 @@ export interface Endpoints {
   me: string;
   root: string;
   login: string;
+  goals: string;
   logout: string;
   register: string;
   accounts: string;
   categories: string;
   account_types: string;
+  goal_categories: string;
   all_transactions: string;
   user_transactions: string;
   transaction_types: string;
