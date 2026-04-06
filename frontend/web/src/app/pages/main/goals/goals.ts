@@ -1,13 +1,19 @@
-import { Button } from "@atoms/button";
+import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { ToastService } from "@atoms/toast";
+import { ToastService } from '@atoms/toast';
+import { form } from '@angular/forms/signals';
 import { GoalsService } from '@api/goals.service';
 import { RadioOption, Radio } from '@atoms/radio';
 import { DrawerService } from '@infrastructure/services';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { Component, computed, inject, signal } from '@angular/core';
-import { initalNewGoalFormState, newGoalFormValidationSchema, NewGoalSchema } from "./goals.types";
-import { form } from "@angular/forms/signals";
+import {
+  initalNewGoalFormState,
+  newGoalFormValidationSchema,
+  NewGoalSchema,
+  TargetCompletionStrategies,
+  TargetCompletionStrategy,
+} from './goals.types';
 
 @Component({
   selector: 'app-goals',
@@ -18,7 +24,7 @@ import { form } from "@angular/forms/signals";
 export class Goals {
   // [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }"
 
-  // Icons 
+  // Icons
   protected readonly iconSize = 16;
   protected readonly PlusIcon = Plus;
 
@@ -31,8 +37,14 @@ export class Goals {
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();
 
   // Computed
-  protected readonly formattedGoalCategories = computed<RadioOption[]>(() => {
+  protected readonly goalCreationStrategies = computed<RadioOption[]>(() =>
+    TargetCompletionStrategies.map((strategy) => ({
+      value: strategy,
+      label: strategy,
+    })),
+  );
 
+  protected readonly formattedGoalCategories = computed<RadioOption[]>(() => {
     if (this.goalCategories$.error()) {
       this.toastService.show({
         variant: 'warning',
@@ -45,7 +57,7 @@ export class Goals {
     const categories = this.goalCategories$.value()?.data;
     if (!categories) return [];
 
-    return categories.map(category => {
+    return categories.map((category) => {
       const { value, label } = category;
 
       return {
@@ -64,5 +76,4 @@ export class Goals {
   protected onCategoryChange(category: string) {
     console.log('Category selected:', category);
   }
-  
 }

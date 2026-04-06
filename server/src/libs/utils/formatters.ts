@@ -6,9 +6,14 @@ import { ExposeEnumDto } from '@common/types';
  * @returns An ExposeEnumDto with the value and a capitalized label
  */
 export function formatEnumForFrontend(enumValue: string): ExposeEnumDto {
+    const formattedLabel = denormalizeCategoryName(enumValue)
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLocaleLowerCase())
+        .join(' ');
+
     return {
         value: enumValue,
-        label: enumValue.charAt(0).toUpperCase() + enumValue.slice(1).toLowerCase(),
+        label: formattedLabel,
     };
 }
 

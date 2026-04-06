@@ -2,7 +2,8 @@ import { GoalCategoryEnum } from '@global/enums';
 import { required, schema } from '@angular/forms/signals';
 
 // TYPES
-export type TargetCompletionStrategy = 'byDate' | 'byAmount';
+export const TargetCompletionStrategies = ['byDate', 'byAmount'] as const;
+export type TargetCompletionStrategy = typeof TargetCompletionStrategies[number];
 
 // FORM
 export type NewGoalSchema = {
