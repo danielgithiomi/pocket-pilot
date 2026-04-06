@@ -36,6 +36,18 @@ export class CategoriesService {
   }
 
   getTransactionCategories(): IEnumResponse[] {
+
+    const resourceError = computed(() => this.resource.getUserCategories.error());
+    if (resourceError()) {
+      this.renderToast({
+        type: 'error',
+        statusCode: 500,
+        title: 'Failed to load categories',
+        details: 'There was an error loading your categories. Please try again.',
+      });
+      return [];
+    }
+
     const incomeCategories = computed(
       () => this.resource.getUserCategories.value()?.data.incomes || [],
     );
@@ -69,8 +81,8 @@ export class CategoriesService {
     const { title, details } = error;
     this.toastService.show({
       title,
-      details: details as string,
       variant: 'error',
+      details: details as string,
     });
   };
 }

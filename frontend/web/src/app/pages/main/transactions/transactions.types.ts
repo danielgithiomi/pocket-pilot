@@ -1,5 +1,5 @@
-import { maxLength, min, required, schema, validate } from '@angular/forms/signals';
 import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
+import { maxLength, min, required, schema, validate } from '@angular/forms/signals';
 import { CreateTransactionRequest, TransactionCategory, TransactionType } from '@global/types';
 
 // TABLE
@@ -18,7 +18,7 @@ export interface TransactionRow {
 // FORM
 export type TransactionSchema = CreateTransactionRequest & {
   accountId: string;
-  description: string; // Make description required for the form
+  description: string;
 };
 
 export const initialTransactionFormState: TransactionSchema = {

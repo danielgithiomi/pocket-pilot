@@ -1,4 +1,5 @@
 import { JwtModule } from '@nestjs/jwt';
+import { GoalsModule } from './goals/goals.module';
 import { WalletModule } from './wallet/wallet.module';
 import { Module, DynamicModule } from '@nestjs/common';
 import { IdentityModule } from './identity/identity.module';
@@ -13,7 +14,7 @@ const JWTModule: DynamicModule = JwtModule.register({
 });
 
 @Module({
-    exports: [IdentityModule, WalletModule],
-    imports: [IdentityModule, WalletModule, DatabaseModule, JWTModule],
+    exports: [IdentityModule, WalletModule, GoalsModule],
+    imports: [IdentityModule, WalletModule, GoalsModule, DatabaseModule, JWTModule],
 })
 export class AppModules {}

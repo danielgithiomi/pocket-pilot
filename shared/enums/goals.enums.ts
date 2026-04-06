@@ -10,3 +10,10 @@ export enum GoalCategoryEnum {
   DEBT_REDUCTION = 'DEBT_REDUCTION',
   EMERGENCY_FUND = 'EMERGENCY_FUND',
 }
+
+export enum GoalStatusEnum {
+  ACTIVE = 'ACTIVE',
+  PAUSED = 'PAUSED',
+  FAILED = 'FAILED',
+  COMPLETED = 'COMPLETED',
+}

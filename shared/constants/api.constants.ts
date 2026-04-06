@@ -16,6 +16,10 @@ export const API_ENDPOINTS = {
   login: "auth/login",
   logout: "auth/logout",
 
+  // goals
+  goals: "goals",
+  goal_categories: "goals/categories",
+
   // accounts
   accounts: "accounts",
   account_types: "accounts/types",

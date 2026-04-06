@@ -31,6 +31,26 @@ enum CategoryType {
     EXPENSE
 }
 
+enum GoalStatus {
+    ACTIVE
+    PAUSED
+    FAILED
+    COMPLETED
+}
+
+enum GoalCategory {
+    OTHER
+    TRAVEL
+    SAVINGS
+    VACATION
+    EDUCATION
+    RETIREMENT
+    INVESTMENTS
+    HOME_PURCHASE
+    DEBT_REDUCTION
+    EMERGENCY_FUND
+}
+
 model Account {
     id        String      @id @default(uuid())
     type      AccountType
@@ -70,12 +90,12 @@ model User {
 }
 
 model Transaction {
-    id          String              @id() @default(uuid())
+    id          String          @id() @default(uuid())
     amount      Float
     type        TransactionType
     description String?
     category    String
-    date        DateTime            @default(now())
+    date        DateTime        @default(now())
 
     // Link to account - one-to-many
     account   Account @relation(fields: [accountId], references: [id])
@@ -92,4 +112,25 @@ model Categories {
     // Link to user - one-to-many
     user   User   @relation(fields: [userId], references: [id])
     userId String @unique
+}
+
+model Goal {
+    id     String @id @default(uuid())
+    userId String
+
+    name        String
+    description String
+
+    endDate   DateTime
+    startDate DateTime
+
+    status   GoalStatus   @default(ACTIVE)
+    category GoalCategory
+
+    monthlyContribution Float
+    targetAmount        Float
+    currentAmount       Float @default(0)
+
+    updatedAt DateTime @updatedAt()
+    createdAt DateTime @default(now())
 }

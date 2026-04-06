@@ -12,14 +12,8 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 export class CategoriesResource {
   private readonly authService: AuthService = inject(AuthService);
 
-  getUserCategories = httpResource<IStandardResponse<Categories>>(() => {
-    const user = this.authService.user();
-
-    if (!user) return undefined;
-
-    return {
-      method: 'GET',
-      url: concatUrl(endpoints.categories),
-    };
-  });
+  getUserCategories = httpResource<IStandardResponse<Categories>>(() => ({
+    method: 'GET',
+    url: concatUrl(endpoints.categories),
+  }));
 }
