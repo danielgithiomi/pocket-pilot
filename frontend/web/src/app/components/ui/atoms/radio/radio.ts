@@ -1,13 +1,14 @@
 import { NgClass } from '@angular/common';
-import { FormField, FieldTree } from '@angular/forms/signals';
+import { FieldTree } from '@angular/forms/signals';
+import { Component, input, computed, output } from '@angular/core';
 import { RadioOption, SelectionMode, RadioLayout } from './radio.types';
-import { Component, input, signal, computed, output } from '@angular/core';
-import { Check, CircleCheck, Circle, LucideAngularModule } from 'lucide-angular';
+import { Check, CircleCheckBig, Circle, LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'atom-radio',
+  styleUrl: './radio.css',
   templateUrl: './radio.html',
-  imports: [LucideAngularModule, FormField, NgClass],
+  imports: [LucideAngularModule, NgClass],
 })
 export class Radio {
   /* INPUTS */
@@ -16,13 +17,14 @@ export class Radio {
   label = input.required<string>();
   inverted = input<boolean>(false);
   invertLabel = input<boolean>(false);
+  selectedValue = input<string | null | number>(null);
 
+  layout = input<RadioLayout>('vertical');
   options = input.required<RadioOption[]>();
   selectionMode = input<SelectionMode>('single');
-  layout = input<RadioLayout>('vertical');
   maxSelections = input<number | undefined>(undefined);
 
-  formField = input.required<FieldTree<string, string>>();
+  formField = input.required<FieldTree<string | null | number, string>>();
 
   /* OUTPUTS */
   selectionChange = output<string>();
@@ -31,11 +33,11 @@ export class Radio {
   readonly iconSize = 18;
   readonly Check = Check;
   readonly Circle = Circle;
-  readonly CheckCircle = CircleCheck;
+  readonly CheckCircle = CircleCheckBig;
 
   /* COMPUTED */
   fieldState = computed(() => this.formField()());
-  inputId = computed<string>(() => `radio-select-${this.id()}`);
+  inputId = computed<string>(() => `radio-${this.id()}`);
 
   isMultiple = computed(() => this.selectionMode() === 'multiple');
   canSelectMore = computed(() => {
@@ -46,7 +48,7 @@ export class Radio {
 
   isOptionSelected = (option: RadioOption) => {
     return computed(() => {
-      const currentValue = this.fieldState().value();
+      const currentValue = this.selectedValue() ?? this.fieldState().value();
       return currentValue === option.value;
     });
   };
@@ -60,15 +62,6 @@ export class Radio {
   /* METHODS */
   onOptionClick(option: RadioOption) {
     if (this.isOptionDisabled(option)()) return;
-
     this.selectionChange.emit(option.value);
-
-    // Update the hidden input value via DOM manipulation
-    const hiddenInput = document.getElementById(this.inputId()) as HTMLInputElement;
-    if (hiddenInput) {
-      hiddenInput.value = option.value;
-      hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
-      hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
-    }
   }
 }

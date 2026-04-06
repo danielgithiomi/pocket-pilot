@@ -8,9 +8,9 @@ import { DrawerService } from '@infrastructure/services';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { Component, computed, inject, signal } from '@angular/core';
 import {
+  NewGoalSchema,
   initalNewGoalFormState,
   newGoalFormValidationSchema,
-  NewGoalSchema,
   TargetCompletionStrategies,
   TargetCompletionStrategy,
 } from './goals.types';
@@ -33,6 +33,9 @@ export class Goals {
   protected readonly goalsService = inject(GoalsService);
   protected readonly drawerService = inject(DrawerService);
 
+  // Signals
+  protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
+
   // Data
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();
 
@@ -40,7 +43,7 @@ export class Goals {
   protected readonly goalCreationStrategies = computed<RadioOption[]>(() =>
     TargetCompletionStrategies.map((strategy) => ({
       value: strategy,
-      label: strategy,
+      label: `By ${strategy.charAt(0).toUpperCase() + strategy.slice(1)}`,
     })),
   );
 
@@ -74,6 +77,12 @@ export class Goals {
 
   // Methods
   protected onCategoryChange(category: string) {
-    console.log('Category selected:', category);
+    if (!category || !TargetCompletionStrategies.includes(category as TargetCompletionStrategy)) {
+      this.selectedCategory.set(null);
+      console.log('Invalid category');
+      return;
+    }
+    const strategy = category as TargetCompletionStrategy;
+    this.selectedCategory.set(strategy);
   }
 }

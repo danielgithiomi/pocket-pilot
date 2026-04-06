@@ -2,7 +2,7 @@ import { GoalCategoryEnum } from '@global/enums';
 import { required, schema } from '@angular/forms/signals';
 
 // TYPES
-export const TargetCompletionStrategies = ['byDate', 'byAmount'] as const;
+export const TargetCompletionStrategies = ['date', 'amount'] as const;
 export type TargetCompletionStrategy = typeof TargetCompletionStrategies[number];
 
 // FORM
@@ -14,7 +14,7 @@ export type NewGoalSchema = {
   category: GoalCategoryEnum | null;
   monthlyContribution: number;
   targetAmount: number;
-  targetCompletionStrategy: TargetCompletionStrategy;
+  targetCompletionStrategy: TargetCompletionStrategy | null;
 };
 
 export const initalNewGoalFormState: NewGoalSchema = {
@@ -25,7 +25,7 @@ export const initalNewGoalFormState: NewGoalSchema = {
   category: null,
   monthlyContribution: 0,
   targetAmount: 0,
-  targetCompletionStrategy: 'byDate',
+  targetCompletionStrategy: null,
 };
 
 export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {

@@ -31,15 +31,18 @@
           </atom-button>
         </div>
 
-        <atom-radio
-          id="category"
-          label="Category"
-          layout="vertical"
-          [required]="true"
-          [options]="goalCreationStrategies()"
-          (selectionChange)="onCategoryChange($event)"
-          [formField]="newGoalForm.targetCompletionStrategy"
-        />
+        <form>
+          <atom-radio
+            id="category"
+            label="Category"
+            [required]="true"
+            [selectedValue]="selectedCategory()"
+            [options]="goalCreationStrategies()"
+            (selectionChange)="onCategoryChange($event)"
+            [formField]="newGoalForm.targetCompletionStrategy"
+          />
+        </form>
+
       </div>
       <div
         class="bills-card"
