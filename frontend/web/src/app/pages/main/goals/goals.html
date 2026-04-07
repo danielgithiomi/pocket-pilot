@@ -78,7 +78,7 @@
           [inverted]="true"
           [min]="minDate()"
           label="Start Date"
-          id="goal-completion-date"
+          id="goal-start-date"
           placeholder="Select a date"
           [showClearOutputIcon]="false"
           [formField]="newGoalForm.startDate"
@@ -106,6 +106,64 @@
           (clearOutput)="newGoalForm.name().controlValue.set('')"
         />
 
+        <div class="flex flex-col justify-start my-4">
+          <div class="w-full flex flex-row items-center gap-4">
+            <atom-input
+              type="number"
+              class="flex-1"
+              [inverted]="true"
+              autocomplete="off"
+              label="Target Amount"
+              wrapperClassName="my-0"
+              id="goal-target-amount"
+              placeholder="Eg: 100000"
+              [formField]="newGoalForm.targetAmount"
+              (clearOutput)="newGoalForm.targetAmount().controlValue.set(null)"
+            />
+
+            @if (selectedCategory() === 'amount') {
+              <atom-input
+                type="number"
+                class="flex-1"
+                [inverted]="true"
+                autocomplete="off"
+                placeholder="Eg: 2000"
+                wrapperClassName="my-0"
+                label="Monthly Contribution"
+                id="goal-monthly-contribution"
+                [formField]="newGoalForm.monthlyContribution"
+                (clearOutput)="newGoalForm.monthlyContribution().controlValue.set(null)"
+              />
+            } @else {
+              <organism-date-picker
+                [required]="true"
+                [inverted]="true"
+                [min]="minDate()"
+                wrapperClassName="py-0!"
+                placeholder="Select a date"
+                [showClearOutputIcon]="false"
+                label="Target Completion Date"
+                id="goal-target-completion-date"
+                [formField]="newGoalForm.startDate"
+              />
+            }
+          </div>
+
+          <p class="text-muted-text text-xs italic my-1">
+            You will need to contribute
+            <span class="font-semibold text-primary">{{ 1000 }}</span> per month to reach your goal.
+          </p>
+        </div>
+
+        <atom-select
+          [inverted]="true"
+          label="Goal Category"
+          id="goal-category-type"
+          placeholder="Select a category"
+          [formField]="newGoalForm.category"
+          [options]="formattedGoalCategories() || [{ value: '', label: 'No categories found' }]"
+        />
+
         <atom-input
           type="text"
           [inverted]="true"
@@ -117,41 +175,6 @@
           [formField]="newGoalForm.description"
           (clearOutput)="newGoalForm.description().controlValue.set('')"
         />
-
-        <atom-select
-          [inverted]="true"
-          label="Goal Category"
-          id="goal-category-type"
-          placeholder="Select a category"
-          [formField]="newGoalForm.category"
-          [options]="formattedGoalCategories() || [{ value: '', label: 'No categories found' }]"
-        />
-
-        @if (selectedCategory() === 'date') {
-          <atom-input
-            type="text"
-            [inverted]="true"
-            [required]="false"
-            autocomplete="off"
-            label="Target Date"
-            id="goal-target-date"
-            placeholder="Eg: 2025-12-31"
-            [formField]="newGoalForm.description"
-            (clearOutput)="newGoalForm.description().controlValue.set('')"
-          />
-        } @else {
-          <atom-input
-            type="number"
-            [inverted]="true"
-            [required]="false"
-            autocomplete="off"
-            label="Target Amount"
-            id="goal-target-amount"
-            placeholder="Eg: 100000"
-            [formField]="newGoalForm.targetAmount"
-            (clearOutput)="newGoalForm.targetAmount().controlValue.set(null)"
-          />
-        }
       }
     </form>
 

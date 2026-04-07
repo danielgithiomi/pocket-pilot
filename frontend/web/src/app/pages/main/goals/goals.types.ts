@@ -8,19 +8,21 @@ export type TargetCompletionStrategy = (typeof TargetCompletionStrategies)[numbe
 // FORM
 export type NewGoalSchema = {
   name: string;
-  description: string;
-  startDate: Date;
   endDate: Date;
-  category: GoalCategoryEnum | "";
-  monthlyContribution: number | null;
+  startDate: Date;
+  description: string;
   targetAmount: number | null;
+  category: GoalCategoryEnum | '';
+  monthlyContribution: number | null;
   targetCompletionStrategy: TargetCompletionStrategy | null;
 };
 
 export const initalNewGoalFormState: NewGoalSchema = {
+  // Step 1
   startDate: new Date(),
   targetCompletionStrategy: null,
 
+  // Step 2
   name: '',
   category: '',
   description: '',
@@ -49,17 +51,4 @@ export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
   required(root.targetCompletionStrategy, {
     message: 'The goal target completion strategy is required field!',
   });
-
-  //   validate(root.targetCompletionStrategy, (context) => {
-  //     const strategy = context.value();
-  //     if (strategy === 'byAmount') {
-  //       if (root.targetAmount == 0) {
-  //         return {
-  //           kind: 'target-amount-required',
-  //           message: 'The goal target amount is required field!',
-  //         };
-  //       }
-  //     }
-  //     return null;
-  //   });
 });

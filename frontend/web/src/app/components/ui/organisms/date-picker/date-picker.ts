@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
 import { FieldTree } from '@angular/forms/signals';
+import { formatInputFieldDate } from '@libs/utils';
 import { Calendar, LucideAngularModule, X } from 'lucide-angular';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { Component, input, signal, computed, output } from '@angular/core';
@@ -20,6 +21,7 @@ export class DatePicker {
   showClearOutputIcon = input<boolean>(true);
 
   inputClassName = input<string>('');
+  wrapperClassName = input<string>('');
   placeholder = input.required<string>();
 
   min = input<Date | null>(null);
@@ -32,8 +34,8 @@ export class DatePicker {
 
   /* ICONS */
   readonly X = X;
-  readonly CalendarIcon = Calendar;
   readonly iconSize = 18;
+  readonly CalendarIcon = Calendar;
 
   /* SIGNALS */
   protected isCalendarOpen = signal(false);
@@ -44,16 +46,12 @@ export class DatePicker {
 
   formattedDate = computed<string>(() => {
     const value = this.fieldState().value();
-    if (!value) return '';
+    if (!value) return formatInputFieldDate(new Date().toISOString());
 
     const date = new Date(value);
     if (isNaN(date.getTime())) return '';
 
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
+    return formatInputFieldDate(date.toISOString());
   });
 
   selectedDateValue = computed<Date | null>(() => {

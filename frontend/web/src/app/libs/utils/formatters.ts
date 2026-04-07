@@ -35,6 +35,19 @@ export function formatFullDate(date: string): string {
 }
 
 /**
+ * Formats a date as a short date string for input fields
+ * @param date The date to format
+ * @returns The formatted date string
+ */
+export function formatInputFieldDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+/**
  * Formats a number as currency
  * @param amount The amount to format
  * @param currency The currency code (e.g., 'USD', 'EUR')
