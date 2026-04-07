@@ -18,12 +18,13 @@ import {
   TargetCompletionStrategies,
   newGoalFormValidationSchema,
 } from './goals.types';
+import { DatePicker } from "@components/ui/organisms/date-picker";
 
 @Component({
   selector: 'app-goals',
   styleUrl: './goals.css',
   templateUrl: './goals.html',
-  imports: [NgClass, CalendarModule, Button, LucideAngularModule, Radio, Form, Input, Select],
+  imports: [NgClass, CalendarModule, Button, LucideAngularModule, Radio, Form, Input, Select, DatePicker],
 })
 export class Goals {
   // Icons

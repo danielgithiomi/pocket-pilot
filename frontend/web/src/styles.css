@@ -273,7 +273,7 @@ main {
     }
 
     label {
-      @apply flex items-center gap-px;
+      @apply flex items-center gap-px text-[0.875rem];
 
       .required {
         @apply text-sm text-(--expense);
@@ -283,6 +283,10 @@ main {
     input,
     select {
       @apply w-full bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
+    }
+
+    input::placeholder {
+      @apply text-muted-text;
     }
 
     select {

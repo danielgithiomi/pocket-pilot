@@ -5,7 +5,8 @@
 
   <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': false }">
     <p class="mb-6">
-      Keep track of your financial <span class="primary-span">goals</span> and <span class="primary-span">bills</span>!
+      Keep track of your financial <span class="primary-span">goals</span> and
+      <span class="primary-span">bills</span>!
     </p>
 
     <div
@@ -83,7 +84,15 @@
           [formField]="newGoalForm.targetCompletionStrategy"
         />
 
-        <ejs-calendar [min]="minDate()" />
+        <organism-date-picker
+          [required]="true"
+          [inverted]="true"
+          [min]="minDate()"
+          label="Start Date"
+          id="goal-completion-date"
+          placeholder="Select a date"
+          [formField]="newGoalForm.startDate"
+        />
       } @else {
         <atom-input
           type="text"

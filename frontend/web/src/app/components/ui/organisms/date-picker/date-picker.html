@@ -1,0 +1,67 @@
+<div class="date-picker-field">
+  <label
+    [for]="inputId()"
+    [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
+  >
+    @if (required()) {
+      <span class="required">*</span>
+    }
+    {{ label() }}:
+  </label>
+
+  <div class="date-picker-wrapper">
+    <input
+      readonly
+      type="text"
+      [id]="inputId()"
+      (click)="onInputClick()"
+      [value]="formattedDate()"
+      [ngClass]="inputClassName()"
+      [placeholder]="placeholder()"
+    />
+
+    <div class="date-picker-icons">
+      @if (fieldState().value()) {
+        <lucide-icon
+          [img]="X"
+          name="clear-date"
+          [size]="iconSize + 3"
+          (click)="onClear($event)"
+          class="date-picker-icon clear-icon"
+        />
+      }
+      <lucide-icon
+        [size]="iconSize"
+        [img]="CalendarIcon"
+        name="calendar-toggle"
+        (click)="toggleCalendar()"
+        class="date-picker-icon calendar-icon"
+      />
+    </div>
+
+    @if (isCalendarOpen()) {
+      <div
+        class="calendar-dropdown"
+        #calendarContainer
+        (click)="onCalendarClick($event)"
+      >
+        <ejs-calendar
+          [value]="selectedDateValue()"
+          [min]="min()"
+          [max]="max()"
+          (change)="onDateSelect($event)"
+        />
+      </div>
+    }
+  </div>
+
+  @if (fieldState().invalid() && fieldState().touched()) {
+    <div class="date-picker-errors-wrapper">
+      @for (error of fieldState().errors(); track error.kind) {
+        <p class="date-picker-error">
+          {{ error.message }}
+        </p>
+      }
+    </div>
+  }
+</div>
