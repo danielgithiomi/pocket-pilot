@@ -5,6 +5,7 @@
   "description": "This is the pocket-pilot server developed with NestJs.",
   "private": true,
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "dev": "ng serve",
