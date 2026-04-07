@@ -26,8 +26,6 @@ import {
   imports: [NgClass, CalendarModule, Button, LucideAngularModule, Radio, Form, Input, Select],
 })
 export class Goals {
-  // [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }"
-
   // Icons
   protected readonly iconSize = 16;
   protected readonly PlusIcon = Plus;
@@ -92,6 +90,9 @@ export class Goals {
       };
     });
   });
+
+  // Calendar
+  protected readonly minDate = signal<Date | null>(new Date());
 
   // Form
   protected readonly newGoalFormModel = signal<NewGoalSchema>(initalNewGoalFormState);

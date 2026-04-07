@@ -83,7 +83,7 @@
           [formField]="newGoalForm.targetCompletionStrategy"
         />
 
-        <ejs-calendar />
+        <ejs-calendar [min]="minDate()" />
       } @else {
         <atom-input
           type="text"
