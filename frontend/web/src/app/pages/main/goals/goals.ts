@@ -8,6 +8,7 @@ import { form } from '@angular/forms/signals';
 import { GoalsService } from '@api/goals.service';
 import { RadioOption, Radio } from '@atoms/radio';
 import { DrawerService } from '@infrastructure/services';
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, Plus, ChevronsRight, ChevronsLeft } from 'lucide-angular';
 import {
@@ -22,7 +23,7 @@ import {
   selector: 'app-goals',
   styleUrl: './goals.css',
   templateUrl: './goals.html',
-  imports: [NgClass, Button, LucideAngularModule, Radio, Form, Input, Select],
+  imports: [NgClass, CalendarModule, Button, LucideAngularModule, Radio, Form, Input, Select],
 })
 export class Goals {
   // [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }"
