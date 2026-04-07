@@ -50,10 +50,22 @@ export class Goals {
 
   // Computed
   protected readonly goalCreationStrategies = computed<RadioOption[]>(() =>
-    TargetCompletionStrategies.map((strategy) => ({
-      value: strategy,
-      label: `By ${strategy.charAt(0).toUpperCase() + strategy.slice(1)}`,
-    })),
+    TargetCompletionStrategies.map((strategy) => {
+      let label: string = '';
+      switch (strategy) {
+        case 'date':
+          label = 'By Completion Date';
+          break;
+        case 'amount':
+          label = 'By Targeted Amount';
+          break;
+      }
+
+      return {
+        label,
+        value: strategy,
+      };
+    }),
   );
 
   protected readonly formattedGoalCategories = computed<RadioOption[]>(() => {

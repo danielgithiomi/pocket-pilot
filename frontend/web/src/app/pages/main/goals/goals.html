@@ -70,9 +70,9 @@
       @if (goalFormStep() === 1) {
         <atom-radio
           id="category"
-          label="Category"
           [required]="true"
           [inverted]="true"
+          label="Goal Achievement Strategy"
           [selectedValue]="selectedCategory()"
           [options]="goalCreationStrategies()"
           (selectionChange)="onCategoryChange($event)"
@@ -80,11 +80,11 @@
         />
       } @else {
         <atom-input
-          id="goal-name"
           type="text"
+          id="goal-name"
           [inverted]="true"
           label="Goal Name"
-          autocomplete="name"
+          autocomplete="off"
           placeholder="Eg: Birthday Trip"
           [formField]="newGoalForm.name"
           (clearOutput)="newGoalForm.name().controlValue.set('')"
@@ -94,24 +94,12 @@
           type="text"
           [inverted]="true"
           [required]="false"
-          autocomplete="name"
+          autocomplete="off"
           label="Description"
           id="goal-description"
           placeholder="Eg: 1 week trip to Bali"
           [formField]="newGoalForm.description"
           (clearOutput)="newGoalForm.description().controlValue.set('')"
-        />
-
-        <atom-input
-          type="number"
-          [inverted]="true"
-          [required]="false"
-          autocomplete="name"
-          label="Target Amount"
-          id="goal-target-amount"
-          placeholder="Eg: 100000"
-          [formField]="newGoalForm.targetAmount"
-          (clearOutput)="newGoalForm.targetAmount().controlValue.set(null)"
         />
 
         <atom-select
@@ -120,10 +108,34 @@
           id="goal-category-type"
           placeholder="Select a category"
           [formField]="newGoalForm.category"
-          [options]="
-            formattedGoalCategories() || [{ value: '', label: 'No goal categories found' }]
-          "
+          [options]="formattedGoalCategories() || [{ value: '', label: 'No categories found' }]"
         />
+
+        @if (selectedCategory() === 'date') {
+          <atom-input
+            type="text"
+            [inverted]="true"
+            [required]="false"
+            autocomplete="off"
+            label="Target Date"
+            id="goal-target-date"
+            placeholder="Eg: 2025-12-31"
+            [formField]="newGoalForm.description"
+            (clearOutput)="newGoalForm.description().controlValue.set('')"
+          />
+        } @else {
+          <atom-input
+            type="number"
+            [inverted]="true"
+            [required]="false"
+            autocomplete="off"
+            label="Target Amount"
+            id="goal-target-amount"
+            placeholder="Eg: 100000"
+            [formField]="newGoalForm.targetAmount"
+            (clearOutput)="newGoalForm.targetAmount().controlValue.set(null)"
+          />
+        }
       }
     </form>
 
