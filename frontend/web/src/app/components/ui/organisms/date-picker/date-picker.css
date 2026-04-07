@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 .date-picker-field {
-  @apply py-2 gap-1;
+  @apply py-2 gap-2;
   width: 100%;
   display: flex;
   flex-direction: column;

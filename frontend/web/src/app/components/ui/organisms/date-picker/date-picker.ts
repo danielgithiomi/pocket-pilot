@@ -46,7 +46,11 @@ export class DatePicker {
 
   formattedDate = computed<string>(() => {
     const value = this.fieldState().value();
-    if (!value) return formatInputFieldDate(new Date().toISOString());
+
+    if (!value) {
+      console.log('no value, returning today');
+      return formatInputFieldDate(new Date().toISOString());
+    }
 
     const date = new Date(value);
     if (isNaN(date.getTime())) return '';

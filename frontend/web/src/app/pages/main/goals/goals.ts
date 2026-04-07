@@ -10,7 +10,7 @@ import { RadioOption, Radio } from '@atoms/radio';
 import { DatePicker } from '@organisms/date-picker';
 import { DrawerService } from '@infrastructure/services';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, effect, untracked } from '@angular/core';
 import { LucideAngularModule, Plus, ChevronsRight, ChevronsLeft } from 'lucide-angular';
 import {
   NewGoalSchema,
@@ -37,6 +37,13 @@ import {
   ],
 })
 export class Goals {
+  constructor() {
+    effect(() => {
+      const startDate = this.newGoalForm.startDate().value();
+
+      console.log('running effect', startDate);
+    });
+  }
   // Icons
   protected readonly iconSize = 16;
   protected readonly PlusIcon = Plus;
@@ -80,9 +87,16 @@ export class Goals {
   );
 
   protected readonly goalSummary = computed<string>(() => {
-    const { endDate, startDate, targetAmount, monthlyContribution } = this.newGoalFormModel();
+    const form = this.newGoalForm;
 
-    console.log(endDate, startDate, targetAmount, monthlyContribution);
+    const startDate = form.startDate().value();
+    const endDate = form.endDate().value();
+    const targetAmount = form.targetAmount().value();
+    const monthlyContribution = form.monthlyContribution().value();
+    const strategy = form.targetCompletionStrategy().value();
+
+    console.log(startDate, strategy, targetAmount, monthlyContribution, endDate);
+
     return '';
   });
 
@@ -111,7 +125,8 @@ export class Goals {
   });
 
   // Calendar
-  protected readonly minDate = signal<Date | null>(new Date());
+  protected readonly minEndDate = signal<Date | null>(new Date());
+  protected readonly minStartDate = signal<Date | null>(new Date());
 
   // Form
   protected readonly newGoalFormModel = signal<NewGoalSchema>(initalNewGoalFormState);

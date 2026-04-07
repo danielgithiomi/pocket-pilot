@@ -66,28 +66,28 @@
 @if (isGoalsFormOpen()) {
   <organism-form
     id="goals"
-    title="Create A New Goal"
+    title="New Goal"
     [class.hidden]="!isGoalsFormOpen()"
     (closeForm)="handleCloseForm($event)"
-    description="Create a new financial goal"
+    description="Start a new financial goal"
   >
     <form slot="content" id="goals-form" (submit)="submitGoalForm($event)">
       @if (goalFormStep() === 1) {
         <organism-date-picker
           [required]="true"
           [inverted]="true"
-          [min]="minDate()"
           label="Start Date"
           id="goal-start-date"
+          [min]="minStartDate()"
           placeholder="Select a date"
           [showClearOutputIcon]="false"
           [formField]="newGoalForm.startDate"
         />
 
         <atom-radio
-          id="category"
           [required]="true"
           [inverted]="true"
+          id="target-completion-strategy"
           label="Goal Achievement Strategy"
           [selectedValue]="selectedCategory()"
           [options]="goalCreationStrategies()"
@@ -137,22 +137,17 @@
             } @else {
               <organism-date-picker
                 [inverted]="true"
-                [min]="minDate()"
+                [min]="minEndDate()"
                 class="w-full flex-1"
                 label="Completion Date"
                 placeholder="Select a date"
                 [showClearOutputIcon]="false"
                 id="goal-target-completion-date"
-                [formField]="newGoalForm.startDate"
+                [formField]="newGoalForm.endDate"
                 wrapperClassName="w-full flex-1 py-0!"
               />
             }
           </div>
-
-          <p class="text-muted-text text-xs italic my-1">
-            You will need to contribute
-            <span class="font-semibold text-primary">{{ 1000 }}</span> per month to reach your goal.
-          </p>
         </div>
 
         <atom-select
@@ -176,6 +171,15 @@
         />
       }
     </form>
+
+    @if(goalFormStep() === 2) {
+      <div slot="sub-footer">
+        <p class="text-muted-text text-right text-xs italic my-1">
+          You will need to contribute
+          <span class="font-semibold text-primary">{{ 1000 }}</span> per month to reach your goal.
+        </p>
+      </div>
+    }
 
     <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
       @if (goalFormStep() === 2) {
