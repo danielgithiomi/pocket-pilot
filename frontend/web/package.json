@@ -7,13 +7,13 @@
   "license": "ISC",
   "scripts": {
     "ng": "ng",
+    "dev": "ng serve",
+    "test": "ng test",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "dev": "ng serve",
-    "prestart": "ts-node scripts/set-env.ts",
-    "prebuild": "ts-node scripts/set-env.ts"
+    "predev": "ts-node scripts/set-env.ts",
+    "prebuild": "ts-node scripts/set-env.ts",
+    "watch": "ng build --watch --configuration development"
   },
   "prettier": {
     "printWidth": 100,
