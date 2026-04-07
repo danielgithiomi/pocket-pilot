@@ -34,7 +34,8 @@
   --tertiary: #c6ff33; /* Yellow */
   --quaternary: #fe7f2d; /* Orange */
   --transparent: transparent;
-  --loader-primary: rgb(91, 146, 121, 50%);
+  --loader-primary: rgba(91, 146, 121, 50%);
+  --scrollbar-track: rgb(91, 146, 121, 25%);
 
   /* State Colors */
   --success: #22c55d;
@@ -136,6 +137,7 @@
 
   --color-muted: var(--muted);
   --color-loader-primary: var(--loader-primary);
+  --color-scrollbar-track: var(--scrollbar-track);
 
   /* State */
   --color-success: var(--success);
@@ -503,4 +505,28 @@ input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-track {
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 0.5rem;
+  background: var(--loader-primary);
+}
+
+::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
 }

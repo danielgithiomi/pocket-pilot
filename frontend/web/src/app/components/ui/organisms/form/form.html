@@ -17,13 +17,13 @@
         [img]="X"
         [size]="24"
         class="atom-icon"
-        (click)="closeForm.emit('icon')"
         color="var(--inverted-text)"
+        (click)="closeForm.emit('icon')"
       />
     </div>
 
     <!-- CONTENT -->
-    <div class="form-content">
+    <div class="form-content overflow-y-scroll no-scrollbar">
       <ng-content select="[slot=content]"></ng-content>
     </div>
 

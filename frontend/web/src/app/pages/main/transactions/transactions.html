@@ -69,10 +69,10 @@
       <atom-input
         id="name"
         type="number"
-        [inverted]="true"
-        autocomplete="name"
-        placeholder="Eg: 100"
         label="Amount"
+        [inverted]="true"
+        autocomplete="off"
+        placeholder="Eg: 100"
         [formField]="transactionForm.amount"
         (clearOutput)="transactionForm.amount().controlValue.set(null)"
       />
@@ -82,7 +82,7 @@
         id="description"
         [inverted]="true"
         [required]="false"
-        autocomplete="name"
+        autocomplete="off"
         label="Description"
         placeholder="Eg: Dinner with friends"
         [formField]="transactionForm.description"

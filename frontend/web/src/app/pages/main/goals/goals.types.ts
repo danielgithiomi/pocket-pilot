@@ -47,6 +47,14 @@ export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
   // Category
   required(root.category, { message: 'The goal category is required field!' });
 
+  // Target Amount
+  required(root.targetAmount, { message: 'The goal target amount is required field!' });
+
+  // Monthly Contribution
+  required(root.monthlyContribution, {
+    message: 'The goal monthly contribution is required field!',
+  });
+
   // Target Completion Strategy
   required(root.targetCompletionStrategy, {
     message: 'The goal target completion strategy is required field!',

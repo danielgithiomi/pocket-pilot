@@ -106,14 +106,14 @@
           (clearOutput)="newGoalForm.name().controlValue.set('')"
         />
 
-        <div class="flex flex-col justify-start my-4">
-          <div class="w-full flex flex-row items-center gap-4">
+        <div class="flex flex-col justify-start my-0 md:my-4">
+          <div class="w-full flex flex-col md:flex-row items-start gap-4">
             <atom-input
               type="number"
-              class="flex-1"
               [inverted]="true"
               autocomplete="off"
               label="Target Amount"
+              class="w-full flex-1"
               wrapperClassName="my-0"
               id="goal-target-amount"
               placeholder="Eg: 100000"
@@ -124,27 +124,27 @@
             @if (selectedCategory() === 'amount') {
               <atom-input
                 type="number"
-                class="flex-1"
                 [inverted]="true"
                 autocomplete="off"
                 placeholder="Eg: 2000"
-                wrapperClassName="my-0"
+                class="w-full flex-1"
                 label="Monthly Contribution"
                 id="goal-monthly-contribution"
+                wrapperClassName="w-full flex-1 my-0"
                 [formField]="newGoalForm.monthlyContribution"
                 (clearOutput)="newGoalForm.monthlyContribution().controlValue.set(null)"
               />
             } @else {
               <organism-date-picker
-                [required]="true"
                 [inverted]="true"
                 [min]="minDate()"
-                wrapperClassName="py-0!"
+                class="w-full flex-1"
+                label="Completion Date"
                 placeholder="Select a date"
                 [showClearOutputIcon]="false"
-                label="Target Completion Date"
                 id="goal-target-completion-date"
                 [formField]="newGoalForm.startDate"
+                wrapperClassName="w-full flex-1 py-0!"
               />
             }
           </div>
@@ -167,7 +167,6 @@
         <atom-input
           type="text"
           [inverted]="true"
-          [required]="false"
           autocomplete="off"
           label="Description"
           id="goal-description"
@@ -187,9 +186,9 @@
           variant="secondary"
           (clicked)="goalFormStep.set(1)"
         >
-          <div class="w-full flex flex-row items-center justify-between gap-4 py-0 md:py-1 lg:py-0">
+          <div class="w-full flex flex-row items-center justify-between gap-4 py-1 lg:py-0">
             <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="back-goal-step"></lucide-icon>
-            <span class="block md:hidden lg:block">Previous</span>
+            <span class="hidden lg:block">Previous</span>
           </div>
         </atom-button>
       }

@@ -1,18 +1,17 @@
 @reference 'tailwindcss';
 
 .date-picker-field {
-  @apply py-2;
-  gap: 0.5rem;
+  @apply py-2 gap-1;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .date-picker-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
   width: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
 }
 
 .date-picker-wrapper input {
@@ -21,7 +20,7 @@
 }
 
 .date-picker-icons {
-  gap: 0.5rem;
+  @apply gap-1;
   display: flex;
   right: 0.75rem;
   position: absolute;

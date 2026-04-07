@@ -7,6 +7,7 @@ import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { GoalsService } from '@api/goals.service';
 import { RadioOption, Radio } from '@atoms/radio';
+import { DatePicker } from '@organisms/date-picker';
 import { DrawerService } from '@infrastructure/services';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { Component, computed, inject, signal } from '@angular/core';
@@ -18,22 +19,21 @@ import {
   TargetCompletionStrategies,
   newGoalFormValidationSchema,
 } from './goals.types';
-import { DatePicker } from '@components/ui/organisms/date-picker';
 
 @Component({
   selector: 'app-goals',
   styleUrl: './goals.css',
   templateUrl: './goals.html',
   imports: [
-    NgClass,
-    CalendarModule,
-    Button,
-    LucideAngularModule,
-    Radio,
     Form,
+    Radio,
     Input,
     Select,
+    Button,
+    NgClass,
     DatePicker,
+    CalendarModule,
+    LucideAngularModule,
   ],
 })
 export class Goals {
@@ -68,7 +68,7 @@ export class Goals {
           label = 'By Completion Date';
           break;
         case 'amount':
-          label = 'By Targeted Amount';
+          label = 'By Monthly Contribution';
           break;
       }
 
@@ -78,6 +78,13 @@ export class Goals {
       };
     }),
   );
+
+  protected readonly goalSummary = computed<string>(() => {
+    const { endDate, startDate, targetAmount, monthlyContribution } = this.newGoalFormModel();
+
+    console.log(endDate, startDate, targetAmount, monthlyContribution);
+    return '';
+  });
 
   protected readonly formattedGoalCategories = computed<RadioOption[]>(() => {
     if (this.goalCategories$.error()) {
