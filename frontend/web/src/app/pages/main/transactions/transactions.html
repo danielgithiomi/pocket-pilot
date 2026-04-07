@@ -74,7 +74,7 @@
         placeholder="Eg: 100"
         label="Amount"
         [formField]="transactionForm.amount"
-        (clearOutput)="transactionForm.amount().controlValue.set(0)"
+        (clearOutput)="transactionForm.amount().controlValue.set(null)"
       />
 
       <atom-input

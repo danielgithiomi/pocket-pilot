@@ -1,11 +1,11 @@
 @reference 'tailwindcss';
 
-.radio-field-wrapper {
+.radio-field {
   @apply space-y-2;
 }
 
 .radio-options-wrapper {
-  @apply space-y-1;
+  @apply space-y-0;
 }
 
 .radio-options-wrapper.layout-horizontal {

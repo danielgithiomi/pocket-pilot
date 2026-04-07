@@ -1,3 +1,6 @@
+import { Input } from '@atoms/input';
+import { Form } from '@organisms/form';
+import { Select } from '@atoms/select';
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
@@ -5,21 +8,21 @@ import { form } from '@angular/forms/signals';
 import { GoalsService } from '@api/goals.service';
 import { RadioOption, Radio } from '@atoms/radio';
 import { DrawerService } from '@infrastructure/services';
-import { LucideAngularModule, Plus } from 'lucide-angular';
 import { Component, computed, inject, signal } from '@angular/core';
+import { LucideAngularModule, Plus, ChevronsRight, ChevronsLeft } from 'lucide-angular';
 import {
   NewGoalSchema,
   initalNewGoalFormState,
-  newGoalFormValidationSchema,
-  TargetCompletionStrategies,
   TargetCompletionStrategy,
+  TargetCompletionStrategies,
+  newGoalFormValidationSchema,
 } from './goals.types';
 
 @Component({
   selector: 'app-goals',
   styleUrl: './goals.css',
   templateUrl: './goals.html',
-  imports: [NgClass, Button, LucideAngularModule, Radio],
+  imports: [NgClass, Button, LucideAngularModule, Radio, Form, Input, Select],
 })
 export class Goals {
   // [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }"
@@ -27,6 +30,8 @@ export class Goals {
   // Icons
   protected readonly iconSize = 16;
   protected readonly PlusIcon = Plus;
+  protected readonly NextIcon = ChevronsRight;
+  protected readonly PreviousIcon = ChevronsLeft;
 
   // Services
   protected readonly toastService = inject(ToastService);
@@ -34,6 +39,10 @@ export class Goals {
   protected readonly drawerService = inject(DrawerService);
 
   // Signals
+  protected readonly goalFormStep = signal<1 | 2>(1);
+  protected readonly isGoalsFormOpen = signal<boolean>(false);
+  protected readonly isBillsFormOpen = signal<boolean>(false);
+  protected readonly isSubmittingGoalsForm = signal<boolean>(false);
   protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
 
   // Data
@@ -64,8 +73,8 @@ export class Goals {
       const { value, label } = category;
 
       return {
-        value: value,
-        label: label,
+        value,
+        label,
         disabled: false,
       };
     });
@@ -76,13 +85,32 @@ export class Goals {
   protected readonly newGoalForm = form(this.newGoalFormModel, newGoalFormValidationSchema);
 
   // Methods
+  protected resetGoalForm() {
+    this.goalFormStep.set(1);
+    this.newGoalForm().reset();
+    this.selectedCategory.set(null);
+    this.newGoalFormModel.set(initalNewGoalFormState);
+  }
+
+  protected handleCloseForm(source: 'icon' | 'overlay') {
+    if (source === 'icon') this.resetGoalForm();
+    this.isGoalsFormOpen.set(false);
+  }
+
   protected onCategoryChange(category: string) {
-    if (!category || !TargetCompletionStrategies.includes(category as TargetCompletionStrategy)) {
-      this.selectedCategory.set(null);
-      console.log('Invalid category');
-      return;
-    }
     const strategy = category as TargetCompletionStrategy;
     this.selectedCategory.set(strategy);
+    this.newGoalForm.targetCompletionStrategy().controlValue.set(strategy);
+  }
+
+  // Submissions
+  protected submitGoalForm(event: Event) {
+    event.preventDefault();
+
+    this.isSubmittingGoalsForm.set(true);
+
+    setTimeout(() => {
+      this.isSubmittingGoalsForm.set(false);
+    }, 1000);
   }
 }

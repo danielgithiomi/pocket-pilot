@@ -1,9 +1,9 @@
+import { capitalize } from '@libs/utils';
 import { NgClass } from '@angular/common';
 import { SelectOption, SelectSize } from './select.types';
 import { Component, input, computed } from '@angular/core';
 import { FormField, FieldTree } from '@angular/forms/signals';
 import { ChevronDown, LucideAngularModule } from 'lucide-angular';
-import { capitalize } from '@libs/utils';
 
 @Component({
   selector: 'atom-select',

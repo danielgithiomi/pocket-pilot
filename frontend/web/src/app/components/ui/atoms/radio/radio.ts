@@ -63,6 +63,7 @@ export class Radio {
   /* METHODS */
   onOptionClick(option: RadioOption) {
     if (this.isOptionDisabled(option)()) return;
+    if (this.isOptionSelected(option)()) return;
     this.selectionChange.emit(option.value);
   }
 }

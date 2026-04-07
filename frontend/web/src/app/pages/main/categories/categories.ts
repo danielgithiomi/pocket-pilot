@@ -97,10 +97,9 @@ export class Categories {
   }
 
   protected handleCategoryTypeSelected(index: number) {
-    this.categoryFormModel.update((state) => ({
-      ...state,
-      categoryType: this.categoryTabItems[index].value as CategoryVariant,
-    }));
+    this.categoryForm
+      .categoryType()
+      .controlValue.set(this.categoryTabItems[index].value as CategoryVariant);
   }
 
   protected resetCategoryForm() {

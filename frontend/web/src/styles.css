@@ -266,6 +266,10 @@ main {
       }
     }
 
+    .radio-field {
+      @apply my-4;
+    }
+
     label {
       @apply flex items-center gap-px;
 

@@ -19,30 +19,18 @@
         <div class="card-header">
           <p class="card-title">Goal Tracker</p>
 
-          <atom-button id="add-goal" variant="primary" size="sm">
+          <atom-button
+            id="add-goal"
+            variant="primary"
+            size="sm"
+            (click)="isGoalsFormOpen.set(true)"
+          >
             <div class="w-full flex flex-row items-center justify-between gap-4">
-              <lucide-icon
-                name="create-transaction"
-                [img]="PlusIcon"
-                [size]="iconSize"
-              ></lucide-icon>
+              <lucide-icon [img]="PlusIcon" [size]="iconSize" name="create-new-goal"></lucide-icon>
               <span class="hidden lg:block">Add Goal</span>
             </div>
           </atom-button>
         </div>
-
-        <form>
-          <atom-radio
-            id="category"
-            label="Category"
-            [required]="true"
-            [selectedValue]="selectedCategory()"
-            [options]="goalCreationStrategies()"
-            (selectionChange)="onCategoryChange($event)"
-            [formField]="newGoalForm.targetCompletionStrategy"
-          />
-        </form>
-
       </div>
       <div
         class="bills-card"
@@ -53,13 +41,14 @@
         <div class="card-header">
           <p class="card-title">Your Bills</p>
 
-          <atom-button id="add-bill" variant="primary" size="sm">
+          <atom-button
+            id="add-bill"
+            variant="primary"
+            size="sm"
+            (click)="isBillsFormOpen.set(true)"
+          >
             <div class="w-full flex flex-row items-center justify-between gap-4">
-              <lucide-icon
-                name="create-transaction"
-                [img]="PlusIcon"
-                [size]="iconSize"
-              ></lucide-icon>
+              <lucide-icon [img]="PlusIcon" [size]="iconSize" name="create-new-bill"></lucide-icon>
               <span class="hidden lg:block">Add Bill</span>
             </div>
           </atom-button>
@@ -68,3 +57,126 @@
     </div>
   </div>
 </section>
+
+@if (isGoalsFormOpen()) {
+  <organism-form
+    id="goals"
+    title="Create A New Goal"
+    [class.hidden]="!isGoalsFormOpen()"
+    (closeForm)="handleCloseForm($event)"
+    description="Create a new financial goal"
+  >
+    <form slot="content" id="goals-form" (submit)="submitGoalForm($event)">
+      @if (goalFormStep() === 1) {
+        <atom-radio
+          id="category"
+          label="Category"
+          [required]="true"
+          [inverted]="true"
+          [selectedValue]="selectedCategory()"
+          [options]="goalCreationStrategies()"
+          (selectionChange)="onCategoryChange($event)"
+          [formField]="newGoalForm.targetCompletionStrategy"
+        />
+      } @else {
+        <atom-input
+          id="goal-name"
+          type="text"
+          [inverted]="true"
+          label="Goal Name"
+          autocomplete="name"
+          placeholder="Eg: Birthday Trip"
+          [formField]="newGoalForm.name"
+          (clearOutput)="newGoalForm.name().controlValue.set('')"
+        />
+
+        <atom-input
+          type="text"
+          [inverted]="true"
+          [required]="false"
+          autocomplete="name"
+          label="Description"
+          id="goal-description"
+          placeholder="Eg: 1 week trip to Bali"
+          [formField]="newGoalForm.description"
+          (clearOutput)="newGoalForm.description().controlValue.set('')"
+        />
+
+        <atom-input
+          type="number"
+          [inverted]="true"
+          [required]="false"
+          autocomplete="name"
+          label="Target Amount"
+          id="goal-target-amount"
+          placeholder="Eg: 100000"
+          [formField]="newGoalForm.targetAmount"
+          (clearOutput)="newGoalForm.targetAmount().controlValue.set(null)"
+        />
+
+        <atom-select
+          [inverted]="true"
+          label="Goal Category"
+          id="goal-category-type"
+          placeholder="Select a category"
+          [formField]="newGoalForm.category"
+          [options]="
+            formattedGoalCategories() || [{ value: '', label: 'No goal categories found' }]
+          "
+        />
+      }
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      @if (goalFormStep() === 2) {
+        <atom-button
+          type="button"
+          id="back-goal-step"
+          [inverted]="true"
+          variant="secondary"
+          (clicked)="goalFormStep.set(1)"
+        >
+          <div class="w-full flex flex-row items-center justify-between gap-4 py-0 md:py-1 lg:py-0">
+            <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="back-goal-step"></lucide-icon>
+            <span class="block md:hidden lg:block">Previous</span>
+          </div>
+        </atom-button>
+      }
+
+      <atom-button
+        type="reset"
+        form="goals-form"
+        [inverted]="true"
+        label="Reset Form"
+        variant="secondary"
+        id="reset-goals-form"
+        (clicked)="resetGoalForm()"
+        [disabled]="!newGoalForm().dirty() || isSubmittingGoalsForm()"
+      />
+
+      @if (goalFormStep() === 1) {
+        <atom-button
+          id="next-goal-step"
+          type="button"
+          variant="primary"
+          (clicked)="goalFormStep.set(2)"
+          [disabled]="!selectedCategory()"
+        >
+          <div class="w-full flex flex-row items-center justify-between gap-4">
+            <span>Next</span>
+            <lucide-icon [img]="NextIcon" [size]="iconSize" name="next-goal-step"></lucide-icon>
+          </div>
+        </atom-button>
+      } @else {
+        <atom-button
+          type="submit"
+          form="goals-form"
+          label="Create Goal"
+          id="submit-goals-form"
+          [isLoading]="isSubmittingGoalsForm()"
+          [disabled]="newGoalForm().invalid() || isSubmittingGoalsForm()"
+        />
+      }
+    </div>
+  </organism-form>
+}

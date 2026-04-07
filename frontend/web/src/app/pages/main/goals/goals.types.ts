@@ -3,7 +3,7 @@ import { required, schema } from '@angular/forms/signals';
 
 // TYPES
 export const TargetCompletionStrategies = ['date', 'amount'] as const;
-export type TargetCompletionStrategy = typeof TargetCompletionStrategies[number];
+export type TargetCompletionStrategy = (typeof TargetCompletionStrategies)[number];
 
 // FORM
 export type NewGoalSchema = {
@@ -11,9 +11,9 @@ export type NewGoalSchema = {
   description: string;
   startDate: Date;
   endDate: Date;
-  category: GoalCategoryEnum | null;
-  monthlyContribution: number;
-  targetAmount: number;
+  category: GoalCategoryEnum | "";
+  monthlyContribution: number | null;
+  targetAmount: number | null;
   targetCompletionStrategy: TargetCompletionStrategy | null;
 };
 
@@ -22,9 +22,9 @@ export const initalNewGoalFormState: NewGoalSchema = {
   description: '',
   startDate: new Date(),
   endDate: new Date(),
-  category: null,
-  monthlyContribution: 0,
-  targetAmount: 0,
+  category: '',
+  monthlyContribution: null,
+  targetAmount: null,
   targetCompletionStrategy: null,
 };
 

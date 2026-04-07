@@ -1,4 +1,4 @@
-<div id="radio-{{ id() }}-wrapper" class="radio-field-wrapper">
+<div id="radio-{{ id() }}-wrapper" class="radio-field">
   <label
     [for]="inputId()"
     [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
@@ -29,7 +29,12 @@
       >
         <div class="radio-icon">
           @if (isOptionSelected(option)()) {
-            <icon-checked-circle [size]="iconSize" fillColor="var(--primary)" [filled]="true" />
+            <icon-checked-circle
+              [filled]="true"
+              [size]="iconSize"
+              fillColor="var(--primary)"
+              [color]="inverted() ? 'var(--inverted-text)' : 'var(--primary-text)'"
+            />
             <!-- @if (isMultiple()) {
               <lucide-icon
                 [size]="iconSize"
