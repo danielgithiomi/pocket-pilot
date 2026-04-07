@@ -53,6 +53,11 @@
         @let incomes = formattedCategories().incomes;
         @let expenses = formattedCategories().expenses;
 
+        <p class="mb-6">
+          You have <span class="font-semibold text-primary">{{ totalCount }}</span>
+          {{ totalCount! > 1 ? 'total categories' : 'category' }}!
+        </p>
+
         <div class="flex flex-row gap-6 flex-1">
           <div class="category-card group/card incomes">
             <p>

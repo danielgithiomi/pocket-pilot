@@ -139,8 +139,8 @@
 @if (isEditSpendingLimitFormOpen()) {
   <organism-form
     id="transactions"
-    title="Add Transaction"
-    description="Create a new transaction"
+    title="Update your limit"
+    description="Modify your monthly spending limit"
     (closeForm)="handleCloseForm($event)"
     [class.hidden]="!isEditSpendingLimitFormOpen()"
   >
