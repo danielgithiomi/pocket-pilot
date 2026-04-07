@@ -73,6 +73,17 @@
   >
     <form slot="content" id="goals-form" (submit)="submitGoalForm($event)">
       @if (goalFormStep() === 1) {
+        <organism-date-picker
+          [required]="true"
+          [inverted]="true"
+          [min]="minDate()"
+          label="Start Date"
+          id="goal-completion-date"
+          placeholder="Select a date"
+          [showClearOutputIcon]="false"
+          [formField]="newGoalForm.startDate"
+        />
+
         <atom-radio
           id="category"
           [required]="true"
@@ -82,16 +93,6 @@
           [options]="goalCreationStrategies()"
           (selectionChange)="onCategoryChange($event)"
           [formField]="newGoalForm.targetCompletionStrategy"
-        />
-
-        <organism-date-picker
-          [required]="true"
-          [inverted]="true"
-          [min]="minDate()"
-          label="Start Date"
-          id="goal-completion-date"
-          placeholder="Select a date"
-          [formField]="newGoalForm.startDate"
         />
       } @else {
         <atom-input
@@ -183,9 +184,9 @@
 
       @if (goalFormStep() === 1) {
         <atom-button
-          id="next-goal-step"
           type="button"
           variant="primary"
+          id="next-goal-step"
           (clicked)="goalFormStep.set(2)"
           [disabled]="!selectedCategory()"
         >

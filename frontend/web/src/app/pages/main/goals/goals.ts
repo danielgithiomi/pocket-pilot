@@ -18,13 +18,23 @@ import {
   TargetCompletionStrategies,
   newGoalFormValidationSchema,
 } from './goals.types';
-import { DatePicker } from "@components/ui/organisms/date-picker";
+import { DatePicker } from '@components/ui/organisms/date-picker';
 
 @Component({
   selector: 'app-goals',
   styleUrl: './goals.css',
   templateUrl: './goals.html',
-  imports: [NgClass, CalendarModule, Button, LucideAngularModule, Radio, Form, Input, Select, DatePicker],
+  imports: [
+    NgClass,
+    CalendarModule,
+    Button,
+    LucideAngularModule,
+    Radio,
+    Form,
+    Input,
+    Select,
+    DatePicker,
+  ],
 })
 export class Goals {
   // Icons
@@ -46,6 +56,7 @@ export class Goals {
   protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
 
   // Data
+  protected readonly initialNewGoalFormState = initalNewGoalFormState;
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();
 
   // Computed

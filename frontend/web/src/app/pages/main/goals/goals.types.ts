@@ -18,14 +18,15 @@ export type NewGoalSchema = {
 };
 
 export const initalNewGoalFormState: NewGoalSchema = {
-  name: '',
-  description: '',
   startDate: new Date(),
-  endDate: new Date(),
-  category: '',
-  monthlyContribution: null,
-  targetAmount: null,
   targetCompletionStrategy: null,
+
+  name: '',
+  category: '',
+  description: '',
+  targetAmount: null,
+  endDate: new Date(),
+  monthlyContribution: null,
 };
 
 export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {

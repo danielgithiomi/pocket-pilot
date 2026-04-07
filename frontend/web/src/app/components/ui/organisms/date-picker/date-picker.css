@@ -1,10 +1,11 @@
 @reference 'tailwindcss';
 
 .date-picker-field {
-  display: flex;
-  flex-direction: column;
+  @apply py-2;
   gap: 0.5rem;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .date-picker-wrapper {
@@ -36,11 +37,13 @@
   color: var(--primary);
 }
 
-.clear-icon, .calendar-icon {
+.clear-icon,
+.calendar-icon {
   color: var(--primary-text);
 }
 
-.clear-icon:hover, .calendar-icon:hover {
+.clear-icon:hover,
+.calendar-icon:hover {
   color: var(--primary);
 }
 

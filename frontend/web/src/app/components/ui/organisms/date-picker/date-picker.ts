@@ -17,6 +17,7 @@ export class DatePicker {
   label = input.required<string>();
   inverted = input<boolean>(false);
   invertLabel = input<boolean>(false);
+  showClearOutputIcon = input<boolean>(true);
 
   inputClassName = input<string>('');
   placeholder = input.required<string>();
@@ -89,8 +90,8 @@ export class DatePicker {
 
   onClear(event: Event): void {
     event.stopPropagation();
-    this.formField()().controlValue.set('');
     this.clearOutput.emit();
+    // this.formField()().controlValue.set('');
   }
 
   onCalendarClick(event: Event): void {

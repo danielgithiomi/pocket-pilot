@@ -21,7 +21,7 @@
     />
 
     <div class="date-picker-icons">
-      @if (fieldState().value()) {
+      @if (fieldState().value() && showClearOutputIcon()) {
         <lucide-icon
           [img]="X"
           name="clear-date"
@@ -40,11 +40,7 @@
     </div>
 
     @if (isCalendarOpen()) {
-      <div
-        class="calendar-dropdown"
-        #calendarContainer
-        (click)="onCalendarClick($event)"
-      >
+      <div class="calendar-dropdown" #calendarContainer (click)="onCalendarClick($event)">
         <ejs-calendar
           [value]="selectedDateValue()"
           [min]="min()"
