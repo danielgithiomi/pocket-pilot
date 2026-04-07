@@ -1,0 +1,78 @@
+<div id="radio-{{ id() }}-wrapper" class="radio-field">
+  <label
+    [for]="inputId()"
+    [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
+  >
+    @if (required()) {
+      <span class="required">*</span>
+    }
+    {{ label() }}:
+  </label>
+
+  <div
+    class="radio-options-wrapper"
+    [ngClass]="{
+      'layout-grid': layout() === 'grid',
+      'layout-vertical': layout() === 'vertical',
+      'layout-horizontal': layout() === 'horizontal',
+    }"
+  >
+    @for (option of options(); track option.value) {
+      <div
+        class="radio-option"
+        [ngClass]="{
+          'text-inverted-text': inverted(),
+          selected: isOptionSelected(option)(),
+          disabled: isOptionDisabled(option)(),
+        }"
+        (click)="onOptionClick(option)"
+      >
+        <div class="radio-icon">
+          @if (isOptionSelected(option)()) {
+            <icon-checked-circle
+              [filled]="true"
+              [size]="iconSize"
+              fillColor="var(--primary)"
+              [color]="inverted() ? 'var(--inverted-text)' : 'var(--primary-text)'"
+            />
+            <!-- @if (isMultiple()) {
+              <lucide-icon
+                [size]="iconSize"
+                name="check-mutliple"
+                [img]="PartialCheck"
+                color="var(--primary)"
+              />
+            } @else {
+              <lucide-icon
+                [size]="iconSize"
+                name="check-single"
+                [img]="CompleteCheck"
+                color="var(--primary)"
+              />
+            } -->
+          } @else {
+            <lucide-icon name="unchecked" [img]="Unchecked" [size]="iconSize" />
+          }
+        </div>
+
+        <span
+          class="radio-label"
+          [ngClass]="{
+            'font-semibold': isOptionSelected(option)(),
+          }"
+          >{{ option.label }}</span
+        >
+      </div>
+    }
+  </div>
+
+  @if (formField()().invalid() && formField()().touched()) {
+    <div class="radio-select-errors-wrapper">
+      @for (error of formField()().errors(); track error.kind) {
+        <p class="radio-select-error">
+          {{ error.message }}
+        </p>
+      }
+    </div>
+  }
+</div>

@@ -5,13 +5,16 @@
   "description": "This is the pocket-pilot server developed with NestJs.",
   "private": true,
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "ng": "ng",
+    "dev": "ng serve",
+    "test": "ng test",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "dev": "ng serve"
+    "predev": "ts-node scripts/set-env.ts",
+    "prebuild": "ts-node scripts/set-env.ts",
+    "watch": "ng build --watch --configuration development"
   },
   "prettier": {
     "printWidth": 100,
@@ -33,6 +36,7 @@
     "@angular/forms": "^21.1.0",
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
+    "@syncfusion/ej2-angular-calendars": "^33.1.44",
     "lottie-web": "^5.13.0",
     "lucide": "^0.577.0",
     "lucide-angular": "^0.577.0",
@@ -45,6 +49,7 @@
     "@angular/cli": "^21.1.2",
     "@angular/compiler-cli": "^21.1.0",
     "@tailwindcss/postcss": "^4.1.12",
+    "dotenv": "^17.4.1",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.12",

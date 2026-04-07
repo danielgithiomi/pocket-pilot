@@ -3,43 +3,198 @@
     <h1 class="page-title">Goals &amp; Bills</h1>
   </div>
 
-  <div
-      class="page-container flex-1"
-      [ngClass]="{ 'grid place-items-center': false }"
+  <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': false }">
+    <p class="mb-6">
+      Keep track of your financial <span class="primary-span">goals</span> and <span class="primary-span">bills</span>!
+    </p>
+
+    <div
+      class="w-full flex flex-col md:flex-row gap-6"
+      [ngClass]="{
+        'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
+      }"
     >
-      <div class="w-full flex flex-col md:flex-row gap-6" [ngClass]="{
-        'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed()
-      }" >
-        <div class="goals-card" [ngClass]="{
-          'md:w-full!': !drawerService.isDrawerCollapsed()
-        }">
-          
-          <div class="card-header">
-            <p class="card-title">Goal Tracker</p>
+      <div
+        class="goals-card"
+        [ngClass]="{
+          'md:w-full!': !drawerService.isDrawerCollapsed(),
+        }"
+      >
+        <div class="card-header">
+          <p class="card-title">Goal Tracker</p>
 
-            <atom-button id="add-goal" variant="primary" size="sm">
-              <div class="w-full flex flex-row items-center justify-between gap-4">
-                <lucide-icon name="create-transaction" [img]="PlusIcon" [size]="iconSize"></lucide-icon>
-                <span class="hidden lg:block">Add Goal</span>
-              </div>
-            </atom-button>
-          </div>
-
+          <atom-button
+            id="add-goal"
+            variant="primary"
+            size="sm"
+            (click)="isGoalsFormOpen.set(true)"
+          >
+            <div class="w-full flex flex-row items-center justify-between gap-4">
+              <lucide-icon [img]="PlusIcon" [size]="iconSize" name="create-new-goal"></lucide-icon>
+              <span class="hidden lg:block">Add Goal</span>
+            </div>
+          </atom-button>
         </div>
-        <div class="bills-card" [ngClass]="{
-          'md:w-full!': !drawerService.isDrawerCollapsed()
-        }">
-          <div class="card-header">
-            <p class="card-title">Your Bills</p>
+      </div>
+      <div
+        class="bills-card"
+        [ngClass]="{
+          'md:w-full!': !drawerService.isDrawerCollapsed(),
+        }"
+      >
+        <div class="card-header">
+          <p class="card-title">Your Bills</p>
 
-            <atom-button id="add-bill" variant="primary" size="sm">
-              <div class="w-full flex flex-row items-center justify-between gap-4">
-                <lucide-icon name="create-transaction" [img]="PlusIcon" [size]="iconSize"></lucide-icon>
-                <span class="hidden lg:block">Add Bill</span>
-              </div>
-            </atom-button>
-          </div>
+          <atom-button
+            id="add-bill"
+            variant="primary"
+            size="sm"
+            (click)="isBillsFormOpen.set(true)"
+          >
+            <div class="w-full flex flex-row items-center justify-between gap-4">
+              <lucide-icon [img]="PlusIcon" [size]="iconSize" name="create-new-bill"></lucide-icon>
+              <span class="hidden lg:block">Add Bill</span>
+            </div>
+          </atom-button>
         </div>
       </div>
     </div>
+  </div>
 </section>
+
+@if (isGoalsFormOpen()) {
+  <organism-form
+    id="goals"
+    title="Create A New Goal"
+    [class.hidden]="!isGoalsFormOpen()"
+    (closeForm)="handleCloseForm($event)"
+    description="Create a new financial goal"
+  >
+    <form slot="content" id="goals-form" (submit)="submitGoalForm($event)">
+      @if (goalFormStep() === 1) {
+        <atom-radio
+          id="category"
+          [required]="true"
+          [inverted]="true"
+          label="Goal Achievement Strategy"
+          [selectedValue]="selectedCategory()"
+          [options]="goalCreationStrategies()"
+          (selectionChange)="onCategoryChange($event)"
+          [formField]="newGoalForm.targetCompletionStrategy"
+        />
+
+        <ejs-calendar [min]="minDate()" />
+      } @else {
+        <atom-input
+          type="text"
+          id="goal-name"
+          [inverted]="true"
+          label="Goal Name"
+          autocomplete="off"
+          placeholder="Eg: Birthday Trip"
+          [formField]="newGoalForm.name"
+          (clearOutput)="newGoalForm.name().controlValue.set('')"
+        />
+
+        <atom-input
+          type="text"
+          [inverted]="true"
+          [required]="false"
+          autocomplete="off"
+          label="Description"
+          id="goal-description"
+          placeholder="Eg: 1 week trip to Bali"
+          [formField]="newGoalForm.description"
+          (clearOutput)="newGoalForm.description().controlValue.set('')"
+        />
+
+        <atom-select
+          [inverted]="true"
+          label="Goal Category"
+          id="goal-category-type"
+          placeholder="Select a category"
+          [formField]="newGoalForm.category"
+          [options]="formattedGoalCategories() || [{ value: '', label: 'No categories found' }]"
+        />
+
+        @if (selectedCategory() === 'date') {
+          <atom-input
+            type="text"
+            [inverted]="true"
+            [required]="false"
+            autocomplete="off"
+            label="Target Date"
+            id="goal-target-date"
+            placeholder="Eg: 2025-12-31"
+            [formField]="newGoalForm.description"
+            (clearOutput)="newGoalForm.description().controlValue.set('')"
+          />
+        } @else {
+          <atom-input
+            type="number"
+            [inverted]="true"
+            [required]="false"
+            autocomplete="off"
+            label="Target Amount"
+            id="goal-target-amount"
+            placeholder="Eg: 100000"
+            [formField]="newGoalForm.targetAmount"
+            (clearOutput)="newGoalForm.targetAmount().controlValue.set(null)"
+          />
+        }
+      }
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      @if (goalFormStep() === 2) {
+        <atom-button
+          type="button"
+          id="back-goal-step"
+          [inverted]="true"
+          variant="secondary"
+          (clicked)="goalFormStep.set(1)"
+        >
+          <div class="w-full flex flex-row items-center justify-between gap-4 py-0 md:py-1 lg:py-0">
+            <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="back-goal-step"></lucide-icon>
+            <span class="block md:hidden lg:block">Previous</span>
+          </div>
+        </atom-button>
+      }
+
+      <atom-button
+        type="reset"
+        form="goals-form"
+        [inverted]="true"
+        label="Reset Form"
+        variant="secondary"
+        id="reset-goals-form"
+        (clicked)="resetGoalForm()"
+        [disabled]="!newGoalForm().dirty() || isSubmittingGoalsForm()"
+      />
+
+      @if (goalFormStep() === 1) {
+        <atom-button
+          id="next-goal-step"
+          type="button"
+          variant="primary"
+          (clicked)="goalFormStep.set(2)"
+          [disabled]="!selectedCategory()"
+        >
+          <div class="w-full flex flex-row items-center justify-between gap-4">
+            <span>Next</span>
+            <lucide-icon [img]="NextIcon" [size]="iconSize" name="next-goal-step"></lucide-icon>
+          </div>
+        </atom-button>
+      } @else {
+        <atom-button
+          type="submit"
+          form="goals-form"
+          label="Create Goal"
+          id="submit-goals-form"
+          [isLoading]="isSubmittingGoalsForm()"
+          [disabled]="newGoalForm().invalid() || isSubmittingGoalsForm()"
+        />
+      }
+    </div>
+  </organism-form>
+}

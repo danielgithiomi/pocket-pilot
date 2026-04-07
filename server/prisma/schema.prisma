@@ -39,16 +39,17 @@ enum GoalStatus {
 }
 
 enum GoalCategory {
-    OTHER
+    LOAN
     TRAVEL
     SAVINGS
+    PURCHASE
     VACATION
     EDUCATION
     RETIREMENT
     INVESTMENTS
-    HOME_PURCHASE
-    DEBT_REDUCTION
+    DEBT_PAYMENT
     EMERGENCY_FUND
+    OTHER
 }
 
 model Account {
