@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-/* @import './../../../node_modules/@syncfusion/ej2-base/styles/material3.css';
-@import './../../../node_modules/@syncfusion/ej2-calendars/styles/material3.css'; */
+@import './../../../node_modules/@syncfusion/ej2-base/styles/material3.css';
+@import './../../../node_modules/@syncfusion/ej2-calendars/styles/material3.css';
 
 @font-face {
   font-family: Geist Mono;

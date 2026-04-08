@@ -41,10 +41,7 @@ export class DatePicker {
   protected isCalendarOpen = signal(false);
 
   /* COMPUTED */
-  fieldState = computed(() => {
-    console.log('fieldState', this.formField());
-    return this.formField()();
-  });
+  fieldState = computed(() => this.formField()());
   inputId = computed<string>(() => `date-picker-${this.id()}`);
 
   formattedDate = computed<string>(() => {

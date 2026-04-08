@@ -1,5 +1,6 @@
 import { GoalCategoryEnum } from '@global/enums';
 import { required, schema } from '@angular/forms/signals';
+import { addOneMonthFromDate } from '@libs/utils';
 
 // TYPES
 export const TargetCompletionStrategies = ['date', 'amount'] as const;
@@ -27,8 +28,8 @@ export const initalNewGoalFormState: NewGoalSchema = {
   category: '',
   description: '',
   targetAmount: null,
-  endDate: new Date(),
   monthlyContribution: null,
+  endDate: addOneMonthFromDate(new Date()),
 };
 
 export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
@@ -60,3 +61,8 @@ export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
     message: 'The goal target completion strategy is required field!',
   });
 });
+
+export interface EffectResponse {
+  rawValue: number;
+  ceiledValue: number;
+}

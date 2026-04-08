@@ -10,10 +10,12 @@ import { RadioOption, Radio } from '@atoms/radio';
 import { DatePicker } from '@organisms/date-picker';
 import { DrawerService } from '@infrastructure/services';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
-import { Component, computed, inject, signal, effect, untracked } from '@angular/core';
+import { Component, computed, inject, signal, effect } from '@angular/core';
+import { addMonths, addOneMonthFromDate, getMonthDifference } from '@libs/utils';
 import { LucideAngularModule, Plus, ChevronsRight, ChevronsLeft } from 'lucide-angular';
 import {
   NewGoalSchema,
+  EffectResponse,
   initalNewGoalFormState,
   TargetCompletionStrategy,
   TargetCompletionStrategies,
@@ -39,9 +41,62 @@ import {
 export class Goals {
   constructor() {
     effect(() => {
+      const endDate = this.newGoalForm.endDate().value();
       const startDate = this.newGoalForm.startDate().value();
+      const totalAmount = this.newGoalForm.targetAmount().value();
+      const monthlyContribution = this.newGoalForm.monthlyContribution().value();
 
-      console.log('running effect', startDate);
+      if (!totalAmount) return;
+
+      const category = this.selectedCategory();
+      switch (category) {
+        case 'date': {
+          // Strategy: BY DATE -> Calculate monthly contribution
+
+          if (!endDate) {
+            console.log('No end date');
+            return;
+          }
+
+          const monthDifference = getMonthDifference(startDate, endDate);
+          console.log('monthDifference', monthDifference);
+
+          const calculatedMonthlyContribution = totalAmount / monthDifference;
+          const ceiledValue = Math.ceil(calculatedMonthlyContribution);
+
+          console.log('calculatedMonthlyContribution', calculatedMonthlyContribution);
+          console.log('ceiledValue', ceiledValue);
+
+          return {
+            rawValue: calculatedMonthlyContribution,
+            ceiledValue,
+          };
+        }
+        case 'amount': {
+          // Strategy: BY AMOUNT -> Calculate how many months to save
+          if (!monthlyContribution || monthlyContribution <= 0) {
+            console.log('No monthly contribution or invalid value');
+            return;
+          }
+
+          const monthsToSave = totalAmount / monthlyContribution;
+          const ceiledValue = Math.ceil(monthsToSave);
+
+          console.log('monthsToSave', monthsToSave);
+          console.log('ceiledValue', ceiledValue);
+
+          const calculatedEndDate = addMonths(startDate, ceiledValue);
+          console.log('calculatedEndDate', calculatedEndDate);
+
+          return {
+            rawValue: calculatedEndDate,
+            ceiledValue,
+          };
+        }
+        default:
+          // No strategy selected or NULL
+          return null;
+      }
     });
   }
   // Icons
@@ -86,19 +141,19 @@ export class Goals {
     }),
   );
 
-  protected readonly goalSummary = computed<string>(() => {
-    const form = this.newGoalForm;
+  // protected readonly goalSummary = computed<string>(() => {
+  //   const form = this.newGoalForm;
 
-    const startDate = form.startDate().value();
-    const endDate = form.endDate().value();
-    const targetAmount = form.targetAmount().value();
-    const monthlyContribution = form.monthlyContribution().value();
-    const strategy = form.targetCompletionStrategy().value();
+  //   const startDate = form.startDate().value();
+  //   const endDate = form.endDate().value();
+  //   const targetAmount = form.targetAmount().value();
+  //   const monthlyContribution = form.monthlyContribution().value();
+  //   const strategy = form.targetCompletionStrategy().value();
 
-    console.log(startDate, strategy, targetAmount, monthlyContribution, endDate);
+  //   console.log(startDate, strategy, targetAmount, monthlyContribution, endDate);
 
-    return '';
-  });
+  //   return '';
+  // });
 
   protected readonly formattedGoalCategories = computed<RadioOption[]>(() => {
     if (this.goalCategories$.error()) {
@@ -125,8 +180,8 @@ export class Goals {
   });
 
   // Calendar
-  protected readonly minEndDate = signal<Date | null>(new Date());
-  protected readonly minStartDate = signal<Date | null>(new Date());
+  protected readonly minStartDate = signal<Date>(new Date());
+  protected readonly minEndDate = signal<Date>(addOneMonthFromDate(new Date()));
 
   // Form
   protected readonly newGoalFormModel = signal<NewGoalSchema>(initalNewGoalFormState);
