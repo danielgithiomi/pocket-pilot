@@ -52,6 +52,11 @@ export class CostAnalysis {
     return [...incomes, ...expenses];
   });
 
+  protected readonly hasExpenseTransactions = computed<boolean>(() => {
+    const transactions = this.transactions();
+    return transactions.some((transaction) => transaction.type === 'EXPENSE');
+  });
+
   protected readonly transactions = computed(() => {
     const transactions = this.transactionsFromService.value()?.data.data;
     if (!transactions) return [];

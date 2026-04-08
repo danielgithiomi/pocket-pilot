@@ -7,7 +7,7 @@ export class GoalsRepository {
     constructor(private readonly db: DatabaseService) {}
 
     createGoal(userId: string, payload: CreateGoalDto): Promise<GoalDto> {
-        return this.db.goal.create({
+        return this.db.goals.create({
             data: {
                 userId,
                 ...payload,

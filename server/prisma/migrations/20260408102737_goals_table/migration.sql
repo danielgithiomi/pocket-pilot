@@ -1,18 +1,18 @@
 -- CreateEnum
-CREATE TYPE "GoalStatus" AS ENUM ('ACTIVE', 'PAUSED', 'FAILED', 'COMPLETED');
+CREATE TYPE "GoalStatus" AS ENUM ('ACTIVE', 'PAUSED', 'FAILED', 'PENDING', 'COMPLETED');
 
 -- CreateEnum
-CREATE TYPE "GoalCategory" AS ENUM ('OTHER', 'TRAVEL', 'SAVINGS', 'VACATION', 'EDUCATION', 'RETIREMENT', 'INVESTMENTS', 'HOME_PURCHASE', 'DEBT_REDUCTION', 'EMERGENCY_FUND');
+CREATE TYPE "GoalCategory" AS ENUM ('LOAN', 'TRAVEL', 'SAVINGS', 'PURCHASE', 'VACATION', 'EDUCATION', 'RETIREMENT', 'INVESTMENTS', 'DEBT_PAYMENT', 'EMERGENCY_FUND', 'OTHER');
 
 -- CreateTable
-CREATE TABLE "Goal" (
+CREATE TABLE "Goals" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
-    "status" "GoalStatus" NOT NULL,
+    "status" "GoalStatus" NOT NULL DEFAULT 'ACTIVE',
     "category" "GoalCategory" NOT NULL,
     "monthlyContribution" DOUBLE PRECISION NOT NULL,
     "targetAmount" DOUBLE PRECISION NOT NULL,
@@ -20,5 +20,5 @@ CREATE TABLE "Goal" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Goal_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Goals_pkey" PRIMARY KEY ("id")
 );

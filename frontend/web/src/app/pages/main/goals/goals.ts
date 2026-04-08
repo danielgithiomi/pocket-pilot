@@ -22,6 +22,8 @@ import {
   TargetCompletionStrategies,
   newGoalFormValidationSchema,
 } from './goals.types';
+import { CreateGoalRequest } from '@global/types';
+import { GoalCategoryEnum } from '@global/enums';
 
 @Component({
   selector: 'app-goals',
@@ -197,6 +199,7 @@ export class Goals {
 
   // Methods
   protected resetGoalForm() {
+    this.summary.set(null);
     this.goalFormStep.set(1);
     this.selectedCategory.set(null);
     this.newGoalForm().reset(this.newGoalFormModel());
@@ -246,9 +249,34 @@ export class Goals {
 
     this.isSubmittingGoalsForm.set(true);
 
-    const { targetAmount, monthlyContribution, endDate, targetCompletionStrategy } =
-      this.newGoalFormModel();
+    const { targetCompletionStrategy, ...formData } = this.newGoalFormModel();
 
-    setTimeout(() => {}, 1000);
+    const payload: CreateGoalRequest = {
+      ...formData,
+      targetAmount: formData.targetAmount!,
+      category: formData.category as GoalCategoryEnum,
+      monthlyContribution: formData.monthlyContribution!,
+    };
+
+    setTimeout(() => {
+
+      this.goalsService.createNewGoal(payload).subscribe({
+        next: () => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Goal created!',
+            details: 'Your financial goal has been created successfully.',
+          });
+          
+          this.resetGoalForm();
+          this.isGoalsFormOpen.set(false);
+        },
+        complete: () => {
+          this.resetGoalForm();
+          this.isSubmittingGoalsForm.set(false);
+        }
+      });
+
+    }, 1000);
   }
 }

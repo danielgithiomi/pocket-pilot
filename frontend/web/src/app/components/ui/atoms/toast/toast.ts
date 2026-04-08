@@ -20,7 +20,7 @@ import {
             <div class="flex flex-row gap-2 items-center">
               @switch (theme().icon) {
                 @case ('success') {
-                  <icon-checked-circle [color]="theme().color" />
+                  <icon-checked-circle [color]="theme().color" [checkColor]="theme().color" />
                 }
                 @case ('error') {
                   <icon-crossed-circle [color]="theme().color" />

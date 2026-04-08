@@ -57,6 +57,10 @@
   pointer-events: none;
 }
 
+.no-expenses {
+  @apply text-(--muted-text) w-full text-center text-xs italic;
+}
+
 .total-amount {
   font-weight: 600;
   line-height: 1.5;
