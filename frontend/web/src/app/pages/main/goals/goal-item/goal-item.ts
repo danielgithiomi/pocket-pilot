@@ -29,7 +29,7 @@ import {
 })
 export class GoalItem {
   // Icons
-  protected readonly iconSize = 18;
+  protected readonly iconSize = 24;
 
   // Inputs
   readonly id = input.required<string>();

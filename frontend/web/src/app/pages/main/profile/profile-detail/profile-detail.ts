@@ -51,7 +51,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
         @switch (detailVariant()) {
           @case ('status') {
             <div class="bg-primary/50 py-0.5 px-3 rounded-full w-fit!">
-              <p class="value truncate-text">{{ detailValue() }}</p>
+              <p class="value truncate-text uppercase">{{ detailValue() }}</p>
             </div>
           }
           @case ('role') {
