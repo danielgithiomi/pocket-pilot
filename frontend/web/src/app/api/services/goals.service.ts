@@ -13,6 +13,8 @@ export class GoalsService {
   private readonly mutation = inject(GoalsMutation);
   private readonly toastService = inject(ToastService);
 
+  getUserGoals = () => this.resource.getUserGoals;
+
   getGoalCategories = () => this.resource.getGoalCategories;
 
   createNewGoal(payload: CreateGoalRequest): Observable<Goal> {

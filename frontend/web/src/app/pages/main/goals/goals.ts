@@ -5,15 +5,18 @@ import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
+import { GoalCategoryEnum } from '@global/enums';
 import { GoalsService } from '@api/goals.service';
 import { RadioOption, Radio } from '@atoms/radio';
+import { CreateGoalRequest } from '@global/types';
 import { DatePicker } from '@organisms/date-picker';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+import { NoData } from "@components/structural/main/no-data/no-data";
 import { Component, computed, inject, signal, effect } from '@angular/core';
-import { addMonths, addOneMonthFromDate, formatCurrency, getMonthDifference } from '@libs/utils';
 import { LucideAngularModule, Plus, ChevronsRight, ChevronsLeft } from 'lucide-angular';
+import { addMonths, addOneMonthFromDate, formatCurrency, getMonthDifference } from '@libs/utils';
 import {
   NewGoalSchema,
   EffectResponse,
@@ -22,9 +25,6 @@ import {
   TargetCompletionStrategies,
   newGoalFormValidationSchema,
 } from './goals.types';
-import { CreateGoalRequest } from '@global/types';
-import { GoalCategoryEnum } from '@global/enums';
-import { NoData } from "@components/structural/main/no-data/no-data";
 
 @Component({
   selector: 'app-goals',
@@ -34,13 +34,13 @@ import { NoData } from "@components/structural/main/no-data/no-data";
     Form,
     Radio,
     Input,
+    NoData,
     Select,
     Button,
     NgClass,
     DatePicker,
     CalendarModule,
     LucideAngularModule,
-    NoData
 ],
 })
 export class Goals {
@@ -121,7 +121,8 @@ export class Goals {
   protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
 
   // Data
-  protected readonly goals$: number = 1;
+  protected readonly bills$ = 0;
+  protected readonly goals$ = this.goalsService.getUserGoals();
   protected readonly initialNewGoalFormState = initalNewGoalFormState;
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();

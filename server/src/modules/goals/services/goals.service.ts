@@ -13,6 +13,10 @@ export class GoalsService {
         return await Promise.resolve(Object.values(GoalCategory).map(formatEnumForFrontend));
     }
 
+    getUserGoals(userId: string): Promise<GoalDto[]> {
+        return this.goalsRepository.getUserGoals(userId);
+    }
+
     createGoal(userId: string, payload: CreateGoalDto): Promise<GoalDto> {
         return this.goalsRepository.createGoal(userId, payload);
     }

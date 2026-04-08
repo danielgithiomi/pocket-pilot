@@ -25,6 +25,14 @@ export class GoalsController {
         return this.goalsService.getGoalCategories();
     }
 
+    @Get()
+    @HttpCode(200)
+    @ApiOperation({ summary: 'Get all user goals' })
+    @ApiResponse({ status: 200, type: GoalDto, isArray: true, description: 'All user goals retrieved successfully' })
+    getGoals(@UserInRequest() user: User) {
+        return this.goalsService.getUserGoals(user.id!);
+    }
+
     @Post()
     @HttpCode(201)
     @ApiOperation({ summary: 'Create a new goal' })
