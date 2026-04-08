@@ -1,8 +1,8 @@
-import { Goal, GoalStatus } from '@global/types';
 import { NgClass } from '@angular/common';
-import { GoalCategoryEnum, GoalStatusEnum } from '@global/enums';
+import { Goal, GoalStatus } from '@global/types';
 import { ProgressBar } from '@atoms/progress-bar';
 import { AccountsService } from '@api/accounts.service';
+import { GoalCategoryEnum, GoalStatusEnum } from '@global/enums';
 import { Component, computed, inject, input } from '@angular/core';
 import { convertDaysToYearsAndMonths, formatCurrency } from '@libs/utils';
 import {

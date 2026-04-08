@@ -13,6 +13,7 @@ import { CreateGoalRequest } from '@global/types';
 import { DatePicker } from '@organisms/date-picker';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
+import { GoalItemSkeleton } from './goal-item/goal-item.skeleton';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { Component, computed, inject, signal, effect } from '@angular/core';
@@ -42,6 +43,7 @@ import {
     GoalItem,
     DatePicker,
     CalendarModule,
+    GoalItemSkeleton,
     LucideAngularModule,
   ],
 })
@@ -130,6 +132,8 @@ export class Goals {
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();
 
   // Computed
+  protected readonly isFetchingGoals = computed(() => this.goals$.isLoading());
+
   protected readonly formattedGoalSummaryValue = computed<string | null>(() => {
     const summary = this.summary();
     const strategy = this.selectedCategory();

@@ -1,14 +1,14 @@
 @reference "tailwindcss";
 
 .goal-item {
-  @apply flex flex-row items-center gap-3 my-2 p-1;
+  @apply flex flex-row items-center gap-3 my-2 p-1 cursor-default!;
 
   .goal-item-icon {
     @apply shrink-0 bg-(--body-background) size-14 rounded-lg grid place-items-center;
   }
 
   .goal-item-content {
-    @apply flex-1 flex flex-col gap-1 overflow-hidden;
+    @apply flex-1 flex flex-col gap-2 overflow-hidden;
 
     .goal-item-details {
       @apply flex flex-row gap-2 items-end justify-between text-xs;

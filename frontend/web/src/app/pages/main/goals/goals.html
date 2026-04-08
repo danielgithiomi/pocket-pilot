@@ -21,15 +21,14 @@
           'md:w-full!': !drawerService.isDrawerCollapsed(),
         }"
       >
-        @let goals = goals$.value()?.data;
-        @let goalCount = goals?.length || 0;
         <div class="card-header">
           <p class="card-title">Goal Tracker</p>
 
           <atom-button
+            size="sm"
             id="add-goal"
             variant="primary"
-            size="sm"
+            [disabled]="isFetchingGoals()"
             (click)="isGoalsFormOpen.set(true)"
           >
             <div class="w-full flex flex-row items-center justify-between gap-4">
@@ -39,24 +38,34 @@
           </atom-button>
         </div>
 
-        <div
-          class="card-content"
-          [ngClass]="{
-            'grid place-items-center': goalCount == 0,
-          }"
-        >
-          @if (!goals || goalCount == 0) {
-            <no-data
-              messageClass="text-xs"
-              animationDimensions="200px"
-              message="No goals yet. Get started today!"
-            />
-          } @else {
-            @for (goal of goals; track goal.id) {
-              <goal-item [goal]="goal" [id]="goal.id"></goal-item>
+        @if (isFetchingGoals()) {
+          <div class="card-content">
+            @for (i of [1, 2]; track i) {
+              <goal-item-skeleton />
             }
-          }
-        </div>
+          </div>
+        } @else {
+          @let goals = goals$.value()?.data;
+          @let goalCount = goals?.length || 0;
+          <div
+            class="card-content"
+            [ngClass]="{
+              'grid place-items-center': goalCount == 0,
+            }"
+          >
+            @if (!goals || goalCount == 0) {
+              <no-data
+                messageClass="text-xs"
+                animationDimensions="200px"
+                message="No goals yet. Get started today!"
+              />
+            } @else {
+              @for (goal of goals; track goal.id) {
+                <goal-item [goal]="goal" [id]="goal.id"></goal-item>
+              }
+            }
+          </div>
+        }
       </div>
       <div
         class="bills-card"
