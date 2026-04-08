@@ -7,7 +7,7 @@
 
   .goals-card,
   .bills-card {
-    @apply cursor-default bg-(--alternate-background) rounded-lg flex-1 w-full md:w-1/2 p-6 min-h-1/2;
+    @apply cursor-default bg-(--alternate-background) rounded-lg flex-1 w-full md:w-1/2 p-6 min-h-1/2 flex flex-col gap-4;
 
     .card-header {
       @apply flex flex-row justify-between items-center;
@@ -15,6 +15,10 @@
       .card-title {
         @apply text-lg font-semibold;
       }
+    }
+
+    .card-content {
+      @apply flex-1 p-2;
     }
   }
 }

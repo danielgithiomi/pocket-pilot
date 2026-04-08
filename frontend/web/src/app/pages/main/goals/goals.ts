@@ -24,6 +24,7 @@ import {
 } from './goals.types';
 import { CreateGoalRequest } from '@global/types';
 import { GoalCategoryEnum } from '@global/enums';
+import { NoData } from "@components/structural/main/no-data/no-data";
 
 @Component({
   selector: 'app-goals',
@@ -39,7 +40,8 @@ import { GoalCategoryEnum } from '@global/enums';
     DatePicker,
     CalendarModule,
     LucideAngularModule,
-  ],
+    NoData
+],
 })
 export class Goals {
   constructor() {
@@ -119,6 +121,7 @@ export class Goals {
   protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
 
   // Data
+  protected readonly goals$: number = 1;
   protected readonly initialNewGoalFormState = initalNewGoalFormState;
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();

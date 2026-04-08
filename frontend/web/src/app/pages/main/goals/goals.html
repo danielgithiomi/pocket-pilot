@@ -36,6 +36,23 @@
             </div>
           </atom-button>
         </div>
+
+        <div
+          class="card-content"
+          [ngClass]="{
+            'grid place-items-center': goals$ == 0,
+          }"
+        >
+          @if (goals$ == 0) {
+            <no-data
+              messageClass="text-xs"
+              animationDimensions="200px"
+              message="No goals yet. Get started today!"
+            />
+          } @else {
+            <p>Goals content goes here</p>
+          }
+        </div>
       </div>
       <div
         class="bills-card"
@@ -57,6 +74,23 @@
               <span class="hidden lg:block">Add Bill</span>
             </div>
           </atom-button>
+        </div>
+
+        <div
+          class="card-content"
+          [ngClass]="{
+            'grid place-items-center': goals$ == 0,
+          }"
+        >
+          @if (goals$ == 0) {
+            <no-data
+              messageClass="text-xs"
+              animationDimensions="200px"
+              message="No bills yet. Get started today!"
+            />
+          } @else {
+            <p>Bills content goes here</p>
+          }
         </div>
       </div>
     </div>
