@@ -213,7 +213,7 @@
           type="button"
           variant="primary"
           id="next-goal-step"
-          (clicked)="goalFormStep.set(2)"
+          (clicked)="onNextStep()"
           [disabled]="!selectedCategory()"
         >
           <div class="w-full flex flex-row items-center justify-between gap-4">

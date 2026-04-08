@@ -41,7 +41,10 @@ export class DatePicker {
   protected isCalendarOpen = signal(false);
 
   /* COMPUTED */
-  fieldState = computed(() => this.formField()());
+  fieldState = computed(() => {
+    console.log('fieldState', this.formField());
+    return this.formField()();
+  });
   inputId = computed<string>(() => `date-picker-${this.id()}`);
 
   formattedDate = computed<string>(() => {
@@ -53,7 +56,11 @@ export class DatePicker {
     }
 
     const date = new Date(value);
-    if (isNaN(date.getTime())) return '';
+    if (isNaN(date.getTime())) {
+      console.log(date.getTime())
+      console.log('returning empty string')
+      return '';
+    };
 
     return formatInputFieldDate(date.toISOString());
   });
@@ -80,8 +87,7 @@ export class DatePicker {
   onDateSelect(event: { value?: Date }): void {
     const selectedDate = event?.value;
     if (selectedDate) {
-      const isoString = selectedDate.toISOString().split('T')[0];
-      this.formField()().controlValue.set(isoString);
+      this.formField()().controlValue.set(selectedDate);
       this.closeCalendar();
     }
   }

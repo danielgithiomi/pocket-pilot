@@ -135,9 +135,14 @@ export class Goals {
   // Methods
   protected resetGoalForm() {
     this.goalFormStep.set(1);
-    this.newGoalForm().reset();
     this.selectedCategory.set(null);
+    this.newGoalForm().reset(this.newGoalFormModel());
     this.newGoalFormModel.set(initalNewGoalFormState);
+  }
+
+  protected onNextStep() {
+    this.goalFormStep.set(2);
+    console.log(this.newGoalFormModel());
   }
 
   protected handleCloseForm(source: 'icon' | 'overlay') {
