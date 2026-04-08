@@ -8,6 +8,7 @@ import { form } from '@angular/forms/signals';
 import { GoalsService } from '@api/goals.service';
 import { RadioOption, Radio } from '@atoms/radio';
 import { DatePicker } from '@organisms/date-picker';
+import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { Component, computed, inject, signal, effect } from '@angular/core';
@@ -21,7 +22,6 @@ import {
   TargetCompletionStrategies,
   newGoalFormValidationSchema,
 } from './goals.types';
-import { AccountsService } from '@api/accounts.service';
 
 @Component({
   selector: 'app-goals',
@@ -44,59 +44,51 @@ export class Goals {
     effect(() => {
       const endDate = this.newGoalForm.endDate().value();
       const startDate = this.newGoalForm.startDate().value();
-      const totalAmount = this.newGoalForm.targetAmount().value();
+      const targetAmount = this.newGoalForm.targetAmount().value();
       const monthlyContribution = this.newGoalForm.monthlyContribution().value();
 
-      if (!totalAmount) return;
+      if (!targetAmount) {
+        this.summary.set(null);
+        return;
+      }
 
       const category = this.selectedCategory();
       switch (category) {
+        // Strategy: BY DATE -> Calculate monthly contribution
         case 'date': {
-          // Strategy: BY DATE -> Calculate monthly contribution
-          if (!endDate) {
-            console.log('No end date');
-            return;
-          }
+          if (!endDate) return;
 
           const monthDifference = getMonthDifference(startDate, endDate);
 
-          const calculatedMonthlyContribution = totalAmount / monthDifference;
+          const calculatedMonthlyContribution = targetAmount / monthDifference;
           const ceiledValue = Math.ceil(calculatedMonthlyContribution);
 
-          // Update form with calculated value
           this.newGoalForm.monthlyContribution().controlValue.set(ceiledValue);
-          this.showSummary.set(true);
 
           this.summary.set({
             ceiledValue,
             rawValue: calculatedMonthlyContribution,
           });
+
           return;
         }
+        // Strategy: BY AMOUNT -> Calculate how many months to save
         case 'amount': {
-          // Strategy: BY AMOUNT -> Calculate how many months to save
-          if (!monthlyContribution || monthlyContribution <= 0) {
-            console.log('No monthly contribution or invalid value');
-            return;
-          }
+          if (!monthlyContribution || monthlyContribution <= 0) return;
 
-          const monthsToSave = totalAmount / monthlyContribution;
+          const monthsToSave = targetAmount / monthlyContribution;
           const ceiledValue = Math.ceil(monthsToSave);
 
-          console.log('monthsToSave', monthsToSave);
-          console.log('ceiledValue', ceiledValue);
-
           const calculatedEndDate = addMonths(startDate, ceiledValue);
-          console.log('calculatedEndDate', calculatedEndDate);
 
-          // Update form with calculated value
-          // this.newGoalForm.endDate().controlValue.set(calculatedEndDate);
+          if (calculatedEndDate.getTime() !== endDate.getTime())
+            this.newGoalForm.endDate().controlValue.set(calculatedEndDate);
 
-          this.showSummary.set(true);
           this.summary.set({
             rawValue: monthsToSave,
             ceiledValue,
           });
+
           return;
         }
         default:
@@ -118,7 +110,6 @@ export class Goals {
 
   // Signals
   protected readonly goalFormStep = signal<1 | 2>(1);
-  protected readonly showSummary = signal<boolean>(false);
   protected readonly isGoalsFormOpen = signal<boolean>(false);
   protected readonly isBillsFormOpen = signal<boolean>(false);
   protected readonly summary = signal<EffectResponse | null>(null);
@@ -134,17 +125,15 @@ export class Goals {
   protected readonly formattedGoalSummaryValue = computed<string | null>(() => {
     const summary = this.summary();
     const strategy = this.selectedCategory();
-    if (!summary) return null;
+    if (!summary) return 'N/A';
 
     const { rawValue, ceiledValue } = summary;
     switch (strategy) {
       case 'date': {
-        const formattedCeiledValue = formatCurrency(ceiledValue, this.currency, 0, true);
         const formattedRawValue = formatCurrency(rawValue, this.currency, 2, false);
+        const formattedCeiledValue = formatCurrency(ceiledValue, this.currency, 0, true);
 
-        if (rawValue !== ceiledValue) {
-          return `≈${formattedCeiledValue} (${formattedRawValue})`;
-        }
+        if (rawValue !== ceiledValue) return `≈${formattedCeiledValue} (${formattedRawValue})`;
         return formattedCeiledValue;
       }
       case 'amount': {
@@ -235,8 +224,8 @@ export class Goals {
   }
 
   protected onPreviousStep() {
+    this.summary.set(null);
     this.goalFormStep.set(1);
-    this.showSummary.set(false);
     this.resetCalculatedFields();
   }
 
@@ -257,8 +246,9 @@ export class Goals {
 
     this.isSubmittingGoalsForm.set(true);
 
-    setTimeout(() => {
-      this.isSubmittingGoalsForm.set(false);
-    }, 1000);
+    const { targetAmount, monthlyContribution, endDate, targetCompletionStrategy } =
+      this.newGoalFormModel();
+
+    setTimeout(() => {}, 1000);
   }
 }
