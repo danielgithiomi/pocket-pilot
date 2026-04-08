@@ -11,7 +11,7 @@ import { DatePicker } from '@organisms/date-picker';
 import { DrawerService } from '@infrastructure/services';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { Component, computed, inject, signal, effect } from '@angular/core';
-import { addMonths, addOneMonthFromDate, getMonthDifference } from '@libs/utils';
+import { addMonths, addOneMonthFromDate, formatCurrency, getMonthDifference } from '@libs/utils';
 import { LucideAngularModule, Plus, ChevronsRight, ChevronsLeft } from 'lucide-angular';
 import {
   NewGoalSchema,
@@ -21,6 +21,7 @@ import {
   TargetCompletionStrategies,
   newGoalFormValidationSchema,
 } from './goals.types';
+import { AccountsService } from '@api/accounts.service';
 
 @Component({
   selector: 'app-goals',
@@ -52,25 +53,25 @@ export class Goals {
       switch (category) {
         case 'date': {
           // Strategy: BY DATE -> Calculate monthly contribution
-
           if (!endDate) {
             console.log('No end date');
             return;
           }
 
           const monthDifference = getMonthDifference(startDate, endDate);
-          console.log('monthDifference', monthDifference);
 
           const calculatedMonthlyContribution = totalAmount / monthDifference;
           const ceiledValue = Math.ceil(calculatedMonthlyContribution);
 
-          console.log('calculatedMonthlyContribution', calculatedMonthlyContribution);
-          console.log('ceiledValue', ceiledValue);
+          // Update form with calculated value
+          this.newGoalForm.monthlyContribution().controlValue.set(ceiledValue);
+          this.showSummary.set(true);
 
-          return {
-            rawValue: calculatedMonthlyContribution,
+          this.summary.set({
             ceiledValue,
-          };
+            rawValue: calculatedMonthlyContribution,
+          });
+          return;
         }
         case 'amount': {
           // Strategy: BY AMOUNT -> Calculate how many months to save
@@ -88,13 +89,17 @@ export class Goals {
           const calculatedEndDate = addMonths(startDate, ceiledValue);
           console.log('calculatedEndDate', calculatedEndDate);
 
-          return {
-            rawValue: calculatedEndDate,
+          // Update form with calculated value
+          // this.newGoalForm.endDate().controlValue.set(calculatedEndDate);
+
+          this.showSummary.set(true);
+          this.summary.set({
+            rawValue: monthsToSave,
             ceiledValue,
-          };
+          });
+          return;
         }
         default:
-          // No strategy selected or NULL
           return null;
       }
     });
@@ -109,19 +114,47 @@ export class Goals {
   protected readonly toastService = inject(ToastService);
   protected readonly goalsService = inject(GoalsService);
   protected readonly drawerService = inject(DrawerService);
+  protected readonly accountsService = inject(AccountsService);
 
   // Signals
   protected readonly goalFormStep = signal<1 | 2>(1);
+  protected readonly showSummary = signal<boolean>(false);
   protected readonly isGoalsFormOpen = signal<boolean>(false);
   protected readonly isBillsFormOpen = signal<boolean>(false);
+  protected readonly summary = signal<EffectResponse | null>(null);
   protected readonly isSubmittingGoalsForm = signal<boolean>(false);
   protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
 
   // Data
   protected readonly initialNewGoalFormState = initalNewGoalFormState;
+  protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();
 
   // Computed
+  protected readonly formattedGoalSummaryValue = computed<string | null>(() => {
+    const summary = this.summary();
+    const strategy = this.selectedCategory();
+    if (!summary) return null;
+
+    const { rawValue, ceiledValue } = summary;
+    switch (strategy) {
+      case 'date': {
+        const formattedCeiledValue = formatCurrency(ceiledValue, this.currency, 0, true);
+        const formattedRawValue = formatCurrency(rawValue, this.currency, 2, false);
+
+        if (rawValue !== ceiledValue) {
+          return `≈${formattedCeiledValue} (${formattedRawValue})`;
+        }
+        return formattedCeiledValue;
+      }
+      case 'amount': {
+        return ``;
+      }
+      default:
+        return null;
+    }
+  });
+
   protected readonly goalCreationStrategies = computed<RadioOption[]>(() =>
     TargetCompletionStrategies.map((strategy) => {
       let label: string = '';
@@ -140,20 +173,6 @@ export class Goals {
       };
     }),
   );
-
-  // protected readonly goalSummary = computed<string>(() => {
-  //   const form = this.newGoalForm;
-
-  //   const startDate = form.startDate().value();
-  //   const endDate = form.endDate().value();
-  //   const targetAmount = form.targetAmount().value();
-  //   const monthlyContribution = form.monthlyContribution().value();
-  //   const strategy = form.targetCompletionStrategy().value();
-
-  //   console.log(startDate, strategy, targetAmount, monthlyContribution, endDate);
-
-  //   return '';
-  // });
 
   protected readonly formattedGoalCategories = computed<RadioOption[]>(() => {
     if (this.goalCategories$.error()) {
@@ -195,9 +214,30 @@ export class Goals {
     this.newGoalFormModel.set(initalNewGoalFormState);
   }
 
+  protected resetCalculatedFields() {
+    const today = new Date();
+    const endDate = this.newGoalForm.endDate();
+    const targetAmount = this.newGoalForm.targetAmount();
+    const monthlyContribution = this.newGoalForm.monthlyContribution();
+
+    targetAmount.reset();
+    targetAmount.controlValue.set(null);
+
+    monthlyContribution.reset();
+    monthlyContribution.controlValue.set(null);
+
+    endDate.reset();
+    endDate.controlValue.set(addOneMonthFromDate(today));
+  }
+
   protected onNextStep() {
     this.goalFormStep.set(2);
-    console.log(this.newGoalFormModel());
+  }
+
+  protected onPreviousStep() {
+    this.goalFormStep.set(1);
+    this.showSummary.set(false);
+    this.resetCalculatedFields();
   }
 
   protected handleCloseForm(source: 'icon' | 'overlay') {

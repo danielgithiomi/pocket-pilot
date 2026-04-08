@@ -172,12 +172,22 @@
       }
     </form>
 
-    @if(goalFormStep() === 2) {
+    @if(showSummary() && goalFormStep() === 2) {
       <div slot="sub-footer">
-        <p class="text-muted-text text-right text-xs italic my-1">
-          You will need to contribute
-          <span class="font-semibold text-primary">{{ 1000 }}</span> per month to reach your goal.
-        </p>
+        @switch (selectedCategory()) {
+          @case ('date') {
+            <p class="text-muted-text text-right text-xs italic my-1">
+              You will need to contribute
+              <span class="font-bold text-primary">{{ formattedGoalSummaryValue() }}</span> per month!.
+            </p>
+          }
+          @case ('amount') {
+            <p class="text-muted-text text-right text-xs italic my-1">
+              It will take you
+              <span class="font-bold text-primary">{{ summary()?.ceiledValue }}</span> months to reach your goal.
+            </p>
+          }
+        }
       </div>
     }
 
@@ -185,13 +195,13 @@
       @if (goalFormStep() === 2) {
         <atom-button
           type="button"
-          id="back-goal-step"
           [inverted]="true"
           variant="secondary"
-          (clicked)="goalFormStep.set(1)"
+          id="previous-goal-step"
+          (clicked)="onPreviousStep()"
         >
           <div class="w-full flex flex-row items-center justify-between gap-4 py-1 lg:py-0">
-            <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="back-goal-step"></lucide-icon>
+            <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="previous-goal-step"></lucide-icon>
             <span class="hidden lg:block">Previous</span>
           </div>
         </atom-button>
