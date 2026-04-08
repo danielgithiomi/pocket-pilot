@@ -2,17 +2,26 @@ import { Input } from '@atoms/input';
 import { Form } from '@organisms/form';
 import { Select } from '@atoms/select';
 import { Button } from '@atoms/button';
+import { GoalItem } from './goal-item';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
+import { GoalCategoryEnum } from '@global/enums';
 import { GoalsService } from '@api/goals.service';
 import { RadioOption, Radio } from '@atoms/radio';
+import { CreateGoalRequest } from '@global/types';
+import { DatePicker } from '@organisms/date-picker';
+import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
+import { GoalItemSkeleton } from './goal-item/goal-item.skeleton';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
-import { Component, computed, inject, signal } from '@angular/core';
+import { NoData } from '@components/structural/main/no-data/no-data';
+import { Component, computed, inject, signal, effect } from '@angular/core';
 import { LucideAngularModule, Plus, ChevronsRight, ChevronsLeft } from 'lucide-angular';
+import { addMonths, addOneMonthFromDate, formatCurrency, getMonthDifference } from '@libs/utils';
 import {
   NewGoalSchema,
+  EffectResponse,
   initalNewGoalFormState,
   TargetCompletionStrategy,
   TargetCompletionStrategies,
@@ -23,9 +32,78 @@ import {
   selector: 'app-goals',
   styleUrl: './goals.css',
   templateUrl: './goals.html',
-  imports: [NgClass, CalendarModule, Button, LucideAngularModule, Radio, Form, Input, Select],
+  imports: [
+    Form,
+    Radio,
+    Input,
+    NoData,
+    Select,
+    Button,
+    NgClass,
+    GoalItem,
+    DatePicker,
+    CalendarModule,
+    GoalItemSkeleton,
+    LucideAngularModule,
+  ],
 })
 export class Goals {
+  constructor() {
+    effect(() => {
+      const endDate = this.newGoalForm.endDate().value();
+      const startDate = this.newGoalForm.startDate().value();
+      const targetAmount = this.newGoalForm.targetAmount().value();
+      const monthlyContribution = this.newGoalForm.monthlyContribution().value();
+
+      if (!targetAmount) {
+        this.summary.set(null);
+        return;
+      }
+
+      const category = this.selectedCategory();
+      switch (category) {
+        // Strategy: BY DATE -> Calculate monthly contribution
+        case 'date': {
+          if (!endDate) return;
+
+          const monthDifference = getMonthDifference(startDate, endDate);
+
+          const calculatedMonthlyContribution = targetAmount / monthDifference;
+          const ceiledValue = Math.ceil(calculatedMonthlyContribution);
+
+          this.newGoalForm.monthlyContribution().controlValue.set(ceiledValue);
+
+          this.summary.set({
+            ceiledValue,
+            rawValue: calculatedMonthlyContribution,
+          });
+
+          return;
+        }
+        // Strategy: BY AMOUNT -> Calculate how many months to save
+        case 'amount': {
+          if (!monthlyContribution || monthlyContribution <= 0) return;
+
+          const monthsToSave = targetAmount / monthlyContribution;
+          const ceiledValue = Math.ceil(monthsToSave);
+
+          const calculatedEndDate = addMonths(startDate, ceiledValue);
+
+          if (calculatedEndDate.getTime() !== endDate.getTime())
+            this.newGoalForm.endDate().controlValue.set(calculatedEndDate);
+
+          this.summary.set({
+            rawValue: monthsToSave,
+            ceiledValue,
+          });
+
+          return;
+        }
+        default:
+          return null;
+      }
+    });
+  }
   // Icons
   protected readonly iconSize = 16;
   protected readonly PlusIcon = Plus;
@@ -36,18 +114,48 @@ export class Goals {
   protected readonly toastService = inject(ToastService);
   protected readonly goalsService = inject(GoalsService);
   protected readonly drawerService = inject(DrawerService);
+  protected readonly accountsService = inject(AccountsService);
 
   // Signals
   protected readonly goalFormStep = signal<1 | 2>(1);
   protected readonly isGoalsFormOpen = signal<boolean>(false);
   protected readonly isBillsFormOpen = signal<boolean>(false);
+  protected readonly summary = signal<EffectResponse | null>(null);
   protected readonly isSubmittingGoalsForm = signal<boolean>(false);
   protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
 
   // Data
+  protected readonly bills$ = 0;
+  protected readonly goals$ = this.goalsService.getUserGoals();
+  protected readonly initialNewGoalFormState = initalNewGoalFormState;
+  protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();
 
   // Computed
+  protected readonly isFetchingGoals = computed(() => this.goals$.isLoading());
+
+  protected readonly formattedGoalSummaryValue = computed<string | null>(() => {
+    const summary = this.summary();
+    const strategy = this.selectedCategory();
+    if (!summary) return 'N/A';
+
+    const { rawValue, ceiledValue } = summary;
+    switch (strategy) {
+      case 'date': {
+        const formattedRawValue = formatCurrency(rawValue, this.currency, 2, false);
+        const formattedCeiledValue = formatCurrency(ceiledValue, this.currency, 0, true);
+
+        if (rawValue !== ceiledValue) return `≈${formattedCeiledValue} (${formattedRawValue})`;
+        return formattedCeiledValue;
+      }
+      case 'amount': {
+        return ``;
+      }
+      default:
+        return null;
+    }
+  });
+
   protected readonly goalCreationStrategies = computed<RadioOption[]>(() =>
     TargetCompletionStrategies.map((strategy) => {
       let label: string = '';
@@ -56,7 +164,7 @@ export class Goals {
           label = 'By Completion Date';
           break;
         case 'amount':
-          label = 'By Targeted Amount';
+          label = 'By Monthly Contribution';
           break;
       }
 
@@ -92,7 +200,8 @@ export class Goals {
   });
 
   // Calendar
-  protected readonly minDate = signal<Date | null>(new Date());
+  protected readonly minStartDate = signal<Date>(new Date());
+  protected readonly minEndDate = signal<Date>(addOneMonthFromDate(new Date()));
 
   // Form
   protected readonly newGoalFormModel = signal<NewGoalSchema>(initalNewGoalFormState);
@@ -100,10 +209,37 @@ export class Goals {
 
   // Methods
   protected resetGoalForm() {
+    this.summary.set(null);
     this.goalFormStep.set(1);
-    this.newGoalForm().reset();
     this.selectedCategory.set(null);
+    this.newGoalForm().reset(this.newGoalFormModel());
     this.newGoalFormModel.set(initalNewGoalFormState);
+  }
+
+  protected resetCalculatedFields() {
+    const today = new Date();
+    const endDate = this.newGoalForm.endDate();
+    const targetAmount = this.newGoalForm.targetAmount();
+    const monthlyContribution = this.newGoalForm.monthlyContribution();
+
+    targetAmount.reset();
+    targetAmount.controlValue.set(null);
+
+    monthlyContribution.reset();
+    monthlyContribution.controlValue.set(null);
+
+    endDate.reset();
+    endDate.controlValue.set(addOneMonthFromDate(today));
+  }
+
+  protected onNextStep() {
+    this.goalFormStep.set(2);
+  }
+
+  protected onPreviousStep() {
+    this.summary.set(null);
+    this.goalFormStep.set(1);
+    this.resetCalculatedFields();
   }
 
   protected handleCloseForm(source: 'icon' | 'overlay') {
@@ -123,8 +259,33 @@ export class Goals {
 
     this.isSubmittingGoalsForm.set(true);
 
+    const { targetCompletionStrategy, ...formData } = this.newGoalFormModel();
+
+    const payload: CreateGoalRequest = {
+      ...formData,
+      targetAmount: formData.targetAmount!,
+      category: formData.category as GoalCategoryEnum,
+      monthlyContribution: formData.monthlyContribution!,
+    };
+
     setTimeout(() => {
-      this.isSubmittingGoalsForm.set(false);
+      this.goalsService.createNewGoal(payload).subscribe({
+        next: () => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Goal created!',
+            details: 'Your financial goal has been created successfully.',
+          });
+
+          this.goals$.reload();
+          this.resetGoalForm();
+          this.isGoalsFormOpen.set(false);
+        },
+        complete: () => {
+          this.resetGoalForm();
+          this.isSubmittingGoalsForm.set(false);
+        },
+      });
     }, 1000);
   }
 }

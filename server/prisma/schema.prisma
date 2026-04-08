@@ -35,6 +35,7 @@ enum GoalStatus {
     ACTIVE
     PAUSED
     FAILED
+    PENDING
     COMPLETED
 }
 
@@ -115,7 +116,7 @@ model Categories {
     userId String @unique
 }
 
-model Goal {
+model Goals {
     id     String @id @default(uuid())
     userId String
 

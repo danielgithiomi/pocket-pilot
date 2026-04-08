@@ -1,0 +1,59 @@
+@reference "tailwindcss";
+
+.goal-item {
+  @apply flex flex-row items-center gap-3 my-2 p-1 cursor-default!;
+
+  .goal-item-icon {
+    @apply shrink-0 bg-(--body-background) size-14 rounded-lg grid place-items-center;
+  }
+
+  .goal-item-content {
+    @apply flex-1 flex flex-col gap-2 overflow-hidden;
+
+    .goal-item-details {
+      @apply flex flex-row gap-2 items-end justify-between text-xs;
+
+      .goal-item-names {
+        @apply flex-1 flex flex-col space-y-px overflow-hidden;
+
+        p {
+          @apply w-full line-clamp-1 truncate;
+        }
+      }
+
+      .goal-item-amounts {
+        @apply flex flex-col items-end gap-1;
+
+        .goal-status {
+          @apply opacity-75 text-xs text-(--muted-text) rounded-lg px-2 py-0.5;
+
+          .goal-status-text {
+            @apply text-(--white);
+            font-size: 0.625rem;
+          }
+        }
+
+        p {
+          @apply text-(--muted-text);
+
+          span {
+            @apply text-(--primary-text);
+          }
+        }
+      }
+    }
+
+    .goal-item-timeline {
+      @apply text-xs text-(--muted-text);
+
+      .remaining-time {
+        @apply text-(--primary) font-semibold;
+      }
+
+      .monthly-contribution {
+        @apply text-(--muted-text);
+        font-size: 0.625rem;
+      }
+    }
+  }
+}

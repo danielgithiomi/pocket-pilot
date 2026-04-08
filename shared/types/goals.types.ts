@@ -6,12 +6,12 @@ export type GoalCategory = GoalCategoryEnum;
 // INPUTS
 export interface CreateGoalRequest {
   name: string;
-  description: string;
-  startDate: Date;
   endDate: Date;
+  startDate: Date;
+  description: string;
+  targetAmount: number;
   category: GoalCategory;
   monthlyContribution: number;
-  targetAmount: number;
 }
 
 // OUTPUTS

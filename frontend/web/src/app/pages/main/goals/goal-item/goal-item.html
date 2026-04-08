@@ -1,0 +1,48 @@
+<div [id]="goalItemId()" class="goal-item">
+  <div class="goal-item-icon">
+    <lucide-icon
+    [size]="iconSize"
+    color="var(--primary-text)"
+    [name]="ICON_MAP[goal().category]"
+    ></lucide-icon>
+  </div>
+
+  <div class="goal-item-content">
+    <div class="goal-item-details">
+      <div class="goal-item-names">
+        <p>{{ goal().name }}</p>
+        <p class="text-muted-text text-[0.65rem]">{{ goal().description }}</p>
+      </div>
+
+      <div class="goal-item-amounts">
+        <div class="goal-status" [ngClass]="STATUS_COLOR_MAP[goal().status]">
+          <p class="goal-status-text">{{ goal().status }}</p>
+        </div>
+        <p>
+          <span>{{ formatCurrency(goal().currentAmount) }}</span
+          >/{{ formatCurrency(goal().targetAmount) }}
+        </p>
+      </div>
+    </div>
+
+    <div class="goal-item-progress">
+      <atom-progress-bar
+        id="goal-progress"
+        [showEditIcon]="false"
+        [allowAnimation]="false"
+        [showValueLabels]="false"
+        [maxValue]="goal().targetAmount"
+        [currentValue]="goal().currentAmount"
+      ></atom-progress-bar>
+    </div>
+
+    <div class="goal-item-timeline">
+      <p>
+        <span class="remaining-time">{{ remainingTime() }}</span> left to save.
+        <span class="monthly-contribution"
+          >[{{ formatCurrency(goal().monthlyContribution) }} monthly]</span
+        >
+      </p>
+    </div>
+  </div>
+</div>

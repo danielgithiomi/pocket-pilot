@@ -1,0 +1,71 @@
+@reference 'tailwindcss';
+
+.date-picker-field {
+  @apply py-2 gap-2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-picker-wrapper {
+  width: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+.date-picker-wrapper input {
+  @apply focus:outline-(--primary) rounded-lg border-none focus:border-none focus:outline-2;
+  cursor: pointer !important;
+}
+
+.date-picker-icons {
+  @apply gap-1;
+  display: flex;
+  right: 0.75rem;
+  position: absolute;
+  align-items: center;
+}
+
+.date-picker-icon {
+  cursor: pointer;
+  transition: color 300ms ease-in-out;
+}
+
+.date-picker-icon:hover {
+  color: var(--primary);
+}
+
+.clear-icon,
+.calendar-icon {
+  color: var(--primary-text);
+}
+
+.clear-icon:hover,
+.calendar-icon:hover {
+  color: var(--primary);
+}
+
+.calendar-dropdown {
+  right: 0;
+  z-index: 1000;
+  padding: 0.5rem;
+  position: absolute;
+  border-radius: 0.5rem;
+  background: var(--white);
+  top: calc(100% + 0.25rem);
+  border: 1px solid var(--primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.date-picker-errors-wrapper {
+  gap: 0.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-picker-error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--error);
+}

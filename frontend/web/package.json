@@ -12,8 +12,8 @@
     "test": "ng test",
     "start": "ng serve",
     "build": "ng build",
-    "predev": "ts-node scripts/set-env.ts",
-    "prebuild": "ts-node scripts/set-env.ts",
+    "predev": "ts-node scripts/set-env.development.ts",
+    "prebuild": "ts-node scripts/set-env.production.ts",
     "watch": "ng build --watch --configuration development"
   },
   "prettier": {

@@ -31,31 +31,35 @@
     {{ formattedTotalSpending() }}
   </div>
 
-  <!-- Segmented Progress Bar -->
-  <div class="progress-track">
-    @for (segment of animatedSegments(); track segment.id; let i = $index) {
-      <div
-        class="progress-segment"
-        [class.first]="i === 0"
-        [style.--segment-color]="segment.color"
-        [style.width.%]="segment.animatedPercentage"
-        [class.last]="i === animatedSegments().length - 1"
-      >
-        <div class="stripe-pattern"></div>
-      </div>
-    }
-  </div>
-
-  <!-- Legend -->
-  <div class="legend">
-    @for (category of categoriesWithPercentage(); track category.id) {
-      <div class="legend-item">
-        <div class="legend-left">
-          <span class="legend-color" [style.background-color]="category.color"></span>
-          <span class="legend-label">{{ category.label }}</span>
+  @if (!hasExpenseTransactions()) {
+    <p class="no-expenses">No expenses so far this month</p>
+  } @else {
+    <!-- Segmented Progress Bar -->
+    <div class="progress-track">
+      @for (segment of animatedSegments(); track segment.id; let i = $index) {
+        <div
+          class="progress-segment"
+          [class.first]="i === 0"
+          [style.--segment-color]="segment.color"
+          [style.width.%]="segment.animatedPercentage"
+          [class.last]="i === animatedSegments().length - 1"
+        >
+          <div class="stripe-pattern"></div>
         </div>
-        <span class="legend-percentage">{{ category.percentage }}%</span>
-      </div>
-    }
-  </div>
+      }
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      @for (category of categoriesWithPercentage(); track category.id) {
+        <div class="legend-item">
+          <div class="legend-left">
+            <span class="legend-color" [style.background-color]="category.color"></span>
+            <span class="legend-label">{{ category.label }}</span>
+          </div>
+          <span class="legend-percentage">{{ category.percentage }}%</span>
+        </div>
+      }
+    </div>
+  }
 </div>

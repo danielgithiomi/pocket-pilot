@@ -4,6 +4,7 @@ export type AutoComplete =
   | 'off'
   | 'name'
   | 'email'
+  | 'amount'
   | 'username'
   | 'phone-number'
   | 'new-password'

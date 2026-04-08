@@ -20,14 +20,6 @@
   @apply flex items-center space-x-2 p-2 py-1 cursor-pointer transition-colors;
 }
 
-/* .radio-option:hover:not(.disabled) {
-  @apply border-gray-400;
-}
-
-.radio-option.selected {
-  @apply border-blue-500;
-} */
-
 .radio-option.disabled {
   @apply opacity-50 cursor-not-allowed;
 }
@@ -45,5 +37,5 @@
 }
 
 .radio-select-error {
-  @apply text-sm text-red-600;
+  @apply text-sm text-(--error);
 }

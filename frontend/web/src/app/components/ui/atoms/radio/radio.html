@@ -7,10 +7,14 @@
       <span class="required">*</span>
     }
     {{ label() }}:
+    <input [id]="inputId()" class="hidden" />
   </label>
 
   <div
+    [id]="inputId()"
+    role="radiogroup"
     class="radio-options-wrapper"
+    [attr.aria-labelledby]="'radio-' + id() + '-label'"
     [ngClass]="{
       'layout-grid': layout() === 'grid',
       'layout-vertical': layout() === 'vertical',
@@ -19,13 +23,17 @@
   >
     @for (option of options(); track option.value) {
       <div
+        role="radio"
         class="radio-option"
+        (click)="onOptionClick(option)"
+        [attr.aria-checked]="isOptionSelected(option)()"
+        [attr.aria-disabled]="isOptionDisabled(option)()"
+        [attr.tabindex]="isOptionDisabled(option)() ? -1 : 0"
         [ngClass]="{
           'text-inverted-text': inverted(),
           selected: isOptionSelected(option)(),
           disabled: isOptionDisabled(option)(),
         }"
-        (click)="onOptionClick(option)"
       >
         <div class="radio-icon">
           @if (isOptionSelected(option)()) {
@@ -35,21 +43,6 @@
               fillColor="var(--primary)"
               [color]="inverted() ? 'var(--inverted-text)' : 'var(--primary-text)'"
             />
-            <!-- @if (isMultiple()) {
-              <lucide-icon
-                [size]="iconSize"
-                name="check-mutliple"
-                [img]="PartialCheck"
-                color="var(--primary)"
-              />
-            } @else {
-              <lucide-icon
-                [size]="iconSize"
-                name="check-single"
-                [img]="CompleteCheck"
-                color="var(--primary)"
-              />
-            } -->
           } @else {
             <lucide-icon name="unchecked" [img]="Unchecked" [size]="iconSize" />
           }

@@ -1,9 +1,10 @@
+import { NgClass } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
 
 @Component({
   selector: 'no-data',
-  imports: [LottieComponent],
+  imports: [LottieComponent, NgClass],
   styles: `
     .no-data {
       animation: slideHalfDown 0.3s ease-in-out;
@@ -16,11 +17,14 @@ import { LottieComponent, AnimationOptions } from 'ngx-lottie';
         [width]="animationDimensions()"
         [height]="animationDimensions()"
       />
-      <p class="text-center font-medium uppercase text-muted">{{ message() }}</p>
+      <p class="text-center font-medium uppercase text-muted" [ngClass]="messageClass()">
+        {{ message() }}
+      </p>
     </div>
   `,
 })
 export class NoData {
+  readonly messageClass = input<string>('');
   readonly message = input.required<string>();
   readonly animationDimensions = input<string>('300px');
 

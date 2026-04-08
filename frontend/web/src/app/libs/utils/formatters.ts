@@ -35,6 +35,53 @@ export function formatFullDate(date: string): string {
 }
 
 /**
+ * Adds months to a date
+ * @param date The date to add months to
+ * @param months The number of months to add
+ * @returns The date with months added
+ */
+export function addMonths(date: Date, months: number): Date {
+  const result = new Date(date);
+  result.setMonth(result.getMonth() + months);
+  return result;
+}
+
+/**
+ * Adds one month to a date
+ * @param date The date to add one month to
+ * @returns The date with one month added
+ */
+export function addOneMonthFromDate(date: Date): Date {
+  return addMonths(date, 1);
+}
+
+/**
+ * Calculates the difference in months between two dates
+ * @param start The start date
+ * @param end The end date
+ * @returns The difference in months
+ */
+export function getMonthDifference(start: Date, end: Date): number {
+  const years = end.getFullYear() - start.getFullYear();
+  const months = end.getMonth() - start.getMonth();
+
+  return years * 12 + months;
+}
+
+/**
+ * Formats a date as a short date string for input fields
+ * @param date The date to format
+ * @returns The formatted date string
+ */
+export function formatInputFieldDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+/**
  * Formats a number as currency
  * @param amount The amount to format
  * @param currency The currency code (e.g., 'USD', 'EUR')
@@ -81,8 +128,6 @@ export function denormalizeCategoryName(normalizedName: string): string {
     .replace(/[_-]/g, ' ') // underscores & hyphens → spaces
     .split(' ')
     .filter(Boolean) // remove empty strings (safety)
-    .map(
-      (word) => word.charAt(0).toUpperCase() + word.slice(1)
-    )
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }

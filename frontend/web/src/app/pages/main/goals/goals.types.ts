@@ -1,5 +1,6 @@
 import { GoalCategoryEnum } from '@global/enums';
 import { required, schema } from '@angular/forms/signals';
+import { addOneMonthFromDate } from '@libs/utils';
 
 // TYPES
 export const TargetCompletionStrategies = ['date', 'amount'] as const;
@@ -8,24 +9,27 @@ export type TargetCompletionStrategy = (typeof TargetCompletionStrategies)[numbe
 // FORM
 export type NewGoalSchema = {
   name: string;
-  description: string;
-  startDate: Date;
   endDate: Date;
-  category: GoalCategoryEnum | "";
-  monthlyContribution: number | null;
+  startDate: Date;
+  description: string;
   targetAmount: number | null;
+  category: GoalCategoryEnum | '';
+  monthlyContribution: number | null;
   targetCompletionStrategy: TargetCompletionStrategy | null;
 };
 
 export const initalNewGoalFormState: NewGoalSchema = {
-  name: '',
-  description: '',
+  // Step 1
   startDate: new Date(),
-  endDate: new Date(),
-  category: '',
-  monthlyContribution: null,
-  targetAmount: null,
   targetCompletionStrategy: null,
+
+  // Step 2
+  name: '',
+  category: '',
+  description: '',
+  targetAmount: null,
+  monthlyContribution: null,
+  endDate: addOneMonthFromDate(new Date()),
 };
 
 export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
@@ -44,21 +48,21 @@ export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
   // Category
   required(root.category, { message: 'The goal category is required field!' });
 
+  // Target Amount
+  required(root.targetAmount, { message: 'The goal target amount is required field!' });
+
+  // Monthly Contribution
+  required(root.monthlyContribution, {
+    message: 'The goal monthly contribution is required field!',
+  });
+
   // Target Completion Strategy
   required(root.targetCompletionStrategy, {
     message: 'The goal target completion strategy is required field!',
   });
-
-  //   validate(root.targetCompletionStrategy, (context) => {
-  //     const strategy = context.value();
-  //     if (strategy === 'byAmount') {
-  //       if (root.targetAmount == 0) {
-  //         return {
-  //           kind: 'target-amount-required',
-  //           message: 'The goal target amount is required field!',
-  //         };
-  //       }
-  //     }
-  //     return null;
-  //   });
 });
+
+export interface EffectResponse {
+  rawValue: number;
+  ceiledValue: number;
+}

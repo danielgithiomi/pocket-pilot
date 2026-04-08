@@ -20,6 +20,7 @@ export class Input {
   invertedIcon = input<boolean>(false);
 
   inputClassName = input<string>('');
+  wrapperClassName = input<string>('');
 
   type = input<InputType>('text');
   placeholder = input.required<string>();

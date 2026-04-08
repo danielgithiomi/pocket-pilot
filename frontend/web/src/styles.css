@@ -34,7 +34,8 @@
   --tertiary: #c6ff33; /* Yellow */
   --quaternary: #fe7f2d; /* Orange */
   --transparent: transparent;
-  --loader-primary: rgb(91, 146, 121, 50%);
+  --loader-primary: rgba(91, 146, 121, 50%);
+  --scrollbar-track: rgb(91, 146, 121, 25%);
 
   /* State Colors */
   --success: #22c55d;
@@ -136,6 +137,7 @@
 
   --color-muted: var(--muted);
   --color-loader-primary: var(--loader-primary);
+  --color-scrollbar-track: var(--scrollbar-track);
 
   /* State */
   --color-success: var(--success);
@@ -273,7 +275,7 @@ main {
     }
 
     label {
-      @apply flex items-center gap-px;
+      @apply flex items-center gap-px text-[0.875rem];
 
       .required {
         @apply text-sm text-(--expense);
@@ -283,6 +285,10 @@ main {
     input,
     select {
       @apply w-full bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
+    }
+
+    input::placeholder {
+      @apply text-muted-text;
     }
 
     select {
@@ -499,4 +505,28 @@ input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-track {
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 0.5rem;
+  background: var(--loader-primary);
+}
+
+::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
 }

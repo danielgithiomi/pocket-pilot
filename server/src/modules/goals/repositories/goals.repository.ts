@@ -6,8 +6,14 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 export class GoalsRepository {
     constructor(private readonly db: DatabaseService) {}
 
+    getUserGoals(userId: string): Promise<GoalDto[]> {
+        return this.db.goals.findMany({
+            where: { userId },
+        });
+    }
+
     createGoal(userId: string, payload: CreateGoalDto): Promise<GoalDto> {
-        return this.db.goal.create({
+        return this.db.goals.create({
             data: {
                 userId,
                 ...payload,
