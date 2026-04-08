@@ -10,7 +10,7 @@ import { Component, computed, effect, input, signal, inject, output } from '@ang
   styleUrl: './progress-bar.css',
   imports: [CommonModule, LucideAngularModule],
   template: `
-    <div class="spending-card" [class.vertical]="variant() === 'vertical'">
+    <div [id]="id()" class="spending-card" [class.vertical]="variant() === 'vertical'">
       <div class="progress-container" [class.vertical]="variant() === 'vertical'">
         <div
           class="progress-track"
@@ -34,16 +34,18 @@ import { Component, computed, effect, input, signal, inject, output } from '@ang
           }
         </div>
 
-        <div class="value-labels" [class.vertical]="variant() === 'vertical'">
-          <span class="current-value"
-            >At:<span
-              [ngClass]="{ 'group-hover:text-error!': isExceeded() }"
-              class="group-hover:text-primary font-bold transition-all duration-200"
-              >{{ formattedCurrentValue() }}</span
-            ></span
-          >
-          <span class="max-value">{{ formattedMaxValue() }}</span>
-        </div>
+        @if (showValueLabels()) {
+          <div class="value-labels" [class.vertical]="variant() === 'vertical'">
+            <span class="current-value"
+              >At:<span
+                [ngClass]="{ 'group-hover:text-error!': isExceeded() }"
+                class="group-hover:text-primary font-bold transition-all duration-200"
+                >{{ formattedCurrentValue() }}</span
+              ></span
+            >
+            <span class="max-value">{{ formattedMaxValue() }}</span>
+          </div>
+        }
       </div>
 
       @if (showEditIcon()) {
@@ -62,10 +64,12 @@ import { Component, computed, effect, input, signal, inject, output } from '@ang
 })
 export class ProgressBar {
   // Input
+  readonly id = input.required<string>();
   readonly maxValue = input.required<number>();
   readonly showEditIcon = input<boolean>(true);
   readonly allowAnimation = input<boolean>(true);
   readonly showPercentage = input<boolean>(false);
+  readonly showValueLabels = input<boolean>(true);
   readonly variant = input<Variant>('horizontal');
   readonly animationDuration = input<number>(600);
   readonly currentValue = input.required<number>();

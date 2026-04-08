@@ -52,7 +52,9 @@
               message="No goals yet. Get started today!"
             />
           } @else {
-            <p>Goals content goes here</p>
+            @for (goal of goals; track goal.id) {
+              <goal-item [goal]="goal" [id]="goal.id"></goal-item>
+            }
           }
         </div>
       </div>

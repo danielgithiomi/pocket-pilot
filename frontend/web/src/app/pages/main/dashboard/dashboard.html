@@ -69,6 +69,7 @@
             <div class="loader"></div>
           } @else {
             <atom-progress-bar
+              id="spending-limit-progress"
               [currentValue]="totalExpenses()"
               [maxValue]="maximumSpendingLimit()"
               (editClick)="onEditSpendingLimit()"

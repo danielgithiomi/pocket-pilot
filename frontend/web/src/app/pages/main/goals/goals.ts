@@ -2,6 +2,7 @@ import { Input } from '@atoms/input';
 import { Form } from '@organisms/form';
 import { Select } from '@atoms/select';
 import { Button } from '@atoms/button';
+import { GoalItem } from './goal-item';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
@@ -13,7 +14,7 @@ import { DatePicker } from '@organisms/date-picker';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
-import { NoData } from "@components/structural/main/no-data/no-data";
+import { NoData } from '@components/structural/main/no-data/no-data';
 import { Component, computed, inject, signal, effect } from '@angular/core';
 import { LucideAngularModule, Plus, ChevronsRight, ChevronsLeft } from 'lucide-angular';
 import { addMonths, addOneMonthFromDate, formatCurrency, getMonthDifference } from '@libs/utils';
@@ -38,10 +39,11 @@ import {
     Select,
     Button,
     NgClass,
+    GoalItem,
     DatePicker,
     CalendarModule,
     LucideAngularModule,
-],
+  ],
 })
 export class Goals {
   constructor() {
@@ -263,7 +265,6 @@ export class Goals {
     };
 
     setTimeout(() => {
-
       this.goalsService.createNewGoal(payload).subscribe({
         next: () => {
           this.toastService.show({
@@ -271,16 +272,16 @@ export class Goals {
             title: 'Goal created!',
             details: 'Your financial goal has been created successfully.',
           });
-          
+
+          this.goals$.reload();
           this.resetGoalForm();
           this.isGoalsFormOpen.set(false);
         },
         complete: () => {
           this.resetGoalForm();
           this.isSubmittingGoalsForm.set(false);
-        }
+        },
       });
-
     }, 1000);
   }
 }
