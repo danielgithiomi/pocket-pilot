@@ -82,7 +82,7 @@
     title="Edit Profile"
     [class.hidden]="!isEditFormOpen()"
     (closeForm)="isEditFormOpen.set(false)"
-    description="Update your profile information"
+    description="Update your personal information."
   >
     <form slot="content" id="edit-user-profile" (submit)="submitEditProfileForm($event)">
       <atom-input

@@ -69,7 +69,10 @@
                 <div class="category-item group/item income">
                   <p>{{ income }}</p>
 
-                  <button class="category-icon atom-icon" (click)="deleteCategory(income, CategoryTypeEnum.INCOME)">
+                  <button
+                    class="category-icon atom-icon"
+                    (click)="deleteCategory(income, CategoryTypeEnum.INCOME)"
+                  >
                     <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
                   </button>
                 </div>
@@ -87,7 +90,10 @@
                 <div class="category-item group/item expense">
                   <p>{{ expense }}</p>
 
-                  <button class="category-icon atom-icon" (click)="deleteCategory(expense, CategoryTypeEnum.EXPENSE)">
+                  <button
+                    class="category-icon atom-icon"
+                    (click)="deleteCategory(expense, CategoryTypeEnum.EXPENSE)"
+                  >
                     <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
                   </button>
                 </div>
@@ -103,10 +109,10 @@
 @if (isFormOpen()) {
   <organism-form
     id="transactions"
-    title="Add Transaction"
+    title="New Category"
     [class.hidden]="!isFormOpen()"
     (closeForm)="handleCloseForm()"
-    description="Create a new transaction"
+    description="Create a new category"
   >
     <form slot="content" id="category-form" (submit)="submitCategory($event)">
       <atom-input
@@ -121,7 +127,7 @@
       />
 
       <div class="flex flex-col items-start gap-1">
-        <p class="text-inverted-text">Category Type:</p>
+        <p class="text-inverted-text"><span class="text-xs text-error mr-0.5">*</span>Type:</p>
 
         <atom-tab-list
           [items]="categoryTabItems"

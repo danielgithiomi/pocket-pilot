@@ -38,7 +38,9 @@ import {
               [ngClass]="{ 'active-icon': linkActive() }"
             />
           </div>
-          <p class="link-text">{{ formattedLinkName() }}</p>
+          <p class="link-text" [ngClass]="{ 'dark:invert-100': linkActive() }">
+            {{ formattedLinkName() }}
+          </p>
         </div>
         <div class="navigation-arrow">
           <lucide-angular [size]="12" color="white" name="chevron-right" [img]="chevronRight" />
