@@ -1,4 +1,4 @@
-import { NavLink } from './nav-link';
+import { NavLink } from './nav-link/nav-link';
 import { ImageDimensions } from '@libs/types';
 import { Chevron } from '@components/ui/atoms/icons';
 import { LucideAngularModule, X } from 'lucide-angular';
