@@ -48,13 +48,14 @@
           @let goals = goals$.value()?.data;
           @let goalCount = goals?.length || 0;
           <div
-            class="card-content p-0!"
+            class="card-content"
             [ngClass]="{
-              'grid place-items-center': goalCount == 0,
+              'grid place-items-center p-0!': goalCount == 0,
             }"
           >
             @if (!goals || goalCount == 0) {
               <no-data
+                class="mb-10"
                 messageClass="text-xs"
                 animationDimensions="200px"
                 message="No goals yet. Get started today!"
@@ -94,9 +95,9 @@
         @let bills = bills$.value()?.data;
         @let billCount = bills?.length || 0;
         <div
-          class="card-content p-0!"
+          class="card-content"
           [ngClass]="{
-            'grid place-items-center': billCount == 0,
+            'grid place-items-center p-0!': billCount == 0,
           }"
         >
           @if (isFetchingBills()) {
@@ -109,6 +110,7 @@
             } @else {
               @if (billCount == 0) {
                 <no-data
+                  class="mb-10"
                   messageClass="text-xs"
                   animationDimensions="200px"
                   message="No bills yet. Get started today!"
