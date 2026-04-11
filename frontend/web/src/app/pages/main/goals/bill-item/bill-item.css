@@ -1,0 +1,29 @@
+@reference 'tailwindcss';
+
+.bill-item {
+  @apply flex flex-row items-center justify-between gap-3 p-2;
+
+  .bill-item-logo {
+    @apply shrink-0 grid place-items-center;
+  }
+
+  .bill-item-content {
+    @apply flex-1 flex flex-col gap-2;
+
+    .bill-item-title {
+      @apply font-semibold;
+    }
+    
+    .bill-item-charge {
+      @apply text-sm text-(--muted-text);
+    }
+  }
+
+  .bill-item-amount {
+    @apply shrink-0;
+
+    p {
+      @apply font-semibold;
+    }
+  }
+}

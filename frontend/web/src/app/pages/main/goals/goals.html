@@ -61,7 +61,7 @@
               />
             } @else {
               @for (goal of goals; track goal.id) {
-                <goal-item [goal]="goal" [id]="goal.id"></goal-item>
+                <goal-item [goal]="goal"></goal-item>
               }
             }
           </div>

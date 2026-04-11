@@ -15,6 +15,8 @@ export class BillsService {
 
   getBillTypes = () => this.resource.getBillTypes;
 
+  getUserBills = () => this.resource.getUserBills;
+
   createNewBill = (payload: CreateBillPayload): Observable<Bill> => {
     return this.mutation.createNewUserBill(payload).pipe(
       map((response: IStandardResponse<Bill>) => response.data),

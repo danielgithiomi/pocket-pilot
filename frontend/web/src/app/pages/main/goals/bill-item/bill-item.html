@@ -1,0 +1,14 @@
+<div [id]="billItemId()" class="bill-item">
+  <div class="bill-item-logo">
+    <lucide-angular name="bill-item-logo" [img]="sailboat" [size]="iconSize"></lucide-angular>
+  </div>
+
+  <div class="bill-item-content">
+    <p class="bill-item-title">{{ billItem().name }}</p>
+    <p class="bill-item-charge">Next billable date: {{ billItem().dueDate }}</p>
+  </div>
+
+  <div class="bill-item-amount">
+    <p>{{ billItem().amount }}</p>
+  </div>
+</div>
