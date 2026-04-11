@@ -115,3 +115,8 @@
 @if (isGoalsFormOpen()) {
   <goals-form [isGoalsFormOpen]="isGoalsFormOpen()" (onGoalsFormClose)="isGoalsFormOpen.set(false)" />
 }
+
+@if (isBillsFormOpen()) {
+  <bills-form [isBillsFormOpen]="isBillsFormOpen()" (onBillsFormClose)="isBillsFormOpen.set(false)" />
+}
+

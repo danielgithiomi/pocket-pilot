@@ -1,5 +1,5 @@
 export enum BillTypeEnum {
-  YEARLY,
-  MONTHLY,
-  ONE_TIME,
+  YEARLY = 'YEARLY',
+  MONTHLY = 'MONTHLY',
+  ONE_TIME = 'ONE_TIME',
 }

@@ -1,3 +1,5 @@
+import { BillType } from "@global/types";
+import { BillTypeEnum } from "@global/enums";
 import { required, schema } from "@angular/forms/signals";
 
 // FORM
@@ -10,9 +12,9 @@ export interface NewBillSchema {
 
 export const INITIAL_FORM_STATE: NewBillSchema = {
     name: '',
-    type: '',
     amount: null,
     dueDate: new Date(),
+    type: BillTypeEnum.MONTHLY,
 };
 
 export const NewBillFormValidationSchema = schema<NewBillSchema>((root) => {

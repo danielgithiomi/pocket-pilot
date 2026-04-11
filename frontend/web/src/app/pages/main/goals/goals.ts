@@ -1,6 +1,7 @@
 import { Button } from '@atoms/button';
 import { GoalItem } from './goal-item';
 import { GoalsForm } from './goals-form';
+import { BillsForm } from './bills-form';
 import { NgClass } from '@angular/common';
 import { GoalsService } from '@api/goals.service';
 import { DrawerService } from '@infrastructure/services';
@@ -20,6 +21,7 @@ import { NoData } from '@components/structural/main/no-data/no-data';
     NgClass,
     GoalItem,
     GoalsForm,
+    BillsForm,
     CalendarModule,
     GoalItemSkeleton,
     LucideAngularModule,
