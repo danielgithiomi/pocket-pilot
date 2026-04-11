@@ -26,7 +26,7 @@ export class CreateBillPayload {
     @Type(() => Date)
     @ApiProperty({ example: '2025-10-01', description: 'The due date of the bill' })
     dueDate!: Date;
-    
+
     @IsString()
     @IsNotEmpty()
     @ApiProperty({ example: 'USD', description: 'The billing currency' })

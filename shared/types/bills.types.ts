@@ -13,7 +13,8 @@ export interface Bill {
   id: string;
   name: string;
   type: string;
-  dueDate: Date;
   amount: number;
   userId: string;
+  dueDate: string;
+  currency: string;
 }
