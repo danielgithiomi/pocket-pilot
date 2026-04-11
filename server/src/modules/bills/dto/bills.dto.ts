@@ -1,7 +1,7 @@
+import { randomUUID } from 'crypto';
 import { BillType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { randomUUID } from 'crypto';
 
 // Request
 export class CreateBillPayload {
