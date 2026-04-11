@@ -12,4 +12,9 @@ export class GoalsMutation {
   createNewGoal(payload: CreateGoalRequest) {
     return this.client.post<Goal, CreateGoalRequest>(endpoints.goals, payload);
   }
+
+  deleteBillById(billId: string) {
+    const url = `${endpoints.goals}/${billId}`;
+    return this.client.delete(url);
+  }
 }

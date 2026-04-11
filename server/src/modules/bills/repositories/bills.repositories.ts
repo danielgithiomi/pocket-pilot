@@ -25,4 +25,8 @@ export class BillsRepository {
             },
         });
     }
+
+    deleteBillById(userId: string, billId: string) {
+        return this.db.bills.delete({ where: { id: billId, userId } });
+    }
 }

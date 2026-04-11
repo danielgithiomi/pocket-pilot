@@ -98,7 +98,7 @@ export class AccountService {
             });
         }
 
-        return this.db.account.delete({ where: { id: foundAccount.id, holderId: userId } });
+        return this.accountRepository.deleteAccountById(userId, accountId);
     }
 
     private verifyAccountAndOwnership(accounts: Account[], userId: string, accountId: string): Account {

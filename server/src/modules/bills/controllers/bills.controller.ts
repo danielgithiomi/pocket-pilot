@@ -1,11 +1,11 @@
-import { ExposeEnumDto } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
 import { BillsService } from '../services/bills.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BillDTO, CreateBillPayload } from '../dto/bills.dto';
+import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
-import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 
 @Controller('bills')
 export class BillsController {
@@ -60,5 +60,22 @@ export class BillsController {
     })
     createNewBill(@Body() payload: CreateBillPayload, @UserInRequest() user: User) {
         return this.billsService.createNewBill(user.id, payload);
+    }
+
+    @Delete(':billId')
+    @UseGuards(CookiesAuthGuard)
+    @ApiOperation({ summary: 'Delete a bill by its ID' })
+    @ApiResponse({
+        status: 200,
+        type: VoidResourceResponse,
+        description: 'Bill deleted successfully',
+    })
+    async deleteBillById(@UserInRequest() user: User, @Param('billId') billId: string): Promise<VoidResourceResponse> {
+        await this.billsService.deleteBillById(user.id, billId);
+
+        return {
+            message: 'You bill was deleted!',
+            details: `The bill with id: {${billId}} has been deleted successfully.`,
+        };
     }
 }
