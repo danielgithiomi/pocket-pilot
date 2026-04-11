@@ -6,6 +6,12 @@ import { required, schema } from '@angular/forms/signals';
 export const TargetCompletionStrategies = ['date', 'amount'] as const;
 export type TargetCompletionStrategy = (typeof TargetCompletionStrategies)[number];
 
+export interface EffectResponse {
+  rawValue: number;
+  ceiledValue: number;
+}
+
+
 // FORM
 export type NewGoalSchema = {
   name: string;
@@ -18,7 +24,7 @@ export type NewGoalSchema = {
   targetCompletionStrategy: TargetCompletionStrategy | null;
 };
 
-export const initalNewGoalFormState: NewGoalSchema = {
+export const INITIAL_FORM_STATE: NewGoalSchema = {
   // Step 1
   startDate: new Date(),
   targetCompletionStrategy: null,
