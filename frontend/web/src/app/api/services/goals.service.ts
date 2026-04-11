@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { GoalsResource } from '@methods/resources';
 import { GoalsMutation } from '@methods/mutations';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
-import { CreateGoalRequest, Goal, IStandardError, IStandardResponse } from '@global/types';
+import { CreateGoalRequest, Goal, IStandardError, IStandardResponse, IVoidResourceResponse } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +20,16 @@ export class GoalsService {
   createNewGoal(payload: CreateGoalRequest): Observable<Goal> {
     return this.mutation.createNewGoal(payload).pipe(
       map((response: IStandardResponse<Goal>) => response.data),
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  }
+
+  deleteGoalById(goalId: string): Observable<IVoidResourceResponse> {
+    return this.mutation.deleteGoalById(goalId).pipe(
+      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

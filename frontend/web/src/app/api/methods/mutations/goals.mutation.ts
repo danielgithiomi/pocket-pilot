@@ -1,7 +1,7 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { CreateGoalRequest, Goal } from '@global/types';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { CreateGoalRequest, Goal, IVoidResourceResponse } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +13,8 @@ export class GoalsMutation {
     return this.client.post<Goal, CreateGoalRequest>(endpoints.goals, payload);
   }
 
-  deleteBillById(billId: string) {
-    const url = `${endpoints.goals}/${billId}`;
-    return this.client.delete(url);
+  deleteGoalById(goalId: string) {
+    const url = `${endpoints.goals}/${goalId}`;
+    return this.client.delete<IVoidResourceResponse>(url);
   }
 }
