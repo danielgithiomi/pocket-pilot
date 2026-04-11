@@ -31,7 +31,7 @@ export class CreateBillPayload {
 export class BillDTO {
     @ApiProperty({ example: randomUUID(), description: 'The ID of the bill' })
     id!: string;
-    
+
     @ApiProperty({ example: randomUUID(), description: 'The ID of the user who owns the bill' })
     userId!: string;
 

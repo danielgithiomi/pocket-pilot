@@ -12,7 +12,7 @@ export class BillsService {
     async getBillsTypes() {
         return await Promise.resolve(Object.values(BillType).map(formatEnumForFrontend));
     }
-    
+
     async getAllBills() {
         return await this.billsRepository.getAllBills();
     }
