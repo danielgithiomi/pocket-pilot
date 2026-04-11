@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { BillsService } from './bills.service';
-import { BillsController } from './bills.controller';
+import { BillsService } from './services/bills.service';
+import { BillsController } from './controllers/bills.controller';
 import { IdentityModule } from '@modules/identity/identity.module';
 import { BillsRepository } from './repositories/bills.repositories';
 

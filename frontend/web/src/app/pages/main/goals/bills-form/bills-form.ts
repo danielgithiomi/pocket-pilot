@@ -78,8 +78,6 @@ export class BillsForm {
       type: Object.values(BillTypeEnum).find((billType) => billType === type)!,
     };
 
-    console.log(payload);
-
     this.billService.createNewBill(payload).subscribe({
       next: () => {
         this.toastService.show({

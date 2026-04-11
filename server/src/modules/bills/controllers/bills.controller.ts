@@ -1,9 +1,9 @@
 import { ExposeEnumDto } from '@common/types';
-import { BillsService } from './bills.service';
 import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
+import { BillsService } from '../services/bills.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { BillDTO, CreateBillPayload } from './dto/bills.dto';
+import { BillDTO, CreateBillPayload } from '../dto/bills.dto';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
 
