@@ -8,11 +8,11 @@ import { Component, input, output, signal, computed, effect } from '@angular/cor
 })
 export class TabList {
   /* INPUTS */
-  items = input.required<TabListItem[]>();
   size = input<TabSize>('md');
-  disabled = input<boolean>(false);
   className = input<string>('');
   activeItem = input<number>(0);
+  disabled = input<boolean>(false);
+  items = input.required<TabListItem[]>();
 
   /* OUTPUTS */
   selectedValue = output<string>();

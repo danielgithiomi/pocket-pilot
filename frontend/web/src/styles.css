@@ -90,7 +90,7 @@
 
   /* Font & Styles */
   --filter-blur: 3px;
-  --overlay-background: rgba(0, 0, 0, 0.5);
+  --overlay-background: rgba(0, 0, 0, 0.65);
   --box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -522,6 +522,7 @@ input[type='number']::-webkit-inner-spin-button {
 
 ::-webkit-scrollbar-thumb,
 .custom-scrollbar::-webkit-scrollbar-thumb {
+
   border-radius: 0.5rem;
   background: var(--loader-primary);
 }

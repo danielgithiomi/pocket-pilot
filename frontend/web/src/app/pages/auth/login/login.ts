@@ -61,7 +61,6 @@ export class Login {
 
         this.routeTo(WEB_ROUTES.dashboard);
       },
-      error: () => this.isSubmitting.set(false),
       complete: () => this.isSubmitting.set(false),
     });
   };

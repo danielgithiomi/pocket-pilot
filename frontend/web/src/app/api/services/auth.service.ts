@@ -152,7 +152,7 @@ export class AuthService {
     const { title, details } = error;
     this.toastService.show({
       title,
-      variant: 'success',
+      variant: 'error',
       details: details as string,
     });
   };
