@@ -11,9 +11,9 @@ import { GoalItemSkeleton } from './goal-item/goal-item.skeleton';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { Component, computed, inject, signal } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
-import { BillItem } from "./bill-item";
-import { BillItemSkeleton } from "./bill-item/bill-item.skeleton";
-import { FetchError } from "@components/structural/main/fetch-error/fetch-error";
+import { BillItem } from './bill-item';
+import { BillItemSkeleton } from './bill-item/bill-item.skeleton';
+import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import { AccountsService } from '@api/accounts.service';
 
 @Component({
@@ -28,12 +28,12 @@ import { AccountsService } from '@api/accounts.service';
     BillItem,
     GoalsForm,
     BillsForm,
+    FetchError,
     CalendarModule,
     GoalItemSkeleton,
-    LucideAngularModule,
     BillItemSkeleton,
-    FetchError
-],
+    LucideAngularModule,
+  ],
 })
 export class Goals {
   // Icons
@@ -58,4 +58,18 @@ export class Goals {
   // Computed
   protected readonly isFetchingBills = computed(() => this.bills$.isLoading());
   protected readonly isFetchingGoals = computed(() => this.goals$.isLoading());
+
+  // Methods
+  protected onFormClose(form: 'goals' | 'bills') {
+    switch (form) {
+      case 'goals':
+        this.isGoalsFormOpen.set(false);
+        this.goalsService.getUserGoals().reload();
+        break;
+      case 'bills':
+        this.isBillsFormOpen.set(false);
+        this.billsService.getUserBills().reload();
+        break;
+    }
+  }
 }

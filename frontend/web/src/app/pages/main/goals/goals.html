@@ -48,7 +48,7 @@
           @let goals = goals$.value()?.data;
           @let goalCount = goals?.length || 0;
           <div
-            class="card-content"
+            class="card-content p-0!"
             [ngClass]="{
               'grid place-items-center': goalCount == 0,
             }"
@@ -94,7 +94,7 @@
         @let bills = bills$.value()?.data;
         @let billCount = bills?.length || 0;
         <div
-          class="card-content"
+          class="card-content p-0!"
           [ngClass]="{
             'grid place-items-center': billCount == 0,
           }"
@@ -127,16 +127,13 @@
 </section>
 
 @if (isGoalsFormOpen()) {
-  <goals-form
-    [isGoalsFormOpen]="isGoalsFormOpen()"
-    (onGoalsFormClose)="isGoalsFormOpen.set(false)"
-  />
+  <goals-form [isGoalsFormOpen]="isGoalsFormOpen()" (onGoalsFormClose)="onFormClose('goals')" />
 }
 
 @if (isBillsFormOpen()) {
   <bills-form
-    [currency]="currency"  
+    [currency]="currency"
     [isBillsFormOpen]="isBillsFormOpen()"
-    (onBillsFormClose)="isBillsFormOpen.set(false)"
+    (onBillsFormClose)="onFormClose('bills')"
   />
 }

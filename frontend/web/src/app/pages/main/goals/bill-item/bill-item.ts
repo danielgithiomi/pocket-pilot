@@ -29,7 +29,7 @@ export class BillItem {
 
   protected readonly formattedAmount = computed<string>(() => {
     const amount = this.billItem().amount;
-    return formatCurrency(amount, this.currency, 2, true);
+    return formatCurrency(amount, this.billItem().currency, 2, true, false);
   });
 
   protected readonly formattedDate = computed<string>(() => {
@@ -39,9 +39,7 @@ export class BillItem {
 
   protected readonly covertedCurrencyAmount = computed<string>(() => {
     const amount = this.billItem().amount;
-
-    const convertedAmount = amount * 2.5;
-
+    const convertedAmount = amount * 46.52;
     return formatCurrency(convertedAmount, this.currency, 2, true);
   });
 }

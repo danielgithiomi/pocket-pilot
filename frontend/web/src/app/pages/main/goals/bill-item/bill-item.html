@@ -5,14 +5,16 @@
 
   <div class="bill-item-content">
     <p class="bill-item-title">{{ billItem().name }}</p>
-    <p class="bill-item-charge">Next billable date: {{ formattedDate() }}</p>
+    <p class="bill-item-charge">
+      Next billing date: <span class="font-bold">{{ formattedDate() }}</span>
+    </p>
   </div>
 
   <div class="bill-item-amount">
     <p>{{ formattedAmount() }}</p>
 
     @if (billItem().currency !== currency) {
-      <p class="bill-item-converted-amount">{{ covertedCurrencyAmount() }}</p>
+      <p class="bill-item-converted-amount">≈{{ covertedCurrencyAmount() }}</p>
     }
   </div>
 </div>

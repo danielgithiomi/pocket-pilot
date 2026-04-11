@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 .bill-item {
-  @apply flex flex-row items-center justify-between gap-4 p-2;
+  @apply flex flex-row items-center justify-between gap-4 p-2 my-1;
 
   .bill-item-logo {
     @apply shrink-0 grid place-items-center size-13 rounded-full bg-(--body-background);
