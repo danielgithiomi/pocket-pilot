@@ -72,6 +72,7 @@
         label="Amount"
         [inverted]="true"
         autocomplete="off"
+        [numberStep]="0.01"
         placeholder="Eg: 100"
         [formField]="transactionForm.amount"
         (clearOutput)="transactionForm.amount().controlValue.set(null)"

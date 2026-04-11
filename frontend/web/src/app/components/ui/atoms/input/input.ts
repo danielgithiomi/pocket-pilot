@@ -12,6 +12,7 @@ import { Component, input, signal, computed, output } from '@angular/core';
 export class Input {
   /* INPUTS */
   id = input.required<string>();
+  numberStep = input<number>(1);
   required = input<boolean>(true);
   label = input.required<string>();
   inverted = input<boolean>(false);

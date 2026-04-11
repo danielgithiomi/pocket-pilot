@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { BillType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
 
 // Request
 export class CreateBillPayload {
@@ -10,7 +11,6 @@ export class CreateBillPayload {
     @ApiProperty({ example: 'Electricity', description: 'The name of the bill' })
     name!: string;
 
-    @IsString()
     @IsNotEmpty()
     @IsEnum(BillType)
     @ApiProperty({ example: BillType.MONTHLY, description: 'The recurrence pattern of the bill' })
@@ -23,6 +23,7 @@ export class CreateBillPayload {
 
     @IsDate()
     @IsNotEmpty()
+    @Type(() => Date)
     @ApiProperty({ example: '2025-10-01', description: 'The due date of the bill' })
     dueDate!: Date;
 }
