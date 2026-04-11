@@ -1,0 +1,92 @@
+<organism-form
+  id="bills"
+  title="New Bill"
+  (closeForm)="handleCloseForm()"
+  [class.hidden]="!isBillsFormOpen()"
+  description="Add a new bill to track"
+>
+  <form slot="content" id="bills-form" (submit)="submitNewBillForm($event)">
+    <atom-input
+      type="text"
+      id="bill-name"
+      [inverted]="true"
+      label="Bill Name"
+      autocomplete="off"
+      placeholder="Eg: Netflix"
+      [formField]="newBillForm.name"
+      (clearOutput)="newBillForm.name().controlValue.set('')"
+    />
+
+    <organism-date-picker
+      [required]="true"
+      [inverted]="true"
+      id="billing-date"
+      label="Billing Date"
+      class="w-full flex-1"
+      [min]="minStartDate()"
+      wrapperClassName="py-0!"
+      placeholder="Select a date"
+      [showClearOutputIcon]="false"
+      [formField]="newBillForm.dueDate"
+    />
+
+    <div class="flex flex-col md:flex-row gap-6">
+      <atom-input
+        type="number"
+        [inverted]="true"
+        autocomplete="off"
+        [numberStep]="0.01"
+        id="billing-amount"
+        class="w-full flex-1"
+        label="Billing Amount"
+        placeholder="Eg: 100000"
+        [formField]="newBillForm.amount"
+        (clearOutput)="newBillForm.amount().controlValue.set(null)"
+      />
+
+      <atom-select
+        [inverted]="true"
+        id="billing-currency"
+        label="Billing Currency"
+        [options]="currencies()"
+        [formField]="newBillForm.currency"
+        placeholder="Select billing currency"
+        [selectedValue]="newBillFormModel().currency"
+      />
+    </div>
+
+    <atom-radio
+      id="billing-type"
+      [required]="true"
+      [inverted]="true"
+      layout="horizontal"
+      label="Billing Frequency"
+      [formField]="newBillForm.type"
+      [options]="formattedBillTypes()"
+      [selectedValue]="newBillFormModel().type"
+      (selectionChange)="onBillingTypeChange($event)"
+    />
+  </form>
+
+  <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+    <atom-button
+      type="reset"
+      form="bills-form"
+      [inverted]="true"
+      label="Reset Form"
+      variant="secondary"
+      id="reset-bills-form"
+      (clicked)="resetNewBillForm()"
+      [disabled]="!newBillForm().dirty() || isSubmittingForm()"
+    />
+
+    <atom-button
+      type="submit"
+      form="bills-form"
+      label="Create Bill"
+      id="submit-bill-form"
+      [isLoading]="isSubmittingForm()"
+      [disabled]="newBillForm().invalid() || isSubmittingForm()"
+    />
+  </div>
+</organism-form>

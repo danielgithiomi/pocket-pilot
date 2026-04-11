@@ -32,7 +32,6 @@ export class GoalItem {
   protected readonly iconSize = 24;
 
   // Inputs
-  readonly id = input.required<string>();
   readonly goal = input.required<Goal>();
 
   // Icon Maps
@@ -65,7 +64,7 @@ export class GoalItem {
   private readonly currency = this.accountsService.getDefaultCurrency();
 
   // Computed
-  protected readonly goalItemId = computed<string>(() => `goal-item-${this.id()}`);
+  protected readonly goalItemId = computed<string>(() => `goal-item-${this.goal().id}`);
   protected readonly remainingTime = computed<string>(() => {
     const today = new Date();
     const endDate = new Date(this.goal().endDate);

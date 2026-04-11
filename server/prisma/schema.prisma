@@ -21,38 +21,6 @@ enum AccountType {
     CURRENT
 }
 
-enum TransactionType {
-    INCOME
-    EXPENSE
-}
-
-enum CategoryType {
-    INCOME
-    EXPENSE
-}
-
-enum GoalStatus {
-    ACTIVE
-    PAUSED
-    FAILED
-    PENDING
-    COMPLETED
-}
-
-enum GoalCategory {
-    LOAN
-    TRAVEL
-    SAVINGS
-    PURCHASE
-    VACATION
-    EDUCATION
-    RETIREMENT
-    INVESTMENTS
-    DEBT_PAYMENT
-    EMERGENCY_FUND
-    OTHER
-}
-
 model Account {
     id        String      @id @default(uuid())
     type      AccountType
@@ -91,6 +59,11 @@ model User {
     categories Categories[]
 }
 
+enum TransactionType {
+    INCOME
+    EXPENSE
+}
+
 model Transaction {
     id          String          @id() @default(uuid())
     amount      Float
@@ -104,6 +77,11 @@ model Transaction {
     accountId String
 }
 
+enum CategoryType {
+    INCOME
+    EXPENSE
+}
+
 model Categories {
     id          String   @id @default(uuid())
     incomes     String[]
@@ -114,6 +92,28 @@ model Categories {
     // Link to user - one-to-many
     user   User   @relation(fields: [userId], references: [id])
     userId String @unique
+}
+
+enum GoalStatus {
+    ACTIVE
+    PAUSED
+    FAILED
+    PENDING
+    COMPLETED
+}
+
+enum GoalCategory {
+    LOAN
+    TRAVEL
+    SAVINGS
+    PURCHASE
+    VACATION
+    EDUCATION
+    RETIREMENT
+    INVESTMENTS
+    DEBT_PAYMENT
+    EMERGENCY_FUND
+    OTHER
 }
 
 model Goals {
@@ -135,4 +135,22 @@ model Goals {
 
     updatedAt DateTime @updatedAt()
     createdAt DateTime @default(now())
+}
+
+enum BillType {
+    YEARLY
+    MONTHLY
+    ONE_TIME
+}
+
+model Bills {
+    id     String @id @default(uuid())
+    userId String
+
+    amount   Float
+    name     String
+    type     BillType
+    currency String
+
+    dueDate DateTime
 }

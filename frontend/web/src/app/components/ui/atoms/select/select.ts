@@ -19,6 +19,7 @@ export class Select {
   inverted = input<boolean>(false);
   placeholder = input.required<string>();
 
+  selectedValue = input<string>('');
   options = input.required<SelectOption[]>();
   formField = input.required<FieldTree<string, string>>();
 
@@ -29,6 +30,8 @@ export class Select {
   /* COMPUTED */
   fieldState = computed(() => this.formField()());
   selectId = computed<string>(() => `select-field-${this.id()}`);
+  currentValue = computed(() => this.selectedValue() || this.fieldState().value());
+
   formattedOptions = computed(() => {
     const options = this.options();
     if (!options) return [];
@@ -37,4 +40,9 @@ export class Select {
       label: capitalize(option.label),
     }));
   });
+
+  /* METHODS */
+  isOptionSelected(option: SelectOption): boolean {
+    return this.currentValue() === option.value;
+  }
 }
