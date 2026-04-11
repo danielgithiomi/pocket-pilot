@@ -2,6 +2,7 @@ import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { Form } from '@organisms/form';
 import { BillType } from '@global/types';
+import { ToastService } from '@atoms/toast';
 import { BillTypeEnum } from '@global/enums';
 import { form } from '@angular/forms/signals';
 import { BillsService } from '@api/bills.service';
@@ -32,6 +33,7 @@ export class BillsForm {
 
   // Services
   protected readonly billService = inject(BillsService);
+  protected readonly toastService = inject(ToastService);
 
   // Data
   protected readonly billTypes = this.billService.getBillTypes();
@@ -66,6 +68,30 @@ export class BillsForm {
   // Submissions
   protected submitNewBillForm(event: Event) {
     event.preventDefault();
-    console.log(this.newBillForm().value());
+
+    this.isSubmittingForm.set(true);
+    const { amount, type, ...rest } = this.newBillFormModel();
+
+    const payload = {
+      ...rest,
+      amount: amount || 0,
+      type: Object.values(BillTypeEnum).find((billType) => billType === type)!,
+    };
+
+    this.billService.createNewBill(payload).subscribe({
+      next: () => {
+        this.toastService.show({
+          variant: 'success',
+          title: 'Bill added!',
+          details: 'Your bill has been added successfully. Now you can track it.',
+        });
+
+        this.resetNewBillForm();
+        this.onBillsFormClose.emit();
+      },
+      complete: () => {
+        this.isSubmittingForm.set(false);
+      },
+    });
   }
 }

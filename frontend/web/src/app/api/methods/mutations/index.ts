@@ -1,6 +1,7 @@
 export * from './auth.mutation';
 export * from './user.mutation';
 export * from './goals.mutation';
+export * from './bills.mutation';
 export * from './accounts.mutation';
 export * from './categories.mutation';
 export * from './transactions.mutation';
