@@ -1,6 +1,8 @@
 import { Bill } from '@global/types';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { LucideAngularModule, Sailboat } from 'lucide-angular';
+import { formatCurrency } from '@libs/utils';
+import { AccountsService } from '@api/accounts.service';
 
 @Component({
   selector: 'bill-item',
@@ -14,8 +16,19 @@ export class BillItem {
   protected readonly sailboat = Sailboat;
 
   // Inputs
-  billItem = input.required<Bill>();
+  readonly billItem = input.required<Bill>();
+
+  // Services
+  protected readonly accountsService = inject(AccountsService);
+
+  // Data
+  protected readonly currency = this.accountsService.getDefaultCurrency();
 
   // Computed
-  billItemId = computed(() => `bill-item-${this.billItem().id}`);
+  protected readonly billItemId = computed(() => `bill-item-${this.billItem().id}`);
+
+  protected readonly formattedAmount = computed(() => {
+    const amount = this.billItem().amount;
+    return formatCurrency(amount, this.currency, 2, true);
+  });
 }

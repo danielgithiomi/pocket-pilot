@@ -1,28 +1,27 @@
 import { Input } from '@atoms/input';
+import { Select } from '@atoms/select';
 import { Button } from '@atoms/button';
 import { Form } from '@organisms/form';
-import { BillType } from '@global/types';
 import { ToastService } from '@atoms/toast';
 import { BillTypeEnum } from '@global/enums';
 import { form } from '@angular/forms/signals';
+import { CURRENCIES } from '@global/constants';
 import { BillsService } from '@api/bills.service';
 import { RadioOption, Radio } from '@atoms/radio';
 import { DatePicker } from '@organisms/date-picker';
 import { LucideAngularModule } from 'lucide-angular';
-import { Component, computed, inject, input, output, signal } from '@angular/core';
-import {
-  NewBillSchema,
-  NewBillFormValidationSchema,
-  INITIAL_FORM_STATE as initialFormData,
-} from './bills-form.types';
+import { SelectOption } from '@atoms/select/select.types';
+import { NewBillSchema, NewBillFormValidationSchema } from './bills-form.types';
+import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
 
 @Component({
   selector: 'bills-form',
   templateUrl: './bills-form.html',
-  imports: [LucideAngularModule, Form, Button, Radio, DatePicker, Input],
+  imports: [LucideAngularModule, Form, Button, Radio, DatePicker, Input, Select],
 })
-export class BillsForm {
+export class BillsForm implements OnInit {
   // Inputs
+  currency = input.required<string>();
   isBillsFormOpen = input.required<boolean>();
 
   // Outputs
@@ -39,11 +38,30 @@ export class BillsForm {
   protected readonly billTypes = this.billService.getBillTypes();
 
   // Form
+  private readonly INITIAL_FORM_STATE: NewBillSchema = {
+    name: '',
+    currency: '',
+    amount: null,
+    dueDate: new Date(),
+    type: BillTypeEnum.MONTHLY,
+  };
   protected readonly minStartDate = signal<Date>(new Date());
-  protected readonly newBillFormModel = signal<NewBillSchema>(initialFormData);
+  protected readonly newBillFormModel = signal<NewBillSchema>(this.INITIAL_FORM_STATE);
   protected readonly newBillForm = form(this.newBillFormModel, NewBillFormValidationSchema);
 
+  ngOnInit(): void {
+    this.newBillForm.currency().controlValue.set(this.currency());
+  }
+
   // Computed
+  protected readonly currencies = computed<SelectOption[]>(() => {
+    const currenciesToInclude = ['USD', 'EUR', 'GBP', 'AED', 'MUR', 'KES', 'ZAR'];
+    const currencies = CURRENCIES.filter((currency) =>
+      currenciesToInclude.includes(currency.value),
+    );
+    return currencies.map((currency) => ({ value: currency.value, label: currency.label }));
+  });
+
   protected readonly formattedBillTypes = computed<RadioOption[]>(() => {
     const billTypes = this.billTypes.value()?.data;
     if (!billTypes) return [];
@@ -57,12 +75,16 @@ export class BillsForm {
 
   protected resetNewBillForm() {
     this.newBillForm().reset();
-    this.newBillFormModel.set(initialFormData);
+    this.newBillFormModel.set(this.INITIAL_FORM_STATE);
   }
 
   protected onBillingTypeChange(type: string) {
     const billType = Object.values(BillTypeEnum).find((billType) => billType === type);
     this.newBillForm.type().controlValue.set(billType!);
+  }
+
+  protected onCurrencyChange(currency: string) {
+    this.newBillForm.currency().controlValue.set(currency);
   }
 
   // Submissions

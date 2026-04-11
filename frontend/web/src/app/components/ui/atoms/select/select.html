@@ -9,10 +9,10 @@
   <div class="select-wrapper">
     <select [id]="selectId()" [formField]="formField()">
       @if (placeholder()) {
-        <option value="" disabled selected>{{ placeholder() }}</option>
+        <option value="" disabled [selected]="!currentValue()">{{ placeholder() }}</option>
       }
       @for (option of formattedOptions(); track option.value) {
-        <option [value]="option.value">
+        <option [value]="option.value" [selected]="isOptionSelected(option)">
           {{ option.label }}
         </option>
       }

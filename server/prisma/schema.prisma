@@ -147,9 +147,10 @@ model Bills {
     id     String @id @default(uuid())
     userId String
 
-    amount Float
-    name   String
-    type   BillType
+    amount   Float
+    name     String
+    type     BillType
+    currency String
 
     dueDate DateTime
 }

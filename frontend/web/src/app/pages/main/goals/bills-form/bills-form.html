@@ -17,6 +17,19 @@
       (clearOutput)="newBillForm.name().controlValue.set('')"
     />
 
+    <organism-date-picker
+      [required]="true"
+      [inverted]="true"
+      id="billing-date"
+      label="Billing Date"
+      class="w-full flex-1"
+      [min]="minStartDate()"
+      wrapperClassName="py-0!"
+      placeholder="Select a date"
+      [showClearOutputIcon]="false"
+      [formField]="newBillForm.dueDate"
+    />
+
     <div class="flex flex-col md:flex-row gap-6">
       <atom-input
         type="number"
@@ -26,23 +39,19 @@
         id="billing-amount"
         class="w-full flex-1"
         label="Billing Amount"
-        wrapperClassName="my-0"
         placeholder="Eg: 100000"
         [formField]="newBillForm.amount"
         (clearOutput)="newBillForm.amount().controlValue.set(null)"
       />
 
-      <organism-date-picker
-        [required]="true"
+      <atom-select
         [inverted]="true"
-        id="billing-date"
-        label="Billing Date"
-        class="w-full flex-1"
-        [min]="minStartDate()"
-        wrapperClassName="py-0!"
-        placeholder="Select a date"
-        [showClearOutputIcon]="false"
-        [formField]="newBillForm.dueDate"
+        id="billing-currency"
+        label="Billing Currency"
+        [options]="currencies()"
+        [formField]="newBillForm.currency"
+        placeholder="Select billing currency"
+        [selectedValue]="newBillFormModel().currency"
       />
     </div>
 
@@ -50,6 +59,7 @@
       id="billing-type"
       [required]="true"
       [inverted]="true"
+      layout="horizontal"
       label="Billing Frequency"
       [formField]="newBillForm.type"
       [options]="formattedBillTypes()"
