@@ -71,11 +71,11 @@ export class BillsController {
         description: 'Bill deleted successfully',
     })
     async deleteBillById(@UserInRequest() user: User, @Param('billId') billId: string): Promise<VoidResourceResponse> {
-        await this.billsService.deleteBillById(user.id, billId);
+        const deletedBill = await this.billsService.deleteBillById(user.id, billId);
 
         return {
-            message: 'You bill was deleted!',
-            details: `The bill with id: {${billId}} has been deleted successfully.`,
+            message: 'The bill was deleted!',
+            details: `Your [${deletedBill.name}] bill was been deleted successfully.`,
         };
     }
 }

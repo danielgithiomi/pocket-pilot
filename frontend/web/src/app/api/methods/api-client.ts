@@ -23,18 +23,18 @@ export class ApiClient {
     return this.http.post<IStandardResponse<T>>(url, body);
   }
 
-  put<T, B>(endpoint: string, body: B): Observable<T> {
+  put<T, B>(endpoint: string, body: B): Observable<IStandardResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.put<T>(url, body);
+    return this.http.put<IStandardResponse<T>>(url, body);
   }
 
-  delete<T>(endpoint: string): Observable<T> {
+  delete<T>(endpoint: string): Observable<IStandardResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.delete<T>(url);
+    return this.http.delete<IStandardResponse<T>>(url);
   }
 
-  deleteWithBody<T, B>(endpoint: string, body: B): Observable<T> {
+  deleteWithBody<T, B>(endpoint: string, body: B): Observable<IStandardResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.delete<T>(url, { body });
+    return this.http.delete<IStandardResponse<T>>(url, { body });
   }
 }

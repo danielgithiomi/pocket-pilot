@@ -5,10 +5,9 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import {
   IAuthResponse,
   IRegisterRequest,
-  IStandardResponse,
   IUpdateUserRequest,
-  IChangePasswordRequest,
   IVoidResourceResponse,
+  IChangePasswordRequest,
 } from '@global/types';
 
 @Injectable({
@@ -22,14 +21,11 @@ export class UserMutation {
   }
 
   update(userId: string, payload: IUpdateUserRequest) {
-    return this.client.put<IStandardResponse<IAuthResponse>, IUpdateUserRequest>(
-      `users/${userId}`,
-      payload,
-    );
+    return this.client.put<IAuthResponse, IUpdateUserRequest>(`users/${userId}`, payload);
   }
 
   changePassword(userId: string, payload: IChangePasswordRequest) {
-    return this.client.put<IStandardResponse<IVoidResourceResponse>, IChangePasswordRequest>(
+    return this.client.put<IVoidResourceResponse, IChangePasswordRequest>(
       `users/${userId}/change-password`,
       payload,
     );

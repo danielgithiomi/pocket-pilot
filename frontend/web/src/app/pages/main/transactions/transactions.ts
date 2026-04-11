@@ -203,8 +203,8 @@ export class Transactions {
     const { accountId, fullId: transactionId } = row;
 
     this.transactionsService.deleteTransaction(accountId, transactionId).subscribe({
-      next: (response: IStandardResponse<IVoidResourceResponse>) => {
-        const { message, details } = response.data;
+      next: (response: IVoidResourceResponse) => {
+        const { message, details } = response;
         this.toastService.show({
           details,
           title: message,

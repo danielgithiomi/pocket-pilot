@@ -20,7 +20,7 @@ export class CategoriesMutation {
   }
 
   deleteCategory(payload: DeleteCategoryRequest) {
-    return this.client.deleteWithBody<IStandardResponse<IVoidResourceResponse>, DeleteCategoryRequest>(
+    return this.client.deleteWithBody<IVoidResourceResponse, DeleteCategoryRequest>(
       endpoints.categories,
       payload,
     );

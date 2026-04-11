@@ -1,10 +1,9 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
 import {
-  IStandardResponse,
+  IVoidResourceResponse,
   TransactionWithAccount,
   CreateTransactionRequest,
-  IVoidResourceResponse,
 } from '@global/types';
 
 @Injectable({
@@ -14,14 +13,14 @@ export class TransactionsMutation {
   private readonly client = inject(ApiClient);
 
   createTransaction(accountId: string, payload: CreateTransactionRequest) {
-    return this.client.post<IStandardResponse<TransactionWithAccount>, CreateTransactionRequest>(
+    return this.client.post<TransactionWithAccount, CreateTransactionRequest>(
       `accounts/${accountId}/transactions`,
       payload,
     );
   }
 
   deleteTransaction(accountId: string, transactionId: string) {
-    return this.client.delete<IStandardResponse<IVoidResourceResponse>>(
+    return this.client.delete<IVoidResourceResponse>(
       `accounts/${accountId}/transactions/${transactionId}`,
     );
   }

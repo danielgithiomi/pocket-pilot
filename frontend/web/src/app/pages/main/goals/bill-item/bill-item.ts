@@ -1,7 +1,9 @@
-import { Bill } from '@global/types';
 import { NgClass } from '@angular/common';
+import { ToastService } from '@atoms/toast';
+import { BillsService } from '@api/bills.service';
 import { AccountsService } from '@api/accounts.service';
 import { formatCurrency, formatDate } from '@libs/utils';
+import { Bill, IVoidResourceResponse } from '@global/types';
 import { LucideAngularModule, Sailboat, Trash } from 'lucide-angular';
 import { Component, computed, inject, input, signal } from '@angular/core';
 
@@ -24,6 +26,8 @@ export class BillItem {
   readonly isDeleting = signal<boolean>(false);
 
   // Services
+  private readonly toastService = inject(ToastService);
+  protected readonly billsService = inject(BillsService);
   protected readonly accountsService = inject(AccountsService);
 
   // Data
@@ -51,7 +55,23 @@ export class BillItem {
   // API Methods
   protected deleteBillItem(billItemId: string) {
     this.isDeleting.set(true);
-    // TODO: Call API to delete bill item
-    // this.isDeleting.set(false);
+
+    setTimeout(() => {
+      this.billsService.deleteBillById(billItemId).subscribe({
+        next: (response: IVoidResourceResponse) => {
+          const { message, details } = response;
+          this.toastService.show({
+            details,
+            title: message,
+            variant: 'success',
+          });
+
+          this.billsService.getUserBills().reload();
+        },
+        complete: () => {
+          this.isDeleting.set(false);
+        },
+      });
+    }, 2000);
   }
 }

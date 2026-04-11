@@ -15,15 +15,10 @@ export class AccountsMutation {
   private readonly client = inject(ApiClient);
 
   createAccount(payload: CreateAccountRequest) {
-    return this.client.post<IStandardResponse<Account>, CreateAccountRequest>(
-      endpoints.accounts,
-      payload,
-    );
+    return this.client.post<Account, CreateAccountRequest>(endpoints.accounts, payload);
   }
 
   deleteAccountById(accountId: string) {
-    return this.client.delete<IStandardResponse<IVoidResourceResponse>>(
-      `${endpoints.accounts}/${accountId}`,
-    );
+    return this.client.delete<IVoidResourceResponse>(`${endpoints.accounts}/${accountId}`);
   }
 }

@@ -1,9 +1,15 @@
 import { ToastService } from '@atoms/toast';
-import { inject, Injectable } from '@angular/core';
 import { BillsMutation } from '@methods/mutations';
 import { BillsResource } from '@methods/resources';
+import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
-import { Bill, CreateBillPayload, IStandardError, IStandardResponse } from '@global/types';
+import {
+  Bill,
+  IStandardError,
+  IStandardResponse,
+  CreateBillPayload,
+  IVoidResourceResponse,
+} from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +26,16 @@ export class BillsService {
   createNewBill = (payload: CreateBillPayload): Observable<Bill> => {
     return this.mutation.createNewUserBill(payload).pipe(
       map((response: IStandardResponse<Bill>) => response.data),
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  };
+
+  deleteBillById = (billId: string): Observable<IVoidResourceResponse> => {
+    return this.mutation.deleteUserBillById(billId).pipe(
+      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;
