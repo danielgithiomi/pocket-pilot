@@ -60,7 +60,7 @@ export class Transactions {
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
   protected readonly transactionTypes = this.transactionsService.getTransactionTypes();
-  protected readonly transactionCategories = this.categoriesService.getTransactionCategories();
+  protected readonly transactionCategories = this.categoriesService.getTransactionCategories;
 
   // States
   protected activeTabIndex = signal<number>(0);

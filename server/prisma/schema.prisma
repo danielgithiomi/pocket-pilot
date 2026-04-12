@@ -30,7 +30,7 @@ model Account {
     balance   Float       @default(0)
 
     // Link to user - one-to-many
-    holder   User   @relation(fields: [holderId], references: [id])
+    holder   User   @relation(fields: [holderId], references: [id], onDelete: Cascade)
     holderId String
 
     // Link to transaction - one-to-many
@@ -57,11 +57,27 @@ model User {
 
     // Link to categories - one-to-many
     categories Categories[]
+
+    // Link to preferences - one-to-one
+    userPreferences UserPreferences?
+}
+
+model UserPreferences {
+    id String @id @default(uuid())
+
+    defaultCurrency      String @default("USD")
+    preferredLanguage    String @default("en")
+    monthlySpendingLimit Float  @default(0)
+
+    // Link to user - one-to-one
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String @unique
 }
 
 enum TransactionType {
     INCOME
     EXPENSE
+    TRANSFER
 }
 
 model Transaction {
@@ -73,7 +89,7 @@ model Transaction {
     date        DateTime        @default(now())
 
     // Link to account - one-to-many
-    account   Account @relation(fields: [accountId], references: [id])
+    account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
     accountId String
 }
 

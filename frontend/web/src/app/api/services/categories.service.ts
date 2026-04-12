@@ -35,32 +35,19 @@ export class CategoriesService {
     );
   }
 
-  getTransactionCategories(): IEnumResponse[] {
+  getTransactionCategories = computed<IEnumResponse[]>(() => {
+    const data = this.resource.getUserCategories.value()?.data;
 
-    const resourceError = computed(() => this.resource.getUserCategories.error());
-    if (resourceError()) {
-      this.renderToast({
-        type: 'error',
-        statusCode: 500,
-        title: 'Failed to load categories',
-        details: 'There was an error loading your categories. Please try again.',
-      });
-      return [];
-    }
+    if (!data) return [];
 
-    const incomeCategories = computed(
-      () => this.resource.getUserCategories.value()?.data.incomes || [],
-    );
-    const expenseCategories = computed(
-      () => this.resource.getUserCategories.value()?.data.expenses || [],
-    );
+    const { incomes, expenses } = data;
+    const allCategories = [...incomes, ...expenses];
 
-    const allCategories = [...incomeCategories(), ...expenseCategories()];
     return allCategories.map((category) => ({
       value: category,
       label: denormalizeCategoryName(category),
     }));
-  }
+  });
 
   deleteCategoryByName(
     categoryName: string,

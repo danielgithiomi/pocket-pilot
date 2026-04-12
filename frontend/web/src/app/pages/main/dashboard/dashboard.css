@@ -1,4 +1,11 @@
 @reference 'tailwindcss';
+
+.masonry {
+  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+}
+
 .legend {
   @apply flex-1 flex flex-col md:flex-row gap-4 text-xs items-start justify-between;
 
@@ -15,7 +22,8 @@
   }
 }
 
-.ratio-loader, .analysis-loader {
+.ratio-loader,
+.analysis-loader {
   width: 75px;
   aspect-ratio: 1;
   border: 6px solid;
@@ -24,7 +32,7 @@
   border-color: var(--loader-primary) transparent;
 }
 
-.analysis-loader{
+.analysis-loader {
   width: 100px;
   aspect-ratio: 1;
   border: 8px solid;
