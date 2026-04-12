@@ -16,6 +16,7 @@ import {
     UserAccountsResponseDto,
     AccountWithTransactionsResponseDto,
 } from '../dto/account.dto';
+import { denormalizeCategoryName } from '@libs/utils';
 
 @ApiTags('Accounts')
 @Controller('accounts')
@@ -25,6 +26,7 @@ export class AccountController {
     constructor(private readonly accountService: AccountService) {}
 
     @Get('types')
+    @Summary('Account Types Retrieved!', 'You have successfully retrieved all account types.')
     @ApiOperation({ summary: 'Get Account Types', description: 'Get all available account types' })
     @ApiResponse({
         status: 200,
@@ -37,6 +39,7 @@ export class AccountController {
     }
 
     @Get('all')
+    @Summary('All Accounts Retrieved!', 'You have successfully retrieved all accounts.')
     @ApiOperation({ summary: 'Retrieve all accounts', description: 'Get all created accounts in the database.' })
     @ApiResponse({
         status: 200,
@@ -54,6 +57,7 @@ export class AccountController {
     }
 
     @Get()
+    @Summary('User Accounts Retrieved!', 'You have successfully retrieved your accounts.')
     @ApiOperation({ summary: 'Get User Accounts', description: 'Get all accounts of the logged in user' })
     @ApiResponse({
         status: 200,
@@ -71,6 +75,7 @@ export class AccountController {
     }
 
     @Get(':accountId')
+    @Summary('Account Retrieved!', 'You have successfully retrieved the account.')
     @ApiOperation({ summary: 'Get Account By Id', description: 'Get an account by its id' })
     @ApiResponse({ status: 200, type: Account, description: 'Account fetched successfully' })
     @ApiParam({
@@ -100,6 +105,7 @@ export class AccountController {
         type: AccountWithTransactionsResponseDto,
         description: 'Account and transactions fetched successfully.',
     })
+    @Summary('Account Transactions Retrieved!', 'You have successfully retrieved the account transactions.')
     async getAccountAndTransactions(
         @UserInRequest() user: User,
         @Param('accountId') accountId: string,
@@ -114,6 +120,7 @@ export class AccountController {
 
     @Post()
     @ApiBody({ type: CreateAccountDto })
+    @Summary('Account Created!', 'You have successfully created an account.')
     @ApiOperation({ summary: 'Create Account', description: 'Create a new account' })
     @ApiResponse({
         status: 201,
@@ -144,11 +151,11 @@ export class AccountController {
         @UserInRequest() user: User,
         @Param('accountId') accountId: string,
     ): Promise<VoidResourceResponse> {
-        await this.accountService.deleteAccountById(user.id!, accountId);
+        const deletedWallet = await this.accountService.deleteAccountById(user.id!, accountId);
 
         return {
             message: 'Account Deleted!',
-            details: `The account with id: {${accountId}} has been deleted successfully.`,
+            details: `Your [${denormalizeCategoryName(deletedWallet.name)}] account has been deleted successfully.`,
         };
     }
 }

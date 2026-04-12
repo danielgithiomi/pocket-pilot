@@ -86,4 +86,8 @@ export const tabListItems: TabListItem[] = [
     value: 'expense',
     label: 'Expenses',
   },
+  {
+    value: 'transfers',
+    label: 'Transfers'
+  }
 ];

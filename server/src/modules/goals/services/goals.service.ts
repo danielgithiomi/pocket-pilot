@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ExposeEnumDto } from '@common/types';
 import { GoalCategory } from '@prisma/client';
+import { ExposeEnumDto } from '@common/types';
 import { formatEnumForFrontend } from '@libs/utils';
 import { CreateGoalDto, GoalDto } from '../dto/goals.dto';
 import { GoalsRepository } from '../repositories/goals.repository';
@@ -19,5 +19,9 @@ export class GoalsService {
 
     createGoal(userId: string, payload: CreateGoalDto): Promise<GoalDto> {
         return this.goalsRepository.createGoal(userId, payload);
+    }
+
+    deleteGoalById(userId: string, goalId: string) {
+        return this.goalsRepository.deleteGoalById(userId, goalId);
     }
 }

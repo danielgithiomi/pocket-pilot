@@ -34,4 +34,8 @@ export class BillsService {
         const createdBill = await this.billsRepository.createNewBill(userId, payload);
         return plainToInstance(BillDTO, createdBill);
     }
+
+    deleteBillById(userId: string, billId: string) {
+        return this.billsRepository.deleteBillById(userId, billId);
+    }
 }

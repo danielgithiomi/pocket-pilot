@@ -50,7 +50,7 @@ export class Categories {
   // Computed
   protected readonly isFetchingCategories = computed(() => this.categories$.isLoading());
   protected readonly formattedCategories = computed<FormattedCategories>(() => {
-    const response = this.categoriesService.getUserCategories();
+    const response = this.categories$;
     const { incomes, expenses } = response.value()?.data!;
     return {
       incomes: this.denormalizeCategoryNames(incomes),
@@ -103,7 +103,7 @@ export class Categories {
   }
 
   protected resetCategoryForm() {
-    this.categoryForm().reset();
+    this.categoryForm().reset(initialCategoryFormState);
     this.categoryFormModel.set(initialCategoryFormState);
   }
 

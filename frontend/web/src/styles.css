@@ -45,6 +45,7 @@
   /* --info: #6290c8; Dusty Denim */
   --income: var(--emerald);
   --expense: var(--apple-red);
+  --transfer: var(--quaternary);
 
   /* Dark Palette */
   --dark: #101011;
@@ -143,6 +144,9 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
+  --color-income: var(--income);
+  --color-expense: var(--expense);
+  --color-transfer: var(--transfer);
   --color-muted: var(--muted-text);
 
   /* Raw Palette */

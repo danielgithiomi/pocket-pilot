@@ -6,12 +6,16 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 export class AccountRepository {
     constructor(private readonly db: DatabaseService) {}
 
-    async createNewAccount(userId: string, data: CreateAccountDto) {
+    createNewAccount(userId: string, data: CreateAccountDto) {
         const { name, type } = data;
         return this.db.account.create({ data: { name, type, holderId: userId } });
     }
 
-    async getAccountById(accountId: string) {
+    getAccountById(accountId: string) {
         return this.db.account.findUnique({ where: { id: accountId } });
+    }
+
+    deleteAccountById(userId: string, accountId: string) {
+        return this.db.account.delete({ where: { id: accountId, holderId: userId } });
     }
 }

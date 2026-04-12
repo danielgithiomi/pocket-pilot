@@ -5,7 +5,7 @@
     <atom-button id="add-transaction" variant="primary" (clicked)="handleOpenForm()">
       <div class="w-full flex flex-row items-center justify-between gap-4">
         <lucide-icon name="create-transaction" [img]="Plus" [size]="iconSize"></lucide-icon>
-        <span class="hidden sm:block">Add Transaction</span>
+        <span class="hidden sm:block">Log Transaction</span>
       </div>
     </atom-button>
   </div>
@@ -58,12 +58,12 @@
 @if (isFormOpen()) {
   <organism-form
     id="transactions"
-    title="Add Transaction"
+    title="Log Transaction"
     [class.hidden]="!isFormOpen()"
-    description="Create a new transaction"
+    description="Record a new transaction"
     (closeForm)="handleCloseForm($event)"
   >
-    @let categories = transactionCategories;
+    @let categories = transactionCategories();
     @let types = transactionTypes.value()?.data;
     <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
       <atom-input
@@ -95,6 +95,7 @@
           id="type"
           class="flex-1"
           [inverted]="true"
+          wrapperClassName="my-0"
           label="Transaction Type"
           placeholder="Select a type"
           [formField]="transactionForm.type"
@@ -105,6 +106,7 @@
           class="flex-1"
           id="categories"
           [inverted]="true"
+          wrapperClassName="my-0"
           label="Transaction Category"
           placeholder="Select a category"
           [formField]="transactionForm.category"
@@ -124,7 +126,7 @@
 
     <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
       <atom-button
-        type="reset"
+        type="button"
         [inverted]="true"
         label="Reset Form"
         variant="secondary"

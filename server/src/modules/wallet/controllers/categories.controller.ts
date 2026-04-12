@@ -22,7 +22,7 @@ export class CategoriesController {
         type: CategoriesDto,
         description: 'The categories fetched successfully by User ID',
     })
-    getCategories(@UserInRequest() user: UserResponseDto) {
+    getUserCategories(@UserInRequest() user: UserResponseDto) {
         return this.categoriesService.getAllUserCategories(user);
     }
 

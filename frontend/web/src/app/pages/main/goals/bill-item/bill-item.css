@@ -4,7 +4,11 @@
   @apply flex flex-row items-center justify-between gap-4 p-2 my-1;
 
   .bill-item-logo {
-    @apply shrink-0 grid place-items-center size-13 rounded-full bg-(--body-background);
+    @apply relative shrink-0 grid place-items-center size-13 rounded-full bg-(--body-background) overflow-hidden;
+
+    .delete-wrapper {
+      @apply absolute hidden group-hover:grid inset-0 place-items-center bg-(--primary) cursor-pointer! transition-all duration-300;
+    }
   }
 
   .bill-item-content {
@@ -29,5 +33,20 @@
     .bill-item-converted-amount {
       @apply text-xs text-(--muted-text) font-semibold;
     }
+  }
+}
+
+.loader {
+  width: 15px;
+  cursor: pointer;
+  aspect-ratio: 1;
+  border: 2px solid;
+  border-radius: 50%;
+  animation: l1 1s infinite;
+  border-color: var(--white) transparent;
+}
+@keyframes l1 {
+  to {
+    transform: rotate(0.5turn);
   }
 }

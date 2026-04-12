@@ -17,6 +17,7 @@ export class Select {
   required = input<boolean>(true);
   label = input.required<string>();
   inverted = input<boolean>(false);
+  wrapperClassName = input<string>('');
   placeholder = input.required<string>();
 
   selectedValue = input<string>('');

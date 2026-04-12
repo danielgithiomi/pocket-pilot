@@ -1,26 +1,38 @@
 <div [id]="goalItemId()" class="goal-item">
-  <div class="goal-item-icon">
+  <div class="group goal-item-icon">
+    <div
+      class="delete-wrapper"
+      [ngClass]="{ 'grid!': isDeleting() }"
+      (click)="deleteGoalItem(goalItem().id)"
+    >
+      @if (isDeleting()) {
+        <div class="loader"></div>
+      } @else {
+        <lucide-angular [size]="17" [img]="trash" name="delete-bill-item"></lucide-angular>
+      }
+    </div>
+
     <lucide-icon
-    [size]="iconSize"
-    color="var(--primary-text)"
-    [name]="ICON_MAP[goal().category]"
-    ></lucide-icon>
+      [size]="iconSize"
+      color="var(--primary-text)"
+      [name]="ICON_MAP[goalItem().category]"
+    />
   </div>
 
   <div class="goal-item-content">
     <div class="goal-item-details">
       <div class="goal-item-names">
-        <p>{{ goal().name }}</p>
-        <p class="text-muted-text text-[0.65rem]">{{ goal().description }}</p>
+        <p>{{ goalItem().name }}</p>
+        <p class="text-muted-text text-[0.65rem]">{{ goalItem().description }}</p>
       </div>
 
       <div class="goal-item-amounts">
-        <div class="goal-status" [ngClass]="STATUS_COLOR_MAP[goal().status]">
-          <p class="goal-status-text">{{ goal().status }}</p>
+        <div class="goal-status" [ngClass]="STATUS_COLOR_MAP[goalItem().status]">
+          <p class="goal-status-text">{{ goalItem().status }}</p>
         </div>
         <p>
-          <span>{{ formatCurrency(goal().currentAmount) }}</span
-          >/{{ formatCurrency(goal().targetAmount) }}
+          <span>{{ formatCurrency(goalItem().currentAmount) }}</span
+          >/{{ formatCurrency(goalItem().targetAmount) }}
         </p>
       </div>
     </div>
@@ -31,8 +43,8 @@
         [showEditIcon]="false"
         [allowAnimation]="false"
         [showValueLabels]="false"
-        [maxValue]="goal().targetAmount"
-        [currentValue]="goal().currentAmount"
+        [maxValue]="goalItem().targetAmount"
+        [currentValue]="goalItem().currentAmount"
       ></atom-progress-bar>
     </div>
 
@@ -40,7 +52,7 @@
       <p>
         <span class="remaining-time">{{ remainingTime() }}</span> left to save.
         <span class="monthly-contribution"
-          >[{{ formatCurrency(goal().monthlyContribution) }} monthly]</span
+          >[{{ formatCurrency(goalItem().monthlyContribution) }} monthly]</span
         >
       </p>
     </div>

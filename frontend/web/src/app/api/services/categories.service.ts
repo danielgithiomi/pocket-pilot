@@ -1,17 +1,17 @@
-import { computed, inject, Injectable } from '@angular/core';
 import { denormalizeCategoryName } from '@libs/utils';
 import { CategoriesMutation } from '@methods/mutations';
 import { CategoriesResource } from '@methods/resources';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { ToastService } from '@components/ui/atoms/toast';
+import { computed, inject, Injectable } from '@angular/core';
 import {
   Categories,
   IEnumResponse,
   IStandardError,
+  CategoryVariant,
   IStandardResponse,
   CreateCategoryRequest,
   DeleteCategoryRequest,
-  CategoryVariant,
   IVoidResourceResponse,
 } from '@global/types';
 
@@ -35,32 +35,20 @@ export class CategoriesService {
     );
   }
 
-  getTransactionCategories(): IEnumResponse[] {
+  getTransactionCategories = computed<IEnumResponse[]>(() => {
+    const data = this.resource.getUserCategories.value()?.data;
 
-    const resourceError = computed(() => this.resource.getUserCategories.error());
-    if (resourceError()) {
-      this.renderToast({
-        type: 'error',
-        statusCode: 500,
-        title: 'Failed to load categories',
-        details: 'There was an error loading your categories. Please try again.',
-      });
-      return [];
-    }
+    if (!data) return [];
 
-    const incomeCategories = computed(
-      () => this.resource.getUserCategories.value()?.data.incomes || [],
-    );
-    const expenseCategories = computed(
-      () => this.resource.getUserCategories.value()?.data.expenses || [],
-    );
+    const { incomes, expenses } = data;
+    const allCategories = ['---Incomes---', ...incomes, '---Expenses---', ...expenses];
 
-    const allCategories = [...incomeCategories(), ...expenseCategories()];
     return allCategories.map((category) => ({
       value: category,
-      label: denormalizeCategoryName(category),
+      disabled: category.startsWith('---'),
+      label: category.startsWith('---') ? category : denormalizeCategoryName(category),
     }));
-  }
+  });
 
   deleteCategoryByName(
     categoryName: string,

@@ -29,7 +29,7 @@ export interface TransactionsWithAccountWithCount {
 }
 
 // ENUMS
-export type TransactionType = "INCOME" | "EXPENSE";
+export type TransactionType = "INCOME" | "EXPENSE" | "TRANSFER";
 export type TransactionCategory =
   | "HEALTH"
   | "HOUSEHOLD"
@@ -37,4 +37,4 @@ export type TransactionCategory =
   | "UTILITIES"
   | "EDUCATION"
   | "ENTERTAINMENT"
-  | "TRANSPORTATION"
+  | "TRANSPORTATION";
