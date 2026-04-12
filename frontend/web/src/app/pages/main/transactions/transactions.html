@@ -63,7 +63,7 @@
     description="Create a new transaction"
     (closeForm)="handleCloseForm($event)"
   >
-    @let categories = transactionCategories;
+    @let categories = transactionCategories();
     @let types = transactionTypes.value()?.data;
     <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
       <atom-input
@@ -108,7 +108,7 @@
           label="Transaction Category"
           placeholder="Select a category"
           [formField]="transactionForm.category"
-          [options]="categories() || [{ value: '', label: 'No transaction categories found' }]"
+          [options]="categories || [{ value: '', label: 'No transaction categories found' }]"
         />
       </div>
 

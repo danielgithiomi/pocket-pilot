@@ -65,6 +65,7 @@ export interface IVoidResourceResponse {
 export interface IEnumResponse {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 // ENDPOINTS

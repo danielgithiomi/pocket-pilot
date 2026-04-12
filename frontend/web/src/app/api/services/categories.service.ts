@@ -1,17 +1,17 @@
-import { computed, inject, Injectable } from '@angular/core';
 import { denormalizeCategoryName } from '@libs/utils';
 import { CategoriesMutation } from '@methods/mutations';
 import { CategoriesResource } from '@methods/resources';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { ToastService } from '@components/ui/atoms/toast';
+import { computed, inject, Injectable } from '@angular/core';
 import {
   Categories,
   IEnumResponse,
   IStandardError,
+  CategoryVariant,
   IStandardResponse,
   CreateCategoryRequest,
   DeleteCategoryRequest,
-  CategoryVariant,
   IVoidResourceResponse,
 } from '@global/types';
 
@@ -41,11 +41,12 @@ export class CategoriesService {
     if (!data) return [];
 
     const { incomes, expenses } = data;
-    const allCategories = [...incomes, ...expenses];
+    const allCategories = ['---Incomes---', ...incomes, '---Expenses---', ...expenses];
 
     return allCategories.map((category) => ({
       value: category,
-      label: denormalizeCategoryName(category),
+      disabled: category.startsWith('---'),
+      label: category.startsWith('---') ? category : denormalizeCategoryName(category),
     }));
   });
 

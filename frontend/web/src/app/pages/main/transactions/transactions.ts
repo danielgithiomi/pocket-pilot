@@ -4,6 +4,7 @@ import { form } from '@angular/forms/signals';
 import { Input } from '@components/ui/atoms/input';
 import { Select } from '@components/ui/atoms/select';
 import { Button } from '@components/ui/atoms/button';
+import { IVoidResourceResponse } from '@global/types';
 import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
 import { Form } from '@components/ui/organisms/form/form';
@@ -14,7 +15,6 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { TableColumn } from '@components/ui/organisms/table/table.types';
-import { IVoidResourceResponse, IStandardResponse } from '@global/types';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
 import {
