@@ -1,23 +1,29 @@
 <header>
   <div class="flex flex-row items-center gap-2">
-    <div class="hamburger-wrapper group" (click)="hamburgerClickEmitter.emit()">
-      <lucide-angular size="24" [img]="Menu" name="hamburger-icon" class="hamburger-icon" />
-    </div>
+    @if (withDrawerLayout()) {
+      <div class="hamburger-wrapper group" (click)="hamburgerClickEmitter.emit()">
+        <lucide-angular size="24" [img]="Menu" name="hamburger-icon" class="hamburger-icon" />
+      </div>
+    }
 
     <div class="hidden sm:flex flex-row items-center space-x-4">
-      <div class="vertical-separator h-8"></div>
+      @if (withDrawerLayout()) {
+        <div class="vertical-separator h-8"></div>
+      }
 
       <h1 class="text-lg font-bold">Pocket Pilot</h1>
     </div>
   </div>
 
   <div class="flex flex-row items-center gap-4">
-    <div class="hidden sm:flex gap-4 md:hidden lg:flex">
-      <lucide-icon class="atom-icon" [name]="Bell" [img]="Bell" [size]="iconSize" />
-      <lucide-icon class="atom-icon" [name]="Settings" [img]="Settings" [size]="iconSize" />
-    </div>
+    @if (withDrawerLayout()) {
+      <div class="hidden sm:flex gap-4 md:hidden lg:flex">
+        <lucide-icon class="atom-icon" [name]="Bell" [img]="Bell" [size]="iconSize" />
+        <lucide-icon class="atom-icon" [name]="Settings" [img]="Settings" [size]="iconSize" />
+      </div>
 
-    <div class="vertical-separator h-8 md:hidden! lg:flex!"></div>
+      <div class="vertical-separator h-8 md:hidden! lg:flex!"></div>
+    }
 
     <user-summary />
   </div>

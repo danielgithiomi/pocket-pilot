@@ -7,6 +7,7 @@ export const WEB_ROUTES = {
   accounts: "accounts",
   dashboard: "dashboard",
   categories: "categories",
+  onboarding: "onboarding",
   register: "auth/register",
   transactions: "transactions",
 } satisfies WebRoutes;
@@ -21,5 +22,6 @@ export interface WebRoutes {
   accounts: string;
   dashboard: string;
   categories: string;
+  onboarding: string;
   transactions: string;
 }

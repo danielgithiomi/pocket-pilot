@@ -8,7 +8,7 @@ import { AppHeader } from '@components/structural/headers/app-header/app-header'
   imports: [RouterOutlet, AppHeader],
   template: `
     <section id="drawerless-layout">
-      <app-header id="drawerless-header" />
+      <app-header [withDrawerLayout]="false" id="drawerless-header" />
 
       <div id="drawerless-content">
         <router-outlet class="w-full flex-1" />

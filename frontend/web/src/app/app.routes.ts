@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Login } from '@pages/auth/login/login';
 import { AuthLayout } from '@pages/layouts/auth';
 import { MainLayout } from '@pages/layouts/main';
+import { DrawerlessLayout } from '@pages/layouts/drawerless';
 import { NotFound } from '@pages/shared/not-found/not-found';
 import { AuthGuard, GuestGuard } from '@infrastructure/guards';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
@@ -21,6 +22,18 @@ export const routes: Routes = [
         title: 'Register | Pocket Pilot',
         path: 'register',
         loadComponent: () => import('@pages/auth/register/register').then((m) => m.Register),
+      },
+    ],
+  },
+  {
+    path: '',
+    canMatch: [AuthGuard],
+    component: DrawerlessLayout,
+    children: [
+      {
+        title: 'Onboarding | Pocket Pilot',
+        path: WEB_ROUTES.onboarding,
+        loadComponent: () => import('@pages/main/onboarding/onboarding').then((m) => m.Onboarding),
       },
     ],
   },
@@ -47,7 +60,8 @@ export const routes: Routes = [
       {
         title: 'Transactions | Pocket Pilot',
         path: WEB_ROUTES.transactions,
-        loadComponent: () => import('@pages/main/transactions/transactions').then((m) => m.Transactions),
+        loadComponent: () =>
+          import('@pages/main/transactions/transactions').then((m) => m.Transactions),
       },
       {
         title: 'Categories | Pocket Pilot',

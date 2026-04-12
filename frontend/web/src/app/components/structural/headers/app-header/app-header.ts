@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { UserSummary } from './user-summary/user-summary';
 import { LucideAngularModule, Menu, Settings2, Bell } from 'lucide-angular';
 
@@ -13,5 +13,10 @@ export class AppHeader {
   protected readonly Bell = Bell;
   protected readonly iconSize = 20;
   protected readonly Settings = Settings2;
+
+  // Inputs
+  withDrawerLayout = input<boolean>(true);
+
+  // Outputs
   hamburgerClickEmitter = output<void>();
 }
