@@ -21,4 +21,10 @@ export class GoalsRepository {
             },
         });
     }
+
+    deleteGoalById(userId: string, goalId: string) {
+        return this.db.goals.delete({
+            where: { id: goalId, userId },
+        });
+    }
 }

@@ -1,19 +1,20 @@
-import { ExposeEnumDto } from '@common/types';
+import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { GoalsService } from '../services/goals.service';
 import { CreateGoalDto, GoalDto } from '../dto/goals.dto';
 import { type User } from '@modules/identity/dto/user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Public, Summary, UserInRequest } from '@common/decorators';
-import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 
 @Controller('goals')
 @UseGuards(CookiesAuthGuard)
 export class GoalsController {
     constructor(private readonly goalsService: GoalsService) {}
 
-    @Public()
     @Get('categories')
+    @Public()
+    @HttpCode(200)
     @ApiOperation({ summary: 'Get all goal categories' })
     @Summary('Goal categories retrieved', 'The user retrieved all goal categories')
     @ApiResponse({
@@ -42,5 +43,19 @@ export class GoalsController {
     @Summary('New goal created', 'The user created a new goal and was saved to the database')
     createGoal(@UserInRequest() user: User, @Body() createGoalDto: CreateGoalDto) {
         return this.goalsService.createGoal(user.id!, createGoalDto);
+    }
+
+    @Delete(':goalId')
+    @HttpCode(200)
+    @ApiOperation({ summary: 'Delete a goal by ID' })
+    @Summary('Goal deleted', 'The user deleted a goal')
+    @ApiResponse({ status: 200, type: VoidResourceResponse, description: 'Goal deleted successfully' })
+    async deleteGoal(@UserInRequest() user: User, @Param('goalId') goalId: string): Promise<VoidResourceResponse> {
+        const deletedGoal = await this.goalsService.deleteGoalById(user.id!, goalId);
+
+        return {
+            message: 'Finance goal deleted!',
+            details: `Your [${deletedGoal.name}] goal has been deleted successfuly.`,
+        };
     }
 }

@@ -12,6 +12,7 @@ export class BillsController {
     constructor(private readonly billsService: BillsService) {}
 
     @Get('types')
+    @HttpCode(200)
     @ApiOperation({ summary: 'Get all bill types' })
     @Summary('Bill types retrieved', 'The application retrieved all bill types')
     @ApiResponse({
@@ -40,6 +41,7 @@ export class BillsController {
     }
 
     @Get()
+    @HttpCode(200)
     @UseGuards(CookiesAuthGuard)
     @ApiOperation({ summary: 'Get all user bills' })
     @Summary('User bills retrieved', 'The user retrieved all their bills.')
@@ -54,6 +56,7 @@ export class BillsController {
     }
 
     @Post()
+    @HttpCode(201)
     @UseGuards(CookiesAuthGuard)
     @ApiOperation({ summary: 'Create a new bill' })
     @Summary('New bill created', 'The user created a new bill and was saved to the database.')
@@ -67,6 +70,7 @@ export class BillsController {
     }
 
     @Delete(':billId')
+    @HttpCode(200)
     @UseGuards(CookiesAuthGuard)
     @ApiOperation({ summary: 'Delete a bill by its ID' })
     @Summary('Bill deleted', 'The user deleted a bill by its ID.')
