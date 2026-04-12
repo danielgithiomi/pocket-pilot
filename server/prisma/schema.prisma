@@ -65,7 +65,7 @@ model User {
 model UserPreferences {
     id String @id @default(uuid())
 
-    phoneNumber          String
+    phoneNumber String
 
     defaultCurrency      String @default("USD")
     preferredLanguage    String @default("en")
