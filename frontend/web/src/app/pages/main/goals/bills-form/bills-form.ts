@@ -40,8 +40,8 @@ export class BillsForm implements OnInit {
   // Form
   private readonly INITIAL_FORM_STATE: NewBillSchema = {
     name: '',
-    currency: '',
     amount: null,
+    currency: 'MUR',
     dueDate: new Date(),
     type: BillTypeEnum.MONTHLY,
   };

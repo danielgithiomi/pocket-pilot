@@ -1,4 +1,4 @@
-<div class="select-field">
+<div class="select-field" [ngClass]="wrapperClassName()">
   <label [ngClass]="{ 'text-inverted-text': inverted() }" [for]="selectId()">
     @if (required()) {
       <span class="required">*</span>

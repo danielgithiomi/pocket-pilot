@@ -65,6 +65,8 @@ model User {
 model UserPreferences {
     id String @id @default(uuid())
 
+    phoneNumber          String
+
     defaultCurrency      String @default("USD")
     preferredLanguage    String @default("en")
     monthlySpendingLimit Float  @default(0)

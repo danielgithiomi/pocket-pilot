@@ -103,7 +103,7 @@ export class Categories {
   }
 
   protected resetCategoryForm() {
-    this.categoryForm().reset();
+    this.categoryForm().reset(initialCategoryFormState);
     this.categoryFormModel.set(initialCategoryFormState);
   }
 

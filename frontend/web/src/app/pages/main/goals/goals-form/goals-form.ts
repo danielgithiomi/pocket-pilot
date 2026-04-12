@@ -193,8 +193,8 @@ export class GoalsForm {
     this.summary.set(null);
     this.goalFormStep.set(1);
     this.selectedCategory.set(null);
-    this.newGoalFormModel.set(INITIAL_FORM_STATE);
-    this.newGoalForm().reset(this.newGoalFormModel());
+    this.newGoalForm().reset(this.initialFormData);
+    this.newGoalFormModel.set(this.initialFormData);
   }
 
   protected resetCalculatedFields() {

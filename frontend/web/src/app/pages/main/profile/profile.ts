@@ -60,8 +60,9 @@ export class Profile {
 
   // METHODS
   protected resetEditProfileForm() {
-    this.editProfileForm().reset();
-    this.editProfileFormModel.set(this.initialEditProfileFormData());
+    const initialData = this.initialEditProfileFormData();
+    this.editProfileForm().reset(initialData);
+    this.editProfileFormModel.set(initialData);
   }
 
   protected submitEditProfileForm(event: Event) {
