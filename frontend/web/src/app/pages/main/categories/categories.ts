@@ -6,13 +6,13 @@ import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { CategoryTypeEnum } from '@global/enums';
+import { NoData } from '@structural/main/no-data/no-data';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, signal } from '@angular/core';
-import { NoData } from '@components/structural/main/no-data/no-data';
+import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { CategoryVariant, IVoidResourceResponse } from '@global/types';
 import { LucideAngularModule, ListFilterPlus, X } from 'lucide-angular';
 import { denormalizeCategoryName, normalizeCategoryName } from '@global/utils';
-import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import {
   CategorySchema,
   categoryTabItems,

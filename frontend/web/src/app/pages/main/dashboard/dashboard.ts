@@ -10,7 +10,7 @@ import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
 import { TransactionsService } from '@api/transactions.service';
 import { Component, computed, inject, signal } from '@angular/core';
-import { DashboardCard } from '@components/structural/main/dashboard-card/dashboard-card';
+import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
 import { TransactionLimitSchema, TransactionLimitValidationSchema } from './dashboard.types';
 import {
   Wallet,

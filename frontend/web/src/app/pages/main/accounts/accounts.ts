@@ -7,10 +7,10 @@ import { Button } from '@components/ui/atoms/button';
 import { Select } from '@components/ui/atoms/select';
 import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
+import { NoData } from '@structural/main/no-data/no-data';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
-import { NoData } from '@components/structural/main/no-data/no-data';
-import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
+import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import {
   AccountsSchema,
   initialAccountsFormState,

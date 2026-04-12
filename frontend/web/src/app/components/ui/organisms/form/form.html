@@ -12,14 +12,16 @@
         <p class="form-description">{{ description() }}</p>
       </div>
 
-      <lucide-icon
-        name="x"
-        [img]="X"
-        [size]="24"
-        class="atom-icon"
-        color="var(--inverted-text)"
-        (click)="closeForm.emit('icon')"
-      />
+      @if (showCloseIcon()) {
+        <lucide-icon
+          name="x"
+          [img]="X"
+          [size]="24"
+          class="atom-icon"
+          color="var(--inverted-text)"
+          (click)="closeForm.emit('icon')"
+        />
+      }
     </div>
 
     <!-- CONTENT -->

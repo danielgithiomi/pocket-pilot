@@ -26,13 +26,13 @@ export const routes: Routes = [
     ],
   },
   {
-    path: '',
+    path: WEB_ROUTES.onboarding,
     canMatch: [AuthGuard],
     component: DrawerlessLayout,
     children: [
       {
+        path: '',
         title: 'Onboarding | Pocket Pilot',
-        path: WEB_ROUTES.onboarding,
         loadComponent: () => import('@pages/main/onboarding/onboarding').then((m) => m.Onboarding),
       },
     ],

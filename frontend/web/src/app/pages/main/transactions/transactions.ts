@@ -6,16 +6,16 @@ import { Select } from '@components/ui/atoms/select';
 import { Button } from '@components/ui/atoms/button';
 import { IVoidResourceResponse } from '@global/types';
 import { AccountsService } from '@api/accounts.service';
+import { NoData } from '@structural/main/no-data/no-data';
 import { ToastService } from '@components/ui/atoms/toast';
 import { Form } from '@components/ui/organisms/form/form';
+import { TableColumn } from '@organisms/table/table.types';
 import { CategoriesService } from '@api/categories.service';
 import { TransactionsService } from '@api/transactions.service';
 import { TabList } from '@components/ui/atoms/tab-list/tab-list';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
-import { NoData } from '@components/structural/main/no-data/no-data';
-import { TableColumn } from '@components/ui/organisms/table/table.types';
-import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
+import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
 import {
   skeletonData,

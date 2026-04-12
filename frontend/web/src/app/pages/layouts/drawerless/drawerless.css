@@ -8,6 +8,20 @@
   }
 
   #drawerless-content {
-    @apply flex-1;
+    @apply relative flex-1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('/images/onboarding_background.jpg');
+
+    &::after {
+      position: absolute;
+      inset: 0;
+      content: '';
+      width: 100%;
+      height: 100%;
+      filter: blur(15px);
+      background-color: rgba(0, 0, 0, 0.75);
+    }
   }
 }

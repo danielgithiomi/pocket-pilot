@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { Drawer } from '@widgets/drawer/drawer';
 import { Component, inject } from '@angular/core';
 import { DrawerService } from '@infrastructure/services';
-import { AppHeader } from '@components/structural/headers/app-header/app-header';
+import { AppHeader } from '@structural/headers/app-header/app-header';
 
 @Component({
   selector: 'main-layout',

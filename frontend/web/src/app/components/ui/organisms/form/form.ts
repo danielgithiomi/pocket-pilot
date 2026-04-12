@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { DrawerService } from '@infrastructure/services';
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 
 @Component({
   selector: 'organism-form',
@@ -23,5 +23,6 @@ export class Form {
   // Inputs
   id = input.required<string>();
   title = input.required<string>();
+  showCloseIcon = input<boolean>(true);
   description = input.required<string>();
 }
