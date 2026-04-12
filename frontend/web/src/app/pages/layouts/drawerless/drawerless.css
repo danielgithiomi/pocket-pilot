@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+#drawerless-layout {
+  @apply flex flex-col h-screen;
+
+  #drawerless-header {
+    @apply w-full h-[8vh];
+  }
+
+  #drawerless-content {
+    @apply flex-1;
+  }
+}

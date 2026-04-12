@@ -4,7 +4,7 @@ import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { normalizeCategories, normalizeCategoryName } from '@libs/utils';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CategoriesRepository } from '../repositories/categories.repository';
-import { DEFAULT_INCOME_CATEGORIES, DEFAULT_EXPENSE_CATEGORIES } from '@libs/constants';
+import { DEFAULT_INCOME_CATEGORIES, DEFAULT_EXPENSE_CATEGORIES } from '@common/constants';
 import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';
 
 @Injectable()
