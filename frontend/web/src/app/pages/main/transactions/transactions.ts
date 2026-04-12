@@ -142,8 +142,20 @@ export class Transactions {
         let classes =
           'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis dark:text-(--inverted-text)';
 
-        if (transaction.type === 'INCOME') classes += ' bg-(--income)';
-        else classes += ' bg-(--expense)';
+        switch (transaction.type) {
+          case 'INCOME':
+            classes += ' bg-(--income)';
+            break;
+          case 'EXPENSE':
+            classes += ' bg-(--expense)';
+            break;
+          case 'TRANSFER':
+            classes += ' bg-(--transfer)';
+            break;
+          default:
+            classes += ' bg-(--body-background)';
+            break;
+        }
 
         return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.type}</span>`;
       },

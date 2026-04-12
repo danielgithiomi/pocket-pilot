@@ -5,7 +5,7 @@
     <atom-button id="add-transaction" variant="primary" (clicked)="handleOpenForm()">
       <div class="w-full flex flex-row items-center justify-between gap-4">
         <lucide-icon name="create-transaction" [img]="Plus" [size]="iconSize"></lucide-icon>
-        <span class="hidden sm:block">Add Transaction</span>
+        <span class="hidden sm:block">Log Transaction</span>
       </div>
     </atom-button>
   </div>
@@ -58,9 +58,9 @@
 @if (isFormOpen()) {
   <organism-form
     id="transactions"
-    title="Add Transaction"
+    title="Log Transaction"
     [class.hidden]="!isFormOpen()"
-    description="Create a new transaction"
+    description="Record a new transaction"
     (closeForm)="handleCloseForm($event)"
   >
     @let categories = transactionCategories();
