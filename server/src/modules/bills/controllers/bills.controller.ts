@@ -1,6 +1,6 @@
 import { CookiesAuthGuard } from '@common/guards';
-import { UserInRequest } from '@common/decorators';
 import { BillsService } from '../services/bills.service';
+import { Summary, UserInRequest } from '@common/decorators';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BillDTO, CreateBillPayload } from '../dto/bills.dto';
 import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
@@ -13,6 +13,7 @@ export class BillsController {
 
     @Get('types')
     @ApiOperation({ summary: 'Get all bill types' })
+    @Summary('Bill types retrieved', 'The application retrieved all bill types')
     @ApiResponse({
         status: 200,
         isArray: true,
@@ -27,6 +28,7 @@ export class BillsController {
     @HttpCode(200)
     @UseGuards(CookiesAuthGuard)
     @ApiOperation({ summary: 'Get all application bills' })
+    @Summary('All application bills retrieved', 'The application retrieved all bills')
     @ApiResponse({
         status: 200,
         type: BillDTO,
@@ -40,6 +42,7 @@ export class BillsController {
     @Get()
     @UseGuards(CookiesAuthGuard)
     @ApiOperation({ summary: 'Get all user bills' })
+    @Summary('User bills retrieved', 'The user retrieved all their bills.')
     @ApiResponse({
         status: 200,
         type: BillDTO,
@@ -53,6 +56,7 @@ export class BillsController {
     @Post()
     @UseGuards(CookiesAuthGuard)
     @ApiOperation({ summary: 'Create a new bill' })
+    @Summary('New bill created', 'The user created a new bill and was saved to the database.')
     @ApiResponse({
         status: 201,
         type: BillDTO,
@@ -65,6 +69,7 @@ export class BillsController {
     @Delete(':billId')
     @UseGuards(CookiesAuthGuard)
     @ApiOperation({ summary: 'Delete a bill by its ID' })
+    @Summary('Bill deleted', 'The user deleted a bill by its ID.')
     @ApiResponse({
         status: 200,
         type: VoidResourceResponse,

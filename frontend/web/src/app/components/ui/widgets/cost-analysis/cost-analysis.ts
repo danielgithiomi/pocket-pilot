@@ -98,8 +98,12 @@ export class CostAnalysis {
   });
 
   readonly categoriesWithPercentage = computed(() => {
-    const currentPercentage = this.costAnalysisCategories().reduce((sum, category) => sum + category.percentage, 0);
-    const remainingPercentage = 100 - currentPercentage;
+    const categoriesLength = this.costAnalysisCategories().length;
+    const categoriesTotalPercentage = this.costAnalysisCategories().reduce(
+      (sum, category) => sum + category.percentage,
+      0,
+    );
+    const remainingPercentage = 100 - categoriesTotalPercentage;
 
     const other: CostAnalysisCategory = {
       categoryName: 'Other',
@@ -107,12 +111,15 @@ export class CostAnalysis {
       color: COLOR_MAP[COLOR_MAP.length - 1],
     };
 
-    const compositeCategories = [...this.costAnalysisCategories(), other];
+    const compositeCategories =
+      categoriesLength > 6
+        ? [...this.costAnalysisCategories(), other]
+        : this.costAnalysisCategories();
 
     return compositeCategories.map((category, _index) => ({
+      color: category.color,
       id: category.categoryName,
       label: category.categoryName,
-      color: category.color,
       percentage: category.percentage,
     }));
   });
