@@ -27,7 +27,7 @@ export const routes: Routes = [
   },
   {
     path: WEB_ROUTES.onboarding,
-    canMatch: [AuthGuard],
+    // canMatch: [AuthGuard],
     component: DrawerlessLayout,
     children: [
       {

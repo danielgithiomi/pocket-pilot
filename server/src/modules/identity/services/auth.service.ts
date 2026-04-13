@@ -1,5 +1,4 @@
 import * as argon from 'argon2';
-import { FullUser } from '../dto/user.dto';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
 import { UserWithPreferencesDto } from '../dto/onboarding.dto';
@@ -18,7 +17,7 @@ export class AuthService {
     ) {}
 
     async me(userId: string): Promise<UserWithPreferencesDto> {
-        const user: FullUser | null = await this.userRepository.findUserById(userId);
+        const user = await this.userRepository.findUserById(userId);
 
         if (!user)
             throw new UnauthorizedException({
@@ -27,7 +26,9 @@ export class AuthService {
                 details: `No user found in the request with the ID: {${userId}}.`,
             });
 
-        return plainToInstance(UserWithPreferencesDto, user);
+        console.log('auth service me', user);
+
+        return plainToInstance(UserWithPreferencesDto, user, { excludeExtraneousValues: true });
     }
 
     async login(data: LoginInputDto): Promise<LoginOutputDto> {
@@ -68,7 +69,7 @@ export class AuthService {
         return {
             access_token,
             refresh_token,
-            user: plainToInstance(UserWithPreferencesDto, user),
+            user: plainToInstance(UserWithPreferencesDto, user, { excludeExtraneousValues: true }),
         } satisfies LoginOutputDto;
     }
 

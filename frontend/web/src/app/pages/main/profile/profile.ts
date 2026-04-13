@@ -1,8 +1,8 @@
+import { User } from '@global/types';
 import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
 import { formatFullDate } from '@libs/utils';
 import { form } from '@angular/forms/signals';
-import { IAuthResponse } from '@global/types';
 import { AuthService } from '@api/auth.service';
 import { UserService } from '@api/user.service';
 import { Input } from '@components/ui/atoms/input';
@@ -74,7 +74,7 @@ export class Profile {
     this.isSubmittingEditProfileForm.set(true);
 
     this.userService.update(id, payload).subscribe({
-      next: (user: IAuthResponse) => {
+      next: (user: User) => {
         this.toastService.show({
           variant: 'success',
           title: 'Update Successful!',

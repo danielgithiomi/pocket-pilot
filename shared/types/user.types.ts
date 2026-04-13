@@ -1,4 +1,3 @@
-
 import { UserPreferences } from "./onboarding.types";
 
 export interface User {

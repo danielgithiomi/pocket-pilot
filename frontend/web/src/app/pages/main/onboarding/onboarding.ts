@@ -7,7 +7,7 @@ import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { OnboardingPayload } from '@global/types';
 import { Component, inject, signal } from '@angular/core';
-import { LANGUAGES, CURRENCIES } from '@global/constants';
+import { LANGUAGES, CURRENCIES, WEB_ROUTES } from '@global/constants';
 import { OnboardingService } from '@api/onboarding.service';
 import { LucideAngularModule, ChevronsRight } from 'lucide-angular';
 import {
@@ -15,6 +15,7 @@ import {
   INITIAL_ONBOARDING_FORM_STATE,
   ONBOARDING_FORM_VALIDATION_SCHEMA,
 } from './onboarding-form.types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'onboarding',
@@ -35,6 +36,7 @@ export class Onboarding {
   protected readonly initialOnboardingFormState = INITIAL_ONBOARDING_FORM_STATE;
 
   // SERVICES
+  private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
   private readonly onboardingService = inject(OnboardingService);
 
@@ -56,8 +58,6 @@ export class Onboarding {
   submitOnboardingForm(event: Event) {
     event.preventDefault();
 
-    console.log('submitting onboarding form');
-
     this.isSubmitting.set(true);
 
     const { phoneNumber, monthlySpendingLimit, ...rest } = this.onboardingFormModel();
@@ -78,6 +78,7 @@ export class Onboarding {
           });
 
           this.resetOnboardingForm();
+          this.router.navigate([WEB_ROUTES.dashboard]);
         },
         complete: () => this.isSubmitting.set(false),
       });

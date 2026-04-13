@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RegisterInputDto } from '../dto/auth.dto';
-import { FullUser, UpdateUserDto, UserResponseDto } from '../dto/user.dto';
+import { FullUser, UpdateUserDto } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()
@@ -17,16 +17,16 @@ export class UserRepository {
         return await this.db.user.create({ data: newUser });
     }
 
-    async getAllUsers(): Promise<UserResponseDto[]> {
+    async getAllUsers(): Promise<FullUser[]> {
         return await this.db.user.findMany({});
     }
 
-    async findUserById(userId: string): Promise<FullUser | null> {
-        return this.db.user.findUnique({ where: { id: userId } });
+    async findUserById(userId: string){
+        return this.db.user.findUnique({ where: { id: userId }, include: { userPreferences: true } });
     }
 
-    async findUserByEmail(email: string): Promise<FullUser | null> {
-        return this.db.user.findUnique({ where: { email } });
+    async findUserByEmail(email: string){
+        return this.db.user.findUnique({ where: { email }, include: { userPreferences: true } });
     }
 
     async updateUserById(userId: string, data: UpdateUserDto): Promise<FullUser> {

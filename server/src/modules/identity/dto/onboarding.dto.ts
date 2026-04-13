@@ -1,4 +1,4 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
@@ -44,6 +44,7 @@ export class UserPreferencesDto {
     preferredLanguage!: string;
 }
 
+@Exclude()
 @ApiExtraModels(UserPreferencesDto)
 export class UserWithPreferencesDto {
     @Expose()
@@ -116,6 +117,8 @@ export class UserWithPreferencesDto {
     })
     isOnboarded!: boolean;
 
+    @Expose()
+    @Type(() => UserPreferencesDto)
     @ApiProperty({ type: UserPreferencesDto })
-    preferences!: UserPreferencesDto;
+    userPreferences!: UserPreferencesDto;
 }

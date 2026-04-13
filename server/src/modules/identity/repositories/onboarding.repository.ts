@@ -20,33 +20,21 @@ export class OnboardingRepository {
             const { id } = user;
             const { phoneNumber, defaultCurrency, preferredLanguage, monthlySpendingLimit } = payload;
 
-            await prisma.userPreferences.create({
-                data: {
-                    userId: id,
-                    defaultCurrency,
-                    preferredLanguage,
-                    monthlySpendingLimit,
-                },
-            });
-
-            await prisma.user.update({
+            return prisma.user.update({
                 where: { id },
                 data: {
                     phoneNumber,
                     isOnboarded: true,
-                },
-            });
-
-            return prisma.user.findUnique({
-                where: { id },
-                select: {
                     userPreferences: {
-                        select: {
-                            defaultCurrency: true,
-                            preferredLanguage: true,
-                            monthlySpendingLimit: true,
+                        create: {
+                            defaultCurrency,
+                            preferredLanguage,
+                            monthlySpendingLimit,
                         },
                     },
+                },
+                include: {
+                    userPreferences: true,
                 },
             });
         });

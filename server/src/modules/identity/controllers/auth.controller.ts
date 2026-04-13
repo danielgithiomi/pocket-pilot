@@ -1,14 +1,15 @@
 import type { Response } from 'express';
+import { type User } from '../dto/user.dto';
 import { MessageResponse } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { LoginInputDto } from './../dto/auth.dto';
 import { plainToInstance } from 'class-transformer';
 import { AuthService } from '../services/auth.service';
 import { Summary, UserInRequest } from '@common/decorators';
-import { type User, UserResponseDto } from '../dto/user.dto';
 import { CookiesService } from '../services/cookies.service';
-import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import { UserWithPreferencesDto } from '../dto/onboarding.dto';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
@@ -18,20 +19,27 @@ export class AuthController {
     ) {}
 
     @Get('me')
+    @HttpCode(200)
     @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
-    @ApiResponse({ status: 200, type: UserResponseDto, description: 'Retrieved Logged in user details.' })
+    @ApiResponse({ status: 200, type: UserWithPreferencesDto, description: 'Retrieved Logged in user details.' })
     @ApiOperation({ summary: 'Get user details', description: 'Get the details of the currently logged in user.' })
-    async me(@UserInRequest() user: User): Promise<UserResponseDto> {
+    async me(@UserInRequest() user: User): Promise<UserWithPreferencesDto> {
         const userResponse = await this.authService.me(user.id!);
 
-        return plainToInstance(UserResponseDto, userResponse);
+        return plainToInstance(UserWithPreferencesDto, userResponse);
     }
 
     @Post('login')
+    @HttpCode(200)
     @ApiBody({ type: LoginInputDto, required: true })
     @Summary('Login Successful.', 'The user is authenticated and tokens are stored in the cookies.')
-    @ApiResponse({ status: 200, description: 'User logged in successfully.', type: UserResponseDto, isArray: false })
+    @ApiResponse({
+        status: 200,
+        isArray: false,
+        type: UserWithPreferencesDto,
+        description: 'User logged in successfully.',
+    })
     @ApiOperation({
         summary: 'Log in a registered user',
         description: 'Log in as a registered user and store the access and refresh tokens in the cookies.',
@@ -45,9 +53,10 @@ export class AuthController {
     }
 
     @Post('logout')
+    @HttpCode(204)
     @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
-    @ApiResponse({ status: 200, description: 'User logged out successfully.', type: MessageResponse })
+    @ApiResponse({ status: 204, description: 'User logged out successfully.', type: MessageResponse })
     @Summary('User Logout Successful.', 'The user is logged out and token is cleared from the cookies.')
     @ApiOperation({
         summary: 'Log out current user',

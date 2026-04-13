@@ -16,7 +16,10 @@ export class OnboardingService {
   onboardUser(payload: OnboardingPayload) {
     return this.mutation.onboardUser(payload).pipe(
       map((response: IStandardResponse<User>) => response.data),
-      tap((user: User) => this.authService.createSession(user)),
+      tap((user: User) => {
+        console.log('login user', user);
+        this.authService.createSession(user);
+      }),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

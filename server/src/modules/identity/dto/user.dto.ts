@@ -5,6 +5,12 @@ import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
 export type FullUser = Prisma.UserCreateInput;
 
+export type UserWithPreferences = Prisma.UserGetPayload<{
+    include: {
+        userPreferences: true;
+    };
+}>;
+
 // INPUT
 export class CreateUserDto {
     @IsString()
@@ -75,6 +81,13 @@ export class UserResponseDto {
 
     @Expose()
     @ApiProperty({
+        example: '+1234567890',
+        description: 'Phone number of the user',
+    })
+    phoneNumber!: string;
+
+    @Expose()
+    @ApiProperty({
         example: '2022-01-01T00:00:00.000Z',
         description: 'Date and time when the user was created',
     })
@@ -107,6 +120,13 @@ export class UserResponseDto {
         description: 'Whether the account is locked',
     })
     isAccountLocked!: boolean;
+
+    @Expose()
+    @ApiProperty({
+        example: true,
+        description: 'Whether the user has completed onboarding',
+    })
+    isOnboarded!: boolean;
 }
 
 // SWAGGER

@@ -1,9 +1,4 @@
-import { User } from "../types/user.types";
-
-// LOGIN
-export interface ILoginRequest {
+export interface LoginPayload {
   email: string;
   password: string;
 }
-
-export type IAuthResponse = User;

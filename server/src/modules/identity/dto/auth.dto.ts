@@ -5,7 +5,7 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export interface ValidationResult {
     isValid: boolean;
-    user: FullUser;
+    user: any;
 }
 
 export interface JWTPayload {

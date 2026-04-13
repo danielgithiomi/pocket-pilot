@@ -1,11 +1,10 @@
 import { inject } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { ToastService } from '@atoms/toast';
-import { AuthService } from '@api/auth.service';
 import { UserMutation } from '@methods/mutations';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 import {
-  IAuthResponse,
+  User,
   IStandardError,
   IRegisterRequest,
   IStandardResponse,
@@ -19,15 +18,14 @@ import {
 })
 export class UserService {
   private readonly mutation = inject(UserMutation);
-  private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
 
   register(request: IRegisterRequest) {
     return this.mutation.register(request).pipe(
-      // tap((response: IStandardResponse<IAuthResponse>) =>
-      //   this.authService.createSession(response.data),
-      // ),
-      map((response: IStandardResponse<IAuthResponse>) => response.data),
+      map((response: IStandardResponse<User>) => response.data),
+      tap((user: User) => {
+        console.log('User registered:', user);
+      }),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;
@@ -35,9 +33,9 @@ export class UserService {
     );
   }
 
-  update(userId: string, payload: IUpdateUserRequest): Observable<IAuthResponse> {
+  update(userId: string, payload: IUpdateUserRequest): Observable<User> {
     return this.mutation.update(userId, payload).pipe(
-      map((response: IStandardResponse<IAuthResponse>) => response.data),
+      map((response: IStandardResponse<User>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

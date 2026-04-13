@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { OnboardingPayload } from '../dto/onboarding.dto';
+import { plainToInstance } from 'class-transformer';
 import { OnboardingRepository } from '../repositories/onboarding.repository';
+import { OnboardingPayload, UserWithPreferencesDto } from '../dto/onboarding.dto';
 
 @Injectable()
 export class OnboardingService {
     constructor(private readonly onboardingRepository: OnboardingRepository) {}
 
-    onboardUser(userId: string, payload: OnboardingPayload) {
-        return this.onboardingRepository.onboardUser(userId, payload);
+    async onboardUser(userId: string, payload: OnboardingPayload) {
+        const onboardedUser = await this.onboardingRepository.onboardUser(userId, payload);
+        return plainToInstance(UserWithPreferencesDto, onboardedUser, { excludeExtraneousValues: true });
     }
 }

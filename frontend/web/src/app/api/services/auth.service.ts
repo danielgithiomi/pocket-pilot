@@ -9,8 +9,7 @@ import { catchError, EMPTY, firstValueFrom, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import {
   User,
-  IAuthResponse,
-  ILoginRequest,
+  LoginPayload,
   IStandardError,
   IStandardResponse,
 } from '@global/types';
@@ -63,7 +62,7 @@ export class AuthService {
 
     try {
       const response = await firstValueFrom(
-        this.http.get<IStandardResponse<IAuthResponse>>(concatUrl('auth/me'), {
+        this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
           credentials: 'include',
         }),
       );
@@ -88,7 +87,7 @@ export class AuthService {
     this.sessionRequest = (async () => {
       try {
         const response = await firstValueFrom(
-          this.http.get<IStandardResponse<IAuthResponse>>(concatUrl('auth/me'), {
+          this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
             credentials: 'include',
           }),
         );
@@ -109,9 +108,9 @@ export class AuthService {
     return this.sessionRequest;
   }
 
-  login(request: ILoginRequest) {
+  login(request: LoginPayload) {
     return this.mutation.login(request).pipe(
-      tap((response: IStandardResponse<IAuthResponse>) => {
+      tap((response: IStandardResponse<User>) => {
         this.createSession(response.data);
       }),
       catchError((error: IStandardError) => {
@@ -144,6 +143,7 @@ export class AuthService {
   }
 
   createSession(user: User) {
+    console.log('Creating session with user:', user);
     this.userSignal.set(user);
     localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
   }
