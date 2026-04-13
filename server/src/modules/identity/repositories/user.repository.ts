@@ -21,11 +21,11 @@ export class UserRepository {
         return await this.db.user.findMany({});
     }
 
-    async findUserById(userId: string){
+    async findUserById(userId: string) {
         return this.db.user.findUnique({ where: { id: userId }, include: { userPreferences: true } });
     }
 
-    async findUserByEmail(email: string){
+    async findUserByEmail(email: string) {
         return this.db.user.findUnique({ where: { email }, include: { userPreferences: true } });
     }
 

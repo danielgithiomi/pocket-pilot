@@ -1,9 +1,10 @@
 import { catchError, EMPTY } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
 import { AccountsResource } from '@methods/resources';
 import { AccountsMutation } from '@methods/mutations';
+import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { ToastService } from '@components/ui/atoms/toast';
-import { inject, Injectable, signal } from '@angular/core';
-import { CreateAccountRequest, IStandardError } from '@global/types';
+import { CreateAccountRequest, IStandardError, User } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -12,19 +13,36 @@ export class AccountsService {
   private readonly toastService = inject(ToastService);
   private readonly accountsMutation = inject(AccountsMutation);
   private readonly accountsResource = inject(AccountsResource);
-  private readonly maximumSpendingLimit = signal<number>(60000);
-  private readonly defaultCurrency: Intl.NumberFormatOptions['currency'] = 'MUR';
 
-  getMaximumSpendingLimit() {
-    return this.maximumSpendingLimit;
+  getUserFromLocalStorage(): User | null {
+    const storedUser = localStorage.getItem(STORED_AUTH_USER_KEY);
+
+    if (!storedUser) {
+      this.renderToast({
+        type: 'error',
+        statusCode: 404,
+        title: 'User not found!',
+        details: 'No user found in the application local storage.',
+      });
+      return null;
+    }
+    return JSON.parse(storedUser);
   }
 
-  setMaximumSpendingLimit(limit: number) {
-    this.maximumSpendingLimit.set(limit);
+  getMaximumSpendingLimit() {
+    const user = this.getUserFromLocalStorage();
+
+    if (!user) return 0;
+
+    return user.userPreferences.monthlySpendingLimit;
   }
 
   getDefaultCurrency() {
-    return this.defaultCurrency;
+    const user = this.getUserFromLocalStorage();
+    
+    if (!user) return 'USD';
+
+    return user.userPreferences.defaultCurrency;
   }
 
   getAccountTypes() {

@@ -143,7 +143,6 @@ export class AuthService {
   }
 
   createSession(user: User) {
-    console.log('Creating session with user:', user);
     this.userSignal.set(user);
     localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
   }

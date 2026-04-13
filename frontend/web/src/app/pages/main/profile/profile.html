@@ -51,7 +51,7 @@
         />
         <profile-detail
           detailVariant="phone"
-          [detailValue]="defaultNumber"
+          [detailValue]="user()?.phoneNumber"
           [isLoading]="isFetchingProfileData()"
         />
         <profile-detail

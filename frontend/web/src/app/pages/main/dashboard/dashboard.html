@@ -62,7 +62,7 @@
         [icon]="spendingLimitIcon"
         [isLoading]="isDataLoading()"
         subtitle="Your monthly spending limit"
-        [iconClassName]="totalExpenses() > maximumSpendingLimit() ? 'group-hover:text-error!' : ''"
+        [iconClassName]="totalExpenses() > maximumSpendingLimit ? 'group-hover:text-error!' : ''"
       >
         <div custom-content class="w-full grid place-items-center">
           @if (isDataLoading()) {
@@ -71,7 +71,7 @@
             <atom-progress-bar
               id="spending-limit-progress"
               [currentValue]="totalExpenses()"
-              [maxValue]="maximumSpendingLimit()"
+              [maxValue]="maximumSpendingLimit"
               (editClick)="onEditSpendingLimit()"
             />
           }

@@ -112,7 +112,7 @@ export class Dashboard {
   });
 
   // Forms
-  protected readonly initialLimitFormState = { amount: this.spendingLimit() };
+  protected readonly initialLimitFormState = { amount: this.spendingLimit };
   protected editLimitFormModel = signal<TransactionLimitSchema>(this.initialLimitFormState);
   protected editLimitForm = form(this.editLimitFormModel, TransactionLimitValidationSchema);
 
@@ -121,7 +121,6 @@ export class Dashboard {
     event.preventDefault();
 
     const { amount } = this.editLimitFormModel();
-    this.accountsService.setMaximumSpendingLimit(amount);
     this.isEditSpendingLimitFormOpen.set(false);
   }
 
