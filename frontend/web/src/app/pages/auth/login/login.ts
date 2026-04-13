@@ -59,7 +59,7 @@ export class Login {
           details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
         });
 
-        this.routeTo(WEB_ROUTES.dashboard);
+        this.routeTo(WEB_ROUTES.onboarding);
       },
       complete: () => this.isSubmitting.set(false),
     });

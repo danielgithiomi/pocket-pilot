@@ -81,13 +81,12 @@ export class CategoriesRepository {
                 where: { userId },
             });
 
-            if (!userCategories) {
+            if (!userCategories)
                 throw new NotFoundException({
                     name: 'CATEGORIES_NOT_FOUND',
                     title: 'Categories not found!',
                     details: 'No categories found for this user in the database.',
                 });
-            }
 
             let filteredIncomes: string[];
             let filteredExpenses: string[];

@@ -188,5 +188,7 @@ model Bills {
 
     dueDate DateTime
 
+    createdAt DateTime @default(now())
+
     @@map("User Bills")
 }
