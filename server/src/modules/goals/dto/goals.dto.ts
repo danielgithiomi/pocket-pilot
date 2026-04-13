@@ -1,7 +1,7 @@
-import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
 import { GoalCategory, GoalStatus } from '@prisma/client';
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 // INPUTS
 export class CreateGoalDto {
@@ -16,10 +16,12 @@ export class CreateGoalDto {
     description!: string;
 
     @IsNotEmpty()
+    @Type(() => Date)
     @ApiProperty({ example: '2025-01-01', description: 'The start date of the goal' })
     startDate!: Date;
 
     @IsNotEmpty()
+    @Type(() => Date)
     @ApiProperty({ example: '2025-12-31', description: 'The end date of the goal' })
     endDate!: Date;
 
@@ -28,10 +30,12 @@ export class CreateGoalDto {
     @ApiProperty({ enum: GoalCategory, example: GoalCategory.TRAVEL, description: 'The category of the goal' })
     category!: GoalCategory;
 
+    @IsNumber()
     @IsNotEmpty()
     @ApiProperty({ example: 1000, description: 'The monthly contribution to the goal' })
     monthlyContribution!: number;
 
+    @IsNumber()
     @IsNotEmpty()
     @ApiProperty({ example: 10000, description: 'The target amount for the goal' })
     targetAmount!: number;

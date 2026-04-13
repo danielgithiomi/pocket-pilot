@@ -18,6 +18,9 @@
           [selected]="isOptionSelected(option)"
         >
           {{ option.label }}
+          @if (option.descriptor) {
+            <span class="text-primary text-sm"> - {{ option.descriptor }}</span>
+          }
         </option>
       }
     </select>
