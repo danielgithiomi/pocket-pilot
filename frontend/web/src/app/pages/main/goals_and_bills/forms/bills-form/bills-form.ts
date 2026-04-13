@@ -35,6 +35,7 @@ export class BillsForm implements OnInit {
   protected readonly toastService = inject(ToastService);
 
   // Data
+  protected readonly bills$ = this.billService.getUserBills();
   protected readonly billTypes = this.billService.getBillTypes();
 
   // Form
@@ -108,6 +109,7 @@ export class BillsForm implements OnInit {
           details: 'Your bill has been added successfully. Now you can track it.',
         });
 
+        this.bills$.reload();
         this.resetNewBillForm();
         this.onBillsFormClose.emit();
       },

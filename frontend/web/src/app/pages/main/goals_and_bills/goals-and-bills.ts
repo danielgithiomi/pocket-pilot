@@ -1,25 +1,21 @@
 import { Button } from '@atoms/button';
-import { GoalItem } from './goal-item';
-import { BillItem } from './bill-item';
-import { GoalsForm } from './goals-form';
-import { BillsForm } from './bills-form';
 import { NgClass } from '@angular/common';
+import { GoalsForm, BillsForm } from './forms';
 import { GoalsService } from '@api/goals.service';
 import { BillsService } from '@api/bills.service';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { NoData } from '@structural/main/no-data/no-data';
 import { LucideAngularModule, Plus } from 'lucide-angular';
-import { BillItemSkeleton } from './bill-item/bill-item.skeleton';
-import { GoalItemSkeleton } from './goal-item/goal-item.skeleton';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
+import { GoalItem, BillItem, BillItemSkeleton, GoalItemSkeleton } from './items';
 
 @Component({
-  selector: 'app-goals',
-  styleUrl: './goals.css',
-  templateUrl: './goals.html',
+  selector: 'goals-and-bill',
+  styleUrl: './goals-and-bills.css',
+  templateUrl: './goals-and-bill.html',
   imports: [
     NoData,
     Button,
@@ -64,11 +60,9 @@ export class Goals {
     switch (form) {
       case 'goals':
         this.isGoalsFormOpen.set(false);
-        this.goalsService.getUserGoals().reload();
         break;
       case 'bills':
         this.isBillsFormOpen.set(false);
-        this.billsService.getUserBills().reload();
         break;
     }
   }

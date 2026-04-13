@@ -66,12 +66,12 @@ export const routes: Routes = [
       {
         title: 'Categories | Pocket Pilot',
         path: WEB_ROUTES.categories,
-        loadComponent: () => import('@pages/main/categories/categories').then((m) => m.Categories),
+        loadComponent: () => import('@pages/main/settings_and_categories/categories').then((m) => m.Categories),
       },
       {
         title: 'Goals & Bills | Pocket Pilot',
         path: WEB_ROUTES.goals,
-        loadComponent: () => import('@pages/main/goals/goals').then((m) => m.Goals),
+        loadComponent: () => import('@pages/main/goals_and_bills/goals-and-bills').then((m) => m.Goals),
       },
       {
         path: '**',

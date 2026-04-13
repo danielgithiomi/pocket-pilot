@@ -26,8 +26,6 @@ export class AuthService {
                 details: `No user found in the request with the ID: {${userId}}.`,
             });
 
-        console.log('auth service me', user);
-
         return plainToInstance(UserWithPreferencesDto, user, { excludeExtraneousValues: true });
     }
 
