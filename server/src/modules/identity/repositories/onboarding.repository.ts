@@ -1,5 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { OnboardingPayload } from '../dto/onboarding.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()
@@ -8,7 +8,6 @@ export class OnboardingRepository {
 
     async onboardUser(userId: string, payload: OnboardingPayload) {
         return this.db.$transaction(async prisma => {
-            // Fetch new registered user
             const user = await prisma.user.findUnique({ where: { id: userId } });
 
             if (!user)
@@ -17,22 +16,39 @@ export class OnboardingRepository {
                     title: 'Registered user not found!',
                     details: 'No user found for this ID in the database.',
                 });
-                
-            const { id } = user;   
+
+            const { id } = user;
             const { phoneNumber, defaultCurrency, preferredLanguage, monthlySpendingLimit } = payload;
 
-            // Update user with onboarding data
             await prisma.userPreferences.create({
                 data: {
                     userId: id,
-                    phoneNumber,
                     defaultCurrency,
                     preferredLanguage,
                     monthlySpendingLimit,
                 },
             });
 
-            return user;
+            await prisma.user.update({
+                where: { id },
+                data: {
+                    phoneNumber,
+                    isOnboarded: true,
+                },
+            });
+
+            return prisma.user.findUnique({
+                where: { id },
+                select: {
+                    userPreferences: {
+                        select: {
+                            defaultCurrency: true,
+                            preferredLanguage: true,
+                            monthlySpendingLimit: true,
+                        },
+                    },
+                },
+            });
         });
     }
 }

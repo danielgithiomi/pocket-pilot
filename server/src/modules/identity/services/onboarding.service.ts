@@ -4,9 +4,7 @@ import { OnboardingRepository } from '../repositories/onboarding.repository';
 
 @Injectable()
 export class OnboardingService {
-    constructor(
-        private readonly onboardingRepository: OnboardingRepository
-    ) {}
+    constructor(private readonly onboardingRepository: OnboardingRepository) {}
 
     onboardUser(userId: string, payload: OnboardingPayload) {
         return this.onboardingRepository.onboardUser(userId, payload);
