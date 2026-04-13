@@ -282,7 +282,7 @@ main {
       @apply flex items-center gap-px text-[0.875rem];
 
       .required {
-        @apply text-sm text-(--expense);
+        @apply text-sm text-expense;
       }
     }
 
