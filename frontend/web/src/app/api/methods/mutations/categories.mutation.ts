@@ -5,7 +5,6 @@ import {
   Categories,
   CreateCategoryRequest,
   DeleteCategoryRequest,
-  IStandardResponse,
   IVoidResourceResponse,
 } from '@global/types';
 

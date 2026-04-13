@@ -89,10 +89,6 @@ export const LANGUAGES: LabelValueItem[] = [
   { value: "ti", label: "Tigrinya" },
   { value: "so", label: "Somali" },
   { value: "om", label: "Oromo" },
-  { value: "aa", label: "Afar" },
-  { value: "ti", label: "Tigrinya" },
-  { value: "so", label: "Somali" },
-  { value: "om", label: "Oromo" },
 ];
 
 export const CURRENCIES: LabelValueItem[] = [
@@ -143,11 +139,6 @@ export const CURRENCIES: LabelValueItem[] = [
   { value: "VEF", label: "VEF", descriptor: "Venezuelan Bolívar" },
   { value: "CRC", label: "CRC", descriptor: "Costa Rican Colón" },
   { value: "PAB", label: "PAB", descriptor: "Panamanian Balboa" },
-  { value: "GTQ", label: "GTQ", descriptor: "Guatemalan Quetzal" },
-  { value: "HNL", label: "HNL", descriptor: "Honduran Lempira" },
-  { value: "NIO", label: "NIO", descriptor: "Nicaraguan Córdoba" },
-  { value: "SVC", label: "SVC", descriptor: "Salvadoran Colón" },
-  { value: "DOP", label: "DOP", descriptor: "Dominican Peso" },
   { value: "GTQ", label: "GTQ", descriptor: "Guatemalan Quetzal" },
   { value: "HNL", label: "HNL", descriptor: "Honduran Lempira" },
   { value: "NIO", label: "NIO", descriptor: "Nicaraguan Córdoba" },

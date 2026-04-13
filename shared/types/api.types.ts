@@ -78,6 +78,7 @@ export interface Endpoints {
   register: string;
   accounts: string;
   categories: string;
+  onboarding: string;
   account_types: string;
   goal_categories: string;
   all_transactions: string;

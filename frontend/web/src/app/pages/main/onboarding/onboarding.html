@@ -1,7 +1,7 @@
 <section id="user-onboarding">
   <organism-form
     title="Onboarding"
-    id="onboarding-form"
+    id="onboarding-form-wrapper"
     [showCloseIcon]="false"
     description="Complete your onboarding to get started!"
   >
@@ -72,9 +72,10 @@
       <atom-button
         type="submit"
         variant="primary"
+        form="onboarding-form"
         id="submit-onboarding-form"
         [isLoading]="isSubmitting()"
-        [disabled]="!onboardingForm().valid() || isSubmitting()"
+        [disabled]="onboardingForm().invalid() || isSubmitting()"
       >
         <div class="w-full flex flex-row items-center justify-between gap-2">
           <span>Complete Onboarding</span>

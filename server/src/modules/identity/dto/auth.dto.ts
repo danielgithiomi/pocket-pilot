@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { FullUser, UserResponseDto } from './user.dto';
+import { UserWithPreferencesDto } from './onboarding.dto';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export interface ValidationResult {
@@ -32,9 +33,9 @@ export type RegisterInputDto = Pick<FullUser, 'name' | 'email' | 'password'>;
 
 // OUTPUT DTOs
 export interface LoginOutputDto {
-    user: UserResponseDto;
     access_token: string;
     refresh_token: string;
+    user: UserWithPreferencesDto;
 }
 
 export interface RegisterOutputDto {

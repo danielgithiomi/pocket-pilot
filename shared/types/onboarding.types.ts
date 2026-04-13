@@ -4,3 +4,9 @@ export interface OnboardingPayload {
   preferredLanguage: string;
   monthlySpendingLimit: number;
 }
+
+export interface UserPreferences {
+  defaultCurrency: string;
+  preferredLanguage: string;
+  monthlySpendingLimit: number;
+}

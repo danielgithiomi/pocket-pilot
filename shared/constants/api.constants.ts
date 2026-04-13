@@ -16,6 +16,9 @@ export const API_ENDPOINTS = {
   login: "auth/login",
   logout: "auth/logout",
 
+  // onboarding
+  onboarding: "onboarding",
+
   // bills
   user_bills: "bills",
   all_bills: "bills/all",

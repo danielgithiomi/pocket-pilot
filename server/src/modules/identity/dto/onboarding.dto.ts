@@ -24,13 +24,6 @@ export class OnboardingPayload {
 export class UserPreferencesDto {
     @Expose()
     @ApiProperty({
-        description: 'Unique identifier for the user preferences',
-        example: '123e4567-e89b-12d3-a456-426614174000',
-    })
-    id!: string;
-
-    @Expose()
-    @ApiProperty({
         example: 1000,
         description: 'Monthly spending limit of the user',
     })

@@ -6,4 +6,5 @@ export * from "./goals.types";
 export * from "./bills.types";
 export * from "./accounts.types";
 export * from "./categories.types";
+export * from "./onboarding.types";
 export * from "./transactions.types";

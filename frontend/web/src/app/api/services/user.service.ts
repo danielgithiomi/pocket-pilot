@@ -24,9 +24,10 @@ export class UserService {
 
   register(request: IRegisterRequest) {
     return this.mutation.register(request).pipe(
-      tap((response: IStandardResponse<IAuthResponse>) =>
-        this.authService.createSession(response.data),
-      ),
+      // tap((response: IStandardResponse<IAuthResponse>) =>
+      //   this.authService.createSession(response.data),
+      // ),
+      map((response: IStandardResponse<IAuthResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;
