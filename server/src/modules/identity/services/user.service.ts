@@ -5,8 +5,7 @@ import { UserRepository } from '../repositories/user.repository';
 import { CategoriesService } from '@modules/wallet/services/categories.service';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { ChangePasswordDto, UpdateUserDto, UserResponseDto } from '../dto/user.dto';
-import { UserWithPreferencesDto } from '../dto/onboarding.dto';
+import { ChangePasswordDto, UpdateUserDto, UserResponseDto, UserWithPreferencesDto } from '../dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -52,7 +51,7 @@ export class UserService {
         return this.userRepository.deleteUserById(userId);
     }
 
-    async findUserById(userId: string): Promise<UserResponseDto> {
+    async findUserById(userId: string): Promise<UserWithPreferencesDto> {
         const user = await this.userRepository.findUserById(userId);
 
         if (!user)
@@ -62,10 +61,10 @@ export class UserService {
                 details: `No user found with the ID: [${userId}].`,
             });
 
-        return plainToInstance(UserResponseDto, user);
+        return plainToInstance(UserWithPreferencesDto, user);
     }
 
-    async updateUserById(userId: string, updatePayload: UpdateUserDto) {
+    async updateUserById(userId: string, updatePayload: UpdateUserDto): Promise<UserWithPreferencesDto> {
         const updatedUser = await this.userRepository.updateUserById(userId, updatePayload);
         return plainToInstance(UserWithPreferencesDto, updatedUser);
     }

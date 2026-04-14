@@ -1,5 +1,4 @@
 import type { Response } from 'express';
-import { type User } from '../dto/user.dto';
 import { MessageResponse } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { LoginInputDto } from './../dto/auth.dto';
@@ -7,7 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { AuthService } from '../services/auth.service';
 import { Summary, UserInRequest } from '@common/decorators';
 import { CookiesService } from '../services/cookies.service';
-import { UserWithPreferencesDto } from '../dto/onboarding.dto';
+import { UserWithPreferencesDto, type User } from '../dto/user.dto';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Body, Controller, Get, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
 
@@ -53,10 +52,10 @@ export class AuthController {
     }
 
     @Post('logout')
-    @HttpCode(204)
+    @HttpCode(200)
     @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
-    @ApiResponse({ status: 204, description: 'User logged out successfully.', type: MessageResponse })
+    @ApiResponse({ status: 200, description: 'User logged out successfully.', type: MessageResponse })
     @Summary('User Logout Successful.', 'The user is logged out and token is cleared from the cookies.')
     @ApiOperation({
         summary: 'Log out current user',

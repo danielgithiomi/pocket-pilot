@@ -6,7 +6,7 @@ import { IS_PUBLIC_KEY } from '@common/decorators';
 import { plainToInstance } from 'class-transformer';
 import { JWTPayload } from '@modules/identity/dto/auth.dto';
 import { UserService } from '@modules/identity/services/user.service';
-import { User, UserResponseDto } from '@modules/identity/dto/user.dto';
+import { UserResponseDto, UserWithPreferencesDto } from '@modules/identity/dto/user.dto';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
@@ -50,11 +50,9 @@ export class CookiesAuthGuard implements CanActivate {
         try {
             const decoded_payload: JWTPayload = this.jwtService.verify(access_token);
 
-            const user: User = await this.userService.findUserById(decoded_payload.sub);
+            const user: UserWithPreferencesDto = await this.userService.findUserById(decoded_payload.sub);
 
-            request.user = plainToInstance(UserResponseDto, user, {
-                excludeExtraneousValues: true,
-            });
+            request.user = plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true });
 
             return true;
         } catch (error) {

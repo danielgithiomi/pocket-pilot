@@ -1,7 +1,8 @@
 import { Prisma } from '@prisma/client';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { UserPreferencesDto } from './onboarding.dto';
 
 export type FullUser = Prisma.UserCreateInput;
 
@@ -134,12 +135,24 @@ export class UserResponseDto {
     isOnboarded!: boolean;
 }
 
+@Exclude()
+@ApiExtraModels(UserPreferencesDto)
+export class UserWithPreferencesDto extends UserResponseDto {
+    @Expose()
+    @Type(() => UserPreferencesDto)
+    @ApiProperty({
+        type: UserPreferencesDto,
+        description: 'User preferences',
+    })
+    userPreferences!: UserPreferencesDto;
+}
+
 // SWAGGER
-@ApiExtraModels(UserResponseDto)
+@ApiExtraModels(UserWithPreferencesDto)
 export class UsersWithCountResponseDto {
     @ApiProperty({ type: Number, example: 1 })
     count!: number;
 
-    @ApiProperty({ type: 'array', items: { $ref: getSchemaPath(UserResponseDto) } })
-    data!: UserResponseDto[];
+    @ApiProperty({ type: 'array', items: { $ref: getSchemaPath(UserWithPreferencesDto) } })
+    data!: UserWithPreferencesDto[];
 }

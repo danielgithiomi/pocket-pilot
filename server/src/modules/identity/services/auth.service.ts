@@ -1,7 +1,7 @@
 import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
-import { UserWithPreferencesDto } from '../dto/onboarding.dto';
+import { UserWithPreferencesDto } from '../dto/user.dto';
 import { UserRepository } from '../repositories/user.repository';
 import { AuthRepository } from '../repositories/auth.repository';
 import { LockedException } from '@common/exceptions/locked.exception';

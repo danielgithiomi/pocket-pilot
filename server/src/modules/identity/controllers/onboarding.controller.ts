@@ -1,16 +1,26 @@
 import { CookiesAuthGuard } from '@common/guards';
-import { UserInRequest } from '@common/decorators';
 import { OnboardingPayload } from '../dto/onboarding.dto';
-import { UserResponseDto as User } from '../dto/user.dto';
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Summary, UserInRequest } from '@common/decorators';
 import { OnboardingService } from '../services/onboarding.service';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UserResponseDto as User, UserWithPreferencesDto } from '../dto/user.dto';
 
 @Controller('onboarding')
 export class OnboardingController {
     constructor(private readonly onboardingService: OnboardingService) {}
 
     @Post()
+    @HttpCode(200)
+    @ApiTags('Onboarding')
     @UseGuards(CookiesAuthGuard)
+    @ApiBody({ type: OnboardingPayload, required: true })
+    @Summary('Onboarding Successful.', 'The user is onboarded successfully.')
+    @ApiOperation({
+        summary: 'Onboard user',
+        description: 'Onboard a user with the provided payload.',
+    })
+    @ApiResponse({ status: 200, type: UserWithPreferencesDto, description: 'User onboarded successfully.' })
     onboardUser(@UserInRequest() user: User, @Body() payload: OnboardingPayload) {
         return this.onboardingService.onboardUser(user.id, payload);
     }

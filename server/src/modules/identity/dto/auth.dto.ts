@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { FullUser, UserResponseDto } from './user.dto';
-import { UserWithPreferencesDto } from './onboarding.dto';
+import { FullUser, UserResponseDto, UserWithPreferencesDto } from './user.dto';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export interface ValidationResult {
