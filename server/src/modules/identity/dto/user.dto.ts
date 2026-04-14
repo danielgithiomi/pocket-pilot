@@ -39,7 +39,7 @@ export class UpdateUserDto {
     @IsNotEmpty()
     @ApiProperty()
     email!: string;
-    
+
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
