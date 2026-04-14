@@ -4,8 +4,8 @@ import { AuthLayout } from '@pages/layouts/auth';
 import { MainLayout } from '@pages/layouts/main';
 import { DrawerlessLayout } from '@pages/layouts/drawerless';
 import { NotFound } from '@pages/shared/not-found/not-found';
-import { AuthGuard, GuestGuard } from '@infrastructure/guards';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
+import { AuthGuard, GuestGuard, OnboardedGuard, OnboardingGuard } from '@infrastructure/guards';
 
 export const routes: Routes = [
   {
@@ -27,7 +27,7 @@ export const routes: Routes = [
   },
   {
     path: WEB_ROUTES.onboarding,
-    // canMatch: [AuthGuard],
+    canMatch: [OnboardingGuard],
     component: DrawerlessLayout,
     children: [
       {
@@ -40,7 +40,7 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayout,
-    canMatch: [AuthGuard],
+    canMatch: [AuthGuard, OnboardedGuard],
     children: [
       {
         title: 'Dashboard | Pocket Pilot',
@@ -66,12 +66,14 @@ export const routes: Routes = [
       {
         title: 'Categories | Pocket Pilot',
         path: WEB_ROUTES.categories,
-        loadComponent: () => import('@pages/main/settings_and_categories/categories').then((m) => m.Categories),
+        loadComponent: () =>
+          import('@pages/main/settings_and_categories/categories').then((m) => m.Categories),
       },
       {
         title: 'Goals & Bills | Pocket Pilot',
         path: WEB_ROUTES.goals,
-        loadComponent: () => import('@pages/main/goals_and_bills/goals-and-bills').then((m) => m.Goals),
+        loadComponent: () =>
+          import('@pages/main/goals_and_bills/goals-and-bills').then((m) => m.Goals),
       },
       {
         path: '**',

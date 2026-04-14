@@ -7,12 +7,7 @@ import { concatUrl } from '@methods/methods.utils';
 import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { catchError, EMPTY, firstValueFrom, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import {
-  User,
-  LoginPayload,
-  IStandardError,
-  IStandardResponse,
-} from '@global/types';
+import { User, LoginPayload, IStandardError, IStandardResponse } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -108,6 +103,16 @@ export class AuthService {
     return this.sessionRequest;
   }
 
+  async isUserOnboarded(): Promise<boolean> {
+    if (this.userSignal())
+      return this.userSignal()!.isOnboarded;
+
+    const isAuthenticated = await this.checkSession();
+    if (!isAuthenticated) return false;
+
+    return this.userSignal()!.isOnboarded;
+  }
+
   login(request: LoginPayload) {
     return this.mutation.login(request).pipe(
       tap((response: IStandardResponse<User>) => {
@@ -136,7 +141,7 @@ export class AuthService {
     this.clearSession();
     this.createSession(user);
   }
-  
+
   clearSession() {
     this.userSignal.set(null);
     localStorage.removeItem(STORED_AUTH_USER_KEY);

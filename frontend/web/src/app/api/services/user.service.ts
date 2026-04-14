@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { ToastService } from '@atoms/toast';
 import { UserMutation } from '@methods/mutations';
-import { catchError, EMPTY, map, Observable } from 'rxjs';
+import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 import {
   User,
   IStandardError,
@@ -23,6 +23,9 @@ export class UserService {
   register(request: IRegisterRequest) {
     return this.mutation.register(request).pipe(
       map((response: IStandardResponse<User>) => response.data),
+      tap((user: User) => {
+        localStorage.setItem('PP_ONBOARDING_USER', JSON.stringify(!user.isOnboarded));
+      }),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

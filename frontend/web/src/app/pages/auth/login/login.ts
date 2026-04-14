@@ -42,7 +42,7 @@ export class Login {
     this.isPasswordVisible.set(!this.isPasswordVisible());
   };
 
-  routeTo = (route: string) => this.router.navigate([route]);
+  routeTo = (route: string) => this.router.navigate([route], { replaceUrl: true });
 
   submitLoginForm = (event: Event) => {
     event.preventDefault();

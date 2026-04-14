@@ -1,48 +1,29 @@
 import { catchError, EMPTY } from 'rxjs';
-import { inject, Injectable } from '@angular/core';
+import { AuthService } from './auth.service';
 import { AccountsResource } from '@methods/resources';
 import { AccountsMutation } from '@methods/mutations';
 import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { ToastService } from '@components/ui/atoms/toast';
+import { computed, inject, Injectable } from '@angular/core';
 import { CreateAccountRequest, IStandardError, User } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountsService {
+  private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
   private readonly accountsMutation = inject(AccountsMutation);
   private readonly accountsResource = inject(AccountsResource);
 
-  getUserFromLocalStorage(): User | null {
-    const storedUser = localStorage.getItem(STORED_AUTH_USER_KEY);
-
-    if (!storedUser) {
-      this.renderToast({
-        type: 'error',
-        statusCode: 404,
-        title: 'User not found!',
-        details: 'No user found in the application local storage.',
-      });
-      return null;
-    }
-    return JSON.parse(storedUser);
-  }
+  private readonly storedUser = computed<User>(() => this.authService.user()!);
 
   getMaximumSpendingLimit() {
-    const user = this.getUserFromLocalStorage();
-
-    if (!user) return 0;
-
-    return user.userPreferences.monthlySpendingLimit;
+    return this.storedUser().userPreferences.monthlySpendingLimit;
   }
 
   getDefaultCurrency() {
-    const user = this.getUserFromLocalStorage();
-    
-    if (!user) return 'USD';
-
-    return user.userPreferences.defaultCurrency;
+    return this.storedUser().userPreferences.defaultCurrency;
   }
 
   getAccountTypes() {

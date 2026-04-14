@@ -52,7 +52,7 @@ export class Register {
           details: `Welcome ${name}! You are now part of the Pocket Pilot family!`,
         });
 
-        this.router.navigateByUrl(WEB_ROUTES.onboarding);
+        this.router.navigate([WEB_ROUTES.onboarding], { replaceUrl: true });
       },
       complete: () => this.isSubmitting.set(false),
     });

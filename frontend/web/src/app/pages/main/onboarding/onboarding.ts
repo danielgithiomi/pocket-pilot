@@ -78,7 +78,7 @@ export class Onboarding {
           });
 
           this.resetOnboardingForm();
-          this.router.navigate([WEB_ROUTES.dashboard]);
+          this.router.navigate([WEB_ROUTES.dashboard], { replaceUrl: true });
         },
         complete: () => this.isSubmitting.set(false),
       });
