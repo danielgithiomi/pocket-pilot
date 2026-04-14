@@ -1,10 +1,10 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { BillsService } from '../services/bills.service';
 import { Summary, UserInRequest } from '@common/decorators';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BillDTO, CreateBillPayload } from '../dto/bills.dto';
 import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
+import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 
 @Controller('bills')
@@ -13,6 +13,7 @@ export class BillsController {
 
     @Get('types')
     @HttpCode(200)
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get all bill types' })
     @Summary('Bill types retrieved', 'The application retrieved all bill types')
     @ApiResponse({
@@ -28,6 +29,7 @@ export class BillsController {
     @Get('all')
     @HttpCode(200)
     @UseGuards(CookiesAuthGuard)
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get all application bills' })
     @Summary('All application bills retrieved', 'The application retrieved all bills')
     @ApiResponse({
@@ -43,6 +45,7 @@ export class BillsController {
     @Get()
     @HttpCode(200)
     @UseGuards(CookiesAuthGuard)
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get all user bills' })
     @Summary('User bills retrieved', 'The user retrieved all their bills.')
     @ApiResponse({
@@ -58,6 +61,7 @@ export class BillsController {
     @Post()
     @HttpCode(201)
     @UseGuards(CookiesAuthGuard)
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Create a new bill' })
     @Summary('New bill created', 'The user created a new bill and was saved to the database.')
     @ApiResponse({
@@ -72,6 +76,7 @@ export class BillsController {
     @Delete(':billId')
     @HttpCode(200)
     @UseGuards(CookiesAuthGuard)
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Delete a bill by its ID' })
     @Summary('Bill deleted', 'The user deleted a bill by its ID.')
     @ApiResponse({

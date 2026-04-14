@@ -21,7 +21,6 @@ import { denormalizeCategoryName } from '@libs/utils';
 @ApiTags('Accounts')
 @Controller('accounts')
 @UseGuards(CookiesAuthGuard)
-@ApiCookieAuth('access_token')
 export class AccountController {
     constructor(private readonly accountService: AccountService) {}
 
@@ -39,6 +38,7 @@ export class AccountController {
     }
 
     @Get('all')
+    @ApiCookieAuth('access_token')
     @Summary('All Accounts Retrieved!', 'You have successfully retrieved all accounts.')
     @ApiOperation({ summary: 'Retrieve all accounts', description: 'Get all created accounts in the database.' })
     @ApiResponse({
@@ -57,6 +57,7 @@ export class AccountController {
     }
 
     @Get()
+    @ApiCookieAuth('access_token')
     @Summary('User Accounts Retrieved!', 'You have successfully retrieved your accounts.')
     @ApiOperation({ summary: 'Get User Accounts', description: 'Get all accounts of the logged in user' })
     @ApiResponse({
@@ -75,6 +76,7 @@ export class AccountController {
     }
 
     @Get(':accountId')
+    @ApiCookieAuth('access_token')
     @Summary('Account Retrieved!', 'You have successfully retrieved the account.')
     @ApiOperation({ summary: 'Get Account By Id', description: 'Get an account by its id' })
     @ApiResponse({ status: 200, type: Account, description: 'Account fetched successfully' })
@@ -89,6 +91,7 @@ export class AccountController {
     }
 
     @Get(':accountId/all-transactions')
+    @ApiCookieAuth('access_token')
     @ApiParam({
         required: true,
         name: 'accountId',
@@ -119,6 +122,7 @@ export class AccountController {
     }
 
     @Post()
+    @ApiCookieAuth('access_token')
     @ApiBody({ type: CreateAccountDto })
     @Summary('Account Created!', 'You have successfully created an account.')
     @ApiOperation({ summary: 'Create Account', description: 'Create a new account' })
@@ -133,6 +137,7 @@ export class AccountController {
     }
 
     @Delete(':accountId')
+    @ApiCookieAuth('access_token')
     @ApiParam({
         required: true,
         name: 'accountId',

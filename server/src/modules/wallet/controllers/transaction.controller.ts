@@ -16,7 +16,6 @@ import {
 @Controller('accounts')
 @ApiTags('Transactions')
 @UseGuards(CookiesAuthGuard)
-@ApiCookieAuth('access_token')
 export class TransactionController {
     constructor(private readonly transactionService: TransactionService) {}
 
@@ -33,6 +32,7 @@ export class TransactionController {
     }
 
     @Get('transactions/user')
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get all user transactions', description: 'Get all transactions for the current user' })
     @ApiResponse({
         status: 200,
@@ -49,6 +49,7 @@ export class TransactionController {
     }
 
     @Get('transactions/all')
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get global transactions', description: 'Get all transactions from all accounts' })
     @ApiResponse({
         status: 200,
@@ -65,6 +66,7 @@ export class TransactionController {
     }
 
     @Get(':accountId/transactions')
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get account transactions', description: 'Get all transactions for the specific account' })
     @ApiParam({
         required: true,
@@ -88,6 +90,7 @@ export class TransactionController {
     }
 
     @Post(':accountId/transactions')
+    @ApiCookieAuth('access_token')
     @ApiOperation({
         summary: 'Create account transaction',
         description: 'Create a new transaction for the specific account',
@@ -113,6 +116,7 @@ export class TransactionController {
     }
 
     @Delete(':accountId/transactions/:transactionId')
+    @ApiCookieAuth('access_token')
     @ApiOperation({
         summary: 'Delete account transaction',
         description: 'Delete a transaction for the specific account',
