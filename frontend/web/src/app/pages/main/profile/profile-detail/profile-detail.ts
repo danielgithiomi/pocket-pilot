@@ -20,7 +20,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
   template: ` <div
     id="profile-detail"
     class="profile-detail"
-    [ngClass]="{ 'border-b border-muted-text': !isLast() }"
+    [ngClass]="{ 'border-b border-muted-text': !isLast(), 'mb-6! md:mb-0!': isLast() }"
   >
     <div class="icon shrink-0">
       <lucide-icon

@@ -17,8 +17,8 @@ export class OnboardingService {
     return this.mutation.onboardUser(payload).pipe(
       map((response: IStandardResponse<User>) => response.data),
       tap((user: User) => {
-        console.log('login user', user);
         this.authService.createSession(user);
+        localStorage.removeItem('PP_ONBOARDING_USER');
       }),
       catchError((error: IStandardError) => {
         this.renderToast(error);

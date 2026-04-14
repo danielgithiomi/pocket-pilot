@@ -4,9 +4,9 @@ import { WEB_ROUTES } from '@global/constants';
 import { AuthMutation } from '@methods/mutations';
 import { HttpClient } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
-import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { catchError, EMPTY, firstValueFrom, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { STORED_AUTH_USER_KEY, STORED_ONBOARDING_USER_KEY } from '@libs/constants';
 import { User, LoginPayload, IStandardError, IStandardResponse } from '@global/types';
 
 @Injectable({
@@ -129,7 +129,6 @@ export class AuthService {
     return this.mutation.logout().pipe(
       tap(() => this.clearSession()),
       catchError((error: IStandardError) => {
-        console.error('Logout error:', error);
         this.renderToast(error);
         return EMPTY;
       }),
@@ -145,6 +144,7 @@ export class AuthService {
   clearSession() {
     this.userSignal.set(null);
     localStorage.removeItem(STORED_AUTH_USER_KEY);
+    localStorage.removeItem(STORED_ONBOARDING_USER_KEY);
   }
 
   createSession(user: User) {

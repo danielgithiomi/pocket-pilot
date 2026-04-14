@@ -26,5 +26,12 @@
 
       <user-summary [withDrawerLayout]="withDrawerLayout()" />
     </div>
+  } @else {
+    <atom-button id="onboarding-logout" type="button" variant="primary" (clicked)="logout()">
+      <div class="w-full flex flex-row items-center justify-between gap-2">
+        <lucide-icon [img]="LogOut" [size]="iconSize" name="logout" />
+        <span>Logout</span>
+      </div>
+    </atom-button>
   }
 </header>

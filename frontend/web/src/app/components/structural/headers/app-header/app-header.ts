@@ -1,17 +1,24 @@
-import { Component, input, output } from '@angular/core';
+import { tap } from 'rxjs';
+import { Button } from '@atoms/button';
+import { Router } from '@angular/router';
+import { WEB_ROUTES } from '@global/constants';
+import { AuthService } from '@api/auth.service';
 import { UserSummary } from './user-summary/user-summary';
-import { LucideAngularModule, Menu, Settings2, Bell } from 'lucide-angular';
+import { STORED_ONBOARDING_USER_KEY } from '@libs/constants';
+import { Component, inject, input, output } from '@angular/core';
+import { LucideAngularModule, Menu, Settings2, Bell, LogOut } from 'lucide-angular';
 
 @Component({
   selector: 'app-header',
   styleUrl: './app-header.css',
   templateUrl: './app-header.html',
-  imports: [LucideAngularModule, UserSummary],
+  imports: [LucideAngularModule, UserSummary, Button],
 })
 export class AppHeader {
   protected readonly Menu = Menu;
   protected readonly Bell = Bell;
   protected readonly iconSize = 20;
+  protected readonly LogOut = LogOut;
   protected readonly Settings = Settings2;
 
   // Inputs
@@ -19,4 +26,22 @@ export class AppHeader {
 
   // Outputs
   hamburgerClickEmitter = output<void>();
+
+  // Services
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+
+  // Methods
+  protected logout() {
+    this.authService
+      .logout()
+      .pipe(
+        tap(() => {
+          this.router.navigateByUrl(WEB_ROUTES.login);
+        }),
+      )
+      .subscribe({
+        complete: () => localStorage.removeItem(STORED_ONBOARDING_USER_KEY),
+      });
+  }
 }

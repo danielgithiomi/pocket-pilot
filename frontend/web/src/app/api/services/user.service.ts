@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { ToastService } from '@atoms/toast';
 import { UserMutation } from '@methods/mutations';
+import { STORED_ONBOARDING_USER_KEY } from '@libs/constants';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 import {
   User,
@@ -24,7 +25,7 @@ export class UserService {
     return this.mutation.register(request).pipe(
       map((response: IStandardResponse<User>) => response.data),
       tap((user: User) => {
-        localStorage.setItem('PP_ONBOARDING_USER', JSON.stringify(!user.isOnboarded));
+        localStorage.setItem(STORED_ONBOARDING_USER_KEY, JSON.stringify(!user.isOnboarded));
       }),
       catchError((error: IStandardError) => {
         this.renderToast(error);
