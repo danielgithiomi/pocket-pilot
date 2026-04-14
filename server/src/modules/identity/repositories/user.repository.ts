@@ -29,12 +29,12 @@ export class UserRepository {
         return this.db.user.findUnique({ where: { email }, include: { userPreferences: true } });
     }
 
-    async updateUserById(userId: string, data: UpdateUserDto): Promise<FullUser> {
-        return this.db.user.update({ where: { id: userId }, data });
+    async updateUserById(userId: string, updatePayload: UpdateUserDto) {
+        return this.db.user.update({ where: { id: userId }, data: updatePayload, include: { userPreferences: true } });
     }
 
-    async updateUserPassword(userId: string, password: string): Promise<FullUser> {
-        return this.db.user.update({ where: { id: userId }, data: { password } });
+    async updateUserPassword(userId: string, password: string) {
+        return this.db.user.update({ where: { id: userId }, data: { password }, include: { userPreferences: true } });
     }
 
     async deleteUserById(userId: string) {

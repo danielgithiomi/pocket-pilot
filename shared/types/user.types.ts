@@ -25,6 +25,7 @@ export interface IRegisterRequest {
 export interface IUpdateUserRequest {
   name: string;
   email: string;
+  phoneNumber: string;
 }
 
 export interface IChangePasswordRequest {

@@ -112,7 +112,7 @@
         type="text"
         [inverted]="true"
         label="Phone Number"
-        placeholder="+123 4567890"
+        placeholder="123467890"
         autocomplete="phone-number"
         [formField]="editProfileForm.phoneNumber"
         (clearOutput)="editProfileForm.phoneNumber().controlValue.set('')"
@@ -138,7 +138,7 @@
         form="edit-user-profile"
         id="submit-edit-profile-form"
         [isLoading]="isSubmittingEditProfileForm()"
-        [disabled]="editProfileForm().invalid() || isSubmittingEditProfileForm()"
+        [disabled]="editProfileForm().invalid() || isSubmittingEditProfileForm() || !isUpdatedDataChanged()"
       />
     </div>
   </organism-form>

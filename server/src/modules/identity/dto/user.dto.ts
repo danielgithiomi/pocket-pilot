@@ -39,6 +39,11 @@ export class UpdateUserDto {
     @IsNotEmpty()
     @ApiProperty()
     email!: string;
+    
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    phoneNumber!: string;
 }
 
 export class ChangePasswordDto {

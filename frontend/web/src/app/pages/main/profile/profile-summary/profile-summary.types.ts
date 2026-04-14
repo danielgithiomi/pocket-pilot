@@ -1,5 +1,4 @@
-import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
-import { email, minLength, required, schema, validate } from '@angular/forms/signals';
+import { email, maxLength, minLength, required, schema, validate } from '@angular/forms/signals';
 
 // FORM
 export interface EditProfileSchema {
@@ -25,16 +24,25 @@ export const editProfileFormValidationSchema = schema<EditProfileSchema>((root) 
 
   // Phone Number
   required(root.phoneNumber, { message: 'The phone number is required field!' });
-  minLength(root.phoneNumber, 10, {
-    message: 'The phone number cannot be less than 10 characters!',
-  });
+  minLength(root.phoneNumber, 8, { message: 'The phone number cannot be less than 8 digits!' });
+  maxLength(root.phoneNumber, 10, { message: 'The phone number cannot be more than 10 digits!' });
   validate(root.phoneNumber, (context) => {
     const number = context.value();
-    if (!number.startsWith('+'))
+    if (number && !/^\d+$/.test(number)) {
       return {
-        kind: 'phone-format',
-        message: 'The phone number must start with your country code (e.g., +1 for USA)',
+        kind: 'phone-number-invalid',
+        message: 'The phone number must contain only digits!',
       };
-    return undefined;
+    }
+    return null;
   });
+  // validate(root.phoneNumber, (context) => {
+  //   const number = context.value();
+  //   if (!number.startsWith('+'))
+  //     return {
+  //       kind: 'phone-format',
+  //       message: 'The phone number must start with your country code (e.g., +1 for USA)',
+  //     };
+  //   return undefined;
+  // });
 });

@@ -6,6 +6,7 @@ import { CategoriesService } from '@modules/wallet/services/categories.service';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { ChangePasswordDto, UpdateUserDto, UserResponseDto } from '../dto/user.dto';
+import { UserWithPreferencesDto } from '../dto/onboarding.dto';
 
 @Injectable()
 export class UserService {
@@ -64,9 +65,9 @@ export class UserService {
         return plainToInstance(UserResponseDto, user);
     }
 
-    async updateUserById(userId: string, user: UpdateUserDto) {
-        const updatedUser = await this.userRepository.updateUserById(userId, user);
-        return plainToInstance(UserResponseDto, updatedUser);
+    async updateUserById(userId: string, updatePayload: UpdateUserDto) {
+        const updatedUser = await this.userRepository.updateUserById(userId, updatePayload);
+        return plainToInstance(UserWithPreferencesDto, updatedUser);
     }
 
     async changePassword(userId: string, payload: ChangePasswordDto) {

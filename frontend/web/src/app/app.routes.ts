@@ -64,8 +64,8 @@ export const routes: Routes = [
           import('@pages/main/transactions/transactions').then((m) => m.Transactions),
       },
       {
-        title: 'Categories | Pocket Pilot',
-        path: WEB_ROUTES.categories,
+        title: 'Settings | Pocket Pilot',
+        path: WEB_ROUTES.settings,
         loadComponent: () =>
           import('@pages/main/settings_and_categories/categories').then((m) => m.Categories),
       },

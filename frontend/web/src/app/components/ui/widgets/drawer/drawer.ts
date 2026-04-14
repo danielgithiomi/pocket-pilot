@@ -4,7 +4,10 @@ import { Chevron } from '@components/ui/atoms/icons';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { Component, input, output } from '@angular/core';
 import { NgOptimizedImage, NgClass } from '@angular/common';
-import { DrawerNavigationLinks as links, AdditionalDrawerNavigationLinks as additionalLinks } from '@libs/constants';
+import {
+  DrawerNavigationLinks as links,
+  AdditionalDrawerNavigationLinks as additionalLinks,
+} from '@libs/constants';
 
 @Component({
   selector: 'app-drawer',

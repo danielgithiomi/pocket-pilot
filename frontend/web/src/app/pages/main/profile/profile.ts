@@ -64,11 +64,21 @@ export class Profile {
     this.editProfileFormModel.set(initialData);
   }
 
+  protected isUpdatedDataChanged(): boolean {
+    const initialData = this.initialEditProfileFormData();
+    const currentData = this.editProfileFormModel();
+    return (
+      initialData.name !== currentData.name ||
+      initialData.email !== currentData.email ||
+      initialData.phoneNumber !== currentData.phoneNumber
+    );
+  }
+
   protected submitEditProfileForm(event: Event) {
     event.preventDefault();
 
     const { id } = this.user()!;
-    const { phoneNumber, ...payload } = this.editProfileFormModel();
+    const payload = this.editProfileFormModel();
 
     this.isSubmittingEditProfileForm.set(true);
 
@@ -80,7 +90,6 @@ export class Profile {
           details: 'Your profile has been updated successfully.',
         });
 
-        // Update state & reset form
         this.authService.refreshSession(user);
         this.isEditFormOpen.set(false);
         this.resetEditProfileForm();

@@ -22,14 +22,14 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
     path: '/transactions',
   },
   {
-    icon: 'categories',
-    name: 'Categories',
-    path: '/categories',
-  },
-  {
     icon: 'goals',
     name: 'Goals_Bills',
     path: '/goals',
+  },
+  {
+    icon: 'settings',
+    name: 'Settings',
+    path: '/settings',
   },
   {
     icon: 'profile',

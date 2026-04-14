@@ -68,8 +68,8 @@ export class UserController {
     @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
     @ApiResponse({ status: 200, description: 'User updated successfully', type: UserResponseDto })
     @ApiOperation({ summary: 'Update user by ID', description: 'Updates a user by their unique identifier.' })
-    updateUserById(@Param('userId') userId: string, @Body() user: UpdateUserDto): Promise<UserResponseDto> {
-        return this.userService.updateUserById(userId, user);
+    updateUserById(@Param('userId') userId: string, @Body() updatePayload: UpdateUserDto): Promise<UserResponseDto> {
+        return this.userService.updateUserById(userId, updatePayload);
     }
 
     @Put(':userId/change-password')
