@@ -36,7 +36,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
             toastService.show({
               variant: 'warning',
               title: 'Please login again!',
-              details: 'You were redirected because your session has expired.',
+              details: 'You were logged out and redirected because your session expired.',
             });
 
             return {

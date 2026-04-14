@@ -19,15 +19,15 @@ import {
   FormattedCategories,
   initialCategoryFormState,
   categoryFormValidationSchema,
-} from './categories.types';
+} from './settings.types';
 
 @Component({
-  selector: 'app-categories',
-  styleUrl: './categories.css',
-  templateUrl: './categories.html',
+  selector: 'app-settings',
+  styleUrl: './settings.css',
+  templateUrl: './settings.html',
   imports: [NgClass, Button, LucideAngularModule, Form, Input, TabList, FetchError, NoData],
 })
-export class Categories {
+export class Settings {
   // Icons
   protected readonly X = X;
   protected readonly iconSize: number = 18;

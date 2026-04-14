@@ -66,8 +66,7 @@ export const routes: Routes = [
       {
         title: 'Settings | Pocket Pilot',
         path: WEB_ROUTES.settings,
-        loadComponent: () =>
-          import('@pages/main/settings_and_categories/categories').then((m) => m.Categories),
+        loadComponent: () => import('@pages/main/settings/settings').then((m) => m.Settings),
       },
       {
         title: 'Goals & Bills | Pocket Pilot',
