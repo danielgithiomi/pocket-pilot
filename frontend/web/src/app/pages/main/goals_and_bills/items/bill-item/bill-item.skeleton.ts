@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'bill-item-skeleton',
   template: `
-    <div class="flex flex-row items-center justify-between gap-4 p-4">
+    <div class="flex flex-row items-center justify-between gap-4 p-4 my-2">
       <div class="skeleton size-13 rounded-full!"></div>
 
       <div class="flex flex-col flex-1 gap-4">

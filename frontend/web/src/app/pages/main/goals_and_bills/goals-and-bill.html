@@ -10,13 +10,13 @@
     </p>
 
     <div
-      class="w-full flex flex-col md:flex-row gap-6"
+      class="w-full flex flex-col md:flex-row gap-6 md:h-full"
       [ngClass]="{
         'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
       }"
     >
       <div
-        class="goals-card"
+        class="goals-card no-scrollbar"
         [ngClass]="{
           'md:w-full!': !drawerService.isDrawerCollapsed(),
         }"
@@ -40,11 +40,12 @@
 
         @if (isFetchingGoals()) {
           <div class="card-content">
-            @for (i of [1, 2]; track i) {
+            @for (i of [1, 2, 3]; track i) {
               <goal-item-skeleton />
             }
           </div>
         } @else {
+          @let hasError = goals$.error();
           @let goals = goals$.value()?.data;
           @let goalCount = goals?.length || 0;
           <div
@@ -53,23 +54,27 @@
               'grid place-items-center p-0!': goalCount == 0,
             }"
           >
-            @if (!goals || goalCount == 0) {
-              <no-data
-                class="mb-10"
-                messageClass="text-xs"
-                animationDimensions="200px"
-                message="No goals yet. Get started today!"
-              />
+            @if (hasError) {
+              <fetch-error message="Failed to load goals" />
             } @else {
-              @for (goal of goals; track goal.id) {
-                <goal-item [goalItem]="goal"></goal-item>
+              @if (!goals || goalCount == 0) {
+                <no-data
+                  class="mb-10"
+                  messageClass="text-xs"
+                  animationDimensions="200px"
+                  message="No goals yet. Get started today!"
+                />
+              } @else {
+                @for (goal of goals; track goal.id) {
+                  <goal-item [goalItem]="goal" />
+                }
               }
             }
           </div>
         }
       </div>
       <div
-        class="bills-card"
+        class="bills-card no-scrollbar"
         [ngClass]="{
           'md:w-full!': !drawerService.isDrawerCollapsed(),
         }"
@@ -91,24 +96,26 @@
           </atom-button>
         </div>
 
-        @let hasError = bills$.error();
-        @let bills = bills$.value()?.data;
-        @let billCount = bills?.length || 0;
-        <div
-          class="card-content"
-          [ngClass]="{
-            'grid place-items-center p-0!': billCount == 0,
-          }"
-        >
-          @if (isFetchingBills()) {
-            @for (i of [1, 2, 3]; track i) {
+        @if (isFetchingBills()) {
+          <div class="card-content">
+            @for (i of [1, 2, 3, 4]; track i) {
               <bill-item-skeleton />
             }
-          } @else {
-            @if (hasError || !bills) {
+          </div>
+        } @else {
+          @let hasError = bills$.error();
+          @let bills = bills$.value()?.data;
+          @let billCount = bills?.length || 0;
+          <div
+            class="card-content"
+            [ngClass]="{
+              'grid place-items-center p-0!': billCount == 0,
+            }"
+          >
+            @if (hasError) {
               <fetch-error message="Failed to load bills" />
             } @else {
-              @if (billCount == 0) {
+              @if (!bills || billCount == 0) {
                 <no-data
                   class="mb-10"
                   messageClass="text-xs"
@@ -117,12 +124,12 @@
                 />
               } @else {
                 @for (bill of bills; track bill.id) {
-                  <bill-item [billItem]="bill"></bill-item>
+                  <bill-item [billItem]="bill" />
                 }
               }
             }
-          }
-        </div>
+          </div>
+        }
       </div>
     </div>
   </div>
