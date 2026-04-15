@@ -45,10 +45,12 @@ import { LucideAngularModule, Bell, Settings2, LogOut, UserLock } from 'lucide-a
         <div
           aria-label="View profile"
           (click)="routeToProfile()"
-          class="wrapper text-inverted-text! dark:hover:text-white!"
+          class="wrapper group/profile text-inverted-text! dark:hover:text-white!"
         >
           <lucide-icon [img]="UserLock" [name]="UserLock" [size]="iconSize" class="profile-icon" />
-          <p class="to-profile-text h-full grow text-inverted-text dark:hover:text-primary-text">
+          <p
+            class="group-hover/profile:text-white text-sm h-full grow text-inverted-text duration-300 transition-all"
+          >
             View Profile
           </p>
         </div>
