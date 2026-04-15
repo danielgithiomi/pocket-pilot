@@ -1,35 +1,6 @@
-import { CategoryTypeEnum } from '@global/enums';
-import { CreateCategoryRequest } from '@global/types';
-import { minLength, required, schema } from '@angular/forms/signals';
-import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
-
-// DATA
-export const categoryTabItems: TabListItem[] = [
-  {
-    value: CategoryTypeEnum.INCOME,
-    label: 'Income',
-  },
-  {
-    value: CategoryTypeEnum.EXPENSE,
-    label: 'Expense',
-  },
-];
-
-// FORM
-export type CategorySchema = CreateCategoryRequest;
-
-export const initialCategoryFormState: CategorySchema = {
-  categoryName: '',
-  categoryType: CategoryTypeEnum.INCOME,
-};
-
-export const categoryFormValidationSchema = schema<CategorySchema>((root) => {
-  required(root.categoryName, { message: 'The name is required field!' });
-  minLength(root.categoryName, 3, { message: 'The name must be at least 3 characters long!' });
-});
-
-// Component Types
 export interface FormattedCategories {
   incomes: string[];
   expenses: string[];
 }
+
+export const CategoryLength = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
