@@ -10,7 +10,7 @@ import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
 import { TransactionsService } from '@api/transactions.service';
 import { Component, computed, inject, signal } from '@angular/core';
-import { DashboardCard } from '@components/structural/main/dashboard-card/dashboard-card';
+import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
 import { TransactionLimitSchema, TransactionLimitValidationSchema } from './dashboard.types';
 import {
   Wallet,
@@ -112,7 +112,7 @@ export class Dashboard {
   });
 
   // Forms
-  protected readonly initialLimitFormState = { amount: this.spendingLimit() };
+  protected readonly initialLimitFormState = { amount: this.spendingLimit };
   protected editLimitFormModel = signal<TransactionLimitSchema>(this.initialLimitFormState);
   protected editLimitForm = form(this.editLimitFormModel, TransactionLimitValidationSchema);
 
@@ -121,7 +121,6 @@ export class Dashboard {
     event.preventDefault();
 
     const { amount } = this.editLimitFormModel();
-    this.accountsService.setMaximumSpendingLimit(amount);
     this.isEditSpendingLimitFormOpen.set(false);
   }
 

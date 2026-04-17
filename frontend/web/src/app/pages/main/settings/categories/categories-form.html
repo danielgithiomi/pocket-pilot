@@ -1,0 +1,52 @@
+<organism-form
+    id="transactions"
+    title="New Category"
+    description="Create a new category"
+    (closeForm)="handleCloseForm($event)"
+    [class.hidden]="!isCategoriesFormOpen()"
+  >
+    <form slot="content" id="category-form" (submit)="submitCategory($event)">
+      <atom-input
+        type="text"
+        id="category-name"
+        [inverted]="true"
+        autocomplete="name"
+        label="Category Name"
+        placeholder="Eg: Groceries"
+        [formField]="categoryForm.categoryName"
+        (clearOutput)="categoryForm.categoryName().controlValue.set('')"
+      />
+
+      <div class="flex flex-col items-start gap-1">
+        <p class="text-inverted-text"><span class="text-xs text-error mr-0.5">*</span>Type:</p>
+
+        <atom-tab-list
+          [items]="categoryTabItems"
+          (selectedIndex)="handleCategoryTypeSelected($event)"
+          [activeItem]="categoryFormModel().categoryType === 'INCOME' ? 0 : 1"
+        />
+      </div>
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      <atom-button
+        type="button"
+        [inverted]="true"
+        label="Reset Form"
+        variant="secondary"
+        form="category-form"
+        id="reset-category-form"
+        (clicked)="resetCategoryForm()"
+        [disabled]="!categoryForm().dirty() || isSubmittingCategoriesForm()"
+      />
+
+      <atom-button
+        type="submit"
+        form="category-form"
+        label="Create Category"
+        id="submit-category-form"
+        [isLoading]="isSubmittingCategoriesForm()"
+        [disabled]="categoryForm().invalid() || isSubmittingCategoriesForm()"
+      />
+    </div>
+  </organism-form>

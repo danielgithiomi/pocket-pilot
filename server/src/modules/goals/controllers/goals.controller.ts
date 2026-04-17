@@ -1,10 +1,10 @@
-import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { GoalsService } from '../services/goals.service';
 import { CreateGoalDto, GoalDto } from '../dto/goals.dto';
 import { type User } from '@modules/identity/dto/user.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Public, Summary, UserInRequest } from '@common/decorators';
+import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
+import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 
 @Controller('goals')
@@ -15,6 +15,7 @@ export class GoalsController {
     @Get('categories')
     @Public()
     @HttpCode(200)
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get all goal categories' })
     @Summary('Goal categories retrieved', 'The user retrieved all goal categories')
     @ApiResponse({
@@ -29,6 +30,7 @@ export class GoalsController {
 
     @Get()
     @HttpCode(200)
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get all user goals' })
     @Summary('User goals retrieved', 'The user retrieved all their goals')
     @ApiResponse({ status: 200, type: GoalDto, isArray: true, description: 'All user goals retrieved successfully' })
@@ -38,6 +40,7 @@ export class GoalsController {
 
     @Post()
     @HttpCode(201)
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Create a new goal' })
     @ApiResponse({ status: 201, type: GoalDto, description: 'Goal created successfully' })
     @Summary('New goal created', 'The user created a new goal and was saved to the database')
@@ -47,11 +50,12 @@ export class GoalsController {
 
     @Delete(':goalId')
     @HttpCode(200)
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Delete a goal by ID' })
     @Summary('Goal deleted', 'The user deleted a goal')
     @ApiResponse({ status: 200, type: VoidResourceResponse, description: 'Goal deleted successfully' })
-    async deleteGoal(@UserInRequest() user: User, @Param('goalId') goalId: string): Promise<VoidResourceResponse> {
-        const deletedGoal = await this.goalsService.deleteGoalById(user.id!, goalId);
+    async deleteGoal(@Param('goalId') goalId: string): Promise<VoidResourceResponse> {
+        const deletedGoal = await this.goalsService.deleteGoalById(goalId);
 
         return {
             message: 'Finance goal deleted!',

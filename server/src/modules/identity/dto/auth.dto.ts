@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { FullUser, UserResponseDto } from './user.dto';
+import { FullUser, UserResponseDto, UserWithPreferencesDto } from './user.dto';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export interface ValidationResult {
     isValid: boolean;
-    user: FullUser;
+    user: any;
 }
 
 export interface JWTPayload {
@@ -32,9 +32,9 @@ export type RegisterInputDto = Pick<FullUser, 'name' | 'email' | 'password'>;
 
 // OUTPUT DTOs
 export interface LoginOutputDto {
-    user: UserResponseDto;
     access_token: string;
     refresh_token: string;
+    user: UserWithPreferencesDto;
 }
 
 export interface RegisterOutputDto {

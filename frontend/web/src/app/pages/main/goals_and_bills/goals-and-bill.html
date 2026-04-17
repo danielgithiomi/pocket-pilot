@@ -1,0 +1,148 @@
+<section id="goals-and-bills" class="page">
+  <div class="page-header">
+    <h1 class="page-title">Goals &amp; Bills</h1>
+  </div>
+
+  <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': false }">
+    <p class="mb-6">
+      Keep track of your financial <span class="primary-span">goals</span> and
+      <span class="primary-span">bills</span>!
+    </p>
+
+    <div
+      class="w-full flex flex-col md:flex-row gap-6 md:h-full pb-4"
+      [ngClass]="{
+        'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
+      }"
+    >
+      <div
+        class="goals-card no-scrollbar"
+        [ngClass]="{
+          'md:w-full!': !drawerService.isDrawerCollapsed(),
+        }"
+      >
+        <div class="card-header">
+          <p class="card-title">Goal Tracker</p>
+
+          <atom-button
+            size="sm"
+            id="add-goal"
+            variant="primary"
+            [disabled]="isFetchingGoals()"
+            (click)="isGoalsFormOpen.set(true)"
+          >
+            <div class="w-full flex flex-row items-center justify-between gap-4">
+              <lucide-icon [img]="PlusIcon" [size]="iconSize" name="create-new-goal"></lucide-icon>
+              <span class="hidden lg:block">Add Goal</span>
+            </div>
+          </atom-button>
+        </div>
+
+        @if (isFetchingGoals()) {
+          <div class="card-content">
+            @for (i of [1, 2, 3]; track i) {
+              <goal-item-skeleton />
+            }
+          </div>
+        } @else {
+          @let hasError = goals$.error();
+          @let goals = goals$.value()?.data;
+          @let goalCount = goals?.length || 0;
+          <div
+            class="card-content"
+            [ngClass]="{
+              'grid place-items-center p-0!': goalCount == 0,
+            }"
+          >
+            @if (hasError) {
+              <fetch-error message="Failed to load goals" />
+            } @else {
+              @if (!goals || goalCount == 0) {
+                <no-data
+                  class="mb-10"
+                  messageClass="text-xs"
+                  animationDimensions="200px"
+                  message="No goals yet. Get started today!"
+                />
+              } @else {
+                @for (goal of goals; track goal.id) {
+                  <goal-item [goalItem]="goal" />
+                }
+              }
+            }
+          </div>
+        }
+      </div>
+      <div
+        class="bills-card no-scrollbar"
+        [ngClass]="{
+          'md:w-full!': !drawerService.isDrawerCollapsed(),
+        }"
+      >
+        <div class="card-header">
+          <p class="card-title">Your Bills</p>
+
+          <atom-button
+            size="sm"
+            id="add-bill"
+            variant="primary"
+            [disabled]="isFetchingBills()"
+            (click)="isBillsFormOpen.set(true)"
+          >
+            <div class="w-full flex flex-row items-center justify-between gap-4">
+              <lucide-icon [img]="PlusIcon" [size]="iconSize" name="create-new-bill"></lucide-icon>
+              <span class="hidden lg:block">Add Bill</span>
+            </div>
+          </atom-button>
+        </div>
+
+        @if (isFetchingBills()) {
+          <div class="card-content">
+            @for (i of [1, 2, 3, 4]; track i) {
+              <bill-item-skeleton />
+            }
+          </div>
+        } @else {
+          @let hasError = bills$.error();
+          @let bills = bills$.value()?.data;
+          @let billCount = bills?.length || 0;
+          <div
+            class="card-content"
+            [ngClass]="{
+              'grid place-items-center p-0!': billCount == 0,
+            }"
+          >
+            @if (hasError) {
+              <fetch-error message="Failed to load bills" />
+            } @else {
+              @if (!bills || billCount == 0) {
+                <no-data
+                  class="mb-10"
+                  messageClass="text-xs"
+                  animationDimensions="200px"
+                  message="No bills yet. Get started today!"
+                />
+              } @else {
+                @for (bill of bills; track bill.id) {
+                  <bill-item [billItem]="bill" />
+                }
+              }
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+@if (isGoalsFormOpen()) {
+  <goals-form [isGoalsFormOpen]="isGoalsFormOpen()" (onGoalsFormClose)="onFormClose('goals')" />
+}
+
+@if (isBillsFormOpen()) {
+  <bills-form
+    [currency]="currency"
+    [isBillsFormOpen]="isBillsFormOpen()"
+    (onBillsFormClose)="onFormClose('bills')"
+  />
+}

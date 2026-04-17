@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
 import { AuthService } from '@api/auth.service';
 import { DrawerService } from '@infrastructure/services';
-import { Component, computed, inject } from '@angular/core';
 import { LucideAngularModule, ChevronDown } from 'lucide-angular';
+import { Component, computed, inject, input } from '@angular/core';
 import { HeaderDropdown } from '../header-dropdown/header-dropdown';
 
 @Component({
@@ -32,16 +32,21 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
       id="user-summary"
       class="user-summary"
       (click)="drawerService.toggleDropdown()"
-      [ngClass]="{ 'group bg-body-background': drawerService.isDropdownOpen() }"
+      [ngClass]="{
+        'bg-body-background group': drawerService.isDropdownOpen(),
+        'hover:bg-transparent! cursor-default!': !drawerService.isDropdownOpen(),
+      }"
     >
       <!-- ABS: Dropdown Chevron Start  -->
-      <div
-        id="profile-chevron"
-        [ngClass]="{ 'rotate-180': drawerService.isDropdownOpen() }"
-        class="absolute top-1/2 -translate-y-1/2 right-2 transition-transform duration-300"
-      >
-        <lucide-angular [size]="12" [img]="ChevronDown" name="profile-chevron" />
-      </div>
+      @if (withDrawerLayout()) {
+        <div
+          id="profile-chevron"
+          [ngClass]="{ 'rotate-180': drawerService.isDropdownOpen() }"
+          class="absolute top-1/2 -translate-y-1/2 right-2 transition-transform duration-300"
+        >
+          <lucide-angular [size]="12" [img]="ChevronDown" name="profile-chevron" />
+        </div>
+      }
       <!-- ABS: Dropdown Chevron End -->
 
       <div id="avatar" class="avatar">
@@ -53,11 +58,16 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
         <p class="text-xs text-muted-text line-clamp-1 truncate">{{ email() }}</p>
       </div>
 
-      <header-dropdown />
+      @if (withDrawerLayout()) {
+        <header-dropdown />
+      }
     </div>
   `,
 })
 export class UserSummary {
+  // Inputs
+  readonly withDrawerLayout = input.required<boolean>();
+
   protected readonly authService: AuthService = inject(AuthService);
   protected readonly drawerService: DrawerService = inject(DrawerService);
 

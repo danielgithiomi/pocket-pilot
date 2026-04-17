@@ -4,10 +4,10 @@ import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
 import { AuthService } from '@api/auth.service';
 import { Input } from '@components/ui/atoms/input';
+import { User, IStandardResponse } from '@global/types';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
-import { IAuthResponse, IStandardResponse } from '@global/types';
 import { Eye, EyeOff, LucideAngularModule } from 'lucide-angular';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
@@ -42,7 +42,7 @@ export class Login {
     this.isPasswordVisible.set(!this.isPasswordVisible());
   };
 
-  routeTo = (route: string) => this.router.navigate([route]);
+  routeTo = (route: string) => this.router.navigate([route], { replaceUrl: true });
 
   submitLoginForm = (event: Event) => {
     event.preventDefault();
@@ -52,14 +52,14 @@ export class Login {
     this.isSubmitting.set(true);
 
     this.authService.login({ email, password }).subscribe({
-      next: (response: IStandardResponse<IAuthResponse>) => {
+      next: (response: IStandardResponse<User>) => {
         this.toastService.show({
           variant: 'success',
           title: response.summary.title,
           details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
         });
 
-        this.routeTo(WEB_ROUTES.dashboard);
+        this.routeTo(WEB_ROUTES.home);
       },
       complete: () => this.isSubmitting.set(false),
     });

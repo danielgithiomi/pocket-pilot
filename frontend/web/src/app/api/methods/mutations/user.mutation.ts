@@ -3,7 +3,7 @@ import { ApiClient } from '../api-client';
 import { Injectable } from '@angular/core';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
 import {
-  IAuthResponse,
+  User,
   IRegisterRequest,
   IUpdateUserRequest,
   IVoidResourceResponse,
@@ -17,11 +17,11 @@ export class UserMutation {
   private readonly client = inject(ApiClient);
 
   register(request: IRegisterRequest) {
-    return this.client.post<IAuthResponse, IRegisterRequest>(endpoints.register, request);
+    return this.client.post<User, IRegisterRequest>(endpoints.register, request);
   }
 
   update(userId: string, payload: IUpdateUserRequest) {
-    return this.client.put<IAuthResponse, IUpdateUserRequest>(`users/${userId}`, payload);
+    return this.client.put<User, IUpdateUserRequest>(`users/${userId}`, payload);
   }
 
   changePassword(userId: string, payload: IChangePasswordRequest) {

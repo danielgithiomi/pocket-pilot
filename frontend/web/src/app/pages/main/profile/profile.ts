@@ -1,8 +1,8 @@
+import { User } from '@global/types';
 import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
 import { formatFullDate } from '@libs/utils';
 import { form } from '@angular/forms/signals';
-import { IAuthResponse } from '@global/types';
 import { AuthService } from '@api/auth.service';
 import { UserService } from '@api/user.service';
 import { Input } from '@components/ui/atoms/input';
@@ -35,12 +35,11 @@ export class Profile {
   protected readonly isSubmittingEditProfileForm = signal(false);
 
   // DATA
-  protected readonly defaultNumber = '+01234567890';
   protected readonly user = this.authService.user;
   protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => ({
     name: this.user()!.name,
     email: this.user()!.email,
-    phoneNumber: this.defaultNumber,
+    phoneNumber: this.user()!.phoneNumber,
   }));
 
   // COMPUTED
@@ -65,23 +64,32 @@ export class Profile {
     this.editProfileFormModel.set(initialData);
   }
 
+  protected isUpdatedDataChanged(): boolean {
+    const initialData = this.initialEditProfileFormData();
+    const currentData = this.editProfileFormModel();
+    return (
+      initialData.name !== currentData.name ||
+      initialData.email !== currentData.email ||
+      initialData.phoneNumber !== currentData.phoneNumber
+    );
+  }
+
   protected submitEditProfileForm(event: Event) {
     event.preventDefault();
 
     const { id } = this.user()!;
-    const { phoneNumber, ...payload } = this.editProfileFormModel();
+    const payload = this.editProfileFormModel();
 
     this.isSubmittingEditProfileForm.set(true);
 
     this.userService.update(id, payload).subscribe({
-      next: (user: IAuthResponse) => {
+      next: (user: User) => {
         this.toastService.show({
           variant: 'success',
           title: 'Update Successful!',
           details: 'Your profile has been updated successfully.',
         });
 
-        // Update state & reset form
         this.authService.refreshSession(user);
         this.isEditFormOpen.set(false);
         this.resetEditProfileForm();

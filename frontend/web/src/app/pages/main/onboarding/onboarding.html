@@ -1,0 +1,88 @@
+<section id="user-onboarding">
+  <organism-form
+    title="Onboarding"
+    id="onboarding-form-wrapper"
+    [showCloseIcon]="false"
+    description="Complete your onboarding to get started!"
+  >
+    <form slot="content" id="onboarding-form" (submit)="submitOnboardingForm($event)">
+      <!-- Phone number field -->
+      <atom-input
+        type="text"
+        id="phone-number"
+        [inverted]="true"
+        autocomplete="off"
+        label="Phone number"
+        placeholder="Eg: 1234567890"
+        [formField]="onboardingForm.phoneNumber"
+        (clearOutput)="onboardingForm.phoneNumber().controlValue.set('')"
+      />
+
+      <div class="flex flex-col sm:flex-row gap-6 py-2">
+        <!-- Default Currency -->
+        <atom-select
+          class="flex-1"
+          [inverted]="true"
+          id="default-currency"
+          wrapperClassName="my-0"
+          [options]="currencies"
+          label="Default Currency"
+          placeholder="Select a currency"
+          [formField]="onboardingForm.defaultCurrency"
+        />
+
+        <!-- Preferred Language -->
+        <atom-select
+          class="flex-1"
+          [inverted]="true"
+          [options]="languages"
+          id="preferred-language"
+          wrapperClassName="my-0"
+          label="Preferred Language"
+          placeholder="Select a language"
+          [formField]="onboardingForm.preferredLanguage"
+        />
+      </div>
+
+      <!-- Monthly Spending Limit -->
+      <atom-input
+        type="number"
+        [inverted]="true"
+        autocomplete="off"
+        [numberStep]="0.01"
+        placeholder="Eg: 50000"
+        id="monthly-spending-limit"
+        label="Monthly Spending Limit"
+        [formField]="onboardingForm.monthlySpendingLimit"
+        (clearOutput)="onboardingForm.monthlySpendingLimit().controlValue.set(null)"
+      />
+    </form>
+
+    <div class="form-footer-buttons" slot="footer">
+      <atom-button
+        type="button"
+        [inverted]="true"
+        label="Reset Form"
+        variant="secondary"
+        form="onboarding-form"
+        id="reset-onboarding-form"
+        (clicked)="resetOnboardingForm()"
+        [disabled]="!onboardingForm().dirty() || isSubmitting()"
+      />
+
+      <atom-button
+        type="submit"
+        variant="primary"
+        form="onboarding-form"
+        id="submit-onboarding-form"
+        [isLoading]="isSubmitting()"
+        [disabled]="onboardingForm().invalid() || isSubmitting()"
+      >
+        <div class="w-full flex flex-row items-center justify-between gap-2">
+          <span>Complete Onboarding</span>
+          <lucide-icon [img]="chevrons" [size]="iconSize" name="next-goal-step" />
+        </div>
+      </atom-button>
+    </div>
+  </organism-form>
+</section>

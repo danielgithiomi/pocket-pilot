@@ -1,24 +1,44 @@
 <header>
   <div class="flex flex-row items-center gap-2">
-    <div class="hamburger-wrapper group" (click)="hamburgerClickEmitter.emit()">
-      <lucide-angular size="24" [img]="Menu" name="hamburger-icon" class="hamburger-icon" />
-    </div>
+    @if (withDrawerLayout()) {
+      <div class="hamburger-wrapper group" (click)="hamburgerClickEmitter.emit()">
+        <lucide-angular size="24" [img]="Menu" name="hamburger-icon" class="hamburger-icon" />
+      </div>
+    }
 
-    <div class="hidden sm:flex flex-row items-center space-x-4">
-      <div class="vertical-separator h-8"></div>
+    <div class="hidden sm:flex flex-row items-center space-x-4 cursor-default!">
+      @if (withDrawerLayout()) {
+        <div class="vertical-separator h-8"></div>
+      }
 
       <h1 class="text-lg font-bold">Pocket Pilot</h1>
     </div>
   </div>
 
-  <div class="flex flex-row items-center gap-4">
-    <div class="hidden sm:flex gap-4 md:hidden lg:flex">
-      <lucide-icon class="atom-icon" [name]="Bell" [img]="Bell" [size]="iconSize" />
-      <lucide-icon class="atom-icon" [name]="Settings" [img]="Settings" [size]="iconSize" />
+  @if (withDrawerLayout()) {
+    <div class="flex flex-row items-center gap-4">
+      <div class="hidden sm:flex gap-4 md:hidden lg:flex">
+        <lucide-icon class="atom-icon" [name]="Bell" [img]="Bell" [size]="iconSize" />
+        <lucide-icon
+          [img]="Settings"
+          class="atom-icon"
+          [name]="Settings"
+          [size]="iconSize"
+          (click)="goToSettings()"
+          [ngClass]="{ 'text-primary': isLinkActive('/settings') }"
+        />
+      </div>
+
+      <div class="vertical-separator h-8 md:hidden! lg:flex!"></div>
+
+      <user-summary [withDrawerLayout]="withDrawerLayout()" />
     </div>
-
-    <div class="vertical-separator h-8 md:hidden! lg:flex!"></div>
-
-    <user-summary />
-  </div>
+  } @else {
+    <atom-button id="onboarding-logout" type="button" variant="primary" (clicked)="logout()">
+      <div class="w-full flex flex-row items-center justify-between gap-2">
+        <lucide-icon [img]="LogOut" [size]="iconSize" name="logout" />
+        <span>Logout</span>
+      </div>
+    </atom-button>
+  }
 </header>

@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastService } from '@atoms/toast';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '@api/auth.service';
 import { IGlobalException, IStandardError } from '@global/types';
@@ -9,6 +10,7 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const authService = inject(AuthService);
+  const toastService = inject(ToastService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -30,6 +32,12 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
           if (name && CLEAR_SESSION_ERROR_NAME[name]) {
             authService.clearSession();
             router.navigateByUrl(WEB_ROUTES.login);
+
+            toastService.show({
+              variant: 'warning',
+              title: 'Session expired. Login again!',
+              details: 'You were logged out and redirected because your session expired.',
+            });
 
             return {
               type,
@@ -62,7 +70,6 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
         title: 'NETWORK_ERROR',
         statusCode: error.status,
         details: 'An network error occurred. Ensure you have an internet connection!',
-        // details: error.message || 'Network error',
       }));
     }),
   );

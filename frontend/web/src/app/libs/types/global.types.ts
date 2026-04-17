@@ -4,7 +4,14 @@ export interface ImageDimensions {
 }
 
 type AdditionalLinks = 'support';
-type UserLinks = 'home' | 'profile' | 'dashboard' | 'accounts' | 'transactions' | 'categories' | 'goals';
+type UserLinks =
+  | 'home'
+  | 'goals'
+  | 'profile'
+  | 'accounts'
+  | 'settings'
+  | 'dashboard'
+  | 'transactions';
 
 export interface DrawerNavigationLink {
   name: string;

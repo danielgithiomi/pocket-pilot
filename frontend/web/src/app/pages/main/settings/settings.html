@@ -1,0 +1,114 @@
+<section id="categories-page" class="page">
+  <div class="page-header">
+    <h1 class="page-title">Settings &amp; Categories</h1>
+
+    <atom-button id="add-category" variant="primary" (clicked)="handleOpenForm()">
+      <div class="w-full flex flex-row items-center justify-between gap-4">
+        <lucide-icon name="create-category" [img]="Plus" [size]="iconSize"></lucide-icon>
+        <span class="hidden sm:block">Add Category</span>
+      </div>
+    </atom-button>
+  </div>
+
+  <!-- @if (isFetchingCategories()) {
+    <div class="page-container flex flex-col flex-1 pb-0!">
+      <div class="skeleton w-1/4 h-5 mb-6"></div>
+
+      <div class="flex flex-row gap-6">
+        <div class="category-card group/card incomes">
+          <div class="skeleton w-3/4 h-5"></div>
+
+          <div class="categories-container">
+            @for (income of categoryLength.slice(0, 9); track $index) {
+              <div class="skeleton skeleton-items"></div>
+            }
+          </div>
+        </div>
+
+        <div class="category-card group">
+          <div class="skeleton w-3/4 h-5"></div>
+
+          <div class="categories-container">
+            @for (income of categoryLength; track $index) {
+              <div class="skeleton skeleton-items"></div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    @let response = categories$.value()?.data;
+    @let incomeCount = response?.incomes?.length || 0;
+    @let expenseCount = response?.expenses?.length || 0;
+    @let totalCount = incomeCount + expenseCount;
+    <div
+      class="page-container flex-1"
+      [ngClass]="{ 'grid place-items-center': totalCount === 0 || categories$.error() }"
+    >
+      @if (categories$.error()) {
+        <fetch-error message="Failed to retrieve your transactions" />
+      } @else if (totalCount === 0) {
+        <no-data message="No transactions found!" />
+      } @else {
+        @let incomes = formattedCategories().incomes;
+        @let expenses = formattedCategories().expenses;
+
+        <p class="mb-6">
+          You have <span class="font-semibold text-primary">{{ totalCount }}</span>
+          {{ totalCount! > 1 ? 'total categories' : 'category' }}!
+        </p>
+
+        <div class="flex flex-row gap-6 flex-1">
+          <div class="category-card group/card incomes">
+            <p>
+              Income Categories: <span class="category-card-span">{{ incomes?.length }}</span>
+            </p>
+
+            <div class="categories-container">
+              @for (income of incomes; track income) {
+                <div class="category-item group/item income">
+                  <p>{{ income }}</p>
+
+                  <button
+                    class="category-icon atom-icon"
+                    (click)="deleteCategory(income, CategoryTypeEnum.INCOME)"
+                  >
+                    <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="category-card group/card">
+            <p>
+              Expense Categories: <span class="category-card-span">{{ expenses?.length }}</span>
+            </p>
+
+            <div class="categories-container">
+              @for (expense of expenses; track expense) {
+                <div class="category-item group/item expense">
+                  <p>{{ expense }}</p>
+
+                  <button
+                    class="category-icon atom-icon"
+                    (click)="deleteCategory(expense, CategoryTypeEnum.EXPENSE)"
+                  >
+                    <lucide-icon name="delete-category" [img]="X" [size]="13"></lucide-icon>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } -->
+</section>
+
+@if (isCategoriesFormOpen()) {
+  <categories-form
+    (categoriesFormClosed)="handleCloseForm()"
+    [isCategoriesFormOpen]="isCategoriesFormOpen()"
+  />
+}

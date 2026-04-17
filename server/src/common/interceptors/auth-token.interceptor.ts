@@ -5,7 +5,7 @@ import { IRequestCookies } from '@common/types';
 import { plainToInstance } from 'class-transformer';
 import { JWTPayload } from '@modules/identity/dto/auth.dto';
 import { UserService } from '@modules/identity/services/user.service';
-import { User, UserResponseDto } from '@modules/identity/dto/user.dto';
+import { UserResponseDto, UserWithPreferencesDto } from '@modules/identity/dto/user.dto';
 import { type CallHandler, type ExecutionContext, type NestInterceptor, UnauthorizedException } from '@nestjs/common';
 
 export class AuthTokenInterceptor implements NestInterceptor {
@@ -37,9 +37,9 @@ export class AuthTokenInterceptor implements NestInterceptor {
 
             console.log(decoded_payload);
 
-            const user: User = await this.userService.findUserById(decoded_payload.sub);
+            const user: UserWithPreferencesDto = await this.userService.findUserById(decoded_payload.sub);
 
-            request.user = plainToInstance(UserResponseDto, user);
+            request.user = plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true });
 
             return next.handle();
         } catch (error) {

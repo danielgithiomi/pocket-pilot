@@ -10,15 +10,20 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    // url      = env("DATABASE_URL")
 }
 
 enum AccountType {
-    WALLET
+    LOAN
     BANK
-    SAVINGS
+    CRYPTO
     CREDIT
+    WALLET
+    SAVINGS
     CURRENT
+    DEPOSIT
+    OVERDRAFT
+    BROKERAGE
+    RETIREMENT
 }
 
 model Account {
@@ -37,13 +42,16 @@ model Account {
     transactions Transaction[]
 
     @@unique([name, holderId])
+    @@map("Accounts")
 }
 
 model User {
-    id        String   @id() @default(uuid())
-    name      String   @unique
-    email     String   @unique
-    password  String
+    id          String  @id() @default(uuid())
+    name        String
+    email       String
+    password    String
+    phoneNumber String?
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -51,6 +59,9 @@ model User {
     lastLoginAt         DateTime?
     failedLoginAttempts Int       @default(0)
     isAccountLocked     Boolean   @default(false)
+
+    // Onboarding
+    isOnboarded Boolean @default(false)
 
     // Link to accounts - one-to-many
     accounts Account[]
@@ -60,20 +71,26 @@ model User {
 
     // Link to preferences - one-to-one
     userPreferences UserPreferences?
+
+    @@unique([email])
+    @@map("Users")
 }
 
 model UserPreferences {
     id String @id @default(uuid())
 
-    phoneNumber String
+    monthlySpendingLimit Float
+    defaultCurrency      String
+    preferredLanguage    String
 
-    defaultCurrency      String @default("USD")
-    preferredLanguage    String @default("en")
-    monthlySpendingLimit Float  @default(0)
+    createdAt DateTime @default(now())
 
     // Link to user - one-to-one
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId String @unique
+    userId String
+
+    @@unique([userId])
+    @@map("User Preferences")
 }
 
 enum TransactionType {
@@ -93,6 +110,8 @@ model Transaction {
     // Link to account - one-to-many
     account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
     accountId String
+
+    @@map("Transactions")
 }
 
 enum CategoryType {
@@ -110,6 +129,8 @@ model Categories {
     // Link to user - one-to-many
     user   User   @relation(fields: [userId], references: [id])
     userId String @unique
+
+    @@map("User Transaction Categories")
 }
 
 enum GoalStatus {
@@ -153,6 +174,8 @@ model Goals {
 
     updatedAt DateTime @updatedAt()
     createdAt DateTime @default(now())
+
+    @@map("Financial Goals")
 }
 
 enum BillType {
@@ -171,4 +194,8 @@ model Bills {
     currency String
 
     dueDate DateTime
+
+    createdAt DateTime @default(now())
+
+    @@map("User Bills")
 }

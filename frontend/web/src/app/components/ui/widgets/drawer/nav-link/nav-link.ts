@@ -7,7 +7,7 @@ import {
   Wallet,
   Target,
   Headset,
-  SquareStack,
+  Settings2,
   UserRoundCog,
   ChevronRight,
   ArrowLeftRight,
@@ -73,8 +73,8 @@ export class NavLink {
     goals: Target,
     accounts: Wallet,
     support: Headset,
+    settings: Settings2,
     profile: UserRoundCog,
-    categories: SquareStack,
     dashboard: LayoutDashboard,
     transactions: ArrowLeftRight,
   };

@@ -282,7 +282,7 @@ main {
       @apply flex items-center gap-px text-[0.875rem];
 
       .required {
-        @apply text-sm text-(--expense);
+        @apply text-sm text-expense;
       }
     }
 
@@ -369,6 +369,10 @@ main {
 @layer utilities {
   .form-redirect-text {
     @apply mt-2 text-sm text-center w-full underline underline-offset-2 cursor-pointer duration-300 ease-in-out text-muted-text hover:text-primary;
+  }
+
+  .form-footer-buttons {
+    @apply w-full flex flex-col sm:flex-row items-end sm:items-center justify-end gap-2 sm:gap-4 pt-2 sm:pt-0;
   }
 
   .bordered-card {
@@ -526,7 +530,6 @@ input[type='number']::-webkit-inner-spin-button {
 
 ::-webkit-scrollbar-thumb,
 .custom-scrollbar::-webkit-scrollbar-thumb {
-
   border-radius: 0.5rem;
   background: var(--loader-primary);
 }

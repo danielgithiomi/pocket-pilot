@@ -4,8 +4,8 @@ import { VoidResourceResponse } from '@common/types';
 import { denormalizeCategoryName } from '@libs/utils';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { CategoriesService } from '../services/categories.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiCookieAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';
 
 @ApiTags('Categories')
@@ -15,6 +15,7 @@ export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService) {}
 
     @Get()
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get User Categories', description: 'Get all user categories' })
     @ApiResponse({
         status: 200,
@@ -27,6 +28,7 @@ export class CategoriesController {
     }
 
     @Post()
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Create or Update User Categories', description: 'Create user categories' })
     @ApiResponse({
         status: 201,
@@ -38,6 +40,7 @@ export class CategoriesController {
     }
 
     @Delete()
+    @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Delete User Category', description: 'Delete user category' })
     @ApiResponse({
         status: 200,

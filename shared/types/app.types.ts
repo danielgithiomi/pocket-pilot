@@ -1,4 +1,5 @@
-export interface MonthOption {
+export interface LabelValueItem {
   value: string;
   label: string;
+  descriptor?: string;
 }

@@ -1,6 +1,6 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { ILoginRequest, IAuthResponse } from '@global/types';
+import { LoginPayload, User } from '@global/types';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
 
 @Injectable({
@@ -9,8 +9,8 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 export class AuthMutation {
   private readonly client = inject(ApiClient);
 
-  login(request: ILoginRequest) {
-    return this.client.post<IAuthResponse, ILoginRequest>(endpoints.login, request);
+  login(request: LoginPayload) {
+    return this.client.post<User, LoginPayload>(endpoints.login, request);
   }
 
   logout() {

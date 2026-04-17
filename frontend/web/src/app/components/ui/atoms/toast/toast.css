@@ -2,7 +2,7 @@
 
 .toast {
   width: 100%;
-  max-width: 300px;
+  max-width: 325px;
   cursor: default;
   overflow: hidden;
   border-radius: 12px;
@@ -29,14 +29,14 @@
 }
 
 .title {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: bold;
 }
 
 .message {
   @apply p-1;
   opacity: 0.8;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .close {

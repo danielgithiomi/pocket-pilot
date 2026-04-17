@@ -2,9 +2,10 @@ import { Routes } from '@angular/router';
 import { Login } from '@pages/auth/login/login';
 import { AuthLayout } from '@pages/layouts/auth';
 import { MainLayout } from '@pages/layouts/main';
+import { DrawerlessLayout } from '@pages/layouts/drawerless';
 import { NotFound } from '@pages/shared/not-found/not-found';
-import { AuthGuard, GuestGuard } from '@infrastructure/guards';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
+import { AuthGuard, GuestGuard, OnboardedGuard, OnboardingGuard } from '@infrastructure/guards';
 
 export const routes: Routes = [
   {
@@ -25,9 +26,21 @@ export const routes: Routes = [
     ],
   },
   {
+    path: WEB_ROUTES.onboarding,
+    canMatch: [OnboardingGuard],
+    component: DrawerlessLayout,
+    children: [
+      {
+        path: '',
+        title: 'Onboarding | Pocket Pilot',
+        loadComponent: () => import('@pages/main/onboarding/onboarding').then((m) => m.Onboarding),
+      },
+    ],
+  },
+  {
     path: '',
     component: MainLayout,
-    canMatch: [AuthGuard],
+    canMatch: [AuthGuard, OnboardedGuard],
     children: [
       {
         title: 'Dashboard | Pocket Pilot',
@@ -47,17 +60,19 @@ export const routes: Routes = [
       {
         title: 'Transactions | Pocket Pilot',
         path: WEB_ROUTES.transactions,
-        loadComponent: () => import('@pages/main/transactions/transactions').then((m) => m.Transactions),
+        loadComponent: () =>
+          import('@pages/main/transactions/transactions').then((m) => m.Transactions),
       },
       {
-        title: 'Categories | Pocket Pilot',
-        path: WEB_ROUTES.categories,
-        loadComponent: () => import('@pages/main/categories/categories').then((m) => m.Categories),
+        title: 'Settings | Pocket Pilot',
+        path: WEB_ROUTES.settings,
+        loadComponent: () => import('@pages/main/settings/settings').then((m) => m.Settings),
       },
       {
-        title: 'Goals | Pocket Pilot',
+        title: 'Goals & Bills | Pocket Pilot',
         path: WEB_ROUTES.goals,
-        loadComponent: () => import('@pages/main/goals/goals').then((m) => m.Goals),
+        loadComponent: () =>
+          import('@pages/main/goals_and_bills/goals-and-bills').then((m) => m.Goals),
       },
       {
         path: '**',

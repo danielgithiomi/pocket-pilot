@@ -1,7 +1,7 @@
 import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
-import { FullUser, UserResponseDto } from '../dto/user.dto';
+import { UserWithPreferencesDto } from '../dto/user.dto';
 import { UserRepository } from '../repositories/user.repository';
 import { AuthRepository } from '../repositories/auth.repository';
 import { LockedException } from '@common/exceptions/locked.exception';
@@ -16,10 +16,8 @@ export class AuthService {
         private readonly authRepository: AuthRepository,
     ) {}
 
-    async me(userId: string): Promise<FullUser> {
-        let user: FullUser | null = null;
-
-        user = await this.userRepository.findUserById(userId);
+    async me(userId: string): Promise<UserWithPreferencesDto> {
+        const user = await this.userRepository.findUserById(userId);
 
         if (!user)
             throw new UnauthorizedException({
@@ -28,7 +26,7 @@ export class AuthService {
                 details: `No user found in the request with the ID: {${userId}}.`,
             });
 
-        return user;
+        return plainToInstance(UserWithPreferencesDto, user, { excludeExtraneousValues: true });
     }
 
     async login(data: LoginInputDto): Promise<LoginOutputDto> {
@@ -69,13 +67,13 @@ export class AuthService {
         return {
             access_token,
             refresh_token,
-            user: plainToInstance(UserResponseDto, user),
+            user: plainToInstance(UserWithPreferencesDto, user, { excludeExtraneousValues: true }),
         } satisfies LoginOutputDto;
     }
 
     // HELPER FUNCTIONS
     private async validateUser(email: string, password: string): Promise<ValidationResult> {
-        const user: FullUser | null = await this.userRepository.findUserByEmail(email);
+        const user = await this.userRepository.findUserByEmail(email);
 
         if (!user)
             throw new NotFoundException({

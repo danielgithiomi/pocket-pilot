@@ -36,13 +36,7 @@ export class TransactionRepository {
                     accountId,
                     ...transaction,
                 },
-                select: {
-                    id: true,
-                    date: true,
-                    type: true,
-                    amount: true,
-                    category: true,
-                    description: true,
+                include: {
                     account: { select: { id: true, name: true } },
                 },
             });

@@ -15,10 +15,6 @@
   .dropdown-view-profile {
     .wrapper {
       @apply p-2 hover:bg-(--muted-text) rounded-md transition-all duration-300 w-full flex flex-row items-center justify-start gap-3;
-
-      .to-profile-text {
-        @apply text-sm;
-      }
     }
   }
 

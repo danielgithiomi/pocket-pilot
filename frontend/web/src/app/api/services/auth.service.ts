@@ -4,16 +4,10 @@ import { WEB_ROUTES } from '@global/constants';
 import { AuthMutation } from '@methods/mutations';
 import { HttpClient } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
-import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { catchError, EMPTY, firstValueFrom, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import {
-  User,
-  IAuthResponse,
-  ILoginRequest,
-  IStandardError,
-  IStandardResponse,
-} from '@global/types';
+import { STORED_AUTH_USER_KEY, STORED_ONBOARDING_USER_KEY } from '@libs/constants';
+import { User, LoginPayload, IStandardError, IStandardResponse } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -63,7 +57,7 @@ export class AuthService {
 
     try {
       const response = await firstValueFrom(
-        this.http.get<IStandardResponse<IAuthResponse>>(concatUrl('auth/me'), {
+        this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
           credentials: 'include',
         }),
       );
@@ -88,7 +82,7 @@ export class AuthService {
     this.sessionRequest = (async () => {
       try {
         const response = await firstValueFrom(
-          this.http.get<IStandardResponse<IAuthResponse>>(concatUrl('auth/me'), {
+          this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
             credentials: 'include',
           }),
         );
@@ -109,9 +103,19 @@ export class AuthService {
     return this.sessionRequest;
   }
 
-  login(request: ILoginRequest) {
+  async isUserOnboarded(): Promise<boolean> {
+    if (this.userSignal())
+      return this.userSignal()!.isOnboarded;
+
+    const isAuthenticated = await this.checkSession();
+    if (!isAuthenticated) return false;
+
+    return this.userSignal()!.isOnboarded;
+  }
+
+  login(request: LoginPayload) {
     return this.mutation.login(request).pipe(
-      tap((response: IStandardResponse<IAuthResponse>) => {
+      tap((response: IStandardResponse<User>) => {
         this.createSession(response.data);
       }),
       catchError((error: IStandardError) => {
@@ -125,7 +129,6 @@ export class AuthService {
     return this.mutation.logout().pipe(
       tap(() => this.clearSession()),
       catchError((error: IStandardError) => {
-        console.error('Logout error:', error);
         this.renderToast(error);
         return EMPTY;
       }),
@@ -137,10 +140,11 @@ export class AuthService {
     this.clearSession();
     this.createSession(user);
   }
-  
+
   clearSession() {
     this.userSignal.set(null);
     localStorage.removeItem(STORED_AUTH_USER_KEY);
+    localStorage.removeItem(STORED_ONBOARDING_USER_KEY);
   }
 
   createSession(user: User) {

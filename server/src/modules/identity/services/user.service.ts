@@ -5,7 +5,7 @@ import { UserRepository } from '../repositories/user.repository';
 import { CategoriesService } from '@modules/wallet/services/categories.service';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { ChangePasswordDto, FullUser, UpdateUserDto, User, UserResponseDto } from '../dto/user.dto';
+import { ChangePasswordDto, UpdateUserDto, UserResponseDto, UserWithPreferencesDto } from '../dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -27,7 +27,7 @@ export class UserService {
 
         const hashedPassword = await argon.hash(data.password);
 
-        const createdUser: FullUser = await this.userRepository.createNewUser(data, hashedPassword);
+        const createdUser = await this.userRepository.createNewUser(data, hashedPassword);
 
         const payload: JWTPayload = this.cookiesService.generatePayload(createdUser);
 
@@ -43,15 +43,16 @@ export class UserService {
     }
 
     async getAllUsers(): Promise<UserResponseDto[]> {
-        return await this.userRepository.getAllUsers();
+        const users = await this.userRepository.getAllUsers();
+        return users.map(user => plainToInstance(UserResponseDto, user));
     }
 
     async deleteUserById(userId: string) {
         return this.userRepository.deleteUserById(userId);
     }
 
-    async findUserById(userId: string): Promise<UserResponseDto> {
-        const user: FullUser | null = await this.userRepository.findUserById(userId);
+    async findUserById(userId: string): Promise<UserWithPreferencesDto> {
+        const user = await this.userRepository.findUserById(userId);
 
         if (!user)
             throw new NotFoundException({
@@ -60,16 +61,16 @@ export class UserService {
                 details: `No user found with the ID: [${userId}].`,
             });
 
-        return plainToInstance(UserResponseDto, user);
+        return plainToInstance(UserWithPreferencesDto, user);
     }
 
-    async updateUserById(userId: string, user: UpdateUserDto) {
-        const updatedUser = await this.userRepository.updateUserById(userId, user);
-        return plainToInstance(UserResponseDto, updatedUser);
+    async updateUserById(userId: string, updatePayload: UpdateUserDto): Promise<UserWithPreferencesDto> {
+        const updatedUser = await this.userRepository.updateUserById(userId, updatePayload);
+        return plainToInstance(UserWithPreferencesDto, updatedUser);
     }
 
     async changePassword(userId: string, payload: ChangePasswordDto) {
-        const user: FullUser | null = await this.userRepository.findUserById(userId);
+        const user = await this.userRepository.findUserById(userId);
 
         if (!user) {
             throw new NotFoundException({
@@ -96,7 +97,7 @@ export class UserService {
 
     // HELPER FUNCTIONS
     private async validateUserExists(email: string): Promise<boolean> {
-        const user: User | null = await this.userRepository.findUserByEmail(email);
+        const user = await this.userRepository.findUserByEmail(email);
         return !!user;
     }
 

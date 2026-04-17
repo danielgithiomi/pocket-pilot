@@ -1,30 +1,29 @@
 import { catchError, EMPTY } from 'rxjs';
+import { AuthService } from './auth.service';
 import { AccountsResource } from '@methods/resources';
 import { AccountsMutation } from '@methods/mutations';
+import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { ToastService } from '@components/ui/atoms/toast';
-import { inject, Injectable, signal } from '@angular/core';
-import { CreateAccountRequest, IStandardError } from '@global/types';
+import { computed, inject, Injectable } from '@angular/core';
+import { CreateAccountRequest, IStandardError, User } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountsService {
+  private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
   private readonly accountsMutation = inject(AccountsMutation);
   private readonly accountsResource = inject(AccountsResource);
-  private readonly maximumSpendingLimit = signal<number>(60000);
-  private readonly defaultCurrency: Intl.NumberFormatOptions['currency'] = 'MUR';
+
+  private readonly storedUser = computed<User>(() => this.authService.user()!);
 
   getMaximumSpendingLimit() {
-    return this.maximumSpendingLimit;
-  }
-
-  setMaximumSpendingLimit(limit: number) {
-    this.maximumSpendingLimit.set(limit);
+    return this.storedUser().userPreferences.monthlySpendingLimit;
   }
 
   getDefaultCurrency() {
-    return this.defaultCurrency;
+    return this.storedUser().userPreferences.defaultCurrency;
   }
 
   getAccountTypes() {

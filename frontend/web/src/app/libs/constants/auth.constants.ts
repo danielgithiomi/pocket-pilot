@@ -1,6 +1,7 @@
 import { Auth_Feature } from './../types/auth.types';
 
 export const STORED_AUTH_USER_KEY: string = 'PP_AUTH_USER';
+export const STORED_ONBOARDING_USER_KEY: string = 'PP_ONBOARDING_USER';
 
 export const APP_FEATURES: Auth_Feature[] = [
   {

@@ -1,3 +1,5 @@
+import { UserPreferences } from "./onboarding.types";
+
 export interface User {
   id: string;
   name: string;
@@ -5,8 +7,11 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
   lastLoginAt: Date;
+  phoneNumber: string;
+  isOnboarded: boolean;
   isAccountLocked: boolean;
   failedLoginAttempts: number;
+  userPreferences: UserPreferences;
 }
 
 // REGISTER
@@ -20,6 +25,7 @@ export interface IRegisterRequest {
 export interface IUpdateUserRequest {
   name: string;
   email: string;
+  phoneNumber: string;
 }
 
 export interface IChangePasswordRequest {

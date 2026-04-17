@@ -1,0 +1,27 @@
+@reference "tailwindcss";
+
+#drawerless-layout {
+  @apply flex flex-col h-screen;
+
+  #drawerless-header {
+    @apply w-full h-[8vh];
+  }
+
+  #drawerless-content {
+    @apply relative flex-1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('/images/onboarding_background.jpg');
+
+    &::after {
+      position: absolute;
+      inset: 0;
+      content: '';
+      width: 100%;
+      height: 100%;
+      filter: blur(15px);
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+}

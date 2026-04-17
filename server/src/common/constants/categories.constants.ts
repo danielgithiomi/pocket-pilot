@@ -4,7 +4,6 @@ export const DEFAULT_INCOME_CATEGORIES = [
     'Refunds',
     'Bonuses',
     'Business',
-    'Transfer',
     'Freelance',
     'Investments',
     'Rental Income',

@@ -21,7 +21,7 @@ export class GoalsService {
         return this.goalsRepository.createGoal(userId, payload);
     }
 
-    deleteGoalById(userId: string, goalId: string) {
-        return this.goalsRepository.deleteGoalById(userId, goalId);
+    deleteGoalById(goalId: string) {
+        return this.goalsRepository.deleteGoalById(goalId);
     }
 }

@@ -60,8 +60,8 @@
     id="transactions"
     title="Log Transaction"
     [class.hidden]="!isFormOpen()"
-    description="Record a new transaction"
     (closeForm)="handleCloseForm($event)"
+    description="Record a new transaction"
   >
     @let categories = transactionCategories();
     @let types = transactionTypes.value()?.data;
@@ -124,7 +124,7 @@
       />
     </form>
 
-    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+    <div class="form-footer-buttons" slot="footer">
       <atom-button
         type="button"
         [inverted]="true"
