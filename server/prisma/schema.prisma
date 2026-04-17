@@ -13,11 +13,17 @@ datasource db {
 }
 
 enum AccountType {
-    WALLET
+    LOAN
     BANK
-    SAVINGS
+    CRYPTO
     CREDIT
+    WALLET
+    SAVINGS
     CURRENT
+    DEPOSIT
+    OVERDRAFT
+    BROKERAGE
+    RETIREMENT
 }
 
 model Account {
