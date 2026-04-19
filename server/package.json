@@ -99,5 +99,5 @@
             "@infrastructure/(.*)": "<rootDir>/infrastructure/$1"
         }
     },
-    "packageManager": "npm@11.6.3"
+    "packageManager": "npm@11.12.1"
 }

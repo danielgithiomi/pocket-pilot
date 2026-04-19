@@ -32,10 +32,10 @@ export class AuthService {
     async login(data: LoginInputDto): Promise<LoginOutputDto> {
         const { email, password } = data;
 
-        const { isValid, user } = await this.validateUser(email, password);
+        const { isValid, user }: ValidationResult = await this.validateUser(email, password);
 
         if (!isValid) {
-            const currentFailedAttempts = user.failedLoginAttempts!;
+            const currentFailedAttempts: number = user.failedLoginAttempts!;
 
             if (currentFailedAttempts >= 3) {
                 await this.authRepository.lockAccount(email);
