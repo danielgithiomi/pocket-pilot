@@ -35,7 +35,7 @@ export class AuthService {
         const { isValid, user }: ValidationResult = await this.validateUser(email, password);
 
         if (!isValid) {
-            const currentFailedAttempts: number = user.failedLoginAttempts!;
+            const currentFailedAttempts: number = user.failedLoginAttempts;
 
             if (currentFailedAttempts >= 3) {
                 await this.authRepository.lockAccount(email);

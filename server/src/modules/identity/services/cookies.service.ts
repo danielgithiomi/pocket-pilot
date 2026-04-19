@@ -1,7 +1,7 @@
 import type { Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { FullUser } from '../dto/user.dto';
 import { JWTPayload } from '../dto/auth.dto';
+import { UserWithPreferences } from '../dto/user.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JWT_ACCESS_TOKEN_VALIDITY_MINUTES, JWT_REFRESH_TOKEN_VALIDITY_DAYS } from '@common/constants';
 
@@ -9,9 +9,9 @@ import { JWT_ACCESS_TOKEN_VALIDITY_MINUTES, JWT_REFRESH_TOKEN_VALIDITY_DAYS } fr
 export class CookiesService {
     constructor(private readonly jwtService: JwtService) {}
 
-    generatePayload(user: FullUser): JWTPayload {
+    generatePayload(user: UserWithPreferences): JWTPayload {
         return {
-            sub: user.id!,
+            sub: user.id,
             username: user.name,
             email: user.email,
             iat: Date.now(),

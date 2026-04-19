@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { FullUser, UserResponseDto, UserWithPreferencesDto } from './user.dto';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { FullUser, UserResponseDto, UserWithPreferences, UserWithPreferencesDto } from './user.dto';
 
 export interface ValidationResult {
     isValid: boolean;
-    user: any;
+    user: UserWithPreferences;
 }
 
 export interface JWTPayload {
