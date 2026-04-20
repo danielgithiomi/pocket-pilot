@@ -1,19 +1,22 @@
 import { Button } from '@atoms/button';
+import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { CategoryTypeEnum } from '@global/enums';
+import { NoData } from '@structural/main/no-data/no-data';
 import { CategoriesService } from '@api/categories.service';
 import { CategoriesForm } from './categories/categories-form';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormattedCategories, CategoryLength } from './settings.types';
+import { FetchError } from '@structural/main/fetch-error/fetch-error';
+import { CategoryLength, FormattedCategories } from './settings.types';
 import { CategoryVariant, IVoidResourceResponse } from '@global/types';
-import { LucideAngularModule, ListFilterPlus, X } from 'lucide-angular';
+import { ListFilterPlus, LucideAngularModule, X } from 'lucide-angular';
 import { denormalizeCategoryName, normalizeCategoryName } from '@global/utils';
 
 @Component({
   selector: 'app-settings',
   styleUrl: './settings.css',
   templateUrl: './settings.html',
-  imports: [Button, LucideAngularModule, CategoriesForm],
+  imports: [NgClass, FetchError, NoData, Button, LucideAngularModule, CategoriesForm],
 })
 export class Settings {
   // Icons
