@@ -11,8 +11,25 @@ export class AccountRepository {
         return this.db.account.create({ data: { name, type, holderId: userId } });
     }
 
+    getAllApplicationAccounts() {
+        return this.db.account.findMany({
+            include: { holder: { select: { name: true, email: true } } },
+        });
+    }
+
+    getUserAccounts(holderId: string) {
+        return this.db.account.findMany({ where: { holderId } });
+    }
+
     getAccountById(accountId: string) {
         return this.db.account.findUnique({ where: { id: accountId } });
+    }
+
+    getAccountWithTransactions(accountId: string) {
+        return this.db.account.findUnique({
+            where: { id: accountId },
+            include: { transactions: { omit: { accountId: true } } },
+        });
     }
 
     deleteAccountById(userId: string, accountId: string) {

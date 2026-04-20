@@ -10,15 +10,15 @@ export abstract class EntityCache<T> {
     protected constructor(
         @Inject(CACHE_MANAGER) protected readonly cache: Cache,
         protected readonly cachePrefix: string,
-        protected readonly defaultTTL: number = 30, // 30 seconds
+        protected readonly defaultTTL: number = 60, // 360 seconds (1 minute)
     ) {
         this.TTL = this.defaultTTL;
         this.PREFIX = this.cachePrefix;
     }
 
-    async getOrSetCache(id: string, callback: () => Promise<T>, ttl: number = this.TTL): Promise<T> {
+    async getOrSetCache<V = T>(id: string, callback: () => Promise<V>, ttl: number = this.TTL): Promise<V> {
         const key = this.key(id);
-        const cachedValue = await this.cache.get<T>(key);
+        const cachedValue = await this.cache.get<V>(key);
         if (cachedValue) return cachedValue;
 
         // No cache found

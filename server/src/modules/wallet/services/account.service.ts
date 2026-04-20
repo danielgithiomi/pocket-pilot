@@ -1,8 +1,8 @@
 import { formatEnumForFrontend } from '@libs/utils';
 import { plainToInstance } from 'class-transformer';
 import { Account, AccountType, Prisma } from '@prisma/client';
+import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
 import { AccountRepository } from '../repositories/account.repository';
-import { DatabaseService } from '@infrastructure/database/database.service';
 import { TransactionRepository } from '../repositories/transaction.respository';
 import { AccountTypeDto, AccountWithHolder, AccountWithTransactionsDto, CreateAccountDto } from '../dto/account.dto';
 import {
@@ -12,12 +12,10 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from '@nestjs/common';
-import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
 
 @Injectable()
 export class AccountService {
     constructor(
-        private readonly db: DatabaseService,
         private readonly cache: AccountsCache,
         private readonly accountRepository: AccountRepository,
         private readonly transactionRepository: TransactionRepository,
@@ -28,15 +26,13 @@ export class AccountService {
     }
 
     async getAllAccounts(): Promise<AccountWithHolder[]> {
-        return this.db.account.findMany({
-            include: { holder: { select: { name: true, email: true } } },
-        });
+        return this.cache.getOrSetCache<AccountWithHolder[]>('all', () =>
+            this.accountRepository.getAllApplicationAccounts(),
+        );
     }
 
     async getUserAccounts(holderId: string): Promise<Account[]> {
-        const cb = () => this.db.account.findMany({ where: { holderId } });
-        return this.cache.getOrSetCache(holderId, cb);
-        // return this.db.account.findMany({ where: { holderId } });
+        return this.cache.getOrSetCache<Account[]>(holderId, () => this.accountRepository.getUserAccounts(holderId));
     }
 
     async getAccountById(userId: string, accountId: string): Promise<Account> {
@@ -48,10 +44,7 @@ export class AccountService {
         const accounts: Account[] = await this.getUserAccounts(userId);
         const foundAccount = this.verifyAccountAndOwnership(accounts, userId, accountId);
 
-        const account = await this.db.account.findUnique({
-            where: { id: foundAccount.id },
-            include: { transactions: { select: { id: true, amount: true, type: true, date: true } } },
-        });
+        const account = await this.accountRepository.getAccountWithTransactions(foundAccount.id);
 
         if (!account) {
             throw new NotFoundException({
@@ -71,7 +64,9 @@ export class AccountService {
                 name: data.name.toLowerCase(),
             };
 
-            return await this.accountRepository.createNewAccount(userId, newAccountData);
+            const createdAccount = await this.accountRepository.createNewAccount(userId, newAccountData);
+            await this.cache.invalidateCache(userId);
+            return createdAccount;
         } catch (error) {
             if (this.isPrismaError(error) === 'unique-constraint') {
                 throw new ConflictException({
@@ -102,7 +97,9 @@ export class AccountService {
             });
         }
 
-        return this.accountRepository.deleteAccountById(userId, accountId);
+        const deletedAccount = await this.accountRepository.deleteAccountById(userId, accountId);
+        await this.cache.invalidateCache(userId);
+        return deletedAccount;
     }
 
     private verifyAccountAndOwnership(accounts: Account[], userId: string, accountId: string): Account {

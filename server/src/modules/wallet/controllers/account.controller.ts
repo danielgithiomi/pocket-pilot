@@ -1,22 +1,22 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { plainToInstance } from 'class-transformer';
-import { AccountTypeDto } from '../dto/account.dto';
+import {
+    Account,
+    AccountsResponseDto,
+    AccountTypeDto,
+    AccountWithHolder,
+    AccountWithHolderDto,
+    AccountWithTransactionsResponseDto,
+    CreateAccountDto,
+    UserAccountsResponseDto,
+} from '../dto/account.dto';
 import { VoidResourceResponse } from '@common/types';
+import { denormalizeCategoryName } from '@libs/utils';
 import { type User } from '@modules/identity/dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { AccountService } from '../services/account.service';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import {
-    Account,
-    CreateAccountDto,
-    AccountWithHolder,
-    AccountsResponseDto,
-    AccountWithHolderDto,
-    UserAccountsResponseDto,
-    AccountWithTransactionsResponseDto,
-} from '../dto/account.dto';
-import { denormalizeCategoryName } from '@libs/utils';
 
 @ApiTags('Accounts')
 @Controller('accounts')
