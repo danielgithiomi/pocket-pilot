@@ -9,9 +9,9 @@ import { ListFilterPlus, LucideAngularModule, X } from 'lucide-angular';
 import { CategoriesForm } from './categories/categories-form/categories-form';
 
 @Component({
-  selector: 'app-settings',
-  styleUrl: './settings.css',
-  templateUrl: './settings.html',
+  selector: 'settings_and_categories',
+  styleUrl: './settings_and_categories.css',
+  templateUrl: './settings_and_categories.html',
   imports: [Button, LucideAngularModule, CategoriesForm, Categories],
 })
 export class Settings {
@@ -20,15 +20,12 @@ export class Settings {
   protected readonly iconSize: number = 18;
   protected readonly Plus = ListFilterPlus;
   protected readonly animationDimension: string = '150px';
-
-  // Services
-  private readonly toastService = inject(ToastService);
-  private readonly categoriesService = inject(CategoriesService);
-
   // States
   protected isSubmitting = signal<boolean>(false);
   protected isCategoriesFormOpen = signal<boolean>(false);
-
+  // Services
+  private readonly toastService = inject(ToastService);
+  private readonly categoriesService = inject(CategoriesService);
   // Data
   protected categories$ = this.categoriesService.getUserCategories();
 

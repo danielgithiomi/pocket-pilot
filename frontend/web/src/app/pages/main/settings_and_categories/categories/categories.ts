@@ -5,7 +5,7 @@ import { LucideAngularModule, X } from 'lucide-angular';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, output } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
-import { CategoryLength, FormattedCategories } from '../settings.types';
+import { CategoryLength, FormattedCategories } from '../settings_and_categories.types';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 
 @Component({
@@ -23,6 +23,9 @@ export class Categories {
   // Data
   protected readonly categoryLength = CategoryLength;
   protected readonly CategoryTypeEnum = CategoryTypeEnum;
+  // Services
+  private readonly categoriesService = inject(CategoriesService);
+  protected readonly categories$ = this.categoriesService.getUserCategories();
   // Computed
   protected readonly isFetchingCategories = computed(() => this.categories$.isLoading());
   protected readonly formattedCategories = computed<FormattedCategories>(() => {
@@ -33,9 +36,6 @@ export class Categories {
       expenses: this.denormalizeCategoryNames(expenses),
     };
   });
-  // Services
-  private readonly categoriesService = inject(CategoriesService);
-  protected readonly categories$ = this.categoriesService.getUserCategories();
 
   // Helper Functions
   private denormalizeCategoryNames(categoryNames: string[]): string[] {

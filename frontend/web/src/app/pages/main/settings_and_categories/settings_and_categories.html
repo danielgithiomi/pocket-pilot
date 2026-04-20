@@ -2,9 +2,9 @@
   <div class="page-header">
     <h1 class="page-title">Settings &amp; Categories</h1>
 
-    <atom-button id="add-category" variant="primary" (clicked)="handleOpenForm()">
+    <atom-button (clicked)="handleOpenForm()" id="add-category" variant="primary">
       <div class="w-full flex flex-row items-center justify-between gap-4">
-        <lucide-icon name="create-category" [img]="Plus" [size]="iconSize"></lucide-icon>
+        <lucide-icon [img]="Plus" [size]="iconSize" name="create-category"></lucide-icon>
         <span class="hidden sm:block">Add Category</span>
       </div>
     </atom-button>
