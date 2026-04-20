@@ -19,13 +19,8 @@ export abstract class EntityCache<T> {
     async getOrSetCache<V = T>(id: string, callback: () => Promise<V>, ttl: number = this.TTL): Promise<V> {
         const key = this.key(id);
         const cachedValue = await this.cache.get<V>(key);
-        if (cachedValue) {
-            console.log('Cache hit', key);
-            return cachedValue;
-        }
+        if (cachedValue) return cachedValue;
 
-        // No cache found
-        console.log('Cache miss', key);
         const freshValue = await callback();
         await this.cache.set(key, freshValue, secondsToMilliseconds(ttl));
         return freshValue;
