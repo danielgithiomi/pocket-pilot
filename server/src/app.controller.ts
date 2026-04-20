@@ -14,12 +14,15 @@ export class AppController {
     @ApiResponse({ status: 200, description: 'You have successfully called the Pocket Pilot API!' })
     @ApiOperation({ summary: 'Get API Configuration', description: 'Returns the Pocket Pilot API Configuration.' })
     getRoot() {
-        // const {} = this.config;
-        return 'You have successfully called the Pocket Pilot API!';
+        const { url } = this.config.database;
+        return {
+            url,
+            message: 'You have successfully called the Pocket Pilot API!',
+        };
     }
 
     @Get('redis')
-    @CacheTTL(15)
+    @CacheTTL(0)
     @CacheKey('pp-redis-config')
     @UseInterceptors(CacheInterceptor)
     @Summary('Pocket Pilot Redis', 'Pocket Pilot Redis Configuration')
@@ -29,8 +32,9 @@ export class AppController {
         return {
             port,
             host,
-            defaultTTL,
+            defaultTTL: `${defaultTTL} seconds`,
             connectionString: `redis://${host}:${port}`,
+            message: 'You have successfully called the Pocket Pilot Redis Configuration!',
         };
     }
 }
