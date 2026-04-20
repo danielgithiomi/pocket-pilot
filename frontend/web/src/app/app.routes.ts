@@ -73,7 +73,7 @@ export const routes: Routes = [
         path: WEB_ROUTES.settings,
         loadComponent: () =>
           import('@pages/main/settings_and_categories/settings_and_categories').then(
-            (m) => m.Settings,
+            (m) => m.SettingsAndCategories,
           ),
       },
       {

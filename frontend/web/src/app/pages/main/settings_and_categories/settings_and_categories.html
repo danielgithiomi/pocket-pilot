@@ -12,9 +12,7 @@
 
   <div class="page-container flex-1 flex flex-col md:flex-row gap-6">
     <!-- Settings Section -->
-    <div class="flex-1" id="settings">
-      <h2 class="text-xl lg:text-2xl font-semibold">Settings</h2>
-    </div>
+    <settings class="flex-1"/>
 
     <!-- Categories Section -->
     <categories (onCategoryDelete)="deleteCategory($event)" class="flex-1"/>
