@@ -2,8 +2,39 @@ name: pocket-pilot-server
 services:
   postgres:
     container_name: pocket-pilot-db
+    restart: unless-stopped
     image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     env_file:
       - .env
     ports:
       - '5432:5432'
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    networks:
+      - pocket-pilot-network
+
+  redis:
+    container_name: pocket-pilot-redis
+    restart: unless-stopped
+    image: redis
+    ports:
+      - '6666:6379'
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pocket-pilot-network
+
+networks:
+  pocket-pilot-network:
+    driver: bridge
