@@ -1,3 +1,4 @@
+import { ExposeEnumDto } from '@common/types';
 import { formatEnumForFrontend } from '@libs/utils';
 import { plainToInstance } from 'class-transformer';
 import { Account, AccountType, Prisma } from '@prisma/client';
@@ -12,7 +13,6 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from '@nestjs/common';
-import { ExposeEnumDto } from '@common/types';
 
 @Injectable()
 export class AccountService {
