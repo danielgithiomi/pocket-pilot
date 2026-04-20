@@ -4,7 +4,7 @@ import { Account, AccountType, Prisma } from '@prisma/client';
 import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
 import { AccountRepository } from '../repositories/account.repository';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { AccountTypeDto, AccountWithHolder, AccountWithTransactionsDto, CreateAccountDto } from '../dto/account.dto';
+import { AccountWithHolder, AccountWithTransactionsDto, CreateAccountDto } from '../dto/account.dto';
 import {
     ConflictException,
     ForbiddenException,
@@ -12,6 +12,7 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from '@nestjs/common';
+import { ExposeEnumDto } from '@common/types';
 
 @Injectable()
 export class AccountService {
@@ -21,8 +22,12 @@ export class AccountService {
         private readonly transactionRepository: TransactionRepository,
     ) {}
 
-    async getAccountTypes(): Promise<AccountTypeDto[]> {
-        return Promise.resolve(Object.values(AccountType).map(formatEnumForFrontend));
+    async getAccountTypes(): Promise<ExposeEnumDto[]> {
+        return this.cache.getOrSetCache<ExposeEnumDto[]>(
+            'types',
+            () => Promise.resolve(Object.values(AccountType).map(formatEnumForFrontend)),
+            0,
+        );
     }
 
     async getAllAccounts(): Promise<AccountWithHolder[]> {

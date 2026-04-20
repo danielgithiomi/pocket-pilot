@@ -1,5 +1,12 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { plainToInstance } from 'class-transformer';
+import { VoidResourceResponse } from '@common/types';
+import { denormalizeCategoryName } from '@libs/utils';
+import { type User } from '@modules/identity/dto/user.dto';
+import { Summary, UserInRequest } from '@common/decorators';
+import { AccountService } from '../services/account.service';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     Account,
     AccountsResponseDto,
@@ -10,13 +17,6 @@ import {
     CreateAccountDto,
     UserAccountsResponseDto,
 } from '../dto/account.dto';
-import { VoidResourceResponse } from '@common/types';
-import { denormalizeCategoryName } from '@libs/utils';
-import { type User } from '@modules/identity/dto/user.dto';
-import { Summary, UserInRequest } from '@common/decorators';
-import { AccountService } from '../services/account.service';
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Accounts')
 @Controller('accounts')
