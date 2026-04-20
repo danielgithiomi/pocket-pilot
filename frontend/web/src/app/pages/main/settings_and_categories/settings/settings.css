@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+#settings {
+
+  .settings-card {
+    @apply flex-1 flex flex-col bg-(--alternate-background) rounded-lg p-6;
+  }
+}
