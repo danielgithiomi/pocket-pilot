@@ -53,5 +53,5 @@
       "prettier --write"
     ]
   },
-  "packageManager": "npm@11.6.3"
+  "packageManager": "npm@11.12.1"
 }

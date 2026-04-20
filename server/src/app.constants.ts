@@ -1,4 +1,4 @@
-import { AppModules } from './modules/modules.module';
+import { AppModules } from '@modules/modules.module';
 import { GlobalExceptionFilter } from '@common/exceptions';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { GlobalResponseInterceptor } from '@common/interceptors';

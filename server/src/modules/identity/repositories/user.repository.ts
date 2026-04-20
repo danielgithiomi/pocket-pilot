@@ -14,11 +14,11 @@ export class UserRepository {
             lastLoginAt: now,
             password: hashedPassword,
         };
-        return await this.db.user.create({ data: newUser });
+        return this.db.user.create({ data: newUser });
     }
 
     async getAllUsers(): Promise<FullUser[]> {
-        return await this.db.user.findMany({});
+        return this.db.user.findMany({});
     }
 
     async findUserById(userId: string) {
