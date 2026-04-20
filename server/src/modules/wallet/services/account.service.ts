@@ -1,22 +1,24 @@
 import { formatEnumForFrontend } from '@libs/utils';
 import { plainToInstance } from 'class-transformer';
-import { Account, Prisma, AccountType } from '@prisma/client';
+import { Account, AccountType, Prisma } from '@prisma/client';
 import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { CreateAccountDto, AccountWithHolder, AccountWithTransactionsDto, AccountTypeDto } from '../dto/account.dto';
+import { AccountTypeDto, AccountWithHolder, AccountWithTransactionsDto, CreateAccountDto } from '../dto/account.dto';
 import {
-    Injectable,
     ConflictException,
-    NotFoundException,
     ForbiddenException,
+    Injectable,
     InternalServerErrorException,
+    NotFoundException,
 } from '@nestjs/common';
+import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
 
 @Injectable()
 export class AccountService {
     constructor(
         private readonly db: DatabaseService,
+        private readonly cache: AccountsCache,
         private readonly accountRepository: AccountRepository,
         private readonly transactionRepository: TransactionRepository,
     ) {}
@@ -32,7 +34,9 @@ export class AccountService {
     }
 
     async getUserAccounts(holderId: string): Promise<Account[]> {
-        return this.db.account.findMany({ where: { holderId } });
+        const cb = () => this.db.account.findMany({ where: { holderId } });
+        return this.cache.getOrSetCache(holderId, cb);
+        // return this.db.account.findMany({ where: { holderId } });
     }
 
     async getAccountById(userId: string, accountId: string): Promise<Account> {

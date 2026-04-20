@@ -3,6 +3,7 @@ import { CookiesAuthGuard } from '@common/guards';
 import { AccountService } from './services/account.service';
 import { CategoriesService } from './services/categories.service';
 import { TransactionService } from './services/transaction.service';
+import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
 import { AccountController } from './controllers/account.controller';
 import { UserService } from '@modules/identity/services/user.service';
 import { AccountRepository } from './repositories/account.repository';
@@ -18,6 +19,7 @@ import { UserRepository } from '@modules/identity/repositories/user.repository';
     controllers: [AccountController, TransactionController, CategoriesController],
     providers: [
         UserService,
+        AccountsCache,
         CookiesService,
         UserRepository,
         AccountService,
