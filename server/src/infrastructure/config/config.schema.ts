@@ -13,7 +13,7 @@ export const PPConfigSchema = z.object({
     // Redis
     REDIS_HOST: z.string().default('localhost'),
     REDIS_PORT: z.coerce.number().default(6379),
-    REDIS_DEFAULT_TTL_SECONDS: z.number().default(15), // 15 seconds
+    REDIS_DEFAULT_TTL_SECONDS: z.coerce.number().int().positive().default(15), // 15 seconds
 });
 
 export type PPCustomConfig = z.infer<typeof PPConfigSchema>;

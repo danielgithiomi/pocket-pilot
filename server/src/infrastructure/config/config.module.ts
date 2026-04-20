@@ -1,10 +1,11 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PPConfigSchema } from './config.schema';
 import { PPConfigService } from './config.service';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 
-@Global()
 @Module({
+    exports: [PPConfigService],
+    providers: [PPConfigService],
     imports: [
         NestConfigModule.forRoot({
             isGlobal: true,
@@ -24,7 +25,5 @@ import { ConfigModule as NestConfigModule } from '@nestjs/config';
             },
         }),
     ],
-    exports: [PPConfigService],
-    providers: [PPConfigService],
 })
 export class PPConfigModule {}
