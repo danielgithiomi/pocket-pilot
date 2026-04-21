@@ -13,10 +13,10 @@ import { PreferencesService } from '@api/preferences.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { IVoidResourceResponse, UpdateUserPreferencesPayload } from '@global/types';
 import {
-  ThemeVariant,
-  SettingsFormSchema,
   ApplicationThemeOptions,
+  SettingsFormSchema,
   SettingsFormValidationSchema,
+  ThemeVariant,
 } from './settings.types';
 
 @Component({
@@ -44,6 +44,9 @@ export class Settings {
   private readonly monthlySpendingLimit = this.accountService.getMonthlySpendingLimit();
 
   // COMPUTED
+  protected readonly monthlySpendingLimitLabel = computed<string>(() => {
+    return `Monthly Spending Limit (${this.defaultCurrency})`;
+  });
   protected readonly applicationThemes = computed<RadioOption[]>(() =>
     ApplicationThemeOptions.map((theme) => {
       let label: string;

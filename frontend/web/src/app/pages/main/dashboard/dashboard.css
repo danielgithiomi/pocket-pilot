@@ -13,7 +13,7 @@
     @apply flex-1 flex flex-row items-center gap-1 md:gap-2;
 
     span {
-      @apply size-2 rounded-full;
+      @apply size-2.5 rounded-full;
     }
 
     p {
