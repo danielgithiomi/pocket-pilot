@@ -105,7 +105,7 @@ export class Settings {
             details: response.details,
           });
 
-          this.resetSettingsForm();
+          window.location.reload();
         },
         complete: () => this.isSubmittingSettingsForm.set(false),
       });
