@@ -1,9 +1,11 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { ApplicationTheme } from '@prisma/client';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class UpdatePreferencesPayload {
     @IsString()
     @IsNotEmpty()
-    applicationTheme!: string;
+    @IsEnum(ApplicationTheme)
+    preferredTheme!: ApplicationTheme;
 
     @IsString()
     @IsNotEmpty()

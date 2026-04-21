@@ -3,8 +3,8 @@ import { OnboardingPayload } from '../dto/onboarding.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { OnboardingService } from '../services/onboarding.service';
 import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
-import { UserResponseDto as User, UserWithPreferencesDto } from '../dto/user.dto';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { UserResponseDto as User, UserWithPreferencesDto } from '@modules/identity/dto/user.dto';
 
 @Controller('onboarding')
 export class OnboardingController {

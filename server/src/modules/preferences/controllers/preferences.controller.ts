@@ -1,11 +1,12 @@
-import { Summary } from '@common/decorators';
-import { ExposeEnumDto } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
+import { Summary, UserInRequest } from '@common/decorators';
 import { UpdatePreferencesPayload } from '../dto/preferences.dto';
+import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { PreferencesService } from '../services/preferences.service';
 import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
-import { Body, Controller, Get, HttpCode, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { UserWithPreferencesDto as User } from '@modules/identity/dto/user.dto';
+import { Body, Controller, Get, HttpCode, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 
 @Controller('preferences')
 export class PreferencesController {
@@ -31,7 +32,7 @@ export class PreferencesController {
         return this.preferencesService.getApplicationThemes();
     }
 
-    @Post()
+    @Put()
     @HttpCode(200)
     @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
@@ -44,7 +45,15 @@ export class PreferencesController {
         status: 200,
         description: 'Application preferences updated successfully.',
     })
-    updateApplicationPreferences(@Body() payload: UpdatePreferencesPayload) {
-        return this.preferencesService.updateApplicationPreferences(payload);
+    async updateUserPreferences(
+        @UserInRequest() user: User,
+        @Body() payload: UpdatePreferencesPayload,
+    ): Promise<VoidResourceResponse> {
+        await this.preferencesService.updateUserPreferences(user.id, payload);
+
+        return {
+            message: 'Preferences updated successfully!',
+            details: 'Your user preferences have been updated successfully.',
+        } satisfies VoidResourceResponse;
     }
 }

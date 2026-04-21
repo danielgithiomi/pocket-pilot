@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { UserWithPreferencesDto } from '../dto/user.dto';
 import { OnboardingPayload } from '../dto/onboarding.dto';
+import { UserWithPreferencesDto } from '../../identity/dto/user.dto';
 import { OnboardingRepository } from '../repositories/onboarding.repository';
 
 @Injectable()
