@@ -2,9 +2,9 @@ import { CookiesAuthGuard } from '@common/guards';
 import { OnboardingPayload } from '../dto/onboarding.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { OnboardingService } from '../services/onboarding.service';
-import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { UserResponseDto as User, UserWithPreferencesDto } from '../dto/user.dto';
+import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('onboarding')
 export class OnboardingController {
