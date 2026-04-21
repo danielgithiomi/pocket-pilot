@@ -5,13 +5,17 @@ import { BillDTO, CreateBillPayload } from '../dto/bills.dto';
 import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
+import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 
 @Controller('bills')
 export class BillsController {
     constructor(private readonly billsService: BillsService) {}
 
     @Get('types')
+    @CacheTTL(0)
+    @CacheKey('bill:types')
+    @UseInterceptors(CacheInterceptor)
     @HttpCode(200)
     @ApiCookieAuth('access_token')
     @ApiOperation({ summary: 'Get all bill types' })

@@ -22,14 +22,6 @@ export class CreateAccountDto {
 }
 
 // OUTPUT
-export class AccountTypeDto {
-    @ApiProperty({ example: 'CURRENT', description: 'The value of the account type' })
-    value!: string;
-
-    @ApiProperty({ example: 'Current', description: 'The label of the account type' })
-    label!: string;
-}
-
 @Exclude()
 export class Account {
     @Expose()

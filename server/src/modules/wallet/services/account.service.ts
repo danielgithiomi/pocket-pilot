@@ -7,11 +7,11 @@ import { AccountRepository } from '../repositories/account.repository';
 import { TransactionRepository } from '../repositories/transaction.respository';
 import { AccountWithHolder, AccountWithTransactionsDto, CreateAccountDto } from '../dto/account.dto';
 import {
+    Injectable,
     ConflictException,
     ForbiddenException,
-    Injectable,
-    InternalServerErrorException,
     NotFoundException,
+    InternalServerErrorException,
 } from '@nestjs/common';
 
 @Injectable()
@@ -23,11 +23,7 @@ export class AccountService {
     ) {}
 
     async getAccountTypes(): Promise<ExposeEnumDto[]> {
-        return this.cache.getOrSetCache<ExposeEnumDto[]>(
-            'types',
-            () => Promise.resolve(Object.values(AccountType).map(formatEnumForFrontend)),
-            0,
-        );
+        return Promise.resolve(Object.values(AccountType).map(formatEnumForFrontend));
     }
 
     async getAllAccounts(): Promise<AccountWithHolder[]> {

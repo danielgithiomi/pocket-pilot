@@ -4,7 +4,8 @@ import { CookiesAuthGuard } from '@common/guards';
 import { UpdatePreferencesPayload } from '../dto/preferences.dto';
 import { PreferencesService } from '../services/preferences.service';
 import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { Body, Controller, Get, HttpCode, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 
 @Controller('preferences')
 export class PreferencesController {
@@ -12,6 +13,9 @@ export class PreferencesController {
 
     @Get('themes')
     @HttpCode(200)
+    @CacheTTL(0)
+    @CacheKey('theme:options')
+    @UseInterceptors(CacheInterceptor)
     @Summary('Get application themes.', 'Get the application theme options.')
     @ApiOperation({
         summary: 'Get application themes',
