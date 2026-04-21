@@ -5,17 +5,22 @@
     <atom-button (clicked)="handleOpenForm()" id="add-category" variant="primary">
       <div class="w-full flex flex-row items-center justify-between gap-4">
         <lucide-icon [img]="Plus" [size]="iconSize" name="create-category"></lucide-icon>
-        <span class="hidden sm:block">Add Category</span>
+        <span class="hidden md:block">Add A Category</span>
       </div>
     </atom-button>
   </div>
 
-  <div class="page-container flex-1 flex flex-col md:flex-row gap-6">
-    <!-- Settings Section -->
+  <div
+    [ngClass]="{ 'md:flex-col! lg:flex-row! md:gap-8!': !drawerService.isDrawerCollapsed() }"
+    class="page-container flex-1 flex flex-col md:flex-row gap-8 md:gap-6"
+  >
     <settings class="flex-1"/>
 
-    <!-- Categories Section -->
-    <categories (onCategoryDelete)="deleteCategory($event)" class="flex-1"/>
+    <categories
+      (onAddCategoryClick)="handleOpenForm()"
+      (onCategoryDelete)="deleteCategory($event)"
+      class="flex-1"
+    />
   </div>
 </section>
 

@@ -2,6 +2,7 @@ import { NgClass } from '@angular/common';
 import { CategoryTypeEnum } from '@global/enums';
 import { denormalizeCategoryName } from '@libs/utils';
 import { LucideAngularModule, X } from 'lucide-angular';
+import { DrawerService } from '@infrastructure/services';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, output } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
@@ -15,18 +16,23 @@ import { CategoryLength, FormattedCategories } from '../settings_and_categories.
   imports: [FetchError, NoData, NgClass, LucideAngularModule],
 })
 export class Categories {
-  // Outputs
+  // OUTPUTS
   onCategoryDelete = output<{ category: string; type: CategoryTypeEnum }>();
-  // Icons
+
+  // ICONS
   protected readonly X = X;
   protected readonly animationDimension: string = '150px';
-  // Data
+
+  // DATA
   protected readonly categoryLength = CategoryLength;
   protected readonly CategoryTypeEnum = CategoryTypeEnum;
-  // Services
+
+  // SERVICES
+  protected readonly drawerService = inject(DrawerService);
   private readonly categoriesService = inject(CategoriesService);
   protected readonly categories$ = this.categoriesService.getUserCategories();
-  // Computed
+
+  // COMPUTED
   protected readonly isFetchingCategories = computed(() => this.categories$.isLoading());
   protected readonly formattedCategories = computed<FormattedCategories>(() => {
     const response = this.categories$;
@@ -37,7 +43,7 @@ export class Categories {
     };
   });
 
-  // Helper Functions
+  // HELPER FUNCTIONS
   private denormalizeCategoryNames(categoryNames: string[]): string[] {
     return categoryNames.map((name) => denormalizeCategoryName(name));
   }

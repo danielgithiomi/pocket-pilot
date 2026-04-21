@@ -1,8 +1,10 @@
 import { Button } from '@atoms/button';
+import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { Settings } from './settings/settings';
 import { Categories } from './categories/categories';
 import { normalizeCategoryName } from '@global/utils';
+import { DrawerService } from '@infrastructure/services';
 import { Component, inject, signal } from '@angular/core';
 import { CategoriesService } from '@api/categories.service';
 import { CategoryVariant, IVoidResourceResponse } from '@global/types';
@@ -13,27 +15,24 @@ import { CategoriesForm } from './categories/categories-form/categories-form';
   selector: 'settings_and_categories',
   styleUrl: './settings_and_categories.css',
   templateUrl: './settings_and_categories.html',
-  imports: [Button, LucideAngularModule, Settings, Categories, CategoriesForm],
+  imports: [LucideAngularModule, Settings, Button, Categories, CategoriesForm, NgClass],
 })
 export class SettingsAndCategories {
-  // Icons
+  // ICONS
   protected readonly X = X;
   protected readonly iconSize: number = 18;
   protected readonly Plus = ListFilterPlus;
-  protected readonly animationDimension: string = '150px';
 
-  // States
-  protected isSubmitting = signal<boolean>(false);
+  // STATES
   protected isCategoriesFormOpen = signal<boolean>(false);
-
-  // Services
-  private readonly toastService = inject(ToastService);
-  private readonly categoriesService = inject(CategoriesService);
-
-  // Data
+  protected readonly drawerService = inject(DrawerService);
+  // DATA
   protected categories$ = this.categoriesService.getUserCategories();
+  private readonly categoriesService = inject(CategoriesService);
+  // SERVICES
+  private readonly toastService = inject(ToastService);
 
-  // Methods
+  // METHODS
   protected handleOpenForm() {
     this.isCategoriesFormOpen.set(true);
   }

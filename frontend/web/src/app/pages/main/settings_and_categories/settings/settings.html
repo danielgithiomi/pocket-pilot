@@ -6,25 +6,72 @@
 
   <div class="settings-card">
     <div class="settings-form">
-      <settings-form [isSubmittingForm]="isSubmittingSettingsForm()"/>
+      <form (submit)="submitSettingsForm($event)" class="px-4 flex flex-col" id="settings-form">
+        <atom-input
+          (clearOutput)="settingsForm.monthlySpendingLimit().controlValue.set(null)"
+          [formField]="settingsForm.monthlySpendingLimit"
+          [invertedIcon]="true"
+          [numberStep]="0.01"
+          autocomplete="off"
+          id="settings-monthly-spending-limit"
+          inputClassName="bg-inverted-background text-inverted-text"
+          label="Monthly Spending Limit"
+          placeholder="Eg: 50000"
+          type="number"
+        />
+
+        <atom-select
+          [formField]="settingsForm.preferredLanguage"
+          [invertedIcon]="true"
+          [options]="languages"
+          id="settings-preferred-language"
+          label="Preferred Language"
+          placeholder="Select a language"
+          selectClassName="bg-inverted-background text-inverted-text"
+        />
+
+        <atom-select
+          [formField]="settingsForm.defaultCurrency"
+          [invertedIcon]="true"
+          [options]="currencies"
+          id="settings-default-currency"
+          label="Default Currency"
+          placeholder="Select a currency"
+          selectClassName="bg-inverted-background text-inverted-text"
+        />
+
+        <atom-radio
+          (selectionChange)="onThemeChange($event)"
+          [formField]="settingsForm.preferredTheme"
+          [options]="applicationThemes()"
+          [required]="true"
+          [selectedValue]="settingsForm.preferredTheme().controlValue()"
+          id="target-completion-strategy"
+          label="Goal Achievement Strategy"
+          layout="horizontal"
+        />
+      </form>
     </div>
 
     <div class="settings-form-buttons">
       <atom-button
+        (click)="resetSettingsForm()"
         [disabled]="isSubmittingSettingsForm()"
-        form="settings-form"
         id="reset-settings"
+        variant="secondary"
+        form="settings-form"
         label="Reset Form"
         type="button"
-        variant="secondary"
       />
+
       <atom-button
+        type="submit"
+        variant="primary"
+        (click)="isSubmittingSettingsForm.set(true)"
         [disabled]="isSubmittingSettingsForm()"
         form="settings-form"
         id="save-settings"
-        label="Save Settings"
-        type="submit"
-        variant="primary"
+        label="Update My Settings"
       />
     </div>
   </div>
