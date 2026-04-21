@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Button } from '@atoms/button';
+import { Component, signal } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { SettingsForm } from './settings-form/settings-form';
-import { Button } from '@atoms/button';
 
 @Component({
   selector: 'settings',
@@ -9,4 +9,7 @@ import { Button } from '@atoms/button';
   templateUrl: './settings.html',
   imports: [LucideAngularModule, SettingsForm, Button],
 })
-export class Settings {}
+export class Settings {
+  // SIGNALS
+  protected readonly isSubmittingSettingsForm = signal<boolean>(false);
+}

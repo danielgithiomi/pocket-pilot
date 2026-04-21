@@ -2,7 +2,6 @@ import { catchError, EMPTY } from 'rxjs';
 import { AuthService } from './auth.service';
 import { AccountsResource } from '@methods/resources';
 import { AccountsMutation } from '@methods/mutations';
-import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { ToastService } from '@components/ui/atoms/toast';
 import { computed, inject, Injectable } from '@angular/core';
 import { CreateAccountRequest, IStandardError, User } from '@global/types';
@@ -18,7 +17,7 @@ export class AccountsService {
 
   private readonly storedUser = computed<User>(() => this.authService.user()!);
 
-  getMaximumSpendingLimit() {
+  getMonthlySpendingLimit() {
     return this.storedUser().userPreferences.monthlySpendingLimit;
   }
 

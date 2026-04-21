@@ -1,5 +1,5 @@
-import { Input } from "@atoms/input";
-import { Button } from "@atoms/button";
+import { Input } from '@atoms/input';
+import { Button } from '@atoms/button';
 import { Form } from '@organisms/form';
 import { formatCurrency } from '@libs/utils';
 import { form } from '@angular/forms/signals';
@@ -13,21 +13,30 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
 import { TransactionLimitSchema, TransactionLimitValidationSchema } from './dashboard.types';
 import {
-  Wallet,
-  HandCoins,
-  PiggyBank,
-  TrendingUp,
-  TrendingDown,
   ArrowLeftRight,
   BrickWallShield,
+  HandCoins,
   LucideAngularModule,
+  PiggyBank,
+  TrendingDown,
+  TrendingUp,
+  Wallet,
 } from 'lucide-angular';
 
 @Component({
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
-  imports: [RatioSlider, ProgressBar, CostAnalysis, DashboardCard, LucideAngularModule, Form, Input, Button],
+  imports: [
+    RatioSlider,
+    ProgressBar,
+    CostAnalysis,
+    DashboardCard,
+    LucideAngularModule,
+    Form,
+    Input,
+    Button,
+  ],
 })
 export class Dashboard {
   // Icons
@@ -47,12 +56,12 @@ export class Dashboard {
   protected readonly accounts = this.accountsService.getUserAccounts();
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();
-  protected readonly spendingLimit = this.accountsService.getMaximumSpendingLimit();
+  protected readonly spendingLimit = this.accountsService.getMonthlySpendingLimit();
 
   // Signals
   protected readonly isSubmittingEditLimitForm = signal<boolean>(false);
   protected readonly isEditSpendingLimitFormOpen = signal<boolean>(false);
-  protected readonly maximumSpendingLimit = this.accountsService.getMaximumSpendingLimit();
+  protected readonly maximumSpendingLimit = this.accountsService.getMonthlySpendingLimit();
 
   // States
   protected readonly isDataLoading = computed(

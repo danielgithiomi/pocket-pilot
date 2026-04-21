@@ -7,12 +7,12 @@
 
   <div class="settings-card">
     <div class="settings-form">
-      <settings-form/>
+      <settings-form [isSubmittingForm]="isSubmittingSettingsForm()"/>
     </div>
 
     <div class="settings-form-buttons">
-      <atom-button id="reset-settings" label="Reset Form" variant="secondary"/>
-      <atom-button id="save-settings" label="Save Settings" variant="primary"/>
+      <atom-button [disabled]="isSubmittingSettingsForm()" id="reset-settings" label="Reset Form" variant="secondary"/>
+      <atom-button [disabled]="isSubmittingSettingsForm()" id="save-settings" label="Save Settings" variant="primary"/>
     </div>
 
   </div>
