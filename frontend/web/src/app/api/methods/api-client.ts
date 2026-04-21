@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IStandardResponse } from '@global/types';
+import { IGlobalResponse } from '@global/types';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -18,23 +18,23 @@ export class ApiClient {
     });
   }
 
-  post<T, B>(endpoint: string, body: B): Observable<IStandardResponse<T>> {
+  post<T, B>(endpoint: string, body: B): Observable<IGlobalResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.post<IStandardResponse<T>>(url, body);
+    return this.http.post<IGlobalResponse<T>>(url, body);
   }
 
-  put<T, B>(endpoint: string, body: B): Observable<IStandardResponse<T>> {
+  put<T, B>(endpoint: string, body: B): Observable<IGlobalResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.put<IStandardResponse<T>>(url, body);
+    return this.http.put<IGlobalResponse<T>>(url, body);
   }
 
-  delete<T>(endpoint: string): Observable<IStandardResponse<T>> {
+  delete<T>(endpoint: string): Observable<IGlobalResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.delete<IStandardResponse<T>>(url);
+    return this.http.delete<IGlobalResponse<T>>(url);
   }
 
-  deleteWithBody<T, B>(endpoint: string, body: B): Observable<IStandardResponse<T>> {
+  deleteWithBody<T, B>(endpoint: string, body: B): Observable<IGlobalResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.delete<IStandardResponse<T>>(url, { body });
+    return this.http.delete<IGlobalResponse<T>>(url, { body });
   }
 }

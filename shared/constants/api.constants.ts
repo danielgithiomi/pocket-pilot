@@ -11,6 +11,9 @@ export const API_ENDPOINTS = {
   // users
   register: "users",
 
+  // preferences
+  preferences: "preferences",
+
   // auth
   me: "auth/me",
   login: "auth/login",

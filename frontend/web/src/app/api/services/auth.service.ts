@@ -7,7 +7,7 @@ import { concatUrl } from '@methods/methods.utils';
 import { catchError, EMPTY, firstValueFrom, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { STORED_AUTH_USER_KEY, STORED_ONBOARDING_USER_KEY } from '@libs/constants';
-import { User, LoginPayload, IStandardError, IStandardResponse } from '@global/types';
+import { User, LoginPayload, IStandardError, IGlobalResponse } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -57,12 +57,12 @@ export class AuthService {
 
     try {
       const response = await firstValueFrom(
-        this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
+        this.http.get<IGlobalResponse<User>>(concatUrl('auth/me'), {
           credentials: 'include',
         }),
       );
 
-      const { data: user } = response;
+      const { body: user } = response;
       this.createSession(user);
     } catch (error) {
       this.clearSession();
@@ -82,12 +82,12 @@ export class AuthService {
     this.sessionRequest = (async () => {
       try {
         const response = await firstValueFrom(
-          this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
+          this.http.get<IGlobalResponse<User>>(concatUrl('auth/me'), {
             credentials: 'include',
           }),
         );
 
-        const { data: user } = response;
+        const { body: user } = response;
         this.createSession(user);
         return true;
       } catch {
@@ -104,8 +104,7 @@ export class AuthService {
   }
 
   async isUserOnboarded(): Promise<boolean> {
-    if (this.userSignal())
-      return this.userSignal()!.isOnboarded;
+    if (this.userSignal()) return this.userSignal()!.isOnboarded;
 
     const isAuthenticated = await this.checkSession();
     if (!isAuthenticated) return false;
@@ -115,8 +114,8 @@ export class AuthService {
 
   login(request: LoginPayload) {
     return this.mutation.login(request).pipe(
-      tap((response: IStandardResponse<User>) => {
-        this.createSession(response.data);
+      tap((response: IGlobalResponse<User>) => {
+        this.createSession(response.body);
       }),
       catchError((error: IStandardError) => {
         this.renderToast(error);

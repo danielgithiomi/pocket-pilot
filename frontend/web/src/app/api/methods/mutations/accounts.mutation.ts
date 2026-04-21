@@ -4,7 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
 import {
   Account,
-  IStandardResponse,
+  IGlobalResponse,
   CreateAccountRequest,
   IVoidResourceResponse,
 } from '@global/types';
@@ -15,11 +15,11 @@ import {
 export class AccountsMutation {
   private readonly client = inject(ApiClient);
 
-  createAccount(payload: CreateAccountRequest): Observable<IStandardResponse<Account>> {
+  createAccount(payload: CreateAccountRequest): Observable<IGlobalResponse<Account>> {
     return this.client.post<Account, CreateAccountRequest>(endpoints.accounts, payload);
   }
 
-  deleteAccountById(accountId: string): Observable<IStandardResponse<IVoidResourceResponse>> {
+  deleteAccountById(accountId: string): Observable<IGlobalResponse<IVoidResourceResponse>> {
     return this.client.delete<IVoidResourceResponse>(`${endpoints.accounts}/${accountId}`);
   }
 }

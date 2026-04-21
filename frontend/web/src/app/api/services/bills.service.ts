@@ -6,7 +6,7 @@ import { catchError, EMPTY, map, Observable } from 'rxjs';
 import {
   Bill,
   IStandardError,
-  IStandardResponse,
+  IGlobalResponse,
   CreateBillPayload,
   IVoidResourceResponse,
 } from '@global/types';
@@ -25,7 +25,7 @@ export class BillsService {
 
   createNewBill = (payload: CreateBillPayload): Observable<Bill> => {
     return this.mutation.createNewUserBill(payload).pipe(
-      map((response: IStandardResponse<Bill>) => response.data),
+      map((response: IGlobalResponse<Bill>) => response.body),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;
@@ -35,7 +35,7 @@ export class BillsService {
 
   deleteBillById = (billId: string): Observable<IVoidResourceResponse> => {
     return this.mutation.deleteUserBillById(billId).pipe(
-      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
+      map((response: IGlobalResponse<IVoidResourceResponse>) => response.body),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

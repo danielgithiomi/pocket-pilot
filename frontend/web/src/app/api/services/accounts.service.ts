@@ -1,10 +1,16 @@
-import { catchError, EMPTY } from 'rxjs';
 import { AuthService } from './auth.service';
+import { catchError, EMPTY, map } from 'rxjs';
 import { AccountsResource } from '@methods/resources';
 import { AccountsMutation } from '@methods/mutations';
 import { ToastService } from '@components/ui/atoms/toast';
 import { computed, inject, Injectable } from '@angular/core';
-import { CreateAccountRequest, IStandardError, User } from '@global/types';
+import {
+  User,
+  IStandardError,
+  IGlobalResponse,
+  CreateAccountRequest,
+  IVoidResourceResponse,
+} from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +50,7 @@ export class AccountsService {
 
   deleteAccountById(accountId: string) {
     return this.accountsMutation.deleteAccountById(accountId).pipe(
+      map((response: IGlobalResponse<IVoidResourceResponse>) => response.body),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

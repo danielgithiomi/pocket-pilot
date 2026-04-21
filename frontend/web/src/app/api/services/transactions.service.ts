@@ -3,7 +3,12 @@ import { inject, Injectable } from '@angular/core';
 import { TransactionsResource } from '@methods/resources';
 import { ToastService } from '@components/ui/atoms/toast';
 import { TransactionsMutation } from '@methods/mutations';
-import { CreateTransactionRequest, IStandardError, IStandardResponse, IVoidResourceResponse } from '@global/types';
+import {
+  IStandardError,
+  IGlobalResponse,
+  IVoidResourceResponse,
+  CreateTransactionRequest,
+} from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +41,7 @@ export class TransactionsService {
 
   deleteTransaction(accountId: string, transactionId: string) {
     return this.transactionsMutation.deleteTransaction(accountId, transactionId).pipe(
-      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
+      map((response: IGlobalResponse<IVoidResourceResponse>) => response.body),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

@@ -3,14 +3,14 @@ import { ImageDimensions } from '@libs/types';
 import { NgOptimizedImage } from '@angular/common';
 import { AccountsService } from '@api/accounts.service';
 import { ToastService } from '@components/ui/atoms/toast';
+import { AccountType, IVoidResourceResponse } from '@global/types';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { AccountType, IVoidResourceResponse, IStandardResponse } from '@global/types';
 import {
   Nfc,
   Trash,
   EllipsisVertical,
-  LucideAngularModule,
   FingerprintPattern,
+  LucideAngularModule,
 } from 'lucide-angular';
 
 @Component({
@@ -65,11 +65,11 @@ export class Account {
     this.isDeleting.set(true);
 
     this.accountsService.deleteAccountById(this.id()).subscribe({
-      next: (response: IStandardResponse<IVoidResourceResponse>) => {
+      next: (response: IVoidResourceResponse) => {
         this.toastService.show({
           variant: 'success',
           title: 'Account deleted successfully',
-          details: response.data.details,
+          details: response.details,
         });
       },
       complete: () => {
