@@ -1,5 +1,4 @@
 <section class="flex-1 flex flex-col gap-4 h-full" id="settings">
-
   <div class="flex flex-col gap-2">
     <h2 class="text-xl lg:text-2xl font-semibold">Your Settings</h2>
     <p>Customize your user experience</p>
@@ -11,9 +10,22 @@
     </div>
 
     <div class="settings-form-buttons">
-      <atom-button [disabled]="isSubmittingSettingsForm()" id="reset-settings" label="Reset Form" variant="secondary"/>
-      <atom-button [disabled]="isSubmittingSettingsForm()" id="save-settings" label="Save Settings" variant="primary"/>
+      <atom-button
+        [disabled]="isSubmittingSettingsForm()"
+        form="settings-form"
+        id="reset-settings"
+        label="Reset Form"
+        type="button"
+        variant="secondary"
+      />
+      <atom-button
+        [disabled]="isSubmittingSettingsForm()"
+        form="settings-form"
+        id="save-settings"
+        label="Save Settings"
+        type="submit"
+        variant="primary"
+      />
     </div>
-
   </div>
 </section>

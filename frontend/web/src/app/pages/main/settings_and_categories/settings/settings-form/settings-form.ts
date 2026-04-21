@@ -1,3 +1,6 @@
+import { Input } from '@atoms/input';
+import { Select } from '@atoms/select';
+import { LANGUAGES } from '@global/constants';
 import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
 import { AccountsService } from '@api/accounts.service';
@@ -8,7 +11,7 @@ import { SettingsFormSchema, SettingsFormValidationSchema } from './settings-for
   selector: 'settings-form',
   // styleUrl: './settings-form.css',
   templateUrl: './settings-form.html',
-  imports: [],
+  imports: [Input, Select],
 })
 export class SettingsForm {
   // INPUTS
@@ -19,6 +22,7 @@ export class SettingsForm {
   private readonly accountService = inject(AccountsService);
 
   // DATA
+  protected readonly languages = LANGUAGES;
   private readonly user = this.authService.user;
   private readonly defaultCurrency = this.accountService.getDefaultCurrency();
   private readonly monthlySpendingLimit = this.accountService.getMonthlySpendingLimit();

@@ -1,5 +1,26 @@
 <div class="overflow-y-scroll no-scrollbar" id="settings-form-component">
-  <form (submit)="submitSettingsForm($event)" id="update-settings-form">
+  <form (submit)="submitSettingsForm($event)" class="px-4 flex flex-col" id="settings-form">
+    <atom-input
+      (clearOutput)="settingsForm.monthlySpendingLimit().controlValue.set(null)"
+      [formField]="settingsForm.monthlySpendingLimit"
+      [invertedIcon]="true"
+      [numberStep]="0.01"
+      autocomplete="off"
+      id="monthly-spending-limit"
+      inputClassName="bg-inverted-background text-inverted-text"
+      label="Monthly Spending Limit"
+      placeholder="Eg: 50000"
+      type="number"
+    />
 
+    <atom-select
+      [formField]="settingsForm.preferredLanguage"
+      [invertedIcon]="true"
+      [options]="languages"
+      id="preferred-language"
+      label="Preferred Language"
+      placeholder="Select a language"
+      selectClassName="bg-inverted-background text-inverted-text"
+    />
   </form>
 </div>
