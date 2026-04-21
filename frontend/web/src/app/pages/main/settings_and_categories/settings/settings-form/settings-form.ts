@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
   selector: 'settings-form',
   // styleUrl: './settings-form.css',
   templateUrl: './settings-form.html',
+  imports: [],
 })
 export class SettingsForm {}
