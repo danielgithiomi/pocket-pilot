@@ -5,8 +5,8 @@ import { LucideAngularModule, X } from 'lucide-angular';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, output } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
-import { CategoryLength, FormattedCategories } from '../settings_and_categories.types';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
+import { CategoryLength, FormattedCategories } from '../settings_and_categories.types';
 
 @Component({
   selector: 'categories',
