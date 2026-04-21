@@ -18,10 +18,6 @@ export interface RatioSliderColors {
   trackStartColor: string;
   /** End color of the track/expenses gradient (default: magenta) */
   trackEndColor: string;
-  /** Card background gradient start (default: dark purple) */
-  cardGradientStart: string;
-  /** Card background gradient end (default: darker purple) */
-  cardGradientEnd: string;
   /** Text color (default: white) */
   textColor: string;
   /** Secondary text color for labels (default: light gray) */
@@ -34,14 +30,10 @@ export interface LegendItem {
 }
 
 const DEFAULT_COLORS: RatioSliderColors = {
-  // Income gradient (foreground progress) - cyan to blue
-  progressStartColor: '#00d4ff',
-  progressEndColor: '#6290c8',
-  // Expenses gradient (background track) - purple to magenta
-  trackStartColor: '#6366f1',
-  trackEndColor: '#b829dd',
-  cardGradientStart: '#1e1b4b',
-  cardGradientEnd: '#0f0a1e',
+  progressStartColor: '#9c1b2a',
+  progressEndColor: 'var(--red-emerald)',
+  trackStartColor: '#477023',
+  trackEndColor: '#2d531a',
   textColor: 'var(--primary-text)',
   secondaryTextColor: 'var(--muted-text)',
 };
@@ -254,11 +246,6 @@ export class RatioSlider {
     const x = this.center() + this.radius() * Math.cos(angle);
     const y = this.center() + this.radius() * Math.sin(angle);
     return { x, y };
-  });
-
-  readonly cardBackground = computed(() => {
-    const colors = this.resolvedColors();
-    return `linear-gradient(135deg, ${colors.cardGradientStart} 0%, ${colors.cardGradientEnd} 100%)`;
   });
 
   constructor() {

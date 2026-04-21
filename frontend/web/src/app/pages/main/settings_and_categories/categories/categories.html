@@ -38,28 +38,30 @@
           }
         }
 
-        <div
-          [ngClass]="{
-            'grid! place-items-center!': hasError || incomesCount === 0,
-          }"
-          class="categories-container"
-        >
-          @if (isFetchingCategories()) {
+        @if (isFetchingCategories()) {
+          <div class="categories-container">
             @for (income of categoryLength.slice(0, 9); track $index) {
               <div class="skeleton skeleton-items"></div>
             }
-          } @else {
+          </div>
+        } @else {
+          <div
+            class="categories-container"
+            [ngClass]="{
+              'grid! place-items-center!': hasError || incomesCount === 0,
+            }"
+          >
             @if (hasError) {
               <fetch-error
+                messageClass="text-xs mb-2"
                 [animationDimensions]="animationDimension"
                 message="Error fetching your income categories."
-                messageClass="text-xs mb-2"
               />
             } @else if (incomesCount === 0) {
               <no-data
+                messageClass="text-xs"
                 [animationDimensions]="animationDimension"
                 message="No income categories found."
-                messageClass="text-xs"
               />
             } @else {
               @for (income of incomes; track income) {
@@ -77,8 +79,8 @@
                 </div>
               }
             }
-          }
-        </div>
+          </div>
+        }
       </div>
     </div>
 
@@ -100,17 +102,19 @@
           }
         }
 
-        <div
-          [ngClass]="{
-            'grid! place-items-center!': hasError || expenseCount === 0,
-          }"
-          class="categories-container"
-        >
-          @if (isFetchingCategories()) {
+        @if (isFetchingCategories()) {
+          <div class="categories-container">
             @for (expense of categoryLength.slice(0, 15); track $index) {
               <div class="skeleton skeleton-items bg-expense!"></div>
             }
-          } @else {
+          </div>
+        } @else {
+          <div
+            class="categories-container"
+            [ngClass]="{
+              'grid! place-items-center!': hasError || expenseCount === 0,
+            }"
+          >
             @if (hasError) {
               <fetch-error
                 [animationDimensions]="animationDimension"
@@ -139,8 +143,8 @@
                 </div>
               }
             }
-          }
-        </div>
+          </div>
+        }
       </div>
     </div>
   </div>
