@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { DrawerNavigationLink } from '@libs/types';
+import { ThemeService } from '@infrastructure/services';
 import { Component, computed, inject, input, output } from '@angular/core';
 import {
   House,
@@ -38,7 +39,7 @@ import {
               [ngClass]="{ 'active-icon': linkActive() }"
             />
           </div>
-          <p class="link-text" [ngClass]="{ 'dark:invert-100': linkActive() }">
+          <p class="link-text" [ngClass]="{ 'text-white!': linkActive() }">
             {{ formattedLinkName() }}
           </p>
         </div>
@@ -91,4 +92,6 @@ export class NavLink {
   protected formattedLinkName(): string {
     return this.link().name.replace('_', ' & ');
   }
+
+  protected readonly themeService = inject(ThemeService);
 }

@@ -6,6 +6,7 @@ export interface OnboardingPayload {
 }
 
 export interface UserPreferences {
+  preferredTheme: string;
   defaultCurrency: string;
   preferredLanguage: string;
   monthlySpendingLimit: number;

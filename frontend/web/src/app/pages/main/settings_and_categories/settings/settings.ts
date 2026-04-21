@@ -7,16 +7,17 @@ import { AuthService } from '@api/auth.service';
 import { Radio, RadioOption } from '@atoms/radio';
 import { LucideAngularModule } from 'lucide-angular';
 import { AccountsService } from '@api/accounts.service';
+import { ThemeService } from '@infrastructure/services';
 import { CURRENCIES, LANGUAGES } from '@global/constants';
 import { PreferencesService } from '@api/preferences.service';
 import { Component, computed, inject, signal } from '@angular/core';
+import { IVoidResourceResponse, UpdateUserPreferencesPayload } from '@global/types';
 import {
   ThemeVariant,
   SettingsFormSchema,
   ApplicationThemeOptions,
   SettingsFormValidationSchema,
 } from './settings.types';
-import { IVoidResourceResponse, UpdateUserPreferencesPayload } from '@global/types';
 
 @Component({
   selector: 'settings',
@@ -31,6 +32,7 @@ export class Settings {
   // SERVICES
   private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
+  private readonly themeService = inject(ThemeService);
   private readonly accountService = inject(AccountsService);
   private readonly preferencesService = inject(PreferencesService);
 
@@ -65,7 +67,7 @@ export class Settings {
   // FORM
   private readonly initialSettingsFormState: SettingsFormSchema = {
     defaultCurrency: this.defaultCurrency,
-    preferredTheme: 'SYSTEM' as ThemeVariant,
+    preferredTheme: this.themeService.theme(),
     monthlySpendingLimit: this.monthlySpendingLimit,
     preferredLanguage: this.user()?.userPreferences.preferredLanguage ?? 'en',
   };
@@ -103,11 +105,10 @@ export class Settings {
             details: response.details,
           });
 
+          this.resetSettingsForm();
         },
         complete: () => this.isSubmittingSettingsForm.set(false),
       });
-    }, 2000);
-
-    console.log(this.settingsFormModel());
+    }, 2500);
   }
 }

@@ -101,9 +101,34 @@
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
-/* Light/Dark Mode Variables */
+/* Light/Dark Mode Variables - Controlled by data attribute or class */
+:root.light {
+  color-scheme: light;
+  --body-background: var(--alternate-white);
+  --alternate-background: var(--white);
+  --inverted-background: var(--dark);
+  --primary-text: var(--dark);
+  --inverted-text: var(--white);
+  --alternate-text: var(--gray1);
+  --muted: var(--muted);
+  --muted-text: var(--gray2);
+}
+
+:root.dark {
+  color-scheme: dark;
+  --body-background: var(--dark);
+  --alternate-background: var(--gray1);
+  --inverted-background: var(--mild-white);
+  --primary-text: var(--white);
+  --inverted-text: var(--black);
+  --alternate-text: var(--gray4);
+  --muted: var(--muted);
+  --muted-text: var(--gray2);
+}
+
+/* Default: Follow system preference when no class is set */
 @media (prefers-color-scheme: light) {
-  :root {
+  :root:has(.light):not(.dark) {
     color-scheme: light;
     --body-background: var(--alternate-white);
     --alternate-background: var(--white);
@@ -117,7 +142,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light):has(.dark) {
     color-scheme: dark;
     --body-background: var(--dark);
     --alternate-background: var(--gray1);
