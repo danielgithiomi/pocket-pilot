@@ -48,7 +48,7 @@ export class Settings {
 
       switch (theme) {
         case 'SYSTEM':
-          label = 'Default (System)';
+          label = 'System';
           break;
         case 'LIGHT':
           label = 'Light';

@@ -42,4 +42,11 @@ export class UserPreferencesDto {
         description: 'Preferred language of the user',
     })
     preferredLanguage!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: 'DARK',
+        description: 'Preferred theme of the user',
+    })
+    preferredTheme!: string;
 }

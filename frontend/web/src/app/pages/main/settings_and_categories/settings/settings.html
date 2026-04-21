@@ -61,7 +61,7 @@
         id="reset-settings"
         form="settings-form"
         (click)="resetSettingsForm()"
-        [disabled]="isSubmittingSettingsForm()"
+        [disabled]="!settingsForm().dirty() || isSubmittingSettingsForm()"
       />
 
       <atom-button
@@ -70,8 +70,11 @@
         id="save-settings"
         form="settings-form"
         label="Update My Settings"
-        [disabled]="isSubmittingSettingsForm()"
+        [isLoading]="isSubmittingSettingsForm()"
         (click)="isSubmittingSettingsForm.set(true)"
+        [disabled]="
+          settingsForm().invalid() || !settingsForm().dirty() || isSubmittingSettingsForm()
+        "
       />
     </div>
   </div>
