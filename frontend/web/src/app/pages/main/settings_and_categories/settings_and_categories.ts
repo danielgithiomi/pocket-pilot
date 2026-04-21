@@ -26,9 +26,11 @@ export class SettingsAndCategories {
   // STATES
   protected isCategoriesFormOpen = signal<boolean>(false);
   protected readonly drawerService = inject(DrawerService);
+  private readonly categoriesService = inject(CategoriesService);
+
   // DATA
   protected categories$ = this.categoriesService.getUserCategories();
-  private readonly categoriesService = inject(CategoriesService);
+
   // SERVICES
   private readonly toastService = inject(ToastService);
 
