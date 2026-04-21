@@ -2,25 +2,46 @@
   <form (submit)="submitSettingsForm($event)" class="px-4 flex flex-col" id="settings-form">
     <atom-input
       (clearOutput)="settingsForm.monthlySpendingLimit().controlValue.set(null)"
+      autocomplete="off"
       [formField]="settingsForm.monthlySpendingLimit"
       [invertedIcon]="true"
+      placeholder="Eg: 50000"
       [numberStep]="0.01"
-      autocomplete="off"
-      id="monthly-spending-limit"
+      id="settings-monthly-spending-limit"
       inputClassName="bg-inverted-background text-inverted-text"
       label="Monthly Spending Limit"
-      placeholder="Eg: 50000"
       type="number"
     />
 
     <atom-select
-      [formField]="settingsForm.preferredLanguage"
       [invertedIcon]="true"
       [options]="languages"
-      id="preferred-language"
+      [formField]="settingsForm.preferredLanguage"
       label="Preferred Language"
       placeholder="Select a language"
+      id="settings-preferred-language"
       selectClassName="bg-inverted-background text-inverted-text"
+    />
+
+    <atom-select
+      [formField]="settingsForm.defaultCurrency"
+      [invertedIcon]="true"
+      [options]="currencies"
+      id="settings-default-currency"
+      label="Default Currency"
+      placeholder="Select a currency"
+      selectClassName="bg-inverted-background text-inverted-text"
+    />
+
+    <atom-radio
+      (selectionChange)="onThemeChange($event)"
+      [formField]="settingsForm.preferredTheme"
+      [options]="applicationThemes()"
+      [required]="true"
+      [selectedValue]="settingsForm.preferredTheme().controlValue()"
+      id="target-completion-strategy"
+      label="Goal Achievement Strategy"
+      layout="horizontal"
     />
   </form>
 </div>

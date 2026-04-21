@@ -1,7 +1,7 @@
-// FORM
 import { required, schema } from '@angular/forms/signals';
 
-export type ThemeVariant = 'system' | 'light' | 'dark';
+export const ApplicationThemeOptions = ['system', 'light', 'dark'] as const;
+export type ThemeVariant = (typeof ApplicationThemeOptions)[number];
 
 export interface SettingsFormSchema {
   defaultCurrency: string;
