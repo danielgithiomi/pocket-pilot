@@ -1,19 +1,22 @@
 import { Input } from '@atoms/input';
-import { Radio, RadioOption } from '@atoms/radio';
 import { Select } from '@atoms/select';
 import { Button } from '@atoms/button';
+import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
+import { Radio, RadioOption } from '@atoms/radio';
 import { LucideAngularModule } from 'lucide-angular';
 import { AccountsService } from '@api/accounts.service';
 import { CURRENCIES, LANGUAGES } from '@global/constants';
+import { PreferencesService } from '@api/preferences.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import {
-  ApplicationThemeOptions,
-  SettingsFormSchema,
-  SettingsFormValidationSchema,
   ThemeVariant,
+  SettingsFormSchema,
+  ApplicationThemeOptions,
+  SettingsFormValidationSchema,
 } from './settings.types';
+import { IVoidResourceResponse, UpdateUserPreferencesPayload } from '@global/types';
 
 @Component({
   selector: 'settings',
@@ -25,22 +28,32 @@ export class Settings {
   // SIGNALS
   protected readonly isSubmittingSettingsForm = signal<boolean>(false);
 
+  // SERVICES
+  private readonly authService = inject(AuthService);
+  private readonly toastService = inject(ToastService);
+  private readonly accountService = inject(AccountsService);
+  private readonly preferencesService = inject(PreferencesService);
+
   // DATA
   protected readonly languages = LANGUAGES;
   protected readonly currencies = CURRENCIES;
+  private readonly user = this.authService.user;
+  private readonly defaultCurrency = this.accountService.getDefaultCurrency();
+  private readonly monthlySpendingLimit = this.accountService.getMonthlySpendingLimit();
+
   // COMPUTED
   protected readonly applicationThemes = computed<RadioOption[]>(() =>
     ApplicationThemeOptions.map((theme) => {
       let label: string;
 
       switch (theme) {
-        case 'system':
+        case 'SYSTEM':
           label = 'Default (System)';
           break;
-        case 'light':
+        case 'LIGHT':
           label = 'Light';
           break;
-        case 'dark':
+        case 'DARK':
           label = 'Dark';
           break;
       }
@@ -48,16 +61,11 @@ export class Settings {
       return { label, value: theme };
     }),
   );
-  // SERVICES
-  private readonly authService = inject(AuthService);
-  private readonly accountService = inject(AccountsService);
-  private readonly user = this.authService.user;
-  private readonly defaultCurrency = this.accountService.getDefaultCurrency();
-  private readonly monthlySpendingLimit = this.accountService.getMonthlySpendingLimit();
+
   // FORM
   private readonly initialSettingsFormState: SettingsFormSchema = {
-    preferredTheme: 'system',
     defaultCurrency: this.defaultCurrency,
+    preferredTheme: 'SYSTEM' as ThemeVariant,
     monthlySpendingLimit: this.monthlySpendingLimit,
     preferredLanguage: this.user()?.userPreferences.preferredLanguage ?? 'en',
   };
@@ -78,6 +86,27 @@ export class Settings {
   // SUBMISSIONS
   protected submitSettingsForm(event: Event) {
     event.preventDefault();
+
+    this.isSubmittingSettingsForm.set(true);
+
+    const payload: UpdateUserPreferencesPayload = {
+      ...this.settingsFormModel(),
+      monthlySpendingLimit: this.settingsFormModel().monthlySpendingLimit!,
+    };
+
+    setTimeout(() => {
+      this.preferencesService.updateUserPreferences(payload).subscribe({
+        next: (response: IVoidResourceResponse) => {
+          this.toastService.show({
+            variant: 'success',
+            title: response.message,
+            details: response.details,
+          });
+
+        },
+        complete: () => this.isSubmittingSettingsForm.set(false),
+      });
+    }, 2000);
 
     console.log(this.settingsFormModel());
   }

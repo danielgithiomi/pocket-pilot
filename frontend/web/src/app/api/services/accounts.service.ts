@@ -7,7 +7,7 @@ import { computed, inject, Injectable } from '@angular/core';
 import {
   User,
   IStandardError,
-  IGlobalResponse,
+  IStandardResponse,
   CreateAccountRequest,
   IVoidResourceResponse,
 } from '@global/types';
@@ -50,7 +50,7 @@ export class AccountsService {
 
   deleteAccountById(accountId: string) {
     return this.accountsMutation.deleteAccountById(accountId).pipe(
-      map((response: IGlobalResponse<IVoidResourceResponse>) => response.body),
+      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

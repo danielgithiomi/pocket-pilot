@@ -4,7 +4,7 @@ import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
 import { AuthService } from '@api/auth.service';
 import { Input } from '@components/ui/atoms/input';
-import { User, IGlobalResponse } from '@global/types';
+import { User, IStandardResponse } from '@global/types';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
@@ -52,11 +52,11 @@ export class Login {
     this.isSubmitting.set(true);
 
     this.authService.login({ email, password }).subscribe({
-      next: (response: IGlobalResponse<User>) => {
+      next: (response: IStandardResponse<User>) => {
         this.toastService.show({
           variant: 'success',
           title: response.summary.title,
-          details: `Welcome back to Pocket Pilot - ${response.body.name.toLocaleUpperCase()}`,
+          details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
         });
 
         this.routeTo(WEB_ROUTES.home);

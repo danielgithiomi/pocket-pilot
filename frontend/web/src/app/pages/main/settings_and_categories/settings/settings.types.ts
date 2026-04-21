@@ -1,6 +1,6 @@
 import { required, schema } from '@angular/forms/signals';
 
-export const ApplicationThemeOptions = ['system', 'light', 'dark'] as const;
+export const ApplicationThemeOptions = ['SYSTEM', 'LIGHT', 'DARK'] as const;
 export type ThemeVariant = (typeof ApplicationThemeOptions)[number];
 
 export interface SettingsFormSchema {

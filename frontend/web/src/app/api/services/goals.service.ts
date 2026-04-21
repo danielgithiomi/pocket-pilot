@@ -6,7 +6,7 @@ import { catchError, EMPTY, map, Observable } from 'rxjs';
 import {
   Goal,
   IStandardError,
-  IGlobalResponse,
+  IStandardResponse,
   CreateGoalRequest,
   IVoidResourceResponse,
 } from '@global/types';
@@ -25,7 +25,7 @@ export class GoalsService {
 
   createNewGoal(payload: CreateGoalRequest): Observable<Goal> {
     return this.mutation.createNewGoal(payload).pipe(
-      map((response: IGlobalResponse<Goal>) => response.body),
+      map((response: IStandardResponse<Goal>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;
@@ -35,7 +35,7 @@ export class GoalsService {
 
   deleteGoalById(goalId: string): Observable<IVoidResourceResponse> {
     return this.mutation.deleteGoalById(goalId).pipe(
-      map((response: IGlobalResponse<IVoidResourceResponse>) => response.body),
+      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

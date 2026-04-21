@@ -7,8 +7,8 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 import {
   User,
   IStandardError,
-  IGlobalResponse,
   IRegisterRequest,
+  IStandardResponse,
   IUpdateUserRequest,
   IVoidResourceResponse,
   IChangePasswordRequest,
@@ -23,7 +23,7 @@ export class UserService {
 
   register(request: IRegisterRequest) {
     return this.mutation.register(request).pipe(
-      map((response: IGlobalResponse<User>) => response.body),
+      map((response: IStandardResponse<User>) => response.data),
       tap((user: User) => {
         localStorage.setItem(STORED_ONBOARDING_USER_KEY, JSON.stringify(!user.isOnboarded));
       }),
@@ -36,7 +36,7 @@ export class UserService {
 
   update(userId: string, payload: IUpdateUserRequest): Observable<User> {
     return this.mutation.update(userId, payload).pipe(
-      map((response: IGlobalResponse<User>) => response.body),
+      map((response: IStandardResponse<User>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;
@@ -49,7 +49,7 @@ export class UserService {
     payload: IChangePasswordRequest,
   ): Observable<IVoidResourceResponse> {
     return this.mutation.changePassword(userId, payload).pipe(
-      map((response: IGlobalResponse<IVoidResourceResponse>) => response.body),
+      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

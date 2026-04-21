@@ -5,7 +5,7 @@ import { ToastService } from '@components/ui/atoms/toast';
 import { TransactionsMutation } from '@methods/mutations';
 import {
   IStandardError,
-  IGlobalResponse,
+  IStandardResponse,
   IVoidResourceResponse,
   CreateTransactionRequest,
 } from '@global/types';
@@ -41,7 +41,7 @@ export class TransactionsService {
 
   deleteTransaction(accountId: string, transactionId: string) {
     return this.transactionsMutation.deleteTransaction(accountId, transactionId).pipe(
-      map((response: IGlobalResponse<IVoidResourceResponse>) => response.body),
+      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

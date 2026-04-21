@@ -9,7 +9,7 @@ import {
   IEnumResponse,
   IStandardError,
   CategoryVariant,
-  IGlobalResponse,
+  IStandardResponse,
   CreateCategoryRequest,
   DeleteCategoryRequest,
   IVoidResourceResponse,
@@ -27,7 +27,7 @@ export class CategoriesService {
 
   createNewCategory(payload: CreateCategoryRequest): Observable<Categories> {
     return this.mutation.createNewCategory(payload).pipe(
-      map((response: IGlobalResponse<Categories>) => response.body),
+      map((response: IStandardResponse<Categories>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;
@@ -63,7 +63,7 @@ export class CategoriesService {
   ): Observable<IVoidResourceResponse> {
     const payload: DeleteCategoryRequest = { categoryName, categoryType };
     return this.mutation.deleteCategory(payload).pipe(
-      map((response: IGlobalResponse<IVoidResourceResponse>) => response.body),
+      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.renderToast(error);
         return EMPTY;

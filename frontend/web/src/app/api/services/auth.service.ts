@@ -7,7 +7,7 @@ import { concatUrl } from '@methods/methods.utils';
 import { catchError, EMPTY, firstValueFrom, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { STORED_AUTH_USER_KEY, STORED_ONBOARDING_USER_KEY } from '@libs/constants';
-import { User, LoginPayload, IStandardError, IGlobalResponse } from '@global/types';
+import { User, LoginPayload, IStandardError, IStandardResponse } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -57,12 +57,12 @@ export class AuthService {
 
     try {
       const response = await firstValueFrom(
-        this.http.get<IGlobalResponse<User>>(concatUrl('auth/me'), {
+        this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
           credentials: 'include',
         }),
       );
 
-      const { body: user } = response;
+      const { data: user } = response;
       this.createSession(user);
     } catch (error) {
       this.clearSession();
@@ -82,12 +82,12 @@ export class AuthService {
     this.sessionRequest = (async () => {
       try {
         const response = await firstValueFrom(
-          this.http.get<IGlobalResponse<User>>(concatUrl('auth/me'), {
+          this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
             credentials: 'include',
           }),
         );
 
-        const { body: user } = response;
+        const { data: user } = response;
         this.createSession(user);
         return true;
       } catch {
@@ -114,8 +114,8 @@ export class AuthService {
 
   login(request: LoginPayload) {
     return this.mutation.login(request).pipe(
-      tap((response: IGlobalResponse<User>) => {
-        this.createSession(response.body);
+      tap((response: IStandardResponse<User>) => {
+        this.createSession(response.data);
       }),
       catchError((error: IStandardError) => {
         this.renderToast(error);
@@ -135,11 +135,6 @@ export class AuthService {
   }
 
   // HELPER FUNCTIONS
-  refreshSession(user: User) {
-    this.clearSession();
-    this.createSession(user);
-  }
-
   clearSession() {
     this.userSignal.set(null);
     localStorage.removeItem(STORED_AUTH_USER_KEY);
@@ -149,6 +144,16 @@ export class AuthService {
   createSession(user: User) {
     this.userSignal.set(user);
     localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
+  }
+
+  refreshSession(user: User) {
+    this.clearSession();
+    this.createSession(user);
+  }
+
+  reinitializeSession() {
+    this.clearSession();
+    this.initializeSession();
   }
 
   private renderToast = (error: IStandardError) => {
