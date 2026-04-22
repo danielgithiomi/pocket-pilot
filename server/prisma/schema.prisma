@@ -10,6 +10,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
+    // url      = env("DATABASE_URL")
 }
 
 enum AccountType {
@@ -76,12 +77,19 @@ model User {
     @@map("Users")
 }
 
+enum ApplicationTheme {
+    SYSTEM
+    LIGHT
+    DARK
+}
+
 model UserPreferences {
     id String @id @default(uuid())
 
     monthlySpendingLimit Float
     defaultCurrency      String
     preferredLanguage    String
+    preferredTheme       ApplicationTheme @default(SYSTEM)
 
     createdAt DateTime @default(now())
 

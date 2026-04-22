@@ -7,7 +7,7 @@
   </label>
 
   <div class="select-wrapper">
-    <select [id]="selectId()" [formField]="formField()">
+    <select [formField]="formField()" [id]="selectId()" [ngClass]="selectClassName()">
       @if (placeholder()) {
         <option value="" disabled [selected]="!currentValue()">{{ placeholder() }}</option>
       }
@@ -27,10 +27,11 @@
 
     <div class="select-dropdown-wrapper">
       <lucide-icon
-        [img]="ChevronDown"
         [size]="iconSize"
-        name="select-chevron"
+        [img]="ChevronDown"
         class="select-icon"
+        [ngClass]="{ 'text-inverted-text': invertedIcon() }"
+        name="select-chevron"
       />
     </div>
   </div>

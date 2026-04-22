@@ -1,5 +1,5 @@
-<div [id]="cardId()" class="group dashboard-card">
-  <div class="header">
+<div [id]="cardId()" class="group dashboard-card" [ngClass]="wrapperClassName()">
+  <div class="header" [ngClass]="{ 'px-4!': !!wrapperClassName() }">
     <p class="title">{{ title() }}</p>
 
     <lucide-icon
@@ -18,12 +18,11 @@
       @if (value()) {
         <h2 class="value">{{ value() }}</h2>
       }
-
       <ng-content select="[custom-content]"></ng-content>
     }
   </div>
 
-  <div class="footer">
+  <div class="footer" [ngClass]="{ 'px-4!': !!wrapperClassName() }">
     <p class="subtitle">{{ subtitle() }}</p>
   </div>
 </div>

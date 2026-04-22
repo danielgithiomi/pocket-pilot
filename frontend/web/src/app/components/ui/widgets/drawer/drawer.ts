@@ -2,12 +2,13 @@ import { NavLink } from './nav-link/nav-link';
 import { ImageDimensions } from '@libs/types';
 import { Chevron } from '@components/ui/atoms/icons';
 import { LucideAngularModule, X } from 'lucide-angular';
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { NgOptimizedImage, NgClass } from '@angular/common';
 import {
   DrawerNavigationLinks as links,
   AdditionalDrawerNavigationLinks as additionalLinks,
 } from '@libs/constants';
+import { ThemeService } from '@infrastructure/services';
 
 @Component({
   selector: 'app-drawer',
@@ -27,4 +28,6 @@ export class Drawer {
   protected readonly additionalLinks = additionalLinks;
   protected readonly logoUrl: string = '/images/branding/logo.png';
   protected readonly logoDimensions: ImageDimensions = { width: 70, height: 70 };
+
+  protected readonly themeService = inject(ThemeService);
 }

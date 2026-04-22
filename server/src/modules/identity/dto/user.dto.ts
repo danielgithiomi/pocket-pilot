@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
-import { UserPreferencesDto } from './onboarding.dto';
+import { UserPreferencesDto } from '../../preferences/dto/onboarding.dto';
 
 export type FullUser = Prisma.UserCreateInput;
 

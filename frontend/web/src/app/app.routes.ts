@@ -13,14 +13,14 @@ export const routes: Routes = [
     component: AuthLayout,
     children: [
       {
-        title: 'Login | Pocket Pilot',
         path: 'login',
-        canMatch: [GuestGuard],
         component: Login,
+        canMatch: [GuestGuard],
+        title: 'Login | Pocket Pilot',
       },
       {
-        title: 'Register | Pocket Pilot',
         path: 'register',
+        title: 'Register | Pocket Pilot',
         loadComponent: () => import('@pages/auth/register/register').then((m) => m.Register),
       },
     ],
@@ -43,13 +43,18 @@ export const routes: Routes = [
     canMatch: [AuthGuard, OnboardedGuard],
     children: [
       {
-        title: 'Dashboard | Pocket Pilot',
+        path: WEB_ROUTES.home,
+        title: 'Home | Pocket Pilot',
+        component: NotFound,
+      },
+      {
         path: WEB_ROUTES.dashboard,
+        title: 'Dashboard | Pocket Pilot',
         loadComponent: () => import('@pages/main/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
-        title: 'Profile | Pocket Pilot',
         path: WEB_ROUTES.profile,
+        title: 'Profile | Pocket Pilot',
         loadComponent: () => import('@pages/main/profile/profile').then((m) => m.Profile),
       },
       {
@@ -66,7 +71,10 @@ export const routes: Routes = [
       {
         title: 'Settings | Pocket Pilot',
         path: WEB_ROUTES.settings,
-        loadComponent: () => import('@pages/main/settings/settings').then((m) => m.Settings),
+        loadComponent: () =>
+          import('@pages/main/settings_and_categories/settings_and_categories').then(
+            (m) => m.SettingsAndCategories,
+          ),
       },
       {
         title: 'Goals & Bills | Pocket Pilot',

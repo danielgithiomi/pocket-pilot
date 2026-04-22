@@ -1,0 +1,151 @@
+<section class="flex-1 flex flex-col gap-4 h-full" id="categories">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-xl lg:text-2xl font-semibold">Your Categories</h2>
+    <div>
+      @if (isFetchingCategories()) {
+        <div class="skeleton w-1/2 h-5 my-0.5"></div>
+      } @else {
+        @let response = categories$.value()?.data;
+        @let incomeCount = response?.incomes?.length || 0;
+        @let expenseCount = response?.expenses?.length || 0;
+        @let totalCount = incomeCount + expenseCount;
+        <p>
+          You have <span class="font-semibold text-primary">{{ totalCount }}</span>
+          {{ totalCount > 1 ? 'total categories' : 'category' }}!
+        </p>
+      }
+    </div>
+  </div>
+
+  <div class="flex-1 flex flex-col gap-6">
+    @let hasError = categories$.error();
+
+    <!-- Incomes Section -->
+    <div class="flex-1">
+      <div class="category-card group/card incomes">
+        @let incomes = categories$.value()?.data?.incomes;
+        @let incomesCount = incomes?.length || 0;
+
+        @if (isFetchingCategories()) {
+          <div class="skeleton w-1/2 h-5"></div>
+        } @else {
+          @if (incomesCount === 0 || hasError) {
+            <p>No income categories found.</p>
+          } @else {
+            <p>
+              <span class="category-card-span">{{ incomesCount }}</span> Income Categories.
+            </p>
+          }
+        }
+
+        @if (isFetchingCategories()) {
+          <div class="categories-container">
+            @for (income of categoryLength.slice(0, 9); track $index) {
+              <div class="skeleton skeleton-items"></div>
+            }
+          </div>
+        } @else {
+          <div
+            class="categories-container"
+            [ngClass]="{
+              'grid! place-items-center!': hasError || incomesCount === 0,
+            }"
+          >
+            @if (hasError) {
+              <fetch-error
+                messageClass="text-xs mb-2"
+                [animationDimensions]="animationDimension"
+                message="Error fetching your income categories."
+              />
+            } @else if (incomesCount === 0) {
+              <no-data
+                messageClass="text-xs"
+                [animationDimensions]="animationDimension"
+                message="No income categories found."
+              />
+            } @else {
+              @for (income of incomes; track income) {
+                <div class="category-item group/item income">
+                  <p>{{ income }}</p>
+
+                  <button
+                    (click)="
+                      onCategoryDelete.emit({ category: income, type: CategoryTypeEnum.INCOME })
+                    "
+                    class="category-icon atom-icon"
+                  >
+                    <lucide-icon [img]="X" [size]="13" name="delete-category"></lucide-icon>
+                  </button>
+                </div>
+              }
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Expenses Section -->
+    <div class="flex-1">
+      <div class="category-card group/card expenses">
+        @let expenses = categories$.value()?.data?.expenses;
+        @let expenseCount = expenses?.length || 0;
+
+        @if (isFetchingCategories()) {
+          <div class="skeleton w-1/2 h-5 bg-expense!"></div>
+        } @else {
+          @if (expenseCount === 0 || hasError) {
+            <p>No expense categories found.</p>
+          } @else {
+            <p>
+              <span class="category-card-span">{{ expenseCount }}</span> Expense Categories.
+            </p>
+          }
+        }
+
+        @if (isFetchingCategories()) {
+          <div class="categories-container">
+            @for (expense of categoryLength.slice(0, 15); track $index) {
+              <div class="skeleton skeleton-items bg-expense!"></div>
+            }
+          </div>
+        } @else {
+          <div
+            class="categories-container"
+            [ngClass]="{
+              'grid! place-items-center!': hasError || expenseCount === 0,
+            }"
+          >
+            @if (hasError) {
+              <fetch-error
+                [animationDimensions]="animationDimension"
+                message="Error fetching your expense categories."
+                messageClass="text-xs mb-2"
+              />
+            } @else if (expenseCount === 0) {
+              <no-data
+                [animationDimensions]="animationDimension"
+                message="No expense categories found."
+                messageClass="text-xs"
+              />
+            } @else {
+              @for (expense of expenses; track expense) {
+                <div class="category-item group/item expense">
+                  <p>{{ expense }}</p>
+
+                  <button
+                    (click)="
+                      onCategoryDelete.emit({ category: expense, type: CategoryTypeEnum.EXPENSE })
+                    "
+                    class="category-icon atom-icon"
+                  >
+                    <lucide-icon [img]="X" [size]="13" name="delete-category"></lucide-icon>
+                  </button>
+                </div>
+              }
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

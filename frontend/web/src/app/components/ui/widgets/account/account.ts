@@ -1,23 +1,24 @@
 import { formatCurrency } from '@libs/utils';
 import { ImageDimensions } from '@libs/types';
-import { NgOptimizedImage } from '@angular/common';
 import { AccountsService } from '@api/accounts.service';
+import { ThemeService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
+import { NgClass, NgOptimizedImage } from '@angular/common';
+import { AccountType, IVoidResourceResponse } from '@global/types';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { AccountType, IVoidResourceResponse, IStandardResponse } from '@global/types';
 import {
   Nfc,
   Trash,
   EllipsisVertical,
-  LucideAngularModule,
   FingerprintPattern,
+  LucideAngularModule,
 } from 'lucide-angular';
 
 @Component({
   selector: 'account-card',
   styleUrl: './account.css',
   templateUrl: './account.html',
-  imports: [NgOptimizedImage, LucideAngularModule],
+  imports: [NgOptimizedImage, LucideAngularModule, NgClass],
 })
 export class Account {
   // Inputs
@@ -47,6 +48,7 @@ export class Account {
 
   // Services
   private readonly toastService = inject(ToastService);
+  protected readonly themeService = inject(ThemeService);
   private readonly accountsService = inject(AccountsService);
 
   // Data
@@ -65,11 +67,11 @@ export class Account {
     this.isDeleting.set(true);
 
     this.accountsService.deleteAccountById(this.id()).subscribe({
-      next: (response: IStandardResponse<IVoidResourceResponse>) => {
+      next: (response: IVoidResourceResponse) => {
         this.toastService.show({
           variant: 'success',
           title: 'Account deleted successfully',
-          details: response.data.details,
+          details: response.details,
         });
       },
       complete: () => {

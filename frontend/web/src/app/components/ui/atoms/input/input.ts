@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
-import { InputType, AutoComplete } from './input.types';
-import { FormField, FieldTree } from '@angular/forms/signals';
-import { Eye, EyeOff, X, LucideAngularModule } from 'lucide-angular';
-import { Component, input, signal, computed, output } from '@angular/core';
+import { AutoComplete, InputType } from './input.types';
+import { FieldTree, FormField } from '@angular/forms/signals';
+import { Eye, EyeOff, LucideAngularModule, X } from 'lucide-angular';
+import { Component, computed, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'atom-input',
@@ -15,8 +15,10 @@ export class Input {
   numberStep = input<number>(1);
   required = input<boolean>(true);
   label = input.required<string>();
-  inverted = input<boolean>(false);
   allowEndIcon = input<boolean>(true);
+
+  // Inversions
+  inverted = input<boolean>(false);
   invertLabel = input<boolean>(false);
   invertedIcon = input<boolean>(false);
 

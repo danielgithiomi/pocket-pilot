@@ -4,7 +4,7 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
   {
     icon: 'home',
     name: 'Home',
-    path: '/',
+    path: '/home',
   },
   {
     icon: 'dashboard',

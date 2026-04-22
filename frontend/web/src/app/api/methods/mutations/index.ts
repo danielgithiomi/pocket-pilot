@@ -5,4 +5,5 @@ export * from './bills.mutation';
 export * from './accounts.mutation';
 export * from './onboarding.mutation';
 export * from './categories.mutation';
+export * from './preferences.mutation';
 export * from './transactions.mutation';

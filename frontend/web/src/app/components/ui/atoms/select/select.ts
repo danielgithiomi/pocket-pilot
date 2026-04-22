@@ -1,8 +1,8 @@
 import { capitalize } from '@libs/utils';
 import { NgClass } from '@angular/common';
 import { SelectOption, SelectSize } from './select.types';
-import { Component, input, computed } from '@angular/core';
-import { FormField, FieldTree } from '@angular/forms/signals';
+import { Component, computed, input } from '@angular/core';
+import { FieldTree, FormField } from '@angular/forms/signals';
 import { ChevronDown, LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -16,9 +16,16 @@ export class Select {
   size = input<SelectSize>('sm');
   required = input<boolean>(true);
   label = input.required<string>();
-  inverted = input<boolean>(false);
-  wrapperClassName = input<string>('');
   placeholder = input.required<string>();
+
+  // Classnames
+  selectClassName = input<string>('');
+  wrapperClassName = input<string>('');
+
+  // Inversions
+  inverted = input<boolean>(false);
+  invertLabel = input<boolean>(false);
+  invertedIcon = input<boolean>(false);
 
   selectedValue = input<string>('');
   options = input.required<SelectOption[]>();

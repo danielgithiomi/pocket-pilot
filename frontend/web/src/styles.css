@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './calendar.css';
 @import './../../../node_modules/@syncfusion/ej2-base/styles/material3.css';
 @import './../../../node_modules/@syncfusion/ej2-calendars/styles/material3.css';
 
@@ -35,6 +36,7 @@
   --quaternary: #fe7f2d; /* Orange */
   --transparent: transparent;
   --loader-primary: rgba(91, 146, 121, 50%);
+  --loader-secondary: rgba(254, 127, 45, 50%);
   --scrollbar-track: rgb(91, 146, 121, 25%);
 
   /* State Colors */
@@ -100,9 +102,34 @@
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
-/* Light/Dark Mode Variables */
+/* Light/Dark Mode Variables - Controlled by data attribute or class */
+:root.light {
+  color-scheme: light;
+  --body-background: var(--alternate-white);
+  --alternate-background: var(--white);
+  --inverted-background: var(--dark);
+  --primary-text: var(--dark);
+  --inverted-text: var(--white);
+  --alternate-text: var(--gray1);
+  --muted: var(--muted);
+  --muted-text: var(--gray2);
+}
+
+:root.dark {
+  color-scheme: dark;
+  --body-background: var(--dark);
+  --alternate-background: var(--gray1);
+  --inverted-background: var(--mild-white);
+  --primary-text: var(--white);
+  --inverted-text: var(--black);
+  --alternate-text: var(--gray4);
+  --muted: var(--muted);
+  --muted-text: var(--gray2);
+}
+
+/* Default: Follow system preference when no class is set */
 @media (prefers-color-scheme: light) {
-  :root {
+  :root:not(.light):not(.dark) {
     color-scheme: light;
     --body-background: var(--alternate-white);
     --alternate-background: var(--white);
@@ -116,7 +143,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light):not(.dark) {
     color-scheme: dark;
     --body-background: var(--dark);
     --alternate-background: var(--gray1);
@@ -348,7 +375,6 @@ main {
       }
     }
   }
-
   /* PAGES END */
 
   /* ICONS START */

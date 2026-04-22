@@ -32,19 +32,20 @@
       }
       <lucide-icon
         [size]="iconSize"
-        [img]="CalendarIcon"
         name="calendar-toggle"
         (click)="toggleCalendar()"
-        class="date-picker-icon calendar-icon"
+        [img]="isCalendarOpen() ? X : CalendarIcon"
+        class="date-picker-icon calendar-icon cursor-pointer!"
       />
     </div>
 
     @if (isCalendarOpen()) {
       <div class="calendar-dropdown" #calendarContainer (click)="onCalendarClick($event)">
         <ejs-calendar
-          [value]="selectedDateValue()"
           [min]="min()"
           [max]="max()"
+          (blur)="closeCalendar()"
+          [value]="selectedDateValue()"
           (change)="onDateSelect($event)"
         />
       </div>

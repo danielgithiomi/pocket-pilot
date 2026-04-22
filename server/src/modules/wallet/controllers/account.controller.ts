@@ -1,12 +1,13 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { plainToInstance } from 'class-transformer';
-import { AccountTypeDto } from '../dto/account.dto';
-import { VoidResourceResponse } from '@common/types';
+import { denormalizeCategoryName } from '@libs/utils';
 import { type User } from '@modules/identity/dto/user.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { AccountService } from '../services/account.service';
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
+import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import {
     Account,
     CreateAccountDto,
@@ -16,7 +17,6 @@ import {
     UserAccountsResponseDto,
     AccountWithTransactionsResponseDto,
 } from '../dto/account.dto';
-import { denormalizeCategoryName } from '@libs/utils';
 
 @ApiTags('Accounts')
 @Controller('accounts')
@@ -25,15 +25,18 @@ export class AccountController {
     constructor(private readonly accountService: AccountService) {}
 
     @Get('types')
+    @CacheTTL(0)
+    @CacheKey('account:types')
+    @UseInterceptors(CacheInterceptor)
     @Summary('Account Types Retrieved!', 'You have successfully retrieved all account types.')
     @ApiOperation({ summary: 'Get Account Types', description: 'Get all available account types' })
     @ApiResponse({
         status: 200,
         isArray: true,
-        type: AccountTypeDto,
+        type: ExposeEnumDto,
         description: 'Account types fetched successfully',
     })
-    async getAccountTypes(): Promise<AccountTypeDto[]> {
+    async getAccountTypes(): Promise<ExposeEnumDto[]> {
         return await this.accountService.getAccountTypes();
     }
 

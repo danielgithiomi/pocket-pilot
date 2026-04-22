@@ -22,14 +22,6 @@ export class CreateAccountDto {
 }
 
 // OUTPUT
-export class AccountTypeDto {
-    @ApiProperty({ example: 'CURRENT', description: 'The value of the account type' })
-    value!: string;
-
-    @ApiProperty({ example: 'Current', description: 'The label of the account type' })
-    label!: string;
-}
-
 @Exclude()
 export class Account {
     @Expose()
@@ -76,6 +68,11 @@ export class Account {
     })
     @Type(() => Date)
     updatedAt!: Date;
+
+    @Expose()
+    @Type(() => String)
+    @ApiProperty({ example: '5183bc66-22fe-4d07-9166-e53c0b3b9ea7', description: 'The ID of the account holder' })
+    holderId!: string;
 }
 
 export type AccountWithTransactions = Prisma.AccountGetPayload<{

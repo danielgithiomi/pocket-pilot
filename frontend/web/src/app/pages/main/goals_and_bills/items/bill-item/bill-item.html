@@ -8,7 +8,12 @@
       @if (isDeleting()) {
         <div class="loader"></div>
       } @else {
-        <lucide-angular name="delete-bill-item" [img]="trash" [size]="17"></lucide-angular>
+        <lucide-angular
+          [size]="17"
+          [img]="trash"
+          class="text-white"
+          name="delete-bill-item"
+        ></lucide-angular>
       }
     </div>
 

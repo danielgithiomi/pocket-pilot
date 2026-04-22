@@ -3,15 +3,19 @@ import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { normalizeCategories, normalizeCategoryName } from '@libs/utils';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { CategoriesCache } from '@modules/wallet/cache/categories.cache';
 import { CategoriesRepository } from '../repositories/categories.repository';
-import { DEFAULT_INCOME_CATEGORIES, DEFAULT_EXPENSE_CATEGORIES } from '@common/constants';
+import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@common/constants';
 import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';
 
 @Injectable()
 export class CategoriesService {
     private readonly logger = new Logger(CategoriesService.name);
 
-    constructor(private readonly categoriesRepository: CategoriesRepository) {}
+    constructor(
+        private readonly cache: CategoriesCache,
+        private readonly categoriesRepository: CategoriesRepository,
+    ) {}
 
     async addDefaultCategoriesOnRegistration(userId: string): Promise<boolean> {
         const normalizedIncomes = normalizeCategories(DEFAULT_INCOME_CATEGORIES);
@@ -37,7 +41,7 @@ export class CategoriesService {
                 },
             });
 
-        const normalisedName = normalizeCategoryName(payload.categoryName);
+        const normalisedName: string = normalizeCategoryName(payload.categoryName);
 
         const categoryDto = await this.categoriesRepository.createCategory(
             userId,
@@ -45,14 +49,20 @@ export class CategoriesService {
             payload.categoryType,
         );
 
-        return plainToInstance(CategoriesDto, categoryDto);
+        const createdCategories = plainToInstance(CategoriesDto, categoryDto);
+        await this.cache.invalidateCache(userId);
+        await this.cache.setCache(userId, createdCategories);
+        return createdCategories;
     }
 
     async getAllUserCategories(user: UserResponseDto): Promise<CategoriesDto> {
         const { id: userId, name } = user;
-        const categories = await this.categoriesRepository.getAllUserCategories(userId);
 
-        if (!categories)
+        const cachedCategories = await this.cache.getCache(userId);
+        if (cachedCategories) return cachedCategories;
+
+        const fetchedCategories = await this.categoriesRepository.getAllUserCategories(userId);
+        if (!fetchedCategories)
             return {
                 id: '',
                 incomes: [],
@@ -65,7 +75,9 @@ export class CategoriesService {
                 },
             };
 
-        return plainToInstance(CategoriesDto, categories);
+        const categories: CategoriesDto = plainToInstance(CategoriesDto, fetchedCategories);
+        await this.cache.setCache(userId, categories);
+        return categories;
     }
 
     async deleteCategoryByName(userId: string, payload: DeleteCategoryPayload) {
@@ -73,6 +85,7 @@ export class CategoriesService {
 
         try {
             await this.categoriesRepository.deleteCategory(userId, categoryName, categoryType);
+            await this.cache.invalidateCache(userId);
         } catch (error) {
             this.logger.error(`Error deleting category ${categoryName} for user ${userId}:`, error);
             throw new BadRequestException({

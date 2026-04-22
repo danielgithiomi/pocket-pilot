@@ -104,8 +104,7 @@ export class AuthService {
   }
 
   async isUserOnboarded(): Promise<boolean> {
-    if (this.userSignal())
-      return this.userSignal()!.isOnboarded;
+    if (this.userSignal()) return this.userSignal()!.isOnboarded;
 
     const isAuthenticated = await this.checkSession();
     if (!isAuthenticated) return false;
@@ -136,11 +135,6 @@ export class AuthService {
   }
 
   // HELPER FUNCTIONS
-  refreshSession(user: User) {
-    this.clearSession();
-    this.createSession(user);
-  }
-
   clearSession() {
     this.userSignal.set(null);
     localStorage.removeItem(STORED_AUTH_USER_KEY);
@@ -150,6 +144,16 @@ export class AuthService {
   createSession(user: User) {
     this.userSignal.set(user);
     localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
+  }
+
+  refreshSession(user: User) {
+    this.clearSession();
+    this.createSession(user);
+  }
+
+  reinitializeSession() {
+    this.clearSession();
+    this.initializeSession();
   }
 
   private renderToast = (error: IStandardError) => {

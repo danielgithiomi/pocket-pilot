@@ -1,0 +1,56 @@
+@reference "tailwindcss";
+
+.category-card {
+  @apply cursor-default bg-(--alternate-background) rounded-lg flex-1 w-full h-full p-6 min-h-[250px];
+  /* @apply cursor-default bg-(--alternate-background) rounded-lg flex-1 w-full p-6 min-h-[200px]; */
+
+  .category-card-span {
+    @apply group-hover/card:text-(--primary) group-hover/card:font-bold group-hover/card:scale-105 transition-all duration-300;
+  }
+
+  .categories-container {
+    @apply flex flex-row flex-wrap gap-3 my-3 pt-4;
+
+    .skeleton-items {
+      @apply w-1/2 h-5 rounded-lg;
+    }
+
+    .skeleton-items:nth-child(odd) {
+      @apply w-[4rem];
+    }
+
+    .skeleton-items:nth-child(even) {
+      @apply w-[6rem];
+    }
+
+    .skeleton-items:nth-child(5) {
+      @apply w-[8rem];
+    }
+
+    .skeleton-items:last-child {
+      @apply w-2/3;
+    }
+
+    .category-item {
+      @apply relative overflow-hidden rounded-lg px-2 py-0.5 hover:scale-105 transition-all duration-300 cursor-pointer;
+
+      p {
+        @apply text-sm cursor-default text-white;
+      }
+
+      .category-icon {
+        @apply opacity-0 group-hover/item:block group-hover/item:text-white group-hover/item:opacity-100 absolute top-1/2 right-0 -translate-y-1/2 px-1 py-2.5 transition-all duration-300 cursor-pointer rounded-lg;
+        backdrop-filter: blur(10px);
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .category-item.income {
+      @apply bg-(--income);
+    }
+
+    .category-item.expense {
+      @apply bg-(--expense);
+    }
+  }
+}

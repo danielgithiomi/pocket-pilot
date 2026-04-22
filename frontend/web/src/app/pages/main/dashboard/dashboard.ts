@@ -1,22 +1,24 @@
-import { Input } from "@atoms/input";
-import { Button } from "@atoms/button";
-import { Form } from '@organisms/form';
+import { NgClass } from '@angular/common';
+import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
-import { form } from '@angular/forms/signals';
 import { MONTHS_ENUM } from '@global/constants';
 import { RatioSlider } from '@atoms/ratio-slider';
 import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
+import { DrawerService } from '@infrastructure/services';
 import { TransactionsService } from '@api/transactions.service';
-import { Component, computed, inject, signal } from '@angular/core';
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
-import { TransactionLimitSchema, TransactionLimitValidationSchema } from './dashboard.types';
 import {
   Wallet,
   HandCoins,
   PiggyBank,
+  Calendar1,
+  CirclePile,
   TrendingUp,
+  CircleGauge,
   TrendingDown,
   ArrowLeftRight,
   BrickWallShield,
@@ -27,40 +29,51 @@ import {
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
-  imports: [RatioSlider, ProgressBar, CostAnalysis, DashboardCard, LucideAngularModule, Form, Input, Button],
+  imports: [
+    NgClass,
+    RatioSlider,
+    ProgressBar,
+    CostAnalysis,
+    DashboardCard,
+    CalendarModule,
+    LucideAngularModule,
+  ],
 })
 export class Dashboard {
   // Icons
   protected readonly walletIcon = Wallet;
   protected readonly ratioIcon = PiggyBank;
+  protected readonly pilesIcon = CirclePile;
+  protected readonly gaugeIcon = CircleGauge;
   protected readonly incomeIcon = TrendingUp;
+  protected readonly calendarIcon = Calendar1;
   protected readonly handCoinsIcon = HandCoins;
   protected readonly expenseIcon = TrendingDown;
   protected readonly transactionIcon = ArrowLeftRight;
   protected readonly spendingLimitIcon = BrickWallShield;
 
   // Services
+  private readonly toastService = inject(ToastService);
+  protected readonly drawerService = inject(DrawerService);
   private readonly accountsService = inject(AccountsService);
   private readonly transactionsService = inject(TransactionsService);
 
   // Data
+  protected readonly minDate = new Date();
+  protected readonly currentMonthIndex = new Date().getMonth();
   protected readonly accounts = this.accountsService.getUserAccounts();
   protected readonly currency = this.accountsService.getDefaultCurrency();
+  protected readonly actualMonth = MONTHS_ENUM[this.currentMonthIndex].value;
   protected readonly transactions = this.transactionsService.getUserTransactions();
-  protected readonly spendingLimit = this.accountsService.getMaximumSpendingLimit();
-
-  // Signals
-  protected readonly isSubmittingEditLimitForm = signal<boolean>(false);
-  protected readonly isEditSpendingLimitFormOpen = signal<boolean>(false);
-  protected readonly maximumSpendingLimit = this.accountsService.getMaximumSpendingLimit();
+  protected readonly monthlySpendingLimit = this.accountsService.getMonthlySpendingLimit();
 
   // States
+  protected readonly currentMonth = signal<string>(this.actualMonth);
+
+  // Computed
   protected readonly isDataLoading = computed(
     () => this.accounts.isLoading() || this.transactions.isLoading(),
   );
-
-  // Computed
-  protected readonly currentMonth = computed(() => MONTHS_ENUM[new Date().getMonth()].value);
 
   protected readonly accountsCount = computed(() => {
     if (this.accounts.error()) return '0';
@@ -111,35 +124,18 @@ export class Dashboard {
     return Math.min(100, Math.max(0, Math.round(ratio)));
   });
 
-  // Forms
-  protected readonly initialLimitFormState = { amount: this.spendingLimit };
-  protected editLimitFormModel = signal<TransactionLimitSchema>(this.initialLimitFormState);
-  protected editLimitForm = form(this.editLimitFormModel, TransactionLimitValidationSchema);
-
   // Methods
-  protected submitEditLimitForm(event: Event) {
-    event.preventDefault();
-
-    const { amount } = this.editLimitFormModel();
-    this.isEditSpendingLimitFormOpen.set(false);
-  }
-
-  protected resetEditLimitForm() {
-    this.editLimitForm().reset();
-    this.isSubmittingEditLimitForm.set(false);
-    this.editLimitFormModel.set(this.initialLimitFormState);
-  }
-
-  protected onEditSpendingLimit() {
-    this.isEditSpendingLimitFormOpen.set(true);
-  }
-
   protected onMonthChange(month: string) {
     console.log('Month changed:', month);
+    this.currentMonth.set(month);
   }
 
-  protected handleCloseForm(source: 'icon' | 'overlay') {
-    this.isEditSpendingLimitFormOpen.set(false);
+  protected onSpendingLimitClick() {
+    this.toastService.show({
+      variant: 'info',
+      title: 'Edit In Settings!',
+      details: 'Please visit the settings page to edit your monthly spending limit.',
+    });
   }
 
   // Helper Methods

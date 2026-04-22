@@ -3,9 +3,11 @@ import { CookiesAuthGuard } from '@common/guards';
 import { AccountService } from './services/account.service';
 import { CategoriesService } from './services/categories.service';
 import { TransactionService } from './services/transaction.service';
+import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
 import { AccountController } from './controllers/account.controller';
 import { UserService } from '@modules/identity/services/user.service';
 import { AccountRepository } from './repositories/account.repository';
+import { CategoriesCache } from '@modules/wallet/cache/categories.cache';
 import { CategoriesController } from './controllers/categories.controller';
 import { CategoriesRepository } from './repositories/categories.repository';
 import { CookiesService } from '@modules/identity/services/cookies.service';
@@ -14,13 +16,15 @@ import { TransactionRepository } from './repositories/transaction.respository';
 import { UserRepository } from '@modules/identity/repositories/user.repository';
 
 @Module({
-    exports: [CategoriesService],
+    exports: [CategoriesService, CategoriesCache],
     controllers: [AccountController, TransactionController, CategoriesController],
     providers: [
         UserService,
+        AccountsCache,
         CookiesService,
         UserRepository,
         AccountService,
+        CategoriesCache,
         CookiesAuthGuard,
         AccountRepository,
         CategoriesService,

@@ -7,6 +7,7 @@ export interface Account {
   id: string;
   name: string;
   balance: number;
+  holderId: string;
   createdAt: string;
   updatedAt: string;
   type: AccountType;

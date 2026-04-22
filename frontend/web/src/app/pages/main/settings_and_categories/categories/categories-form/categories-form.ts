@@ -7,10 +7,10 @@ import { form } from '@angular/forms/signals';
 import { CategoriesService } from '@api/categories.service';
 import { Component, inject, input, output, signal } from '@angular/core';
 import {
+  categoryFormValidationSchema,
   CategorySchema,
   categoryTabItems,
   initialCategoryFormState,
-  categoryFormValidationSchema,
 } from './categories-form.types';
 import { CategoryVariant } from '@global/types';
 
@@ -28,18 +28,15 @@ export class CategoriesForm {
 
   // SIGNALS
   protected isSubmittingCategoriesForm = signal<boolean>(false);
-
-  // SERVICES
-  private readonly toastService = inject(ToastService);
-  private readonly categoriesService = inject(CategoriesService);
-
   // DATA
   protected readonly categoryTabItems = categoryTabItems;
-  private readonly categories$ = this.categoriesService.getUserCategories();
-
   // FORM
   protected categoryFormModel = signal<CategorySchema>(initialCategoryFormState);
   protected categoryForm = form(this.categoryFormModel, categoryFormValidationSchema);
+  // SERVICES
+  private readonly toastService = inject(ToastService);
+  private readonly categoriesService = inject(CategoriesService);
+  private readonly categories$ = this.categoriesService.getUserCategories();
 
   // METHODS
   handleCloseForm(source: 'icon' | 'overlay') {

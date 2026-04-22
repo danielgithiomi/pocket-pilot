@@ -19,6 +19,10 @@
       [width]="logoDimensions.width"
       [height]="logoDimensions.height"
       class="drawer-logo dark:invert-100"
+      [ngClass]="{
+        'invert-0!': themeService.theme() === 'LIGHT',
+        'invert-100!': themeService.theme() === 'DARK',
+      }"
     />
 
     @if (isMobile()) {
@@ -40,7 +44,7 @@
           [link]="link"
           [isDrawerExpanded]="drawerOpen()"
           (navLinkClicked)="linkClicked.emit()"
-        ></nav-link>
+        />
       }
     </div>
 
@@ -52,7 +56,7 @@
           [link]="link"
           [isDrawerExpanded]="drawerOpen()"
           (navLinkClicked)="linkClicked.emit()"
-        ></nav-link>
+        />
       }
     </div>
   </div>

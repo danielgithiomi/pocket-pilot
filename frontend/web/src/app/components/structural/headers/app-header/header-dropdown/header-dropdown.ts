@@ -6,7 +6,7 @@ import { AuthService } from '@api/auth.service';
 import { Button } from '@components/ui/atoms/button';
 import { DrawerService } from '@infrastructure/services';
 import { Component, inject, signal } from '@angular/core';
-import { LucideAngularModule, Bell, Settings2, LogOut, UserLock } from 'lucide-angular';
+import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-angular';
 
 @Component({
   selector: 'header-dropdown',
@@ -65,7 +65,7 @@ import { LucideAngularModule, Bell, Settings2, LogOut, UserLock } from 'lucide-a
           [isLoading]="isLogoutLoading()"
         >
           <div class="w-full flex flex-row items-center justify-center gap-3">
-            <lucide-icon [img]="LogOut" [name]="LogOut" class="atom-icon" [size]="iconSize" />
+            <lucide-icon [img]="LogOut" [name]="LogOut" [size]="iconSize" />
             <p class="text-white">Logout</p>
           </div>
         </atom-button>

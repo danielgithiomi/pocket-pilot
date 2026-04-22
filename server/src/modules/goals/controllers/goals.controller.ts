@@ -5,7 +5,8 @@ import { type User } from '@modules/identity/dto/user.dto';
 import { Public, Summary, UserInRequest } from '@common/decorators';
 import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
+import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 
 @Controller('goals')
 @UseGuards(CookiesAuthGuard)
@@ -13,6 +14,9 @@ export class GoalsController {
     constructor(private readonly goalsService: GoalsService) {}
 
     @Get('categories')
+    @CacheTTL(0)
+    @CacheKey('goal:categories')
+    @UseInterceptors(CacheInterceptor)
     @Public()
     @HttpCode(200)
     @ApiCookieAuth('access_token')
