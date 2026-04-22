@@ -3,8 +3,8 @@
     <h1 class="page-title">Dashboard</h1>
   </div>
 
-  <div class="page-container flex-1 flex flex-col space-y-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+  <div class="page-container flex-1 flex flex-col space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       <!-- Accounts -->
       <dashboard-card
         id="accounts"
@@ -21,8 +21,8 @@
         title="Transactions"
         [icon]="transactionIcon"
         [value]="transactionsCount()"
-        subtitle="Transactions made this month"
         [isLoading]="isDataLoading()"
+        subtitle="Transactions made this month"
       />
 
       <!-- Net Cash Flow -->
@@ -81,7 +81,7 @@
       </dashboard-card>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       <!-- Ratio Card -->
       <dashboard-card
         id="ratio"
