@@ -7,7 +7,7 @@
     @apply relative shrink-0 grid place-items-center size-13 rounded-full bg-(--body-background) overflow-hidden;
 
     .delete-wrapper {
-      @apply absolute hidden group-hover:grid inset-0 place-items-center bg-(--primary) cursor-pointer! transition-all duration-300;
+      @apply absolute hidden group-hover/bill-item:grid inset-0 place-items-center bg-(--primary) cursor-pointer! transition-all duration-300;
     }
   }
 

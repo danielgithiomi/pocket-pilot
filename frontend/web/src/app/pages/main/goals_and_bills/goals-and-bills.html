@@ -51,7 +51,7 @@
           <div
             class="card-content no-scrollbar"
             [ngClass]="{
-              'grid place-items-center p-0!': goalCount == 0,
+              'grid! place-items-center! p-0!': goalCount == 0,
             }"
           >
             @if (hasError) {
@@ -109,7 +109,7 @@
           <div
             class="card-content no-scrollbar"
             [ngClass]="{
-              'grid place-items-center p-0!': billCount == 0,
+              'grid! place-items-center! p-0!': billCount == 0,
             }"
           >
             @if (hasError) {
