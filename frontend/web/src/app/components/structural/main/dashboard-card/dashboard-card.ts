@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { LucideIconData, LucideAngularModule } from 'lucide-angular';
 
@@ -6,7 +6,7 @@ import { LucideIconData, LucideAngularModule } from 'lucide-angular';
   selector: 'dashboard-card',
   styleUrl: './dashboard-card.css',
   templateUrl: './dashboard-card.html',
-  imports: [LucideAngularModule, CommonModule],
+  imports: [LucideAngularModule, CommonModule, NgClass],
 })
 export class DashboardCard {
   value = input<string>();
@@ -15,6 +15,7 @@ export class DashboardCard {
   title = input.required<string>();
   iconClassName = input<string>('');
   subtitle = input.required<string>();
+  wrapperClassName = input<string>('');
   isLoading = input.required<boolean>();
   icon = input.required<LucideIconData>();
 

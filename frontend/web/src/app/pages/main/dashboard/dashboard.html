@@ -3,8 +3,8 @@
     <h1 class="page-title">Dashboard</h1>
   </div>
 
-  <div class="page-container flex-1 flex flex-col space-y-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  <div class="page-container flex-1 flex flex-col space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       <!-- Accounts -->
       <dashboard-card
         id="accounts"
@@ -81,7 +81,7 @@
       </dashboard-card>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       <!-- Ratio Card -->
       <dashboard-card
         id="ratio"
@@ -121,7 +121,11 @@
         class="col-span-1"
         [isLoading]="false"
         [icon]="calendarIcon"
+        wrapperClassName="px-2!"
         subtitle="Your monthly spending calendar"
+        [ngClass]="{
+          'md:col-span-2! xl:col-span-1!': !drawerService.isDrawerCollapsed(),
+        }"
       >
         <div custom-content class="w-full grid place-items-center">
           <ejs-calendar [min]="minDate" />

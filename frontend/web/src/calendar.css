@@ -23,7 +23,7 @@
 
   .e-prev,
   .e-next {
-    @apply size-9! border-primary! cursor-pointer! shadow-none!;
+    @apply border-primary! cursor-pointer! shadow-none!;
   }
 
   .e-prev:hover,

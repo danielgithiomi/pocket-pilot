@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
 import { MONTHS_ENUM } from '@global/constants';
@@ -5,6 +6,7 @@ import { RatioSlider } from '@atoms/ratio-slider';
 import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
+import { DrawerService } from '@infrastructure/services';
 import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
@@ -26,13 +28,14 @@ import {
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
   imports: [
+    NgClass,
     RatioSlider,
     ProgressBar,
     CostAnalysis,
     DashboardCard,
     CalendarModule,
     LucideAngularModule,
-  ],
+],
 })
 export class Dashboard {
   // Icons
@@ -47,6 +50,7 @@ export class Dashboard {
 
   // Services
   private readonly toastService = inject(ToastService);
+  protected readonly drawerService = inject(DrawerService);
   private readonly accountsService = inject(AccountsService);
   private readonly transactionsService = inject(TransactionsService);
 
