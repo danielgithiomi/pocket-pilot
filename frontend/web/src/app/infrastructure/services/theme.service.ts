@@ -14,7 +14,7 @@ export class ThemeService {
 
   private systemMediaQuery: MediaQueryList | null = null;
   private readonly currentTheme = signal<Theme>(
-    this.authService.user()?.userPreferences?.preferredTheme as Theme,
+    (this.authService.user()?.userPreferences?.preferredTheme as Theme) || 'system',
   );
 
   readonly theme = computed(() => this.currentTheme());
@@ -92,7 +92,7 @@ export class ThemeService {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       root.classList.add(prefersDark ? 'dark' : 'light');
     } else {
-      root.classList.add(theme.toLowerCase());
+      root.classList.add(theme?.toLowerCase() || 'system');
     }
   }
 

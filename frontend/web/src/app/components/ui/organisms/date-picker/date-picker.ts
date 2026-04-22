@@ -54,10 +54,10 @@ export class DatePicker {
 
     const date = new Date(value);
     if (isNaN(date.getTime())) {
-      console.log(date.getTime())
-      console.log('returning empty string')
+      console.log(date.getTime());
+      console.log('returning empty string');
       return '';
-    };
+    }
 
     return formatInputFieldDate(date.toISOString());
   });
@@ -96,7 +96,7 @@ export class DatePicker {
   onClear(event: Event): void {
     event.stopPropagation();
     this.clearOutput.emit();
-    // this.formField()().controlValue.set('');
+    this.formField()().controlValue.set('');
   }
 
   onCalendarClick(event: Event): void {

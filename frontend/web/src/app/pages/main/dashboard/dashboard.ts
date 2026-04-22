@@ -7,11 +7,13 @@ import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
 import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
 import {
   Wallet,
   HandCoins,
   PiggyBank,
+  Calendar1,
   TrendingUp,
   TrendingDown,
   ArrowLeftRight,
@@ -23,13 +25,21 @@ import {
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
-  imports: [RatioSlider, ProgressBar, CostAnalysis, DashboardCard, LucideAngularModule],
+  imports: [
+    RatioSlider,
+    ProgressBar,
+    CostAnalysis,
+    DashboardCard,
+    CalendarModule,
+    LucideAngularModule,
+  ],
 })
 export class Dashboard {
   // Icons
   protected readonly walletIcon = Wallet;
   protected readonly ratioIcon = PiggyBank;
   protected readonly incomeIcon = TrendingUp;
+  protected readonly calendarIcon = Calendar1;
   protected readonly handCoinsIcon = HandCoins;
   protected readonly expenseIcon = TrendingDown;
   protected readonly transactionIcon = ArrowLeftRight;
@@ -41,6 +51,7 @@ export class Dashboard {
   private readonly transactionsService = inject(TransactionsService);
 
   // Data
+  protected readonly minDate = new Date();
   protected readonly accounts = this.accountsService.getUserAccounts();
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly transactions = this.transactionsService.getUserTransactions();

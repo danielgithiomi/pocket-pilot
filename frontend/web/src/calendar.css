@@ -1,0 +1,85 @@
+.e-calendar {
+  @apply w-full! bg-alternate-background!;
+}
+
+.e-calendar-content-table {
+  @apply pt-2! pb-4!;
+}
+
+.e-title {
+  @apply font-bold! text-primary-text!;
+}
+
+.e-title:focus {
+  @apply shadow-none! bg-loader-primary!;
+}
+
+.e-cell {
+  @apply m-0! p-0!;
+}
+
+.e-icon-container {
+  @apply flex! flex-row! gap-2! items-center! justify-center!;
+
+  .e-prev,
+  .e-next {
+    @apply size-9! border-primary! cursor-pointer! shadow-none!;
+  }
+
+  .e-prev:hover,
+  .e-next:hover {
+    @apply bg-body-background!;
+  }
+
+  .e-prev:focus,
+  .e-next:focus {
+    @apply shadow-none!;
+  }
+
+  .e-icons {
+    @apply text-primary!;
+  }
+}
+
+.e-week-header tr th {
+  @apply font-semibold! text-primary!;
+}
+
+span.e-day {
+  @apply text-primary-text! hover:bg-body-background! border-none!;
+}
+
+.e-today,
+.e-selected,
+span.e-day:focus,
+.e-cell.e-focused-cell span.e-day {
+  @apply shadow-none!;
+}
+
+.e-other-month span.e-day {
+  @apply text-muted-text!;
+}
+
+.e-focused-date span.e-day {
+  @apply bg-loader-primary!;
+}
+
+.e-today span.e-day {
+  @apply bg-warning! text-black!;
+}
+
+.e-focused-date.e-today span.e-day {
+  color: var(--primary-text) !important;
+  background-color: var(--loader-primary) !important;
+}
+
+.e-selected span.e-day {
+  font-weight: 600 !important;
+  color: var(--white) !important;
+  border: 1px solid var(--primary-text) !important;
+  background-color: var(--primary) !important;
+}
+
+.e-footer-container {
+  @apply hidden!;
+}
