@@ -7,16 +7,18 @@ import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
-import { Component, computed, inject } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
 import {
   Wallet,
   HandCoins,
   PiggyBank,
   Calendar1,
+  CirclePile,
   TrendingUp,
+  CircleGauge,
   TrendingDown,
   ArrowLeftRight,
   BrickWallShield,
@@ -35,12 +37,14 @@ import {
     DashboardCard,
     CalendarModule,
     LucideAngularModule,
-],
+  ],
 })
 export class Dashboard {
   // Icons
   protected readonly walletIcon = Wallet;
   protected readonly ratioIcon = PiggyBank;
+  protected readonly pilesIcon = CirclePile;
+  protected readonly gaugeIcon = CircleGauge;
   protected readonly incomeIcon = TrendingUp;
   protected readonly calendarIcon = Calendar1;
   protected readonly handCoinsIcon = HandCoins;
@@ -56,18 +60,20 @@ export class Dashboard {
 
   // Data
   protected readonly minDate = new Date();
+  protected readonly currentMonthIndex = new Date().getMonth();
   protected readonly accounts = this.accountsService.getUserAccounts();
   protected readonly currency = this.accountsService.getDefaultCurrency();
+  protected readonly actualMonth = MONTHS_ENUM[this.currentMonthIndex].value;
   protected readonly transactions = this.transactionsService.getUserTransactions();
   protected readonly monthlySpendingLimit = this.accountsService.getMonthlySpendingLimit();
 
   // States
+  protected readonly currentMonth = signal<string>(this.actualMonth);
+
+  // Computed
   protected readonly isDataLoading = computed(
     () => this.accounts.isLoading() || this.transactions.isLoading(),
   );
-
-  // Computed
-  protected readonly currentMonth = computed(() => MONTHS_ENUM[new Date().getMonth()].value);
 
   protected readonly accountsCount = computed(() => {
     if (this.accounts.error()) return '0';
@@ -121,6 +127,7 @@ export class Dashboard {
   // Methods
   protected onMonthChange(month: string) {
     console.log('Month changed:', month);
+    this.currentMonth.set(month);
   }
 
   protected onSpendingLimitClick() {

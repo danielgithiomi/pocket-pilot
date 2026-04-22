@@ -3,17 +3,23 @@ import { normalizeCategoryName } from '@global/utils';
 import { AccountsService } from '@api/accounts.service';
 import { capitalize, formatCurrency } from '@libs/utils';
 import { CategoriesService } from '@api/categories.service';
+import { LucideAngularModule, RotateCcw } from 'lucide-angular';
 import { TransactionsService } from '@api/transactions.service';
 import { COLOR_MAP, CostAnalysisCategory } from './cost-analysis.types';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 
 @Component({
+  imports: [LucideAngularModule],
   styleUrl: './cost-analysis.css',
   selector: 'widget-cost-analysis',
   templateUrl: './cost-analysis.html',
 })
 export class CostAnalysis {
+  // ICONS
+  protected readonly reset = RotateCcw;
+
   // INPUTS
+  readonly actualMonth = input.required<string>();
   readonly currentMonth = input.required<string>();
   readonly totalMonthlySpending = input.required<number>();
   protected readonly allowAnimation = input<boolean>(true);
@@ -22,9 +28,11 @@ export class CostAnalysis {
 
   // OUTPUTS
   protected readonly monthChange = output<string>();
+  protected readonly resetMonthEvent = output<void>();
 
   // STATES
   private _hasInitialized = false;
+  protected readonly isMonthChanged = signal<boolean>(false);
   private readonly _animatedPercentages = signal<Map<string, number>>(new Map());
 
   // SERVICES
@@ -132,7 +140,16 @@ export class CostAnalysis {
     }));
   });
 
+  // METHODS
+  onMonthChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.isMonthChanged.set(true);
+    this.monthChange.emit(select.value);
+  }
+
   constructor() {
+    effect(() => this.isMonthChanged.set(this.currentMonth() !== this.actualMonth()));
+
     effect(() => {
       const animate = this.allowAnimation();
       const duration = this.animationDuration();
@@ -162,11 +179,6 @@ export class CostAnalysis {
         this.animateSegments(categories, duration);
       }
     });
-  }
-
-  onMonthChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.monthChange.emit(select.value);
   }
 
   private animateSegments(

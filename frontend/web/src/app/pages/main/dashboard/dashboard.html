@@ -4,6 +4,8 @@
   </div>
 
   <div class="page-container flex-1 flex flex-col space-y-6">
+    <p>Your effortless financial <span class="font-semibold text-primary">command center</span></p>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       <!-- Accounts -->
       <dashboard-card
@@ -86,7 +88,7 @@
       <dashboard-card
         id="ratio"
         class="col-span-1"
-        [icon]="ratioIcon"
+        [icon]="gaugeIcon"
         [isLoading]="false"
         title="Spending Ratio"
         subtitle="Your monthly spending so far."
@@ -135,7 +137,7 @@
       <!-- Analysis Card -->
       <dashboard-card
         id="analysis"
-        [icon]="ratioIcon"
+        [icon]="pilesIcon"
         [isLoading]="false"
         title="Spending Analysis"
         class="col-span-1 md:col-span-2"
@@ -146,9 +148,11 @@
             <div class="analysis-loader"></div>
           } @else {
             <widget-cost-analysis
+              [actualMonth]="actualMonth"
               [currentMonth]="currentMonth()"
               (monthChange)="onMonthChange($event)"
               [totalMonthlySpending]="totalExpenses()"
+              (resetMonthEvent)="onMonthChange(actualMonth)"
             />
           }
         </div>

@@ -20,6 +20,10 @@
   display: flex;
   justify-content: end;
   margin-bottom: 0.75rem;
+
+  .header-content {
+    @apply flex flex-row gap-2 items-center;
+  }
 }
 
 .dropdown-wrapper {
