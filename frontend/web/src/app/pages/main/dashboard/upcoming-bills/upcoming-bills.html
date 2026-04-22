@@ -4,17 +4,34 @@
   [isLoading]="false"
   title="Upcoming Bills"
   [iconSize]="iconSize()"
-  wrapperClassName="px-2!"
   subtitle="Bills that are soon due."
 >
   <div custom-content class="min-h-[250px] w-full">
     @if (isFetchingBills()) {
-      <!-- <div class="dashboard-card-loader"></div> -->
-       @for (i of [1, 2, 3]; track i) {
-         <bill-item-skeleton />
-       }
+      @for (i of [1, 2, 3]; track i) {
+        <bill-item-skeleton />
+      }
     } @else {
-      <div>Content goes here</div>
+      <!-- Loaded Values -->
+      @let bills = upcomingBills();
+      @let hasError = bills$.error();
+      @let zeroBills = bills.length === 0;
+
+      <div [ngClass]="{ 'w-full! h-full! grid! place-items-center!': zeroBills || hasError }">
+        @if (hasError) {
+          <fetch-error message="Failed to load bills" messageClass="text-xs" />
+        } @else if (zeroBills) {
+          <no-data
+            messageClass="text-xs"
+            animationDimensions="180px"
+            message="No bills due within the next week!"
+          />
+        } @else {
+          @for (bill of bills; track bill.id) {
+            <bill-item [billItem]="bill" />
+          }
+        }
+      </div>
     }
   </div>
 </dashboard-card>
