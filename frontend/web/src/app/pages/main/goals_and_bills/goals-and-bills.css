@@ -18,7 +18,7 @@
     }
 
     .card-content {
-      @apply flex-1 p-2;
+      @apply flex-1 p-1 overflow-y-scroll flex flex-col space-y-2;
     }
   }
 }

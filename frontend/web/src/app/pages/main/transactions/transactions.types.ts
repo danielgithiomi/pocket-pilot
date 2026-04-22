@@ -34,6 +34,17 @@ export const transactionFormValidationSchema = schema<TransactionSchema>((root) 
 
   required(root.amount, { message: 'The amount is required field!' });
   min(root.amount, 1, { message: 'The minimum transaction amount must be at least 1!' });
+  validate(root.amount, (context) => {
+    const value = context.value();
+    if (value === null) return undefined;
+
+    const asString = value.toString();
+    const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
+
+    return isValid
+      ? undefined
+      : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
+  });
 
   validate(root.type, (context) => {
     const type = context.value();
@@ -88,6 +99,6 @@ export const tabListItems: TabListItem[] = [
   },
   {
     value: 'transfers',
-    label: 'Transfers'
-  }
+    label: 'Transfers',
+  },
 ];
