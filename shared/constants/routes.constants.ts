@@ -10,6 +10,9 @@ export const WEB_ROUTES = {
   onboarding: "onboarding",
   register: "auth/register",
   transactions: "transactions",
+
+  // dynamic routes
+  accountDetails: "accounts/:id",
 } satisfies WebRoutes;
 
 export interface WebRoutes {
@@ -24,4 +27,7 @@ export interface WebRoutes {
   dashboard: string;
   onboarding: string;
   transactions: string;
+
+  // dynamic routes
+  accountDetails: string;
 }

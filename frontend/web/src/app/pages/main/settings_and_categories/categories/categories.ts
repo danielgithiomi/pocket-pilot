@@ -7,7 +7,7 @@ import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, output } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
-import { CategoryLength, FormattedCategories } from '../settings_and_categories.types';
+import { CategoryLength, FormattedCategories } from '../settings-and-categories.types';
 
 @Component({
   selector: 'categories',

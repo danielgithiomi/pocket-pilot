@@ -1,5 +1,9 @@
 <section [id]="accountId()">
-  <div class="container" (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)">
+  <div
+    class="container"
+    [routerLink]="['/accounts', id()]"
+    (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)"
+  >
     <div class="card">
       <div class="header">
         <img

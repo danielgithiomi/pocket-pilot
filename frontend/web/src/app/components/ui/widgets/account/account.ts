@@ -1,4 +1,5 @@
 import { formatCurrency } from '@libs/utils';
+import { RouterLink } from '@angular/router';
 import { ImageDimensions } from '@libs/types';
 import { AccountsService } from '@api/accounts.service';
 import { ThemeService } from '@infrastructure/services';
@@ -18,7 +19,7 @@ import {
   selector: 'account-card',
   styleUrl: './account.css',
   templateUrl: './account.html',
-  imports: [NgOptimizedImage, LucideAngularModule, NgClass],
+  imports: [NgOptimizedImage, LucideAngularModule, NgClass, RouterLink],
 })
 export class Account {
   // Inputs
