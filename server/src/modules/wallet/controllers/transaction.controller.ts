@@ -6,7 +6,7 @@ import { TransactionService } from '../services/transaction.service';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
-    Transaction,
+    TransactionDto,
     CreateTransactionDto,
     TransactionWithAccount,
     TransactionsResponseDto,
@@ -77,11 +77,12 @@ export class TransactionController {
     @ApiResponse({
         status: 200,
         isArray: true,
-        type: Transaction,
+        type: TransactionDto,
         description: 'Returns all transactions for the specific account.',
     })
     async getTransactionsByAccountId(@Param('accountId') accountId: string): Promise<TransactionsResponseDto> {
-        const accountTransactions: Transaction[] = await this.transactionService.getTransactionsByAccountId(accountId);
+        const accountTransactions: TransactionDto[] =
+            await this.transactionService.getTransactionsByAccountId(accountId);
 
         return {
             count: accountTransactions.length,

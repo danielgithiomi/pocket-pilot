@@ -5,7 +5,7 @@ import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { denormalizeCategoryName, formatEnumForFrontend } from '@libs/utils';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { Transaction, CreateTransactionDto, TransactionWithAccount } from '../dto/transaction.dto';
+import { TransactionDto, CreateTransactionDto, TransactionWithAccount } from '../dto/transaction.dto';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class TransactionService {
         return plainToInstance(TransactionWithAccount, transactions);
     }
 
-    async getTransactionsByAccountId(accountId: string): Promise<Transaction[]> {
+    async getTransactionsByAccountId(accountId: string): Promise<TransactionDto[]> {
         await this.confirmAccountExists(accountId);
 
         return this.db.transaction.findMany({
