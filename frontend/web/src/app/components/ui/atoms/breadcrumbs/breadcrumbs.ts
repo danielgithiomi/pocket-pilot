@@ -8,7 +8,7 @@ import { LucideAngularModule, ChevronRight, LucideIconData } from 'lucide-angula
   selector: 'breadcrumbs',
   imports: [RouterLink, NgClass, LucideAngularModule],
   template: `
-    <div aria-label="navigation-breadcrumb" class="flex my-2 flex-row items-center gap-1">
+    <div aria-label="navigation-breadcrumb" class="flex flex-row items-center gap-1">
       <lucide-angular
         [img]="icon()"
         [size]="iconSide"
@@ -21,8 +21,8 @@ import { LucideAngularModule, ChevronRight, LucideIconData } from 'lucide-angula
         <div>
           <a
             [routerLink]="breadcrumb.route"
-            class="text-sm italic text-muted-text"
-            [ngClass]="{ 'text-primary underline underline-offset-1': isLast }"
+            [ngClass]="{ 'text-primary': isLast }"
+            class="text-sm italic text-muted-text hover:underline underline-offset-1"
           >
             {{ breadcrumb.label }}
           </a>
@@ -45,7 +45,7 @@ export class Breadcrumbs {
   protected readonly breadcrumbArrow = ChevronRight;
 
   // INPUT
-  readonly iconSide: number = 18;
+  readonly iconSide: number = 17;
   readonly icon = input.required<LucideIconData>();
   readonly breadcrumbItems = input.required<BreadcrumbInput[]>();
 

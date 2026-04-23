@@ -35,6 +35,10 @@ export class AccountsService {
     return this.accountsResource.accountTypes;
   }
 
+  getAccountWithTransactionsById(accountId: string) {
+    return this.accountsResource.accountWithTransactions(accountId);
+  }
+
   createNewAccount(payload: CreateAccountRequest) {
     return this.accountsMutation.createAccount(payload).pipe(
       catchError((error: IStandardError) => {

@@ -4,6 +4,13 @@
   </div>
 
   <div class="page-container">
-    <breadcrumbs [breadcrumbItems]="breadcrumbItems()" [icon]="breadcrumbIcon" />
+    @if (isLoadingResources()) {
+      <div class="flex flex-row items-center gap-2 mt-2">
+        <div class="skeleton size-5 rounded-full"></div>
+        <div class="skeleton w-1/5 h-4"></div>
+      </div>
+    } @else {
+      <breadcrumbs [breadcrumbItems]="breadcrumbItems()" [icon]="breadcrumbIcon" />
+    }
   </div>
 </section>
