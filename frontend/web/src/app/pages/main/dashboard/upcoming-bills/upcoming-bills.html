@@ -4,7 +4,7 @@
   [isLoading]="false"
   title="Upcoming Bills"
   [iconSize]="iconSize()"
-  subtitle="Bills that are soon due."
+  subtitle="Your bills that are due soon."
 >
   <div custom-content class="min-h-[250px] w-full">
     @if (isFetchingBills()) {
@@ -24,7 +24,7 @@
           <no-data
             messageClass="text-xs"
             animationDimensions="200px"
-            message="No bills due within the next week!"
+            message="Good news - No bills due anytime soon!"
           />
         } @else {
           @for (bill of bills; track bill.id) {

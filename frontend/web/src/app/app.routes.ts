@@ -42,11 +42,11 @@ export const routes: Routes = [
     component: MainLayout,
     canMatch: [AuthGuard, OnboardedGuard],
     children: [
-      {
-        path: WEB_ROUTES.home,
-        title: 'Home | Pocket Pilot',
-        component: NotFound,
-      },
+      // {
+      //   path: WEB_ROUTES.home,
+      //   title: 'Home | Pocket Pilot',
+      //   component: NotFound,
+      // },
       {
         path: WEB_ROUTES.dashboard,
         title: 'Dashboard | Pocket Pilot',

@@ -27,7 +27,7 @@
       @if (hasError) {
         <fetch-error message="Failed to retrieve your transactions" />
       } @else if (count === 0) {
-        <no-data message="No transactions found!" />
+        <no-data message="You have no transactions yet! Log one today." messageClass="text-sm" />
       } @else {
         <div>
           <p class="mb-6">

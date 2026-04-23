@@ -1,11 +1,11 @@
 import { DrawerNavigationLink } from '@libs/types';
 
 export const DrawerNavigationLinks: DrawerNavigationLink[] = [
-  {
-    icon: 'home',
-    name: 'Home',
-    path: '/home',
-  },
+  // {
+  //   icon: 'home',
+  //   name: 'Home',
+  //   path: '/home',
+  // },
   {
     icon: 'dashboard',
     name: 'Dashboard',

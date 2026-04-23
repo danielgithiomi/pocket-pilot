@@ -1,6 +1,6 @@
 export const WEB_ROUTES = {
   root: "",
-  home: "home",
+  // home: "home",
   goals: "goals",
   profile: "profile",
   login: "auth/login",
@@ -13,8 +13,8 @@ export const WEB_ROUTES = {
 } satisfies WebRoutes;
 
 export interface WebRoutes {
+  // home: string;
   root: string;
-  home: string;
   goals: string;
   login: string;
   profile: string;
