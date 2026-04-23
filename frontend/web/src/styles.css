@@ -70,7 +70,7 @@
   --alternate-white: #f0f2f6;
 
   /* Alternative Colors */
-  --muted: #e5e7eb;
+  --muted: #d9d9d9;
   --jet-black: #272d2d;
   --jungle-teal: #5b9279;
   --torch-red: #fb2b37;
@@ -175,7 +175,7 @@
   --color-income: var(--income);
   --color-expense: var(--expense);
   --color-transfer: var(--transfer);
-  --color-muted: var(--muted-text);
+  --color-muted: var(--muted);
 
   /* Raw Palette */
   --color-dark: var(--dark);
@@ -192,7 +192,6 @@
   --color-primary-text: var(--primary-text);
   --color-alternate-text: var(--alternate-text);
   --color-inverted-text: var(--inverted-text);
-  --color-muted: var(--muted);
   --color-muted-text: var(--muted-text);
 }
 
@@ -348,6 +347,10 @@ main {
 
       .page-title {
         @apply text-2xl lg:text-3xl font-semibold;
+      }
+
+      .page-subtitle {
+        @apply text-base;
       }
     }
 
