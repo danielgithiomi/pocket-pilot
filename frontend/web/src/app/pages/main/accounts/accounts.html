@@ -69,55 +69,58 @@
   }
 </section>
 
-<organism-form
-  id="accounts"
-  title="Add Account"
-  [class.hidden]="!isFormOpen()"
-  description="Create a new account"
-  (closeForm)="handleCloseForm($event)"
->
-  @let types = accountTypes.value()?.data;
-  <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">
-    <atom-input
-      id="name"
-      type="text"
-      [inverted]="true"
-      autocomplete="name"
-      label="Account Name"
-      placeholder="Eg: Expenditure"
-      [formField]="accountsForm.name"
-      (clearOutput)="accountsForm.name().controlValue.set('')"
-    />
+@let accountTypeHasError = !!accountTypes.error();
+@if (!accountTypeHasError) {
+  <organism-form
+    id="accounts"
+    title="Add Account"
+    [class.hidden]="!isFormOpen()"
+    description="Create a new account"
+    (closeForm)="handleCloseForm($event)"
+  >
+    @let types = accountTypes.value()?.data;
+    <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">
+      <atom-input
+        id="name"
+        type="text"
+        [inverted]="true"
+        autocomplete="name"
+        label="Account Name"
+        placeholder="Eg: Expenditure"
+        [formField]="accountsForm.name"
+        (clearOutput)="accountsForm.name().controlValue.set('')"
+      />
 
-    <atom-select
-      id="type"
-      [inverted]="true"
-      label="Account Type"
-      [formField]="accountsForm.type"
-      placeholder="Select an account type"
-      [options]="types || [{ value: '', label: 'No account types found' }]"
-    />
-  </form>
+      <atom-select
+        id="type"
+        [inverted]="true"
+        label="Account Type"
+        [formField]="accountsForm.type"
+        placeholder="Select an account type"
+        [options]="types || [{ value: '', label: 'No account types found' }]"
+      />
+    </form>
 
-  <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
-    <atom-button
-      type="button"
-      [inverted]="true"
-      label="Reset Form"
-      variant="secondary"
-      form="accounts-form"
-      id="reset-account-form"
-      (clicked)="resetAccountsForm()"
-      [disabled]="!accountsForm().dirty() || isSubmitting()"
-    />
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      <atom-button
+        type="button"
+        [inverted]="true"
+        label="Reset Form"
+        variant="secondary"
+        form="accounts-form"
+        id="reset-account-form"
+        (clicked)="resetAccountsForm()"
+        [disabled]="!accountsForm().dirty() || isSubmitting()"
+      />
 
-    <atom-button
-      type="submit"
-      form="accounts-form"
-      label="Create A New Account"
-      id="submit-account-form"
-      [isLoading]="isSubmitting()"
-      [disabled]="accountsForm().invalid() || isSubmitting()"
-    />
-  </div>
-</organism-form>
+      <atom-button
+        type="submit"
+        form="accounts-form"
+        label="Create A New Account"
+        id="submit-account-form"
+        [isLoading]="isSubmitting()"
+        [disabled]="accountsForm().invalid() || isSubmitting()"
+      />
+    </div>
+  </organism-form>
+}
