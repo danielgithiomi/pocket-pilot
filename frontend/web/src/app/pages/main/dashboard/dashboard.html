@@ -4,7 +4,7 @@
   </div>
 
   <div class="page-container flex-1 flex flex-col space-y-6">
-    <p>Your effortless financial <span class="font-semibold text-primary">command center</span></p>
+    <p>Your effortless financial <span class="font-semibold text-primary">command center!</span></p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       <!-- Accounts -->
@@ -125,9 +125,7 @@
         [icon]="calendarIcon"
         wrapperClassName="px-2!"
         subtitle="Your monthly spending calendar"
-        [ngClass]="{
-          'md:col-span-2! xl:col-span-1!': !drawerService.isDrawerCollapsed(),
-        }"
+        [ngClass]="{ 'md:col-span-2! xl:col-span-1!': !drawerService.isDrawerCollapsed() }"
       >
         <div custom-content class="w-full grid place-items-center">
           <ejs-calendar [min]="minDate" />

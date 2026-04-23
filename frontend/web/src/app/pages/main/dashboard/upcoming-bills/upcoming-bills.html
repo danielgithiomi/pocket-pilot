@@ -14,7 +14,7 @@
     } @else {
       <!-- Loaded Values -->
       @let bills = upcomingBills();
-      @let hasError = bills$.error();
+      @let hasError = !!bills$.error();
       @let zeroBills = bills.length === 0;
 
       <div [ngClass]="{ 'w-full! h-full! grid! place-items-center!': zeroBills || hasError }">

@@ -33,13 +33,14 @@
       </div>
     </div>
   } @else {
+    @let hasError = !!accountsWithCount.error();
     @let response = accountsWithCount.value()?.data;
     @let count = response?.count;
     <div
       class="page-container flex-1"
-      [ngClass]="{ 'grid place-items-center': count === 0 || accountsWithCount.error() }"
+      [ngClass]="{ 'grid place-items-center': count === 0 || hasError }"
     >
-      @if (accountsWithCount.error()) {
+      @if (hasError) {
         <fetch-error message="Failed to retrieve your accounts." />
       } @else if (count === 0) {
         <no-data message="No accounts found!" />

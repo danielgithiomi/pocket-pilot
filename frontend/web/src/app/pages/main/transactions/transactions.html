@@ -17,13 +17,14 @@
       <organism-table [isLoading]="true" [data]="skeletonData" [columns]="transactionColumns" />
     </div>
   } @else {
+    @let hasError = !!transactions.error();
     @let response = transactions.value()?.data;
     @let count = response?.count;
     <div
       class="page-container flex-1"
-      [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }"
+      [ngClass]="{ 'grid place-items-center': count === 0 || hasError }"
     >
-      @if (transactions.error()) {
+      @if (hasError) {
         <fetch-error message="Failed to retrieve your transactions" />
       } @else if (count === 0) {
         <no-data message="No transactions found!" />
