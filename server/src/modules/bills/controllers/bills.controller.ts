@@ -1,4 +1,5 @@
 import { CookiesAuthGuard } from '@common/guards';
+import { hoursToMilliseconds } from '@libs/utils';
 import { BillsService } from '../services/bills.service';
 import { Summary, UserInRequest } from '@common/decorators';
 import { BillDTO, CreateBillPayload } from '../dto/bills.dto';
@@ -13,8 +14,8 @@ export class BillsController {
     constructor(private readonly billsService: BillsService) {}
 
     @Get('types')
-    @CacheTTL(0)
     @CacheKey('bill:types')
+    @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
     @HttpCode(200)
     @ApiCookieAuth('access_token')

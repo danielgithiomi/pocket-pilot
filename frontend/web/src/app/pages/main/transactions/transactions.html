@@ -115,13 +115,22 @@
       </div>
 
       <atom-select
-        id="account"
+        id="source-account"
         [inverted]="true"
         label="Associated Account"
-        [formField]="transactionForm.accountId"
         placeholder="Select one account"
+        [formField]="transactionForm.accountId"
         [options]="accountsDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
       />
+
+      <!-- <atom-select
+        id="target-account"
+        [inverted]="true"
+        label="Target Account"
+        placeholder="Select one account"
+        [formField]="transactionForm.targetAccountId"
+        [options]="accountsDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
+      /> -->
     </form>
 
     <div class="form-footer-buttons" slot="footer">

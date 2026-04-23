@@ -1,4 +1,5 @@
 import { Summary } from '@common/decorators';
+import { hoursToMilliseconds } from '@libs/utils';
 import { PPConfigService } from '@infrastructure/config';
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -22,8 +23,8 @@ export class AppController {
     }
 
     @Get('redis')
-    @CacheTTL(0)
     @CacheKey('pp-redis-config')
+    @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
     @Summary('Pocket Pilot Redis', 'Pocket Pilot Redis Configuration')
     @ApiOperation({ summary: 'Get Redis Configuration', description: 'Returns the Pocket Pilot Redis Configuration.' })
