@@ -25,7 +25,7 @@ export class AccountDetails {
   );
 
   // COMPUTED
-  protected readonly isLoadingResources = computed(() => true);
+  protected readonly isLoadingResources = computed(() => this.accountWithTransactions.isLoading());
 
   protected readonly breadcrumbItems = computed(() => {
     const account = this.accountWithTransactions.value()?.data;

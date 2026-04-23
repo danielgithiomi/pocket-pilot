@@ -10,7 +10,7 @@ import { LucideAngularModule, ChevronRight, LucideIconData } from 'lucide-angula
   template: `
     <div aria-label="navigation-breadcrumb" class="flex flex-row items-center gap-2">
       @if (isLoading()) {
-        <div class="skeleton size-4 rounded-full"></div>
+        <div class="skeleton size-5 rounded-full"></div>
         <div class="skeleton w-2/5 md:w-1/5 h-4"></div>
       } @else {
         <lucide-angular
