@@ -32,8 +32,10 @@ export interface LegendItem {
 const DEFAULT_COLORS: RatioSliderColors = {
   progressStartColor: '#9c1b2a',
   progressEndColor: 'var(--red-emerald)',
-  trackStartColor: '#477023',
-  trackEndColor: '#2d531a',
+  trackEndColor: 'var(--loader-primary)',
+  trackStartColor: 'var(--primary)',
+  // trackStartColor: '#477023',
+  // trackEndColor: '#2d531a',
   textColor: 'var(--primary-text)',
   secondaryTextColor: 'var(--muted-text)',
 };
