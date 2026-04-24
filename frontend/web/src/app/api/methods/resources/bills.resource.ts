@@ -10,11 +10,13 @@ import { Bill, IEnumResponse, IStandardResponse } from '@global/types';
 export class BillsResource {  
   getBillTypes = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
     method: 'GET',
+    cache: 'no-cache',
     url: concatUrl(endpoints.bill_types),
   }));
 
   getUserBills = httpResource<IStandardResponse<Bill[]>>(() => ({
     method: 'GET',
+    cache: 'no-cache',
     url: concatUrl(endpoints.user_bills),
   }));
 }

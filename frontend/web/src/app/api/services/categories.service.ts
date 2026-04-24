@@ -1,4 +1,4 @@
-import { denormalizeCategoryName } from '@libs/utils';
+import { formatToReadable } from '@libs/utils';
 import { CategoriesMutation } from '@methods/mutations';
 import { CategoriesResource } from '@methods/resources';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
@@ -53,7 +53,7 @@ export class CategoriesService {
     return allCategories.map((category) => ({
       value: category,
       disabled: category.startsWith('---'),
-      label: category.startsWith('---') ? category : denormalizeCategoryName(category),
+      label: category.startsWith('---') ? category : formatToReadable(category),
     }));
   });
 

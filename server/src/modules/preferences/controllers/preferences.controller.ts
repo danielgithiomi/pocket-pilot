@@ -1,4 +1,5 @@
 import { CookiesAuthGuard } from '@common/guards';
+import { hoursToMilliseconds } from '@libs/utils';
 import { Summary, UserInRequest } from '@common/decorators';
 import { UpdatePreferencesPayload } from '../dto/preferences.dto';
 import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
@@ -14,8 +15,8 @@ export class PreferencesController {
 
     @Get('themes')
     @HttpCode(200)
-    @CacheTTL(0)
     @CacheKey('theme:options')
+    @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
     @Summary('Get application themes.', 'Get the application theme options.')
     @ApiOperation({

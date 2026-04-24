@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
         <div class="skeleton w-2/3 h-3"></div>
       </div>
 
-      <div class="skeleton w-1/8 h-3"></div>
+      <div class="skeleton w-1/8 h-5"></div>
     </div>
   `,
 })

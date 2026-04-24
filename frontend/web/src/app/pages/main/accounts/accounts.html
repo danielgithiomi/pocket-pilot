@@ -22,10 +22,8 @@
       <div class="account-grid">
         @for (i of [1, 2, 3]; track i) {
           <account-card
-            [balance]="0"
-            type="CURRENT"
             [id]="i.toString()"
-            [name]="'Account ' + i"
+            [account]="dummyAccount"
             [isLoading]="isLoadingAccounts()"
             (onAccountDelete)="accountsWithCount.reload()"
           />
@@ -33,90 +31,104 @@
       </div>
     </div>
   } @else {
-    @let response = accountsWithCount.value()?.data;
-    @let count = response?.count;
+    @let hasError = !!accountsWithCount.error() || !accountsWithCount.hasValue();
+    @let resource = accountsWithCount.value()?.data;
+    @let accounts = resource?.data;
+    @let count = resource?.count;
     <div
       class="page-container flex-1"
-      [ngClass]="{ 'grid place-items-center': count === 0 || accountsWithCount.error() }"
+      [ngClass]="{ 'grid place-items-center': count === 0 || hasError }"
     >
-      @if (accountsWithCount.error()) {
-        <fetch-error message="Failed to retrieve your accounts." />
-      } @else if (count === 0) {
-        <no-data message="No accounts found!" />
+      @if (hasError) {
+        <fetch-error
+          messageClass="text-sm"
+          message="Failed to load your accounts! Please refresh the page."
+        />
       } @else {
-        <div>
-          <p>
-            You have <span class="font-semibold text-primary">{{ count }}</span> active
-            {{ count! > 1 ? 'accounts' : 'account' }}!
-          </p>
+        @if (count === 0) {
+          <no-data message="You have no accounts yet! Create one today." messageClass="text-sm" />
+        } @else {
+          <div>
+            <p>
+              You have <span class="font-semibold text-primary">{{ count }}</span> active
+              {{ count! > 1 ? 'accounts' : 'account' }}!
+            </p>
 
-          <div class="account-grid">
-            @for (account of response?.data; track account.id) {
-              <account-card
-                [id]="account.id"
-                [name]="account.name"
-                [type]="account.type"
-                [balance]="account.balance"
-                [isLoading]="isLoadingAccounts()"
-                (onAccountDelete)="accountsWithCount.reload()"
-              />
-            }
+            <div
+              class="account-grid"
+              [ngClass]="{
+                'md:grid-cols-2! lg:grid-cols-3! xl:grid-cols-4!':
+                  !drawerService.isDrawerCollapsed(),
+              }"
+            >
+              @for (account of accounts; track account.id) {
+                <account-card
+                  [id]="account.id"
+                  [account]="account"
+                  [isLoading]="isLoadingAccounts()"
+                  (onAccountDelete)="accountsWithCount.reload()"
+                />
+              }
+            </div>
           </div>
-        </div>
+        }
       }
     </div>
   }
 </section>
 
-<organism-form
-  id="accounts"
-  title="Add Account"
-  [class.hidden]="!isFormOpen()"
-  description="Create a new account"
-  (closeForm)="handleCloseForm($event)"
->
-  @let types = accountTypes.value()?.data;
-  <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">
-    <atom-input
-      id="name"
-      type="text"
-      [inverted]="true"
-      autocomplete="name"
-      label="Account Name"
-      placeholder="Eg: Expenditure"
-      [formField]="accountsForm.name"
-      (clearOutput)="accountsForm.name().controlValue.set('')"
-    />
+@let accountTypeHasError = !!accountTypes.error();
+@if (!accountTypeHasError) {
+  <organism-form
+    id="accounts"
+    title="Add Account"
+    [class.hidden]="!isFormOpen()"
+    description="Create a new account"
+    (closeForm)="handleCloseForm($event)"
+  >
+    @let types = accountTypes.value()?.data;
+    <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">
+      <atom-input
+        id="name"
+        type="text"
+        [inverted]="true"
+        autocomplete="name"
+        label="Account Name"
+        placeholder="Eg: Expenditure"
+        [formField]="accountsForm.name"
+        (clearOutput)="accountsForm.name().controlValue.set('')"
+      />
 
-    <atom-select
-      id="type"
-      [inverted]="true"
-      label="Account Type"
-      [formField]="accountsForm.type"
-      placeholder="Select an account type"
-      [options]="types || [{ value: '', label: 'No account types found' }]"
-    />
-  </form>
+      <atom-select
+        id="type"
+        [inverted]="true"
+        label="Account Type"
+        [formField]="accountsForm.type"
+        placeholder="Select an account type"
+        [options]="types || [{ value: '', label: 'No account types found' }]"
+      />
+    </form>
 
-  <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
-    <atom-button
-      type="button"
-      [inverted]="true"
-      label="Reset Form"
-      variant="secondary"
-      form="accounts-form"
-      id="reset-account-form"
-      (clicked)="resetAccountsForm()"
-      [disabled]="!accountsForm().dirty() || isSubmitting()"
-    />
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      <atom-button
+        type="button"
+        [inverted]="true"
+        label="Reset Form"
+        variant="secondary"
+        form="accounts-form"
+        id="reset-account-form"
+        (clicked)="resetAccountsForm()"
+        [disabled]="!accountsForm().dirty() || isSubmitting()"
+      />
 
-    <atom-button
-      type="submit"
-      form="accounts-form"
-      label="Create A New Account"
-      id="submit-account-form"
-      [isLoading]="isSubmitting()"
-      [disabled]="accountsForm().invalid() || isSubmitting()"
-    />
-  </div>
-</organism-form>
+      <atom-button
+        type="submit"
+        form="accounts-form"
+        label="Create A New Account"
+        id="submit-account-form"
+        [isLoading]="isSubmitting()"
+        [disabled]="accountsForm().invalid() || isSubmitting()"
+      />
+    </div>
+  </organism-form>
+}

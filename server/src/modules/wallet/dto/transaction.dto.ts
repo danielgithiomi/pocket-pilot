@@ -28,7 +28,7 @@ export class CreateTransactionDto {
 }
 
 @Exclude()
-export class Transaction {
+export class TransactionDto {
     @Expose()
     @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the transaction' })
     id!: string;
@@ -67,23 +67,23 @@ export class TransactionAccount {
 }
 
 @Exclude()
-export class TransactionWithAccount extends Transaction {
+export class TransactionWithAccount extends TransactionDto {
     @Expose()
     @Type(() => TransactionAccount)
     @ApiProperty({ type: TransactionAccount, description: 'The owning account of the transaction' })
     account!: TransactionAccount;
 }
 
-@ApiExtraModels(Transaction)
+@ApiExtraModels(TransactionDto)
 export class TransactionsResponseDto {
     @ApiProperty({ example: 3, description: 'The total number of transactions' })
     count!: number;
 
     @ApiProperty({
         type: 'array',
-        items: { $ref: getSchemaPath(Transaction) },
+        items: { $ref: getSchemaPath(TransactionDto) },
     })
-    data!: Transaction[];
+    data!: TransactionDto[];
 }
 
 @ApiExtraModels(TransactionWithAccount)

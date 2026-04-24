@@ -1,12 +1,12 @@
-import { required, schema } from "@angular/forms/signals";
+import { required, schema, validate } from '@angular/forms/signals';
 
 // FORM
 export interface NewBillSchema {
-    name: string;
-    type: string;
-    dueDate: Date;
-    currency: string;
-    amount: number | null;
+  name: string;
+  type: string;
+  dueDate: Date;
+  currency: string;
+  amount: number | null;
 }
 
 export const NewBillFormValidationSchema = schema<NewBillSchema>((root) => {
@@ -24,4 +24,15 @@ export const NewBillFormValidationSchema = schema<NewBillSchema>((root) => {
 
   // Amount
   required(root.amount, { message: 'The bill amount is required field!' });
+  validate(root.amount, (context) => {
+    const value = context.value();
+    if (value === null) return undefined;
+
+    const asString = value.toString();
+    const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
+
+    return isValid
+      ? undefined
+      : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
+  });
 });

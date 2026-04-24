@@ -14,19 +14,25 @@
     <div class="page-container flex-1">
       <div class="skeleton w-1/4 h-5 mb-6"></div>
 
-      <organism-table [isLoading]="true" [data]="skeletonData" [columns]="transactionColumns" />
+      <organism-table
+        [isLoading]="true"
+        [data]="skeletonData"
+        [columns]="transactionColumns"
+        id="transactions-table-skeleton"
+      />
     </div>
   } @else {
+    @let hasError = !!transactions.error();
     @let response = transactions.value()?.data;
     @let count = response?.count;
     <div
       class="page-container flex-1"
-      [ngClass]="{ 'grid place-items-center': count === 0 || transactions.error() }"
+      [ngClass]="{ 'grid place-items-center': count === 0 || hasError }"
     >
-      @if (transactions.error()) {
+      @if (hasError) {
         <fetch-error message="Failed to retrieve your transactions" />
       } @else if (count === 0) {
-        <no-data message="No transactions found!" />
+        <no-data message="You have no transactions yet! Log one today." messageClass="text-sm" />
       } @else {
         <div>
           <p class="mb-6">
@@ -43,6 +49,7 @@
           </div>
 
           <organism-table
+            id="transactions-table"
             [isLoading]="isFetching()"
             [columns]="transactionColumns"
             [data]="formattedTransactions()"
@@ -115,13 +122,22 @@
       </div>
 
       <atom-select
-        id="account"
+        id="source-account"
         [inverted]="true"
         label="Associated Account"
-        [formField]="transactionForm.accountId"
         placeholder="Select one account"
+        [formField]="transactionForm.accountId"
         [options]="accountsDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
       />
+
+      <!-- <atom-select
+        id="target-account"
+        [inverted]="true"
+        label="Target Account"
+        placeholder="Select one account"
+        [formField]="transactionForm.targetAccountId"
+        [options]="accountsDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
+      /> -->
     </form>
 
     <div class="form-footer-buttons" slot="footer">

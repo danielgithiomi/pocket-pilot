@@ -1,13 +1,13 @@
 import { NgClass } from '@angular/common';
 import { CategoryTypeEnum } from '@global/enums';
-import { denormalizeCategoryName } from '@libs/utils';
+import { formatToReadable } from '@libs/utils';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { DrawerService } from '@infrastructure/services';
 import { CategoriesService } from '@api/categories.service';
 import { Component, computed, inject, output } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
-import { CategoryLength, FormattedCategories } from '../settings_and_categories.types';
+import { CategoryLength, FormattedCategories } from '../settings-and-categories.types';
 
 @Component({
   selector: 'categories',
@@ -45,6 +45,6 @@ export class Categories {
 
   // HELPER FUNCTIONS
   private denormalizeCategoryNames(categoryNames: string[]): string[] {
-    return categoryNames.map((name) => denormalizeCategoryName(name));
+    return categoryNames.map((name) => formatToReadable(name));
   }
 }

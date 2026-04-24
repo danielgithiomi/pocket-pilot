@@ -1,3 +1,5 @@
+import { Transaction } from "./transactions.types";
+
 export interface CreateAccountRequest {
   name: string;
   type: AccountType | "";
@@ -19,3 +21,10 @@ export interface UserAccountsWithCount {
 }
 
 export type AccountType = "WALLET" | "BANK" | "SAVINGS" | "CREDIT" | "CURRENT";
+
+export interface AccountWithTransactions extends Account {
+  count: number;
+  data: Account & {
+    transactions: Transaction[];
+  };
+}

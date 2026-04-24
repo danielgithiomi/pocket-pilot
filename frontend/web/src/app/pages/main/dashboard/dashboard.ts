@@ -8,8 +8,9 @@ import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { TransactionsService } from '@api/transactions.service';
+import { UpcomingBills } from "./upcoming-bills/upcoming-bills";
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
 import {
   Wallet,
@@ -19,6 +20,7 @@ import {
   CirclePile,
   TrendingUp,
   CircleGauge,
+  ReceiptCent,
   TrendingDown,
   ArrowLeftRight,
   BrickWallShield,
@@ -34,6 +36,7 @@ import {
     RatioSlider,
     ProgressBar,
     CostAnalysis,
+    UpcomingBills,
     DashboardCard,
     CalendarModule,
     LucideAngularModule,
@@ -41,10 +44,12 @@ import {
 })
 export class Dashboard {
   // Icons
+  readonly iconSize: number = 16;
   protected readonly walletIcon = Wallet;
   protected readonly ratioIcon = PiggyBank;
   protected readonly pilesIcon = CirclePile;
   protected readonly gaugeIcon = CircleGauge;
+  protected readonly billsIcon = ReceiptCent;
   protected readonly incomeIcon = TrendingUp;
   protected readonly calendarIcon = Calendar1;
   protected readonly handCoinsIcon = HandCoins;

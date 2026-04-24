@@ -1,0 +1,37 @@
+<dashboard-card
+  id="upcoming-bills"
+  [icon]="billsIcon"
+  [isLoading]="false"
+  title="Upcoming Bills"
+  [iconSize]="iconSize()"
+  subtitle="Your bills that are due soon."
+>
+  <div custom-content class="min-h-[250px] w-full">
+    @if (isFetchingBills()) {
+      @for (i of [1, 2, 3]; track i) {
+        <bill-item-skeleton />
+      }
+    } @else {
+      <!-- Loaded Values -->
+      @let bills = upcomingBills();
+      @let hasError = !!bills$.error();
+      @let zeroBills = bills.length === 0;
+
+      <div [ngClass]="{ 'w-full! h-full! grid! place-items-center!': zeroBills || hasError }">
+        @if (hasError) {
+          <fetch-error message="Failed to load bills" messageClass="text-xs" />
+        } @else if (zeroBills) {
+          <no-data
+            messageClass="text-xs"
+            animationDimensions="200px"
+            message="Good news - No bills due anytime soon!"
+          />
+        } @else {
+          @for (bill of bills; track bill.id) {
+            <bill-item [billItem]="bill" />
+          }
+        }
+      </div>
+    }
+  </div>
+</dashboard-card>

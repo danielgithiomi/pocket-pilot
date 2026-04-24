@@ -13,8 +13,8 @@ import { CategoriesForm } from './categories/categories-form/categories-form';
 
 @Component({
   selector: 'settings_and_categories',
-  styleUrl: './settings_and_categories.css',
-  templateUrl: './settings_and_categories.html',
+  styleUrl: './settings-and-categories.css',
+  templateUrl: './settings-and-categories.html',
   imports: [LucideAngularModule, Settings, Button, Categories, CategoriesForm, NgClass],
 })
 export class SettingsAndCategories {

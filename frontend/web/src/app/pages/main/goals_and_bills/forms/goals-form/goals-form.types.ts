@@ -1,6 +1,6 @@
 import { GoalCategoryEnum } from '@global/enums';
 import { addOneMonthFromDate } from '@libs/utils';
-import { required, schema } from '@angular/forms/signals';
+import { required, schema, validate } from '@angular/forms/signals';
 
 // TYPES
 export const TargetCompletionStrategies = ['date', 'amount'] as const;
@@ -56,10 +56,35 @@ export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
 
   // Target Amount
   required(root.targetAmount, { message: 'The goal target amount is required field!' });
+  validate(root.targetAmount, (context) => {
+    const value = context.value();
+    if (value === null) return undefined;
+
+    const asString = value.toString();
+    const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
+
+    // const isValid = Math.round(value * 100) === value * 100;
+    // const isValid = Math.abs(value * 100 - Math.round(value * 100)) < Number.EPSILON;
+
+    return isValid
+      ? undefined
+      : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
+  });
 
   // Monthly Contribution
   required(root.monthlyContribution, {
     message: 'The goal monthly contribution is required field!',
+  });
+  validate(root.monthlyContribution, (context) => {
+    const value = context.value();
+    if (value === null) return undefined;
+
+    const asString = value.toString();
+    const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
+
+    return isValid
+      ? undefined
+      : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
   });
 
   // Target Completion Strategy

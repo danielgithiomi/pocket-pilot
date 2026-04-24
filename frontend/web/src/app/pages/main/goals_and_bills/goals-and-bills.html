@@ -10,7 +10,7 @@
     </p>
 
     <div
-      class="w-full flex flex-col md:flex-row gap-6 md:h-full pb-4"
+      class="w-full flex flex-col md:flex-row min-h-full gap-6 pb-4"
       [ngClass]="{
         'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
       }"
@@ -45,13 +45,13 @@
             }
           </div>
         } @else {
-          @let hasError = goals$.error();
+          @let hasError = !!goals$.error();
           @let goals = goals$.value()?.data;
           @let goalCount = goals?.length || 0;
           <div
-            class="card-content"
+            class="card-content no-scrollbar"
             [ngClass]="{
-              'grid place-items-center p-0!': goalCount == 0,
+              'grid! place-items-center! p-0!': goalCount == 0,
             }"
           >
             @if (hasError) {
@@ -62,7 +62,7 @@
                   class="mb-10"
                   messageClass="text-xs"
                   animationDimensions="200px"
-                  message="No goals yet. Get started today!"
+                  message="Create a goal today! Your future self will thank you."
                 />
               } @else {
                 @for (goal of goals; track goal.id) {
@@ -103,13 +103,13 @@
             }
           </div>
         } @else {
-          @let hasError = bills$.error();
+          @let hasError = !!bills$.error();
           @let bills = bills$.value()?.data;
           @let billCount = bills?.length || 0;
           <div
-            class="card-content"
+            class="card-content no-scrollbar"
             [ngClass]="{
-              'grid place-items-center p-0!': billCount == 0,
+              'grid! place-items-center! p-0!': billCount == 0,
             }"
           >
             @if (hasError) {
@@ -120,7 +120,7 @@
                   class="mb-10"
                   messageClass="text-xs"
                   animationDimensions="200px"
-                  message="No bills yet. Get started today!"
+                  message="You have no bills! Add one to keep things on track."
                 />
               } @else {
                 @for (bill of bills; track bill.id) {

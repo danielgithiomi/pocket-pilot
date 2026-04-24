@@ -280,3 +280,10 @@ export class Transactions {
     });
   }
 }
+
+// {
+//     "type": "TRANSFER",
+//     "amount": 2000,
+//     "category": "Account Transfers",
+//     "description": "Moved to misc."
+// }

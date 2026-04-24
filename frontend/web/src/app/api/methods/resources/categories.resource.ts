@@ -11,6 +11,7 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 export class CategoriesResource {
   getUserCategories = httpResource<IStandardResponse<Categories>>(() => ({
     method: 'GET',
+    cache: 'no-cache',
     url: concatUrl(endpoints.categories),
   }));
 }

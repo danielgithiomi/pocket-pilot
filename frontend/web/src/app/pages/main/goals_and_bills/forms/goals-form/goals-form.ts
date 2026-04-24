@@ -165,7 +165,7 @@ export class GoalsForm {
   );
 
   protected readonly formattedGoalCategories = computed<RadioOption[]>(() => {
-    if (this.goalCategories$.error()) {
+    if (!!this.goalCategories$.error()) {
       this.toastService.show({
         variant: 'warning',
         title: 'Error Fetching Goal Categories!',

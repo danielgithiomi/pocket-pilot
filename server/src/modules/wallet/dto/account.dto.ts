@@ -1,4 +1,4 @@
-import { Transaction } from './transaction.dto';
+import { TransactionDto } from './transaction.dto';
 import { AccountType, Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
@@ -162,9 +162,9 @@ export class AccountWithTransactionsDto {
     updatedAt!: Date;
 
     @Expose()
-    @Type(() => Transaction)
-    @ApiProperty({ type: Transaction, isArray: true, description: 'The transactions of the account' })
-    transactions!: Transaction[];
+    @Type(() => TransactionDto)
+    @ApiProperty({ type: TransactionDto, isArray: true, description: 'The transactions of the account' })
+    transactions!: TransactionDto[];
 }
 
 // SWAGGER

@@ -15,7 +15,7 @@ import { GoalItem, BillItem, BillItemSkeleton, GoalItemSkeleton } from './items'
 @Component({
   selector: 'goals-and-bill',
   styleUrl: './goals-and-bills.css',
-  templateUrl: './goals-and-bill.html',
+  templateUrl: './goals-and-bills.html',
   imports: [
     NoData,
     Button,

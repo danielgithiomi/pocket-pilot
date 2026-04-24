@@ -29,7 +29,7 @@ export const routes: Routes = [
     path: WEB_ROUTES.onboarding,
     canMatch: [OnboardingGuard],
     component: DrawerlessLayout,
-    children: [
+    loadChildren: () => [
       {
         path: '',
         title: 'Onboarding | Pocket Pilot',
@@ -41,12 +41,12 @@ export const routes: Routes = [
     path: '',
     component: MainLayout,
     canMatch: [AuthGuard, OnboardedGuard],
-    children: [
-      {
-        path: WEB_ROUTES.home,
-        title: 'Home | Pocket Pilot',
-        component: NotFound,
-      },
+    loadChildren: () => [
+      // {
+      //   path: WEB_ROUTES.home,
+      //   title: 'Home | Pocket Pilot',
+      //   component: NotFound,
+      // },
       {
         path: WEB_ROUTES.dashboard,
         title: 'Dashboard | Pocket Pilot',
@@ -63,6 +63,12 @@ export const routes: Routes = [
         loadComponent: () => import('@pages/main/accounts/accounts').then((m) => m.Accounts),
       },
       {
+        title: 'Account Details | Pocket Pilot',
+        path: WEB_ROUTES.accountDetails,
+        loadComponent: () =>
+          import('@pages/main/account_details/account-details').then((m) => m.AccountDetails),
+      },
+      {
         title: 'Transactions | Pocket Pilot',
         path: WEB_ROUTES.transactions,
         loadComponent: () =>
@@ -72,7 +78,7 @@ export const routes: Routes = [
         title: 'Settings | Pocket Pilot',
         path: WEB_ROUTES.settings,
         loadComponent: () =>
-          import('@pages/main/settings_and_categories/settings_and_categories').then(
+          import('@pages/main/settings_and_categories/settings-and-categories').then(
             (m) => m.SettingsAndCategories,
           ),
       },

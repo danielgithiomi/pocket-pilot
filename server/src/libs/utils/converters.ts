@@ -13,3 +13,12 @@ export function secondsToMilliseconds(seconds: number) {
 export function hoursToSeconds(hours: number) {
     return hours * 60 * 60;
 }
+
+/**
+ * Converts hours to milliseconds
+ * @param hours - The number of hours to convert
+ * @returns The number of milliseconds
+ */
+export function hoursToMilliseconds(hours: number) {
+    return secondsToMilliseconds(hoursToSeconds(hours));
+}

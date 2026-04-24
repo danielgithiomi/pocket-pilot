@@ -3,22 +3,24 @@ import { formatEnumForFrontend } from '@libs/utils';
 import { plainToInstance } from 'class-transformer';
 import { Account, AccountType, Prisma } from '@prisma/client';
 import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
+import { AccountDetailsCache } from '../cache/account-details.cache';
 import { AccountRepository } from '../repositories/account.repository';
 import { TransactionRepository } from '../repositories/transaction.respository';
 import { AccountWithHolder, AccountWithTransactionsDto, CreateAccountDto } from '../dto/account.dto';
 import {
     Injectable,
     ConflictException,
-    ForbiddenException,
     NotFoundException,
+    ForbiddenException,
     InternalServerErrorException,
 } from '@nestjs/common';
 
 @Injectable()
 export class AccountService {
     constructor(
-        private readonly cache: AccountsCache,
+        private readonly accountsCache: AccountsCache,
         private readonly accountRepository: AccountRepository,
+        private readonly accountDetailsCache: AccountDetailsCache,
         private readonly transactionRepository: TransactionRepository,
     ) {}
 
@@ -27,13 +29,15 @@ export class AccountService {
     }
 
     async getAllAccounts(): Promise<AccountWithHolder[]> {
-        return this.cache.getOrSetCache<AccountWithHolder[]>('all', () =>
+        return this.accountsCache.getOrSetCache<AccountWithHolder[]>('all', () =>
             this.accountRepository.getAllApplicationAccounts(),
         );
     }
 
     async getUserAccounts(holderId: string): Promise<Account[]> {
-        return this.cache.getOrSetCache<Account[]>(holderId, () => this.accountRepository.getUserAccounts(holderId));
+        return this.accountsCache.getOrSetCache<Account[]>(holderId, () =>
+            this.accountRepository.getUserAccounts(holderId),
+        );
     }
 
     async getAccountById(userId: string, accountId: string): Promise<Account> {
@@ -42,20 +46,27 @@ export class AccountService {
     }
 
     async getAccountAndTransactions(userId: string, accountId: string): Promise<AccountWithTransactionsDto> {
-        const accounts: Account[] = await this.getUserAccounts(userId);
-        const foundAccount = this.verifyAccountAndOwnership(accounts, userId, accountId);
+        const getAccountAndItsTransactions = async () => {
+            const accounts: Account[] = await this.getUserAccounts(userId);
+            const foundAccount = this.verifyAccountAndOwnership(accounts, userId, accountId);
 
-        const account = await this.accountRepository.getAccountWithTransactions(foundAccount.id);
+            const account = await this.accountRepository.getAccountWithTransactions(foundAccount.id);
 
-        if (!account) {
-            throw new NotFoundException({
-                name: 'ACCOUNT_NOT_FOUND',
-                title: 'Account Not Found',
-                details: `The account with id: {${accountId}} was not found.`,
-            });
-        }
+            if (!account) {
+                throw new NotFoundException({
+                    name: 'ACCOUNT_NOT_FOUND',
+                    title: 'Account Not Found',
+                    details: `The account with id: {${accountId}} was not found.`,
+                });
+            }
 
-        return plainToInstance(AccountWithTransactionsDto, account);
+            return plainToInstance(AccountWithTransactionsDto, account);
+        };
+
+        return this.accountDetailsCache.getOrSetCache<AccountWithTransactionsDto>(
+            accountId,
+            getAccountAndItsTransactions,
+        );
     }
 
     async createAccount(userId: string, data: CreateAccountDto): Promise<Account> {
@@ -66,7 +77,7 @@ export class AccountService {
             };
 
             const createdAccount = await this.accountRepository.createNewAccount(userId, newAccountData);
-            await this.cache.invalidateCache(userId);
+            await this.invalidateCachesByAccountId(userId, createdAccount.id);
             return createdAccount;
         } catch (error) {
             if (this.isPrismaError(error) === 'unique-constraint') {
@@ -99,7 +110,7 @@ export class AccountService {
         }
 
         const deletedAccount = await this.accountRepository.deleteAccountById(userId, accountId);
-        await this.cache.invalidateCache(userId);
+        await this.invalidateCachesByAccountId(userId, accountId);
         return deletedAccount;
     }
 
@@ -143,5 +154,11 @@ export class AccountService {
     private async accountHasTransactions(accountId: string): Promise<boolean> {
         const accountTransactionCount = await this.transactionRepository.getTransactionCountByAccountId(accountId);
         return accountTransactionCount > 0;
+    }
+
+    private async invalidateCachesByAccountId(userId: string, accountId: string): Promise<void> {
+        await this.accountsCache.invalidateCache(userId); // User accounts list
+        // await this.accountsCache.invalidateCache(accountId); // Single account
+        await this.accountDetailsCache.invalidateCache(accountId); // Account with transactions
     }
 }

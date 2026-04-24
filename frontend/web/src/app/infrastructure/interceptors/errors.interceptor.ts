@@ -41,9 +41,9 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
             return {
               type,
-              details: 'Your user session has expired! Please login again.',
               statusCode: 401,
               title: 'Session Expired!',
+              details: 'Your user session has expired! Please login again.',
             } satisfies IStandardError;
           }
 

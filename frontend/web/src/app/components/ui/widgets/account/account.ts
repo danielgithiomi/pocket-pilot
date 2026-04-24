@@ -1,11 +1,12 @@
 import { formatCurrency } from '@libs/utils';
+import { RouterLink } from '@angular/router';
 import { ImageDimensions } from '@libs/types';
 import { AccountsService } from '@api/accounts.service';
 import { ThemeService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NgClass, NgOptimizedImage } from '@angular/common';
-import { AccountType, IVoidResourceResponse } from '@global/types';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { AccountType, Account as IAccount, IVoidResourceResponse } from '@global/types';
 import {
   Nfc,
   Trash,
@@ -18,14 +19,12 @@ import {
   selector: 'account-card',
   styleUrl: './account.css',
   templateUrl: './account.html',
-  imports: [NgOptimizedImage, LucideAngularModule, NgClass],
+  imports: [NgOptimizedImage, LucideAngularModule, NgClass, RouterLink],
 })
 export class Account {
   // Inputs
   id = input.required<string>();
-  name = input.required<string>();
-  balance = input.required<number>();
-  type = input.required<AccountType>();
+  account = input.required<IAccount>();
   isLoading = input.required<boolean>();
 
   // Outputs
@@ -56,10 +55,13 @@ export class Account {
 
   // Computed signals
   protected accountId = computed(() => `account-${this.id()}`);
-  protected formattedBalance = computed(() => formatCurrency(this.balance(), this.currency));
+  protected formattedBalance = computed(() =>
+    formatCurrency(this.account().balance, this.currency),
+  );
 
   // Methods
-  toggleOptions() {
+  toggleOptions(event: Event) {
+    event.stopPropagation();
     this.isOptionsOpen.set(!this.isOptionsOpen());
   }
 

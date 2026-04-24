@@ -34,6 +34,7 @@ import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-a
             [name]="Settings"
             [img]="Settings"
             [size]="iconSize"
+            (click)="routeToSettings()"
             color="var(--body-background)"
           />
         </div>
@@ -51,7 +52,7 @@ import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-a
           <p
             class="group-hover/profile:text-white text-sm h-full grow text-inverted-text duration-300 transition-all"
           >
-            View Profile
+            <span class="hidden sm:inline">View</span> Profile
           </p>
         </div>
         <div class="separator mt-2! mb-3!"></div>
@@ -86,6 +87,11 @@ export class HeaderDropdown {
 
   protected routeToProfile(): void {
     this.router.navigateByUrl(WEB_ROUTES.profile);
+    this.drawerService.closeDropDown();
+  }
+
+  protected routeToSettings(): void {
+    this.router.navigateByUrl(WEB_ROUTES.settings);
     this.drawerService.closeDropDown();
   }
 

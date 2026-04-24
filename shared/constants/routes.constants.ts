@@ -1,6 +1,6 @@
 export const WEB_ROUTES = {
   root: "",
-  home: "home",
+  // home: "home",
   goals: "goals",
   profile: "profile",
   login: "auth/login",
@@ -10,11 +10,14 @@ export const WEB_ROUTES = {
   onboarding: "onboarding",
   register: "auth/register",
   transactions: "transactions",
+
+  // dynamic routes
+  accountDetails: "accounts/:id",
 } satisfies WebRoutes;
 
 export interface WebRoutes {
+  // home: string;
   root: string;
-  home: string;
   goals: string;
   login: string;
   profile: string;
@@ -24,4 +27,7 @@ export interface WebRoutes {
   dashboard: string;
   onboarding: string;
   transactions: string;
+
+  // dynamic routes
+  accountDetails: string;
 }

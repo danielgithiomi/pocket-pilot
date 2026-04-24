@@ -1,4 +1,5 @@
 import { CookiesAuthGuard } from '@common/guards';
+import { hoursToMilliseconds } from '@libs/utils';
 import { GoalsService } from '../services/goals.service';
 import { CreateGoalDto, GoalDto } from '../dto/goals.dto';
 import { type User } from '@modules/identity/dto/user.dto';
@@ -14,8 +15,8 @@ export class GoalsController {
     constructor(private readonly goalsService: GoalsService) {}
 
     @Get('categories')
-    @CacheTTL(0)
     @CacheKey('goal:categories')
+    @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
     @Public()
     @HttpCode(200)

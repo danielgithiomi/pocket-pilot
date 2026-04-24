@@ -70,7 +70,7 @@ export class NavLink {
   protected readonly chevronRight = ChevronRight;
   protected iconSize = computed(() => (this.isDrawerExpanded() ? 16 : 20));
   protected readonly iconMap: Record<DrawerNavigationLink['icon'], any> = {
-    home: House,
+    // home: House,
     goals: Target,
     accounts: Wallet,
     support: Headset,
@@ -86,7 +86,7 @@ export class NavLink {
   }
 
   protected linkActive(): boolean {
-    return this.router.url === this.link().path;
+    return this.router.url === this.link().path || this.router.url.includes(this.link().path);
   }
 
   protected formattedLinkName(): string {

@@ -10,7 +10,7 @@ export abstract class EntityCache<T> {
     protected constructor(
         @Inject(CACHE_MANAGER) protected readonly cache: Cache,
         protected readonly cachePrefix: string,
-        protected readonly defaultTTL: number = 60, // 360 seconds (1 minute)
+        protected readonly defaultTTL: number = 60, // 60 seconds (1 minute)
     ) {
         this.TTL = this.defaultTTL;
         this.PREFIX = this.cachePrefix;

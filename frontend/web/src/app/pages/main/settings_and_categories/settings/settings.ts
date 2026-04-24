@@ -9,14 +9,14 @@ import { LucideAngularModule } from 'lucide-angular';
 import { AccountsService } from '@api/accounts.service';
 import { ThemeService } from '@infrastructure/services';
 import { CURRENCIES, LANGUAGES } from '@global/constants';
+import { UpdateUserPreferencesPayload } from '@global/types';
 import { PreferencesService } from '@api/preferences.service';
 import { Component, computed, inject, signal } from '@angular/core';
-import { IVoidResourceResponse, UpdateUserPreferencesPayload } from '@global/types';
 import {
-  ApplicationThemeOptions,
-  SettingsFormSchema,
-  SettingsFormValidationSchema,
   ThemeVariant,
+  SettingsFormSchema,
+  ApplicationThemeOptions,
+  SettingsFormValidationSchema,
 } from './settings.types';
 
 @Component({
@@ -101,17 +101,12 @@ export class Settings {
 
     setTimeout(() => {
       this.preferencesService.updateUserPreferences(payload).subscribe({
-        next: (response: IVoidResourceResponse) => {
-          this.toastService.show({
-            variant: 'success',
-            title: response.message,
-            details: response.details,
-          });
-
+        next: () => {
+          this.isSubmittingSettingsForm.set(false);
           window.location.reload();
         },
         complete: () => this.isSubmittingSettingsForm.set(false),
       });
-    }, 2500);
+    }, 2000);
   }
 }
