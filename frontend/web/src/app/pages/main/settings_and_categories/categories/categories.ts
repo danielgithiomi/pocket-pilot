@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { CategoryTypeEnum } from '@global/enums';
-import { denormalizeCategoryName } from '@libs/utils';
+import { formatToReadable } from '@libs/utils';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { DrawerService } from '@infrastructure/services';
 import { CategoriesService } from '@api/categories.service';
@@ -45,6 +45,6 @@ export class Categories {
 
   // HELPER FUNCTIONS
   private denormalizeCategoryNames(categoryNames: string[]): string[] {
-    return categoryNames.map((name) => denormalizeCategoryName(name));
+    return categoryNames.map((name) => formatToReadable(name));
   }
 }

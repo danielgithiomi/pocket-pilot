@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { BreadcrumbInput } from './breadcrumb.types';
 import { Component, computed, input } from '@angular/core';
 import { LucideAngularModule, ChevronRight, LucideIconData } from 'lucide-angular';
+import { formatToReadable } from '@libs/utils';
 
 @Component({
   selector: 'breadcrumbs',
@@ -62,6 +63,7 @@ export class Breadcrumbs {
       ...item,
       id: index,
       isLast: index === items.length - 1,
+      label: formatToReadable(item.label),
     }));
   });
 }

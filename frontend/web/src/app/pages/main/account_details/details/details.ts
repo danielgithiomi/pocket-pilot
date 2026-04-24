@@ -1,11 +1,9 @@
 import { Account } from '@widgets/account';
-import { ToastService } from '@atoms/toast';
 import { Account as IAccount } from '@global/types';
 import { Button } from '@components/ui/atoms/button';
 import { AccountsService } from '@api/accounts.service';
-import { Component, inject, input, output, signal } from '@angular/core';
-import { denormalizeCategoryName, formatCurrency, formatDate } from '@libs/utils';
-import { Title } from '@angular/platform-browser';
+import { Component, inject, input, output } from '@angular/core';
+import { formatToReadable, formatCurrency, formatDate } from '@libs/utils';
 
 @Component({
   selector: 'account-details',
@@ -23,7 +21,6 @@ export class DetailsComponent {
   readonly onDeleteAccountClick = output<string>();
 
   // SERVICES
-  private readonly toastService = inject(ToastService);
   private readonly accountService = inject(AccountsService);
 
   // DATA
@@ -31,7 +28,7 @@ export class DetailsComponent {
 
   // METHODS
   protected formatText(text: string) {
-    return denormalizeCategoryName(text);
+    return formatToReadable(text);
   }
 
   protected formatDate(date: string) {

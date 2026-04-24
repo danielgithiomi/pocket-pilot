@@ -123,7 +123,7 @@ export function capitalize(string: string): string {
  * @param normalizedName The normalized category name
  * @returns The denormalized category name
  */
-export function denormalizeCategoryName(normalizedName: string): string {
+export function formatToReadable(normalizedName: string): string {
   return normalizedName
     .replace(/[_-]/g, ' ') // underscores & hyphens → spaces
     .split(' ')

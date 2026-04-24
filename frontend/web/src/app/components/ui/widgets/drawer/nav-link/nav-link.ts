@@ -86,7 +86,7 @@ export class NavLink {
   }
 
   protected linkActive(): boolean {
-    return this.router.url === this.link().path;
+    return this.router.url === this.link().path || this.router.url.includes(this.link().path);
   }
 
   protected formattedLinkName(): string {
