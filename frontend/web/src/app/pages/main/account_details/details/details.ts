@@ -1,17 +1,19 @@
 import { Account } from '@widgets/account';
 import { Account as IAccount } from '@global/types';
-import { capitalize, formatCurrency, formatDate } from '@libs/utils';
-import { Component, computed, inject, input } from '@angular/core';
+import { Button } from "@components/ui/atoms/button";
 import { AccountsService } from '@api/accounts.service';
+import { Component, inject, input } from '@angular/core';
+import { denormalizeCategoryName, formatCurrency, formatDate } from '@libs/utils';
 
 @Component({
   selector: 'account-details',
   templateUrl: './details.html',
-  imports: [Account],
+  imports: [Account, Button],
 })
 export class DetailsComponent {
   // INPUTS
   readonly account = input.required<IAccount>();
+  readonly transactionCount = input.required<number>();
 
   // SERVICES
   private readonly accountService = inject(AccountsService);
@@ -21,7 +23,7 @@ export class DetailsComponent {
 
   // METHODS
   protected formatText(text: string) {
-    return capitalize(text);
+    return denormalizeCategoryName(text);
   }
 
   protected formatDate(date: string) {

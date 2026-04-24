@@ -1,3 +1,8 @@
 <section id="account-transactions-section">
-  <p>Transactions</p>
+  <organism-table
+    [data]="formattedTransactions()"
+    [id]="'account-transactions-table'"
+    [columns]="accountTransactionsColumns"
+    emptyMessage="This account has no transactions yet!"
+  />
 </section>

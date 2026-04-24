@@ -11,6 +11,7 @@ import { Component, input, output, computed } from '@angular/core';
 })
 export class Table<T extends object> {
   /* INPUTS */
+  id = input.required<string>();
   data = input.required<T[]>();
   isLoading = input<boolean>(true);
   columns = input.required<TableColumn<T>[]>();

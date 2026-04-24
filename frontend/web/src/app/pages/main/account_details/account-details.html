@@ -29,12 +29,14 @@
         } @else {
           <div class="h-full flex flex-col md:flex-row gap-6">
             <account-details
-              class="w-full md:flex-2 lg:flex-2 xl:flex-1"
               [account]="resource.account"
+              [transactionCount]="resource.count"
+              class="w-full md:flex-2 lg:flex-2 xl:flex-1"
               [ngClass]="{ 'md:flex-2! xl:flex-1!': !drawerService.isDrawerCollapsed() }"
             />
 
             <account-transactions
+              [transactions]="resource.transactions"
               class="w-full md:flex-4 lg:flex-3 xl:flex-4"
               [ngClass]="{ 'md:flex-3! xl:flex-3!': !drawerService.isDrawerCollapsed() }"
             />
