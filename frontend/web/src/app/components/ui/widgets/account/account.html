@@ -51,7 +51,12 @@
             @if (isLoading()) {
               <div class="skeleton size-5"></div>
             } @else {
-              <lucide-icon [size]="16" name="options" [img]="Options" (click)="toggleOptions()" />
+              <lucide-icon
+                [size]="16"
+                name="options"
+                [img]="Options"
+                (click)="toggleOptions($event)"
+              />
             }
 
             <!-- Card Options Drop Down -->

@@ -33,37 +33,49 @@
       </div>
     </div>
   } @else {
-    @let hasError = !!accountsWithCount.error();
-    @let response = accountsWithCount.value()?.data;
-    @let count = response?.count;
+    @let hasError = !!accountsWithCount.error() || !accountsWithCount.hasValue();
+    @let resource = accountsWithCount.value()?.data;
+    @let accounts = resource?.data;
+    @let count = resource?.count;
     <div
       class="page-container flex-1"
       [ngClass]="{ 'grid place-items-center': count === 0 || hasError }"
     >
       @if (hasError) {
-        <fetch-error message="Failed to retrieve your accounts." />
-      } @else if (count === 0) {
-        <no-data message="You have no accounts yet! Create one today." messageClass="text-sm" />
+        <fetch-error
+          messageClass="text-sm"
+          message="Failed to load your accounts! Please refresh the page."
+        />
       } @else {
-        <div>
-          <p>
-            You have <span class="font-semibold text-primary">{{ count }}</span> active
-            {{ count! > 1 ? 'accounts' : 'account' }}!
-          </p>
+        @if (count === 0) {
+          <no-data message="You have no accounts yet! Create one today." messageClass="text-sm" />
+        } @else {
+          <div>
+            <p>
+              You have <span class="font-semibold text-primary">{{ count }}</span> active
+              {{ count! > 1 ? 'accounts' : 'account' }}!
+            </p>
 
-          <div class="account-grid">
-            @for (account of response?.data; track account.id) {
-              <account-card
-                [id]="account.id"
-                [name]="account.name"
-                [type]="account.type"
-                [balance]="account.balance"
-                [isLoading]="isLoadingAccounts()"
-                (onAccountDelete)="accountsWithCount.reload()"
-              />
-            }
+            <div
+              class="account-grid"
+              [ngClass]="{
+                'md:grid-cols-2! lg:grid-cols-3! xl:grid-cols-4!':
+                  !drawerService.isDrawerCollapsed(),
+              }"
+            >
+              @for (account of accounts; track account.id) {
+                <account-card
+                  [id]="account.id"
+                  [name]="account.name"
+                  [type]="account.type"
+                  [balance]="account.balance"
+                  [isLoading]="isLoadingAccounts()"
+                  (onAccountDelete)="accountsWithCount.reload()"
+                />
+              }
+            </div>
           </div>
-        </div>
+        }
       }
     </div>
   }

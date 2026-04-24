@@ -60,7 +60,8 @@ export class Account {
   protected formattedBalance = computed(() => formatCurrency(this.balance(), this.currency));
 
   // Methods
-  toggleOptions() {
+  toggleOptions(event: Event) {
+    event.stopPropagation();
     this.isOptionsOpen.set(!this.isOptionsOpen());
   }
 

@@ -6,6 +6,7 @@ import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
 import { Select } from '@components/ui/atoms/select';
 import { AccountsService } from '@api/accounts.service';
+import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NoData } from '@structural/main/no-data/no-data';
 import { Component, computed, inject, signal } from '@angular/core';
@@ -24,7 +25,7 @@ import {
     @reference 'tailwindcss';
 
     .account-grid {
-      @apply grid py-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+      @apply grid py-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6;
     }
   `,
   imports: [NoData, Button, LucideAngularModule, Form, Input, NgClass, Account, Select, FetchError],
@@ -36,6 +37,7 @@ export class Accounts {
 
   // Services
   private readonly toastService = inject(ToastService);
+  protected readonly drawerService = inject(DrawerService);
   protected readonly accountsService = inject(AccountsService);
 
   // States

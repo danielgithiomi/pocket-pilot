@@ -12,6 +12,7 @@ section {
   overflow: hidden;
   border-radius: 25px;
 }
+
 section::before {
   content: '';
   position: absolute;
@@ -21,6 +22,7 @@ section::before {
   transform: translate(-150px, -100px);
   background: linear-gradient(90deg, var(--primary), var(--alternate-background));
 }
+
 section::after {
   content: '';
   position: absolute;
@@ -30,6 +32,7 @@ section::after {
   transform: translate(150px, 100px);
   background: linear-gradient(90deg, var(--alternate-background), var(--quaternary));
 }
+
 .container {
   height: 200px;
   width: 100%;
@@ -83,7 +86,7 @@ section:hover {
     }
 
     .card-options {
-      @apply relative p-1 rounded-md;
+      @apply relative p-1 rounded-md z-1;
 
       .dropdown {
         @apply absolute cursor-pointer! bottom-full -right-1 mb-2 size-8 bg-(--inverted-background) rounded-md shadow-lg z-5 grid place-items-center;
