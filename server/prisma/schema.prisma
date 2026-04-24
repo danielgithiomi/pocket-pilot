@@ -31,6 +31,7 @@ model Account {
     id        String      @id @default(uuid())
     type      AccountType
     name      String
+    currency  String
     createdAt DateTime    @default(now())
     updatedAt DateTime    @updatedAt
     balance   Float       @default(0)

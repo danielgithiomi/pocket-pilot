@@ -19,6 +19,11 @@ export class CreateAccountDto {
     @IsNotEmpty()
     @ApiProperty({ enum: AccountType, description: 'The type of the account' })
     type!: AccountType;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ example: 'USD', description: 'The currency of the account' })
+    currency!: string;
 }
 
 // OUTPUT
@@ -44,6 +49,13 @@ export class Account {
         description: 'The type of the account',
     })
     type!: AccountType;
+
+    @Expose()
+    @ApiProperty({
+        example: 'USD',
+        description: 'The currency of the account',
+    })
+    currency!: string;
 
     @Expose()
     @ApiProperty({
@@ -95,38 +107,7 @@ export class AccountHolder {
 }
 
 @Exclude()
-export class AccountWithHolderDto {
-    @Expose()
-    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the account' })
-    id!: string;
-
-    @Expose()
-    @ApiProperty({ example: 'Savings Account', description: 'The name of the account' })
-    name!: string;
-
-    @Expose()
-    @ApiProperty({ enum: AccountType, description: 'The type of the account' })
-    type!: AccountType;
-
-    @Expose()
-    @ApiProperty({ example: 1000, description: 'The balance of the account' })
-    balance!: number;
-
-    @Expose()
-    @Type(() => Date)
-    @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'Creation date of the account' })
-    createdAt!: Date;
-
-    @Expose()
-    @Type(() => Date)
-    @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'Last update date of the account' })
-    updatedAt!: Date;
-
-    @Expose()
-    @Type(() => String)
-    @ApiProperty({ example: '5183bc66-22fe-4d07-9166-e53c0b3b9ea7', description: 'The ID of the account holder' })
-    holderId!: string;
-
+export class AccountWithHolderDto extends Account {
     @Expose()
     @Type(() => AccountHolder)
     @ApiProperty({ type: AccountHolder, description: 'The account holder with selected fields' })
@@ -134,33 +115,7 @@ export class AccountWithHolderDto {
 }
 
 @Exclude()
-export class AccountWithTransactionsDto {
-    @Expose()
-    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the account' })
-    id!: string;
-
-    @Expose()
-    @ApiProperty({ example: 'Savings Account', description: 'The name of the account' })
-    name!: string;
-
-    @Expose()
-    @ApiProperty({ example: 'Savings Account', description: 'The type of the account' })
-    type!: string;
-
-    @Expose()
-    @ApiProperty({ example: 1000, description: 'The balance of the account' })
-    balance!: number;
-
-    @Expose()
-    @Type(() => Date)
-    @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'Creation date of the account' })
-    createdAt!: Date;
-
-    @Expose()
-    @Type(() => Date)
-    @ApiProperty({ example: '2026-02-11T00:00:00.000Z', description: 'Last update date of the account' })
-    updatedAt!: Date;
-
+export class AccountWithTransactionsDto extends Account {
     @Expose()
     @Type(() => TransactionDto)
     @ApiProperty({ type: TransactionDto, isArray: true, description: 'The transactions of the account' })
@@ -180,7 +135,7 @@ export class AccountsResponseDto {
     data!: AccountWithHolderDto[];
 }
 
-@ApiExtraModels(AccountWithHolderDto)
+@ApiExtraModels(Account)
 export class UserAccountsResponseDto {
     @ApiProperty({ type: Number, example: 1 })
     count!: number;

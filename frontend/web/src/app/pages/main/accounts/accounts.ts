@@ -9,15 +9,11 @@ import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NoData } from '@structural/main/no-data/no-data';
-import { DummyAccountData as DummyAccount } from '@global/constants';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import {
-  AccountsSchema,
-  initialAccountsFormState,
-  accountsFormValidationSchema,
-} from './accounts.types';
+import { AccountsSchema, accountsFormValidationSchema } from './accounts.types';
+import { CURRENCIES, DummyAccountData as DummyAccount } from '@global/constants';
 
 @Component({
   selector: 'accounts',
@@ -49,18 +45,25 @@ export class Accounts {
   protected isLoadingAccounts = computed<boolean>(() => this.accountsWithCount.isLoading());
 
   // Data
+  protected readonly currencies = CURRENCIES;
   protected readonly dummyAccount = DummyAccount;
+  protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly accountTypes = this.accountsService.getAccountTypes();
   protected readonly accountsWithCount = this.accountsService.getUserAccounts();
 
   // Form
-  protected accountsFormModel = signal<AccountsSchema>(initialAccountsFormState);
+  private readonly INITIAL_FORM_STATE: AccountsSchema = {
+    name: '',
+    type: '',
+    currency: this.currency,
+  };
+  protected accountsFormModel = signal<AccountsSchema>(this.INITIAL_FORM_STATE);
   protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
 
   // Methods
   protected resetAccountsForm() {
     this.accountsForm().reset();
-    this.accountsFormModel.set(initialAccountsFormState);
+    this.accountsFormModel.set(this.INITIAL_FORM_STATE);
   }
 
   protected handleCloseForm(source: 'icon' | 'overlay') {
@@ -71,16 +74,16 @@ export class Accounts {
   protected submitAccountsForm = (event: Event) => {
     event.preventDefault();
 
-    const { name, type } = this.accountsFormModel();
+    const payload = this.accountsFormModel();
 
     this.isSubmitting.set(true);
 
-    this.accountsService.createNewAccount({ name, type }).subscribe({
+    this.accountsService.createNewAccount(payload).subscribe({
       next: () => {
         this.toastService.show({
           variant: 'success',
           title: 'Account created!',
-          details: `Your [${name}] account has been created successfully.`,
+          details: `Your [${payload.name}] account has been created successfully.`,
         });
         this.accountsWithCount.reload();
         this.resetAccountsForm();

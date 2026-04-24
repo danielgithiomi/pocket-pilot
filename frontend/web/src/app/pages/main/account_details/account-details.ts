@@ -98,10 +98,12 @@ export class AccountDetails {
     setTimeout(() => {
       this.accountsService.deleteAccountById(accountId).subscribe({
         next: () => {
+          const accountName = this.resourceData()?.account?.name ?? 'account';
+
           this.toastService.show({
             variant: 'success',
             title: 'Account deleted!',
-            details: 'The account and all its transactions have been successfully deleted.',
+            details: `Your [${accountName}] and all its transactions have been successfully deleted.`,
           });
 
           this.reloadResources();

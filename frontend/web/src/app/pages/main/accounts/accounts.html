@@ -99,14 +99,29 @@
         (clearOutput)="accountsForm.name().controlValue.set('')"
       />
 
-      <atom-select
-        id="type"
-        [inverted]="true"
-        label="Account Type"
-        [formField]="accountsForm.type"
-        placeholder="Select an account type"
-        [options]="types || [{ value: '', label: 'No account types found' }]"
-      />
+      <div class="flex flex-col sm:flex-row gap-0 sm:gap-4">
+        <atom-select
+          class="flex-1"
+          id="account-type"
+          [inverted]="true"
+          label="Account Type"
+          wrapperClassName="my-0"
+          placeholder="Select a type"
+          [formField]="accountsForm.type"
+          [options]="types || [{ value: '', label: 'No account types found' }]"
+        />
+
+        <atom-select
+          class="flex-1"
+          [inverted]="true"
+          id="account-currency"
+          [options]="currencies"
+          wrapperClassName="my-0"
+          label="Account Currency"
+          placeholder="Select a currency"
+          [formField]="accountsForm.currency"
+        />
+      </div>
     </form>
 
     <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">

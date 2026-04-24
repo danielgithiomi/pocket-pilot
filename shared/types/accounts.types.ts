@@ -2,6 +2,7 @@ import { Transaction } from "./transactions.types";
 
 export interface CreateAccountRequest {
   name: string;
+  currency: string;
   type: AccountType | "";
 }
 
@@ -10,6 +11,7 @@ export interface Account {
   name: string;
   balance: number;
   holderId: string;
+  currency: string;
   createdAt: string;
   updatedAt: string;
   type: AccountType;
