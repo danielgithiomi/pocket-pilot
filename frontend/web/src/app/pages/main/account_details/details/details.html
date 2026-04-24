@@ -1,5 +1,14 @@
-<account-card
-  [id]="account().id"
-  [account]="account()"
-  [isLoading]="false"
-/>
+<section id="account-details-section" class="flex flex-row md:flex-col gap-8">
+  <account-card [id]="account().id" [account]="account()" [isLoading]="false" />
+
+  <div class="flex-1 flex flex-col gap-2 text-sm">
+    <h4 class="font-semibold mb-4">Account Info</h4>
+    <p>Account name: {{ formatText(account().name) }}</p>
+    <p>Account type: {{ account().type }}</p>
+    <p>Account currency: {{ currency }}</p>
+    <p>Account status: ACTIVE</p>
+    <p>Account balance: {{ formatBalance(account().balance) }}</p>
+    <p>Date Created: {{ formatDate(account().createdAt) }}</p>
+    <p>Last Transaction: {{ formatDate(account().updatedAt) }}</p>
+  </div>
+</section>

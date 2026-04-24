@@ -55,7 +55,9 @@ export class Account {
 
   // Computed signals
   protected accountId = computed(() => `account-${this.id()}`);
-  protected formattedBalance = computed(() => formatCurrency(this.account().balance, this.currency));
+  protected formattedBalance = computed(() =>
+    formatCurrency(this.account().balance, this.currency),
+  );
 
   // Methods
   toggleOptions(event: Event) {
