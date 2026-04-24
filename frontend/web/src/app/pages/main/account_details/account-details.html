@@ -1,9 +1,31 @@
 <section id="account-details-page" class="page">
+  @let resource = resourceData();
   <div class="page-header">
     <h1 class="page-title">Account Details</h1>
+
+    <div class="flex flex-row items-center gap-4">
+      <!-- Edit Button -->
+      <atom-button id="account-details-edit" variant="secondary" (clicked)="handleOnEditClick()">
+        <div class="w-full grid place-items-center">
+          <lucide-icon name="edit-account" [img]="editIcon" [size]="iconSize"></lucide-icon>
+        </div>
+      </atom-button>
+
+      <!-- Delete Button -->
+      <atom-button
+        variant="primary"
+        id="account-details-delete"
+        [isLoading]="isDeletingAccount()"
+        (clicked)="handleOnDeleteAccountClick(resource?.account?.id || '')"
+        [className]="deleteClickCount() === 2 ? 'bg-red-600 text-white' : ''"
+      >
+        <div class="w-full grid place-items-center">
+          <lucide-icon name="delete-account" [img]="deleteIcon" [size]="iconSize"></lucide-icon>
+        </div>
+      </atom-button>
+    </div>
   </div>
 
-  @let resource = resourceData();
   <div
     class="page-container flex-1 flex flex-col space-y-6"
     [ngClass]="{ 'grid! place-items-center!': hasError() || !resource }"
@@ -27,20 +49,21 @@
         @if (!resource) {
           <no-data message="No account data available" />
         } @else {
-          <div class="h-full flex flex-col md:flex-row gap-6">
+          <div
+            class="h-full flex flex-col md:flex-row gap-6"
+            [ngClass]="{ 'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed() }"
+          >
             <account-details
               [account]="resource.account"
               [transactionCount]="resource.count"
-              [deleteClickCount]="deleteClickCount()"
-              [isDeletingAccount]="isDeletingAccount()"
               class="w-full md:flex-2 lg:flex-2 xl:flex-1"
-              (onDeleteAccountClick)="handleDeleteAccount($event)"
               [ngClass]="{ 'md:flex-2! xl:flex-1!': !drawerService.isDrawerCollapsed() }"
             />
 
             <account-transactions
               [transactions]="resource.transactions"
               class="w-full md:flex-4 lg:flex-3 xl:flex-4"
+              [accountCurrency]="resource.account.currency"
               [ngClass]="{ 'md:flex-3! xl:flex-3!': !drawerService.isDrawerCollapsed() }"
             />
           </div>

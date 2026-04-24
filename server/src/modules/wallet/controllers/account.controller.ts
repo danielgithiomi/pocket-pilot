@@ -135,8 +135,8 @@ export class AccountController {
         isArray: false,
         description: 'Account created successfully',
     })
-    createAccount(@UserInRequest() user: User, @Body() accountDto: CreateAccountDto): Promise<Account> {
-        return this.accountService.createAccount(user.id!, accountDto);
+    createAccount(@UserInRequest() user: User, @Body() payload: CreateAccountDto): Promise<Account> {
+        return this.accountService.createAccount(user.id!, payload);
     }
 
     @Delete(':accountId')

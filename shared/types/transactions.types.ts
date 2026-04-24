@@ -21,6 +21,7 @@ export interface TransactionWithAccount extends Transaction {
 export interface AccountInTransaction {
   id: string;
   name: string;
+  currency: string;
 }
 
 export interface TransactionsWithAccountWithCount {

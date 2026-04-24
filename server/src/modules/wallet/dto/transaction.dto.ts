@@ -64,6 +64,10 @@ export class TransactionAccount {
     @Expose()
     @ApiProperty({ example: 'Savings Account', description: 'The name of the owning account' })
     name!: string;
+
+    @Expose()
+    @ApiProperty({ example: 'USD', description: 'The currency of the owning account' })
+    currency!: string;
 }
 
 @Exclude()

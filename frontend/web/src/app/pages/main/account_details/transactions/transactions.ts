@@ -1,24 +1,18 @@
 import { Transaction } from '@global/types';
 import { Table, TableColumn } from '@organisms/table';
-import { AccountsService } from '@api/accounts.service';
 import { formatCurrency, formatDate } from '@libs/utils';
+import { Component, computed, input } from '@angular/core';
 import { AccountTransactionRow } from './transactions.types';
-import { Component, computed, inject, input } from '@angular/core';
 
 @Component({
+  imports: [Table],
   selector: 'account-transactions',
   templateUrl: './transactions.html',
-  imports: [Table],
 })
 export class TransactionsComponent {
   // INPUT
+  readonly accountCurrency = input.required<string>();
   readonly transactions = input.required<Transaction[]>();
-
-  // SERVICES
-  private readonly accountService = inject(AccountsService);
-
-  // DATA
-  private readonly currency = this.accountService.getDefaultCurrency();
 
   // TABLE
   protected accountTransactionsColumns: TableColumn<AccountTransactionRow>[] = [
@@ -94,7 +88,7 @@ export class TransactionsComponent {
         category: transaction.category,
         date: formatDate(transaction.date),
         description: transaction.description,
-        amount: formatCurrency(transaction.amount, this.currency, 2, true, false),
+        amount: formatCurrency(transaction.amount, this.accountCurrency(), 2, true, false),
       }))
     ).reverse();
   });

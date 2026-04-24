@@ -4,7 +4,7 @@
 }
 
 .table-container {
-  @apply w-full overflow-hidden rounded border border-(--primary) bg-(--alternate-background);
+  @apply flex flex-col w-full overflow-hidden rounded border border-(--primary) bg-(--alternate-background);
 }
 
 .table-header {
@@ -28,7 +28,7 @@
 }
 
 .table-body {
-  @apply divide-y divide-(--muted-text)/30;
+  @apply flex-1 h-full divide-y divide-(--muted-text)/30;
 }
 
 .table-row {
@@ -52,7 +52,7 @@
 }
 
 .empty-state {
-  @apply flex items-center justify-center py-12;
+  @apply grid place-items-center min-h-[145px];
 }
 
 .empty-message {

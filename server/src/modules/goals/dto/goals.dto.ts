@@ -15,6 +15,11 @@ export class CreateGoalDto {
     @ApiProperty({ example: 'My Goal Description', description: 'The description of the goal' })
     description!: string;
 
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ example: 'USD', description: 'The currency of the goal' })
+    currency!: string;
+
     @IsNotEmpty()
     @Type(() => Date)
     @ApiProperty({ example: '2025-01-01', description: 'The start date of the goal' })
@@ -59,6 +64,10 @@ export class GoalDto {
     @Expose()
     @ApiProperty({ example: 'My Goal Description', description: 'The description of the goal' })
     description!: string;
+
+    @Expose()
+    @ApiProperty({ example: 'USD', description: 'The currency of the goal' })
+    currency!: string;
 
     @Expose()
     @ApiProperty({ example: '2025-01-01', description: 'The start date of the goal' })

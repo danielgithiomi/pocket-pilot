@@ -6,9 +6,9 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 export class AccountRepository {
     constructor(private readonly db: DatabaseService) {}
 
-    createNewAccount(userId: string, data: CreateAccountDto) {
-        const { name, type } = data;
-        return this.db.account.create({ data: { name, type, holderId: userId } });
+    createNewAccount(userId: string, payload: CreateAccountDto) {
+        const { name, type, currency } = payload;
+        return this.db.account.create({ data: { name, type, currency, holderId: userId } });
     }
 
     getAllApplicationAccounts() {

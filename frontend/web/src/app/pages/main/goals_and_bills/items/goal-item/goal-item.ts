@@ -69,9 +69,6 @@ export class GoalItem {
   private readonly toastService = inject(ToastService);
   private readonly accountsService = inject(AccountsService);
 
-  // Data
-  private readonly currency = this.accountsService.getDefaultCurrency();
-
   // Computed
   protected readonly goalItemId = computed<string>(() => `goal-item-${this.goalItem().id}`);
   protected readonly remainingTime = computed<string>(() => {
@@ -108,6 +105,6 @@ export class GoalItem {
 
   // Helper functions
   protected formatCurrency(amount: number): string {
-    return formatCurrency(amount, this.currency, 0, true);
+    return formatCurrency(amount, this.goalItem().currency, 0, true);
   }
 }

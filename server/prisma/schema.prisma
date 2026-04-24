@@ -31,6 +31,7 @@ model Account {
     id        String      @id @default(uuid())
     type      AccountType
     name      String
+    currency  String
     createdAt DateTime    @default(now())
     updatedAt DateTime    @updatedAt
     balance   Float       @default(0)
@@ -168,6 +169,7 @@ model Goals {
     userId String
 
     name        String
+    currency    String
     description String
 
     endDate   DateTime

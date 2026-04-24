@@ -1,4 +1,4 @@
-import { GoalCategoryEnum, GoalStatusEnum } from '../enums/goals.enums';
+import { GoalCategoryEnum, GoalStatusEnum } from "../enums/goals.enums";
 
 export type GoalStatus = GoalStatusEnum;
 export type GoalCategory = GoalCategoryEnum;
@@ -8,6 +8,7 @@ export interface CreateGoalRequest {
   name: string;
   endDate: Date;
   startDate: Date;
+  currency: string;
   description: string;
   targetAmount: number;
   category: GoalCategory;
@@ -17,16 +18,17 @@ export interface CreateGoalRequest {
 // OUTPUTS
 export interface Goal {
   id: string;
-  userId: string;
   name: string;
-  description: string;
-  startDate: Date;
   endDate: Date;
-  category: GoalCategory;
-  status: GoalStatus;
-  monthlyContribution: number;
-  targetAmount: number;
-  currentAmount: number;
+  userId: string;
+  startDate: Date;
   updatedAt: Date;
   createdAt: Date;
-};
+  currency: string;
+  status: GoalStatus;
+  description: string;
+  targetAmount: number;
+  currentAmount: number;
+  category: GoalCategory;
+  monthlyContribution: number;
+}

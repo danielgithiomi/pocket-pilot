@@ -69,11 +69,11 @@ export class AccountService {
         );
     }
 
-    async createAccount(userId: string, data: CreateAccountDto): Promise<Account> {
+    async createAccount(userId: string, payload: CreateAccountDto): Promise<Account> {
         try {
             const newAccountData: CreateAccountDto = {
-                ...data,
-                name: data.name.toLowerCase(),
+                ...payload,
+                name: payload.name.toLowerCase(),
             };
 
             const createdAccount = await this.accountRepository.createNewAccount(userId, newAccountData);
@@ -84,7 +84,7 @@ export class AccountService {
                 throw new ConflictException({
                     name: 'ACCOUNT_NAME_CONFLICT',
                     title: 'Account Already Exists!',
-                    details: `You already have an account with the name: [${data.name}].`,
+                    details: `You already have an account with the name: [${payload.name}].`,
                 });
             }
 

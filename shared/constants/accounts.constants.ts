@@ -6,6 +6,7 @@ export const DummyAccountData: Account = {
   balance: 0,
   holderId: "",
   type: "CURRENT",
+  currency: "USD",
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };

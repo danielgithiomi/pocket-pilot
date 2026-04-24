@@ -16,11 +16,11 @@ import { addOneMonthFromDate, getMonthDifference, addMonths, formatCurrency } fr
 import {
   NewGoalSchema,
   EffectResponse,
-  INITIAL_FORM_STATE,
   TargetCompletionStrategy,
   TargetCompletionStrategies,
   newGoalFormValidationSchema,
 } from './goals-form.types';
+import { CURRENCIES } from '@global/constants';
 
 @Component({
   selector: 'goals-form',
@@ -39,33 +39,53 @@ export class GoalsForm {
   // Outputs
   onGoalsFormClose = output<void>();
 
-  // Form
-  protected readonly initialFormData = INITIAL_FORM_STATE;
-  protected readonly newGoalFormModel = signal<NewGoalSchema>(this.initialFormData);
-  protected readonly newGoalForm = form(this.newGoalFormModel, newGoalFormValidationSchema);
-
-  // Signals
-  protected readonly goalFormStep = signal<1 | 2>(1);
-  protected readonly summary = signal<EffectResponse | null>(null);
-  protected readonly isSubmittingGoalsForm = signal<boolean>(false);
-  protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
-
-  // Calendar
-  protected readonly minStartDate = signal<Date>(new Date());
-  protected readonly minEndDate = signal<Date>(addOneMonthFromDate(new Date()));
-
   // Services
   protected readonly goalsService = inject(GoalsService);
   protected readonly toastService = inject(ToastService);
   protected readonly accountsService = inject(AccountsService);
 
   // Data
+  protected readonly currencies = CURRENCIES;
   protected readonly goals$ = this.goalsService.getUserGoals();
-  protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();
+  protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
+
+  // Signals
+  protected readonly goalFormStep = signal<1 | 2>(1);
+  protected readonly summary = signal<EffectResponse | null>(null);
+  protected readonly isSubmittingGoalsForm = signal<boolean>(false);
+  protected readonly goalCurrency = signal<string>(this.defaultCurrency);
+  protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
+
+  // Calendar
+  protected readonly minStartDate = signal<Date>(new Date());
+  protected readonly minEndDate = signal<Date>(addOneMonthFromDate(new Date()));
+
+  // Form
+  private readonly INITIAL_FORM_STATE: NewGoalSchema = {
+    // Step 1
+    startDate: new Date(),
+    targetCompletionStrategy: null,
+
+    // Step 2
+    name: '',
+    category: '',
+    description: '',
+    targetAmount: null,
+    monthlyContribution: null,
+    currency: this.defaultCurrency,
+    endDate: addOneMonthFromDate(new Date()),
+  };
+  protected readonly newGoalFormModel = signal<NewGoalSchema>(this.INITIAL_FORM_STATE);
+  protected readonly newGoalForm = form(this.newGoalFormModel, newGoalFormValidationSchema);
 
   // Constructor & Effects
   constructor() {
+    effect(() => {
+      const currency = this.newGoalForm.currency().value();
+      this.goalCurrency.set(currency);
+    });
+
     effect(() => {
       const endDate = this.newGoalForm.endDate().value();
       const startDate = this.newGoalForm.startDate().value();
@@ -131,8 +151,8 @@ export class GoalsForm {
     const { rawValue, ceiledValue } = summary;
     switch (strategy) {
       case 'date': {
-        const formattedRawValue = formatCurrency(rawValue, this.currency, 2, false);
-        const formattedCeiledValue = formatCurrency(ceiledValue, this.currency, 0, true);
+        const formattedRawValue = formatCurrency(rawValue, this.goalCurrency(), 2, false);
+        const formattedCeiledValue = formatCurrency(ceiledValue, this.goalCurrency(), 0, true);
 
         if (rawValue !== ceiledValue) return `≈${formattedCeiledValue} (${formattedRawValue})`;
         return formattedCeiledValue;
@@ -192,9 +212,9 @@ export class GoalsForm {
   protected resetGoalForm() {
     this.summary.set(null);
     this.goalFormStep.set(1);
+    this.newGoalForm().reset();
     this.selectedCategory.set(null);
-    this.newGoalForm().reset(this.initialFormData);
-    this.newGoalFormModel.set(this.initialFormData);
+    this.newGoalFormModel.set(this.INITIAL_FORM_STATE);
   }
 
   protected resetCalculatedFields() {

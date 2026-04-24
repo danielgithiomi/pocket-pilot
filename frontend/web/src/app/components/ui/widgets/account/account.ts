@@ -5,8 +5,8 @@ import { AccountsService } from '@api/accounts.service';
 import { ThemeService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NgClass, NgOptimizedImage } from '@angular/common';
+import { Account as IAccount, IVoidResourceResponse } from '@global/types';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { AccountType, Account as IAccount, IVoidResourceResponse } from '@global/types';
 import {
   Nfc,
   Trash,
@@ -26,6 +26,7 @@ export class Account {
   id = input.required<string>();
   account = input.required<IAccount>();
   isLoading = input.required<boolean>();
+  variant = input<'default' | 'detail'>('default');
 
   // Outputs
   onAccountDelete = output<void>();
@@ -50,13 +51,10 @@ export class Account {
   protected readonly themeService = inject(ThemeService);
   private readonly accountsService = inject(AccountsService);
 
-  // Data
-  protected readonly currency = this.accountsService.getDefaultCurrency();
-
   // Computed signals
   protected accountId = computed(() => `account-${this.id()}`);
   protected formattedBalance = computed(() =>
-    formatCurrency(this.account().balance, this.currency),
+    formatCurrency(this.account().balance, this.account().currency),
   );
 
   // Methods
@@ -65,7 +63,8 @@ export class Account {
     this.isOptionsOpen.set(!this.isOptionsOpen());
   }
 
-  deleteAccount() {
+  deleteAccount(event: Event) {
+    event.stopPropagation();
     this.isDeleting.set(true);
 
     this.accountsService.deleteAccountById(this.id()).subscribe({

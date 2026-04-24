@@ -30,7 +30,7 @@
       [formField]="newBillForm.dueDate"
     />
 
-    <div class="flex flex-col md:flex-row gap-6">
+    <div class="flex flex-col md:flex-row gap-4 md:gap-6 mt-4">
       <atom-input
         type="number"
         [inverted]="true"
@@ -40,15 +40,18 @@
         class="w-full flex-1"
         label="Billing Amount"
         placeholder="Eg: 100000"
+        wrapperClassName="my-0!"
         [formField]="newBillForm.amount"
         (clearOutput)="newBillForm.amount().controlValue.set(null)"
       />
 
       <atom-select
         [inverted]="true"
+        class="w-full flex-1"
         id="billing-currency"
         label="Billing Currency"
         [options]="currencies()"
+        wrapperClassName="my-0!"
         [formField]="newBillForm.currency"
         placeholder="Select billing currency"
         [selectedValue]="newBillFormModel().currency"

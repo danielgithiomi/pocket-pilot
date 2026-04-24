@@ -9,14 +9,14 @@ export class TransactionRepository {
 
     async getAllTransactionsAndAccountData() {
         return this.db.transaction.findMany({
-            include: { account: { select: { id: true, name: true } } },
+            include: { account: { select: { id: true, name: true, currency: true } } },
         });
     }
 
     async getUserTransactionsAndAccountData(userId: string) {
         return this.db.transaction.findMany({
             where: { account: { holderId: userId } },
-            include: { account: { select: { id: true, name: true } } },
+            include: { account: { select: { id: true, name: true, currency: true } } },
         });
     }
 
@@ -37,7 +37,7 @@ export class TransactionRepository {
                     ...transaction,
                 },
                 include: {
-                    account: { select: { id: true, name: true } },
+                    account: { select: { id: true, name: true, currency: true } },
                 },
             });
 
