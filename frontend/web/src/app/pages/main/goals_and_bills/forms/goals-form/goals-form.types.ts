@@ -17,6 +17,7 @@ export type NewGoalSchema = {
   name: string;
   endDate: Date;
   startDate: Date;
+  currency: string;
   description: string;
   targetAmount: number | null;
   category: GoalCategoryEnum | '';
@@ -24,19 +25,20 @@ export type NewGoalSchema = {
   targetCompletionStrategy: TargetCompletionStrategy | null;
 };
 
-export const INITIAL_FORM_STATE: NewGoalSchema = {
-  // Step 1
-  startDate: new Date(),
-  targetCompletionStrategy: null,
+// export const INITIAL_FORM_STATE: NewGoalSchema = {
+//   // Step 1
+//   startDate: new Date(),
+//   targetCompletionStrategy: null,
 
-  // Step 2
-  name: '',
-  category: '',
-  description: '',
-  targetAmount: null,
-  monthlyContribution: null,
-  endDate: addOneMonthFromDate(new Date()),
-};
+//   // Step 2
+//   name: '',
+//   currency: '',
+//   category: '',
+//   description: '',
+//   targetAmount: null,
+//   monthlyContribution: null,
+//   endDate: addOneMonthFromDate(new Date()),
+// };
 
 export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
   // Name

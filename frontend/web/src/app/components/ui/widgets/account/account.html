@@ -25,7 +25,7 @@
           <div class="skeleton w-2/3 h-10"></div>
         } @else {
           <div class="balance">
-            <span class="currency">{{ currency }}</span>
+            <span class="currency">{{ account().currency }}</span>
             <span class="value">{{ formattedBalance() }}</span>
           </div>
         }
@@ -47,31 +47,33 @@
             }
           </div>
 
-          <div class="card-options">
-            @if (isLoading()) {
-              <div class="skeleton size-5"></div>
-            } @else {
-              <lucide-icon
-                [size]="16"
-                name="options"
-                [img]="Options"
-                (click)="toggleOptions($event)"
-              />
-            }
+          @if (variant() === 'default') {
+            <div class="card-options">
+              @if (isLoading()) {
+                <div class="skeleton size-5"></div>
+              } @else {
+                <lucide-icon
+                  [size]="16"
+                  name="options"
+                  [img]="Options"
+                  (click)="toggleOptions($event)"
+                />
+              }
 
-            <!-- Card Options Drop Down -->
-            @if (isOptionsOpen()) {
-              <div class="dropdown" (click)="deleteAccount()">
-                <div class="pointer"></div>
+              <!-- Card Options Drop Down -->
+              @if (isOptionsOpen()) {
+                <div class="dropdown" (click)="deleteAccount($event)">
+                  <div class="pointer"></div>
 
-                @if (isDeleting()) {
-                  <div class="loader"></div>
-                } @else {
-                  <lucide-icon name="delete" [img]="Trash" [size]="16" class="delete" />
-                }
-              </div>
-            }
-          </div>
+                  @if (isDeleting()) {
+                    <div class="loader"></div>
+                  } @else {
+                    <lucide-icon name="delete" [img]="Trash" [size]="16" class="delete" />
+                  }
+                </div>
+              }
+            </div>
+          }
         </div>
       </div>
     </div>

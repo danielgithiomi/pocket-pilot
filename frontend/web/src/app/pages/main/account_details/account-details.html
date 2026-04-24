@@ -15,6 +15,7 @@
       <atom-button
         variant="primary"
         id="account-details-delete"
+        [isLoading]="isDeletingAccount()"
         (clicked)="handleOnDeleteAccountClick(resource?.account?.id || '')"
         [className]="deleteClickCount() === 2 ? 'bg-red-600 text-white' : ''"
       >
@@ -62,6 +63,7 @@
             <account-transactions
               [transactions]="resource.transactions"
               class="w-full md:flex-4 lg:flex-3 xl:flex-4"
+              [accountCurrency]="resource.account.currency"
               [ngClass]="{ 'md:flex-3! xl:flex-3!': !drawerService.isDrawerCollapsed() }"
             />
           </div>

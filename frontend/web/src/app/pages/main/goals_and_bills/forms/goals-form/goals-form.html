@@ -5,7 +5,7 @@
   (closeForm)="handleCloseForm($event)"
   description="Start a new financial goal"
 >
-  <form slot="content" id="goals-form" (submit)="submitGoalForm($event)">
+  <form slot="content" id="goals-form" (submit)="submitGoalForm($event)" class="my-4">
     @if (goalFormStep() === 1) {
       <organism-date-picker
         [required]="true"
@@ -86,14 +86,29 @@
         </div>
       </div>
 
-      <atom-select
-        [inverted]="true"
-        label="Goal Category"
-        id="goal-category-type"
-        placeholder="Select a category"
-        [formField]="newGoalForm.category"
-        [options]="formattedGoalCategories() || [{ value: '', label: 'No categories found' }]"
-      />
+      <div class="flex flex-col sm:flex-row my-4 gap-4">
+        <atom-select
+          class="flex-1"
+          label="Category"
+          [inverted]="true"
+          id="goal-category"
+          wrapperClassName="my-0"
+          placeholder="Select a category"
+          [formField]="newGoalForm.category"
+          [options]="formattedGoalCategories() || [{ value: '', label: 'No categories found' }]"
+        />
+
+        <atom-select
+          class="flex-1"
+          label="Currency"
+          [inverted]="true"
+          id="goal-currency"
+          [options]="currencies"
+          wrapperClassName="my-0"
+          placeholder="Select a currency"
+          [formField]="newGoalForm.currency"
+        />
+      </div>
 
       <atom-input
         type="text"

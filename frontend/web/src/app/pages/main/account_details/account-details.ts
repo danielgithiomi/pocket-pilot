@@ -76,11 +76,11 @@ export class AccountDetails {
   });
 
   // METHODS
+  private reloadResources = () => this.accountsService.getUserAccounts().reload();
+
   protected handleOnEditClick() {
     console.log('Edit clicked');
   }
-
-  private reloadResources = () => this.accountsService.getUserAccounts().reload();
 
   protected handleOnDeleteAccountClick(accountId: string) {
     if (this.deleteClickCount() === 1) {

@@ -169,6 +169,7 @@ model Goals {
     userId String
 
     name        String
+    currency    String
     description String
 
     endDate   DateTime
