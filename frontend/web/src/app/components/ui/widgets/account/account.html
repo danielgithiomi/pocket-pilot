@@ -1,7 +1,7 @@
 <section [id]="accountId()">
   <div
     class="container"
-    [routerLink]="['/accounts', id()]"
+    [routerLink]="isLoading() ? null : ['/accounts', id()]"
     (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)"
   >
     <div class="card">
@@ -41,8 +41,8 @@
             } @else {
               <lucide-icon name="identity-icon" [img]="IdentityIcon" [size]="12" class="mt-0.5" />
               <div class="flex flex-col">
-                <p class="capitalize text-sm">{{ name() }}</p>
-                <p class="text-[10px] text-muted-text">{{ type() }}</p>
+                <p class="capitalize text-sm">{{ account().name }}</p>
+                <p class="text-[10px] text-muted-text">{{ account().type }}</p>
               </div>
             }
           </div>

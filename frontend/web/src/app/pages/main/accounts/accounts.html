@@ -22,10 +22,8 @@
       <div class="account-grid">
         @for (i of [1, 2, 3]; track i) {
           <account-card
-            [balance]="0"
-            type="CURRENT"
             [id]="i.toString()"
-            [name]="'Account ' + i"
+            [account]="dummyAccount"
             [isLoading]="isLoadingAccounts()"
             (onAccountDelete)="accountsWithCount.reload()"
           />
@@ -66,9 +64,7 @@
               @for (account of accounts; track account.id) {
                 <account-card
                   [id]="account.id"
-                  [name]="account.name"
-                  [type]="account.type"
-                  [balance]="account.balance"
+                  [account]="account"
                   [isLoading]="isLoadingAccounts()"
                   (onAccountDelete)="accountsWithCount.reload()"
                 />

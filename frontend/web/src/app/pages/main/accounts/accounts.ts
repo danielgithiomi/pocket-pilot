@@ -9,6 +9,7 @@ import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NoData } from '@structural/main/no-data/no-data';
+import { DummyAccountData as DummyAccount } from '@global/constants';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
@@ -48,6 +49,7 @@ export class Accounts {
   protected isLoadingAccounts = computed<boolean>(() => this.accountsWithCount.isLoading());
 
   // Data
+  protected readonly dummyAccount = DummyAccount;
   protected readonly accountTypes = this.accountsService.getAccountTypes();
   protected readonly accountsWithCount = this.accountsService.getUserAccounts();
 

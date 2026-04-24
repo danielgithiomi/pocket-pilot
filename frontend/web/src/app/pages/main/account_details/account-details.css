@@ -1,0 +1,7 @@
+@reference 'tailwindcss';
+
+#account-details-page {
+  .account-details-content {
+    @apply h-full flex flex-col md:flex-row gap-4;
+  }
+}

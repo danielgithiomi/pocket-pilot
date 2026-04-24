@@ -1,14 +1,18 @@
 import { capitalize } from '@libs/utils';
+import { NgClass } from '@angular/common';
+import { Account } from '@widgets/account';
+import { Breadcrumbs } from '@atoms/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import { AccountsService } from '@api/accounts.service';
 import { Component, computed, inject } from '@angular/core';
 import { LucideAngularModule, Wallet } from 'lucide-angular';
-import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
+import { FetchError } from '@structural/main/fetch-error/fetch-error';
 
 @Component({
   selector: 'account-details',
+  styleUrl: './account-details.css',
   templateUrl: './account-details.html',
-  imports: [Breadcrumbs, LucideAngularModule],
+  imports: [Breadcrumbs, LucideAngularModule, Account, NgClass, FetchError],
 })
 export class AccountDetails {
   // ICONS
@@ -25,7 +29,13 @@ export class AccountDetails {
   );
 
   // COMPUTED
+  protected readonly hasError = computed(() => !!this.accountWithTransactions.error());
   protected readonly isLoadingResources = computed(() => this.accountWithTransactions.isLoading());
+  protected readonly resourceData = computed(() => {
+    const data = this.accountWithTransactions.value()?.data;
+    const { transactions, ...account } = data!;
+    return { account, transactions };
+  });
 
   protected readonly breadcrumbItems = computed(() => {
     const account = this.accountWithTransactions.value()?.data;

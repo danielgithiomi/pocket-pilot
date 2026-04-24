@@ -10,12 +10,14 @@ import { Goal, IEnumResponse, IStandardResponse } from '@global/types';
 export class GoalsResource {
 
     getGoalCategories = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
-        method: 'GET', 
+        method: 'GET',
+        cache: 'no-cache',
         url: concatUrl(endpoints.goal_categories),
     }));
 
     getUserGoals = httpResource<IStandardResponse<Goal[]>>(() => ({
-        method: 'GET', 
+        method: 'GET',
+        cache: 'no-cache',
         url: concatUrl(endpoints.goals),
     }));
     
