@@ -15,9 +15,12 @@
 
     <atom-button
       class="mt-auto"
-      variant="secondary"
-      label="Delete Account"
+      variant="primary"
       id="delete-account-details"
+      [isLoading]="isDeletingAccount()"
+      (click)="onDeleteAccountClick.emit(account().id)"
+      [label]="deleteClickCount() === 1 ? 'Delete Account' : 'Confirm Delete'"
+      [className]="deleteClickCount() === 2 ? 'bg-red-500 text-white font-semibold' : ''"
     />
   </div>
 </section>

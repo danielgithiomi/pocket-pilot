@@ -77,7 +77,7 @@ export class AccountService {
             };
 
             const createdAccount = await this.accountRepository.createNewAccount(userId, newAccountData);
-            await this.invalidateCachesByAccountId(createdAccount.id);
+            await this.invalidateCachesByAccountId(userId, createdAccount.id);
             return createdAccount;
         } catch (error) {
             if (this.isPrismaError(error) === 'unique-constraint') {
@@ -110,7 +110,7 @@ export class AccountService {
         }
 
         const deletedAccount = await this.accountRepository.deleteAccountById(userId, accountId);
-        await this.invalidateCachesByAccountId(deletedAccount.id);
+        await this.invalidateCachesByAccountId(userId, accountId);
         return deletedAccount;
     }
 
@@ -156,8 +156,9 @@ export class AccountService {
         return accountTransactionCount > 0;
     }
 
-    private async invalidateCachesByAccountId(accountId: string): Promise<void> {
-        await this.accountsCache.invalidateCache(accountId);
-        await this.accountDetailsCache.invalidateCache(accountId);
+    private async invalidateCachesByAccountId(userId: string, accountId: string): Promise<void> {
+        await this.accountsCache.invalidateCache(userId); // User accounts list
+        // await this.accountsCache.invalidateCache(accountId); // Single account
+        await this.accountDetailsCache.invalidateCache(accountId); // Account with transactions
     }
 }

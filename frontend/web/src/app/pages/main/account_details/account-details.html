@@ -31,7 +31,10 @@
             <account-details
               [account]="resource.account"
               [transactionCount]="resource.count"
+              [deleteClickCount]="deleteClickCount()"
+              [isDeletingAccount]="isDeletingAccount()"
               class="w-full md:flex-2 lg:flex-2 xl:flex-1"
+              (onDeleteAccountClick)="handleDeleteAccount($event)"
               [ngClass]="{ 'md:flex-2! xl:flex-1!': !drawerService.isDrawerCollapsed() }"
             />
 
