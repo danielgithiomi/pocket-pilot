@@ -3,11 +3,12 @@
     <h1 class="page-title">Account Details</h1>
   </div>
 
+  @let resource = resourceData();
   <div
     class="page-container flex-1 flex flex-col space-y-4"
-    [ngClass]="{ 'grid! place-items-center!': hasError() }"
+    [ngClass]="{ 'grid! place-items-center!': hasError() || !resource }"
   >
-    @if (!hasError()) {
+    @if (!hasError() && resource) {
       <breadcrumbs
         [icon]="breadcrumbIcon"
         [isLoading]="isLoadingResources()"
@@ -15,11 +16,9 @@
       />
     }
 
-    @if (hasError()) {
+    @if (hasError() || !resource) {
       <fetch-error message="Error loading account" />
     } @else {
-      @let resource = resourceData();
-
       <div class="account-details-content">
         <div class="w-full md:flex-1">
           <account-card
@@ -28,7 +27,7 @@
             [isLoading]="isLoadingResources()"
           />
         </div>
-        <div class="w-full md:flex-2">Right</div>
+        <div class="w-full md:flex-4">Right</div>
       </div>
     }
   </div>

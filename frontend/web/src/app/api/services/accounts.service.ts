@@ -35,7 +35,7 @@ export class AccountsService {
     return this.accountsResource.accountTypes;
   }
 
-  getAccountWithTransactionsById(accountId: string) {
+  getAccountWithItsTransactionsById(accountId: string) {
     return this.accountsResource.accountWithTransactions(accountId);
   }
 
