@@ -22,23 +22,17 @@
       @if (!resource) {
         <no-data message="No account data available" />
       } @else {
-        <div class="account-details-content">
-          <div
+        <div class="h-full flex flex-col md:flex-row gap-6">
+          <account-details
             class="w-full md:flex-1"
+            [account]="resource.account"
             [ngClass]="{ 'md:flex-2! lg:flex-1!': !drawerService.isDrawerCollapsed() }"
-          >
-            <account-card
-              [id]="resource.account.id"
-              [account]="resource.account"
-              [isLoading]="isLoadingResources()"
-            />
-          </div>
-          <div
+          />
+
+          <account-transactions
             class="w-full md:flex-4"
             [ngClass]="{ 'md:flex-3! lg:flex-3!': !drawerService.isDrawerCollapsed() }"
-          >
-            Right
-          </div>
+          />
         </div>
       }
     }

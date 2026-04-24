@@ -1,20 +1,27 @@
 import { capitalize } from '@libs/utils';
 import { NgClass } from '@angular/common';
-import { Account } from '@widgets/account';
 import { Breadcrumbs } from '@atoms/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
+import { DetailsComponent } from './details/details';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { NoData } from '@structural/main/no-data/no-data';
 import { Component, computed, inject } from '@angular/core';
 import { LucideAngularModule, Wallet } from 'lucide-angular';
+import { TransactionsComponent } from './transactions/transactions';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 
 @Component({
-  selector: 'account-details',
-  styleUrl: './account-details.css',
   templateUrl: './account-details.html',
-  imports: [Breadcrumbs, LucideAngularModule, Account, NgClass, FetchError, NoData],
+  imports: [
+    NoData,
+    NgClass,
+    FetchError,
+    Breadcrumbs,
+    DetailsComponent,
+    LucideAngularModule,
+    TransactionsComponent,
+  ],
 })
 export class AccountDetails {
   // ICONS
