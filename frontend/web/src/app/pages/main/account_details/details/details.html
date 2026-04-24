@@ -1,26 +1,45 @@
-<section id="account-details-section" class="flex h-full flex-row md:flex-col gap-8">
-  <account-card [id]="account().id" [account]="account()" [isLoading]="false" />
+<section id="account-details-section" class="flex h-full flex-col sm:flex-row md:flex-col gap-6">
+  <account-card
+    [id]="account().id"
+    [isLoading]="false"
+    [account]="account()"
+    class="flex-0 sm:flex-1 md:flex-0"
+  />
 
-  <div class="flex-1 flex flex-col gap-2 text-sm">
-    <h4 class="font-semibold mb-4">Account Info</h4>
+  <div class="flex-0 sm:flex-1 md:flex-0">
+    <h5 class="underline text-lg underline-offset-2 font-semibold mb-2">Summary</h5>
 
-    <p>Account name: {{ formatText(account().name) }}</p>
-    <p>Account type: {{ account().type }}</p>
-    <p>Account currency: {{ currency }}</p>
-    <p>Transaction count: {{ transactionCount() }}</p>
-    <p>Account Status: ACTIVE</p>
-    <p>Current balance: {{ formatBalance(account().balance) }}</p>
-    <p>Date Created: {{ formatDate(account().createdAt) }}</p>
-    <p>Last Activity: {{ formatDate(account().updatedAt) }}</p>
-
-    <atom-button
-      class="mt-auto"
-      variant="primary"
-      id="delete-account-details"
-      [isLoading]="isDeletingAccount()"
-      (click)="onDeleteAccountClick.emit(account().id)"
-      [label]="deleteClickCount() === 1 ? 'Delete Account' : 'Confirm Delete'"
-      [className]="deleteClickCount() === 2 ? 'bg-red-500 text-white font-semibold' : ''"
-    />
+    <div class="flex flex-col gap-2 text-sm pl-2">
+      <summary-item
+        id="account-name"
+        label="Account Name"
+        [value]="formatText(account().name)"
+      />
+      <summary-item
+        id="account-type"
+        label="Account Type"
+        [value]="account().type"
+      />
+      <summary-item
+        id="account-currency"
+        label="Account Currency"
+        [value]="currency"
+      />
+      <summary-item
+        id="transaction-count"
+        label="No. of Transactions"
+        [value]="transactionCount().toString()"
+      />
+      <summary-item
+        id="date-created"
+        label="Date Created"
+        [value]="formatDate(account().createdAt)"
+      />
+      <summary-item
+        id="last-activity"
+        label="Last Activity"
+        [value]="formatDate(account().updatedAt)"
+      />
+    </div>
   </div>
 </section>

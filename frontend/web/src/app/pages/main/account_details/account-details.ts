@@ -1,3 +1,4 @@
+import { Button } from '@atoms/button';
 import { capitalize } from '@libs/utils';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
@@ -7,14 +8,15 @@ import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NoData } from '@structural/main/no-data/no-data';
-import { LucideAngularModule, Wallet } from 'lucide-angular';
 import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionsComponent } from './transactions/transactions';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
+import { LucideAngularModule, Wallet, SquarePen, Trash2 } from 'lucide-angular';
 
 @Component({
   templateUrl: './account-details.html',
   imports: [
+    Button,
     NoData,
     NgClass,
     FetchError,
@@ -26,6 +28,9 @@ import { FetchError } from '@structural/main/fetch-error/fetch-error';
 })
 export class AccountDetails {
   // ICONS
+  protected readonly iconSize = 18;
+  protected readonly deleteIcon = Trash2;
+  protected readonly editIcon = SquarePen;
   protected readonly breadcrumbIcon = Wallet;
 
   // SIGNALS
@@ -71,10 +76,13 @@ export class AccountDetails {
   });
 
   // METHODS
+  protected handleOnEditClick() {
+    console.log('Edit clicked');
+  }
 
   private reloadResources = () => this.accountsService.getUserAccounts().reload();
 
-  protected handleDeleteAccount(accountId: string) {
+  protected handleOnDeleteAccountClick(accountId: string) {
     if (this.deleteClickCount() === 1) {
       this.deleteClickCount.set(2);
       this.toastService.show({

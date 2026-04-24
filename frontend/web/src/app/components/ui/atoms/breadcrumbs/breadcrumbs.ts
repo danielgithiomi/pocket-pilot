@@ -1,9 +1,9 @@
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { formatToReadable } from '@libs/utils';
 import { BreadcrumbInput } from './breadcrumb.types';
 import { Component, computed, input } from '@angular/core';
 import { LucideAngularModule, ChevronRight, LucideIconData } from 'lucide-angular';
-import { formatToReadable } from '@libs/utils';
 
 @Component({
   selector: 'breadcrumbs',
