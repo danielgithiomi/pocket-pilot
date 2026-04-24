@@ -39,16 +39,6 @@ export class GoalsForm {
   // Outputs
   onGoalsFormClose = output<void>();
 
-  // Signals
-  protected readonly goalFormStep = signal<1 | 2>(1);
-  protected readonly summary = signal<EffectResponse | null>(null);
-  protected readonly isSubmittingGoalsForm = signal<boolean>(false);
-  protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
-
-  // Calendar
-  protected readonly minStartDate = signal<Date>(new Date());
-  protected readonly minEndDate = signal<Date>(addOneMonthFromDate(new Date()));
-
   // Services
   protected readonly goalsService = inject(GoalsService);
   protected readonly toastService = inject(ToastService);
@@ -57,8 +47,19 @@ export class GoalsForm {
   // Data
   protected readonly currencies = CURRENCIES;
   protected readonly goals$ = this.goalsService.getUserGoals();
-  protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly goalCategories$ = this.goalsService.getGoalCategories();
+  protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
+
+  // Signals
+  protected readonly goalFormStep = signal<1 | 2>(1);
+  protected readonly summary = signal<EffectResponse | null>(null);
+  protected readonly isSubmittingGoalsForm = signal<boolean>(false);
+  protected readonly goalCurrency = signal<string>(this.defaultCurrency);
+  protected readonly selectedCategory = signal<TargetCompletionStrategy | null>(null);
+
+  // Calendar
+  protected readonly minStartDate = signal<Date>(new Date());
+  protected readonly minEndDate = signal<Date>(addOneMonthFromDate(new Date()));
 
   // Form
   private readonly INITIAL_FORM_STATE: NewGoalSchema = {
@@ -71,8 +72,8 @@ export class GoalsForm {
     category: '',
     description: '',
     targetAmount: null,
-    currency: this.currency,
     monthlyContribution: null,
+    currency: this.defaultCurrency,
     endDate: addOneMonthFromDate(new Date()),
   };
   protected readonly newGoalFormModel = signal<NewGoalSchema>(this.INITIAL_FORM_STATE);
@@ -80,6 +81,11 @@ export class GoalsForm {
 
   // Constructor & Effects
   constructor() {
+    effect(() => {
+      const currency = this.newGoalForm.currency().value();
+      this.goalCurrency.set(currency);
+    });
+
     effect(() => {
       const endDate = this.newGoalForm.endDate().value();
       const startDate = this.newGoalForm.startDate().value();
@@ -145,8 +151,8 @@ export class GoalsForm {
     const { rawValue, ceiledValue } = summary;
     switch (strategy) {
       case 'date': {
-        const formattedRawValue = formatCurrency(rawValue, this.currency, 2, false);
-        const formattedCeiledValue = formatCurrency(ceiledValue, this.currency, 0, true);
+        const formattedRawValue = formatCurrency(rawValue, this.goalCurrency(), 2, false);
+        const formattedCeiledValue = formatCurrency(ceiledValue, this.goalCurrency(), 0, true);
 
         if (rawValue !== ceiledValue) return `≈${formattedCeiledValue} (${formattedRawValue})`;
         return formattedCeiledValue;
