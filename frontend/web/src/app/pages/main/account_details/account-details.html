@@ -5,7 +5,7 @@
 
   @let resource = resourceData();
   <div
-    class="page-container flex-1 flex flex-col space-y-4"
+    class="page-container flex-1 flex flex-col space-y-6"
     [ngClass]="{ 'grid! place-items-center!': hasError() || !resource }"
   >
     @if (!hasError() && resource) {
@@ -16,19 +16,31 @@
       />
     }
 
-    @if (hasError() || !resource) {
+    @if (hasError()) {
       <fetch-error message="Error loading account" />
     } @else {
-      <div class="account-details-content">
-        <div class="w-full md:flex-1">
-          <account-card
-            [id]="resource.account.id"
-            [account]="resource.account"
-            [isLoading]="isLoadingResources()"
-          />
+      @if (!resource) {
+        <no-data message="No account data available" />
+      } @else {
+        <div class="account-details-content">
+          <div
+            class="w-full md:flex-1"
+            [ngClass]="{ 'md:flex-2! lg:flex-1!': !drawerService.isDrawerCollapsed() }"
+          >
+            <account-card
+              [id]="resource.account.id"
+              [account]="resource.account"
+              [isLoading]="isLoadingResources()"
+            />
+          </div>
+          <div
+            class="w-full md:flex-4"
+            [ngClass]="{ 'md:flex-3! lg:flex-3!': !drawerService.isDrawerCollapsed() }"
+          >
+            Right
+          </div>
         </div>
-        <div class="w-full md:flex-4">Right</div>
-      </div>
+      }
     }
   </div>
 </section>

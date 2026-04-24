@@ -4,7 +4,9 @@ import { Account } from '@widgets/account';
 import { Breadcrumbs } from '@atoms/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import { AccountsService } from '@api/accounts.service';
-import { Component, computed, inject, signal } from '@angular/core';
+import { DrawerService } from '@infrastructure/services';
+import { NoData } from '@structural/main/no-data/no-data';
+import { Component, computed, inject } from '@angular/core';
 import { LucideAngularModule, Wallet } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 
@@ -12,7 +14,7 @@ import { FetchError } from '@structural/main/fetch-error/fetch-error';
   selector: 'account-details',
   styleUrl: './account-details.css',
   templateUrl: './account-details.html',
-  imports: [Breadcrumbs, LucideAngularModule, Account, NgClass, FetchError],
+  imports: [Breadcrumbs, LucideAngularModule, Account, NgClass, FetchError, NoData],
 })
 export class AccountDetails {
   // ICONS
@@ -20,6 +22,7 @@ export class AccountDetails {
 
   // SERVICES
   private readonly route = inject(ActivatedRoute);
+  protected readonly drawerService = inject(DrawerService);
   private readonly accountsService = inject(AccountsService);
 
   // DATA
