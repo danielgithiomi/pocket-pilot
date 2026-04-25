@@ -78,7 +78,7 @@
 </section>
 
 @let accountTypeHasError = !!accountTypes.error();
-@if (!accountTypeHasError) {
+@if (!accountTypeHasError && isFormOpen()) {
   <organism-form
     id="accounts"
     title="Add Account"
@@ -99,7 +99,7 @@
         (clearOutput)="accountsForm.name().controlValue.set('')"
       />
 
-      <div class="flex flex-col sm:flex-row gap-0 sm:gap-4">
+      <div class="flex flex-col sm:flex-row gap-4">
         <atom-select
           class="flex-1"
           id="account-type"

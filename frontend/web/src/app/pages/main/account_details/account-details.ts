@@ -8,6 +8,7 @@ import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NoData } from '@structural/main/no-data/no-data';
+import { AccountDetailsForm } from './account-details.form';
 import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionsComponent } from './transactions/transactions';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
@@ -22,6 +23,7 @@ import { LucideAngularModule, Wallet, SquarePen, Trash2 } from 'lucide-angular';
     FetchError,
     Breadcrumbs,
     DetailsComponent,
+    AccountDetailsForm,
     LucideAngularModule,
     TransactionsComponent,
   ],
@@ -35,7 +37,9 @@ export class AccountDetails {
 
   // SIGNALS
   protected readonly deleteClickCount = signal<1 | 2>(1);
+  protected readonly isEditFormOpen = signal<boolean>(false);
   protected readonly isDeletingAccount = signal<boolean>(false);
+  protected readonly isSubmittingEditForm = signal<boolean>(false);
 
   // SERVICES
   private readonly router = inject(Router);
@@ -79,10 +83,16 @@ export class AccountDetails {
   private reloadResources = () => this.accountsService.getUserAccounts().reload();
 
   protected handleOnEditClick() {
-    console.log('Edit clicked');
+    this.isEditFormOpen.set(true);
+  }
+
+  protected handleEditFormSubmit() {
+    this.isEditFormOpen.set(false);
   }
 
   protected handleOnDeleteAccountClick(accountId: string) {
+    if (!accountId || accountId === '') return;
+
     if (this.deleteClickCount() === 1) {
       this.deleteClickCount.set(2);
       this.toastService.show({

@@ -8,7 +8,7 @@ import {
   User,
   IStandardError,
   IStandardResponse,
-  CreateAccountRequest,
+  CreateAccountPayload,
   IVoidResourceResponse,
 } from '@global/types';
 
@@ -39,7 +39,7 @@ export class AccountsService {
     return this.accountsResource.accountWithTransactions(accountId);
   }
 
-  createNewAccount(payload: CreateAccountRequest) {
+  createNewAccount(payload: CreateAccountPayload) {
     return this.accountsMutation.createAccount(payload).pipe(
       catchError((error: IStandardError) => {
         this.renderToast(error);
@@ -50,6 +50,10 @@ export class AccountsService {
 
   getUserAccounts() {
     return this.accountsResource.userAccounts;
+  }
+
+  getAccountById(accountId: string) {
+    return this.accountsResource.accountById(accountId);
   }
 
   deleteAccountById(accountId: string) {

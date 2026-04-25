@@ -1,10 +1,12 @@
 import { Transaction } from "./transactions.types";
 
-export interface CreateAccountRequest {
+export interface CreateAccountPayload {
   name: string;
   currency: string;
   type: AccountType | "";
 }
+
+export type UpdateAccountPayload = CreateAccountPayload;
 
 export interface Account {
   id: string;

@@ -25,6 +25,16 @@ export class AccountsResource {
     url: concatUrl(endpoints.accounts),
   }));
 
+  accountById = (accountId: string) =>
+    httpResource<IStandardResponse<AccountWithTransactions>>(() => {
+      const url = `accounts/${accountId}`;
+      return {
+        method: 'GET',
+        cache: 'no-cache',
+        url: concatUrl(url),
+      };
+    });
+
   accountWithTransactions = (accountId: string) =>
     httpResource<IStandardResponse<AccountWithTransactions>>(() => {
       const url = `accounts/${accountId}/all-transactions`;

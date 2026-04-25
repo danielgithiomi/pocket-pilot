@@ -5,7 +5,7 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import {
   Account,
   IStandardResponse,
-  CreateAccountRequest,
+  CreateAccountPayload,
   IVoidResourceResponse,
 } from '@global/types';
 
@@ -15,8 +15,8 @@ import {
 export class AccountsMutation {
   private readonly client = inject(ApiClient);
 
-  createAccount(payload: CreateAccountRequest): Observable<IStandardResponse<Account>> {
-    return this.client.post<Account, CreateAccountRequest>(endpoints.accounts, payload);
+  createAccount(payload: CreateAccountPayload): Observable<IStandardResponse<Account>> {
+    return this.client.post<Account, CreateAccountPayload>(endpoints.accounts, payload);
   }
 
   deleteAccountById(accountId: string): Observable<IStandardResponse<IVoidResourceResponse>> {
