@@ -1,23 +1,22 @@
 @reference "tailwindcss";
 
 section {
-  position: relative;
   width: 100%;
-  min-width: 200px;
-  background: var(--body-background);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  perspective: 1000px;
+  min-width: 200px;
   overflow: hidden;
+  position: relative;
+  align-items: center;
   border-radius: 25px;
+  justify-content: center;
+  background: var(--body-background);
 }
 
 section::before {
   content: '';
-  position: absolute;
-  height: 240px;
   width: 240px;
+  height: 240px;
+  position: absolute;
   border-radius: 50%;
   transform: translate(-150px, -100px);
   background: linear-gradient(90deg, var(--primary), var(--alternate-background));
@@ -25,39 +24,41 @@ section::before {
 
 section::after {
   content: '';
-  position: absolute;
-  height: 240px;
   width: 240px;
+  height: 240px;
   border-radius: 50%;
+  position: absolute;
   transform: translate(150px, 100px);
   background: linear-gradient(90deg, var(--alternate-background), var(--quaternary));
-}
-
-.container {
-  height: 200px;
-  width: 100%;
-  z-index: 100;
-  transition: 0.6s;
-  position: relative;
-  transform-style: preserve-3d;
-  cursor: pointer !important;
-  background-color: color-mix(in srgb, var(--alternate-background) 35%, transparent);
 }
 
 section:hover {
   @apply scale-101 transition-transform ease-in-out duration-400;
 }
 
+.container {
+  width: 100%;
+  z-index: 100;
+  height: 200px;
+  transition: 0.6s;
+  position: relative;
+  perspective: 1000px;
+  cursor: pointer !important;
+  transform: translateZ(40px);
+  transform-style: preserve-3d;
+  background-color: color-mix(in srgb, var(--alternate-background) 40%, transparent);
+}
+
 .container .card {
   @apply flex flex-col;
-  position: absolute;
-  height: 100%;
   width: 100%;
+  height: 100%;
   padding: 20px;
+  position: absolute;
   border-radius: 25px;
-  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25);
-  border: 1px solid var(--primary);
   backdrop-filter: blur(8px);
+  border: 1px solid var(--primary);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25);
 }
 
 .header {
