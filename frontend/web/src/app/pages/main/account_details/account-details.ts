@@ -39,7 +39,6 @@ export class AccountDetails {
   protected readonly deleteClickCount = signal<1 | 2>(1);
   protected readonly isEditFormOpen = signal<boolean>(false);
   protected readonly isDeletingAccount = signal<boolean>(false);
-  protected readonly isSubmittingEditForm = signal<boolean>(false);
 
   // SERVICES
   private readonly router = inject(Router);
@@ -80,13 +79,17 @@ export class AccountDetails {
   });
 
   // METHODS
-  private reloadResources = () => this.accountsService.getUserAccounts().reload();
+  private reloadResources = () => {
+    this.accountWithTransactions.reload();
+    this.accountsService.getUserAccounts().reload();
+  };
 
   protected handleOnEditClick() {
     this.isEditFormOpen.set(true);
   }
 
-  protected handleEditFormSubmit() {
+  protected handleEditFormClose(cause: 'submit' | 'icon' | 'overlay') {
+    if (cause === 'submit') this.reloadResources();
     this.isEditFormOpen.set(false);
   }
 

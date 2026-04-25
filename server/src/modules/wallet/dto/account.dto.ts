@@ -26,6 +26,8 @@ export class CreateAccountDto {
     currency!: string;
 }
 
+export class UpdateAccountPayload extends CreateAccountDto {}
+
 // OUTPUT
 @Exclude()
 export class Account {

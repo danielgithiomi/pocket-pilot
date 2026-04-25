@@ -6,7 +6,12 @@ import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
 import { AccountDetailsCache } from '../cache/account-details.cache';
 import { AccountRepository } from '../repositories/account.repository';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { AccountWithHolder, AccountWithTransactionsDto, CreateAccountDto } from '../dto/account.dto';
+import {
+    CreateAccountDto,
+    AccountWithHolder,
+    UpdateAccountPayload,
+    AccountWithTransactionsDto,
+} from '../dto/account.dto';
 import {
     Injectable,
     ConflictException,
@@ -92,6 +97,31 @@ export class AccountService {
                 name: 'ACCOUNT_CREATION_FAILED',
                 title: 'Failed to create account!',
                 details: 'An unexpected error occurred while creating the account.',
+            });
+        }
+    }
+
+    async updateAccount(userId: string, accountId: string, payload: UpdateAccountPayload): Promise<Account> {
+        const accounts = await this.getUserAccounts(userId);
+        this.verifyAccountAndOwnership(accounts, userId, accountId);
+
+        try {
+            const updatedAccount = await this.accountRepository.updateAccountById(accountId, payload);
+            await this.invalidateCachesByAccountId(userId, updatedAccount.id);
+            return updatedAccount;
+        } catch (error) {
+            if (this.isPrismaError(error) === 'unique-constraint') {
+                throw new ConflictException({
+                    name: 'ACCOUNT_NAME_CONFLICT',
+                    title: 'Account Already Exists!',
+                    details: `You already have an account with the name: [${payload.name}].`,
+                });
+            }
+
+            throw new InternalServerErrorException({
+                name: 'ACCOUNT_UPDATE_FAILED',
+                title: 'Failed to update account!',
+                details: 'An unexpected error occurred while updating the account.',
             });
         }
     }

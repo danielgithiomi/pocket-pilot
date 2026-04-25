@@ -77,7 +77,6 @@
   <edit-account-details-form
     [account]="resource.account"
     [isEditFormOpen]="isEditFormOpen()"
-    [isSubmitting]="isSubmittingEditForm()"
-    (onEditFormClose)="handleEditFormSubmit()"
+    (closeEditFormEvent)="handleEditFormClose($event)"
   />
 }

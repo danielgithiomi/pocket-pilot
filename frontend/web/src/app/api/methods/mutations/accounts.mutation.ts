@@ -5,6 +5,7 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import {
   Account,
   IStandardResponse,
+  UpdateAccountPayload,
   CreateAccountPayload,
   IVoidResourceResponse,
 } from '@global/types';
@@ -17,6 +18,10 @@ export class AccountsMutation {
 
   createAccount(payload: CreateAccountPayload): Observable<IStandardResponse<Account>> {
     return this.client.post<Account, CreateAccountPayload>(endpoints.accounts, payload);
+  }
+
+  updateAccountById(accountId: string, payload: UpdateAccountPayload): Observable<IStandardResponse<Account>> {
+    return this.client.put<Account, UpdateAccountPayload>(`${endpoints.accounts}/${accountId}`, payload);
   }
 
   deleteAccountById(accountId: string): Observable<IStandardResponse<IVoidResourceResponse>> {

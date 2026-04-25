@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAccountDto } from '../dto/account.dto';
+import { CreateAccountDto, UpdateAccountPayload } from '../dto/account.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()
@@ -30,6 +30,10 @@ export class AccountRepository {
             where: { id: accountId },
             include: { transactions: { omit: { accountId: true } } },
         });
+    }
+
+    updateAccountById(accountId: string, payload: UpdateAccountPayload) {
+        return this.db.account.update({ where: { id: accountId }, data: payload });
     }
 
     deleteAccountById(userId: string, accountId: string) {

@@ -8,6 +8,7 @@ import {
   User,
   IStandardError,
   IStandardResponse,
+  UpdateAccountPayload,
   CreateAccountPayload,
   IVoidResourceResponse,
 } from '@global/types';
@@ -54,6 +55,15 @@ export class AccountsService {
 
   getAccountById(accountId: string) {
     return this.accountsResource.accountById(accountId);
+  }
+
+  updateAccountById(accountId: string, payload: UpdateAccountPayload) {
+    return this.accountsMutation.updateAccountById(accountId, payload).pipe(
+      catchError((error: IStandardError) => {
+        this.renderToast(error);
+        return EMPTY;
+      }),
+    );
   }
 
   deleteAccountById(accountId: string) {

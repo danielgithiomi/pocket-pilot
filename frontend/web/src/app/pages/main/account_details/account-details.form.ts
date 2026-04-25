@@ -2,6 +2,7 @@ import { Input } from '@atoms/input';
 import { Form } from '@organisms/form';
 import { Select } from '@atoms/select';
 import { Button } from '@atoms/button';
+import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { CURRENCIES } from '@global/constants';
 import { Account as IAccount } from '@global/types';
@@ -18,10 +19,10 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
       title="Add Account"
       [class.hidden]="!isEditFormOpen()"
       description="Create a new account"
-      (closeForm)="onEditFormClose.emit()"
+      (closeForm)="closeEditFormEvent.emit($event)"
     >
       @let types = accountTypes.value()?.data;
-      <form slot="content" id="accounts-form" (submit)="submitEditAccountForm($event)">
+      <form slot="content" id="edit-account-form" (submit)="submitEditAccountForm($event)">
         <atom-input
           id="name"
           type="text"
@@ -64,18 +65,18 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
           [inverted]="true"
           label="Reset Form"
           variant="secondary"
-          form="accounts-form"
-          id="reset-account-form"
+          form="edit-account-form"
+          id="reset-edit-account-form"
           (clicked)="resetEditAccountsForm()"
           [disabled]="!editAccountForm().dirty() || isSubmitting()"
         />
 
         <atom-button
           type="submit"
-          form="accounts-form"
-          label="Create A New Account"
-          id="submit-account-form"
+          label="Update Account"
+          form="edit-account-form"
           [isLoading]="isSubmitting()"
+          id="submit-edit-account-form"
           [disabled]="editAccountForm().invalid() || isSubmitting()"
         />
       </div>
@@ -85,13 +86,16 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
 export class AccountDetailsForm {
   // INPUTS
   readonly account = input.required<IAccount>();
-  readonly isSubmitting = input.required<boolean>();
   readonly isEditFormOpen = input.required<boolean>();
 
   // OUTPUTS
-  readonly onEditFormClose = output<void>();
+  readonly closeEditFormEvent = output<'submit' | 'icon' | 'overlay'>();
+
+  // SIGNALS
+  protected readonly isSubmitting = signal<boolean>(false);
 
   // SERVICES
+  private readonly toastService = inject(ToastService);
   private readonly accountsService = inject(AccountsService);
 
   // DATA
@@ -132,14 +136,22 @@ export class AccountDetailsForm {
   protected submitEditAccountForm(event: Event) {
     event.preventDefault();
 
+    this.isSubmitting.set(true);
+
     const { ...payload } = this.editAccountFormModel();
 
     setTimeout(() => {
-      this.accountsService.createNewAccount(payload).subscribe({
+      this.accountsService.updateAccountById(this.account().id, payload).subscribe({
         next: () => {
-          console.log('Account created successfully');
+          this.toastService.show({
+            variant: 'success',
+            title: 'Account updated successfully!',
+            details: 'Your account information has been updated successfully.',
+          });
+
+          this.closeEditFormEvent.emit('submit');
         },
-        complete: () => this.onEditFormClose.emit(),
+        complete: () => this.isSubmitting.set(false),
       });
     }, 2500);
   }
