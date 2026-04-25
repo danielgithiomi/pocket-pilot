@@ -79,6 +79,19 @@ export class Transactions {
     }));
   });
 
+  protected editStateText = computed<string>(() => {
+    switch (this.activeTabIndex()) {
+      case 0:
+        return 'You have no transactions yet! Log your first transaction today.';
+      case 1:
+        return 'You have no income transactions logged yet!';
+      case 2:
+        return 'You have no expense transactions logged yet!';
+      default:
+        return 'You have no transfer transactions logged yet!';
+    }
+  });
+
   protected filteredTransactions = computed(() => {
     const activeTabIndex = this.activeTabIndex();
     const transactions = this.transactions.value()?.data?.data;
@@ -127,7 +140,7 @@ export class Transactions {
     {
       key: 'amount',
       label: 'Amount',
-      width: '2fr',
+      width: '1.5fr',
       cellTemplate: (transaction: TransactionRow) => {
         let classes = 'font-semibold';
         return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.amount}</span>`;
@@ -262,27 +275,22 @@ export class Transactions {
         details: 'This transaction will result in a negative balance in your account.',
       });
 
-    this.transactionsService.createTransaction(accountId, transactionPayload).subscribe({
-      next: () => {
-        this.toastService.show({
-          variant: 'success',
-          title: 'Transaction created!',
-          details: `Your [${transactionPayload.type.toUpperCase()}] transaction has been logged successfully.`,
-        });
+    setTimeout(() => {
+      this.transactionsService.createTransaction(accountId, transactionPayload).subscribe({
+        next: () => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Transaction created!',
+            details: `Your [${transactionPayload.type.toUpperCase()}] transaction has been logged successfully.`,
+          });
 
-        this.reloadResources();
-        this.resetTransactionForm();
-        this.isFormOpen.set(false);
-      },
-      error: (error) => console.error('Transaction creation failed:', error),
-      complete: () => this.isSubmitting.set(false),
-    });
+          this.reloadResources();
+          this.resetTransactionForm();
+          this.isFormOpen.set(false);
+        },
+        error: (error) => console.error('Transaction creation failed:', error),
+        complete: () => this.isSubmitting.set(false),
+      });
+    }, 3500);
   }
 }
-
-// {
-//     "type": "TRANSFER",
-//     "amount": 2000,
-//     "category": "Account Transfers",
-//     "description": "Moved to misc."
-// }

@@ -78,19 +78,21 @@ export class Accounts {
 
     this.isSubmitting.set(true);
 
-    this.accountsService.createNewAccount(payload).subscribe({
-      next: () => {
-        this.toastService.show({
-          variant: 'success',
-          title: 'Account created!',
-          details: `Your [${payload.name}] account has been created successfully.`,
-        });
-        this.accountsWithCount.reload();
-        this.resetAccountsForm();
-        this.isFormOpen.set(false);
-      },
-      error: (error) => console.error('Account creation failed:', error),
-      complete: () => this.isSubmitting.set(false),
-    });
+    setTimeout(() => {
+      this.accountsService.createNewAccount(payload).subscribe({
+        next: () => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Account created!',
+            details: `Your [${payload.name}] account has been created successfully.`,
+          });
+          this.accountsWithCount.reload();
+          this.resetAccountsForm();
+          this.isFormOpen.set(false);
+        },
+        error: (error) => console.error('Account creation failed:', error),
+        complete: () => this.isSubmitting.set(false),
+      });
+    }, 1000);
   };
 }

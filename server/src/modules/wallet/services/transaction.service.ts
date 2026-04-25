@@ -1,5 +1,6 @@
 import { ExposeEnumDto } from '@common/types';
 import { plainToInstance } from 'class-transformer';
+import { AccountsCache } from '../cache/accounts.cache';
 import { TransactionType, Account } from '@prisma/client';
 import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
@@ -12,6 +13,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException 
 export class TransactionService {
     constructor(
         private readonly db: DatabaseService,
+        private readonly accountsCache: AccountsCache,
         private readonly accountRepository: AccountRepository,
         private readonly transactionRepository: TransactionRepository,
     ) {}
@@ -70,7 +72,12 @@ export class TransactionService {
             });
         }
 
-        return this.transactionRepository.createNewTransactionAndUpdateBalance(accountId, transformedDto);
+        const createdTransaction = await this.transactionRepository.createNewTransactionAndUpdateBalance(
+            accountId,
+            transformedDto,
+        );
+        this.invalidateAccountCache(userId);
+        return createdTransaction;
     }
 
     async deleteTransactionByAccountId(userId: string, accountId: string, transactionId: string): Promise<void> {
@@ -85,6 +92,7 @@ export class TransactionService {
         }
 
         await this.transactionRepository.deleteTransactionById(transactionId);
+        this.invalidateAccountCache(userId);
     }
 
     private async confirmAccountExists(accountId: string): Promise<Account> {
@@ -107,5 +115,9 @@ export class TransactionService {
 
     private isTransactionTypeValid(type: string): boolean {
         return type === TransactionType.EXPENSE || type === TransactionType.INCOME;
+    }
+
+    private invalidateAccountCache(userId: string) {
+        this.accountsCache.invalidateCache(userId);
     }
 }

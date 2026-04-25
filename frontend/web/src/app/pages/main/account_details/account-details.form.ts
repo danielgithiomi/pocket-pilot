@@ -9,6 +9,7 @@ import { Account as IAccount } from '@global/types';
 import { AccountsService } from '@api/accounts.service';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './account.details.types';
+import { formatToReadable } from '@libs/utils';
 
 @Component({
   selector: 'edit-account-details-form',
@@ -16,9 +17,9 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
   template: `
     <organism-form
       id="accounts"
-      title="Add Account"
+      title="Update Account"
       [class.hidden]="!isEditFormOpen()"
-      description="Create a new account"
+      description="Modify account details"
       (closeForm)="closeEditFormEvent.emit($event)"
     >
       @let types = accountTypes.value()?.data;
@@ -117,7 +118,7 @@ export class AccountDetailsForm {
   constructor() {
     effect(() => {
       const { name, type, currency } = this.account();
-      this.editAccountFormModel.set({ name, type, currency });
+      this.editAccountFormModel.set({ name: formatToReadable(name), type, currency });
     });
   }
 

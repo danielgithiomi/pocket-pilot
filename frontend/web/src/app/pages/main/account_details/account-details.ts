@@ -101,7 +101,7 @@ export class AccountDetails {
       this.toastService.show({
         variant: 'warning',
         title: 'Are you sure?',
-        details: 'Deleting an account will remove all transactions associated with it.',
+        details: 'Deleting an account will also delete all transactions associated with it.',
       });
       return;
     }

@@ -36,8 +36,9 @@
       } @else {
         <div>
           <p class="mb-6">
-            You have <span class="font-semibold text-primary">{{ count }}</span>
-            {{ count! > 1 ? 'total transactions' : 'transaction' }}!
+            You have {{ count === 1 ? 'only' : '' }}
+            <span class="font-semibold text-primary">{{ count }}</span>
+            {{ count! > 1 ? 'total transactions logged' : 'logged transaction' }}!
           </p>
 
           <div class="mb-6">
@@ -52,9 +53,9 @@
             id="transactions-table"
             [isLoading]="isFetching()"
             [columns]="transactionColumns"
+            [emptyMessage]="editStateText()"
             [data]="formattedTransactions()"
             (deleteRow)="deleteDataRow($event)"
-            emptyMessage="You have no transactions yet!"
           />
         </div>
       }
