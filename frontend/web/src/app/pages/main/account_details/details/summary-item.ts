@@ -3,10 +3,9 @@ import { Component, input } from '@angular/core';
 @Component({
   selector: 'summary-item',
   template: `
-    <div [id]="id()" class="flex flex-row gap-1 items-center">
-      <!-- <span class="text-primary not-italic">‣</span> -->
+    <div [id]="id()" class="flex flex-row gap-1 items-center cursor-default!">
       <span class="text-base text-primary not-italic">•</span>
-      <p class="text-sm text-muted-text italic">
+      <p class="text-sm text-muted-text italic cursor-default!">
         {{ label() }}:
         <span class="not-italic font-semibold text-primary">{{ value() }}</span>
       </p>

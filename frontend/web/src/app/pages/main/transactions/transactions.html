@@ -35,7 +35,7 @@
         <no-data message="You have no transactions yet! Log one today." messageClass="text-sm" />
       } @else {
         <div>
-          <p class="mb-6">
+          <p class="mb-6 page-subtitle cursor-default">
             You have {{ count === 1 ? 'only' : '' }}
             <span class="font-semibold text-primary">{{ count }}</span>
             {{ count! > 1 ? 'total transactions logged' : 'logged transaction' }}!
