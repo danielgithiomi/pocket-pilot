@@ -41,7 +41,13 @@ model Account {
     holderId String
 
     // Link to transaction - one-to-many
-    transactions Transaction[]
+    // transactions Transaction[]
+
+    // Transactions where this account is the SOURCE
+    outgoingTransactions Transaction[] @relation("SourceAccountTransactions")
+
+    // Transactions where this account is the TARGET
+    incomingTransactions Transaction[] @relation("TargetAccountTransactions")
 
     @@unique([name, holderId])
     @@map("Accounts")
@@ -116,9 +122,22 @@ model Transaction {
     category    String
     date        DateTime        @default(now())
 
-    // Link to account - one-to-many
-    account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
-    accountId String
+    // // Link to source account - one-to-many
+    // sourceAccount   Account @relation(fields: [sourceAccountId], references: [id], onDelete: Cascade)
+    // sourceAccountId String
+
+    // // Link to target account (for transfers) - one-to-many
+    // targetAccount   Account? @relation("targetAccountId", fields: [targetAccountId], references: [id], onDelete: Cascade)
+    // targetAccountId String?
+
+    // SOURCE ACCOUNT (money comes from)
+
+    sourceAccount   Account @relation("SourceAccountTransactions", fields: [sourceAccountId], references: [id], onDelete: Cascade)
+    sourceAccountId String
+
+    // TARGET ACCOUNT (money goes to) — optional
+    targetAccount   Account? @relation("TargetAccountTransactions", fields: [targetAccountId], references: [id], onDelete: Cascade)
+    targetAccountId String?
 
     @@map("Transactions")
 }

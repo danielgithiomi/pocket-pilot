@@ -142,8 +142,14 @@ export class Transactions {
       label: 'Amount',
       width: '1.5fr',
       cellTemplate: (transaction: TransactionRow) => {
+        const isSameCurrency = transaction.currency === 'MUR';
+
         let classes = 'font-semibold';
-        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.amount}</span>`;
+        let currencyClasses = 'font-semibold text-muted-text text-xs';
+        return `<div class="flex flex-col">
+        <span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.amount}</span>
+          <span class="${isSameCurrency ? 'hidden' : currencyClasses}">Rs. 200</span>
+        </div>`;
       },
     },
     {
@@ -152,7 +158,7 @@ export class Transactions {
       width: '1fr',
       cellTemplate: (transaction: TransactionRow) => {
         let classes =
-          'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis dark:text-(--inverted-text)';
+          'px-2 py-1 font-semibold rounded-xl text-xs overflow-hidden text-ellipsis dark:text-(--inverted-text)';
 
         switch (transaction.type) {
           case 'INCOME':
@@ -216,6 +222,7 @@ export class Transactions {
         date: formatDate(transaction.date),
         description: transaction.description,
         id: splitTransactionId(transaction.id),
+        currency: transaction.account.currency,
         accountName: capitalize(transaction.account.name),
         amount: formatCurrency(transaction.amount, transaction.account.currency, 2, true, false),
       })) || skeletonData

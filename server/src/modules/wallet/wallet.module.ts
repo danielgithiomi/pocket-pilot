@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CookiesAuthGuard } from '@common/guards';
 import { AccountService } from './services/account.service';
+import { TransferService } from './services/transfer.service';
 import { CategoriesService } from './services/categories.service';
 import { TransactionService } from './services/transaction.service';
 import { AccountDetailsCache } from './cache/account-details.cache';
@@ -25,6 +26,7 @@ import { UserRepository } from '@modules/identity/repositories/user.repository';
         CookiesService,
         UserRepository,
         AccountService,
+        TransferService,
         CategoriesCache,
         CookiesAuthGuard,
         AccountRepository,

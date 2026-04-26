@@ -9,6 +9,7 @@ export interface TransactionRow {
   type: string;
   fullId: string;
   amount: string;
+  currency: string;
   category: string;
   accountId: string;
   accountName: string;

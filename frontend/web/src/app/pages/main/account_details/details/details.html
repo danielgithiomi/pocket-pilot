@@ -11,9 +11,15 @@
     <h5 class="underline text-lg underline-offset-2 font-semibold mb-2">Summary</h5>
 
     <div class="flex flex-col gap-1 text-sm pl-2">
-      <summary-item id="account-name" label="Account Name" [value]="formatText(account().name)" />
-      <summary-item id="account-type" label="Account Type" [value]="account().type" />
-      <summary-item id="account-currency" label="Account Currency" [value]="account().currency" />
+      <summary-item id="account-name" label="Name" [value]="formatText(account().name)" />
+      <summary-item id="account-type" label="Type" [value]="account().type" />
+      <summary-item id="account-currency" label="Currency" [value]="account().currency" />
+      <summary-item id="account-balance" label="Balance" [value]="formatBalance()" />
+
+      @if (isDifferentCurrency()) {
+        <summary-item label="Conversion" id="account-conversion" [value]="formatConversion()" />
+      }
+
       <summary-item
         id="transaction-count"
         label="No. of Transactions"

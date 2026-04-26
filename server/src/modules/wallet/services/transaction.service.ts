@@ -114,7 +114,7 @@ export class TransactionService {
     }
 
     private isTransactionTypeValid(type: string): boolean {
-        return type === TransactionType.EXPENSE || type === TransactionType.INCOME;
+        return type === TransactionType.TRANSFER || type === TransactionType.EXPENSE || type === TransactionType.INCOME ;
     }
 
     private invalidateAccountCache(userId: string) {

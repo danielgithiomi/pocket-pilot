@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
 import { TransactionType } from '@prisma/client';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { CreateTransactionDto, TransactionWithAccount } from '../dto/transaction.dto';
 
@@ -57,6 +57,18 @@ export class TransactionRepository {
                         balance: {
                             decrement: transaction.amount,
                         },
+                    },
+                });
+            } else if (transaction.type === TransactionType.TRANSFER) {
+                // For transfer transactions, we don't update the balance here
+                // The balance update will be handled by the transfer service
+            } else {
+                throw new InternalServerErrorException({
+                    name: 'INVALID_TRANSACTION_TYPE',
+                    title: 'Invalid transaction type!',
+                    message: 'Could not create transaction with invalid type',
+                    details: {
+                        type: transaction.type,
                     },
                 });
             }

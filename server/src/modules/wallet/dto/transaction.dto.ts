@@ -27,6 +27,18 @@ export class CreateTransactionDto {
     description!: string;
 }
 
+export class CreateTransferTransactionPayload extends CreateTransactionDto {
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the account to transfer from' })
+    sourceAccountId!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174001', description: 'The ID of the account to transfer to' })
+    targetAccountId!: string;
+}
+
 @Exclude()
 export class TransactionDto {
     @Expose()
@@ -76,6 +88,19 @@ export class TransactionWithAccount extends TransactionDto {
     @Type(() => TransactionAccount)
     @ApiProperty({ type: TransactionAccount, description: 'The owning account of the transaction' })
     account!: TransactionAccount;
+}
+
+@Exclude()
+export class TransferTransactionDto extends TransactionDto {
+    @Expose()
+    @Type(() => TransactionAccount)
+    @ApiProperty({ type: TransactionAccount, description: 'The source account of the transfer' })
+    sourceAccount!: TransactionAccount;
+
+    @Expose()
+    @Type(() => TransactionAccount)
+    @ApiProperty({ type: TransactionAccount, description: 'The target account of the transfer' })
+    targetAccount!: TransactionAccount;
 }
 
 @ApiExtraModels(TransactionDto)
