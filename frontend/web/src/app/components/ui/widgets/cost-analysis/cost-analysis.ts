@@ -1,8 +1,8 @@
 import { MONTHS_ENUM } from '@global/constants';
 import { normalizeCategoryName } from '@global/utils';
 import { AccountsService } from '@api/accounts.service';
-import { capitalize, formatCurrency } from '@libs/utils';
 import { CategoriesService } from '@api/categories.service';
+import { formatCurrency, formatToReadable } from '@libs/utils';
 import { LucideAngularModule, RotateCcw } from 'lucide-angular';
 import { TransactionsService } from '@api/transactions.service';
 import { COLOR_MAP, CostAnalysisCategory } from './cost-analysis.types';
@@ -95,7 +95,7 @@ export class CostAnalysis {
         const categoryTotal = categoryTotals.get(categoryName) || 0;
         return {
           color: COLOR_MAP[index],
-          categoryName: capitalize(categoryName),
+          categoryName: formatToReadable(categoryName),
           percentage: Math.round((categoryTotal / total) * 100),
         };
       })

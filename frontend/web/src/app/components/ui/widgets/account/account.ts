@@ -33,11 +33,11 @@ export class Account implements OnInit {
     const isDetail = this.variant() === 'detail';
     if (isDetail) {
       VanillaTilt.init(document.querySelectorAll('.account-wrapper') as any, {
-        max: 10,
-        speed: 500,
+        max: 15,
+        speed: 3000,
         reset: true,
         glare: true,
-        scale: 1.005,
+        scale: 1.025,
         reverse: true,
         'max-glare': 0.25,
         perspective: 1000,

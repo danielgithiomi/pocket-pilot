@@ -1,21 +1,17 @@
 export interface CreateTransactionRequest {
+  type: string;
+  category: string;
   description: string;
   amount: number | null;
-  type: TransactionType | "";
-  category: TransactionCategory | "";
 }
 
 export interface Transaction {
   id: string;
   date: string;
+  type: string;
   amount: number;
+  category: string;
   description: string;
-  type: TransactionType;
-  category: TransactionCategory;
-}
-
-export interface TransactionWithAccount extends Transaction {
-  account: AccountInTransaction;
 }
 
 export interface AccountInTransaction {
@@ -24,18 +20,11 @@ export interface AccountInTransaction {
   currency: string;
 }
 
-export interface TransactionsWithAccountWithCount {
-  data: TransactionWithAccount[];
-  count: number;
+export interface TransactionWithAccount extends Transaction {
+  account: AccountInTransaction;
 }
 
-// ENUMS
-export type TransactionType = "INCOME" | "EXPENSE" | "TRANSFER";
-export type TransactionCategory =
-  | "HEALTH"
-  | "HOUSEHOLD"
-  | "GROCERIES"
-  | "UTILITIES"
-  | "EDUCATION"
-  | "ENTERTAINMENT"
-  | "TRANSPORTATION";
+export interface TransactionsWithAccountWithCount {
+  count: number;
+  data: TransactionWithAccount[];
+}

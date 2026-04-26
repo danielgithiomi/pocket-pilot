@@ -187,8 +187,7 @@ export class AccountService {
     }
 
     private async invalidateCachesByAccountId(userId: string, accountId: string): Promise<void> {
-        await this.accountsCache.invalidateCache(userId); // User accounts list
-        // await this.accountsCache.invalidateCache(accountId); // Single account
-        await this.accountDetailsCache.invalidateCache(accountId); // Account with transactions
+        await this.accountsCache.invalidateCache(userId);
+        await this.accountDetailsCache.invalidateCache(accountId);
     }
 }

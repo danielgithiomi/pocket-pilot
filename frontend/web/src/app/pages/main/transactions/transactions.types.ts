@@ -1,18 +1,18 @@
+import { CreateTransactionRequest } from '@global/types';
 import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
 import { maxLength, min, required, schema, validate } from '@angular/forms/signals';
-import { CreateTransactionRequest, TransactionCategory, TransactionType } from '@global/types';
 
 // TABLE
 export interface TransactionRow {
   id: string;
   date: string;
+  type: string;
   fullId: string;
   amount: string;
+  category: string;
   accountId: string;
   accountName: string;
   description: string;
-  type: TransactionType;
-  category: TransactionCategory;
 }
 
 // FORM
