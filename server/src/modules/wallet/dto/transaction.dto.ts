@@ -30,12 +30,18 @@ export class CreateTransactionDto {
 export class CreateTransferTransactionPayload extends CreateTransactionDto {
     @IsString()
     @IsNotEmpty()
-    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the account to transfer from' })
+    @ApiProperty({
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'The ID of the account to transfer from',
+    })
     sourceAccountId!: string;
 
     @IsString()
     @IsNotEmpty()
-    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174001', description: 'The ID of the account to transfer to' })
+    @ApiProperty({
+        example: '123e4567-e89b-12d3-a456-426614174001',
+        description: 'The ID of the account to transfer to',
+    })
     targetAccountId!: string;
 }
 

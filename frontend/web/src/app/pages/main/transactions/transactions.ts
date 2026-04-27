@@ -148,7 +148,7 @@ export class Transactions {
         let currencyClasses = 'font-semibold text-muted-text text-xs';
         return `<div class="flex flex-col">
         <span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.amount}</span>
-          <span class="${isSameCurrency ? 'hidden' : currencyClasses}">Rs. 200</span>
+          <span class="${isSameCurrency ? 'hidden' : currencyClasses}">≈ Rs. 200</span>
         </div>`;
       },
     },

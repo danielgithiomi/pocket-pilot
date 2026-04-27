@@ -1,20 +1,20 @@
-<section id="account-details-section" class="flex h-full flex-col sm:flex-row md:flex-col gap-6">
+<section id="account-details-section" class="flex w-full flex-col sm:flex-row md:flex-col gap-6">
   <account-card
     variant="detail"
     [id]="account().id"
     [isLoading]="false"
     [account]="account()"
-    class="flex-0 sm:flex-1 md:flex-0"
+    class="flex-0 sm:flex-1 md:flex-0 p-5 sm:p-2 xl:p-5"
   />
 
-  <div class="flex-0 sm:flex-1 md:flex-0 cursor-default!">
+  <div class="flex-0 sm:flex-1 md:flex-0 cursor-default md:ms-2">
     <h5 class="underline text-lg underline-offset-2 font-semibold mb-2">Summary</h5>
 
-    <div class="flex flex-col gap-1 text-sm pl-2">
-      <summary-item id="account-name" label="Name" [value]="formatText(account().name)" />
-      <summary-item id="account-type" label="Type" [value]="account().type" />
-      <summary-item id="account-currency" label="Currency" [value]="account().currency" />
-      <summary-item id="account-balance" label="Balance" [value]="formatBalance()" />
+    <div class="flex flex-col gap-1 text-sm ms-1">
+      <summary-item label="Name" id="account-name" [value]="account().name" />
+      <summary-item label="Type" id="account-type" [value]="account().type" />
+      <summary-item label="Currency" id="account-currency" [value]="account().currency" />
+      <summary-item label="Balance" id="account-balance" [value]="formatBalance()" />
 
       @if (isDifferentCurrency()) {
         <summary-item label="Conversion" id="account-conversion" [value]="formatConversion()" />
