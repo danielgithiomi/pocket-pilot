@@ -28,7 +28,10 @@ export class AccountRepository {
     getAccountWithTransactions(accountId: string) {
         return this.db.account.findUnique({
             where: { id: accountId },
-            include: { transactions: { omit: { accountId: true } } },
+            include: {
+                incomingTransactions: true,
+                outgoingTransactions: true,
+            },
         });
     }
 

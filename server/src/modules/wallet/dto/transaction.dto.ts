@@ -93,20 +93,15 @@ export class TransactionWithAccount extends TransactionDto {
     @Expose()
     @Type(() => TransactionAccount)
     @ApiProperty({ type: TransactionAccount, description: 'The owning account of the transaction' })
-    account!: TransactionAccount;
+    sourceAccount!: TransactionAccount;
 }
 
 @Exclude()
-export class TransferTransactionDto extends TransactionWithAccount {
+export class CompleteTranferDto extends TransactionWithAccount {
     @Expose()
     @Type(() => TransactionAccount)
-    @ApiProperty({ type: TransactionAccount, description: 'The source account of the transfer' })
-    sourceAccount!: TransactionAccount;
-
-    @Expose()
-    @Type(() => TransactionAccount)
-    @ApiProperty({ type: TransactionAccount, description: 'The target account of the transfer' })
-    targetAccount!: TransactionAccount;
+    @ApiProperty({ type: TransactionAccount, nullable: true, description: 'The target account of the transfer' })
+    targetAccount!: TransactionAccount | null;
 }
 
 @ApiExtraModels(TransactionDto)
@@ -121,14 +116,14 @@ export class TransactionsResponseDto {
     data!: TransactionDto[];
 }
 
-@ApiExtraModels(TransactionWithAccount)
+@ApiExtraModels(CompleteTranferDto)
 export class TransactionsWithAccountResponseDto {
     @ApiProperty({ example: 1, description: 'The number of transactions for the account' })
     count!: number;
 
     @ApiProperty({
         type: 'array',
-        items: { $ref: getSchemaPath(TransactionWithAccount) },
+        items: { $ref: getSchemaPath(CompleteTranferDto) },
     })
-    data!: TransactionWithAccount[];
+    data!: CompleteTranferDto[];
 }

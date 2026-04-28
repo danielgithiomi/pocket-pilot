@@ -1,1 +1,1 @@
-export * from './entiity.cache';
+export * from './entity.cache';

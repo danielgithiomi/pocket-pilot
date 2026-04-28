@@ -42,10 +42,12 @@ export abstract class EntityCache<T> {
     }
 
     async invalidateCaches(cacheIds: string[]): Promise<void> {
-        cacheIds.forEach(async id => {
-            const cacheKey = this.key(id);
-            await this.cache.del(cacheKey);
-        });
+        await Promise.all(
+            cacheIds.map(async id => {
+                const cacheKey = this.key(id);
+                await this.cache.del(cacheKey);
+            }),
+        );
     }
 
     async clearCache(): Promise<void> {

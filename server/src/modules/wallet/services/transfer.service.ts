@@ -2,7 +2,7 @@ import { AccountsCache } from '../cache/accounts.cache';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { AccountDetailsCache } from '../cache/account-details.cache';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { CreateTransferTransactionPayload, TransferTransactionDto } from '../dto/transaction.dto';
+import { CreateTransferTransactionPayload, CompleteTranferDto } from '../dto/transaction.dto';
 
 @Injectable()
 export class TransferService {
@@ -17,17 +17,15 @@ export class TransferService {
         userId: string,
         accountId: string,
         payload: CreateTransferTransactionPayload,
-    ): Promise<void> {
+    ): Promise<CompleteTranferDto> {
         const { sourceAccountId, targetAccountId } = payload;
         // Safety Checks
         this.checkSourceAccountMatches(accountId, sourceAccountId);
 
-        const createdTranferTransaction = this.transactionRepository.createTransferTransactionAndUpdateBalances(
-            userId,
-            payload,
-        );
+        const createdTranferTransaction =
+            this.transactionRepository.createTransferTransactionAndUpdateBalances(payload);
         await this.invalidateCaches(userId, sourceAccountId, targetAccountId);
-        // return createdTranferTransaction;
+        return createdTranferTransaction;
     }
 
     // HELPER METHODS
@@ -43,8 +41,8 @@ export class TransferService {
     }
 
     private async invalidateCaches(userId: string, sourceAccountId: string, targetAccountId: string) {
-        this.accountsCache.invalidateCache(userId);
-        this.accountDetailsCache.invalidateCaches([sourceAccountId, targetAccountId]);
+        await this.accountsCache.invalidateCache(userId);
+        await this.accountDetailsCache.invalidateCaches([sourceAccountId, targetAccountId]);
         // TODO: Add cache invalidation for the transaction cache
         // this.transactionsCache.invalidateCaches([sourceAccountId, targetAccountId]);
     }

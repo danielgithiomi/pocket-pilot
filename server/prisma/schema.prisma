@@ -139,6 +139,8 @@ model Transaction {
     targetAccountId String?
 
     @@map("Transactions")
+    @@index([sourceAccountId])      
+    @@index([targetAccountId])
 }
 
 enum CategoryType {

@@ -65,7 +65,12 @@ export class AccountService {
                 });
             }
 
-            return plainToInstance(AccountWithTransactionsDto, account);
+            const accountWithTransactions = {
+                ...account,
+                transactions: [...account.incomingTransactions, ...account.outgoingTransactions],
+            };
+
+            return plainToInstance(AccountWithTransactionsDto, accountWithTransactions);
         };
 
         return this.accountDetailsCache.getOrSetCache<AccountWithTransactionsDto>(

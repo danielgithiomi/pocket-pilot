@@ -6,7 +6,7 @@ import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { denormalizeCategoryName, formatEnumForFrontend } from '@libs/utils';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { TransactionDto, CreateTransactionDto, TransactionWithAccount } from '../dto/transaction.dto';
+import { TransactionDto, CreateTransactionDto, CompleteTranferDto } from '../dto/transaction.dto';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
@@ -22,32 +22,29 @@ export class TransactionService {
         return await Promise.resolve(Object.values(TransactionType).map(formatEnumForFrontend));
     }
 
-    async getAllTransactions(): Promise<TransactionWithAccount[]> {
+    async getAllTransactions(): Promise<CompleteTranferDto[]> {
         const transactions = await this.transactionRepository.getAllTransactionsAndAccountData();
 
-        return plainToInstance(TransactionWithAccount, transactions);
+        return plainToInstance(CompleteTranferDto, transactions);
     }
 
-    async getUserTransactions(userId: string): Promise<TransactionWithAccount[]> {
+    async getUserTransactions(userId: string): Promise<CompleteTranferDto[]> {
         const transactions = await this.transactionRepository.getUserTransactionsAndAccountData(userId);
 
-        return plainToInstance(TransactionWithAccount, transactions);
+        return plainToInstance(CompleteTranferDto, transactions);
     }
 
     async getTransactionsByAccountId(accountId: string): Promise<TransactionDto[]> {
         await this.confirmAccountExists(accountId);
 
-        return this.db.transaction.findMany({
-            where: { accountId },
-            select: { id: true, type: true, description: true, category: true, amount: true, date: true },
-        });
+        return this.transactionRepository.getUserPlainTransactionsByAccountId(accountId);
     }
 
     async createTransactionByAccountId(
         userId: string,
         accountId: string,
         createTransactionDto: CreateTransactionDto,
-    ): Promise<TransactionWithAccount> {
+    ): Promise<CompleteTranferDto> {
         const transformedDto: CreateTransactionDto = {
             ...createTransactionDto,
             type: createTransactionDto.type,
@@ -95,19 +92,6 @@ export class TransactionService {
         this.invalidateAccountCache(userId);
     }
 
-    private async confirmAccountExists(accountId: string): Promise<Account> {
-        const account: Account | null = await this.accountRepository.getAccountById(accountId);
-
-        if (!account)
-            throw new NotFoundException({
-                name: 'ACCOUNT_NOT_FOUND',
-                title: 'Account not found!',
-                message: `Couldn't create a transaction because the account with ID: {${accountId}} does not exist.`,
-            });
-
-        return account;
-    }
-
     // HELPER FUNCTIONS
     private isAccountOwnedByUser(userId: string, accountHolderId: string) {
         return userId === accountHolderId;
@@ -119,5 +103,18 @@ export class TransactionService {
 
     private invalidateAccountCache(userId: string) {
         this.accountsCache.invalidateCache(userId);
+    }
+
+    private async confirmAccountExists(accountId: string): Promise<Account> {
+        const account: Account | null = await this.accountRepository.getAccountById(accountId);
+
+        if (!account)
+            throw new NotFoundException({
+                name: 'ACCOUNT_NOT_FOUND',
+                title: 'Account not found!',
+                message: `Couldn't create a transaction because the account with ID: {${accountId}} does not exist.`,
+            });
+
+        return account;
     }
 }
