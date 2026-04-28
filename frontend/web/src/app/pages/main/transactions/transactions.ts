@@ -13,9 +13,9 @@ import { TableColumn } from '@organisms/table/table.types';
 import { CategoriesService } from '@api/categories.service';
 import { TransactionsService } from '@api/transactions.service';
 import { TabList } from '@components/ui/atoms/tab-list/tab-list';
-import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
 import {
   skeletonData,
@@ -66,14 +66,26 @@ export class Transactions {
   protected isDeleting = signal<boolean>(false);
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
+  protected isTransferTransaction = signal<boolean>(false);
 
   // Computed
   protected isFetching = computed(() => {
     return this.accounts.isLoading() || this.transactions.isLoading();
   });
 
-  protected accountsDropdown = computed(() => {
+  protected sourceAccountDropdown = computed(() => {
     return this.accounts.value()?.data?.data?.map((account) => ({
+      value: account.id,
+      label: account.name,
+    }));
+  });
+
+  protected targetAccountDropdown = computed(() => {
+    const accounts = this.accounts.value()?.data?.data;
+    const sourceAccountId = this.transactionFormModel().sourceAccountId;
+
+    const filteredAccounts = accounts?.filter((account) => account.id !== sourceAccountId);
+    return filteredAccounts?.map((account) => ({
       value: account.id,
       label: account.name,
     }));
@@ -146,10 +158,12 @@ export class Transactions {
 
         let classes = 'font-semibold';
         let currencyClasses = 'font-semibold text-muted-text text-xs';
-        return `<div class="flex flex-col">
-        <span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.amount}</span>
-          <span class="${isSameCurrency ? 'hidden' : currencyClasses}">≈ Rs. 200</span>
-        </div>`;
+        return `
+          <div class="flex flex-col">
+            <span class="${classes}">${transaction.amount}</span>
+            <span class="${this.isFetching() || isSameCurrency ? 'hidden' : currencyClasses}">≈ Rs. 200</span>
+          </div>
+        `;
       },
     },
     {
@@ -218,13 +232,19 @@ export class Transactions {
         fullId: transaction.id,
         type: transaction.type,
         category: transaction.category,
-        accountId: transaction.account.id,
         date: formatDate(transaction.date),
         description: transaction.description,
         id: splitTransactionId(transaction.id),
-        currency: transaction.account.currency,
-        accountName: capitalize(transaction.account.name),
-        amount: formatCurrency(transaction.amount, transaction.account.currency, 2, true, false),
+        accountId: transaction.sourceAccount.id,
+        currency: transaction.sourceAccount.currency,
+        accountName: capitalize(transaction.sourceAccount.name),
+        amount: formatCurrency(
+          transaction.amount,
+          transaction.sourceAccount.currency,
+          2,
+          true,
+          false,
+        ),
       })) || skeletonData
     ).reverse();
   });
@@ -271,11 +291,12 @@ export class Transactions {
 
     this.isSubmitting.set(true);
 
-    const { accountId, ...transactionPayload } = this.transactionFormModel();
+    const payload = this.transactionFormModel();
     const availableBalance: number =
-      this.accounts.value()?.data?.data?.find((account) => account.id === accountId)?.balance ?? 0;
+      this.accounts.value()?.data?.data?.find((account) => account.id === payload.sourceAccountId)
+        ?.balance ?? 0;
 
-    if (this.transactionsService.isNegativeBalance(availableBalance, transactionPayload))
+    if (this.transactionsService.isNegativeBalance(availableBalance, payload))
       this.toastService.show({
         variant: 'warning',
         title: 'Exceeded available balance!',
@@ -283,12 +304,12 @@ export class Transactions {
       });
 
     setTimeout(() => {
-      this.transactionsService.createTransaction(accountId, transactionPayload).subscribe({
+      this.transactionsService.createTransaction(payload.sourceAccountId, payload).subscribe({
         next: () => {
           this.toastService.show({
             variant: 'success',
             title: 'Transaction created!',
-            details: `Your [${transactionPayload.type.toUpperCase()}] transaction has been logged successfully.`,
+            details: `Your [${payload.type.toUpperCase()}] transaction has been logged successfully.`,
           });
 
           this.reloadResources();
@@ -299,5 +320,12 @@ export class Transactions {
         complete: () => this.isSubmitting.set(false),
       });
     }, 3500);
+  }
+
+  constructor() {
+    effect(() => {
+      const transactionType = this.transactionFormModel().type;
+      if (transactionType === 'TRANSFER') this.isTransferTransaction.set(true);
+    });
   }
 }

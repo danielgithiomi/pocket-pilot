@@ -17,10 +17,7 @@ export class ToastService {
       id,
     };
 
-    if (this.checkSessionToastAlreadyExists(this._toasts(), toast)) {
-      console.log(`Toast with title: ${toast.title} already exists. Skipping... ${toast.id} `)
-      return;
-    }
+    if (this.checkSessionToastAlreadyExists(this._toasts(), toast)) return;
 
     this._toasts.update((prev) => [...prev, toast]);
   }
@@ -29,15 +26,13 @@ export class ToastService {
     this._toasts.update((prev) => prev.filter((t) => t.id !== id));
   }
 
-  private checkSessionToastAlreadyExists(toasts: ToastInternal[], toast: ToastInternal) : boolean {
+  private checkSessionToastAlreadyExists(toasts: ToastInternal[], toast: ToastInternal): boolean {
     if (!toast || toast.title === undefined) return false;
 
     const toastsLength: number = toasts.length;
     if (toastsLength === 0) return false;
 
-    const singleToastTitle: string[] = [
-      "Session expired. Login again!"
-    ]
+    const singleToastTitle: string[] = ['Session expired. Login again!'];
 
     return singleToastTitle.includes(toast.title);
   }

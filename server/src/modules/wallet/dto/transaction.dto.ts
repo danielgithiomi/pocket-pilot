@@ -21,7 +21,6 @@ export class CreateTransactionDto {
     amount!: number;
 
     @IsString()
-    @IsNotEmpty()
     @MaxLength(100, { message: 'Description must not exceed 100 characters' })
     @ApiProperty({ example: 'Dinner with Friends', description: 'The description of the transaction' })
     description!: string;

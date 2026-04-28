@@ -17,17 +17,15 @@ export interface TransactionRow {
 }
 
 // FORM
-export type TransactionSchema = CreateTransactionRequest & {
-  accountId: string;
-  description: string;
-};
+export type TransactionSchema = CreateTransactionRequest;
 
 export const initialTransactionFormState: TransactionSchema = {
   type: '',
   amount: null,
   category: '',
-  accountId: '',
   description: '',
+  targetAccountId: '',
+  sourceAccountId: '',
 };
 
 export const transactionFormValidationSchema = schema<TransactionSchema>((root) => {
@@ -99,7 +97,7 @@ export const tabListItems: TabListItem[] = [
     label: 'Expenses',
   },
   {
-    value: 'transfers',
+    value: 'transfer',
     label: 'Transfers',
   },
 ];

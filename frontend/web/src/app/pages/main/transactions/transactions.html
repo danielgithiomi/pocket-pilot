@@ -127,18 +127,20 @@
         [inverted]="true"
         label="Associated Account"
         placeholder="Select one account"
-        [formField]="transactionForm.accountId"
-        [options]="accountsDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
+        [formField]="transactionForm.sourceAccountId"
+        [options]="sourceAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
       />
 
-      <!-- <atom-select
-        id="target-account"
-        [inverted]="true"
-        label="Target Account"
-        placeholder="Select one account"
-        [formField]="transactionForm.targetAccountId"
-        [options]="accountsDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
-      /> -->
+      @if (isTransferTransaction()) {
+        <atom-select
+          id="target-account"
+          [inverted]="true"
+          label="Target Account"
+          placeholder="Select one account"
+          [formField]="transactionForm.targetAccountId"
+          [options]="targetAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
+        />
+      }
     </form>
 
     <div class="form-footer-buttons" slot="footer">

@@ -3,6 +3,8 @@ export interface CreateTransactionRequest {
   category: string;
   description: string;
   amount: number | null;
+  sourceAccountId: string;
+  targetAccountId: string;
 }
 
 export interface Transaction {
@@ -21,7 +23,8 @@ export interface AccountInTransaction {
 }
 
 export interface TransactionWithAccount extends Transaction {
-  account: AccountInTransaction;
+  sourceAccount: AccountInTransaction;
+  targetAccount: AccountInTransaction | null;
 }
 
 export interface TransactionsWithAccountWithCount {
