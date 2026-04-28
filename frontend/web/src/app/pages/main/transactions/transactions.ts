@@ -74,21 +74,45 @@ export class Transactions {
   });
 
   protected sourceAccountDropdown = computed(() => {
-    return this.accounts.value()?.data?.data?.map((account) => ({
-      value: account.id,
-      label: account.name,
-    }));
+    const accounts = this.accounts.value()?.data?.data;
+    const targetAccountId = this.transactionFormModel().targetAccountId;
+
+    if (!targetAccountId || targetAccountId === '')
+      return accounts?.map((account) => ({
+        value: account.id,
+        label: account.name,
+      }));
+
+    const sourceAccounts = accounts
+      ?.filter((account) => account.id !== targetAccountId)
+      .map((account) => ({
+        value: account.id,
+        label: account.name,
+      }));
+
+    if (!sourceAccounts || sourceAccounts.length === 0) {
+      return [{ value: '', label: 'You have no other accounts!', disabled: true }];
+    }
+
+    return sourceAccounts;
   });
 
   protected targetAccountDropdown = computed(() => {
     const accounts = this.accounts.value()?.data?.data;
     const sourceAccountId = this.transactionFormModel().sourceAccountId;
 
-    const filteredAccounts = accounts?.filter((account) => account.id !== sourceAccountId);
-    return filteredAccounts?.map((account) => ({
-      value: account.id,
-      label: account.name,
-    }));
+    const targetAccounts = accounts
+      ?.filter((account) => account.id !== sourceAccountId)
+      .map((account) => ({
+        value: account.id,
+        label: account.name,
+      }));
+
+    if (!targetAccounts || targetAccounts.length === 0) {
+      return [{ value: '', label: 'You have no other accounts!', disabled: true }];
+    }
+
+    return targetAccounts;
   });
 
   protected editStateText = computed<string>(() => {
@@ -124,6 +148,7 @@ export class Transactions {
   // Methods
   protected resetTransactionForm() {
     this.transactionForm().reset();
+    this.isTransferTransaction.set(false);
     this.transactionFormModel.set(initialTransactionFormState);
   }
 
@@ -325,7 +350,20 @@ export class Transactions {
   constructor() {
     effect(() => {
       const transactionType = this.transactionFormModel().type;
-      if (transactionType === 'TRANSFER') this.isTransferTransaction.set(true);
+      const categoryControl = this.transactionForm.category();
+      const currentCategory = categoryControl.controlValue();
+
+      if (transactionType === 'TRANSFER') {
+        this.isTransferTransaction.set(true);
+        if (currentCategory !== 'Transfer') {
+          categoryControl.controlValue.set('Transfer');
+        }
+      } else {
+        this.isTransferTransaction.set(false);
+        if (currentCategory !== '') {
+          categoryControl.controlValue.set('');
+        }
+      }
     });
   }
 }

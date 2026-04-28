@@ -34,7 +34,6 @@ export class TransactionsService {
     const type = payload.type;
 
     if (type === 'TRANSFER') {
-      console.log('Creating transfer transaction');
       return this.transactionsMutation.createTransferTransaction(accountId, payload).pipe(
         catchError((error: IStandardError) => {
           this.renderToast(error);
@@ -43,7 +42,6 @@ export class TransactionsService {
       );
     }
 
-    console.log('Creating regular transaction');
     return this.transactionsMutation.createTransaction(accountId, payload).pipe(
       catchError((error: IStandardError) => {
         this.renderToast(error);

@@ -42,8 +42,6 @@ export class CategoriesService {
 
     const { incomes, expenses } = data;
     const allCategories = [
-      '---Internal---',
-      'account_transfer',
       '---Incomes---',
       ...incomes,
       '---Expenses---',

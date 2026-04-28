@@ -289,6 +289,10 @@ main {
           .select-icon {
             @apply cursor-pointer hover:text-primary hover:scale-105 transition-all duration-300 ease-in-out;
           }
+
+          .select-icon-disabled {
+            @apply cursor-not-allowed! text-muted-text! hover:text-muted-text!;
+          }
         }
       }
 
@@ -328,6 +332,10 @@ main {
       & option[value=''] {
         color: var(--muted-text);
       }
+    }
+
+    select:disabled {
+      @apply opacity-75 cursor-not-allowed! text-muted-text;
     }
 
     button {

@@ -119,7 +119,6 @@ export class TransactionController {
         @Body() createTransactionDto: CreateTransactionDto,
     ): Promise<TransactionWithAccount> {
         const { id: userId } = currentUser;
-        console.log('Creating transaction', createTransactionDto);
         return this.transactionService.createTransactionByAccountId(userId, accountId, createTransactionDto);
     }
 
@@ -146,7 +145,6 @@ export class TransactionController {
         @Body() transferTransactionPayload: CreateTransferTransactionPayload,
     ): Promise<CompleteTranferDto> {
         const { id: userId } = currentUser;
-        console.log('Creating transfer transaction', transferTransactionPayload);
         return this.transferService.createTransactionAndTransferAmountBetweenAccounts(
             userId,
             accountId,

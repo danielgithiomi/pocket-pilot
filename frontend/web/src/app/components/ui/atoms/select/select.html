@@ -7,31 +7,33 @@
   </label>
 
   <div class="select-wrapper">
-    <select [formField]="formField()" [id]="selectId()" [ngClass]="selectClassName()">
-      @if (placeholder()) {
-        <option value="" disabled [selected]="!currentValue()">{{ placeholder() }}</option>
-      }
-      @for (option of formattedOptions(); track option.value) {
-        <option
-          [value]="option.value"
-          [disabled]="option.disabled"
-          [selected]="isOptionSelected(option)"
-        >
-          {{ option.label }}
-          @if (option.descriptor) {
-            <span class="text-primary text-sm"> - {{ option.descriptor }}</span>
-          }
-        </option>
-      }
-    </select>
+    <fieldset [disabled]="disabled()" style="border: none; padding: 0; margin: 0">
+      <select [formField]="formField()" [id]="selectId()" [ngClass]="selectClassName()">
+        @if (placeholder()) {
+          <option value="" disabled [selected]="!currentValue()">{{ placeholder() }}</option>
+        }
+        @for (option of formattedOptions(); track option.value) {
+          <option
+            [value]="option.value"
+            [disabled]="option.disabled"
+            [selected]="isOptionSelected(option)"
+          >
+            {{ option.label }}
+            @if (option.descriptor) {
+              <span class="text-primary text-sm"> - {{ option.descriptor }}</span>
+            }
+          </option>
+        }
+      </select>
+    </fieldset>
 
     <div class="select-dropdown-wrapper">
       <lucide-icon
         [size]="iconSize"
         [img]="ChevronDown"
-        class="select-icon"
-        [ngClass]="{ 'text-inverted-text': invertedIcon() }"
         name="select-chevron"
+        [ngClass]="{ 'text-inverted-text': invertedIcon() }"
+        [class]="disabled() ? 'select-icon-disabled' : 'select-icon'"
       />
     </div>
   </div>

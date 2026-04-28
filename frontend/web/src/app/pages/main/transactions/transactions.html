@@ -117,6 +117,7 @@
           wrapperClassName="my-0"
           label="Transaction Category"
           placeholder="Select a category"
+          [disabled]="isTransferTransaction()"
           [formField]="transactionForm.category"
           [options]="categories || [{ value: '', label: 'No transaction categories found' }]"
         />
