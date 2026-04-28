@@ -46,6 +46,7 @@ export class CategoriesService {
       ...incomes,
       '---Expenses---',
       ...expenses,
+      'transfer'
     ];
 
     return allCategories.map((category) => ({

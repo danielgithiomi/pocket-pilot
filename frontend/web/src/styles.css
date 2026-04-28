@@ -291,7 +291,7 @@ main {
           }
 
           .select-icon-disabled {
-            @apply cursor-not-allowed! text-muted-text! hover:text-muted-text!;
+            @apply cursor-not-allowed! text-muted-text hover:text-muted-text!;
           }
         }
       }

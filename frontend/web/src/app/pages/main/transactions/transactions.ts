@@ -15,7 +15,7 @@ import { TransactionsService } from '@api/transactions.service';
 import { TabList } from '@components/ui/atoms/tab-list/tab-list';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
 import {
   skeletonData,
@@ -349,14 +349,14 @@ export class Transactions {
 
   constructor() {
     effect(() => {
-      const transactionType = this.transactionFormModel().type;
       const categoryControl = this.transactionForm.category();
-      const currentCategory = categoryControl.controlValue();
+      const transactionType = this.transactionForm.type().controlValue();
+      const currentCategory = untracked(() => categoryControl.controlValue());
 
       if (transactionType === 'TRANSFER') {
         this.isTransferTransaction.set(true);
-        if (currentCategory !== 'Transfer') {
-          categoryControl.controlValue.set('Transfer');
+        if (currentCategory !== 'transfer') {
+          categoryControl.controlValue.set('transfer');
         }
       } else {
         this.isTransferTransaction.set(false);
