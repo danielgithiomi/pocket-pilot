@@ -12,8 +12,8 @@ export interface TransactionRow {
   currency: string;
   category: string;
   accountId: string;
-  accountName: string;
   description: string;
+  accountName: string;
 }
 
 // FORM

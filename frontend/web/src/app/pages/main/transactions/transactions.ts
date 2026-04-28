@@ -16,7 +16,12 @@ import { TabList } from '@components/ui/atoms/tab-list/tab-list';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
-import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
+import {
+  formatDate,
+  formatCurrency,
+  formatToReadable,
+  splitTransactionId,
+} from '@libs/utils/formatters';
 import {
   skeletonData,
   tabListItems,
@@ -234,7 +239,7 @@ export class Transactions {
     {
       key: 'accountName',
       label: 'Account',
-      width: '1fr',
+      width: '2fr',
     },
     {
       key: 'date',
@@ -262,7 +267,9 @@ export class Transactions {
         id: splitTransactionId(transaction.id),
         accountId: transaction.sourceAccount.id,
         currency: transaction.sourceAccount.currency,
-        accountName: capitalize(transaction.sourceAccount.name),
+        accountName: transaction.targetAccount?.name
+          ? `${formatToReadable(transaction.sourceAccount.name)} -> ${formatToReadable(transaction.targetAccount.name)}`
+          : formatToReadable(transaction.sourceAccount.name),
         amount: formatCurrency(
           transaction.amount,
           transaction.sourceAccount.currency,
@@ -355,8 +362,8 @@ export class Transactions {
 
       if (transactionType === 'TRANSFER') {
         this.isTransferTransaction.set(true);
-        if (currentCategory !== 'transfer') {
-          categoryControl.controlValue.set('transfer');
+        if (currentCategory !== 'Transfer') {
+          categoryControl.controlValue.set('Transfer');
         }
       } else {
         this.isTransferTransaction.set(false);

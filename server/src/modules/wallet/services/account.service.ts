@@ -80,13 +80,10 @@ export class AccountService {
     }
 
     async createAccount(userId: string, payload: CreateAccountDto): Promise<Account> {
-        try {
-            const newAccountData: CreateAccountDto = {
-                ...payload,
-                name: payload.name.toLowerCase(),
-            };
+        await this.checkIfAccountNameAlreadyExists(userId, payload.name);
 
-            const createdAccount = await this.accountRepository.createNewAccount(userId, newAccountData);
+        try {
+            const createdAccount = await this.accountRepository.createNewAccount(userId, payload);
             await this.invalidateCachesByAccountId(userId, createdAccount.id);
             return createdAccount;
         } catch (error) {
@@ -184,6 +181,20 @@ export class AccountService {
             }
         }
         return 'non-prisma';
+    }
+
+    private async checkIfAccountNameAlreadyExists(userId: string, newAccountName: string): Promise<void> {
+        const accounts = await this.getUserAccounts(userId);
+
+        if (accounts.some(account => account.name.toLowerCase() === newAccountName.toLowerCase())) {
+            throw new ConflictException({
+                name: 'ACCOUNT_NAME_CONFLICT',
+                title: 'Account Already Exists!',
+                details: `You already have an account with the name: [${newAccountName}].`,
+            });
+        }
+
+        return;
     }
 
     private async accountHasTransactions(accountId: string): Promise<boolean> {
