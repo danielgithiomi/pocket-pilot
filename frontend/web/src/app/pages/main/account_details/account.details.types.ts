@@ -1,9 +1,9 @@
-import { CreateAccountPayload } from '@global/types';
+import { UpdateAccountPayload } from '@global/types';
 import { minLength, required, schema, validate } from '@angular/forms/signals';
 
-export type AccountsSchema = CreateAccountPayload;
+export type UpdateAccountDetailsSchema = UpdateAccountPayload;
 
-export const accountsFormValidationSchema = schema<AccountsSchema>((root) => {
+export const UpdateAccountValidationSchema = schema<UpdateAccountDetailsSchema>((root) => {
   // Account name
   required(root.name, { message: 'The account name is required field!' });
   minLength(root.name, 3, { message: 'The account name must be at least 3 characters long!' });

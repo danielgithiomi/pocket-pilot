@@ -21,10 +21,27 @@ export class CreateTransactionDto {
     amount!: number;
 
     @IsString()
-    @IsNotEmpty()
     @MaxLength(100, { message: 'Description must not exceed 100 characters' })
     @ApiProperty({ example: 'Dinner with Friends', description: 'The description of the transaction' })
     description!: string;
+}
+
+export class CreateTransferTransactionPayload extends CreateTransactionDto {
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'The ID of the account to transfer from',
+    })
+    sourceAccountId!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({
+        example: '123e4567-e89b-12d3-a456-426614174001',
+        description: 'The ID of the account to transfer to',
+    })
+    targetAccountId!: string;
 }
 
 @Exclude()
@@ -75,7 +92,15 @@ export class TransactionWithAccount extends TransactionDto {
     @Expose()
     @Type(() => TransactionAccount)
     @ApiProperty({ type: TransactionAccount, description: 'The owning account of the transaction' })
-    account!: TransactionAccount;
+    sourceAccount!: TransactionAccount;
+}
+
+@Exclude()
+export class CompleteTranferDto extends TransactionWithAccount {
+    @Expose()
+    @Type(() => TransactionAccount)
+    @ApiProperty({ type: TransactionAccount, nullable: true, description: 'The target account of the transfer' })
+    targetAccount!: TransactionAccount | null;
 }
 
 @ApiExtraModels(TransactionDto)
@@ -90,14 +115,14 @@ export class TransactionsResponseDto {
     data!: TransactionDto[];
 }
 
-@ApiExtraModels(TransactionWithAccount)
+@ApiExtraModels(CompleteTranferDto)
 export class TransactionsWithAccountResponseDto {
     @ApiProperty({ example: 1, description: 'The number of transactions for the account' })
     count!: number;
 
     @ApiProperty({
         type: 'array',
-        items: { $ref: getSchemaPath(TransactionWithAccount) },
+        items: { $ref: getSchemaPath(CompleteTranferDto) },
     })
-    data!: TransactionWithAccount[];
+    data!: CompleteTranferDto[];
 }

@@ -13,10 +13,15 @@ import { TableColumn } from '@organisms/table/table.types';
 import { CategoriesService } from '@api/categories.service';
 import { TransactionsService } from '@api/transactions.service';
 import { TabList } from '@components/ui/atoms/tab-list/tab-list';
-import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { formatCurrency, formatDate, splitTransactionId, capitalize } from '@libs/utils/formatters';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import {
+  formatDate,
+  formatCurrency,
+  formatToReadable,
+  splitTransactionId,
+} from '@libs/utils/formatters';
 import {
   skeletonData,
   tabListItems,
@@ -66,17 +71,66 @@ export class Transactions {
   protected isDeleting = signal<boolean>(false);
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
+  protected isTransferTransaction = signal<boolean>(false);
 
   // Computed
   protected isFetching = computed(() => {
     return this.accounts.isLoading() || this.transactions.isLoading();
   });
 
-  protected accountsDropdown = computed(() => {
-    return this.accounts.value()?.data?.data?.map((account) => ({
-      value: account.id,
-      label: account.name,
-    }));
+  protected sourceAccountDropdown = computed(() => {
+    const accounts = this.accounts.value()?.data?.data;
+    const targetAccountId = this.transactionFormModel().targetAccountId;
+
+    if (!targetAccountId || targetAccountId === '')
+      return accounts?.map((account) => ({
+        value: account.id,
+        label: account.name,
+      }));
+
+    const sourceAccounts = accounts
+      ?.filter((account) => account.id !== targetAccountId)
+      .map((account) => ({
+        value: account.id,
+        label: account.name,
+      }));
+
+    if (!sourceAccounts || sourceAccounts.length === 0) {
+      return [{ value: '', label: 'You have no other accounts!', disabled: true }];
+    }
+
+    return sourceAccounts;
+  });
+
+  protected targetAccountDropdown = computed(() => {
+    const accounts = this.accounts.value()?.data?.data;
+    const sourceAccountId = this.transactionFormModel().sourceAccountId;
+
+    const targetAccounts = accounts
+      ?.filter((account) => account.id !== sourceAccountId)
+      .map((account) => ({
+        value: account.id,
+        label: account.name,
+      }));
+
+    if (!targetAccounts || targetAccounts.length === 0) {
+      return [{ value: '', label: 'You have no other accounts!', disabled: true }];
+    }
+
+    return targetAccounts;
+  });
+
+  protected editStateText = computed<string>(() => {
+    switch (this.activeTabIndex()) {
+      case 0:
+        return 'You have no transactions yet! Log your first transaction today.';
+      case 1:
+        return 'You have no income transactions logged yet!';
+      case 2:
+        return 'You have no expense transactions logged yet!';
+      default:
+        return 'You have no transfer transactions logged yet!';
+    }
   });
 
   protected filteredTransactions = computed(() => {
@@ -99,6 +153,7 @@ export class Transactions {
   // Methods
   protected resetTransactionForm() {
     this.transactionForm().reset();
+    this.isTransferTransaction.set(false);
     this.transactionFormModel.set(initialTransactionFormState);
   }
 
@@ -127,10 +182,18 @@ export class Transactions {
     {
       key: 'amount',
       label: 'Amount',
-      width: '2fr',
+      width: '1.5fr',
       cellTemplate: (transaction: TransactionRow) => {
+        const isSameCurrency = transaction.currency === 'MUR';
+
         let classes = 'font-semibold';
-        return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.amount}</span>`;
+        let currencyClasses = 'font-semibold text-muted-text text-xs';
+        return `
+          <div class="flex flex-col">
+            <span class="${classes}">${transaction.amount}</span>
+            <span class="${this.isFetching() || isSameCurrency ? 'hidden' : currencyClasses}">≈ Rs. 200</span>
+          </div>
+        `;
       },
     },
     {
@@ -139,7 +202,7 @@ export class Transactions {
       width: '1fr',
       cellTemplate: (transaction: TransactionRow) => {
         let classes =
-          'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis dark:text-(--inverted-text)';
+          'px-2 py-1 font-semibold rounded-xl text-xs overflow-hidden text-ellipsis dark:text-(--inverted-text)';
 
         switch (transaction.type) {
           case 'INCOME':
@@ -176,7 +239,7 @@ export class Transactions {
     {
       key: 'accountName',
       label: 'Account',
-      width: '1fr',
+      width: '2fr',
     },
     {
       key: 'date',
@@ -199,12 +262,21 @@ export class Transactions {
         fullId: transaction.id,
         type: transaction.type,
         category: transaction.category,
-        accountId: transaction.account.id,
         date: formatDate(transaction.date),
         description: transaction.description,
         id: splitTransactionId(transaction.id),
-        accountName: capitalize(transaction.account.name),
-        amount: formatCurrency(transaction.amount, transaction.account.currency, 2, true, false),
+        accountId: transaction.sourceAccount.id,
+        currency: transaction.sourceAccount.currency,
+        accountName: transaction.targetAccount?.name
+          ? `${formatToReadable(transaction.sourceAccount.name)} -> ${formatToReadable(transaction.targetAccount.name)}`
+          : formatToReadable(transaction.sourceAccount.name),
+        amount: formatCurrency(
+          transaction.amount,
+          transaction.sourceAccount.currency,
+          2,
+          true,
+          false,
+        ),
       })) || skeletonData
     ).reverse();
   });
@@ -251,38 +323,54 @@ export class Transactions {
 
     this.isSubmitting.set(true);
 
-    const { accountId, ...transactionPayload } = this.transactionFormModel();
+    const payload = this.transactionFormModel();
     const availableBalance: number =
-      this.accounts.value()?.data?.data?.find((account) => account.id === accountId)?.balance ?? 0;
+      this.accounts.value()?.data?.data?.find((account) => account.id === payload.sourceAccountId)
+        ?.balance ?? 0;
 
-    if (this.transactionsService.isNegativeBalance(availableBalance, transactionPayload))
+    if (this.transactionsService.isNegativeBalance(availableBalance, payload))
       this.toastService.show({
         variant: 'warning',
         title: 'Exceeded available balance!',
         details: 'This transaction will result in a negative balance in your account.',
       });
 
-    this.transactionsService.createTransaction(accountId, transactionPayload).subscribe({
-      next: () => {
-        this.toastService.show({
-          variant: 'success',
-          title: 'Transaction created!',
-          details: `Your [${transactionPayload.type.toUpperCase()}] transaction has been logged successfully.`,
-        });
+    setTimeout(() => {
+      this.transactionsService.createTransaction(payload.sourceAccountId, payload).subscribe({
+        next: () => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Transaction created!',
+            details: `Your [${payload.type.toUpperCase()}] transaction has been logged successfully.`,
+          });
 
-        this.reloadResources();
-        this.resetTransactionForm();
-        this.isFormOpen.set(false);
-      },
-      error: (error) => console.error('Transaction creation failed:', error),
-      complete: () => this.isSubmitting.set(false),
+          this.reloadResources();
+          this.resetTransactionForm();
+          this.isFormOpen.set(false);
+        },
+        error: (error) => console.error('Transaction creation failed:', error),
+        complete: () => this.isSubmitting.set(false),
+      });
+    }, 3500);
+  }
+
+  constructor() {
+    effect(() => {
+      const categoryControl = this.transactionForm.category();
+      const transactionType = this.transactionForm.type().controlValue();
+      const currentCategory = untracked(() => categoryControl.controlValue());
+
+      if (transactionType === 'TRANSFER') {
+        this.isTransferTransaction.set(true);
+        if (currentCategory !== 'Transfer') {
+          categoryControl.controlValue.set('Transfer');
+        }
+      } else {
+        this.isTransferTransaction.set(false);
+        if (currentCategory !== '') {
+          categoryControl.controlValue.set('');
+        }
+      }
     });
   }
 }
-
-// {
-//     "type": "TRANSFER",
-//     "amount": 2000,
-//     "category": "Account Transfers",
-//     "description": "Moved to misc."
-// }

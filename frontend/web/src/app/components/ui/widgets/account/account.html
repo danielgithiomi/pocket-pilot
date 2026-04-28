@@ -1,10 +1,14 @@
-<section [id]="accountId()">
+<section
+  [id]="accountId()"
+  class="account-wrapper"
+  [ngClass]="{ 'border border-primary': variant() === 'detail' }"
+>
   <div
     class="container"
     [routerLink]="isLoading() ? null : ['/accounts', id()]"
     (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)"
   >
-    <div class="card">
+    <div class="card" [ngClass]="{ 'border-none!': variant() === 'detail' }">
       <div class="header">
         <img
           [ngSrc]="logoUrl"

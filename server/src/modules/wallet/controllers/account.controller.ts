@@ -7,12 +7,13 @@ import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { denormalizeCategoryName, hoursToMilliseconds } from '@libs/utils';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import {
     Account,
     CreateAccountDto,
     AccountWithHolder,
     AccountsResponseDto,
+    UpdateAccountPayload,
     AccountWithHolderDto,
     UserAccountsResponseDto,
     AccountWithTransactionsResponseDto,
@@ -137,6 +138,31 @@ export class AccountController {
     })
     createAccount(@UserInRequest() user: User, @Body() payload: CreateAccountDto): Promise<Account> {
         return this.accountService.createAccount(user.id!, payload);
+    }
+
+    @Put(':accountId')
+    @ApiCookieAuth('access_token')
+    @ApiParam({
+        required: true,
+        name: 'accountId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the account to be updated.',
+    })
+    @ApiBody({ type: UpdateAccountPayload })
+    @Summary('Account Updated!', 'You have successfully updated the account.')
+    @ApiOperation({ summary: 'Update Account', description: 'Update an account by its id' })
+    @ApiResponse({
+        status: 200,
+        isArray: false,
+        type: Account,
+        description: 'Account updated successfully',
+    })
+    updateAccount(
+        @UserInRequest() user: User,
+        @Param('accountId') accountId: string,
+        @Body() payload: UpdateAccountPayload,
+    ): Promise<Account> {
+        return this.accountService.updateAccount(user.id!, accountId, payload);
     }
 
     @Delete(':accountId')

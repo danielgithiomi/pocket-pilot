@@ -16,6 +16,7 @@ export class Select {
   size = input<SelectSize>('sm');
   required = input<boolean>(true);
   label = input.required<string>();
+  disabled = input<boolean>(false);
   placeholder = input.required<string>();
 
   // Classnames

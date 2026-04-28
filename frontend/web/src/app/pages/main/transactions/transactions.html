@@ -35,9 +35,10 @@
         <no-data message="You have no transactions yet! Log one today." messageClass="text-sm" />
       } @else {
         <div>
-          <p class="mb-6">
-            You have <span class="font-semibold text-primary">{{ count }}</span>
-            {{ count! > 1 ? 'total transactions' : 'transaction' }}!
+          <p class="mb-6 page-subtitle cursor-default">
+            You have {{ count === 1 ? 'only' : '' }}
+            <span class="font-semibold text-primary">{{ count }}</span>
+            {{ count! > 1 ? 'total transactions logged' : 'logged transaction' }}!
           </p>
 
           <div class="mb-6">
@@ -52,9 +53,9 @@
             id="transactions-table"
             [isLoading]="isFetching()"
             [columns]="transactionColumns"
+            [emptyMessage]="editStateText()"
             [data]="formattedTransactions()"
             (deleteRow)="deleteDataRow($event)"
-            emptyMessage="You have no transactions yet!"
           />
         </div>
       }
@@ -97,7 +98,7 @@
         (clearOutput)="transactionForm.description().controlValue.set('')"
       />
 
-      <div class="flex flex-col sm:flex-row gap-0 sm:gap-4">
+      <div class="flex flex-col sm:flex-row gap-4">
         <atom-select
           id="type"
           class="flex-1"
@@ -116,6 +117,7 @@
           wrapperClassName="my-0"
           label="Transaction Category"
           placeholder="Select a category"
+          [disabled]="isTransferTransaction()"
           [formField]="transactionForm.category"
           [options]="categories || [{ value: '', label: 'No transaction categories found' }]"
         />
@@ -124,20 +126,22 @@
       <atom-select
         id="source-account"
         [inverted]="true"
-        label="Associated Account"
-        placeholder="Select one account"
-        [formField]="transactionForm.accountId"
-        [options]="accountsDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
+        placeholder="Select source account"
+        [formField]="transactionForm.sourceAccountId"
+        [label]="isTransferTransaction() ? 'Source Account' : 'Associated Account'"
+        [options]="sourceAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
       />
 
-      <!-- <atom-select
-        id="target-account"
-        [inverted]="true"
-        label="Target Account"
-        placeholder="Select one account"
-        [formField]="transactionForm.targetAccountId"
-        [options]="accountsDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
-      /> -->
+      @if (isTransferTransaction()) {
+        <atom-select
+          id="target-account"
+          [inverted]="true"
+          label="Target Account"
+          placeholder="Select target account"
+          [formField]="transactionForm.targetAccountId"
+          [options]="targetAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
+        />
+      }
     </form>
 
     <div class="form-footer-buttons" slot="footer">

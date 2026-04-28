@@ -26,6 +26,8 @@ export class CreateAccountDto {
     currency!: string;
 }
 
+export class UpdateAccountPayload extends CreateAccountDto {}
+
 // OUTPUT
 @Exclude()
 export class Account {
@@ -88,7 +90,10 @@ export class Account {
 }
 
 export type AccountWithTransactions = Prisma.AccountGetPayload<{
-    include: { transactions: { select: { id: true; amount: true; type: true } } };
+    include: {
+        incomingTransactions: { select: { id: true; amount: true; type: true } };
+        outgoingTransactions: { select: { id: true; amount: true; type: true } };
+    };
 }>;
 
 export type AccountWithHolder = Prisma.AccountGetPayload<{

@@ -1,17 +1,19 @@
 import { ExposeEnumDto } from '@common/types';
 import { plainToInstance } from 'class-transformer';
+import { AccountsCache } from '../cache/accounts.cache';
 import { TransactionType, Account } from '@prisma/client';
 import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { denormalizeCategoryName, formatEnumForFrontend } from '@libs/utils';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { TransactionDto, CreateTransactionDto, TransactionWithAccount } from '../dto/transaction.dto';
+import { TransactionDto, CreateTransactionDto, CompleteTranferDto } from '../dto/transaction.dto';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class TransactionService {
     constructor(
         private readonly db: DatabaseService,
+        private readonly accountsCache: AccountsCache,
         private readonly accountRepository: AccountRepository,
         private readonly transactionRepository: TransactionRepository,
     ) {}
@@ -20,32 +22,29 @@ export class TransactionService {
         return await Promise.resolve(Object.values(TransactionType).map(formatEnumForFrontend));
     }
 
-    async getAllTransactions(): Promise<TransactionWithAccount[]> {
+    async getAllTransactions(): Promise<CompleteTranferDto[]> {
         const transactions = await this.transactionRepository.getAllTransactionsAndAccountData();
 
-        return plainToInstance(TransactionWithAccount, transactions);
+        return plainToInstance(CompleteTranferDto, transactions);
     }
 
-    async getUserTransactions(userId: string): Promise<TransactionWithAccount[]> {
+    async getUserTransactions(userId: string): Promise<CompleteTranferDto[]> {
         const transactions = await this.transactionRepository.getUserTransactionsAndAccountData(userId);
 
-        return plainToInstance(TransactionWithAccount, transactions);
+        return plainToInstance(CompleteTranferDto, transactions);
     }
 
     async getTransactionsByAccountId(accountId: string): Promise<TransactionDto[]> {
         await this.confirmAccountExists(accountId);
 
-        return this.db.transaction.findMany({
-            where: { accountId },
-            select: { id: true, type: true, description: true, category: true, amount: true, date: true },
-        });
+        return this.transactionRepository.getUserPlainTransactionsByAccountId(accountId);
     }
 
     async createTransactionByAccountId(
         userId: string,
         accountId: string,
         createTransactionDto: CreateTransactionDto,
-    ): Promise<TransactionWithAccount> {
+    ): Promise<CompleteTranferDto> {
         const transformedDto: CreateTransactionDto = {
             ...createTransactionDto,
             type: createTransactionDto.type,
@@ -70,7 +69,12 @@ export class TransactionService {
             });
         }
 
-        return this.transactionRepository.createNewTransactionAndUpdateBalance(accountId, transformedDto);
+        const createdTransaction = await this.transactionRepository.createNewTransactionAndUpdateBalance(
+            accountId,
+            transformedDto,
+        );
+        this.invalidateAccountCache(userId);
+        return createdTransaction;
     }
 
     async deleteTransactionByAccountId(userId: string, accountId: string, transactionId: string): Promise<void> {
@@ -85,6 +89,20 @@ export class TransactionService {
         }
 
         await this.transactionRepository.deleteTransactionById(transactionId);
+        this.invalidateAccountCache(userId);
+    }
+
+    // HELPER FUNCTIONS
+    private isAccountOwnedByUser(userId: string, accountHolderId: string) {
+        return userId === accountHolderId;
+    }
+
+    private isTransactionTypeValid(type: string): boolean {
+        return type === TransactionType.TRANSFER || type === TransactionType.EXPENSE || type === TransactionType.INCOME;
+    }
+
+    private invalidateAccountCache(userId: string) {
+        this.accountsCache.invalidateCache(userId);
     }
 
     private async confirmAccountExists(accountId: string): Promise<Account> {
@@ -98,14 +116,5 @@ export class TransactionService {
             });
 
         return account;
-    }
-
-    // HELPER FUNCTIONS
-    private isAccountOwnedByUser(userId: string, accountHolderId: string) {
-        return userId === accountHolderId;
-    }
-
-    private isTransactionTypeValid(type: string): boolean {
-        return type === TransactionType.EXPENSE || type === TransactionType.INCOME;
     }
 }

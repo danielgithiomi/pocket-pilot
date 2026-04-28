@@ -42,12 +42,12 @@ export class CategoriesService {
 
     const { incomes, expenses } = data;
     const allCategories = [
-      '---Internal---',
-      'Account Transfers',
       '---Incomes---',
       ...incomes,
       '---Expenses---',
       ...expenses,
+      '---Internal---',
+      'Transfer'
     ];
 
     return allCategories.map((category) => ({

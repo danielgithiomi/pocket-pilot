@@ -1,5 +1,5 @@
+@let resource = resourceData();
 <section id="account-details-page" class="page">
-  @let resource = resourceData();
   <div class="page-header">
     <h1 class="page-title">Account Details</h1>
 
@@ -56,13 +56,13 @@
             <account-details
               [account]="resource.account"
               [transactionCount]="resource.count"
-              class="w-full md:flex-2 lg:flex-2 xl:flex-1"
+              class="w-full md:flex-2 lg:flex-2 xl:flex-1 overflow-hidden"
               [ngClass]="{ 'md:flex-2! xl:flex-1!': !drawerService.isDrawerCollapsed() }"
             />
 
             <account-transactions
               [transactions]="resource.transactions"
-              class="w-full md:flex-4 lg:flex-3 xl:flex-4"
+              class="w-full md:flex-4 lg:flex-3"
               [accountCurrency]="resource.account.currency"
               [ngClass]="{ 'md:flex-3! xl:flex-3!': !drawerService.isDrawerCollapsed() }"
             />
@@ -72,3 +72,11 @@
     }
   </div>
 </section>
+
+@if (isEditFormOpen() && resource) {
+  <edit-account-details-form
+    [account]="resource.account"
+    [isEditFormOpen]="isEditFormOpen()"
+    (closeEditFormEvent)="handleEditFormClose($event)"
+  />
+}

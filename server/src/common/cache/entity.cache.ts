@@ -41,6 +41,15 @@ export abstract class EntityCache<T> {
         await this.cache.del(key);
     }
 
+    async invalidateCaches(cacheIds: string[]): Promise<void> {
+        await Promise.all(
+            cacheIds.map(async id => {
+                const cacheKey = this.key(id);
+                await this.cache.del(cacheKey);
+            }),
+        );
+    }
+
     async clearCache(): Promise<void> {
         await this.cache.clear();
     }

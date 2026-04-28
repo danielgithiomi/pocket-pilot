@@ -6,7 +6,12 @@ import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
 import { AccountDetailsCache } from '../cache/account-details.cache';
 import { AccountRepository } from '../repositories/account.repository';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { AccountWithHolder, AccountWithTransactionsDto, CreateAccountDto } from '../dto/account.dto';
+import {
+    CreateAccountDto,
+    AccountWithHolder,
+    UpdateAccountPayload,
+    AccountWithTransactionsDto,
+} from '../dto/account.dto';
 import {
     Injectable,
     ConflictException,
@@ -60,7 +65,12 @@ export class AccountService {
                 });
             }
 
-            return plainToInstance(AccountWithTransactionsDto, account);
+            const accountWithTransactions = {
+                ...account,
+                transactions: [...account.incomingTransactions, ...account.outgoingTransactions],
+            };
+
+            return plainToInstance(AccountWithTransactionsDto, accountWithTransactions);
         };
 
         return this.accountDetailsCache.getOrSetCache<AccountWithTransactionsDto>(
@@ -70,13 +80,10 @@ export class AccountService {
     }
 
     async createAccount(userId: string, payload: CreateAccountDto): Promise<Account> {
-        try {
-            const newAccountData: CreateAccountDto = {
-                ...payload,
-                name: payload.name.toLowerCase(),
-            };
+        await this.checkIfAccountNameAlreadyExists(userId, payload.name, true);
 
-            const createdAccount = await this.accountRepository.createNewAccount(userId, newAccountData);
+        try {
+            const createdAccount = await this.accountRepository.createNewAccount(userId, payload);
             await this.invalidateCachesByAccountId(userId, createdAccount.id);
             return createdAccount;
         } catch (error) {
@@ -92,6 +99,33 @@ export class AccountService {
                 name: 'ACCOUNT_CREATION_FAILED',
                 title: 'Failed to create account!',
                 details: 'An unexpected error occurred while creating the account.',
+            });
+        }
+    }
+
+    async updateAccount(userId: string, accountId: string, payload: UpdateAccountPayload): Promise<Account> {
+        const accounts = await this.getUserAccounts(userId);
+        this.verifyAccountAndOwnership(accounts, userId, accountId);
+
+        await this.checkIfAccountNameAlreadyExists(userId, payload.name, false);
+
+        try {
+            const updatedAccount = await this.accountRepository.updateAccountById(accountId, payload);
+            await this.invalidateCachesByAccountId(userId, updatedAccount.id);
+            return updatedAccount;
+        } catch (error) {
+            if (this.isPrismaError(error) === 'unique-constraint') {
+                throw new ConflictException({
+                    name: 'ACCOUNT_NAME_CONFLICT',
+                    title: 'Account Already Exists!',
+                    details: `You already have an account with the name: [${payload.name}].`,
+                });
+            }
+
+            throw new InternalServerErrorException({
+                name: 'ACCOUNT_UPDATE_FAILED',
+                title: 'Failed to update account!',
+                details: 'An unexpected error occurred while updating the account.',
             });
         }
     }
@@ -151,14 +185,38 @@ export class AccountService {
         return 'non-prisma';
     }
 
+    private async checkIfAccountNameAlreadyExists(
+        userId: string,
+        payloadName: string,
+        convert: boolean,
+    ): Promise<void> {
+        const accounts = await this.getUserAccounts(userId);
+
+        const newAccountName = convert ? payloadName.toLowerCase() : payloadName;
+
+        const performCheck = (existingAccountName: string) => {
+            const convertedName = convert ? existingAccountName.toLowerCase() : existingAccountName;
+            return convertedName === newAccountName;
+        };
+
+        if (accounts.some(account => performCheck(account.name))) {
+            throw new ConflictException({
+                name: 'ACCOUNT_NAME_CONFLICT',
+                title: 'Account Already Exists!',
+                details: `You already have an account with the name: [${newAccountName}].`,
+            });
+        }
+
+        return;
+    }
+
     private async accountHasTransactions(accountId: string): Promise<boolean> {
         const accountTransactionCount = await this.transactionRepository.getTransactionCountByAccountId(accountId);
         return accountTransactionCount > 0;
     }
 
     private async invalidateCachesByAccountId(userId: string, accountId: string): Promise<void> {
-        await this.accountsCache.invalidateCache(userId); // User accounts list
-        // await this.accountsCache.invalidateCache(accountId); // Single account
-        await this.accountDetailsCache.invalidateCache(accountId); // Account with transactions
+        await this.accountsCache.invalidateCache(userId);
+        await this.accountDetailsCache.invalidateCache(accountId);
     }
 }

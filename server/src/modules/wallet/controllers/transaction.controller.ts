@@ -1,5 +1,6 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
+import { TransferService } from '../services/transfer.service';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { VoidResourceResponse, ExposeEnumDto } from '@common/types';
 import { TransactionService } from '../services/transaction.service';
@@ -7,9 +8,11 @@ import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/c
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     TransactionDto,
+    CompleteTranferDto,
     CreateTransactionDto,
     TransactionWithAccount,
     TransactionsResponseDto,
+    CreateTransferTransactionPayload,
     TransactionsWithAccountResponseDto,
 } from '../dto/transaction.dto';
 
@@ -17,7 +20,10 @@ import {
 @ApiTags('Transactions')
 @UseGuards(CookiesAuthGuard)
 export class TransactionController {
-    constructor(private readonly transactionService: TransactionService) {}
+    constructor(
+        private readonly transferService: TransferService,
+        private readonly transactionService: TransactionService,
+    ) {}
 
     @Get('transactions/types')
     @ApiOperation({ summary: 'Get transaction types', description: 'Get all transaction types' })
@@ -40,7 +46,7 @@ export class TransactionController {
         description: 'Returns all database transactions.',
     })
     async getUserTransactions(@UserInRequest() user: UserResponseDto): Promise<TransactionsWithAccountResponseDto> {
-        const userTransactions: TransactionWithAccount[] = await this.transactionService.getUserTransactions(user.id);
+        const userTransactions: CompleteTranferDto[] = await this.transactionService.getUserTransactions(user.id);
 
         return {
             count: userTransactions.length,
@@ -57,7 +63,7 @@ export class TransactionController {
         description: 'Returns all database transactions.',
     })
     async getAllTransactions(): Promise<TransactionsWithAccountResponseDto> {
-        const allTransactions: TransactionWithAccount[] = await this.transactionService.getAllTransactions();
+        const allTransactions: CompleteTranferDto[] = await this.transactionService.getAllTransactions();
 
         return {
             count: allTransactions.length,
@@ -114,6 +120,36 @@ export class TransactionController {
     ): Promise<TransactionWithAccount> {
         const { id: userId } = currentUser;
         return this.transactionService.createTransactionByAccountId(userId, accountId, createTransactionDto);
+    }
+
+    @Post(':accountId/transfer')
+    @ApiCookieAuth('access_token')
+    @ApiOperation({
+        summary: 'Transfer money between accounts',
+        description: 'Transfer money between two accounts',
+    })
+    @ApiParam({
+        required: true,
+        name: 'accountId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the account to be updated with the new transaction.',
+    })
+    @ApiResponse({
+        status: 201,
+        type: TransactionWithAccount,
+        description: 'Returns the created transaction with minimal account data.',
+    })
+    async transferMoneyBetweenAccounts(
+        @Param('accountId') accountId: string,
+        @UserInRequest() currentUser: UserResponseDto,
+        @Body() transferTransactionPayload: CreateTransferTransactionPayload,
+    ): Promise<CompleteTranferDto> {
+        const { id: userId } = currentUser;
+        return this.transferService.createTransactionAndTransferAmountBetweenAccounts(
+            userId,
+            accountId,
+            transferTransactionPayload,
+        );
     }
 
     @Delete(':accountId/transactions/:transactionId')

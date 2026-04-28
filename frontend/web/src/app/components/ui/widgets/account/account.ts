@@ -1,3 +1,4 @@
+import VanillaTilt from 'vanilla-tilt';
 import { formatCurrency } from '@libs/utils';
 import { RouterLink } from '@angular/router';
 import { ImageDimensions } from '@libs/types';
@@ -6,7 +7,7 @@ import { ThemeService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { Account as IAccount, IVoidResourceResponse } from '@global/types';
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
 import {
   Nfc,
   Trash,
@@ -21,17 +22,33 @@ import {
   templateUrl: './account.html',
   imports: [NgOptimizedImage, LucideAngularModule, NgClass, RouterLink],
 })
-export class Account {
-  // Inputs
+export class Account implements OnInit {
+  // INPUTS
   id = input.required<string>();
   account = input.required<IAccount>();
   isLoading = input.required<boolean>();
   variant = input<'default' | 'detail'>('default');
 
-  // Outputs
+  ngOnInit(): void {
+    const isDetail = this.variant() === 'detail';
+    if (isDetail) {
+      VanillaTilt.init(document.querySelectorAll('.account-wrapper') as any, {
+        max: 15,
+        speed: 3000,
+        reset: true,
+        glare: true,
+        scale: 1.025,
+        reverse: true,
+        'max-glare': 0.25,
+        perspective: 1000,
+      });
+    }
+  }
+
+  // OUTPUTS
   onAccountDelete = output<void>();
 
-  // Images
+  // IMAGES
   protected NFC = Nfc;
   protected Trash = Trash;
   protected Options = EllipsisVertical;
@@ -42,22 +59,22 @@ export class Account {
     height: 30,
   };
 
-  // Signals
+  // SIGNALS
   isDeleting = signal<boolean>(false);
   isOptionsOpen = signal<boolean>(false);
 
-  // Services
+  // SERVICES
   private readonly toastService = inject(ToastService);
   protected readonly themeService = inject(ThemeService);
   private readonly accountsService = inject(AccountsService);
 
-  // Computed signals
+  // COMPUTED
   protected accountId = computed(() => `account-${this.id()}`);
   protected formattedBalance = computed(() =>
     formatCurrency(this.account().balance, this.account().currency),
   );
 
-  // Methods
+  // METHODS
   toggleOptions(event: Event) {
     event.stopPropagation();
     this.isOptionsOpen.set(!this.isOptionsOpen());
@@ -67,18 +84,20 @@ export class Account {
     event.stopPropagation();
     this.isDeleting.set(true);
 
-    this.accountsService.deleteAccountById(this.id()).subscribe({
-      next: (response: IVoidResourceResponse) => {
-        this.toastService.show({
-          variant: 'success',
-          title: 'Account deleted successfully',
-          details: response.details,
-        });
-      },
-      complete: () => {
-        this.onAccountDelete.emit();
-        this.isDeleting.set(false);
-      },
-    });
+    setTimeout(() => {
+      this.accountsService.deleteAccountById(this.id()).subscribe({
+        next: (response: IVoidResourceResponse) => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Account deleted successfully',
+            details: response.details,
+          });
+        },
+        complete: () => {
+          this.onAccountDelete.emit();
+          this.isDeleting.set(false);
+        },
+      });
+    }, 2000);
   }
 }

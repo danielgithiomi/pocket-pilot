@@ -49,7 +49,7 @@
           <no-data message="You have no accounts yet! Create one today." messageClass="text-sm" />
         } @else {
           <div>
-            <p>
+            <p class="page-subtitle cursor-default">
               You have <span class="font-semibold text-primary">{{ count }}</span> active
               {{ count! > 1 ? 'accounts' : 'account' }}!
             </p>
@@ -78,7 +78,7 @@
 </section>
 
 @let accountTypeHasError = !!accountTypes.error();
-@if (!accountTypeHasError) {
+@if (!accountTypeHasError && isFormOpen()) {
   <organism-form
     id="accounts"
     title="Add Account"
@@ -99,7 +99,7 @@
         (clearOutput)="accountsForm.name().controlValue.set('')"
       />
 
-      <div class="flex flex-col sm:flex-row gap-0 sm:gap-4">
+      <div class="flex flex-col sm:flex-row gap-4">
         <atom-select
           class="flex-1"
           id="account-type"

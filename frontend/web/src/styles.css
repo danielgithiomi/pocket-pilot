@@ -289,6 +289,10 @@ main {
           .select-icon {
             @apply cursor-pointer hover:text-primary hover:scale-105 transition-all duration-300 ease-in-out;
           }
+
+          .select-icon-disabled {
+            @apply cursor-not-allowed! text-muted-text hover:text-muted-text!;
+          }
         }
       }
 
@@ -330,6 +334,10 @@ main {
       }
     }
 
+    select:disabled {
+      @apply opacity-75 cursor-not-allowed! text-muted-text;
+    }
+
     button {
       @apply bg-primary text-black shadow-primary disabled:bg-primary/50 cursor-pointer w-full rounded-lg px-4 py-2 shadow disabled:shadow-none disabled:cursor-not-allowed enabled:hover:scale-101 duration-300 ease-in-out;
     }
@@ -342,15 +350,15 @@ main {
     @apply p-4 h-full;
 
     .page-header {
-      @apply flex flex-row items-center justify-between mb-6;
+      @apply flex flex-row items-center justify-between mb-6 cursor-default!;
       animation: slideDown 0.3s ease-in-out;
 
       .page-title {
-        @apply text-2xl lg:text-3xl font-semibold;
+        @apply text-2xl lg:text-3xl font-semibold cursor-default!;
       }
 
       .page-subtitle {
-        @apply text-base;
+        @apply text-base cursor-default!;
       }
     }
 
@@ -365,11 +373,11 @@ main {
           @apply flex flex-col space-y-2 mt-2;
 
           .title {
-            @apply font-semibold;
+            @apply font-semibold cursor-default!;
           }
 
           .subtitle {
-            @apply text-sm text-muted-text;
+            @apply text-sm text-muted-text cursor-default!;
           }
         }
 
