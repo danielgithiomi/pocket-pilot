@@ -131,7 +131,6 @@ model Transaction {
     // targetAccountId String?
 
     // SOURCE ACCOUNT (money comes from)
-
     sourceAccount   Account @relation("SourceAccountTransactions", fields: [sourceAccountId], references: [id], onDelete: Cascade)
     sourceAccountId String
 

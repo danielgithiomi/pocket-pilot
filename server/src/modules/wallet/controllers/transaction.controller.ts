@@ -1,5 +1,6 @@
 import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
+import { TransferService } from '../services/transfer.service';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { VoidResourceResponse, ExposeEnumDto } from '@common/types';
 import { TransactionService } from '../services/transaction.service';
@@ -10,14 +11,19 @@ import {
     CreateTransactionDto,
     TransactionWithAccount,
     TransactionsResponseDto,
+    CreateTransferTransactionPayload,
     TransactionsWithAccountResponseDto,
+    TransferTransactionDto,
 } from '../dto/transaction.dto';
 
 @Controller('accounts')
 @ApiTags('Transactions')
 @UseGuards(CookiesAuthGuard)
 export class TransactionController {
-    constructor(private readonly transactionService: TransactionService) {}
+    constructor(
+        private readonly transferService: TransferService,
+        private readonly transactionService: TransactionService,
+    ) {}
 
     @Get('transactions/types')
     @ApiOperation({ summary: 'Get transaction types', description: 'Get all transaction types' })
@@ -114,6 +120,37 @@ export class TransactionController {
     ): Promise<TransactionWithAccount> {
         const { id: userId } = currentUser;
         return this.transactionService.createTransactionByAccountId(userId, accountId, createTransactionDto);
+    }
+
+    @Post(':accountId/transfer')
+    @ApiCookieAuth('access_token')
+    @ApiOperation({
+        summary: 'Transfer money between accounts',
+        description: 'Transfer money between two accounts',
+    })
+    @ApiParam({
+        required: true,
+        name: 'accountId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the account to be updated with the new transaction.',
+    })
+    @ApiResponse({
+        status: 201,
+        type: TransactionWithAccount,
+        description: 'Returns the created transaction with minimal account data.',
+    })
+    async transferMoneyBetweenAccounts(
+        @Param('accountId') accountId: string,
+        @UserInRequest() currentUser: UserResponseDto,
+        @Body() transferTransactionPayload: CreateTransferTransactionPayload,
+    ): Promise<void> {
+        const { id: userId } = currentUser;
+
+        // return this.transferService.createTransactionAndTransferAmountBetweenAccounts(
+        //     userId,
+        //     accountId,
+        //     transferTransactionPayload,
+        // );
     }
 
     @Delete(':accountId/transactions/:transactionId')

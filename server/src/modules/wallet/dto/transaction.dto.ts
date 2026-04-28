@@ -97,7 +97,7 @@ export class TransactionWithAccount extends TransactionDto {
 }
 
 @Exclude()
-export class TransferTransactionDto extends TransactionDto {
+export class TransferTransactionDto extends TransactionWithAccount {
     @Expose()
     @Type(() => TransactionAccount)
     @ApiProperty({ type: TransactionAccount, description: 'The source account of the transfer' })

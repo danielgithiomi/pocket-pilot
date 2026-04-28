@@ -1,7 +1,7 @@
 import { TransactionType } from '@prisma/client';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { CreateTransactionDto, TransactionWithAccount } from '../dto/transaction.dto';
+import { CreateTransactionDto, CreateTransferTransactionPayload, TransactionWithAccount } from '../dto/transaction.dto';
 
 @Injectable()
 export class TransactionRepository {
@@ -59,9 +59,6 @@ export class TransactionRepository {
                         },
                     },
                 });
-            } else if (transaction.type === TransactionType.TRANSFER) {
-                // For transfer transactions, we don't update the balance here
-                // The balance update will be handled by the transfer service
             } else {
                 throw new InternalServerErrorException({
                     name: 'INVALID_TRANSACTION_TYPE',
@@ -74,6 +71,31 @@ export class TransactionRepository {
             }
 
             return createdTransaction;
+        });
+    }
+
+    async createTransferTransactionAndUpdateBalances(userId: string, payload: CreateTransferTransactionPayload) {
+        return this.db.$transaction(async prisma => {
+            const { sourceAccountId, targetAccountId, amount } = payload;
+
+            const createdTranferTransaction = await prisma.transaction.create({
+                data: { ...payload },
+                include: { account: { select: { id: true, name: true, currency: true } } },
+            });
+
+            // Decrement from source account
+            await prisma.account.update({
+                where: { id: sourceAccountId },
+                data: { balance: { decrement: amount }}
+            });
+
+            // Increment the target account
+            await prisma.account.update({
+                where: { id: targetAccountId },
+                data: { balance: { increment: amount } },
+            });
+
+            return createdTranferTransaction;
         });
     }
 
