@@ -80,7 +80,7 @@ export class AccountService {
     }
 
     async createAccount(userId: string, payload: CreateAccountDto): Promise<Account> {
-        await this.checkIfAccountNameAlreadyExists(userId, payload.name);
+        await this.checkIfAccountNameAlreadyExists(userId, payload.name, true);
 
         try {
             const createdAccount = await this.accountRepository.createNewAccount(userId, payload);
@@ -106,6 +106,8 @@ export class AccountService {
     async updateAccount(userId: string, accountId: string, payload: UpdateAccountPayload): Promise<Account> {
         const accounts = await this.getUserAccounts(userId);
         this.verifyAccountAndOwnership(accounts, userId, accountId);
+
+        await this.checkIfAccountNameAlreadyExists(userId, payload.name, false);
 
         try {
             const updatedAccount = await this.accountRepository.updateAccountById(accountId, payload);
@@ -183,10 +185,21 @@ export class AccountService {
         return 'non-prisma';
     }
 
-    private async checkIfAccountNameAlreadyExists(userId: string, newAccountName: string): Promise<void> {
+    private async checkIfAccountNameAlreadyExists(
+        userId: string,
+        payloadName: string,
+        convert: boolean,
+    ): Promise<void> {
         const accounts = await this.getUserAccounts(userId);
 
-        if (accounts.some(account => account.name.toLowerCase() === newAccountName.toLowerCase())) {
+        const newAccountName = convert ? payloadName.toLowerCase() : payloadName;
+
+        const performCheck = (existingAccountName: string) => {
+            const convertedName = convert ? existingAccountName.toLowerCase() : existingAccountName;
+            return convertedName === newAccountName;
+        };
+
+        if (accounts.some(account => performCheck(account.name))) {
             throw new ConflictException({
                 name: 'ACCOUNT_NAME_CONFLICT',
                 title: 'Account Already Exists!',

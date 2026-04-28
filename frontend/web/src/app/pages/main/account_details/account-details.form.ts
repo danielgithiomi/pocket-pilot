@@ -78,7 +78,7 @@ import { formatToReadable } from '@libs/utils';
           form="edit-account-form"
           [isLoading]="isSubmitting()"
           id="submit-edit-account-form"
-          [disabled]="editAccountForm().invalid() || isSubmitting()"
+          [disabled]="editAccountForm().invalid() || !editAccountForm().dirty() || isSubmitting()"
         />
       </div>
     </organism-form>
