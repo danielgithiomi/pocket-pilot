@@ -66,7 +66,7 @@
             } @else {
               @for (income of incomes; track income) {
                 <div class="category-item group/item income">
-                  <p>{{ income }}</p>
+                  <p>{{ formatCategoryName(income) }}</p>
 
                   <button
                     (click)="
@@ -130,7 +130,7 @@
             } @else {
               @for (expense of expenses; track expense) {
                 <div class="category-item group/item expense">
-                  <p>{{ expense }}</p>
+                  <p>{{ formatCategoryName(expense) }}</p>
 
                   <button
                     (click)="

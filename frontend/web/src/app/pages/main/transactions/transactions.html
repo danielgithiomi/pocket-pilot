@@ -98,7 +98,7 @@
         (clearOutput)="transactionForm.description().controlValue.set('')"
       />
 
-      <div class="flex flex-col sm:flex-row gap-0 sm:gap-4">
+      <div class="flex flex-col sm:flex-row gap-4">
         <atom-select
           id="type"
           class="flex-1"
@@ -126,9 +126,9 @@
       <atom-select
         id="source-account"
         [inverted]="true"
-        label="Associated Account"
-        placeholder="Select one account"
+        placeholder="Select source account"
         [formField]="transactionForm.sourceAccountId"
+        [label]="isTransferTransaction() ? 'Source Account' : 'Associated Account'"
         [options]="sourceAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
       />
 
@@ -137,7 +137,7 @@
           id="target-account"
           [inverted]="true"
           label="Target Account"
-          placeholder="Select one account"
+          placeholder="Select target account"
           [formField]="transactionForm.targetAccountId"
           [options]="targetAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
         />

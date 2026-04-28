@@ -34,17 +34,9 @@ export class Categories {
 
   // COMPUTED
   protected readonly isFetchingCategories = computed(() => this.categories$.isLoading());
-  protected readonly formattedCategories = computed<FormattedCategories>(() => {
-    const response = this.categories$;
-    const { incomes, expenses } = response.value()?.data!;
-    return {
-      incomes: this.denormalizeCategoryNames(incomes),
-      expenses: this.denormalizeCategoryNames(expenses),
-    };
-  });
 
   // HELPER FUNCTIONS
-  private denormalizeCategoryNames(categoryNames: string[]): string[] {
-    return categoryNames.map((name) => formatToReadable(name));
+  protected formatCategoryName(categoryName: string): string {
+    return formatToReadable(categoryName);
   }
 }
