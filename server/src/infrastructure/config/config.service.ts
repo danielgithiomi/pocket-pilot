@@ -26,9 +26,11 @@ export class PPConfigService {
             region: this.service.getOrThrow<string>('AWS_S3_REGION'),
             maxAttempts: this.service.getOrThrow<number>('AWS_MAX_ATTEMPTS'),
             accessKeyId: this.service.getOrThrow<string>('AWS_ACCESS_KEY_ID'),
+            s3BucketName: this.service.getOrThrow<string>('AWS_S3_BUCKET_NAME'),
             socketTimeout: this.service.getOrThrow<number>('AWS_MAX_SOCKET_TIMEOUT'),
             secretAccessKey: this.service.getOrThrow<string>('AWS_SECRET_ACCESS_KEY'),
             connectionTimeout: this.service.getOrThrow<number>('AWS_MAX_CONNECTION_TIMEOUT'),
+            presignedUrlExpiration: this.service.getOrThrow<number>('AWS_PRESIGNED_URL_EXPIRATION_IN_SECONDS'),
         };
     }
 }
