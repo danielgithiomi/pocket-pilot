@@ -5,4 +5,5 @@ export interface AccountTransactionRow {
     amount: string;
     category: string;
     description: string;
+    sourceAccountId: string;
 }

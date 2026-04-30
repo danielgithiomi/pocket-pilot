@@ -45,7 +45,7 @@ export class TransactionRepository {
         transaction: CreateTransactionDto,
     ): Promise<CompleteTranferDto> {
         return this.db.$transaction(async prisma => {
-            let createdTransaction;
+            let createdTransaction: CompleteTranferDto;
 
             try {
                 createdTransaction = await prisma.transaction.create({

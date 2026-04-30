@@ -265,14 +265,16 @@ export class Transactions {
         date: formatDate(transaction.date),
         description: transaction.description,
         id: splitTransactionId(transaction.id),
-        accountId: transaction.sourceAccount.id,
-        currency: transaction.sourceAccount.currency,
-        accountName: transaction.targetAccount?.name
-          ? `${formatToReadable(transaction.sourceAccount.name)} -> ${formatToReadable(transaction.targetAccount.name)}`
-          : formatToReadable(transaction.sourceAccount.name),
+        accountId: transaction.sourceAccount?.id ?? '',
+        currency: transaction.sourceAccount?.currency ?? 'MUR',
+        accountName: transaction.sourceAccount?.name
+          ? transaction.targetAccount?.name
+            ? `${formatToReadable(transaction.sourceAccount.name)} -> ${formatToReadable(transaction.targetAccount.name)}`
+            : formatToReadable(transaction.sourceAccount.name)
+          : 'Unknown Account',
         amount: formatCurrency(
           transaction.amount,
-          transaction.sourceAccount.currency,
+          transaction.sourceAccount?.currency ?? 'MUR',
           2,
           true,
           false,
@@ -362,8 +364,8 @@ export class Transactions {
 
       if (transactionType === 'TRANSFER') {
         this.isTransferTransaction.set(true);
-        if (currentCategory !== 'Transfer') {
-          categoryControl.controlValue.set('Transfer');
+        if (currentCategory !== 'transfer') {
+          categoryControl.controlValue.set('transfer');
         }
       } else {
         this.isTransferTransaction.set(false);
