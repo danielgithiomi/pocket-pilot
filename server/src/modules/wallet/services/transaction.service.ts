@@ -6,7 +6,7 @@ import { AccountRepository } from '../repositories/account.repository';
 import { DatabaseService } from '@infrastructure/database/database.service';
 import { denormalizeCategoryName, formatEnumForFrontend } from '@libs/utils';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { TransactionDto, CreateTransactionDto, CompleteTranferDto } from '../dto/transaction.dto';
+import { TransactionDto, CreateTransactionDto, CompleteTransactionDto } from '../dto/transaction.dto';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
@@ -22,16 +22,16 @@ export class TransactionService {
         return await Promise.resolve(Object.values(TransactionType).map(formatEnumForFrontend));
     }
 
-    async getAllTransactions(): Promise<CompleteTranferDto[]> {
+    async getAllTransactions(): Promise<CompleteTransactionDto[]> {
         const transactions = await this.transactionRepository.getAllTransactionsAndAccountData();
 
-        return plainToInstance(CompleteTranferDto, transactions);
+        return plainToInstance(CompleteTransactionDto, transactions);
     }
 
-    async getUserTransactions(userId: string): Promise<CompleteTranferDto[]> {
+    async getUserTransactions(userId: string): Promise<CompleteTransactionDto[]> {
         const transactions = await this.transactionRepository.getUserTransactionsAndAccountData(userId);
 
-        return plainToInstance(CompleteTranferDto, transactions);
+        return plainToInstance(CompleteTransactionDto, transactions);
     }
 
     async getTransactionsByAccountId(accountId: string): Promise<TransactionDto[]> {
@@ -44,7 +44,7 @@ export class TransactionService {
         userId: string,
         accountId: string,
         createTransactionDto: CreateTransactionDto,
-    ): Promise<CompleteTranferDto> {
+    ): Promise<CompleteTransactionDto> {
         const transformedDto: CreateTransactionDto = {
             ...createTransactionDto,
             type: createTransactionDto.type,
@@ -101,8 +101,8 @@ export class TransactionService {
         return type === TransactionType.TRANSFER || type === TransactionType.EXPENSE || type === TransactionType.INCOME;
     }
 
-    private invalidateAccountCache(userId: string) {
-        this.accountsCache.invalidateCache(userId);
+    private async invalidateAccountCache(userId: string) {
+        await this.accountsCache.invalidateCache(userId);
     }
 
     private async confirmAccountExists(accountId: string): Promise<Account> {

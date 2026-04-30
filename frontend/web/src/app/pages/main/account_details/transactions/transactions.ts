@@ -1,4 +1,4 @@
-import { Transaction, TransactionWithAccount } from '@global/types';
+import { TransactionInAccount } from '@global/types';
 import { Table, TableColumn } from '@organisms/table';
 import { formatCurrency, formatDate } from '@libs/utils';
 import { Component, computed, input } from '@angular/core';
@@ -13,7 +13,7 @@ export class TransactionsComponent {
   // INPUT
   readonly accountId = input.required<string>();
   readonly accountCurrency = input.required<string>();
-  readonly transactions = input.required<TransactionWithAccount[]>();
+  readonly transactions = input.required<TransactionInAccount[]>();
 
   // TABLE
   protected accountTransactionsColumns: TableColumn<AccountTransactionRow>[] = [
@@ -60,7 +60,7 @@ export class TransactionsComponent {
         }
 
         return `<span class="${classes}">
-          ${transaction.type} [${this.accountId() === transaction.sourceAccountId ? 'IN' : 'OUT'}]
+          ${transaction.type} ${transaction.type === 'TRANSFER' ? (this.accountId() !== transaction.sourceAccountId ? '&#8690;' : '&#8689;') : ''}
         </span>`;
       },
     },
@@ -91,7 +91,8 @@ export class TransactionsComponent {
         category: transaction.category,
         date: formatDate(transaction.date),
         description: transaction.description,
-        sourceAccountId: transaction.sourceAccount.id,
+        sourceAccountId: transaction.sourceAccountId,
+        targetAccountId: transaction.targetAccountId,
         amount: formatCurrency(transaction.amount, this.accountCurrency(), 2, true, false),
       }))
       .reverse();

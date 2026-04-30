@@ -22,6 +22,11 @@ export interface AccountInTransaction {
   currency: string;
 }
 
+export interface TransactionInAccount extends Transaction {
+  sourceAccountId: string;
+  targetAccountId: string | null;
+}
+
 export interface TransactionWithAccount extends Transaction {
   sourceAccount: AccountInTransaction;
   targetAccount: AccountInTransaction | null;

@@ -1,7 +1,7 @@
 import { TransactionType } from '@prisma/client';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { CompleteTranferDto, CreateTransactionDto, CreateTransferTransactionPayload } from '../dto/transaction.dto';
+import { CompleteTransactionDto, CreateTransactionDto, CreateTransferTransactionPayload } from '../dto/transaction.dto';
 
 @Injectable()
 export class TransactionRepository {
@@ -43,9 +43,9 @@ export class TransactionRepository {
     async createNewTransactionAndUpdateBalance(
         accountId: string,
         transaction: CreateTransactionDto,
-    ): Promise<CompleteTranferDto> {
+    ): Promise<CompleteTransactionDto> {
         return this.db.$transaction(async prisma => {
-            let createdTransaction: CompleteTranferDto;
+            let createdTransaction: CompleteTransactionDto;
 
             try {
                 createdTransaction = await prisma.transaction.create({
@@ -102,9 +102,9 @@ export class TransactionRepository {
 
     async createTransferTransactionAndUpdateBalances(
         payload: CreateTransferTransactionPayload,
-    ): Promise<CompleteTranferDto> {
+    ): Promise<CompleteTransactionDto> {
         return this.db.$transaction(async prisma => {
-            let createdTransferTransaction: CompleteTranferDto;
+            let createdTransferTransaction: CompleteTransactionDto;
             const { sourceAccountId, targetAccountId, amount } = payload;
 
             try {

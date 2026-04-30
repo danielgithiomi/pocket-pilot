@@ -6,4 +6,5 @@ export interface AccountTransactionRow {
     category: string;
     description: string;
     sourceAccountId: string;
+    targetAccountId: string | null;
 }

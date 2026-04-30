@@ -2,7 +2,7 @@ import { AccountsCache } from '../cache/accounts.cache';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { AccountDetailsCache } from '../cache/account-details.cache';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { CreateTransferTransactionPayload, CompleteTranferDto } from '../dto/transaction.dto';
+import { CreateTransferTransactionPayload, CompleteTransactionDto } from '../dto/transaction.dto';
 
 @Injectable()
 export class TransferService {
@@ -17,7 +17,7 @@ export class TransferService {
         userId: string,
         accountId: string,
         payload: CreateTransferTransactionPayload,
-    ): Promise<CompleteTranferDto> {
+    ): Promise<CompleteTransactionDto> {
         const { sourceAccountId, targetAccountId } = payload;
         // Safety Checks
         this.checkSourceAccountMatches(accountId, sourceAccountId);
