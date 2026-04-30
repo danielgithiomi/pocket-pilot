@@ -1,4 +1,4 @@
 export interface PreSignedUrlResponse {
-    uploadKey: string;
+    key: string;
     presignedUrl: string;
 }

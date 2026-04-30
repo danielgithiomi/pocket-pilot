@@ -73,7 +73,7 @@ export class TransactionService {
             accountId,
             transformedDto,
         );
-        this.invalidateAccountCache(userId);
+        await this.invalidateAccountCache(userId);
         return createdTransaction;
     }
 
@@ -89,7 +89,7 @@ export class TransactionService {
         }
 
         await this.transactionRepository.deleteTransactionById(transactionId);
-        this.invalidateAccountCache(userId);
+        await this.invalidateAccountCache(userId);
     }
 
     // HELPER FUNCTIONS

@@ -22,3 +22,12 @@ export function hoursToSeconds(hours: number) {
 export function hoursToMilliseconds(hours: number) {
     return secondsToMilliseconds(hoursToSeconds(hours));
 }
+
+/**
+ * Converts megabytes to bytes
+ * @param mb - The number of megabytes to convert
+ * @returns The number of bytes
+ */
+export function mbToBytes(mb: number) {
+    return mb * 1024 * 1024;
+}
