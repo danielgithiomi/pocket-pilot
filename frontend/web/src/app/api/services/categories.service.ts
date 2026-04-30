@@ -47,13 +47,17 @@ export class CategoriesService {
       '---Expenses---',
       ...expenses,
       '---Internal---',
-      'Transfer'
+      'Transfer',
     ];
 
     return allCategories.map((category) => ({
       value: category,
-      disabled: category.startsWith('---'),
-      label: category.startsWith('---') ? category : formatToReadable(category),
+      disabled: category.startsWith('---') || category === 'Transfer',
+      label: category.startsWith('---')
+        ? category
+        : category === 'Transfer'
+          ? 'Account Transfer'
+          : formatToReadable(category),
     }));
   });
 

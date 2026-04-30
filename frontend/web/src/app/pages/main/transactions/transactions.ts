@@ -308,7 +308,7 @@ export class Transactions {
       this.toastService.show({
         variant: 'warning',
         title: 'No accounts found!',
-        details: 'Please create an account first to add transactions.',
+        details: 'Please create an account first to log your transactions.',
       });
       return;
     }
@@ -364,8 +364,8 @@ export class Transactions {
 
       if (transactionType === 'TRANSFER') {
         this.isTransferTransaction.set(true);
-        if (currentCategory !== 'transfer') {
-          categoryControl.controlValue.set('transfer');
+        if (currentCategory !== 'Transfer') {
+          categoryControl.controlValue.set('Transfer');
         }
       } else {
         this.isTransferTransaction.set(false);
