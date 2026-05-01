@@ -1,14 +1,17 @@
-import { User } from '@global/types';
 import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
 import { formatFullDate } from '@libs/utils';
 import { form } from '@angular/forms/signals';
+import { AwsService } from '@api/aws.service';
 import { AuthService } from '@api/auth.service';
 import { UserService } from '@api/user.service';
 import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
+import { AwsPresignedUrlResponse, User } from '@global/types';
 import { ProfileDetail } from './profile-detail/profile-detail';
 import { ChangePassword } from './change-password/change-password';
 import { ProfileSummary } from './profile-summary/profile-summary';
@@ -21,7 +24,16 @@ import {
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.html',
-  imports: [ProfileDetail, NgClass, ChangePassword, ProfileSummary, Form, Input, Button],
+  imports: [
+    Form,
+    Input,
+    Button,
+    NgClass,
+    ProfileDetail,
+    ProfileSummary,
+    ChangePassword,
+    ReactiveFormsModule,
+  ],
 })
 export class Profile {
   // SERVICES
@@ -32,7 +44,13 @@ export class Profile {
 
   // STATES
   protected readonly isEditFormOpen = signal(false);
+  protected readonly selectedImage = signal<File | null>(null);
   protected readonly isSubmittingEditProfileForm = signal(false);
+  protected readonly isSubmittingProfilePictureForm = signal(false);
+  protected readonly isProfilePictureFormOpen = signal<boolean>(false);
+
+  // SERVICES
+  private readonly awsService = inject(AwsService);
 
   // DATA
   protected readonly user = this.authService.user;
@@ -57,11 +75,21 @@ export class Profile {
     editProfileFormValidationSchema,
   );
 
+  // PROFILE PICTURE FORM
+  protected readonly formGroup = new FormGroup({
+    profilePicture: new FormControl<File | null>(null),
+  });
+
   // METHODS
   protected resetEditProfileForm() {
     const initialData = this.initialEditProfileFormData();
     this.editProfileForm().reset(initialData);
     this.editProfileFormModel.set(initialData);
+  }
+
+  protected resetProfilePictureForm() {
+    this.formGroup.reset();
+    this.selectedImage.set(null);
   }
 
   protected isUpdatedDataChanged(): boolean {
@@ -74,6 +102,22 @@ export class Profile {
     );
   }
 
+  protected handleOnFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      this.toastService.show({
+        variant: 'error',
+        title: 'File Upload Error',
+        details: 'Please select an image to upload.',
+      });
+      return;
+    }
+    this.selectedImage.set(file);
+  }
+
+  // SUBMISSIONS
   protected submitEditProfileForm(event: Event) {
     event.preventDefault();
 
@@ -96,5 +140,33 @@ export class Profile {
       },
       complete: () => this.isSubmittingEditProfileForm.set(false),
     });
+  }
+
+  protected submitEditProfilePictureForm(event: Event) {
+    event.preventDefault();
+    const file = this.selectedImage();
+
+    if (!file) {
+      this.toastService.show({
+        variant: 'error',
+        title: 'File Upload Error',
+        details: 'Please select an image to upload.',
+      });
+      return;
+    }
+
+    this.isSubmittingProfilePictureForm.set(true);
+
+    setTimeout(() => {
+      this.awsService.updateProfilePicture(file).subscribe({
+        next: (response: AwsPresignedUrlResponse) => {
+          console.log('RESPONSE', response);
+        },
+        error: (error) => {
+          console.error('ERROR', error);
+        },
+        complete: () => this.isSubmittingProfilePictureForm.set(false),
+      });
+    }, 2000);
   }
 }

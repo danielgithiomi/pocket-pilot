@@ -1,6 +1,6 @@
 import { AuthService } from '@api/auth.service';
 import { LucideAngularModule, Camera } from 'lucide-angular';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'profile-picture',
@@ -26,6 +26,7 @@ import { Component, computed, inject, input, signal } from '@angular/core';
       class="profile-picture group"
       (mouseenter)="isHovered.set(true)"
       (mouseleave)="isHovered.set(false)"
+      (click)="profilePictureClicked.emit()"
     >
       @if (isHovered()) {
         <div class="overlay animate-fade-in">
@@ -60,6 +61,9 @@ export class ProfilePicture {
 
   // INPUTS
   profilePictureUrl = input<string | null>(null);
+
+  // OUTPUTS
+  protected readonly profilePictureClicked = output<void>();
 
   // SERVICES
   protected readonly authService = inject(AuthService);

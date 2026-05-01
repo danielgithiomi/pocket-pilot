@@ -20,6 +20,7 @@
         <profile-summary
           [isFetching]="isFetchingProfileData()"
           (editProfileClicked)="isEditFormOpen.set(true)"
+          (updateProfilePictureClicked)="isProfilePictureFormOpen.set(true)"
         />
       </div>
 
@@ -120,7 +121,6 @@
     </form>
 
     <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
-
       <atom-button
         type="button"
         [inverted]="true"
@@ -138,7 +138,56 @@
         form="edit-user-profile"
         id="submit-edit-profile-form"
         [isLoading]="isSubmittingEditProfileForm()"
-        [disabled]="editProfileForm().invalid() || isSubmittingEditProfileForm() || !isUpdatedDataChanged()"
+        [disabled]="
+          editProfileForm().invalid() || isSubmittingEditProfileForm() || !isUpdatedDataChanged()
+        "
+      />
+    </div>
+  </organism-form>
+}
+
+@if (isProfilePictureFormOpen()) {
+  <organism-form
+    title="Update Profile Picture"
+    id="profile-picture-form-wrapper"
+    description="Update your profile picture."
+    [class.hidden]="!isProfilePictureFormOpen()"
+    (closeForm)="isProfilePictureFormOpen.set(false)"
+  >
+    <form
+      slot="content"
+      [formGroup]="formGroup"
+      id="edit-profile-picture-form"
+      (submit)="submitEditProfilePictureForm($event)"
+    >
+      <input
+        type="file"
+        accept="image/*"
+        id="profile-picture-input"
+        formControlName="profilePicture"
+        (change)="handleOnFileSelected($event)"
+      />
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      <atom-button
+        type="button"
+        [inverted]="true"
+        label="Reset Form"
+        variant="secondary"
+        [disabled]="!selectedImage()"
+        form="edit-profile-picture-form"
+        (clicked)="selectedImage.set(null)"
+        id="reset-update-profile-picture-form"
+      />
+
+      <atom-button
+        type="submit"
+        label="Update Profile Picture"
+        form="edit-profile-picture-form"
+        id="submit-update-profile-picture-form"
+        [isLoading]="isSubmittingProfilePictureForm()"
+        [disabled]="!selectedImage() || isSubmittingProfilePictureForm()"
       />
     </div>
   </organism-form>

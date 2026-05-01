@@ -16,6 +16,8 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       const apiError = error.error as IGlobalException;
 
+      const message = error.error?.error?.message ?? error?.message ?? '';
+
       if (apiError && apiError.success === false) {
         return throwError(() => {
           if (!apiError.error) {
@@ -48,8 +50,9 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
           }
 
           return {
+            details,
+            message,
             type: type,
-            details: details,
             statusCode: apiError.statusCode,
             title: title ?? 'An unexpected error occurred',
           } satisfies IStandardError;

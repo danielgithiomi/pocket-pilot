@@ -22,6 +22,7 @@ export class ProfileSummary {
 
   // OUTPUTS
   editProfileClicked = output<void>();
+  updateProfilePictureClicked = output<void>();
 
   // SERVICES
   protected readonly authService = inject(AuthService);

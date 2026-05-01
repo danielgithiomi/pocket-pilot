@@ -56,6 +56,24 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             } as IGlobalError);
         }
 
+        console.log('HTTP EXCEPTION', exception);
+
+//         HTTP EXCEPTION BadRequestException: File size exceeds the maximum allowed size of 2097152 MBS
+//     at ParseFilePipe.exceptionFactory (/Users/daniel/Desktop/Projects/Personal/Pocket Pilot/node_modules/@nestjs/common/pipes/file/parse-file.pipe.js:24:27)
+//     at ParseFilePipe.validateOrThrow (/Users/daniel/Desktop/Projects/Personal/Pocket Pilot/node_modules/@nestjs/common/pipes/file/parse-file.pipe.js:61:24)
+//     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+//     at async ParseFilePipe.validate (/Users/daniel/Desktop/Projects/Personal/Pocket Pilot/node_modules/@nestjs/common/pipes/file/parse-file.pipe.js:53:13)
+//     at async ParseFilePipe.validateFilesOrFile (/Users/daniel/Desktop/Projects/Personal/Pocket Pilot/node_modules/@nestjs/common/pipes/file/parse-file.pipe.js:43:13)
+//     at async ParseFilePipe.transform (/Users/daniel/Desktop/Projects/Personal/Pocket Pilot/node_modules/@nestjs/common/pipes/file/parse-file.pipe.js:34:13) {
+//   response: {
+//     message: 'File size exceeds the maximum allowed size of 2097152 MBS',
+//     error: 'Bad Request',
+//     statusCode: 400
+//   },
+//   status: 400,
+//   options: {}
+// }
+
         // =========================
         // HTTP EXCEPTIONS (NestJS)
         // =========================
@@ -78,7 +96,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             const err = exceptionResponse as any;
             name = err.name ?? err.code ?? undefined;
             title = err.title ?? 'Internal Http Exception Error';
-            message = err.message ?? 'An unexpected error occurred';
+            message = err.message ?? err.response?.message ?? 'An unexpected error occurred';
             details = err.details;
             type = castException.name;
         } else {

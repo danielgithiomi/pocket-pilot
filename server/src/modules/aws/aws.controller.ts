@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */ 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Multer } from 'multer';
+import { mbToBytes } from '@libs/utils';
 import { AwsService } from './aws.service';
 import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
@@ -22,16 +23,20 @@ import {
 export class AwsController {
     constructor(private readonly awsService: AwsService) {}
 
-    @Post('initiate')
+    @Post('presigned-url')
     @UseInterceptors(FileInterceptor('profile-picture'))
     initiateProfilePictureUpload(
         @UserInRequest() user: User,
         @UploadedFile(
             new ParseFilePipe({
                 validators: [
-                    new MaxFileSizeValidator({ maxSize: AWS_FILE_CONSTANTS.MAX_FILE_SIZE }),
+                    new MaxFileSizeValidator({
+                        maxSize: mbToBytes(AWS_FILE_CONSTANTS.MAX_FILE_SIZE),
+                        errorMessage: `File size exceeds the maximum allowed size of ${AWS_FILE_CONSTANTS.MAX_FILE_SIZE} MBs.`,
+                    }),
                     new FileTypeValidator({
                         fileType: new RegExp(AWS_FILE_CONSTANTS.ALLOWED_FILE_TYPES.join('|')),
+                        errorMessage: `File type not allowed. Allowed types: ${AWS_FILE_CONSTANTS.ALLOWED_FILE_TYPES.join(', ')}`,
                     }),
                 ],
             }),

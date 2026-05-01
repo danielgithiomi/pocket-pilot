@@ -23,6 +23,21 @@ export class ApiClient {
     return this.http.post<IStandardResponse<T>>(url, body);
   }
 
+  uploadFile<T>(
+    endpoint: string,
+    file: File,
+    fieldName: string = 'file',
+  ): Observable<IStandardResponse<T>> {
+    const url = `${this.baseUrl}${endpoint}`;
+    const formData = new FormData();
+    formData.append(fieldName, file);
+    return this.http.post<IStandardResponse<T>>(url, formData, {
+      cache: 'no-cache',
+      reportProgress: true,
+      credentials: 'include',
+    });
+  }
+
   put<T, B>(endpoint: string, body: B): Observable<IStandardResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
     return this.http.put<IStandardResponse<T>>(url, body);
