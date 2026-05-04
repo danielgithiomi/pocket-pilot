@@ -48,6 +48,7 @@ export class Profile {
   protected readonly isSubmittingEditProfileForm = signal(false);
   protected readonly isSubmittingProfilePictureForm = signal(false);
   protected readonly isProfilePictureFormOpen = signal<boolean>(false);
+  protected readonly isDragOver = signal(false);
 
   // SERVICES
   private readonly awsService = inject(AwsService);
@@ -116,6 +117,48 @@ export class Profile {
       return;
     }
     this.selectedImage.set(file);
+  }
+
+  // DRAG AND DROP HANDLERS
+  protected onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(true);
+  }
+
+  protected onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(false);
+  }
+
+  protected onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(false);
+
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (!file.type.startsWith('image/')) {
+        this.toastService.show({
+          variant: 'error',
+          title: 'Invalid File Type',
+          details: 'Please drop an image file.',
+        });
+        return;
+      }
+      this.selectedImage.set(file);
+      this.formGroup.patchValue({ profilePicture: file });
+    }
+  }
+
+  protected formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
   // SUBMISSIONS
