@@ -16,7 +16,7 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
     }
 
     .avatar {
-      @apply size-8 bg-(--primary) grid place-items-center rounded-full shrink-0 mr-4 sm:mr-0;
+      @apply size-8 bg-(--primary) grid place-items-center rounded-full shrink-0 mr-4 sm:mr-0 overflow-hidden;
     }
 
     .content {
@@ -50,7 +50,15 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
       <!-- ABS: Dropdown Chevron End -->
 
       <div id="avatar" class="avatar">
-        <p class="text-white">{{ initial() }}</p>
+        @if (profilePictureUrl()) {
+          <img
+            alt="Profile Picture"
+            [src]="profilePictureUrl()"
+            class="w-full h-full object-cover"
+          />
+        } @else {
+          <p class="text-white">{{ initial() }}</p>
+        }
       </div>
 
       <div class="content">
@@ -76,6 +84,7 @@ export class UserSummary {
 
   protected readonly email = computed(() => this.user()?.email ?? '');
   protected readonly username = computed(() => this.user()?.name ?? '');
+  protected readonly profilePictureUrl = computed(() => this.user()?.profilePictureUrl ?? null);
 
   protected readonly initial = computed(() => {
     const name = this.username();

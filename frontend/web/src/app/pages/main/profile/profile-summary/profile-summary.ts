@@ -16,7 +16,6 @@ import { Component, inject, input, output } from '@angular/core';
   `,
 })
 export class ProfileSummary {
-
   // INPUTS
   isFetching = input<boolean>(false);
 
@@ -26,4 +25,7 @@ export class ProfileSummary {
 
   // SERVICES
   protected readonly authService = inject(AuthService);
+
+  // DATA
+  protected readonly profilePictureUrl = this.authService.user()?.profilePictureUrl || null;
 }

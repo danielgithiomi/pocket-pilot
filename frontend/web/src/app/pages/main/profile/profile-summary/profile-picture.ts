@@ -43,7 +43,7 @@ import { Component, computed, inject, input, output, signal } from '@angular/cor
       }
 
       @if (profilePictureUrl()) {
-        <img [src]="profilePictureUrl()" alt="Profile Picture" class="w-full h-full object-cover" />
+        <img [src]="profilePictureUrl()" alt="Profile Picture" class="h-full w-full" />
       } @else {
         <div class="flex items-center justify-center h-full">
           <p class="text-white text-5xl">{{ initial() }}</p>

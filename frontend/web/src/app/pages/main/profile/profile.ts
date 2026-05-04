@@ -161,18 +161,18 @@ export class Profile {
     setTimeout(() => {
       this.awsService.updateProfilePicture(file).subscribe({
         next: (progress: number) => {
-          console.log('PROGRESS', progress);
-          if (progress === 100)
+          if (progress === 100) {
             this.toastService.show({
               variant: 'success',
               title: 'Profile Picture Updated!',
               details: 'Your profile picture has been updated successfully.',
             });
 
-          this.resetProfilePictureForm();
-          this.isProfilePictureFormOpen.set(false);
+            this.resetProfilePictureForm();
+            this.isProfilePictureFormOpen.set(false);
+            window.location.reload();
+          }
         },
-        error: (error) => console.error('ERROR', error),
         complete: () => this.isSubmittingProfilePictureForm.set(false),
       });
     }, 2000);

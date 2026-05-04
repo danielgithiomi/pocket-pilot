@@ -35,7 +35,6 @@ export class AwsService {
           })
           .pipe(
             map((event) => {
-              console.log('Upload event', event);
               switch (event.type) {
                 case HttpEventType.UploadProgress: {
                   if (event.total) {
@@ -66,13 +65,13 @@ export class AwsService {
       }),
       retry(2),
       catchError((error) => {
+        console.error('ERROR from AWS Service', error);
         this.renderToast({
           type: 'error',
           details: error.message,
           statusCode: error.status,
           title: 'Failed to update user profile picture',
         });
-        console.error('ERROR from AWS Service', error);
         return EMPTY;
       }),
     );
