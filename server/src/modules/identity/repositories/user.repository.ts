@@ -38,7 +38,11 @@ export class UserRepository {
     }
 
     async updateUserProfilePicture(userId: string, profilePictureUrl: string) {
-        return this.db.user.update({ where: { id: userId }, data: { profilePictureUrl }, include: { userPreferences: true } });
+        return this.db.user.update({
+            where: { id: userId },
+            data: { profilePictureUrl },
+            include: { userPreferences: true },
+        });
     }
 
     async deleteUserById(userId: string) {

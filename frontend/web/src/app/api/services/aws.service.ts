@@ -53,7 +53,7 @@ export class AwsService {
           type: 'error',
           details: error.message,
           statusCode: error.status,
-          title: 'Failed to get presigned URL',
+          title: 'Failed to update user profile picture',
         });
         console.error('ERROR from AWS Service', error);
         return EMPTY;
