@@ -51,11 +51,12 @@ model Account {
 }
 
 model User {
-    id          String  @id() @default(uuid())
-    name        String
-    email       String
-    password    String
-    phoneNumber String?
+    id                  String  @id() @default(uuid())
+    name                String
+    email               String
+    password            String
+    phoneNumber         String?
+    profilePictureUrl   String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

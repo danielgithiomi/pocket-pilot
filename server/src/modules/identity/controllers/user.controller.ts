@@ -13,6 +13,7 @@ import {
     ChangePasswordDto,
     UserWithPreferencesDto,
     UsersWithCountResponseDto,
+    UpdateUserProfilePicturePayload,
 } from '../dto/user.dto';
 
 @Controller('users')
@@ -97,21 +98,21 @@ export class UserController {
         };
     }
 
-    // @Put(':userId/profile-picture')
-    // @ApiCookieAuth('access_token')
-    // @ApiParam({ name: 'userId', description: 'The ID of the user to update' })
-    // @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
-    // @ApiResponse({ status: 200, description: 'User updated successfully', type: UserWithPreferencesDto })
-    // @ApiOperation({
-    //     summary: 'Update user profile picture',
-    //     description: 'Updates the profile picture for a user by their unique identifier.',
-    // })
-    // updateUserProfilePicture(
-    //     @Param('userId') userId: string,
-    //     @Body() payload: UpdateUserProfilePicturePayload,
-    // ): Promise<UserWithPreferencesDto> {
-    //     return this.userService.updateUserProfilePicture(userId, payload.profilePictureUrl);
-    // }
+    @Put(':userId/profile-picture')
+    @ApiCookieAuth('access_token')
+    @ApiParam({ name: 'userId', description: 'The ID of the user to update' })
+    @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
+    @ApiResponse({ status: 200, description: 'User updated successfully', type: UserWithPreferencesDto })
+    @ApiOperation({
+        summary: 'Update user profile picture',
+        description: 'Updates the profile picture for a user by their unique identifier.',
+    })
+    updateUserProfilePicture(
+        @Param('userId') userId: string,
+        @Body() payload: UpdateUserProfilePicturePayload,
+    ): Promise<UserWithPreferencesDto> {
+        return this.userService.updateUserProfilePicture(userId, payload.profilePictureUrl);
+    }
 
     @Delete(':userId')
     @ApiCookieAuth('access_token')

@@ -91,9 +91,10 @@ export class UserService {
         await this.userRepository.updateUserPassword(userId, hashedPassword);
     }
 
-    // async updateUserProfilePicture(userId: string, profilePictureUrl: string) {
-    //     return this.userRepository.updateUserProfilePicture(userId, profilePictureUrl);
-    // }
+    async updateUserProfilePicture(userId: string, profilePictureUrl: string) {
+        const userWithProfilePicture = await this.userRepository.updateUserProfilePicture(userId, profilePictureUrl);
+        return plainToInstance(UserWithPreferencesDto, userWithProfilePicture);
+    }
 
     async deleteUserById(userId: string) {
         return this.userRepository.deleteUserById(userId);

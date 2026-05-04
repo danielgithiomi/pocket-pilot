@@ -1,3 +1,4 @@
+import { User } from '@global/types';
 import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
 import { formatFullDate } from '@libs/utils';
@@ -11,7 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
-import { AwsPresignedUrlResponse, User } from '@global/types';
 import { ProfileDetail } from './profile-detail/profile-detail';
 import { ChangePassword } from './change-password/change-password';
 import { ProfileSummary } from './profile-summary/profile-summary';
