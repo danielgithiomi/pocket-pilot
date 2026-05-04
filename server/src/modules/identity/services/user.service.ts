@@ -47,10 +47,6 @@ export class UserService {
         return users.map(user => plainToInstance(UserResponseDto, user));
     }
 
-    async deleteUserById(userId: string) {
-        return this.userRepository.deleteUserById(userId);
-    }
-
     async findUserById(userId: string): Promise<UserWithPreferencesDto> {
         const user = await this.userRepository.findUserById(userId);
 
@@ -93,6 +89,14 @@ export class UserService {
         const hashedPassword = await argon.hash(payload.newPassword);
 
         await this.userRepository.updateUserPassword(userId, hashedPassword);
+    }
+
+    // async updateUserProfilePicture(userId: string, profilePictureUrl: string) {
+    //     return this.userRepository.updateUserProfilePicture(userId, profilePictureUrl);
+    // }
+
+    async deleteUserById(userId: string) {
+        return this.userRepository.deleteUserById(userId);
     }
 
     // HELPER FUNCTIONS

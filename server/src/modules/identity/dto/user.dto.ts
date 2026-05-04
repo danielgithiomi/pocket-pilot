@@ -59,6 +59,13 @@ export class ChangePasswordDto {
     currentPassword!: string;
 }
 
+export class UpdateUserProfilePicturePayload {
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    profilePictureUrl!: string;
+}
+
 // OUTPUT DTOs
 export type User = Omit<FullUser, 'password'>;
 
@@ -91,6 +98,13 @@ export class UserResponseDto {
         description: 'Phone number of the user',
     })
     phoneNumber!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: 'https://example.com/profile.jpg',
+        description: "URL to the user's profile picture",
+    })
+    profilePictureUrl!: string | null;
 
     @Expose()
     @ApiProperty({

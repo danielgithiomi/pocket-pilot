@@ -159,8 +159,8 @@ export class Profile {
 
     setTimeout(() => {
       this.awsService.updateProfilePicture(file).subscribe({
-        next: (response: AwsPresignedUrlResponse) => {
-          console.log('RESPONSE', response);
+        next: (progress: number) => {
+          console.log('Progress', progress);
         },
         error: (error) => {
           console.error('ERROR', error);
