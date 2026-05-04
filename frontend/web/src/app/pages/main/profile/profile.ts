@@ -54,6 +54,7 @@ export class Profile {
 
   // DATA
   protected readonly user = this.authService.user;
+  protected readonly uploadProgress = this.awsService.progress;
   protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => ({
     name: this.user()!.name,
     email: this.user()!.email,
@@ -160,11 +161,18 @@ export class Profile {
     setTimeout(() => {
       this.awsService.updateProfilePicture(file).subscribe({
         next: (progress: number) => {
-          console.log('Progress', progress);
+          console.log('PROGRESS', progress);
+          if (progress === 100)
+            this.toastService.show({
+              variant: 'success',
+              title: 'Profile Picture Updated!',
+              details: 'Your profile picture has been updated successfully.',
+            });
+
+          this.resetProfilePictureForm();
+          this.isProfilePictureFormOpen.set(false);
         },
-        error: (error) => {
-          console.error('ERROR', error);
-        },
+        error: (error) => console.error('ERROR', error),
         complete: () => this.isSubmittingProfilePictureForm.set(false),
       });
     }, 2000);

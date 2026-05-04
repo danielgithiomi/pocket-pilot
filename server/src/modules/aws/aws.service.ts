@@ -34,8 +34,9 @@ export class AwsService {
         contentType: string,
         fileSize: number,
     ): Promise<PreSignedUrlResponse> {
+        const ext = contentType.split('/')[1];
         const { presignedUrlExpiration: expiresIn } = this.configService.aws;
-        const key = `${user.email}/profile-picture.${contentType.split('/')[1]}`;
+        const key = `${user.email}/profile-picture-${Date.now()}.${ext}`;
 
         const uploadCommand: PutObjectCommand = new PutObjectCommand({
             Bucket: this.s3BucketName,

@@ -1,10 +1,11 @@
 import { ToastService } from '@atoms/toast';
 import { AuthService } from './auth.service';
 import { AwsMutation } from '@methods/mutations';
-import { inject, Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { catchError, EMPTY, map, Observable, retry, Subscription, switchMap } from 'rxjs';
-import { AwsPresignedUrlResponse, IStandardError, IStandardResponse } from '@global/types';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { catchError, EMPTY, map, retry, switchMap, tap } from 'rxjs';
+import { AwsPresignedUrlResponse, IStandardError, IStandardResponse, User } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,12 @@ export class AwsService {
   private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
 
-  // async updateProfilePicture(file: File): Observable<AwsPresignedUrlResponse> {
+  // SIGNALS
+  private readonly uploadProgress = signal<number>(0);
+
+  // EXPOSED SIGNALS
+  progress = computed(() => this.uploadProgress());
+
   updateProfilePicture(file: File) {
     return this.mutation.getPresignedUploadUrl(file).pipe(
       map((response: IStandardResponse<AwsPresignedUrlResponse>) => response.data),
@@ -25,22 +31,33 @@ export class AwsService {
           .put(presignedUrl, file, {
             headers: { 'Content-Type': file.type },
             reportProgress: true,
-            observe: 'events',
+            observe: 'events' as const,
           })
           .pipe(
             map((event) => {
               console.log('Upload event', event);
-              if (event.type === HttpEventType.UploadProgress && event.total) {
-                const progress = Math.round((event.loaded / event.total) * 100);
-                return progress;
+              switch (event.type) {
+                case HttpEventType.UploadProgress: {
+                  if (event.total) {
+                    const progress = Math.round((event.loaded / event.total) * 100);
+                    this.uploadProgress.set(progress);
+                    return progress;
+                  }
+                  return 0;
+                }
+                case HttpEventType.Response: {
+                  this.uploadProgress.set(100);
+                  return 100;
+                }
+                default:
+                  return 0;
               }
-              if (event.type === HttpEventType.Response) return 100;
-              return 0;
             }),
             switchMap((progress) => {
-              console.log('Progress', progress);
               if (progress === 100)
                 return this.updateUserProfilePictureUrl(this.authService.user()!.id, key).pipe(
+                  map((reponse: IStandardResponse<User>) => reponse.data),
+                  tap((user: User) => this.authService.refreshSession(user)),
                   map(() => 100),
                 );
               return [progress];
@@ -62,7 +79,10 @@ export class AwsService {
   }
 
   // HELPER FUNCTIONS
-  private updateUserProfilePictureUrl(userId: string, profilePictureUrl: string) {
+  private updateUserProfilePictureUrl(userId: string, key: string) {
+    const region = environment.awsRegion;
+    const s3BucketName = environment.awsS3BucketName;
+    const profilePictureUrl = `https://${s3BucketName}.s3.${region}.amazonaws.com/${key}`;
     return this.mutation.updateUserProfileWithPictureUrl(userId, profilePictureUrl);
   }
 
