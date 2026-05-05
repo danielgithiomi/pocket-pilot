@@ -79,7 +79,7 @@ export class AwsService {
 
   // HELPER FUNCTIONS
   private updateUserProfilePictureKey(userId: string, key: string) {
-    return this.mutation.updateUserProfileWithPictureUrl(userId, key);
+    return this.mutation.updateUserProfileWithPictureKey(userId, key);
   }
 
   private renderToast = (error: IStandardError) => {

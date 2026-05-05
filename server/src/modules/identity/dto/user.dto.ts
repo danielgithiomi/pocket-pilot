@@ -62,7 +62,10 @@ export class ChangePasswordDto {
 export class UpdateUserProfilePicturePayload {
     @IsString()
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({
+        example: 'user@email.com/profile-picture-123.jpg',
+        description: 'The AWS S3 key for the profile picture',
+    })
     profilePictureAwsKey!: string;
 }
 

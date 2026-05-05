@@ -66,8 +66,8 @@ export class AwsService {
         return `https://${s3BucketName}.s3.${region}.amazonaws.com/${profilePictureKey}`;
     }
 
-    async checkAndGenerateProfilePictureUrl(profilePictureKey: string): Promise<string | null> {
-        if (!(await this.doesProfilePictureKeyExist(profilePictureKey))) return null;
+    async checkAndGenerateProfilePictureUrl(profilePictureKey: string | null): Promise<string | null> {
+        if (!profilePictureKey || !(await this.doesProfilePictureKeyExist(profilePictureKey))) return null;
         return this.generateProfilePictureUrl(profilePictureKey);
     }
 

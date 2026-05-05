@@ -102,10 +102,15 @@ export class UserService {
         return this.toUserPreferenceDto(updatedUser);
     }
 
-    async updateUserProfilePicture(userId: string, profilePictureAwsKey: string) {
-        const profilePictureUrl = this.awsService.generateProfilePictureUrl(profilePictureAwsKey);
-        const userWithProfilePicture = await this.userRepository.updateUserProfilePicture(userId, profilePictureUrl);
-        return this.toUserPreferenceDto(userWithProfilePicture);
+    async updateUserProfileWithPictureKey(userId: string, profilePictureAwsKey: string) {
+        const userWithProfilePictureKey = await this.userRepository.updateUserProfilePictureKey(
+            userId,
+            profilePictureAwsKey,
+        );
+
+        console.log(userWithProfilePictureKey);
+
+        return this.toUserPreferenceDto(userWithProfilePictureKey);
     }
 
     async deleteUserById(userId: string) {
@@ -123,15 +128,12 @@ export class UserService {
     }
 
     private toUserPreferenceDto(user: UserWithPreferences): UserWithPreferencesDto {
-        if (!user) {
-            throw new NotFoundException({
-                name: 'USER_NOT_FOUND!',
-                title: 'User Not Found!',
-                details: `No user found when converting to UserWithPreferencesDto.`,
-            });
-        }
+        const userWithProfilePicture = {
+            ...user,
+            profilePictureUrl: this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey),
+        };
 
-        const userWithProfilePicture = this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey!);
+        console.log(userWithProfilePicture);
         return plainToInstance(UserWithPreferencesDto, userWithProfilePicture);
     }
 }
