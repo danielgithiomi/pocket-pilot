@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { UserPreferencesDto } from '../../preferences/dto/onboarding.dto';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
 export type FullUser = Prisma.UserCreateInput;
 
@@ -63,7 +63,7 @@ export class UpdateUserProfilePicturePayload {
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
-    profilePictureUrl!: string;
+    profilePictureAwsKey!: string;
 }
 
 // OUTPUT DTOs

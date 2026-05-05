@@ -17,8 +17,8 @@ export class UserRepository {
         return this.db.user.create({ data: newUser });
     }
 
-    async getAllUsers(): Promise<FullUser[]> {
-        return this.db.user.findMany({});
+    async getAllUsers() {
+        return this.db.user.findMany({ include: { userPreferences: true } });
     }
 
     async findUserById(userId: string) {
@@ -37,10 +37,10 @@ export class UserRepository {
         return this.db.user.update({ where: { id: userId }, data: { password }, include: { userPreferences: true } });
     }
 
-    async updateUserProfilePicture(userId: string, profilePictureUrl: string) {
+    async updateUserProfilePicture(userId: string, profilePictureAwsKey: string) {
         return this.db.user.update({
             where: { id: userId },
-            data: { profilePictureUrl },
+            data: { profilePictureKey: profilePictureAwsKey },
             include: { userPreferences: true },
         });
     }

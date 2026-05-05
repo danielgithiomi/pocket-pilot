@@ -111,7 +111,7 @@ export class UserController {
         @Param('userId') userId: string,
         @Body() payload: UpdateUserProfilePicturePayload,
     ): Promise<UserWithPreferencesDto> {
-        return this.userService.updateUserProfilePicture(userId, payload.profilePictureUrl);
+        return this.userService.updateUserProfilePicture(userId, payload.profilePictureAwsKey);
     }
 
     @Delete(':userId')

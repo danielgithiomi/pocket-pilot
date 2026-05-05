@@ -35,6 +35,6 @@ export interface IChangePasswordRequest {
 }
 
 export interface IUpdateUserProfilePictureRequest {
-  profilePictureUrl: string;
+  profilePictureKey: string;
 }
 

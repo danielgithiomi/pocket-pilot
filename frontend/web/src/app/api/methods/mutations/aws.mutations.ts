@@ -17,8 +17,8 @@ export class AwsMutation {
     );
   }
 
-  updateUserProfileWithPictureUrl(userId: string, profilePictureUrl: string) {
+  updateUserProfileWithPictureUrl(userId: string, profilePictureKey: string) {
     const url = `users/${userId}/profile-picture`;
-    return this.client.put<User, IUpdateUserProfilePictureRequest>(url, { profilePictureUrl });
+    return this.client.put<User, IUpdateUserProfilePictureRequest>(url, { profilePictureKey });
   }
 }

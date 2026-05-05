@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
 import { PreSignedUrlResponse } from './aws.types';
+import { Injectable, Logger } from '@nestjs/common';
 import { PPConfigService } from '@infrastructure/config';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
+import { PutObjectCommand, HeadObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 @Injectable()
 export class AwsService {
     private readonly s3Client: S3Client;
     private readonly s3BucketName: string;
+    private readonly logger = new Logger('AWS');
 
     constructor(private readonly configService: PPConfigService) {
         const { maxAttempts, socketTimeout, connectionTimeout, region, accessKeyId, secretAccessKey, s3BucketName } =
@@ -53,5 +54,34 @@ export class AwsService {
             key,
             presignedUrl,
         };
+    }
+
+    generateProfilePictureUrl(profilePictureKey: string): string {
+        const s3BucketName = this.s3BucketName;
+        const region = this.s3Client.config.region;
+
+        this.logger.warn(`Generating profile picture url for user with key: ${profilePictureKey}`);
+        this.logger.warn('Details: ', { s3BucketName, region, profilePictureKey });
+
+        return `https://${s3BucketName}.s3.${region}.amazonaws.com/${profilePictureKey}`;
+    }
+
+    async checkAndGenerateProfilePictureUrl(profilePictureKey: string): Promise<string | null> {
+        if (!(await this.doesProfilePictureKeyExist(profilePictureKey))) return null;
+        return this.generateProfilePictureUrl(profilePictureKey);
+    }
+
+    private async doesProfilePictureKeyExist(Key: string) {
+        try {
+            const command = new HeadObjectCommand({
+                Key,
+                Bucket: this.s3BucketName,
+            });
+            await this.s3Client.send(command);
+            return true;
+        } catch (error) {
+            this.logger.error(`Error checking if profile picture key (${Key}) exists`, error);
+            return false;
+        }
     }
 }

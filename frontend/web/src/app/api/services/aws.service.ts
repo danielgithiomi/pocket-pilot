@@ -1,7 +1,6 @@
 import { ToastService } from '@atoms/toast';
 import { AuthService } from './auth.service';
 import { AwsMutation } from '@methods/mutations';
-import { environment } from '@environments/environment';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError, EMPTY, map, retry, switchMap, tap } from 'rxjs';
@@ -54,7 +53,7 @@ export class AwsService {
             }),
             switchMap((progress) => {
               if (progress === 100)
-                return this.updateUserProfilePictureUrl(this.authService.user()!.id, key).pipe(
+                return this.updateUserProfilePictureKey(this.authService.user()!.id, key).pipe(
                   map((reponse: IStandardResponse<User>) => reponse.data),
                   tap((user: User) => this.authService.refreshSession(user)),
                   map(() => 100),
@@ -66,23 +65,21 @@ export class AwsService {
       retry(2),
       catchError((error) => {
         console.error('ERROR from AWS Service', error);
-        this.renderToast({
-          type: 'error',
-          details: error.message,
-          statusCode: error.status,
-          title: 'Failed to update user profile picture',
-        });
+        if (error.status !== 401)
+          this.renderToast({
+            type: 'error',
+            details: error.message,
+            statusCode: error.status,
+            title: 'Failed to update user profile picture',
+          });
         return EMPTY;
       }),
     );
   }
 
   // HELPER FUNCTIONS
-  private updateUserProfilePictureUrl(userId: string, key: string) {
-    const region = environment.awsRegion;
-    const s3BucketName = environment.awsS3BucketName;
-    const profilePictureUrl = `https://${s3BucketName}.s3.${region}.amazonaws.com/${key}`;
-    return this.mutation.updateUserProfileWithPictureUrl(userId, profilePictureUrl);
+  private updateUserProfilePictureKey(userId: string, key: string) {
+    return this.mutation.updateUserProfileWithPictureUrl(userId, key);
   }
 
   private renderToast = (error: IStandardError) => {

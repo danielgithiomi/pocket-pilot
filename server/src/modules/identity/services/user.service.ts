@@ -1,15 +1,23 @@
 import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
+import { AwsService } from '@modules/aws/aws.service';
 import { UserRepository } from '../repositories/user.repository';
 import { CategoriesService } from '@modules/wallet/services/categories.service';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { ChangePasswordDto, UpdateUserDto, UserResponseDto, UserWithPreferencesDto } from '../dto/user.dto';
+import {
+    UpdateUserDto,
+    UserResponseDto,
+    ChangePasswordDto,
+    UserWithPreferences,
+    UserWithPreferencesDto,
+} from '../dto/user.dto';
 
 @Injectable()
 export class UserService {
     constructor(
+        private readonly awsService: AwsService,
         private readonly cookiesService: CookiesService,
         private readonly userRepository: UserRepository,
         private readonly categoriesService: CategoriesService,
@@ -44,7 +52,7 @@ export class UserService {
 
     async getAllUsers(): Promise<UserResponseDto[]> {
         const users = await this.userRepository.getAllUsers();
-        return users.map(user => plainToInstance(UserResponseDto, user));
+        return users.map(user => this.toUserPreferenceDto(user));
     }
 
     async findUserById(userId: string): Promise<UserWithPreferencesDto> {
@@ -57,15 +65,16 @@ export class UserService {
                 details: `No user found with the ID: [${userId}].`,
             });
 
-        return plainToInstance(UserWithPreferencesDto, user);
+        console.log(user);
+        return this.toUserPreferenceDto(user);
     }
 
     async updateUserById(userId: string, updatePayload: UpdateUserDto): Promise<UserWithPreferencesDto> {
         const updatedUser = await this.userRepository.updateUserById(userId, updatePayload);
-        return plainToInstance(UserWithPreferencesDto, updatedUser);
+        return this.toUserPreferenceDto(updatedUser);
     }
 
-    async changePassword(userId: string, payload: ChangePasswordDto) {
+    async changePassword(userId: string, payload: ChangePasswordDto): Promise<UserWithPreferencesDto> {
         const user = await this.userRepository.findUserById(userId);
 
         if (!user) {
@@ -88,12 +97,15 @@ export class UserService {
 
         const hashedPassword = await argon.hash(payload.newPassword);
 
-        await this.userRepository.updateUserPassword(userId, hashedPassword);
+        const updatedUser = await this.userRepository.updateUserPassword(userId, hashedPassword);
+
+        return this.toUserPreferenceDto(updatedUser);
     }
 
-    async updateUserProfilePicture(userId: string, profilePictureUrl: string) {
+    async updateUserProfilePicture(userId: string, profilePictureAwsKey: string) {
+        const profilePictureUrl = this.awsService.generateProfilePictureUrl(profilePictureAwsKey);
         const userWithProfilePicture = await this.userRepository.updateUserProfilePicture(userId, profilePictureUrl);
-        return plainToInstance(UserWithPreferencesDto, userWithProfilePicture);
+        return this.toUserPreferenceDto(userWithProfilePicture);
     }
 
     async deleteUserById(userId: string) {
@@ -108,5 +120,18 @@ export class UserService {
 
     private async confirmOldPasswordMatch(hashedPassword: string, password: string): Promise<boolean> {
         return await argon.verify(hashedPassword, password);
+    }
+
+    private toUserPreferenceDto(user: UserWithPreferences): UserWithPreferencesDto {
+        if (!user) {
+            throw new NotFoundException({
+                name: 'USER_NOT_FOUND!',
+                title: 'User Not Found!',
+                details: `No user found when converting to UserWithPreferencesDto.`,
+            });
+        }
+
+        const userWithProfilePicture = this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey!);
+        return plainToInstance(UserWithPreferencesDto, userWithProfilePicture);
     }
 }
