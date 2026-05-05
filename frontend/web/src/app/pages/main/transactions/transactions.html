@@ -2,7 +2,12 @@
   <div class="page-header">
     <h1 class="page-title">Transactions</h1>
 
-    <atom-button id="add-transaction" variant="primary" (clicked)="handleOpenForm()">
+    <atom-button
+      variant="primary"
+      id="add-transaction"
+      [disabled]="isFetching()"
+      (clicked)="handleOpenForm()"
+    >
       <div class="w-full flex flex-row items-center justify-between gap-4">
         <lucide-icon name="create-transaction" [img]="Plus" [size]="iconSize"></lucide-icon>
         <span class="hidden sm:block">Log Transaction</span>

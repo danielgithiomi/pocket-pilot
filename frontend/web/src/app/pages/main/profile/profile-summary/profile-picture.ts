@@ -1,6 +1,6 @@
 import { AuthService } from '@api/auth.service';
 import { LucideAngularModule, Camera } from 'lucide-angular';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, output, signal } from '@angular/core';
 
 @Component({
   selector: 'profile-picture',
@@ -26,6 +26,7 @@ import { Component, computed, inject, input, signal } from '@angular/core';
       class="profile-picture group"
       (mouseenter)="isHovered.set(true)"
       (mouseleave)="isHovered.set(false)"
+      (click)="profilePictureClicked.emit()"
     >
       @if (isHovered()) {
         <div class="overlay animate-fade-in">
@@ -36,13 +37,13 @@ import { Component, computed, inject, input, signal } from '@angular/core';
               [img]="camera"
               name="change-profile-picture"
             />
-            <p class="text-xs text-white">Update</p>
+            <p class="text-xs text-white">{{ profilePictureUrl() ? 'Change' : 'Add' }}</p>
           </div>
         </div>
       }
 
       @if (profilePictureUrl()) {
-        <img [src]="profilePictureUrl()" alt="Profile Picture" class="w-full h-full object-cover" />
+        <img [src]="profilePictureUrl()" alt="Profile Picture" class="h-full w-full object-cover" />
       } @else {
         <div class="flex items-center justify-center h-full">
           <p class="text-white text-5xl">{{ initial() }}</p>
@@ -58,11 +59,16 @@ export class ProfilePicture {
   // STATES
   protected readonly isHovered = signal(false);
 
-  // INPUTS
-  profilePictureUrl = input<string | null>(null);
+  // OUTPUTS
+  protected readonly profilePictureClicked = output<void>();
 
   // SERVICES
   protected readonly authService = inject(AuthService);
+
+  // DATA
+  protected readonly profilePictureUrl = computed(
+    () => this.authService.user()?.profilePictureUrl ?? null,
+  );
 
   // METHODS
   protected readonly initial = computed(() => {

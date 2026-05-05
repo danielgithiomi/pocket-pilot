@@ -31,10 +31,9 @@
       </div>
     </div>
   } @else {
-    @let hasError = !!accountsWithCount.error() || !accountsWithCount.hasValue();
-    @let resource = accountsWithCount.value()?.data;
-    @let accounts = resource?.data;
-    @let count = resource?.count;
+    @let hasError = accountsHasError();
+    @let accounts = accountsList();
+    @let count = accountsCount();
     <div
       class="page-container flex-1"
       [ngClass]="{ 'grid place-items-center': count === 0 || hasError }"
@@ -77,7 +76,7 @@
   }
 </section>
 
-@let accountTypeHasError = !!accountTypes.error();
+@let accountTypeHasError = accountTypesHasError();
 @if (!accountTypeHasError && isFormOpen()) {
   <organism-form
     id="accounts"
@@ -86,7 +85,7 @@
     description="Create a new account"
     (closeForm)="handleCloseForm($event)"
   >
-    @let types = accountTypes.value()?.data;
+    @let types = accountTypesValue();
     <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">
       <atom-input
         id="name"

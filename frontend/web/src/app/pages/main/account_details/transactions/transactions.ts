@@ -1,4 +1,4 @@
-import { Transaction } from '@global/types';
+import { TransactionInAccount } from '@global/types';
 import { Table, TableColumn } from '@organisms/table';
 import { formatCurrency, formatDate } from '@libs/utils';
 import { Component, computed, input } from '@angular/core';
@@ -11,8 +11,9 @@ import { AccountTransactionRow } from './transactions.types';
 })
 export class TransactionsComponent {
   // INPUT
+  readonly accountId = input.required<string>();
   readonly accountCurrency = input.required<string>();
-  readonly transactions = input.required<Transaction[]>();
+  readonly transactions = input.required<TransactionInAccount[]>();
 
   // TABLE
   protected accountTransactionsColumns: TableColumn<AccountTransactionRow>[] = [
@@ -58,7 +59,9 @@ export class TransactionsComponent {
             break;
         }
 
-        return `<span class="${classes}">${transaction.type}</span>`;
+        return `<span class="${classes}">
+          ${transaction.type} ${transaction.type === 'TRANSFER' ? (this.accountId() !== transaction.sourceAccountId ? '&#8690;' : '&#8689;') : ''}
+        </span>`;
       },
     },
     {
@@ -81,15 +84,17 @@ export class TransactionsComponent {
   protected formattedTransactions = computed<AccountTransactionRow[]>(() => {
     const transactionsToFormat = this.transactions();
 
-    return (
-      transactionsToFormat?.map((transaction) => ({
+    return transactionsToFormat
+      ?.map((transaction) => ({
         id: transaction.id,
         type: transaction.type,
         category: transaction.category,
         date: formatDate(transaction.date),
         description: transaction.description,
+        sourceAccountId: transaction.sourceAccountId,
+        targetAccountId: transaction.targetAccountId,
         amount: formatCurrency(transaction.amount, this.accountCurrency(), 2, true, false),
       }))
-    ).reverse();
+      .reverse();
   });
 }

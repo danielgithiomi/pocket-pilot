@@ -1,15 +1,23 @@
 import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
+import { AwsService } from '@modules/aws/aws.service';
 import { UserRepository } from '../repositories/user.repository';
 import { CategoriesService } from '@modules/wallet/services/categories.service';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { ChangePasswordDto, UpdateUserDto, UserResponseDto, UserWithPreferencesDto } from '../dto/user.dto';
+import {
+    UpdateUserDto,
+    UserResponseDto,
+    ChangePasswordDto,
+    UserWithPreferences,
+    UserWithPreferencesDto,
+} from '../dto/user.dto';
 
 @Injectable()
 export class UserService {
     constructor(
+        private readonly awsService: AwsService,
         private readonly cookiesService: CookiesService,
         private readonly userRepository: UserRepository,
         private readonly categoriesService: CategoriesService,
@@ -42,13 +50,9 @@ export class UserService {
         } satisfies RegisterOutputDto;
     }
 
-    async getAllUsers(): Promise<UserResponseDto[]> {
+    async getAllUsers(): Promise<UserWithPreferencesDto[]> {
         const users = await this.userRepository.getAllUsers();
-        return users.map(user => plainToInstance(UserResponseDto, user));
-    }
-
-    async deleteUserById(userId: string) {
-        return this.userRepository.deleteUserById(userId);
+        return Promise.all(users.map(user => this.toUserPreferenceDto(user)));
     }
 
     async findUserById(userId: string): Promise<UserWithPreferencesDto> {
@@ -61,15 +65,15 @@ export class UserService {
                 details: `No user found with the ID: [${userId}].`,
             });
 
-        return plainToInstance(UserWithPreferencesDto, user);
+        return this.toUserPreferenceDto(user);
     }
 
     async updateUserById(userId: string, updatePayload: UpdateUserDto): Promise<UserWithPreferencesDto> {
         const updatedUser = await this.userRepository.updateUserById(userId, updatePayload);
-        return plainToInstance(UserWithPreferencesDto, updatedUser);
+        return this.toUserPreferenceDto(updatedUser);
     }
 
-    async changePassword(userId: string, payload: ChangePasswordDto) {
+    async changePassword(userId: string, payload: ChangePasswordDto): Promise<UserWithPreferencesDto> {
         const user = await this.userRepository.findUserById(userId);
 
         if (!user) {
@@ -92,7 +96,22 @@ export class UserService {
 
         const hashedPassword = await argon.hash(payload.newPassword);
 
-        await this.userRepository.updateUserPassword(userId, hashedPassword);
+        const updatedUser = await this.userRepository.updateUserPassword(userId, hashedPassword);
+
+        return this.toUserPreferenceDto(updatedUser);
+    }
+
+    async updateUserProfileWithPictureKey(userId: string, profilePictureAwsKey: string) {
+        const userWithProfilePictureKey = await this.userRepository.updateUserProfilePictureKey(
+            userId,
+            profilePictureAwsKey,
+        );
+
+        return this.toUserPreferenceDto(userWithProfilePictureKey);
+    }
+
+    async deleteUserById(userId: string) {
+        return this.userRepository.deleteUserById(userId);
     }
 
     // HELPER FUNCTIONS
@@ -103,5 +122,14 @@ export class UserService {
 
     private async confirmOldPasswordMatch(hashedPassword: string, password: string): Promise<boolean> {
         return await argon.verify(hashedPassword, password);
+    }
+
+    private async toUserPreferenceDto(user: UserWithPreferences): Promise<UserWithPreferencesDto> {
+        const userWithProfilePicture = {
+            ...user,
+            profilePictureUrl: await this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey),
+        };
+
+        return plainToInstance(UserWithPreferencesDto, userWithProfilePicture);
     }
 }

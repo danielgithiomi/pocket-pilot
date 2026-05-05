@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { UserPreferencesDto } from '../../preferences/dto/onboarding.dto';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
 export type FullUser = Prisma.UserCreateInput;
 
@@ -59,6 +59,16 @@ export class ChangePasswordDto {
     currentPassword!: string;
 }
 
+export class UpdateUserProfilePicturePayload {
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({
+        example: 'user@email.com/profile-picture-123.jpg',
+        description: 'The AWS S3 key for the profile picture',
+    })
+    profilePictureAwsKey!: string;
+}
+
 // OUTPUT DTOs
 export type User = Omit<FullUser, 'password'>;
 
@@ -91,6 +101,13 @@ export class UserResponseDto {
         description: 'Phone number of the user',
     })
     phoneNumber!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: 'https://example.com/profile.jpg',
+        description: "URL to the user's profile picture",
+    })
+    profilePictureUrl!: string | null;
 
     @Expose()
     @ApiProperty({

@@ -1,3 +1,4 @@
+export * from './aws.mutations';
 export * from './auth.mutation';
 export * from './user.mutation';
 export * from './goals.mutation';

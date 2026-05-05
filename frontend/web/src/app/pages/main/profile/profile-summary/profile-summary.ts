@@ -16,12 +16,12 @@ import { Component, inject, input, output } from '@angular/core';
   `,
 })
 export class ProfileSummary {
-
   // INPUTS
   isFetching = input<boolean>(false);
 
   // OUTPUTS
   editProfileClicked = output<void>();
+  updateProfilePictureClicked = output<void>();
 
   // SERVICES
   protected readonly authService = inject(AuthService);

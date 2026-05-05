@@ -1,4 +1,4 @@
-import { Transaction } from "./transactions.types";
+import { TransactionInAccount } from "./transactions.types";
 
 export interface CreateAccountPayload {
   name: string;
@@ -26,9 +26,9 @@ export interface UserAccountsWithCount {
 
 export type AccountType = "WALLET" | "BANK" | "SAVINGS" | "CREDIT" | "CURRENT";
 
-export interface AccountWithTransactions extends Account {
+export interface AccountWithTransactions {
   count: number;
   data: Account & {
-    transactions: Transaction[];
+    transactions: TransactionInAccount[];
   };
 }

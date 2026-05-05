@@ -8,7 +8,7 @@ import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/c
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     TransactionDto,
-    CompleteTranferDto,
+    CompleteTransactionDto,
     CreateTransactionDto,
     TransactionWithAccount,
     TransactionsResponseDto,
@@ -46,7 +46,7 @@ export class TransactionController {
         description: 'Returns all database transactions.',
     })
     async getUserTransactions(@UserInRequest() user: UserResponseDto): Promise<TransactionsWithAccountResponseDto> {
-        const userTransactions: CompleteTranferDto[] = await this.transactionService.getUserTransactions(user.id);
+        const userTransactions: CompleteTransactionDto[] = await this.transactionService.getUserTransactions(user.id);
 
         return {
             count: userTransactions.length,
@@ -63,7 +63,7 @@ export class TransactionController {
         description: 'Returns all database transactions.',
     })
     async getAllTransactions(): Promise<TransactionsWithAccountResponseDto> {
-        const allTransactions: CompleteTranferDto[] = await this.transactionService.getAllTransactions();
+        const allTransactions: CompleteTransactionDto[] = await this.transactionService.getAllTransactions();
 
         return {
             count: allTransactions.length,
@@ -143,7 +143,7 @@ export class TransactionController {
         @Param('accountId') accountId: string,
         @UserInRequest() currentUser: UserResponseDto,
         @Body() transferTransactionPayload: CreateTransferTransactionPayload,
-    ): Promise<CompleteTranferDto> {
+    ): Promise<CompleteTransactionDto> {
         const { id: userId } = currentUser;
         return this.transferService.createTransactionAndTransferAmountBetweenAccounts(
             userId,

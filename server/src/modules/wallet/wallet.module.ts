@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CookiesAuthGuard } from '@common/guards';
+import { AwsService } from '@modules/aws/aws.service';
 import { AccountService } from './services/account.service';
 import { TransferService } from './services/transfer.service';
 import { CategoriesService } from './services/categories.service';
@@ -21,6 +22,7 @@ import { UserRepository } from '@modules/identity/repositories/user.repository';
     exports: [CategoriesService, CategoriesCache],
     controllers: [AccountController, TransactionController, CategoriesController],
     providers: [
+        AwsService,
         UserService,
         AccountsCache,
         CookiesService,

@@ -131,7 +131,6 @@ export class Dashboard {
 
   // Methods
   protected onMonthChange(month: string) {
-    console.log('Month changed:', month);
     this.currentMonth.set(month);
   }
 

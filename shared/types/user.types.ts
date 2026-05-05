@@ -10,6 +10,7 @@ export interface User {
   phoneNumber: string;
   isOnboarded: boolean;
   isAccountLocked: boolean;
+  profilePictureUrl: string;
   failedLoginAttempts: number;
   userPreferences: UserPreferences;
 }
@@ -31,4 +32,8 @@ export interface IUpdateUserRequest {
 export interface IChangePasswordRequest {
   newPassword: string;
   currentPassword: string;
+}
+
+export interface IUpdateUserProfilePictureRequest {
+  profilePictureAwsKey: string;
 }

@@ -78,7 +78,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             const err = exceptionResponse as any;
             name = err.name ?? err.code ?? undefined;
             title = err.title ?? 'Internal Http Exception Error';
-            message = err.message ?? 'An unexpected error occurred';
+            message = err.message ?? err.response?.message ?? 'An unexpected error occurred';
             details = err.details;
             type = castException.name;
         } else {

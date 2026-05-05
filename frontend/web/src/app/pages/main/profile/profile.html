@@ -20,6 +20,7 @@
         <profile-summary
           [isFetching]="isFetchingProfileData()"
           (editProfileClicked)="isEditFormOpen.set(true)"
+          (updateProfilePictureClicked)="isProfilePictureFormOpen.set(true)"
         />
       </div>
 
@@ -120,7 +121,6 @@
     </form>
 
     <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
-
       <atom-button
         type="button"
         [inverted]="true"
@@ -138,7 +138,124 @@
         form="edit-user-profile"
         id="submit-edit-profile-form"
         [isLoading]="isSubmittingEditProfileForm()"
-        [disabled]="editProfileForm().invalid() || isSubmittingEditProfileForm() || !isUpdatedDataChanged()"
+        [disabled]="
+          editProfileForm().invalid() || isSubmittingEditProfileForm() || !isUpdatedDataChanged()
+        "
+      />
+    </div>
+  </organism-form>
+}
+
+@if (isProfilePictureFormOpen()) {
+  <organism-form
+    title="Update Profile Picture"
+    id="profile-picture-form-wrapper"
+    description="Update your profile picture."
+    [class.hidden]="!isProfilePictureFormOpen()"
+    (closeForm)="isProfilePictureFormOpen.set(false)"
+  >
+    <form
+      slot="content"
+      class="h-full py-4"
+      [formGroup]="formGroup"
+      id="edit-profile-picture-form"
+      (submit)="submitEditProfilePictureForm($event)"
+    >
+      <div
+        class="file-dropzone"
+        [class.drag-over]="isDragOver()"
+        [class.has-file]="selectedImage()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+      >
+        <input
+          type="file"
+          accept="image/*"
+          id="profile-picture-input"
+          formControlName="profilePicture"
+          (change)="handleOnFileSelected($event)"
+          class="file-input-hidden"
+        />
+
+        <label for="profile-picture-input" class="dropzone-content">
+          @if (selectedImage()) {
+            <div class="file-preview">
+              <div class="file-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <circle cx="10" cy="13" r="2" />
+                  <path d="m20 17-1.09-2.45a2 2 0 0 0-2.2-1.14H12l-1.45-2.9a2 2 0 0 0-2.2-1.14H5" />
+                </svg>
+              </div>
+              <span class="file-name">{{ selectedImage()?.name }}</span>
+              <span class="file-size">{{ formatFileSize(selectedImage()?.size || 0) }}</span>
+            </div>
+          } @else {
+            <div class="upload-prompt">
+              <div class="upload-icon-wrapper">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" x2="12" y1="3" y2="15" />
+                </svg>
+              </div>
+              <span class="select-text">Select a file</span>
+              <span class="divider-text">or</span>
+              <span class="drag-text">Drag and drop a file here</span>
+            </div>
+          }
+        </label>
+      </div>
+
+      @if (isSubmittingProfilePictureForm()) {
+        <div class="w-full flex flex-row items-center justify-center gap-2">
+          <span>Uploading...</span>
+          <span>{{ uploadProgress() }}%</span>
+        </div>
+      }
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+      <atom-button
+        type="button"
+        [inverted]="true"
+        label="Reset Form"
+        variant="secondary"
+        [disabled]="!selectedImage()"
+        form="edit-profile-picture-form"
+        (clicked)="selectedImage.set(null)"
+        id="reset-update-profile-picture-form"
+      />
+
+      <atom-button
+        type="submit"
+        label="Update Profile Picture"
+        form="edit-profile-picture-form"
+        id="submit-update-profile-picture-form"
+        [isLoading]="isSubmittingProfilePictureForm()"
+        [disabled]="!selectedImage() || isSubmittingProfilePictureForm()"
       />
     </div>
   </organism-form>

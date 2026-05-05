@@ -115,8 +115,6 @@ export class ChangePassword {
     const { id } = this.authService.user()!;
     const { confirmNewPassword, ...payload } = this.changePasswordFormModel();
 
-    console.log(payload);
-
     this.isSubmittingChangePassword.set(true);
 
     this.userService.changePassword(id, payload).subscribe({

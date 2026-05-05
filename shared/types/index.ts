@@ -1,3 +1,4 @@
+export * from "./aws.types";
 export * from "./api.types";
 export * from "./app.types";
 export * from "./auth.types";

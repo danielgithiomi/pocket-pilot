@@ -86,6 +86,8 @@ export interface Endpoints {
   user_transactions: string;
   transaction_types: string;
 
+  presigned_url: string;
+
   all_bills: string;
   user_bills: string;
   bill_types: string;

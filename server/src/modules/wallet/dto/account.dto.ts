@@ -1,6 +1,6 @@
-import { TransactionDto } from './transaction.dto';
 import { AccountType, Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
+import { TransactionInAccountDto } from './transaction.dto';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
@@ -122,9 +122,9 @@ export class AccountWithHolderDto extends Account {
 @Exclude()
 export class AccountWithTransactionsDto extends Account {
     @Expose()
-    @Type(() => TransactionDto)
-    @ApiProperty({ type: TransactionDto, isArray: true, description: 'The transactions of the account' })
-    transactions!: TransactionDto[];
+    @Type(() => TransactionInAccountDto)
+    @ApiProperty({ type: TransactionInAccountDto, isArray: true, description: 'The transactions of the account' })
+    transactions!: TransactionInAccountDto[];
 }
 
 // SWAGGER

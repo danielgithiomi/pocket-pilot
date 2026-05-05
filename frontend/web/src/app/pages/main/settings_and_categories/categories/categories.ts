@@ -1,13 +1,13 @@
 import { NgClass } from '@angular/common';
-import { CategoryTypeEnum } from '@global/enums';
 import { formatToReadable } from '@libs/utils';
+import { CategoryTypeEnum } from '@global/enums';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { DrawerService } from '@infrastructure/services';
 import { CategoriesService } from '@api/categories.service';
+import { CategoryLength } from '../settings-and-categories.types';
 import { Component, computed, inject, output } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
-import { CategoryLength, FormattedCategories } from '../settings-and-categories.types';
 
 @Component({
   selector: 'categories',

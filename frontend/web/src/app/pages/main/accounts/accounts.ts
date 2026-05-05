@@ -43,6 +43,15 @@ export class Accounts {
 
   // Computed
   protected isLoadingAccounts = computed<boolean>(() => this.accountsWithCount.isLoading());
+  protected accountsHasError = computed(
+    () => !!this.accountsWithCount.error() || !this.accountsWithCount.hasValue(),
+  );
+  protected accountsResource = computed(() => {
+    if (this.accountsWithCount.error()) return null;
+    return this.accountsWithCount.value()?.data ?? null;
+  });
+  protected accountsList = computed(() => this.accountsResource()?.data ?? []);
+  protected accountsCount = computed(() => this.accountsResource()?.count ?? 0);
 
   // Data
   protected readonly currencies = CURRENCIES;
@@ -50,6 +59,13 @@ export class Accounts {
   protected readonly currency = this.accountsService.getDefaultCurrency();
   protected readonly accountTypes = this.accountsService.getAccountTypes();
   protected readonly accountsWithCount = this.accountsService.getUserAccounts();
+
+  // Safe resource accessors for templates
+  protected accountTypesHasError = computed(() => !!this.accountTypes.error());
+  protected accountTypesValue = computed(() => {
+    if (this.accountTypes.error()) return null;
+    return this.accountTypes.value()?.data ?? null;
+  });
 
   // Form
   private readonly INITIAL_FORM_STATE: AccountsSchema = {

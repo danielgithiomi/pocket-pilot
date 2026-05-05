@@ -1,8 +1,8 @@
 import type { Response } from 'express';
 import { Summary } from '@common/decorators';
 import { plainToInstance } from 'class-transformer';
-import { UserService } from '../services/user.service';
 import { VoidResourceResponse } from '@common/types';
+import { UserService } from '../services/user.service';
 import { CookiesService } from '../services/cookies.service';
 import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
@@ -13,6 +13,7 @@ import {
     ChangePasswordDto,
     UserWithPreferencesDto,
     UsersWithCountResponseDto,
+    UpdateUserProfilePicturePayload,
 } from '../dto/user.dto';
 
 @Controller('users')
@@ -95,6 +96,22 @@ export class UserController {
             message: 'Password changed!',
             details: 'Your password has been changed successfully.',
         };
+    }
+
+    @Put(':userId/profile-picture')
+    @ApiCookieAuth('access_token')
+    @ApiParam({ name: 'userId', description: 'The ID of the user to update' })
+    @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
+    @ApiResponse({ status: 200, description: 'User updated successfully', type: UserWithPreferencesDto })
+    @ApiOperation({
+        summary: 'Update user profile picture',
+        description: 'Updates the profile picture for a user by their unique identifier.',
+    })
+    updateUserProfilePicture(
+        @Param('userId') userId: string,
+        @Body() payload: UpdateUserProfilePicturePayload,
+    ): Promise<UserWithPreferencesDto> {
+        return this.userService.updateUserProfileWithPictureKey(userId, payload.profilePictureAwsKey);
     }
 
     @Delete(':userId')

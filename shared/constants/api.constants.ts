@@ -22,6 +22,9 @@ export const API_ENDPOINTS = {
   // onboarding
   onboarding: "onboarding",
 
+  // aws
+  presigned_url: "aws/presigned-url",
+
   // bills
   user_bills: "bills",
   all_bills: "bills/all",
