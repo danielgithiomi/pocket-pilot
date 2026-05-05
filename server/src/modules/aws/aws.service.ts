@@ -75,8 +75,7 @@ export class AwsService {
             });
             await this.s3Client.send(command);
             return true;
-        } catch (error) {
-            this.logger.error(`Error checking if profile picture key (${Key}) exists`, error);
+        } catch {
             return false;
         }
     }

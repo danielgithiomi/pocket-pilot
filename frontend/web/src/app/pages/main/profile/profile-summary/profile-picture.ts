@@ -37,7 +37,7 @@ import { Component, computed, inject, output, signal } from '@angular/core';
               [img]="camera"
               name="change-profile-picture"
             />
-            <p class="text-xs text-white">Update</p>
+            <p class="text-xs text-white">{{ profilePictureUrl() ? 'Change' : 'Add' }}</p>
           </div>
         </div>
       }
@@ -67,7 +67,8 @@ export class ProfilePicture {
 
   // DATA
   protected readonly profilePictureUrl = computed(
-    () => this.authService.user()?.profilePictureUrl ?? null);
+    () => this.authService.user()?.profilePictureUrl ?? null,
+  );
 
   // METHODS
   protected readonly initial = computed(() => {
