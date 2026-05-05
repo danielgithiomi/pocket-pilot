@@ -56,19 +56,15 @@ export class AwsService {
         };
     }
 
-    generateProfilePictureUrl(profilePictureKey: string): string {
+    async generateProfilePictureUrl(profilePictureKey: string): Promise<string> {
         const s3BucketName = this.s3BucketName;
-        const region = this.s3Client.config.region;
-
-        this.logger.warn(`Generating profile picture url for user with key: ${profilePictureKey}`);
-        this.logger.warn('Details: ', { s3BucketName, region, profilePictureKey });
-
+        const region = await this.s3Client.config.region();
         return `https://${s3BucketName}.s3.${region}.amazonaws.com/${profilePictureKey}`;
     }
 
     async checkAndGenerateProfilePictureUrl(profilePictureKey: string | null): Promise<string | null> {
         if (!profilePictureKey || !(await this.doesProfilePictureKeyExist(profilePictureKey))) return null;
-        return this.generateProfilePictureUrl(profilePictureKey);
+        return await this.generateProfilePictureUrl(profilePictureKey);
     }
 
     private async doesProfilePictureKeyExist(Key: string) {

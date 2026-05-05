@@ -50,9 +50,9 @@ export class UserService {
         } satisfies RegisterOutputDto;
     }
 
-    async getAllUsers(): Promise<UserResponseDto[]> {
+    async getAllUsers(): Promise<UserWithPreferencesDto[]> {
         const users = await this.userRepository.getAllUsers();
-        return users.map(user => this.toUserPreferenceDto(user));
+        return Promise.all(users.map(user => this.toUserPreferenceDto(user)));
     }
 
     async findUserById(userId: string): Promise<UserWithPreferencesDto> {
@@ -65,7 +65,6 @@ export class UserService {
                 details: `No user found with the ID: [${userId}].`,
             });
 
-        console.log(user);
         return this.toUserPreferenceDto(user);
     }
 
@@ -108,8 +107,6 @@ export class UserService {
             profilePictureAwsKey,
         );
 
-        console.log(userWithProfilePictureKey);
-
         return this.toUserPreferenceDto(userWithProfilePictureKey);
     }
 
@@ -127,13 +124,12 @@ export class UserService {
         return await argon.verify(hashedPassword, password);
     }
 
-    private toUserPreferenceDto(user: UserWithPreferences): UserWithPreferencesDto {
+    private async toUserPreferenceDto(user: UserWithPreferences): Promise<UserWithPreferencesDto> {
         const userWithProfilePicture = {
             ...user,
-            profilePictureUrl: this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey),
+            profilePictureUrl: await this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey),
         };
 
-        console.log(userWithProfilePicture);
         return plainToInstance(UserWithPreferencesDto, userWithProfilePicture);
     }
 }

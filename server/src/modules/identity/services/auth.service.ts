@@ -1,16 +1,18 @@
 import * as argon from 'argon2';
 import { CookiesService } from './cookies.service';
 import { plainToInstance } from 'class-transformer';
-import { UserWithPreferencesDto } from '../dto/user.dto';
+import { AwsService } from '@modules/aws/aws.service';
 import { UserRepository } from '../repositories/user.repository';
 import { AuthRepository } from '../repositories/auth.repository';
 import { LockedException } from '@common/exceptions/locked.exception';
+import { UserWithPreferences, UserWithPreferencesDto } from '../dto/user.dto';
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JWTPayload, LoginInputDto, LoginOutputDto, ValidationResult } from '../dto/auth.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
+        private readonly awsService: AwsService,
         private readonly cookiesService: CookiesService,
         private readonly userRepository: UserRepository,
         private readonly authRepository: AuthRepository,
@@ -26,7 +28,7 @@ export class AuthService {
                 details: `No user found in the request with the ID: {${userId}}.`,
             });
 
-        return plainToInstance(UserWithPreferencesDto, user, { excludeExtraneousValues: true });
+        return this.toUserWithPreferenceAndPictureUrl(user);
     }
 
     async login(data: LoginInputDto): Promise<LoginOutputDto> {
@@ -67,7 +69,7 @@ export class AuthService {
         return {
             access_token,
             refresh_token,
-            user: plainToInstance(UserWithPreferencesDto, user, { excludeExtraneousValues: true }),
+            user: await this.toUserWithPreferenceAndPictureUrl(user),
         } satisfies LoginOutputDto;
     }
 
@@ -90,5 +92,14 @@ export class AuthService {
 
     private async validatePassword(password: string, hashedPassword: string): Promise<boolean> {
         return await argon.verify(hashedPassword, password);
+    }
+
+    private async toUserWithPreferenceAndPictureUrl(user: UserWithPreferences) {
+        const userWithProfilePictureUrl = {
+            ...user,
+            profilePictureUrl: await this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey),
+        };
+
+        return plainToInstance(UserWithPreferencesDto, userWithProfilePictureUrl, { excludeExtraneousValues: true });
     }
 }
