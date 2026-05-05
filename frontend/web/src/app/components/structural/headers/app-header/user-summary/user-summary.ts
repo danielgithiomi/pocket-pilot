@@ -51,11 +51,7 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
 
       <div id="avatar" class="avatar">
         @if (profilePictureUrl()) {
-          <img
-            alt="Profile Picture"
-            [src]="profilePictureUrl()"
-            class="w-full h-full object-cover"
-          />
+          <img [alt]="initial()" [src]="profilePictureUrl()" class="w-full h-full object-cover" />
         } @else {
           <p class="text-white">{{ initial() }}</p>
         }
@@ -84,7 +80,9 @@ export class UserSummary {
 
   protected readonly email = computed(() => this.user()?.email ?? '');
   protected readonly username = computed(() => this.user()?.name ?? '');
-  protected readonly profilePictureUrl = computed(() => this.user()?.profilePictureUrl ?? null);
+  protected readonly profilePictureUrl = computed(
+    () => this.authService.user()?.profilePictureUrl ?? null,
+  );
 
   protected readonly initial = computed(() => {
     const name = this.username();

@@ -1,6 +1,6 @@
 import { AuthService } from '@api/auth.service';
 import { LucideAngularModule, Camera } from 'lucide-angular';
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, output, signal } from '@angular/core';
 
 @Component({
   selector: 'profile-picture',
@@ -59,14 +59,15 @@ export class ProfilePicture {
   // STATES
   protected readonly isHovered = signal(false);
 
-  // INPUTS
-  profilePictureUrl = input<string | null>(null);
-
   // OUTPUTS
   protected readonly profilePictureClicked = output<void>();
 
   // SERVICES
   protected readonly authService = inject(AuthService);
+
+  // DATA
+  protected readonly profilePictureUrl = computed(
+    () => this.authService.user()?.profilePictureUrl ?? null);
 
   // METHODS
   protected readonly initial = computed(() => {

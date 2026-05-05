@@ -25,7 +25,4 @@ export class ProfileSummary {
 
   // SERVICES
   protected readonly authService = inject(AuthService);
-
-  // DATA
-  protected readonly profilePictureUrl = this.authService.user()?.profilePictureUrl || null;
 }

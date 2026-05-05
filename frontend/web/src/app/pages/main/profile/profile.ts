@@ -43,12 +43,12 @@ export class Profile {
   protected readonly drawerService: DrawerService = inject(DrawerService);
 
   // STATES
+  protected readonly isDragOver = signal(false);
   protected readonly isEditFormOpen = signal(false);
   protected readonly selectedImage = signal<File | null>(null);
   protected readonly isSubmittingEditProfileForm = signal(false);
   protected readonly isSubmittingProfilePictureForm = signal(false);
   protected readonly isProfilePictureFormOpen = signal<boolean>(false);
-  protected readonly isDragOver = signal(false);
 
   // SERVICES
   private readonly awsService = inject(AwsService);
