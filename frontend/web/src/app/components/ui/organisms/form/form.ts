@@ -21,8 +21,10 @@ export class Form {
   description = input.required<string>();
 
   // OUTPUTS
-  protected readonly closeForm = output<'icon' | 'overlay'>();
+  protected readonly closeForm = output<FormCloseEvent>();
 
   // SERVICES
   protected readonly drawerService: DrawerService = inject(DrawerService);
 }
+
+export type FormCloseEvent = 'icon' | 'overlay';

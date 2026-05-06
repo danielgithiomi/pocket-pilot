@@ -1,6 +1,7 @@
 <organism-form
   id="squad"
   title="Create A New Squad"
+  (closeForm)="handleCreateSquadFormClose($event)"
   description="People you regularly share expenses with."
 >
   <form id="create-squad-form" slot="content" (submit)="handleCreateSquadFormSubmit($event)"></form>

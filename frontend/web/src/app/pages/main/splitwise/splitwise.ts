@@ -1,7 +1,7 @@
 import { Button } from '@atoms/button';
 import { SplitwiseSquads } from './squads/squads';
 import { Component, computed, signal } from '@angular/core';
-import { SplitwiseSquardForm } from "./squard-form/squard-form";
+import { SplitwiseSquardForm } from './squard-form/squard-form';
 import { LucideAngularModule, ListPlus, Users } from 'lucide-angular';
 
 @Component({
@@ -21,4 +21,9 @@ export class Splitwise {
 
   // COMPUTED
   protected isLoadingResources = computed<boolean>(() => false);
+
+  // METHODS
+  protected handleCreateSquadFormClose() {
+    this.isCreateSquadFormOpen.set(false);
+  }
 }
