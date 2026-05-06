@@ -21,7 +21,11 @@
 
       <!-- Right Side -->
       <div class="flex-2 page-card">
-        <splitwise-squads [isLoadingResources]="isLoadingResources()" />
+        <splitwise-squads
+          [isSquadFormOpen]="isSquadFormOpen()"
+          [isLoadingResources]="isLoadingResources()"
+          (createSquadClickEvent)="isSquadFormOpen.set(true)"
+        />
       </div>
     </div>
   </div>

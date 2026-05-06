@@ -1,18 +1,44 @@
-<div class="flex flex-col">
+<div class="h-full flex flex-col">
   <div class="flex flex-row items-center justify-between">
     <div class="card-header">
       <p class="title">Split Squads</p>
       <p class="subtitle">Manage your squads</p>
     </div>
 
-    <atom-button id="add-split" variant="primary" [disabled]="isLoadingResources()">
+    <atom-button
+      id="add-split"
+      variant="primary"
+      [disabled]="isFetchingSquads()"
+      (clicked)="createSquadClickEvent.emit()"
+    >
       <div class="w-full flex flex-row items-center justify-between gap-4">
         <lucide-icon name="create-squad" [img]="Users" [size]="iconSize" />
       </div>
     </atom-button>
   </div>
 
-  <div class="card-content flex-1">
-    <!-- Content goes here -->
+  @let hasError = false;
+  @let hasNoData = false;
+  @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
+  <div class="card-content" [ngClass]="{ 'flex-1 grid place-items-center': centerContent }">
+    @if (isFetchingSquads()) {
+      <div class="dashboard-card-loader"></div>
+    } @else {
+      @if (hasError) {
+        <fetch-error
+          [messageClass]="animationMessageSize"
+          [animationDimensions]="animationDimensions"
+          message="Error loading squads. Please refresh."
+        />
+      } @else if (hasNoData) {
+        <no-data
+          message="Add a squad to get started"
+          [messageClass]="animationMessageSize"
+          [animationDimensions]="animationDimensions"
+        />
+      } @else {
+        <p>Form is open: {{ isSquadFormOpen() }}</p>
+      }
+    }
   </div>
 </div>

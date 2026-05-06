@@ -1,7 +1,7 @@
 import { Button } from '@atoms/button';
-import { Component, computed } from '@angular/core';
+import { SplitwiseSquads } from './squads/squads';
+import { Component, computed, signal } from '@angular/core';
 import { LucideAngularModule, ListPlus, Users } from 'lucide-angular';
-import { SplitwiseSquads } from "./squads/squads";
 
 @Component({
   selector: 'app-splitwise',
@@ -14,6 +14,9 @@ export class Splitwise {
   protected readonly iconSize = 20;
   protected readonly Users = Users;
   protected readonly Plus = ListPlus;
+
+  // SIGNAL STATES
+  protected readonly isSquadFormOpen = signal<boolean>(false);
 
   // COMPUTED
   protected isLoadingResources = computed<boolean>(() => false);
