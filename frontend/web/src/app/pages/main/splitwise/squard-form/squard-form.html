@@ -1,0 +1,29 @@
+<organism-form
+  id="squad"
+  title="Create A New Squad"
+  description="People you regularly share expenses with."
+>
+  <form id="create-squad-form" slot="content" (submit)="handleCreateSquadFormSubmit($event)"></form>
+
+  <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+    <atom-button
+      type="button"
+      label="Reset"
+      [inverted]="true"
+      variant="secondary"
+      form="create-squad-form"
+      id="reset-create-squad-form"
+      (clicked)="resetCreateSquadForm()"
+      [disabled]="!createSquadForm().dirty() || isSubmittingCreateSquadForm()"
+    />
+
+    <atom-button
+      type="submit"
+      label="Create Squad"
+      form="create-squad-form"
+      id="submit-create-squad-form"
+      [isLoading]="isSubmittingCreateSquadForm()"
+      [disabled]="createSquadForm().invalid() || isSubmittingCreateSquadForm()"
+    />
+  </div>
+</organism-form>

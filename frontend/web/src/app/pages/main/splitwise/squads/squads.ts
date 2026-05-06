@@ -1,8 +1,8 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { NoData } from '@structural/main/no-data/no-data';
-import { Component, computed, input, output } from '@angular/core';
 import { LucideAngularModule, Users } from 'lucide-angular';
+import { Component, computed, input, output } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 
 @Component({
@@ -20,11 +20,11 @@ export class SplitwiseSquads {
   protected readonly animationMessageSize = 'text-xs';
 
   // INPUTS
-  readonly isSquadFormOpen = input.required<boolean>();
   readonly isLoadingResources = input.required<boolean>();
+  readonly isCreateSquadFormOpen = input.required<boolean>();
 
   // OUTPUTS
-  protected readonly createSquadClickEvent = output<void>();
+  protected readonly createSquadButtonClickEvent = output<void>();
 
   // COMPUTED
   protected readonly isFetchingSquads = computed<boolean>(() => false);

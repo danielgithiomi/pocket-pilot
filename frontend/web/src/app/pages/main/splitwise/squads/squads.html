@@ -8,8 +8,8 @@
     <atom-button
       id="add-split"
       variant="primary"
-      [disabled]="isFetchingSquads()"
-      (clicked)="createSquadClickEvent.emit()"
+      (clicked)="createSquadButtonClickEvent.emit()"
+      [disabled]="isFetchingSquads() || isCreateSquadFormOpen()"
     >
       <div class="w-full flex flex-row items-center justify-between gap-4">
         <lucide-icon name="create-squad" [img]="Users" [size]="iconSize" />
@@ -37,7 +37,7 @@
           [animationDimensions]="animationDimensions"
         />
       } @else {
-        <p>Form is open: {{ isSquadFormOpen() }}</p>
+        <p>Form is open: {{ isCreateSquadFormOpen() }}</p>
       }
     }
   </div>

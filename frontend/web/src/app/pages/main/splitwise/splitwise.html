@@ -22,11 +22,15 @@
       <!-- Right Side -->
       <div class="flex-2 page-card">
         <splitwise-squads
-          [isSquadFormOpen]="isSquadFormOpen()"
           [isLoadingResources]="isLoadingResources()"
-          (createSquadClickEvent)="isSquadFormOpen.set(true)"
+          [isCreateSquadFormOpen]="isCreateSquadFormOpen()"
+          (createSquadButtonClickEvent)="isCreateSquadFormOpen.set(true)"
         />
       </div>
     </div>
   </div>
 </section>
+
+@if (isCreateSquadFormOpen()) {
+  <splitwise-squard-form />
+}
