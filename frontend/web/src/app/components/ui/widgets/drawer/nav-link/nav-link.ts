@@ -4,7 +4,7 @@ import { DrawerNavigationLink } from '@libs/types';
 import { ThemeService } from '@infrastructure/services';
 import { Component, computed, inject, input, output } from '@angular/core';
 import {
-  House,
+  Split,
   Wallet,
   Target,
   Headset,
@@ -72,6 +72,7 @@ export class NavLink {
   protected readonly iconMap: Record<DrawerNavigationLink['icon'], any> = {
     // home: House,
     goals: Target,
+    splitter: Split,
     accounts: Wallet,
     support: Headset,
     settings: Settings2,

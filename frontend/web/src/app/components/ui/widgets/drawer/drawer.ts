@@ -1,6 +1,7 @@
 import { NavLink } from './nav-link/nav-link';
 import { ImageDimensions } from '@libs/types';
 import { Chevron } from '@components/ui/atoms/icons';
+import { ThemeService } from '@infrastructure/services';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { Component, inject, input, output } from '@angular/core';
 import { NgOptimizedImage, NgClass } from '@angular/common';
@@ -8,7 +9,6 @@ import {
   DrawerNavigationLinks as links,
   AdditionalDrawerNavigationLinks as additionalLinks,
 } from '@libs/constants';
-import { ThemeService } from '@infrastructure/services';
 
 @Component({
   selector: 'app-drawer',

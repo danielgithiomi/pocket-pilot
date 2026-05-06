@@ -22,6 +22,11 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
     path: '/transactions',
   },
   {
+    icon: 'splitter',
+    name: 'Splitter',
+    path: '/splitter',
+  },
+  {
     icon: 'goals',
     name: 'Goals_Bills',
     path: '/goals',
