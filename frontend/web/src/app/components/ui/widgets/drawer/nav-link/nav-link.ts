@@ -72,9 +72,9 @@ export class NavLink {
   protected readonly iconMap: Record<DrawerNavigationLink['icon'], any> = {
     // home: House,
     goals: Target,
-    splitter: Split,
     accounts: Wallet,
     support: Headset,
+    splitwise: Split,
     settings: Settings2,
     profile: UserRoundCog,
     dashboard: LayoutDashboard,

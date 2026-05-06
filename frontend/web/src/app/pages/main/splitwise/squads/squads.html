@@ -1,0 +1,18 @@
+<div class="flex flex-col">
+  <div class="flex flex-row items-center justify-between">
+    <div class="card-header">
+      <p class="title">Split Squads</p>
+      <p class="subtitle">Manage your squads</p>
+    </div>
+
+    <atom-button id="add-split" variant="primary" [disabled]="isLoadingResources()">
+      <div class="w-full flex flex-row items-center justify-between gap-4">
+        <lucide-icon name="create-squad" [img]="Users" [size]="iconSize" />
+      </div>
+    </atom-button>
+  </div>
+
+  <div class="card-content flex-1">
+    <!-- Content goes here -->
+  </div>
+</div>

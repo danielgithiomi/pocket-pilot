@@ -6,6 +6,7 @@ export const WEB_ROUTES = {
   login: "auth/login",
   accounts: "accounts",
   settings: "settings",
+  splitwise: "splitwise",
   dashboard: "dashboard",
   onboarding: "onboarding",
   register: "auth/register",
@@ -24,6 +25,7 @@ export interface WebRoutes {
   register: string;
   settings: string;
   accounts: string;
+  splitwise: string;
   dashboard: string;
   onboarding: string;
   transactions: string;
