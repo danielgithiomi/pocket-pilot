@@ -1,12 +1,14 @@
 import { ExposeEnumDto } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { hoursToMilliseconds } from '@libs/utils';
-import { HttpCode, UseGuards } from '@nestjs/common';
-import { Public, Summary } from '@common/decorators';
 import { SplitwiseService } from './splitwise.service';
+import { Body, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
+import { Public, Summary, UserInRequest } from '@common/decorators';
+import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { SplitwiseSquadDto, SplitwiseSquadPayload } from './dto/splitwise.dto';
 
 @Controller('splitwise')
 @UseGuards(CookiesAuthGuard)
@@ -30,5 +32,35 @@ export class SplitwiseController {
     })
     getSplitwiseCategories() {
         return this.splitwiseService.getSplitwiseCategories();
+    }
+
+    @Get('squads')
+    @HttpCode(200)
+    @ApiCookieAuth('access_token')
+    @ApiOperation({ summary: 'Get all splitwise squads' })
+    @Summary('Splitwise squads retrieved', 'The user retrieved all splitwise squads')
+    @ApiResponse({
+        status: 200,
+        isArray: true,
+        type: SplitwiseSquadDto,
+        description: 'Splitwise squads retrieved successfully',
+    })
+    getUserSplitwiseSquads() {
+        return this.splitwiseService.getUserSplitwiseSquads();
+    }
+
+    @Post('squads')
+    @HttpCode(201)
+    @ApiCookieAuth('access_token')
+    @ApiOperation({ summary: 'Create splitwise squad' })
+    @Summary('Splitwise squad created', 'The user created a splitwise squad')
+    @ApiResponse({
+        status: 201,
+        isArray: false,
+        type: SplitwiseSquadDto,
+        description: 'Splitwise squad created successfully',
+    })
+    createSplitwiseSquad(@UserInRequest() user: User, @Body() payload: SplitwiseSquadPayload) {
+        return this.splitwiseService.createSplitwiseSquad(user.id, payload);
     }
 }

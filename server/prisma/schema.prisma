@@ -230,7 +230,7 @@ enum SplitCategoryTag {
     ENTERTAINMENT
 }
 
-model SplitSquad {
+model SplitwiseSquad {
     id            String    @id @default(uuid())
     creatorId     String
 
@@ -241,5 +241,5 @@ model SplitSquad {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt()
 
-    @@map("Split Squads")
+    @@map("Splitwise Squads")
 }

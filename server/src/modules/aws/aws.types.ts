@@ -7,14 +7,14 @@ export interface PreSignedUrlResponse {
 
 export class PreSignedUrlResponseDto {
     @ApiProperty({
-        example: 'user/123/profile-picture.jpg',
         description: 'The key of the file',
+        example: 'user/123/profile-picture.jpg',
     })
     key!: string;
 
     @ApiProperty({
-        example: 'https://s3.amazonaws.com/bucket/user/123/profile-picture.jpg',
         description: 'The presigned URL of the file',
+        example: 'https://s3.amazonaws.com/bucket/user/123/profile-picture.jpg',
     })
     presignedUrl!: string;
 }
