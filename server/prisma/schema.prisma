@@ -51,12 +51,12 @@ model Account {
 }
 
 model User {
-    id                  String  @id() @default(uuid())
-    name                String
-    email               String
-    password            String
-    phoneNumber         String?
-    profilePictureKey   String?
+    id                String  @id() @default(uuid())
+    name              String
+    email             String
+    password          String
+    phoneNumber       String?
+    profilePictureKey String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -128,9 +128,9 @@ model Transaction {
     targetAccount   Account? @relation("TargetAccountTransactions", fields: [targetAccountId], references: [id], onDelete: Cascade)
     targetAccountId String?
 
-    @@map("Transactions")
-    @@index([sourceAccountId])      
+    @@index([sourceAccountId])
     @@index([targetAccountId])
+    @@map("Transactions")
 }
 
 enum CategoryType {
@@ -218,4 +218,28 @@ model Bills {
     createdAt DateTime @default(now())
 
     @@map("User Bills")
+}
+
+enum SplitCategoryTag {
+    FOOD
+    DESERT
+    DRINKS
+    SHOPPING
+    UTILITIES
+    TRANSPORT
+    ENTERTAINMENT
+}
+
+model SplitSquad {
+    id            String    @id @default(uuid())
+    creatorId     String
+
+    squadName     String
+    squadImageKey String?
+    squadMembers  String[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt()
+
+    @@map("Split Squads")
 }
