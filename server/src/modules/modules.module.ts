@@ -5,6 +5,7 @@ import { GoalsModule } from './goals/goals.module';
 import { WalletModule } from './wallet/wallet.module';
 import { Module, DynamicModule } from '@nestjs/common';
 import { IdentityModule } from './identity/identity.module';
+import { SplitwiseModule } from './splitwise/splitwise.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { DatabaseModule } from '@infrastructure/database/database.module';
 
@@ -24,8 +25,9 @@ const JWTModule: DynamicModule = JwtModule.register({
         GoalsModule,
         BillsModule,
         WalletModule,
-        DatabaseModule,
         IdentityModule,
+        DatabaseModule,
+        SplitwiseModule,
         PreferencesModule,
     ],
 })
