@@ -1,16 +1,17 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
+import { SplitwiseSquad } from '@global/types';
 import { NoData } from '@structural/main/no-data/no-data';
 import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, Users } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { Component, computed, inject, input, output } from '@angular/core';
-import { SplitwiseSquad } from '@global/types';
+import { SquadItem } from "@components/structural/main/squad-item/squad-item";
 
 @Component({
   selector: 'splitwise-squads',
   templateUrl: './squads.html',
-  imports: [LucideAngularModule, NgClass, Button, NoData, FetchError],
+  imports: [LucideAngularModule, NgClass, Button, NoData, FetchError, SquadItem],
 })
 export class SplitwiseSquads {
   // ICONS

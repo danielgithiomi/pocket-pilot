@@ -37,9 +37,11 @@
           [animationDimensions]="animationDimensions"
         />
       } @else {
-        @for (squad of userSquads(); track squad.id) {
-          <p>{{ squad.squadName }}</p>
-        }
+        <div class="flex flex-col gap-4">
+          @for (squad of userSquads(); track squad.id) {
+            <squad-item [squad]="squad" />
+          }
+        </div>
       }
     }
   </div>

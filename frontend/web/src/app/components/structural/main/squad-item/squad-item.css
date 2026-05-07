@@ -1,0 +1,37 @@
+@reference "tailwindcss";
+
+.squad-item {
+  @apply flex flex-row gap-4 items-center justify-between w-full;
+
+  .squad-image {
+    @apply size-16 rounded-full overflow-hidden;
+
+    img {
+      @apply w-full h-full object-cover;
+    }
+
+    p {
+      @apply text-2xl font-semibold;
+    }
+  }
+
+  .squad-content {
+    @apply self-start flex-1 flex flex-col items-start justify-between;
+
+    .squad-name {
+      @apply font-semibold;
+    }
+
+    .squad-members-container {
+      @apply flex flex-row gap-4 flex-wrap;
+    }
+  }
+
+  .squad-options {
+    @apply cursor-pointer hover:bg-(--body-background) px-1 py-2 rounded transition-all duration-250;
+
+    .options-icon {
+      @apply text-(--primary-text);
+    }
+  }
+}

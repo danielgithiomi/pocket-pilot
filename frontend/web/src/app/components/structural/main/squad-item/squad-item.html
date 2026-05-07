@@ -1,0 +1,25 @@
+<div [id]="squadId()" class="squad-item">
+  @let hasImage = squad().squadImageKey;
+  <div class="squad-image" [ngClass]="{ 'grid place-items-center bg-body-background': !hasImage }">
+    @if (!hasImage) {
+      <p>{{ squadInitial() }}</p>
+    } @else {
+      <img [ngSrc]="squad().squadImageKey" [alt]="`${squadId()}-squad-image`" fill priority />
+    }
+  </div>
+
+  <div class="squad-content">
+    <p class="squad-name">{{ squad().squadName }}</p>
+
+    <div class="squad-members-container">
+      @let members = squad().squadMembers;
+      @for (member of members; track member) {
+        <p class="">{{ member }}</p>
+      }
+    </div>
+  </div>
+
+  <div class="squad-options">
+    <lucide-angular name="squad-options" [img]="options" [size]="iconSize" class="" />
+  </div>
+</div>

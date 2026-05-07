@@ -64,7 +64,7 @@ export class SplitwiseSquadDto {
     @Expose()
     @ApiProperty({
         description: 'The members of the squad',
-        example: ['123e4567-e89b-12d3-a456-426614174000'],
+        example: ['joshua', 'michelle', 'julie'],
     })
     squadMembers!: string[];
 
