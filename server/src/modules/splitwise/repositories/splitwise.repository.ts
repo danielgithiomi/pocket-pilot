@@ -9,4 +9,8 @@ export class SplitwiseRepository {
     createNewSplitWiseSquad(userId: string, payload: SplitwiseSquadPayload) {
         return this.db.splitwiseSquad.create({ data: { ...payload, creatorId: userId } });
     }
+
+    getUserSplitwiseSquads(userId: string) {
+        return this.db.splitwiseSquad.findMany({ where: { creatorId: userId } });
+    }
 }

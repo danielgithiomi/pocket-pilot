@@ -1,23 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
+import { ArrayMinSize, IsArray, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
-@Exclude()
 export class SplitwiseSquadPayload {
-    @Expose()
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(3, { message: 'Squad name must be at least 3 characters long' })
+    @MaxLength(25, { message: 'Squad name must be at most 25 characters long' })
     @ApiProperty({
         example: 'My Squad',
         description: 'The name of the squad',
     })
     squadName!: string;
 
-    @Expose()
+    @IsArray()
+    @IsString({ each: true })
+    @ArrayMinSize(1, { message: 'Squad must have at least one member' })
     @ApiProperty({
         description: 'The members of the squad',
         example: ['Daniel', 'Joshua', 'Michelle'],
     })
     squadMembers!: string[];
 
-    @Expose()
+    @IsString()
+    @IsOptional()
     @ApiProperty({
         example: 'squad-image-key',
         description: 'The image key of the squad',

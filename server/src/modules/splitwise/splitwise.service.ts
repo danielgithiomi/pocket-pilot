@@ -17,8 +17,8 @@ export class SplitwiseService {
         return await Promise.resolve(Object.values(SplitCategoryTag).map(formatEnumForFrontend));
     }
 
-    async getUserSplitwiseSquads(): Promise<SplitwiseSquadDto[]> {
-        return await Promise.resolve([]);
+    async getUserSplitwiseSquads(userId: string): Promise<SplitwiseSquadDto[]> {
+        return this.splitwiseRepository.getUserSplitwiseSquads(userId);
     }
 
     async createSplitwiseSquad(userId: string, payload: SplitwiseSquadPayload): Promise<SplitwiseSquadDto> {

@@ -16,9 +16,9 @@ export class SplitwiseController {
     constructor(private readonly splitwiseService: SplitwiseService) {}
 
     @Get('tags')
+    @CacheKey('splitwise:tags')
     @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
-    @CacheKey('splitwise:categories-tags')
     @Public()
     @HttpCode(200)
     @ApiCookieAuth('access_token')
@@ -45,8 +45,8 @@ export class SplitwiseController {
         type: SplitwiseSquadDto,
         description: 'Splitwise squads retrieved successfully',
     })
-    getUserSplitwiseSquads() {
-        return this.splitwiseService.getUserSplitwiseSquads();
+    getUserSplitwiseSquads(@UserInRequest() user: User): Promise<SplitwiseSquadDto[]> {
+        return this.splitwiseService.getUserSplitwiseSquads(user.id);
     }
 
     @Post('squads')
@@ -60,7 +60,10 @@ export class SplitwiseController {
         type: SplitwiseSquadDto,
         description: 'Splitwise squad created successfully',
     })
-    createSplitwiseSquad(@UserInRequest() user: User, @Body() payload: SplitwiseSquadPayload) {
+    createSplitwiseSquad(
+        @UserInRequest() user: User,
+        @Body() payload: SplitwiseSquadPayload,
+    ): Promise<SplitwiseSquadDto> {
         return this.splitwiseService.createSplitwiseSquad(user.id, payload);
     }
 }
