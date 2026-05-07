@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .squad-item {
-  @apply flex flex-row gap-4 items-center justify-between w-full;
+  @apply flex flex-row gap-3 items-center justify-between w-full cursor-default;
 
   .squad-image {
     @apply size-16 rounded-full overflow-hidden;
@@ -16,14 +16,14 @@
   }
 
   .squad-content {
-    @apply self-start flex-1 flex flex-col items-start justify-between;
+    @apply self-start flex-1 flex flex-col items-start justify-between gap-1;
 
     .squad-name {
       @apply font-semibold;
     }
 
     .squad-members-container {
-      @apply flex flex-row gap-4 flex-wrap;
+      @apply flex flex-row gap-2 flex-wrap max-h-[150px] overflow-scroll;
     }
   }
 

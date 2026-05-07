@@ -11,10 +11,10 @@
   <div class="squad-content">
     <p class="squad-name">{{ squad().squadName }}</p>
 
-    <div class="squad-members-container">
+    <div class="squad-members-container no-scrollbar">
       @let members = squad().squadMembers;
       @for (member of members; track member) {
-        <p class="">{{ member }}</p>
+        <squad-member [name]="member" />
       }
     </div>
   </div>

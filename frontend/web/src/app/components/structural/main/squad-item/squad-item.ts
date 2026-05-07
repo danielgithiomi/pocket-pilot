@@ -1,4 +1,5 @@
 import { SplitwiseSquad } from '@global/types';
+import { SquadMember } from '../squad-member/squad-member';
 import { Component, computed, input } from '@angular/core';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { LucideAngularModule, EllipsisVertical } from 'lucide-angular';
@@ -7,7 +8,7 @@ import { LucideAngularModule, EllipsisVertical } from 'lucide-angular';
   selector: 'squad-item',
   styleUrl: './squad-item.css',
   templateUrl: './squad-item.html',
-  imports: [NgOptimizedImage, NgClass, LucideAngularModule],
+  imports: [NgOptimizedImage, NgClass, LucideAngularModule, SquadMember],
 })
 export class SquadItem {
 
