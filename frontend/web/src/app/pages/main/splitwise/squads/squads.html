@@ -17,8 +17,8 @@
     </atom-button>
   </div>
 
-  @let hasError = false;
   @let hasNoData = false;
+  @let hasError = apiError();
   @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
   <div class="card-content" [ngClass]="{ 'flex-1 grid place-items-center': centerContent }">
     @if (isFetchingSquads()) {
@@ -37,7 +37,9 @@
           [animationDimensions]="animationDimensions"
         />
       } @else {
-        <p>Squad Content Goes Here</p>
+        @for (squad of userSquads(); track squad.id) {
+          <p>{{ squad.squadName }}</p>
+        }
       }
     }
   </div>

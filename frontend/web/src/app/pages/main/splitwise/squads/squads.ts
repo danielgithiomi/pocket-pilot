@@ -1,9 +1,11 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { NoData } from '@structural/main/no-data/no-data';
+import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, Users } from 'lucide-angular';
-import { Component, computed, input, output } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
+import { Component, computed, inject, input, output } from '@angular/core';
+import { SplitwiseSquad } from '@global/types';
 
 @Component({
   selector: 'splitwise-squads',
@@ -26,6 +28,14 @@ export class SplitwiseSquads {
   // OUTPUTS
   protected readonly createSquadButtonClickEvent = output<void>();
 
+  // SERVICES
+  private readonly splitwiseService = inject(SplitwiseService);
+
+  // DATA
+  protected readonly squads = this.splitwiseService.getUserSquads();
+
   // COMPUTED
-  protected readonly isFetchingSquads = computed<boolean>(() => false);
+  protected readonly apiError = computed<boolean>(() => !!this.squads.error());
+  protected readonly isFetchingSquads = computed<boolean>(() => this.squads.isLoading());
+  protected readonly userSquads = computed<SplitwiseSquad[]>(() => this.squads.value()?.data || []);
 }

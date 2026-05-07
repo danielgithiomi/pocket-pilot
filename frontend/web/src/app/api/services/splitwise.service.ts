@@ -18,6 +18,8 @@ export class SplitwiseService {
   private readonly resource = inject(SplitwiseResource);
   private readonly errorService = inject(ApiServiceError);
 
+  getUserSquads = () => this.resource.getUserSplitwiseSquads;
+
   createNewUserSquad(payload: SplitwiseSquadPayload): Observable<SplitwiseSquad> {
     return this.mutation.createNewSquad(payload).pipe(
       map((response: IStandardResponse<SplitwiseSquad>) => response.data),
@@ -26,9 +28,5 @@ export class SplitwiseService {
         return EMPTY;
       }),
     );
-  }
-
-  getUserSquads() {
-    return this.resource.getUserSplitwiseSquads;
   }
 }
