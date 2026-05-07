@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { formatToReadable } from '@libs/utils';
-import { Component, computed, input, output } from '@angular/core';
 import { LucideAngularModule, Check } from 'lucide-angular';
+import { Component, computed, input, output } from '@angular/core';
 
 @Component({
   selector: 'squad-member',
@@ -12,6 +12,7 @@ import { LucideAngularModule, Check } from 'lucide-angular';
       (click)="onMemberEventClick.emit(member().memberName)"
       [ngClass]="{
         'cursor-pointer!': isCheckable(),
+        'bg-primary!': inverted() && isActive(),
         'bg-loader-primary! border border-primary': isActive(),
       }"
       class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-2"
@@ -34,6 +35,7 @@ export class SquadMember {
   protected readonly UserCheck = Check;
 
   // INPUTS
+  readonly inverted = input<boolean>(false);
   readonly isCheckable = input<boolean>(true);
   readonly member = input.required<ISquadMember>();
 

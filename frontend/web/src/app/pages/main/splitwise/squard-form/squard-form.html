@@ -16,25 +16,27 @@
       (clearOutput)="createSquadForm.squadName().controlValue.set('')"
     />
 
+    <!-- Member Selection -->
+    <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
+      <p class="text-inverted-text"><span class="text-sm text-expense">*</span>Select Members:</p>
+    </div>
+
     <div class="flex flex-row items-end gap-2 w-full">
-      <atom-input
+      <input
         type="text"
         class="flex-1"
-        [inverted]="true"
-        autocomplete="off"
+        #newMemberInput
+        autocomplete="name"
         id="add-member-name"
-        label="Squad Members"
         placeholder="Eg: John"
-        wrapperClassName="my-0"
-        [formField]="createSquadForm.squadName"
-        (clearOutput)="createSquadForm.squadName().controlValue.set('')"
       />
 
       <atom-button
         id="add-member"
         variant="primary"
-        [disabled]="false"
         class="shadow-none rounded-lg!"
+        [disabled]="!isMemberNameValid()"
+        (clicked)="addNewMemberToPool(newMemberInput.value); newMemberInput.value = ''"
       >
         <div class="w-full h-full grid place-items-center py-[3px]">
           <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize" />
@@ -52,7 +54,7 @@
         <p>You currently don't have any existing members</p>
       } @else {
         @for (member of squadMembersPool(); track member) {
-          <squad-member [member]="member" [isCheckable]="true" />
+          <squad-member [inverted]="true" [member]="member" [isCheckable]="true" />
         }
       }
     </div>

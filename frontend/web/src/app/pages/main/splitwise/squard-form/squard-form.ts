@@ -3,8 +3,9 @@ import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { form } from '@angular/forms/signals';
 import { Form, FormCloseEvent } from '@organisms/form';
+import { ToastService } from '@components/ui/atoms/toast';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
-import { Component, computed, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { SquadMember, ISquadMember } from '@structural/main/squad-member/squad-member';
 import {
   CreateSquadSchema,
@@ -28,7 +29,11 @@ export class SplitwiseSquardForm {
   // OUTPUTS
   readonly closeCreateFormSquadEvent = output<void>();
 
+  // SERVICES
+  private readonly toastService = inject(ToastService);
+
   // STATE SIGNALS
+  protected readonly isMemberNameValid = signal<boolean>(false);
   protected readonly selectedSquadMembers = signal<string[]>([]);
   protected readonly isSubmittingCreateSquadForm = signal<boolean>(false);
 
@@ -58,12 +63,21 @@ export class SplitwiseSquardForm {
 
   // METHODS
   addNewMemberToPool(newMember: string) {
-    console.log('Add new member to pool', newMember);
+    if (!newMember.trim()) {
+      this.toastService.show({
+        variant: 'error',
+        title: 'Empty Member Name',
+        details: 'The member name cannot be empty',
+      });
+      return;
+    }
+
     this.selectedSquadMembers.update((members) => [...members, newMember]);
   }
 
   resetCreateSquadForm() {
     this.selectedSquadMembers.set([]);
+    this.isMemberNameValid.set(false);
     console.log('Reset create squad form');
   }
 
