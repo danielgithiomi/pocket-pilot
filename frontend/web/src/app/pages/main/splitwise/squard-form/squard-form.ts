@@ -10,7 +10,7 @@ import {
   CreateSquadSchema,
   initialCreateSquadData,
   createSquadValidationSchema,
-} from './squad-form-types';
+} from './squad-form.types';
 
 @Component({
   selector: 'splitwise-squard-form',
@@ -23,12 +23,13 @@ export class SplitwiseSquardForm {
   protected readonly AddUserIcon = UserPlus;
 
   // INPUTS
-  readonly squadMembers = input.required<string[]>();
+  readonly existingSquadMembers = input.required<string[]>();
 
   // OUTPUTS
   readonly closeCreateFormSquadEvent = output<void>();
 
   // STATE SIGNALS
+  protected readonly selectedSquadMembers = signal<string[]>([]);
   protected readonly isSubmittingCreateSquadForm = signal<boolean>(false);
 
   // FORM
@@ -36,12 +37,33 @@ export class SplitwiseSquardForm {
   protected readonly createSquadForm = form(this.createSquadFormModel, createSquadValidationSchema);
 
   // COMPUTED
-  protected readonly checkableSquadMembers = computed<ISquadMember[]>(() =>
-    this.squadMembers().map((member) => ({ memberName: member, isChecked: false })),
+  protected readonly formattedExistingMembers = computed<ISquadMember[]>(() =>
+    this.existingSquadMembers().map((member) => ({
+      memberName: member,
+      isChecked: this.selectedSquadMembers().includes(member),
+    })),
   );
 
+  protected readonly squadMembersPool = computed<ISquadMember[]>(() => {
+    const selectedMembers = this.selectedSquadMembers();
+    const selectedExisitingMembers = this.formattedExistingMembers();
+
+    const localMembers = selectedMembers.map((member) => ({
+      memberName: member,
+      isChecked: true,
+    }));
+
+    return [...selectedExisitingMembers, ...localMembers];
+  });
+
   // METHODS
+  addNewMemberToPool(newMember: string) {
+    console.log('Add new member to pool', newMember);
+    this.selectedSquadMembers.update((members) => [...members, newMember]);
+  }
+
   resetCreateSquadForm() {
+    this.selectedSquadMembers.set([]);
     console.log('Reset create squad form');
   }
 

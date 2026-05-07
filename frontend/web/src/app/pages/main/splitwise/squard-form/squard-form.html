@@ -43,7 +43,7 @@
     </div>
 
     <!-- Squad Member Container -->
-    @let existingMembersCount = squadMembers().length;
+    @let existingMembersCount = existingSquadMembers().length;
     <div
       class="min-h-40 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row gap-2 p-2"
       [ngClass]="{ 'grid! place-items-center!': existingMembersCount === 0 }"
@@ -51,7 +51,7 @@
       @if (existingMembersCount === 0) {
         <p>You currently don't have any existing members</p>
       } @else {
-        @for (member of checkableSquadMembers(); track member) {
+        @for (member of squadMembersPool(); track member) {
           <squad-member [member]="member" [isCheckable]="true" />
         }
       }

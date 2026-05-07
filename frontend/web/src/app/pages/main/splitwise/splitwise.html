@@ -33,7 +33,7 @@
 
 @if (isCreateSquadFormOpen()) {
   <splitwise-squard-form
-    [squadMembers]="allSquadMembers()"
+    [existingSquadMembers]="allSquadMembers()"
     (closeCreateFormSquadEvent)="handleCreateSquadFormClose()"
   />
 }
