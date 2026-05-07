@@ -1,9 +1,11 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
+import { NgClass } from '@angular/common';
 import { form } from '@angular/forms/signals';
 import { Form, FormCloseEvent } from '@organisms/form';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
-import { Component, input, output, signal } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
+import { SquadMember, ISquadMember } from '@structural/main/squad-member/squad-member';
 import {
   CreateSquadSchema,
   initialCreateSquadData,
@@ -13,7 +15,7 @@ import {
 @Component({
   selector: 'splitwise-squard-form',
   templateUrl: './squard-form.html',
-  imports: [LucideAngularModule, Form, Button, Input],
+  imports: [LucideAngularModule, Form, Button, Input, SquadMember, NgClass],
 })
 export class SplitwiseSquardForm {
   // ICONS
@@ -32,6 +34,11 @@ export class SplitwiseSquardForm {
   // FORM
   protected readonly createSquadFormModel = signal<CreateSquadSchema>(initialCreateSquadData);
   protected readonly createSquadForm = form(this.createSquadFormModel, createSquadValidationSchema);
+
+  // COMPUTED
+  protected readonly checkableSquadMembers = computed<ISquadMember[]>(() =>
+    this.squadMembers().map((member) => ({ memberName: member, isChecked: false })),
+  );
 
   // METHODS
   resetCreateSquadForm() {

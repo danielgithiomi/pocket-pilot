@@ -1,7 +1,6 @@
 import { NgClass } from '@angular/common';
 import { formatToReadable } from '@libs/utils';
-import { ISquadMember } from './squad-member.types';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { LucideAngularModule, Check } from 'lucide-angular';
 
 @Component({
@@ -10,8 +9,9 @@ import { LucideAngularModule, Check } from 'lucide-angular';
   template: `
     <div
       [id]="memberId()"
+      (click)="onMemberEventClick.emit(member().memberName)"
       [ngClass]="{
-        'cursor-pointer': isCheckable(),
+        'cursor-pointer!': isCheckable(),
         'bg-loader-primary! border border-primary': isActive(),
       }"
       class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-2"
@@ -22,7 +22,7 @@ import { LucideAngularModule, Check } from 'lucide-angular';
 
       <p class="text-sm">{{ formattedName() }}</p>
 
-      @if (isCheckable()) {
+      @if (isActive()) {
         <lucide-icon name="member-cheched-icon" [img]="UserCheck" [size]="iconSize" />
       }
     </div>
@@ -30,17 +30,29 @@ import { LucideAngularModule, Check } from 'lucide-angular';
 })
 export class SquadMember {
   // ICONS
-  protected readonly iconSize = 12;
+  protected readonly iconSize = 10;
   protected readonly UserCheck = Check;
 
   // INPUTS
   readonly isCheckable = input<boolean>(true);
   readonly member = input.required<ISquadMember>();
 
+  // OUTPUTS
+  readonly onMemberEventClick = output<string>();
+
   // COMPUTED
   protected readonly isChecked = computed<boolean>(() => this.member().isChecked);
   protected readonly memberId = computed<string>(() => `member-${this.member().memberName}`);
   protected readonly isActive = computed<boolean>(() => this.isCheckable() && this.isChecked());
-  protected readonly formattedName = computed<string>(() => formatToReadable(this.member().memberName));
-  protected readonly initial = computed<string>(() => this.member().memberName.charAt(0).toUpperCase());
+  protected readonly formattedName = computed<string>(() =>
+    formatToReadable(this.member().memberName),
+  );
+  protected readonly initial = computed<string>(() =>
+    this.member().memberName.charAt(0).toUpperCase(),
+  );
+}
+
+export interface ISquadMember {
+  memberName: string;
+  isChecked: boolean;
 }

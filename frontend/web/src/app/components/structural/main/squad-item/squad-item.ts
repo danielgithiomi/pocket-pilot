@@ -2,7 +2,7 @@ import { SplitwiseSquad } from '@global/types';
 import { SquadMember } from '../squad-member/squad-member';
 import { Component, computed, input } from '@angular/core';
 import { NgClass, NgOptimizedImage } from '@angular/common';
-import { ISquadMember } from '../squad-member/squad-member.types';
+import { ISquadMember } from '../squad-member/squad-member';
 import { LucideAngularModule, EllipsisVertical } from 'lucide-angular';
 
 @Component({
@@ -37,4 +37,9 @@ export class SquadItem {
       memberName: member,
     }));
   });
+
+  // METHODS
+  protected handleOnMemberClick(memberName: string) {
+    console.log('Clicked member: ', memberName);
+  }
 }

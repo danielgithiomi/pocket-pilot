@@ -1,7 +1,8 @@
 import { Button } from '@atoms/button';
 import { SplitwiseSquads } from './squads/squads';
-import { Component, computed, signal } from '@angular/core';
+import { SplitwiseService } from '@api/splitwise.service';
 import { SplitwiseSquardForm } from './squard-form/squard-form';
+import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListPlus, Users } from 'lucide-angular';
 
 @Component({
@@ -19,8 +20,19 @@ export class Splitwise {
   // SIGNAL STATES
   protected readonly isCreateSquadFormOpen = signal<boolean>(false);
 
+  // SERVICES
+  protected readonly splitwiseService = inject(SplitwiseService);
+
+  // DATA
+  protected readonly userSquads = this.splitwiseService.getUserSquads();
+
   // COMPUTED
   protected isLoadingResources = computed<boolean>(() => false);
+  protected allSquadMembers = computed<string[]>(() => {
+    const squads = this.userSquads.value()?.data;
+    if (!squads) return [];
+    return squads.flatMap((squad) => squad.squadMembers);
+  });
 
   // METHODS
   protected handleCreateSquadFormClose() {
