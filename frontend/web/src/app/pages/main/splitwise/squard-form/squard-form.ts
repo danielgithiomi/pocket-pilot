@@ -1,7 +1,9 @@
+import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { form } from '@angular/forms/signals';
 import { Form, FormCloseEvent } from '@organisms/form';
-import { Component, output, signal } from '@angular/core';
+import { LucideAngularModule, UserPlus } from 'lucide-angular';
+import { Component, input, output, signal } from '@angular/core';
 import {
   CreateSquadSchema,
   initialCreateSquadData,
@@ -11,9 +13,16 @@ import {
 @Component({
   selector: 'splitwise-squard-form',
   templateUrl: './squard-form.html',
-  imports: [Form, Button],
+  imports: [LucideAngularModule, Form, Button, Input],
 })
 export class SplitwiseSquardForm {
+  // ICONS
+  protected readonly iconSize: number = 18;
+  protected readonly AddUserIcon = UserPlus;
+
+  // INPUTS
+  readonly squadMembers = input.required<string[]>();
+
   // OUTPUTS
   readonly closeCreateFormSquadEvent = output<void>();
 

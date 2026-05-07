@@ -3,7 +3,7 @@ import { input, output, computed, Component } from '@angular/core';
 
 @Component({
   selector: 'atom-button',
-  standalone: true,
+  styleUrl: './button.css',
   template: `
     <button
       [type]="type()"
@@ -30,7 +30,6 @@ import { input, output, computed, Component } from '@angular/core';
       </span>
     </button>
   `,
-  styleUrl: './button.css',
 })
 export class Button {
   // =========================

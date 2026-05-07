@@ -4,7 +4,47 @@
   (closeForm)="handleCreateSquadFormClose($event)"
   description="People you regularly share expenses with."
 >
-  <form id="create-squad-form" slot="content" (submit)="handleCreateSquadFormSubmit($event)"></form>
+  <form id="create-squad-form" slot="content" (submit)="handleCreateSquadFormSubmit($event)">
+    <atom-input
+      type="text"
+      id="squad-name"
+      [inverted]="true"
+      autocomplete="off"
+      label="Squad Name"
+      placeholder="Eg: Foodies"
+      [formField]="createSquadForm.squadName"
+      (clearOutput)="createSquadForm.squadName().controlValue.set('')"
+    />
+
+    <div class="flex flex-row items-end gap-2 w-full">
+      <atom-input
+        type="text"
+        class="flex-1"
+        [inverted]="true"
+        autocomplete="off"
+        id="add-member-name"
+        label="Squad Members"
+        placeholder="Eg: John"
+        wrapperClassName="my-0"
+        [formField]="createSquadForm.squadName"
+        (clearOutput)="createSquadForm.squadName().controlValue.set('')"
+      />
+
+      <atom-button
+        id="add-member"
+        variant="primary"
+        [disabled]="false"
+        class="shadow-none rounded-lg!"
+      >
+        <div class="w-full h-full grid place-items-center py-[3px]">
+          <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize" />
+        </div>
+      </atom-button>
+    </div>
+
+    <!-- Squad Member Container -->
+    <div class="min-h-40 border-2 border-dashed border-primary rounded-lg mt-4"></div>
+  </form>
 
   <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
     <atom-button

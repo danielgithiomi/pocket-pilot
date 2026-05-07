@@ -12,9 +12,8 @@
     <p class="squad-name">{{ squad().squadName }}</p>
 
     <div class="squad-members-container no-scrollbar">
-      @let members = squad().squadMembers;
-      @for (member of members; track member) {
-        <squad-member [name]="member" />
+      @for (member of squadMembers(); track member) {
+        <squad-member [member]="member" [isCheckable]="true" />
       }
     </div>
   </div>

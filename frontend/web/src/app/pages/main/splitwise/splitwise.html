@@ -32,5 +32,8 @@
 </section>
 
 @if (isCreateSquadFormOpen()) {
-  <splitwise-squard-form (closeCreateFormSquadEvent)="handleCreateSquadFormClose()" />
+  <splitwise-squard-form
+    [squadMembers]="[]"
+    (closeCreateFormSquadEvent)="handleCreateSquadFormClose()"
+  />
 }
