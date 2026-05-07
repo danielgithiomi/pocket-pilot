@@ -31,7 +31,7 @@ import { Component, computed, input, output } from '@angular/core';
 })
 export class SquadMember {
   // ICONS
-  protected readonly iconSize = 10;
+  protected readonly iconSize = 12;
   protected readonly UserCheck = Check;
 
   // INPUTS

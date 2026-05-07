@@ -18,7 +18,7 @@
 
     <!-- Member Selection -->
     <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
-      <p class="text-inverted-text"><span class="text-sm text-expense">*</span>Select Members:</p>
+      <p class="text-inverted-text"><span class="text-sm text-expense">*</span>Select Squad Members:</p>
     </div>
 
     <div class="flex flex-row items-end gap-2 w-full">
@@ -26,9 +26,10 @@
         type="text"
         class="flex-1"
         #newMemberInput
-        autocomplete="name"
+        autocomplete="off"
         id="add-member-name"
         placeholder="Eg: John"
+        (input)="validateMemberName(newMemberInput.value)"
       />
 
       <atom-button
@@ -53,8 +54,13 @@
       @if (existingMembersCount === 0) {
         <p>You currently don't have any existing members</p>
       } @else {
-        @for (member of squadMembersPool(); track member) {
-          <squad-member [inverted]="true" [member]="member" [isCheckable]="true" />
+        @for (member of squadMembersPool(); track member.memberName) {
+          <squad-member
+            [inverted]="true"
+            [member]="member"
+            [isCheckable]="true"
+            (onMemberEventClick)="addNewMemberToPool($event)"
+          />
         }
       }
     </div>
