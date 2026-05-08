@@ -31,11 +31,12 @@ export class Splitwise {
   protected allSquadMembers = computed<string[]>(() => {
     const squads = this.userSquads.value()?.data;
     if (!squads) return [];
-    return squads.flatMap((squad) => squad.squadMembers);
+    return Array.from(new Set(squads.flatMap((squad) => squad.squadMembers)));
   });
 
   // METHODS
-  protected handleCreateSquadFormClose() {
+  protected handleCreateSquadFormClose(reload: boolean) {
+    if (reload) this.userSquads.reload();
     this.isCreateSquadFormOpen.set(false);
   }
 }

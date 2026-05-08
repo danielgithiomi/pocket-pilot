@@ -4,7 +4,7 @@
   @apply flex flex-row gap-3 items-center justify-between w-full cursor-default;
 
   .squad-image {
-    @apply size-16 rounded-full overflow-hidden;
+    @apply size-16 rounded-full overflow-hidden self-start;
 
     img {
       @apply w-full h-full object-cover;

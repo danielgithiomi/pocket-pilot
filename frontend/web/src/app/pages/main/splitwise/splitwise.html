@@ -34,6 +34,6 @@
 @if (isCreateSquadFormOpen()) {
   <splitwise-squard-form
     [existingSquadMembers]="allSquadMembers()"
-    (closeCreateFormSquadEvent)="handleCreateSquadFormClose()"
+    (closeCreateFormSquadEvent)="handleCreateSquadFormClose($event)"
   />
 }

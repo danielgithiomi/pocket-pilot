@@ -29,7 +29,7 @@ export class SplitwiseSquardForm {
   readonly existingSquadMembers = input.required<string[]>();
 
   // OUTPUTS
-  readonly closeCreateFormSquadEvent = output<void>();
+  readonly closeCreateFormSquadEvent = output<boolean>();
 
   // SERVICES
   private readonly toastService = inject(ToastService);
@@ -119,7 +119,7 @@ export class SplitwiseSquardForm {
 
   handleCreateSquadFormClose(event: FormCloseEvent) {
     if (event === 'icon') this.resetCreateSquadForm();
-    this.closeCreateFormSquadEvent.emit();
+    this.closeCreateFormSquadEvent.emit(false);
   }
 
   // SUBMISSIONS
@@ -151,7 +151,7 @@ export class SplitwiseSquardForm {
           });
 
           this.resetCreateSquadForm();
-          this.closeCreateFormSquadEvent.emit();
+          this.closeCreateFormSquadEvent.emit(true);
         },
         complete: () => {
           this.isSubmittingCreateSquadForm.set(false);
