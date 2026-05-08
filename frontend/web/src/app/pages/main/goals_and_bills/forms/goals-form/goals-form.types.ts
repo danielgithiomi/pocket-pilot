@@ -1,5 +1,4 @@
 import { GoalCategoryEnum } from '@global/enums';
-import { addOneMonthFromDate } from '@libs/utils';
 import { required, schema, validate } from '@angular/forms/signals';
 
 // TYPES
@@ -24,21 +23,6 @@ export type NewGoalSchema = {
   monthlyContribution: number | null;
   targetCompletionStrategy: TargetCompletionStrategy | null;
 };
-
-// export const INITIAL_FORM_STATE: NewGoalSchema = {
-//   // Step 1
-//   startDate: new Date(),
-//   targetCompletionStrategy: null,
-
-//   // Step 2
-//   name: '',
-//   currency: '',
-//   category: '',
-//   description: '',
-//   targetAmount: null,
-//   monthlyContribution: null,
-//   endDate: addOneMonthFromDate(new Date()),
-// };
 
 export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
   // Name

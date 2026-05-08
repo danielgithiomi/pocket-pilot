@@ -32,6 +32,8 @@ export class Select {
   options = input.required<SelectOption[]>();
   formField = input.required<FieldTree<string, string>>();
 
+  includeLabel = input<boolean>(true);
+
   /* ICONS */
   readonly iconSize = 18;
   readonly ChevronDown = ChevronDown;

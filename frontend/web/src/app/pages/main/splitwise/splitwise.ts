@@ -1,6 +1,8 @@
 import { Button } from '@atoms/button';
+import { SplitwiseSquad } from '@global/types';
 import { SplitwiseSquads } from './squads/squads';
 import { SplitwiseService } from '@api/splitwise.service';
+import { SplitwiseSplitForm } from './split-form/split-form';
 import { SplitwiseSquardForm } from './squard-form/squard-form';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListPlus, Users } from 'lucide-angular';
@@ -9,7 +11,7 @@ import { LucideAngularModule, ListPlus, Users } from 'lucide-angular';
   selector: 'app-splitwise',
   styleUrl: './splitwise.css',
   templateUrl: './splitwise.html',
-  imports: [Button, LucideAngularModule, SplitwiseSquads, SplitwiseSquardForm],
+  imports: [Button, LucideAngularModule, SplitwiseSquads, SplitwiseSquardForm, SplitwiseSplitForm],
 })
 export class Splitwise {
   // ICONS
@@ -18,6 +20,7 @@ export class Splitwise {
   protected readonly Plus = ListPlus;
 
   // SIGNAL STATES
+  protected readonly isAddSplitFormOpen = signal<boolean>(false);
   protected readonly isCreateSquadFormOpen = signal<boolean>(false);
 
   // SERVICES
@@ -27,12 +30,11 @@ export class Splitwise {
   protected readonly userSquads = this.splitwiseService.getUserSquads();
 
   // COMPUTED
-  protected isLoadingResources = computed<boolean>(() => false);
-  protected allSquadMembers = computed<string[]>(() => {
-    const squads = this.userSquads.value()?.data;
-    if (!squads) return [];
-    return Array.from(new Set(squads.flatMap((squad) => squad.squadMembers)));
-  });
+  protected isLoadingResources = computed<boolean>(() => this.userSquads.isLoading());
+  protected squads = computed<SplitwiseSquad[]>(() => this.userSquads.value()?.data || []);
+  protected allSquadMembers = computed<string[]>(() =>
+    Array.from(new Set(this.squads().flatMap((squad) => squad.squadMembers))),
+  );
 
   // METHODS
   protected handleCreateSquadFormClose(reload: boolean) {

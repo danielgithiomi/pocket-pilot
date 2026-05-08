@@ -2,7 +2,12 @@
   <div class="page-header">
     <h1 class="page-title">Splitwise</h1>
 
-    <atom-button id="add-split" variant="primary" [disabled]="isLoadingResources()">
+    <atom-button
+      id="add-split"
+      variant="primary"
+      [disabled]="isLoadingResources()"
+      (clicked)="isAddSplitFormOpen.set(true)"
+    >
       <div class="w-full flex flex-row items-center justify-between gap-4">
         <lucide-icon name="create-split" [img]="Plus" [size]="iconSize"></lucide-icon>
         <span class="hidden sm:block">Add Split</span>
@@ -36,4 +41,8 @@
     [existingSquadMembers]="allSquadMembers()"
     (closeCreateFormSquadEvent)="handleCreateSquadFormClose($event)"
   />
+}
+
+@if (isAddSplitFormOpen()) {
+  <splitwise-split-form [squads]="squads()" [isSplitFormOpen]="isAddSplitFormOpen()" />
 }
