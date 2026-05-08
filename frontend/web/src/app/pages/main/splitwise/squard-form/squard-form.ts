@@ -3,7 +3,9 @@ import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
+import { SplitwiseSquad } from '@global/types';
 import { Form, FormCloseEvent } from '@organisms/form';
+import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { SquadMember, ISquadMember } from '@structural/main/squad-member/squad-member';
@@ -31,6 +33,7 @@ export class SplitwiseSquardForm {
 
   // SERVICES
   private readonly toastService = inject(ToastService);
+  private readonly splitwiseService = inject(SplitwiseService);
 
   // STATE SIGNALS
   protected readonly isMemberNameValid = signal<boolean>(false);
@@ -61,7 +64,7 @@ export class SplitwiseSquardForm {
         isChecked: true,
       }));
 
-    return [...selectedExisitingMembers, ...localMembers];
+    return [...selectedExisitingMembers, ...localMembers].reverse();
   });
 
   // METHODS
@@ -112,7 +115,6 @@ export class SplitwiseSquardForm {
   resetCreateSquadForm() {
     this.selectedSquadMembers.set([]);
     this.isMemberNameValid.set(false);
-    console.log('Reset create squad form');
   }
 
   handleCreateSquadFormClose(event: FormCloseEvent) {
@@ -120,8 +122,41 @@ export class SplitwiseSquardForm {
     this.closeCreateFormSquadEvent.emit();
   }
 
+  // SUBMISSIONS
   handleCreateSquadFormSubmit(event: Event) {
     event.preventDefault();
-    console.log('Create squad form submitted');
+
+    // Set the members to the form field
+    if (!this.selectedSquadMembers() || this.selectedSquadMembers().length === 0) {
+      this.toastService.show({
+        variant: 'warning',
+        title: 'Squad cannot be empty!',
+        details: 'A squad must have at least one member.',
+      });
+      return;
+    }
+
+    this.isSubmittingCreateSquadForm.set(true);
+    this.createSquadForm.squadMembers().controlValue.set(this.selectedSquadMembers());
+
+    const { ...payload } = this.createSquadFormModel();
+
+    setTimeout(() => {
+      this.splitwiseService.createNewUserSquad(payload).subscribe({
+        next: (response: SplitwiseSquad) => {
+          this.toastService.show({
+            variant: 'success',
+            title: 'Squad created successfully!',
+            details: `Your [${response.squadName}] squad has been created successfully.`,
+          });
+
+          this.resetCreateSquadForm();
+          this.closeCreateFormSquadEvent.emit();
+        },
+        complete: () => {
+          this.isSubmittingCreateSquadForm.set(false);
+        },
+      });
+    }, 2000);
   }
 }

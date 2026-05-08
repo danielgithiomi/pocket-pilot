@@ -18,7 +18,9 @@
 
     <!-- Member Selection -->
     <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
-      <p class="text-inverted-text"><span class="text-sm text-expense">*</span>Select Squad Members:</p>
+      <p class="text-inverted-text">
+        <span class="text-sm text-expense">*</span>Select Squad Members:
+      </p>
     </div>
 
     <div class="flex flex-row items-end gap-2 w-full">
@@ -36,7 +38,7 @@
         id="add-member"
         variant="primary"
         class="shadow-none rounded-lg!"
-        [disabled]="!isMemberNameValid()"
+        [disabled]="!isMemberNameValid() || isSubmittingCreateSquadForm()"
         (clicked)="addNewMemberToPool(newMemberInput.value); newMemberInput.value = ''"
       >
         <div class="w-full h-full grid place-items-center py-[3px]">
@@ -46,13 +48,13 @@
     </div>
 
     <!-- Squad Member Container -->
-    @let existingMembersCount = existingSquadMembers().length;
+    @let memberPoolCount = squadMembersPool().length;
     <div
-      class="min-h-40 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row gap-2 p-2"
-      [ngClass]="{ 'grid! place-items-center!': existingMembersCount === 0 }"
+      class="h-40 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+      [ngClass]="{ 'grid! place-items-center!': memberPoolCount === 0 }"
     >
-      @if (existingMembersCount === 0) {
-        <p>You currently don't have any existing members</p>
+      @if (memberPoolCount === 0) {
+        <p class="text-xs text-inverted-text">You don't have any existing members</p>
       } @else {
         @for (member of squadMembersPool(); track member.memberName) {
           <squad-member

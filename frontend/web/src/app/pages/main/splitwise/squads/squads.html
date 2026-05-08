@@ -17,8 +17,8 @@
     </atom-button>
   </div>
 
-  @let hasNoData = false;
   @let hasError = apiError();
+  @let hasNoData = userSquads().length === 0;
   @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
   <div class="card-content" [ngClass]="{ 'flex-1 grid place-items-center': centerContent }">
     @if (isFetchingSquads()) {
