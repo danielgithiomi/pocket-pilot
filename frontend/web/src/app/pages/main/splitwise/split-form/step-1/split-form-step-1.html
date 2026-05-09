@@ -1,0 +1,83 @@
+<atom-input
+  type="text"
+  id="split-name"
+  [inverted]="true"
+  autocomplete="off"
+  label="Event Name"
+  placeholder="Eg: Drinks at Divino"
+  [formField]="formModel().eventName"
+  (clearOutput)="formModel().eventName().controlValue.set('')"
+/>
+
+<organism-date-picker
+  [required]="true"
+  [inverted]="true"
+  label="Event Date"
+  id="event-split-date"
+  wrapperClassName="pt-0!"
+  placeholder="Select a date"
+  [showClearOutputIcon]="false"
+  [formField]="formModel().eventDate"
+/>
+
+<!-- Member Selection -->
+<div class="w-full flex flex-col gap-1.5 text-[0.875rem] my-2">
+  <p class="text-inverted-text"><span class="text-expense">*</span>People Present:</p>
+
+  <atom-select
+    [inverted]="true"
+    id="squad-options"
+    label="Select a squad"
+    [includeLabel]="false"
+    wrapperClassName="my-0!"
+    [options]="squadOptions()"
+    [formField]="formModel().squadName"
+    placeholder="Pick from an existing squad"
+  />
+</div>
+
+@if (isSquadCustom()) {
+  <div class="flex flex-row items-end gap-2 w-full">
+    <input
+      type="text"
+      class="flex-1"
+      #customMemberInput
+      autocomplete="off"
+      id="add-member-name"
+      placeholder="Eg: John"
+      (input)="validateMemberName(customMemberInput.value)"
+    />
+
+    <atom-button
+      id="add-member"
+      variant="primary"
+      class="shadow-none rounded-lg!"
+      [disabled]="!isMemberNameValid() || isSubmittingForm()"
+      (clicked)="addNewMemberToPool(customMemberInput.value); customMemberInput.value = ''"
+    >
+      <div class="w-full h-full grid place-items-center py-[3px]">
+        <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize()" />
+      </div>
+    </atom-button>
+  </div>
+}
+
+<!-- Squad Member Container -->
+@let splitMembersCount = formattedSplitMembers().length;
+<div
+  class="h-20 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+  [ngClass]="{ 'grid! place-items-center!': splitMembersCount === 0 }"
+>
+  @if (splitMembersCount === 0) {
+    <p class="text-xs text-inverted-text">Add members to split the bill</p>
+  } @else {
+    @for (member of formattedSplitMembers(); track member.memberName) {
+      <squad-member
+        [inverted]="true"
+        [member]="member"
+        [isCheckable]="true"
+        (onMemberEventClick)="toggleMemberChecked($event)"
+      />
+    }
+  }
+</div>
