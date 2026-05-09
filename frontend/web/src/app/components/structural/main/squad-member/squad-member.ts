@@ -15,16 +15,16 @@ import { Component, computed, input, output } from '@angular/core';
         'bg-primary!': inverted() && isActive(),
         'bg-loader-primary! border border-primary': isActive(),
       }"
-      class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-1"
+      class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-1.5"
     >
       <div class="size-5 bg-body-background grid place-items-center rounded-full">
         <p class="text-[0.725rem] font-semibold">{{ initial() }}</p>
       </div>
 
-      <p class="text-xs">{{ formattedName() }}</p>
+      <p class="text-xs text-white font-semibold">{{ formattedName() }}</p>
 
       @if (isActive()) {
-        <lucide-icon name="member-cheched-icon" [img]="UserCheck" [size]="iconSize" />
+        <lucide-icon name="member-checked-icon" [img]="UserCheck" [size]="iconSize" />
       }
     </div>
   `,

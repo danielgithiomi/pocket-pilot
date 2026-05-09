@@ -44,5 +44,9 @@
 }
 
 @if (isAddSplitFormOpen()) {
-  <splitwise-split-form [squads]="squads()" [isSplitFormOpen]="isAddSplitFormOpen()" />
+  <splitwise-split-form
+    [squads]="squads()"
+    [isSplitFormOpen]="isAddSplitFormOpen()"
+    (closeSplitFormEvent)="handleSplitFormClose($event)"
+  />
 }

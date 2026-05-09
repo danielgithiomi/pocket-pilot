@@ -20,7 +20,10 @@
   @let hasError = apiError();
   @let hasNoData = userSquads().length === 0;
   @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
-  <div class="card-content" [ngClass]="{ 'flex-1 grid place-items-center': centerContent }">
+  <div
+    class="card-content overflow-y-scroll no-scrollbar mt-4 mb-2 h-full"
+    [ngClass]="{ 'flex-1 grid place-items-center': centerContent }"
+  >
     @if (isFetchingSquads()) {
       <div class="dashboard-card-loader"></div>
     } @else {
@@ -37,7 +40,7 @@
           [animationDimensions]="animationDimensions"
         />
       } @else {
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-6">
           @for (squad of userSquads(); track squad.id) {
             <squad-item [squad]="squad" />
           }

@@ -320,7 +320,7 @@ main {
 
     input,
     select {
-      @apply w-full bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
+      @apply w-full bg-alternate-background text-[0.875rem] focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
     }
 
     input::placeholder {

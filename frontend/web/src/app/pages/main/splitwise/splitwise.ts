@@ -37,6 +37,11 @@ export class Splitwise {
   );
 
   // METHODS
+  protected handleSplitFormClose(reload: boolean) {
+    if (reload) this.userSquads.reload();
+    this.isAddSplitFormOpen.set(false);
+  }
+
   protected handleCreateSquadFormClose(reload: boolean) {
     if (reload) this.userSquads.reload();
     this.isCreateSquadFormOpen.set(false);
