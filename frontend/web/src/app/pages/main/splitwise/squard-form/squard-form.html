@@ -41,7 +41,7 @@
         [disabled]="!isMemberNameValid() || isSubmittingCreateSquadForm()"
         (clicked)="addNewMemberToPool(newMemberInput.value); newMemberInput.value = ''"
       >
-        <div class="w-full h-full grid place-items-center py-[3px]">
+        <div class="w-full h-full grid place-items-center py-[2px]">
           <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize" />
         </div>
       </atom-button>
@@ -50,7 +50,7 @@
     <!-- Squad Member Container -->
     @let memberPoolCount = squadMembersPool().length;
     <div
-      class="h-40 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+      class="h-22.5 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
       [ngClass]="{ 'grid! place-items-center!': memberPoolCount === 0 }"
     >
       @if (memberPoolCount === 0) {
@@ -86,7 +86,11 @@
       form="create-squad-form"
       id="submit-create-squad-form"
       [isLoading]="isSubmittingCreateSquadForm()"
-      [disabled]="createSquadForm().invalid() || isSubmittingCreateSquadForm()"
+      [disabled]="
+        createSquadForm().invalid() ||
+        isSubmittingCreateSquadForm() ||
+        selectedSquadMembers().length == 0
+      "
     />
   </div>
 </organism-form>

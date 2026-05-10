@@ -55,7 +55,7 @@
       [disabled]="!isMemberNameValid() || isSubmittingForm()"
       (clicked)="addNewMemberToPool(customMemberInput.value); customMemberInput.value = ''"
     >
-      <div class="w-full h-full grid place-items-center py-[3px]">
+      <div class="w-full h-full grid place-items-center py-[1.5px]">
         <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize()" />
       </div>
     </atom-button>
@@ -69,7 +69,13 @@
   [ngClass]="{ 'grid! place-items-center!': splitMembersCount === 0 }"
 >
   @if (splitMembersCount === 0) {
-    <p class="text-xs text-inverted-text">Add members to split the bill</p>
+    <p class="text-xs text-inverted-text">
+      {{
+        isSquadCustom()
+          ? 'Add members to split the bill with.'
+          : 'Select a squad to split the bill with.'
+      }}
+    </p>
   } @else {
     @for (member of formattedSplitMembers(); track member.memberName) {
       <squad-member

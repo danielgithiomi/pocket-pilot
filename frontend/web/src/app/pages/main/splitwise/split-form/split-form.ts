@@ -1,13 +1,10 @@
 import { Button } from '@atoms/button';
-import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { SplitwiseSquad } from '@global/types';
 import { Form, FormCloseEvent } from '@organisms/form';
-import { SelectOption } from '@atoms/select/select.types';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
-import { ISquadMember } from '@structural/main/squad-member/squad-member';
-import { ChevronsRight, LucideAngularModule, UserPlus } from 'lucide-angular';
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { ChevronsRight, LucideAngularModule } from 'lucide-angular';
+import { Component, computed, input, output, signal } from '@angular/core';
 import {
   SplitFormSchema,
   InitialSplitFormState,
@@ -33,9 +30,6 @@ export class SplitwiseSplitForm {
 
   // SIGNAL STATES
   protected readonly splitFormStep = signal<1 | 2 | 3>(1);
-
-  private readonly splitMembers = signal<string[]>([]);
-  protected readonly selectedSquad = signal<string>('');
   protected readonly isSubmittingSplitForm = signal<boolean>(false);
   private readonly memberCheckedState = signal<Record<string, boolean>>({});
   protected readonly selectedMembers = computed<string[]>(() => {
@@ -43,28 +37,17 @@ export class SplitwiseSplitForm {
     return Object.keys(checkedState).filter((member) => checkedState[member]);
   });
 
-  // SERVICES
-  private readonly toastService = inject(ToastService);
-
-  // COMPUTED
-  
-
-  // DATA
-
   // FORM
   protected readonly splitFormModel = signal<SplitFormSchema>(InitialSplitFormState);
   protected readonly splitForm = form(this.splitFormModel, SplitFormValidationSchema);
 
   // METHODS
-  protected goToNextStep(step: 1 | 2 | 3) {
-    this.splitFormStep.set(step);
-  }
-
-  protected resetSplitForm() {
+  protected goToNextStep = (step: 1 | 2 | 3) => this.splitFormStep.set(step);
+  protected resetSplitForm = () => {
     this.splitForm().reset();
     this.splitFormStep.set(1);
     this.splitFormModel.set(InitialSplitFormState);
-  }
+  };
 
   protected handleSplitFormClose(event: FormCloseEvent) {
     if (event === 'icon') this.resetSplitForm();
@@ -91,5 +74,4 @@ export class SplitwiseSplitForm {
     //   this.closeSplitFormEvent.emit(true);
     // }, 2000);
   }
-
 }

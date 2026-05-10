@@ -75,7 +75,7 @@ export class SplitwiseSquardForm {
 
     const trimmedName = memberName.trim();
     const isValid =
-      trimmedName.length > 2 &&
+      trimmedName.length > 1 &&
       trimmedName.length <= 25 &&
       !allMemberNames.includes(trimmedName.toLowerCase());
 
@@ -115,6 +115,9 @@ export class SplitwiseSquardForm {
   resetCreateSquadForm() {
     this.selectedSquadMembers.set([]);
     this.isMemberNameValid.set(false);
+
+    this.createSquadForm().reset();
+    this.createSquadFormModel.set(initialCreateSquadData);
   }
 
   handleCreateSquadFormClose(event: FormCloseEvent) {
@@ -127,11 +130,11 @@ export class SplitwiseSquardForm {
     event.preventDefault();
 
     // Set the members to the form field
-    if (!this.selectedSquadMembers() || this.selectedSquadMembers().length === 0) {
+    if (!this.selectedSquadMembers() || this.selectedSquadMembers().length <= 1) {
       this.toastService.show({
         variant: 'warning',
-        title: 'Squad cannot be empty!',
-        details: 'A squad must have at least one member.',
+        title: 'Very few members!',
+        details: 'A squad must have at least two members.',
       });
       return;
     }
