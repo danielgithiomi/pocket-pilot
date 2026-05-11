@@ -14,7 +14,7 @@
         />
       }
       @case (2) {
-        <split-form-step-2 (onBackIconClick)="goToPreviousStep(1)" />
+        <split-form-step-2 [currency]="defaultCurrency" (onBackIconClick)="goToPreviousStep(1)" />
       }
       @case (3) {
         <!-- <split-form-step-3

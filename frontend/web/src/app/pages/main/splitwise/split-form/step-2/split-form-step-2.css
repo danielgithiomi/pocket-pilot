@@ -19,12 +19,16 @@
       @apply flex flex-row items-center gap-2;
 
       p {
-        @apply bg-(--muted-text) rounded-lg p-2 text-sm text-white;
+        @apply bg-(--gray4) rounded-lg p-2 text-xs py-2.5;
       }
     }
   }
 
   .content {
-    @apply flex-1 mt-4 border border-dashed border-(--primary) rounded-lg min-h-20;
+    @apply flex-1 mt-4 border border-dashed border-(--primary) bg-(--gray4) rounded-lg min-h-30;
+
+    .splittables-container {
+      @apply flex flex-col gap-2 p-2;
+    }
   }
 }

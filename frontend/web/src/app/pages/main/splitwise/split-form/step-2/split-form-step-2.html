@@ -15,16 +15,23 @@
       <div class="flex flex-col text-sm">
         <p>Order Summary</p>
         <p class="italic text-xs text-muted-text!">
-          <span class="text-primary!">{{ itemsCount() }}</span> items
+          <span class="text-primary!">{{ itemsCount() }}</span>
+          {{ itemsCount() === 1 ? 'item' : 'items' }}
         </p>
       </div>
     </div>
 
+    @let hasItems = itemsCount() > 0;
     <div class="header-totals">
-      <p>Subtotal: {{ formattedSubTotal() }}</p>
+      @if (hasItems) {
+        <p>
+          Subtotal: <span class="font-semibold">{{ formattedSubTotal() }}</span>
+        </p>
+      }
       <atom-button
         id="add-item"
         variant="primary"
+        className="shadow-none"
         (clicked)="addNewSplittable()"
         [disabled]="isSubmittingSplittable()"
       >
@@ -35,12 +42,15 @@
     </div>
   </div>
 
-  @let hasItems = splittables().length > 0;
   <div class="content" [ngClass]="{ 'grid place-items-center': !hasItems }">
     @if (!hasItems) {
-      <p class="text-muted-text! text-sm">No items added yet</p>
-    }@else {
-        
+      <p class="text-muted-text! text-sm">No order items added yet!</p>
+    } @else {
+      <div class="splittables-container">
+        @for (splittable of splittables(); track splittable.id) {
+          <order-item [order]="splittable" (onDeleteClickEvent)="handleOnDeleteOrder($event)" />
+        }
+      </div>
     }
   </div>
 </div>

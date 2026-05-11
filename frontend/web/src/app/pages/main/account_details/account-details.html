@@ -17,7 +17,7 @@
         id="account-details-delete"
         [isLoading]="isDeletingAccount()"
         (clicked)="handleOnDeleteAccountClick(resource?.account?.id || '')"
-        [className]="deleteClickCount() === 2 ? 'bg-red-600 text-white' : ''"
+        [className]="deleteClickCount() === 2 ? 'bg-error text-white' : ''"
       >
         <div class="w-full grid place-items-center">
           <lucide-icon name="delete-account" [img]="deleteIcon" [size]="iconSize"></lucide-icon>

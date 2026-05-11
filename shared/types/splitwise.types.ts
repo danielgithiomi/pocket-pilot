@@ -25,3 +25,14 @@ export interface SplittablePayload {
   categoryTag: string;
   // paidBy: string;
 }
+
+export interface IOrderItem {
+  id: number;
+  name: string;
+  total: number;
+  quantity: number;
+  settled: boolean;
+  unitPrice: number;
+  consumers: string[];
+  categoryTag: string;
+}
