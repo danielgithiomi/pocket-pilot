@@ -32,6 +32,7 @@ export class SplitFormStep1 {
   private readonly splitwiseService = inject(SplitwiseService);
 
   // DATA
+  protected readonly maxDate = new Date();
   protected readonly currencies = COMMON_CURRENCIES;
   private readonly userSquads = this.splitwiseService.getUserSquads();
 

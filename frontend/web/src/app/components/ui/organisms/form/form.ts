@@ -11,8 +11,8 @@ import { Component, inject, input, output } from '@angular/core';
 })
 export class Form {
   // ICONS
-  protected readonly iconSize = 18;
   protected readonly X = X;
+  protected readonly iconSize = 18;
 
   // INPUTS
   id = input.required<string>();

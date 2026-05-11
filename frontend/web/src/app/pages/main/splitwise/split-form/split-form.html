@@ -14,7 +14,7 @@
         />
       }
       @case (2) {
-        <p>Step 2</p>
+        <split-form-step-2 (onBackIconClick)="goToPreviousStep(1)" />
       }
       @case (3) {
         <!-- <split-form-step-3
@@ -29,9 +29,9 @@
   @if (splitFormStep() === 2) {
     <div slot="sub-footer">
       <p class="text-muted-text text-right text-xs italic my-1">
-        Event: <span class="font-bold text-primary">{{ splitFormModel().eventName }}</span>
-        with <span class="font-bold text-primary">{{ splitForm.eventMembers().value().length }}</span> members
-        on {{ formatDate(splitFormModel().eventDate) }}
+        Details: <span class="font-bold text-primary">{{ splitFormModel().eventName }}</span> with
+        <span class="font-bold text-primary">{{ splitForm.eventMembers().value().length }}</span>
+        members on {{ formatDate(splitFormModel().eventDate) }}
       </p>
     </div>
   }

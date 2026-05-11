@@ -22,6 +22,9 @@ export const SplitFormValidationSchema = schema<SplitFormSchema>((root) => {
   // Date
   required(root.eventDate, { message: 'The event date is required field!' });
 
+  // Billing Currency
+  required(root.billingCurrency, { message: 'The billing currency is required field!' });
+
   // Squad
   required(root.squadName, { message: 'The squad name is required field!' });
 

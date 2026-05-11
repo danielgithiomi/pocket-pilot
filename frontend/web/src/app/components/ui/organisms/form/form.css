@@ -31,7 +31,7 @@
     }
 
     .form-content {
-      @apply flex-1 px-2;
+      @apply flex-1 px-2 my-2 h-full;
     }
 
     .form-footer {

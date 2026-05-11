@@ -248,9 +248,11 @@ model Splittable{
     id            String        @id @default(uuid())
     creatorId     String
 
-    amount        Float
-    currency      String
-    description   String
+    name          String
+    unitPrice     Float
+    quantity      Int
+    total         Float
+    consumers     String[]
     categoryTag   SplitCategoryTag
     paidBy        String
     paidFor       String[]

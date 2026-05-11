@@ -12,11 +12,12 @@ import {
   InitialSplitFormState,
   SplitFormValidationSchema,
 } from './split-form.types';
+import { SplitFormStep2 } from "./step-2/split-form-step-2";
 
 @Component({
   selector: 'splitwise-split-form',
   templateUrl: './split-form.html',
-  imports: [LucideAngularModule, Form, Button, SplitFormStep1],
+  imports: [LucideAngularModule, Form, Button, SplitFormStep1, SplitFormStep2],
 })
 export class SplitwiseSplitForm {
   // ICONS
@@ -32,7 +33,7 @@ export class SplitwiseSplitForm {
   readonly closeSplitFormEvent = output<boolean>();
 
   // SIGNAL STATES
-  protected readonly splitFormStep = signal<FormStepOptions>(1);
+  protected readonly splitFormStep = signal<FormStepOptions>(2);
   protected readonly isSubmittingSplitForm = signal<boolean>(false);
 
   // SERVICES

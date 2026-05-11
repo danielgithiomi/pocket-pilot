@@ -1,0 +1,46 @@
+<div id="split-form-step-2">
+  <div class="header">
+    <div class="header-summary">
+      <div
+        (click)="onBackIconClick.emit()"
+        class="group/back-icon hover:bg-muted-text p-1 rounded-lg cursor-pointer"
+      >
+        <lucide-angular
+          name="back-arrow"
+          [img]="leftArrow"
+          [size]="iconSize"
+          class="group-hover/back-icon:text-white text-inverted-text"
+        />
+      </div>
+      <div class="flex flex-col text-sm">
+        <p>Order Summary</p>
+        <p class="italic text-xs text-muted-text!">
+          <span class="text-primary!">{{ itemsCount() }}</span> items
+        </p>
+      </div>
+    </div>
+
+    <div class="header-totals">
+      <p>Subtotal: {{ formattedSubTotal() }}</p>
+      <atom-button
+        id="add-item"
+        variant="primary"
+        (clicked)="addNewSplittable()"
+        [disabled]="isSubmittingSplittable()"
+      >
+        <div class="w-full h-full grid place-items-center">
+          <lucide-icon name="add-member-icon" [img]="addItem" [size]="iconSize" />
+        </div>
+      </atom-button>
+    </div>
+  </div>
+
+  @let hasItems = splittables().length > 0;
+  <div class="content" [ngClass]="{ 'grid place-items-center': !hasItems }">
+    @if (!hasItems) {
+      <p class="text-muted-text! text-sm">No items added yet</p>
+    }@else {
+        
+    }
+  </div>
+</div>

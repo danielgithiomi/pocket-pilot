@@ -13,3 +13,15 @@ export interface SplitwiseSquad {
   squadImageKey: string;
   squadMembers: string[];
 }
+
+export interface SplittablePayload {
+  name: string;
+  total: number;
+  settled: boolean;
+  quantity: number;
+  paidFor: string[];
+  unitPrice: number;
+  consumers: string[];
+  categoryTag: string;
+  // paidBy: string;
+}
