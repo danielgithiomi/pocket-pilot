@@ -21,7 +21,7 @@
   @let hasNoData = userSquads().length === 0;
   @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
   <div
-    class="card-content overflow-y-scroll no-scrollbar mt-4 mb-2 h-full"
+    class="card-content overflow-y-scroll no-scrollbar mt-4 pb-2"
     [ngClass]="{ 'flex-1 grid place-items-center': centerContent }"
   >
     @if (isFetchingSquads()) {

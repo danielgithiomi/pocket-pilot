@@ -13,11 +13,7 @@
 
     <div class="squad-members-container no-scrollbar">
       @for (member of squadMembers(); track member) {
-        <squad-member
-          [member]="member"
-          [isCheckable]="true"
-          (onMemberEventClick)="handleOnMemberClick($event)"
-        />
+        <squad-member [member]="member" [isCheckable]="false" />
       }
     </div>
   </div>

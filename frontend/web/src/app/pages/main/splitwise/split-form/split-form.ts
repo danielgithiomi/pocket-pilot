@@ -1,10 +1,11 @@
 import { Button } from '@atoms/button';
+import { formatFullDate } from '@libs/utils';
 import { form } from '@angular/forms/signals';
 import { SplitwiseSquad } from '@global/types';
 import { Form, FormCloseEvent } from '@organisms/form';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
-import { ChevronsRight, LucideAngularModule } from 'lucide-angular';
 import { Component, computed, input, output, signal } from '@angular/core';
+import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
 import {
   SplitFormSchema,
   InitialSplitFormState,
@@ -20,6 +21,7 @@ export class SplitwiseSplitForm {
   // ICONS
   protected readonly iconSize = 18;
   protected readonly NextIcon = ChevronsRight;
+  protected readonly PreviousIcon = ChevronsLeft;
 
   // INPUTS
   readonly squads = input.required<SplitwiseSquad[]>();
@@ -29,7 +31,7 @@ export class SplitwiseSplitForm {
   readonly closeSplitFormEvent = output<boolean>();
 
   // SIGNAL STATES
-  protected readonly splitFormStep = signal<1 | 2 | 3>(1);
+  protected readonly splitFormStep = signal<FormStepOptions>(1);
   protected readonly isSubmittingSplitForm = signal<boolean>(false);
   private readonly memberCheckedState = signal<Record<string, boolean>>({});
   protected readonly selectedMembers = computed<string[]>(() => {
@@ -42,7 +44,9 @@ export class SplitwiseSplitForm {
   protected readonly splitForm = form(this.splitFormModel, SplitFormValidationSchema);
 
   // METHODS
-  protected goToNextStep = (step: 1 | 2 | 3) => this.splitFormStep.set(step);
+  protected formatDate = (date: Date) => formatFullDate(date.toISOString());
+  protected goToNextStep = (step: FormStepOptions) => this.splitFormStep.set(step);
+  protected goToPreviousStep = (step: FormStepOptions) => this.splitFormStep.set(step);
   protected resetSplitForm = () => {
     this.splitForm().reset();
     this.splitFormStep.set(1);
@@ -75,3 +79,5 @@ export class SplitwiseSplitForm {
     // }, 2000);
   }
 }
+
+type FormStepOptions = 1 | 2 | 3;

@@ -15,7 +15,7 @@ import { Component, computed, input, output } from '@angular/core';
         'bg-primary!': inverted() && isActive(),
         'bg-loader-primary! border border-primary': isActive(),
       }"
-      class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-1.5 h-fit!"
+      class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-1.5 cursor-default"
     >
       <div class="size-5 bg-body-background grid place-items-center rounded-full">
         <p class="text-[0.725rem] font-semibold">{{ initial() }}</p>

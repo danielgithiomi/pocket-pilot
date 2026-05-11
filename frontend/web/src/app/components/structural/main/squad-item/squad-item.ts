@@ -37,9 +37,4 @@ export class SquadItem {
       memberName: member,
     }));
   });
-
-  // METHODS
-  protected handleOnMemberClick(memberName: string) {
-    console.log('Clicked member: ', memberName);
-  }
 }

@@ -5,14 +5,53 @@
   description="Split shared expenses with your squad."
 >
   <form id="split-form" slot="content" (submit)="handleSplitFormSubmit($event)">
-    <split-form-step-1
-      [iconSize]="iconSize"
-      [formModel]="splitForm"
-      [isSubmittingForm]="isSubmittingSplitForm()"
-    />
+    @switch (splitFormStep()) {
+      @case (1) {
+        <split-form-step-1
+          [iconSize]="iconSize"
+          [formModel]="splitForm"
+          [isSubmittingForm]="isSubmittingSplitForm()"
+        />
+      }
+      @case (2) {
+        <p>Step 2</p>
+      }
+      @case (3) {
+        <!-- <split-form-step-3
+          [iconSize]="iconSize"
+          [formModel]="splitForm"
+          [isSubmittingForm]="isSubmittingSplitForm()"
+        /> -->
+      }
+    }
   </form>
 
+  @if (splitFormStep() === 2) {
+    <div slot="sub-footer">
+      <p class="text-muted-text text-right text-xs italic my-1">
+        Event: <span class="font-bold text-primary">{{ splitFormModel().eventName }}</span>
+        on {{ formatDate(splitFormModel().eventDate) }}
+      </p>
+    </div>
+  }
+
   <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+    @if (splitFormStep() === 2 || splitFormStep() === 3) {
+      <atom-button
+        type="button"
+        [inverted]="true"
+        variant="secondary"
+        id="previous-split-step"
+        (clicked)="goToPreviousStep(splitFormStep() === 2 ? 1 : 2)"
+        [disabled]="isSubmittingSplitForm() || splitFormStep() === 1"
+      >
+        <div class="w-full flex flex-row items-center justify-between gap-4 py-1 lg:py-0">
+          <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="previous-split-step" />
+          <span class="hidden lg:block">Back</span>
+        </div>
+      </atom-button>
+    }
+
     <atom-button
       type="button"
       label="Reset"
