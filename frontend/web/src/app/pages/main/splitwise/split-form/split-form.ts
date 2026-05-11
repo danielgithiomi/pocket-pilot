@@ -3,9 +3,10 @@ import { formatFullDate } from '@libs/utils';
 import { form } from '@angular/forms/signals';
 import { SplitwiseSquad } from '@global/types';
 import { Form, FormCloseEvent } from '@organisms/form';
+import { AccountsService } from '@api/accounts.service';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
-import { Component, computed, input, output, signal } from '@angular/core';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import {
   SplitFormSchema,
   InitialSplitFormState,
@@ -33,14 +34,19 @@ export class SplitwiseSplitForm {
   // SIGNAL STATES
   protected readonly splitFormStep = signal<FormStepOptions>(1);
   protected readonly isSubmittingSplitForm = signal<boolean>(false);
-  private readonly memberCheckedState = signal<Record<string, boolean>>({});
-  protected readonly selectedMembers = computed<string[]>(() => {
-    const checkedState = this.memberCheckedState();
-    return Object.keys(checkedState).filter((member) => checkedState[member]);
-  });
+
+  // SERVICES
+  private readonly accountsService = inject(AccountsService);
+
+  // DATA
+  protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
 
   // FORM
-  protected readonly splitFormModel = signal<SplitFormSchema>(InitialSplitFormState);
+  private initialLocalFormState: SplitFormSchema = {
+    ...InitialSplitFormState,
+    billingCurrency: this.defaultCurrency,
+  };
+  protected readonly splitFormModel = signal<SplitFormSchema>(this.initialLocalFormState);
   protected readonly splitForm = form(this.splitFormModel, SplitFormValidationSchema);
 
   // METHODS
@@ -50,7 +56,7 @@ export class SplitwiseSplitForm {
   protected resetSplitForm = () => {
     this.splitForm().reset();
     this.splitFormStep.set(1);
-    this.splitFormModel.set(InitialSplitFormState);
+    this.splitFormModel.set(this.initialLocalFormState);
   };
 
   protected handleSplitFormClose(event: FormCloseEvent) {
@@ -61,12 +67,6 @@ export class SplitwiseSplitForm {
   // SUBMISSIONS
   protected handleSplitFormSubmit(event: Event) {
     event.preventDefault();
-
-    this.splitForm.eventMembers().controlValue.set(
-      Object.entries(this.memberCheckedState())
-        .filter(([_, isChecked]) => isChecked)
-        .map(([memberName]) => memberName),
-    );
 
     const { ...payload } = this.splitFormModel();
     console.log(payload);

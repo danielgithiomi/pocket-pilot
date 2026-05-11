@@ -5,9 +5,10 @@ export interface SplitFormSchema {
   eventName: string;
   squadName: string;
   eventMembers: string[];
+  billingCurrency: string;
 }
 
-export const InitialSplitFormState: SplitFormSchema = {
+export const InitialSplitFormState = {
   eventName: '',
   squadName: '',
   eventMembers: [],

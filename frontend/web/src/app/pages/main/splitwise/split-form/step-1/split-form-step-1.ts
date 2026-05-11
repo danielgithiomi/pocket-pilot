@@ -6,6 +6,7 @@ import { ToastService } from '@atoms/toast';
 import { SelectOption } from '@atoms/select';
 import { FieldTree } from '@angular/forms/signals';
 import { DatePicker } from '@organisms/date-picker';
+import { COMMON_CURRENCIES } from '@global/constants';
 import { SplitFormSchema } from '../split-form.types';
 import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
@@ -31,6 +32,7 @@ export class SplitFormStep1 {
   private readonly splitwiseService = inject(SplitwiseService);
 
   // DATA
+  protected readonly currencies = COMMON_CURRENCIES;
   private readonly userSquads = this.splitwiseService.getUserSquads();
 
   // INTERNAL STATE
@@ -71,7 +73,7 @@ export class SplitFormStep1 {
       .map((member) => member.toLowerCase())
       .includes(trimmedName.toLowerCase());
 
-    const isValid = trimmedName.length > 2 && trimmedName.length <= 25 && !alreadyExists;
+    const isValid = trimmedName.length > 1 && trimmedName.length <= 20 && !alreadyExists;
 
     this.isMemberNameValid.set(isValid);
   }
@@ -112,7 +114,6 @@ export class SplitFormStep1 {
   constructor() {
     effect(() => {
       const selectedSquad = this.formModel().squadName().value();
-      console.log('Selected squad', selectedSquad);
       this.selectedSquad.set(selectedSquad);
     });
 
@@ -133,6 +134,24 @@ export class SplitFormStep1 {
         });
         this.memberCheckedState.set(initialCheckedState);
       }
+    });
+
+    effect(() => {
+      // Track all dependencies that affect the final member list
+      const isCustom = this.isSquadCustom();
+      const selectedSquad = this.selectedSquad();
+      const customMembers = this.splitMembers();
+      const checkedState = this.memberCheckedState();
+
+      // Get the source members list
+      const sourceMembers = isCustom
+        ? customMembers
+        : this.squads().find((squad) => squad.squadName === selectedSquad)?.squadMembers || [];
+
+      // Compute selected members based on checked state (default to checked if not in state)
+      const selectedMembers = sourceMembers.filter((member) => checkedState[member] ?? true);
+
+      this.formModel().eventMembers().controlValue.set(selectedMembers);
     });
   }
 }

@@ -30,6 +30,7 @@
     <div slot="sub-footer">
       <p class="text-muted-text text-right text-xs italic my-1">
         Event: <span class="font-bold text-primary">{{ splitFormModel().eventName }}</span>
+        with <span class="font-bold text-primary">{{ splitForm.eventMembers().value().length }}</span> members
         on {{ formatDate(splitFormModel().eventDate) }}
       </p>
     </div>
