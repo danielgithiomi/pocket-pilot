@@ -28,10 +28,22 @@
   }
 
   .squad-options {
-    @apply cursor-pointer hover:bg-(--body-background) px-1 py-2 rounded transition-all duration-250;
+    @apply relative cursor-pointer hover:bg-(--body-background) px-1 py-2 rounded transition-all duration-250;
 
     .options-icon {
       @apply text-(--primary-text);
+    }
+
+    .squad-item-dropdown {
+      @apply absolute top-full right-0;
+
+      .dropdown-arrow {
+        @apply absolute top-1 right-1 bg-(--body-background) size-4 rotate-45 -z-1;
+      }
+
+      .dropdown-content {
+        @apply absolute top-2 right-0 bg-(--body-background) rounded p-2 flex flex-row gap-3;
+      }
     }
   }
 }

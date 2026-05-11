@@ -1,4 +1,4 @@
-<div [id]="squadId()" class="squad-item">
+<div [id]="squadId()" class="squad-item" (mouseleave)="isDropdownOpen.set(false)">
   @let hasImage = squad().squadImageKey;
   <div class="squad-image" [ngClass]="{ 'grid place-items-center bg-body-background': !hasImage }">
     @if (!hasImage) {
@@ -18,7 +18,35 @@
     </div>
   </div>
 
-  <div class="squad-options">
-    <lucide-angular name="squad-options" [img]="options" [size]="iconSize" class="" />
+  <div class="squad-options" [ngClass]="{ 'bg-body-background': isDropdownOpen() }">
+    <lucide-angular
+      name="squad-options"
+      [img]="options"
+      [size]="iconSize"
+      (click)="isDropdownOpen.set(!isDropdownOpen())"
+    />
+
+    <!-- Squad Item Dropdown -->
+    @if (isDropdownOpen()) {
+      <div class="squad-item-dropdown">
+        <div class="dropdown-arrow"></div>
+        <div class="dropdown-content">
+          <lucide-angular
+            name="edit"
+            [img]="edit"
+            [size]="iconSize"
+            class="atom-icon"
+            (click)="handleOnItemEdit()"
+          />
+          <lucide-angular
+            name="delete"
+            [img]="delete"
+            [size]="iconSize"
+            (click)="handleOnItemDelete()"
+            class="atom-icon hover:text-expense"
+          />
+        </div>
+      </div>
+    }
   </div>
 </div>

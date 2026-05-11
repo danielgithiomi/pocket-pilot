@@ -1,9 +1,9 @@
 import { SplitwiseSquad } from '@global/types';
 import { SquadMember } from '../squad-member/squad-member';
-import { Component, computed, input } from '@angular/core';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { ISquadMember } from '../squad-member/squad-member';
-import { LucideAngularModule, EllipsisVertical } from 'lucide-angular';
+import { Component, computed, input, signal } from '@angular/core';
+import { LucideAngularModule, EllipsisVertical, Trash2, Pencil } from 'lucide-angular';
 
 @Component({
   selector: 'squad-item',
@@ -14,10 +14,15 @@ import { LucideAngularModule, EllipsisVertical } from 'lucide-angular';
 export class SquadItem {
   // ICONS
   protected readonly iconSize: number = 18;
+  protected readonly edit = Pencil;
+  protected readonly delete = Trash2;
   protected readonly options = EllipsisVertical;
 
   // INPUTS
   readonly squad = input.required<SplitwiseSquad>();
+
+  // SIGNALS
+  protected readonly isDropdownOpen = signal<boolean>(false);
 
   // COMPUTED
   protected readonly squadId = computed<string>(() => this.squad().id);
@@ -37,4 +42,13 @@ export class SquadItem {
       memberName: member,
     }));
   });
+
+  // METHODS
+  handleOnItemEdit() {
+    console.log('Edit squad', this.squadId());
+  }
+  
+  handleOnItemDelete() {
+    console.log('Delete squad', this.squadId());
+  }
 }
