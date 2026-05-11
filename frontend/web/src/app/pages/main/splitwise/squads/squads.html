@@ -21,7 +21,7 @@
   @let hasNoData = userSquads().length === 0;
   @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
   <div
-    class="card-content overflow-y-scroll no-scrollbar mt-4 pb-2"
+    class="card-content h-full overflow-y-scroll no-scrollbar mt-4 pb-2"
     [ngClass]="{ 'flex-1 grid place-items-center': centerContent }"
   >
     @if (isFetchingSquads()) {
@@ -40,7 +40,7 @@
           [animationDimensions]="animationDimensions"
         />
       } @else {
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-6 h-full">
           @for (squad of userSquads(); track squad.id) {
             <squad-item [squad]="squad" />
           }

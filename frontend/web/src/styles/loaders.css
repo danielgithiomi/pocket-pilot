@@ -7,6 +7,24 @@
   border-color: var(--loader-primary) transparent;
 }
 
+.delete-loader {
+  width: 12px;
+  aspect-ratio: 1;
+  border: 2px solid;
+  border-radius: 50%;
+  animation: l1 1s infinite;
+  border-color: var(--error) transparent;
+}
+
+.icon-loader {
+  width: 12px;
+  aspect-ratio: 1;
+  border: 2px solid;
+  border-radius: 50%;
+  animation: l1 1s infinite;
+  border-color: var(--primary) transparent;
+}
+
 @keyframes l1 {
   to {
     transform: rotate(0.5turn);

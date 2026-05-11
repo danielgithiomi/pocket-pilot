@@ -8,6 +8,7 @@ import {
   SplitwiseSquad,
   IStandardResponse,
   SplitwiseSquadPayload,
+  IVoidResourceResponse,
 } from '@global/types';
 
 @Injectable({
@@ -23,6 +24,16 @@ export class SplitwiseService {
   createNewUserSquad(payload: SplitwiseSquadPayload): Observable<SplitwiseSquad> {
     return this.mutation.createNewSquad(payload).pipe(
       map((response: IStandardResponse<SplitwiseSquad>) => response.data),
+      catchError((error: IStandardError) => {
+        this.errorService.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  }
+
+  deleteExistingUserSquad(squadId: string): Observable<IVoidResourceResponse> {
+    return this.mutation.deleteExistingUserSquad(squadId).pipe(
+      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.errorService.renderToast(error);
         return EMPTY;

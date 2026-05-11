@@ -27,6 +27,12 @@ export class SplitwiseService {
         return plainToInstance(SplitwiseSquadDto, createdSplitwiseSquad);
     }
 
+    async deleteUserSplitwiseSquad(userId: string, squadId: string) {
+        const deleteSquad = await this.splitwiseRepository.deleteUserSplitwiseSquad(userId, squadId);
+        await this.invalidateCache(userId);
+        return deleteSquad;
+    }
+
     // HELPER FUNCTIONS
     private async invalidateCache(userId: string) {
         await this.squadCache.invalidateCache(userId);

@@ -1,8 +1,10 @@
-import { SplitwiseSquad } from '@global/types';
+import { ToastService } from '@atoms/toast';
+import { SplitwiseService } from '@api/splitwise.service';
 import { SquadMember } from '../squad-member/squad-member';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { ISquadMember } from '../squad-member/squad-member';
-import { Component, computed, input, signal } from '@angular/core';
+import { IVoidResourceResponse, SplitwiseSquad } from '@global/types';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { LucideAngularModule, EllipsisVertical, Trash2, Pencil } from 'lucide-angular';
 
 @Component({
@@ -23,6 +25,11 @@ export class SquadItem {
 
   // SIGNALS
   protected readonly isDropdownOpen = signal<boolean>(false);
+  protected readonly isDeletingSquad = signal<boolean>(false);
+
+  // SERVICES
+  private readonly toastService = inject(ToastService);
+  private readonly splitwiseService = inject(SplitwiseService);
 
   // COMPUTED
   protected readonly squadId = computed<string>(() => this.squad().id);
@@ -47,8 +54,27 @@ export class SquadItem {
   handleOnItemEdit() {
     console.log('Edit squad', this.squadId());
   }
-  
+
   handleOnItemDelete() {
     console.log('Delete squad', this.squadId());
+
+    this.isDeletingSquad.set(true);
+
+    setTimeout(() => {
+      this.splitwiseService.deleteExistingUserSquad(this.squadId()).subscribe({
+        next: (response: IVoidResourceResponse) => {
+          const { message, details } = response;
+          this.toastService.show({
+            details,
+            title: message,
+            variant: 'success',
+          });
+
+          this.isDropdownOpen.set(false);
+          this.splitwiseService.getUserSquads().reload();
+        },
+        complete: () => this.isDeletingSquad.set(false),
+      });
+    }, 2500);
   }
 }

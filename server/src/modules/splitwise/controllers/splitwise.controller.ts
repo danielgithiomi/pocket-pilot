@@ -1,14 +1,14 @@
-import { ExposeEnumDto } from '@common/types';
+import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { hoursToMilliseconds } from '@libs/utils';
-import { SplitwiseService } from './splitwise.service';
-import { Body, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { SplitwiseService } from '../splitwise.service';
+import { Body, Delete, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { Public, Summary, UserInRequest } from '@common/decorators';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
-import { SplitwiseSquadDto, SplitwiseSquadPayload } from './dto/splitwise.dto';
+import { SplitwiseSquadDto, SplitwiseSquadPayload } from '../dto/splitwise.dto';
 
 @Controller('splitwise')
 @UseGuards(CookiesAuthGuard)
@@ -65,5 +65,26 @@ export class SplitwiseController {
         @Body() payload: SplitwiseSquadPayload,
     ): Promise<SplitwiseSquadDto> {
         return this.splitwiseService.createSplitwiseSquad(user.id, payload);
+    }
+
+    @Delete('squads/:squadId')
+    @HttpCode(200)
+    @ApiCookieAuth('access_token')
+    @ApiOperation({ summary: 'Delete a user splitwise squad' })
+    @Summary('Splitwise squad deleted', 'The user deleted a splitwise squad')
+    @ApiResponse({
+        status: 200,
+        description: 'Splitwise user squad deleted successfully',
+    })
+    async deleteSplitwiseSquad(
+        @UserInRequest() user: User,
+        @Param('squadId') squadId: string,
+    ): Promise<VoidResourceResponse> {
+        const deleteSquad = await this.splitwiseService.deleteUserSplitwiseSquad(user.id, squadId);
+
+        return {
+            message: 'Squad deleted successfully!',
+            details: `Your ${deleteSquad.squadName} squad has been deleted successfully.`,
+        };
     }
 }

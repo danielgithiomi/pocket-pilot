@@ -1,7 +1,7 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
-import { SplitwiseSquad, SplitwiseSquadPayload } from '@global/types';
+import { IVoidResourceResponse, SplitwiseSquad, SplitwiseSquadPayload } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -11,5 +11,9 @@ export class SplitwiseMutation {
 
   createNewSquad(payload: SplitwiseSquadPayload) {
     return this.client.post<SplitwiseSquad, SplitwiseSquadPayload>(endpoints.squads, payload);
+  }
+
+  deleteExistingUserSquad(squadId: string) {
+    return this.client.delete<IVoidResourceResponse>(`${endpoints.squads}/${squadId}`);
   }
 }

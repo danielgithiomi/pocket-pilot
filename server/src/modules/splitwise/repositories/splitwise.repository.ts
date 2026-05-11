@@ -13,4 +13,8 @@ export class SplitwiseRepository {
     getUserSplitwiseSquads(userId: string) {
         return this.db.splitwiseSquad.findMany({ where: { creatorId: userId } });
     }
+
+    deleteUserSplitwiseSquad(userId: string, squadId: string) {
+        return this.db.splitwiseSquad.delete({ where: { id: squadId, creatorId: userId } });
+    }
 }

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { SquadsCache } from './caches/squads.cache';
 import { SplitwiseService } from './splitwise.service';
-import { SplitwiseController } from './splitwise.controller';
 import { IdentityModule } from '@modules/identity/identity.module';
+import { SplitwiseController } from './controllers/splitwise.controller';
 import { SplitwiseRepository } from './repositories/splitwise.repository';
 
 @Module({
