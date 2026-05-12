@@ -21,6 +21,8 @@ export class SplitwiseService {
 
   getUserSquads = () => this.resource.getUserSplitwiseSquads;
 
+  getOrderCategoryTags = () => this.resource.getOrderCategoryTags;
+
   createNewUserSquad(payload: SplitwiseSquadPayload): Observable<SplitwiseSquad> {
     return this.mutation.createNewSquad(payload).pipe(
       map((response: IStandardResponse<SplitwiseSquad>) => response.data),

@@ -30,7 +30,7 @@ export class Select {
 
   selectedValue = input<string>('');
   options = input.required<SelectOption[]>();
-  formField = input.required<FieldTree<string, string>>();
+  formField = input.required<FieldTree<string | number, string>>();
 
   includeLabel = input<boolean>(true);
 

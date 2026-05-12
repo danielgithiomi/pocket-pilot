@@ -90,6 +90,7 @@ export interface Endpoints {
 
   squads: string;
   splitwise: string;
+  orderTags: string;
 
   all_bills: string;
   user_bills: string;

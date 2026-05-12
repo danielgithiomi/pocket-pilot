@@ -32,15 +32,98 @@
         id="add-item"
         variant="primary"
         className="shadow-none"
-        (clicked)="addNewSplittable()"
         [disabled]="isSubmittingSplittable()"
+        (clicked)="isFormVisible.set(!isFormVisible())"
       >
         <div class="w-full h-full grid place-items-center">
-          <lucide-icon name="add-member-icon" [img]="addItem" [size]="iconSize" />
+          <lucide-icon
+            name="add-member-icon"
+            [img]="isFormVisible() ? HideForm : ShowForm"
+            [size]="iconSize"
+          />
         </div>
       </atom-button>
     </div>
   </div>
+
+  @if (isFormVisible()) {
+    <div class="new-item-form">
+      <form id="new-splittable-form" (submit)="addNewSplittable($event)">
+        <div class="flex flex-row gap-2">
+          <atom-input
+            type="text"
+            class="flex-2"
+            label="Item Name"
+            [inverted]="true"
+            autocomplete="off"
+            id="splittable-name"
+            [formField]="splittableForm.name"
+            placeholder="Eg: Margherita Pizza"
+            (clearOutput)="splittableForm.name().controlValue.set('')"
+          />
+
+          <atom-select
+            id="quantity"
+            class="flex-1"
+            label="Quantity"
+            [inverted]="true"
+            [options]="orderQuantities()"
+            placeholder="Select the quantity"
+            [formField]="splittableForm.quantity"
+          />
+        </div>
+
+        <div class="flex flex-row gap-2 mb-4">
+          <atom-input
+            type="number"
+            class="flex-1"
+            [inverted]="true"
+            label="Unit Price"
+            autocomplete="off"
+            [numberStep]="0.01"
+            wrapperClassName="my-0!"
+            placeholder="Eg: 760.50"
+            id="splittable-unit-price"
+            [formField]="splittableForm.unitPrice"
+            (clearOutput)="splittableForm.unitPrice().controlValue.set(null)"
+          />
+
+          <atom-select
+            label="Tag"
+            class="flex-1"
+            id="category-tag"
+            [inverted]="true"
+            wrapperClassName="my-0!"
+            [options]="categoryTags()"
+            placeholder="Select a category"
+            [formField]="splittableForm.categoryTag"
+          />
+        </div>
+      </form>
+
+      <div class="form-buttons">
+        <atom-button
+          type="button"
+          label="Reset"
+          [inverted]="true"
+          variant="secondary"
+          form="new-splittable-form"
+          id="reset-splittable-form"
+          (clicked)="resetSplittableForm()"
+          [disabled]="!splittableForm().dirty() || isSubmittingSplittable()"
+        />
+
+        <atom-button
+          label="Add"
+          type="submit"
+          form="new-splittable-form"
+          id="submit-splittable-form"
+          [isLoading]="isSubmittingSplittable()"
+          [disabled]="splittableForm().invalid() || isSubmittingSplittable()"
+        />
+      </div>
+    </div>
+  }
 
   <div class="content" [ngClass]="{ 'grid place-items-center': !hasItems }">
     @if (!hasItems) {
