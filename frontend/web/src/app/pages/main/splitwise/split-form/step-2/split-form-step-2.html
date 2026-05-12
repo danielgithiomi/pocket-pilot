@@ -152,7 +152,12 @@
     } @else {
       <div class="splittables-container">
         @for (splittable of splittables(); track splittable.id) {
-          <order-item [order]="splittable" (onDeleteClickEvent)="handleOnDeleteOrder($event)" />
+          <order-item
+            [order]="splittable"
+            [presentMembers]="presentMembers()"
+            (onDeleteClickEvent)="handleOnDeleteOrder($event)"
+            (onUpdateSplittableEvent)="updateEventSplittables($event)"
+          />
         }
       </div>
     }

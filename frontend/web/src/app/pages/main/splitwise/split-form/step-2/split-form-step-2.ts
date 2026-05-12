@@ -8,7 +8,6 @@ import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
 import { OrderItem } from './order-item/order-item';
 import { Select, SelectOption } from '@atoms/select';
-import { AccountsService } from '@api/accounts.service';
 import { SplitwiseService } from '@api/splitwise.service';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
@@ -46,7 +45,6 @@ export class SplitFormStep2 {
 
   // SERVICES
   private readonly toastService = inject(ToastService);
-  private readonly accountsService = inject(AccountsService);
   private readonly splitwiseService = inject(SplitwiseService);
 
   // DATA
@@ -161,6 +159,31 @@ export class SplitFormStep2 {
 
     this.splittables.update((splittables) => [...splittables, newSplittable].reverse());
     this.resetSplittableForm();
+  }
+
+  protected updateEventSplittables(splittable: IOrderItem) {
+    const splittableExists = this.splittables().find((s) => s.id === splittable.id);
+
+    if (!splittableExists) {
+      this.toastService.show({
+        variant: 'error',
+        title: 'Splittable not found!',
+        details: 'The splittable you are trying to update does not exist.',
+      });
+      return;
+    }
+
+    // Recalculate total to ensure it's always quantity * unitPrice
+    const updatedSplittable: IOrderItem = {
+      ...splittable,
+      total: splittable.quantity * splittable.unitPrice,
+    };
+
+    this.splittables.update((splittables) =>
+      splittables.map((splittableItem) =>
+        splittableItem.id === updatedSplittable.id ? updatedSplittable : splittableItem,
+      ),
+    );
   }
 
   protected handleOnDeleteOrder(orderId: number) {
