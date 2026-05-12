@@ -9,6 +9,7 @@ import { form } from '@angular/forms/signals';
 import { OrderItem } from './order-item/order-item';
 import { AccountsService } from '@api/accounts.service';
 import { SplitwiseService } from '@api/splitwise.service';
+import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ArrowLeft, PanelTopClose, PanelBottomClose, LucideAngularModule } from 'lucide-angular';
 import {
@@ -21,7 +22,7 @@ import {
   selector: 'split-form-step-2',
   styleUrl: './split-form-step-2.css',
   templateUrl: './split-form-step-2.html',
-  imports: [NgClass, LucideAngularModule, Button, Input, Select, OrderItem],
+  imports: [NgClass, LucideAngularModule, Button, Input, Select, SquadMember, OrderItem],
 })
 export class SplitFormStep2 {
   // ICONS
@@ -32,6 +33,7 @@ export class SplitFormStep2 {
 
   // INPUTS
   readonly currency = input.required<string>();
+  readonly presentMembers = input.required<string[]>();
 
   // OUTPUTS
   readonly onBackIconClick = output<void>();
@@ -51,6 +53,7 @@ export class SplitFormStep2 {
   protected readonly categoryTagsResource = this.splitwiseService.getOrderCategoryTags();
 
   // COMPUTED
+  protected readonly itemsCount = computed<number>(() => this.splittables().length);
   protected readonly isFetchingData = computed<boolean>(() =>
     this.categoryTagsResource.isLoading(),
   );
@@ -72,10 +75,16 @@ export class SplitFormStep2 {
       return { label, value };
     });
   });
-  protected readonly itemsCount = computed<number>(() => this.splittables().length);
   protected readonly formattedSubTotal = computed<string>(() => {
     const subtotal = this.splittables().reduce((acc, splittable) => acc + splittable.total, 0);
     return formatCurrency(subtotal, this.currency(), 2, true);
+  });
+  protected readonly formattedConsumers = computed<ISquadMember[]>(() => {
+    const currentMembers = this.splittableForm().value().consumers;
+    return this.presentMembers().map((member) => ({
+      memberName: member,
+      isChecked: currentMembers.includes(member),
+    }));
   });
 
   // FORM
@@ -89,6 +98,29 @@ export class SplitFormStep2 {
   protected resetSplittableForm(): void {
     this.splittableForm().reset();
     this.splittableFormModel.set(InitialNewSplittableData);
+  }
+
+  protected addConsumerToOrder(memberName: string): void {
+    const orderQuantity = this.splittableForm().value().quantity;
+    const currentConsumers = this.splittableForm().value().consumers;
+
+    let updatedMembers: string[];
+    const memberExists = currentConsumers.includes(memberName);
+
+    if (memberExists) updatedMembers = currentConsumers.filter((member) => member !== memberName);
+    else {
+      if (currentConsumers.length >= orderQuantity) {
+        this.toastService.show({
+          variant: 'error',
+          title: 'Quantity mismatch!',
+          details: 'You want to add more consumers than the quantity of the item.',
+        });
+        return;
+      }
+      updatedMembers = [...currentConsumers, memberName];
+    }
+
+    this.splittableForm.consumers().controlValue.set(updatedMembers);
   }
 
   protected addNewSplittable(event: Event): void {

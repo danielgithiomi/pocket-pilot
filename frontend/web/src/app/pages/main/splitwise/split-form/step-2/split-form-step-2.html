@@ -99,6 +99,27 @@
             [formField]="splittableForm.categoryTag"
           />
         </div>
+
+        <div class="flex flex-col space-y-2 mb-4">
+          <!-- Member Selection -->
+          <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
+            <p class="text-inverted-text"><span class="text-sm text-expense">*</span>Consumers:</p>
+          </div>
+
+          <!-- Squad Member Container -->
+          <div
+            class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+          >
+            @for (member of formattedConsumers(); track member.memberName) {
+              <squad-member
+                [inverted]="true"
+                [member]="member"
+                [isCheckable]="true"
+                (onMemberEventClick)="addConsumerToOrder($event)"
+              />
+            }
+          </div>
+        </div>
       </form>
 
       <div class="form-buttons">
