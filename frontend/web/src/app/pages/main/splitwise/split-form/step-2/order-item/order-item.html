@@ -7,8 +7,10 @@
     />
 
     <div class="flex-1 flex flex-col space-y-1">
-        <p class="order-item-name">{{ order().name }}</p>
-        <p class="text-xs">{{ order().quantity }} x {{ formattedUnitPrice() }} = {{ formattedTotal() }}</p>
+      <p class="order-item-name">{{ order().name }}</p>
+      <p class="text-xs">
+        {{ order().quantity }} x {{ formattedUnitPrice() }} = {{ formattedTotal() }}
+      </p>
     </div>
 
     <atom-button
@@ -24,4 +26,95 @@
       </div>
     </atom-button>
   </div>
+
+  <hr />
+
+  @if (isExpanded()) {
+    <div class="new-item-form">
+      <form id="update-splittable-form" (submit)="updateSplittable($event)">
+        <div class="flex flex-row gap-2">
+          <atom-input
+            type="text"
+            class="flex-2"
+            label="Item Name"
+            [inverted]="true"
+            autocomplete="off"
+            id="update-splittable-name"
+            placeholder="Eg: Margherita Pizza"
+            [formField]="updateSplittableForm.name"
+            (clearOutput)="updateSplittableForm.name().controlValue.set('')"
+          />
+
+          <atom-select
+            class="flex-1"
+            label="Quantity"
+            [inverted]="true"
+            [options]="orderQuantities()"
+            id="update-splittable-quantity"
+            placeholder="Select the quantity"
+            [formField]="updateSplittableForm.quantity"
+          />
+        </div>
+
+        <div class="flex flex-row gap-2 mb-4">
+          <atom-input
+            type="number"
+            class="flex-1"
+            [inverted]="true"
+            label="Unit Price"
+            autocomplete="off"
+            [numberStep]="0.01"
+            wrapperClassName="my-0!"
+            placeholder="Eg: 760.50"
+            id="update-splittable-unit-price"
+            [formField]="updateSplittableForm.unitPrice"
+            (clearOutput)="updateSplittableForm.unitPrice().controlValue.set(null)"
+          />
+
+          <atom-select
+            label="Tag"
+            class="flex-1"
+            [inverted]="true"
+            wrapperClassName="my-0!"
+            placeholder="Select a category"
+            [options]="categoryTagOptions()"
+            id="update-splittable-category-tag"
+            [formField]="updateSplittableForm.categoryTag"
+          />
+        </div>
+
+        <div class="flex flex-col space-y-2 mb-4">
+          <!-- Member Selection -->
+          <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
+            <p class="text-inverted-text"><span class="text-sm text-expense">*</span>Consumers:</p>
+          </div>
+
+          <!-- Squad Member Container -->
+          <div
+            class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+          >
+            @for (member of formattedConsumers(); track member.memberName) {
+              <squad-member
+                [inverted]="true"
+                [member]="member"
+                [isCheckable]="true"
+                (onMemberEventClick)="updateOrderConsumers($event)"
+              />
+            }
+          </div>
+        </div>
+      </form>
+
+      <div class="form-buttons">
+        <atom-button
+          type="submit"
+          label="Update"
+          id="update-splittable-form"
+          form="update-splittable-form"
+          [isLoading]="isUpdatingSplittable()"
+          [disabled]="updateSplittableForm().invalid() || isUpdatingSplittable()"
+        />
+      </div>
+    </div>
+  }
 </div>

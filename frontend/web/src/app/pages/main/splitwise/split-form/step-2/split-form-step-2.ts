@@ -1,16 +1,17 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
-import { Select, SelectOption } from '@atoms/select';
 import { NgClass } from '@angular/common';
 import { IOrderItem } from '@global/types';
 import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
+import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
 import { OrderItem } from './order-item/order-item';
+import { Select, SelectOption } from '@atoms/select';
 import { AccountsService } from '@api/accounts.service';
 import { SplitwiseService } from '@api/splitwise.service';
-import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import { ArrowLeft, PanelTopClose, PanelBottomClose, LucideAngularModule } from 'lucide-angular';
 import {
   NewSplittableSchema,
@@ -49,7 +50,6 @@ export class SplitFormStep2 {
   private readonly splitwiseService = inject(SplitwiseService);
 
   // DATA
-  protected readonly quantities = signal<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   protected readonly categoryTagsResource = this.splitwiseService.getOrderCategoryTags();
 
   // COMPUTED
@@ -58,7 +58,7 @@ export class SplitFormStep2 {
     this.categoryTagsResource.isLoading(),
   );
   protected readonly orderQuantities = computed<SelectOption[]>(() => {
-    return this.quantities().map((quantity) => ({
+    return QUANTITIES.map((quantity) => ({
       value: quantity,
       label: quantity.toString(),
     }));
@@ -127,6 +127,15 @@ export class SplitFormStep2 {
     event.preventDefault();
 
     const { name, quantity, unitPrice, categoryTag, consumers } = this.splittableForm().value();
+
+    if (consumers.length < 1) {
+      this.toastService.show({
+        variant: 'error',
+        title: 'Consumers are required!',
+        details: 'Please select at least one consumer.',
+      });
+      return;
+    }
 
     if (!unitPrice) {
       this.toastService.show({
