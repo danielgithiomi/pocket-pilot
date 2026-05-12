@@ -74,7 +74,7 @@ export class SplitFormStep2 {
   });
   protected readonly itemsCount = computed<number>(() => this.splittables().length);
   protected readonly formattedSubTotal = computed<string>(() => {
-    const subtotal: number = 0;
+    const subtotal = this.splittables().reduce((acc, splittable) => acc + splittable.total, 0);
     return formatCurrency(subtotal, this.currency(), 2, true);
   });
 
@@ -90,7 +90,7 @@ export class SplitFormStep2 {
     this.splittableForm().reset();
     this.splittableFormModel.set(InitialNewSplittableData);
   }
-  
+
   protected addNewSplittable(event: Event): void {
     event.preventDefault();
 
@@ -119,6 +119,7 @@ export class SplitFormStep2 {
     };
 
     this.splittables.update((splittables) => [...splittables, newSplittable].reverse());
+    this.resetSplittableForm();
   }
 
   protected handleOnDeleteOrder(orderId: number) {

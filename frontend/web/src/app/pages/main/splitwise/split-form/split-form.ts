@@ -33,7 +33,7 @@ export class SplitwiseSplitForm {
   readonly closeSplitFormEvent = output<boolean>();
 
   // SIGNAL STATES
-  protected readonly splitFormStep = signal<FormStepOptions>(2);
+  protected readonly splitFormStep = signal<FormStepOptions>(1);
   protected readonly isSubmittingSplitForm = signal<boolean>(false);
 
   // SERVICES
