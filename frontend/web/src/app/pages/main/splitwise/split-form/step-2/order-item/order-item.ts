@@ -149,7 +149,6 @@ export class OrderItem {
 
   // CONSTRUCTOR
   constructor() {
-    // Initialize form when order input becomes available
     effect(() => {
       const orderData = this.order();
       if (orderData) this.updateSplittableFormModel.set(orderData);

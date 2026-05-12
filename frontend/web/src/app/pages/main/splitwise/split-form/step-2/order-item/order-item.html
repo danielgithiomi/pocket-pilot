@@ -9,7 +9,8 @@
     <div class="flex-1 flex flex-col space-y-1">
       <p class="order-item-name">{{ order().name }}</p>
       <p class="text-xs">
-        {{ order().quantity }} x {{ formattedUnitPrice() }} = {{ formattedTotal() }}
+        {{ order().quantity }} x {{ formattedUnitPrice() }} =
+        <span class="font-bold text-primary!">{{ formattedTotal() }}</span>
       </p>
     </div>
 
