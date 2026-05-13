@@ -2,7 +2,7 @@ import { required, schema, min } from '@angular/forms/signals';
 
 export interface NewSplittableSchema {
   name: string;
-  quantity: number;
+  quantity: string;
   categoryTag: string;
   consumers: string[];
   unitPrice: number | null;
@@ -10,7 +10,7 @@ export interface NewSplittableSchema {
 
 export const InitialNewSplittableData: NewSplittableSchema = {
   name: '',
-  quantity: 1,
+  quantity: '1',
   consumers: [],
   categoryTag: '',
   unitPrice: null,

@@ -99,8 +99,8 @@ export class SplitFormStep2 {
   }
 
   protected addConsumerToOrder(memberName: string): void {
-    const orderQuantity = this.splittableForm().value().quantity;
     const currentConsumers = this.splittableForm().value().consumers;
+    const orderQuantity = Number(this.splittableForm().value().quantity);
 
     let updatedMembers: string[];
     const memberExists = currentConsumers.includes(memberName);
@@ -124,7 +124,7 @@ export class SplitFormStep2 {
   protected addNewSplittable(event: Event): void {
     event.preventDefault();
 
-    const { name, quantity, unitPrice, categoryTag, consumers } = this.splittableForm().value();
+    const { name, quantity: quantityStr, unitPrice, categoryTag, consumers } = this.splittableForm().value();
 
     if (consumers.length < 1) {
       this.toastService.show({
@@ -144,6 +144,7 @@ export class SplitFormStep2 {
       return;
     }
 
+    const quantity = Number(quantityStr);
     const total = quantity * unitPrice!;
 
     const newSplittable: IOrderItem = {

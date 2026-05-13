@@ -63,7 +63,7 @@ export class OrderItem {
   protected readonly orderItemId = computed<string>(() => `order-item-${this.order().id}`);
   protected readonly orderQuantities = computed<SelectOption[]>(() =>
     QUANTITIES.map((quantity) => ({
-      value: quantity,
+      value: quantity.toString(),
       label: quantity.toString(),
     })),
   );
@@ -97,8 +97,13 @@ export class OrderItem {
   protected updateSplittable(event: Event): void {
     event.preventDefault();
 
-    const { name, quantity, unitPrice, categoryTag, consumers } =
-      this.updateSplittableForm().value();
+    const {
+      name,
+      quantity: quantityStr,
+      unitPrice,
+      categoryTag,
+      consumers,
+    } = this.updateSplittableForm().value();
 
     if (!unitPrice) {
       this.toastService.show({
@@ -109,6 +114,7 @@ export class OrderItem {
       return;
     }
 
+    const quantity = Number(quantityStr);
     const total = unitPrice * quantity;
 
     const updatedOrder: IOrderItem = {
@@ -125,7 +131,7 @@ export class OrderItem {
   }
 
   protected updateOrderConsumers(memberName: string): void {
-    const orderQuantity = this.updateSplittableForm().value().quantity;
+    const orderQuantity = Number(this.updateSplittableForm().value().quantity);
     const currentConsumers = this.updateSplittableForm().value().consumers;
 
     let updatedMembers: string[];
@@ -151,7 +157,11 @@ export class OrderItem {
   constructor() {
     effect(() => {
       const orderData = this.order();
-      if (orderData) this.updateSplittableFormModel.set(orderData);
+      if (orderData)
+        this.updateSplittableFormModel.set({
+          ...orderData,
+          quantity: orderData.quantity.toString(),
+        });
     });
   }
 }
