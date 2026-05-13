@@ -19,20 +19,15 @@ export interface SplittablePayload {
   total: number;
   settled: boolean;
   quantity: number;
-  paidFor: string[];
   unitPrice: number;
   consumers: string[];
   categoryTag: string;
-  // paidBy: string;
 }
 
-export interface IOrderItem {
+export interface Splittable extends SplittablePayload {
+  id: string;
+}
+
+export interface SplittableOrder extends SplittablePayload {
   id: number;
-  name: string;
-  total: number;
-  quantity: number;
-  settled: boolean;
-  unitPrice: number;
-  consumers: string[];
-  categoryTag: string;
 }

@@ -1,11 +1,11 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { IOrderItem } from '@global/types';
 import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
 import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
+import { SplittableOrder } from '@global/types';
 import { OrderItem } from './order-item/order-item';
 import { Select, SelectOption } from '@atoms/select';
 import { SplitwiseService } from '@api/splitwise.service';
@@ -40,7 +40,7 @@ export class SplitFormStep2 {
 
   // INTERNAL STATE
   protected readonly isFormVisible = signal<boolean>(false);
-  protected readonly splittables = signal<IOrderItem[]>([]);
+  protected readonly splittables = signal<SplittableOrder[]>([]);
   protected readonly isSubmittingSplittable = signal<boolean>(false);
 
   // SERVICES
@@ -147,7 +147,7 @@ export class SplitFormStep2 {
     const quantity = Number(quantityStr);
     const total = quantity * unitPrice!;
 
-    const newSplittable: IOrderItem = {
+    const newSplittable: SplittableOrder = {
       id: this.splittables().length + 1,
       name,
       total,
@@ -162,7 +162,7 @@ export class SplitFormStep2 {
     this.resetSplittableForm();
   }
 
-  protected updateEventSplittables(splittable: IOrderItem) {
+  protected updateEventSplittables(splittable: SplittableOrder) {
     const splittableExists = this.splittables().find((s) => s.id === splittable.id);
 
     if (!splittableExists) {
@@ -175,7 +175,7 @@ export class SplitFormStep2 {
     }
 
     // Recalculate total to ensure it's always quantity * unitPrice
-    const updatedSplittable: IOrderItem = {
+    const updatedSplittable: SplittableOrder = {
       ...splittable,
       total: splittable.quantity * splittable.unitPrice,
     };

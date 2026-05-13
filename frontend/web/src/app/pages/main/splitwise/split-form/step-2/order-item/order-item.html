@@ -112,7 +112,7 @@
           id="update-splittable-form"
           form="update-splittable-form"
           [isLoading]="isUpdatingSplittable()"
-          [disabled]="updateSplittableForm().invalid() || isUpdatingSplittable()"
+          [disabled]="!updateSplittableForm().dirty() || updateSplittableForm().invalid() || isUpdatingSplittable()"
         />
       </div>
     </div>

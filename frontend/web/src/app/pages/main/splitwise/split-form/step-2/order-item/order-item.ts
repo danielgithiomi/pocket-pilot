@@ -1,10 +1,10 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
-import { IOrderItem } from '@global/types';
 import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
 import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
+import { SplittableOrder } from '@global/types';
 import { Select, SelectOption } from '@atoms/select';
 import { AccountsService } from '@api/accounts.service';
 import { SplitwiseService } from '@api/splitwise.service';
@@ -31,12 +31,12 @@ export class OrderItem {
   protected readonly ArrowDownIcon = ChevronDown;
 
   // INPUTS
-  readonly order = input.required<IOrderItem>();
+  readonly order = input.required<SplittableOrder>();
   readonly presentMembers = input.required<string[]>();
 
   // OUTPUTS
   readonly onDeleteClickEvent = output<number>();
-  readonly onUpdateSplittableEvent = output<IOrderItem>();
+  readonly onUpdateSplittableEvent = output<SplittableOrder>();
 
   // INTERNAL STATES
   protected readonly isExpanded = signal<boolean>(false);
@@ -117,7 +117,7 @@ export class OrderItem {
     const quantity = Number(quantityStr);
     const total = unitPrice * quantity;
 
-    const updatedOrder: IOrderItem = {
+    const updatedOrder: SplittableOrder = {
       ...this.order(),
       name,
       total,

@@ -5,14 +5,14 @@ import { SplitwiseSquad } from '@global/types';
 import { Form, FormCloseEvent } from '@organisms/form';
 import { AccountsService } from '@api/accounts.service';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
+import { SplitFormStep2 } from './step-2/split-form-step-2';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
-import { Component, computed, inject, input, output, signal } from '@angular/core';
 import {
   SplitFormSchema,
   InitialSplitFormState,
   SplitFormValidationSchema,
 } from './split-form.types';
-import { SplitFormStep2 } from "./step-2/split-form-step-2";
 
 @Component({
   selector: 'splitwise-split-form',

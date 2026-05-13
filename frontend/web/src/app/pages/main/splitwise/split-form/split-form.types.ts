@@ -1,3 +1,4 @@
+import { SplittableOrder } from '@global/types';
 import { required, schema } from '@angular/forms/signals';
 
 export interface SplitFormSchema {
@@ -6,11 +7,13 @@ export interface SplitFormSchema {
   squadName: string;
   eventMembers: string[];
   billingCurrency: string;
+  splittables: SplittableOrder[];
 }
 
 export const InitialSplitFormState = {
   eventName: '',
   squadName: '',
+  splittables: [],
   eventMembers: [],
   eventDate: new Date(),
 };
@@ -22,11 +25,11 @@ export const SplitFormValidationSchema = schema<SplitFormSchema>((root) => {
   // Date
   required(root.eventDate, { message: 'The event date is required field!' });
 
-  // Billing Currency
-  required(root.billingCurrency, { message: 'The billing currency is required field!' });
-
   // Squad
   required(root.squadName, { message: 'The squad name is required field!' });
+
+  // Billing Currency
+  required(root.billingCurrency, { message: 'The billing currency is required field!' });
 
   // Members
   required(root.eventMembers, { message: 'The event members are required field!' });
