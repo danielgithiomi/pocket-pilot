@@ -10,7 +10,9 @@
         <split-form-step-1
           [iconSize]="iconSize"
           [formModel]="splitForm"
+          [existingSquads]="squads()"
           [isSubmittingForm]="isSubmittingSplitForm()"
+          (onPresentMembersChangeEvent)="updateEventMembers($event)"
         />
       }
       @case (2) {

@@ -54,7 +54,7 @@ export class SplitwiseSplitForm {
   protected formatDate = (date: Date) => formatFullDate(date.toISOString());
   protected goToNextStep = (step: FormStepOptions) => this.splitFormStep.set(step);
   protected goToPreviousStep = (step: FormStepOptions) => this.splitFormStep.set(step);
-  protected resetSplitForm = () => {
+  protected resetSplitForm() {
     this.splitForm().reset();
     this.splitFormStep.set(1);
     this.splitFormModel.set(this.initialLocalFormState);
@@ -63,6 +63,10 @@ export class SplitwiseSplitForm {
   protected handleSplitFormClose(event: FormCloseEvent) {
     if (event === 'icon') this.resetSplitForm();
     this.closeSplitFormEvent.emit(false);
+  }
+
+  protected updateEventMembers(members: string[]) {
+    this.splitForm.eventMembers().controlValue.set(members);
   }
 
   // SUBMISSIONS

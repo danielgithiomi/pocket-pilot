@@ -4,14 +4,23 @@ import { Select } from '@atoms/select';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { SelectOption } from '@atoms/select';
+import { SplitwiseSquad } from '@global/types';
 import { FieldTree } from '@angular/forms/signals';
 import { DatePicker } from '@organisms/date-picker';
 import { COMMON_CURRENCIES } from '@global/constants';
 import { SplitFormSchema } from '../split-form.types';
-import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
+import {
+  input,
+  effect,
+  inject,
+  output,
+  signal,
+  computed,
+  Component,
+  untracked,
+} from '@angular/core';
 
 @Component({
   selector: 'split-form-step-1',
@@ -25,45 +34,48 @@ export class SplitFormStep1 {
   // INPUTS
   readonly iconSize = input.required<number>();
   readonly isSubmittingForm = input.required<boolean>();
+  readonly existingSquads = input.required<SplitwiseSquad[]>();
   readonly formModel = input.required<FieldTree<SplitFormSchema, string | number>>();
+
+  // OUTPUTS
+  readonly onPresentMembersChangeEvent = output<string[]>();
 
   // SERVICES
   private readonly toastService = inject(ToastService);
-  private readonly splitwiseService = inject(SplitwiseService);
 
   // DATA
   protected readonly maxDate = new Date();
   protected readonly currencies = COMMON_CURRENCIES;
-  private readonly userSquads = this.splitwiseService.getUserSquads();
 
   // INTERNAL STATE
-  protected readonly selectedSquad = signal<string>('');
   protected readonly splitMembers = signal<string[]>([]);
   protected readonly isSquadCustom = signal<boolean>(false);
   protected readonly isMemberNameValid = signal<boolean>(false);
-  private readonly memberCheckedState = signal<CheckedMember>({});
+
+  /** Used so remounting step 1 (e.g. back from step 2) is not treated as a squad change. */
+  private previousSquadName: string | null = null;
 
   // COMPUTED
-  protected readonly squads = computed(() => this.userSquads.value()?.data || []);
-  protected readonly squadOptions = computed<SelectOption[]>(() => {
-    const squadNames = this.squads().map((squad) => squad.squadName);
+  protected readonly squadDropdownOptions = computed<SelectOption[]>(() => {
+    const squadNames = this.existingSquads().map((squad) => squad.squadName);
     return [...squadNames, 'CUSTOM'].map((squadName) => ({
       value: squadName,
       label: squadName === 'CUSTOM' ? 'Custom' : squadName,
     }));
   });
   protected readonly formattedSplitMembers = computed<ISquadMember[]>(() => {
+    const squadName = this.formModel().squadName().value();
     const members =
-      this.selectedSquad() === 'CUSTOM'
+      squadName === 'CUSTOM'
         ? this.splitMembers()
-        : this.squads().find((squad) => squad.squadName === this.selectedSquad())?.squadMembers ||
-          [];
+        : (this.existingSquads().find((squad) => squad.squadName === squadName)?.squadMembers ??
+          []);
 
-    const checkedState = this.memberCheckedState();
+    const selectedMembers = this.formModel().eventMembers().value();
 
     return members.map((member) => ({
       memberName: member,
-      isChecked: checkedState[member] ?? true,
+      isChecked: selectedMembers.includes(member),
     }));
   });
 
@@ -74,9 +86,9 @@ export class SplitFormStep1 {
       .map((member) => member.toLowerCase())
       .includes(trimmedName.toLowerCase());
 
-    const isValid = trimmedName.length > 1 && trimmedName.length <= 20 && !alreadyExists;
+    const isNameValid = trimmedName.length > 1 && trimmedName.length <= 20 && !alreadyExists;
 
-    this.isMemberNameValid.set(isValid);
+    this.isMemberNameValid.set(!!isNameValid);
   }
 
   protected addNewMemberToPool(memberName: string) {
@@ -85,9 +97,9 @@ export class SplitFormStep1 {
 
     this.splitMembers.update((customMembers) => {
       const normalizedCustom = customMembers.map((m) => m.toLowerCase());
-      const alreadyExists = normalizedCustom.includes(normalizedInput);
+      const userAlreadyExists = normalizedCustom.includes(normalizedInput);
 
-      if (alreadyExists) {
+      if (userAlreadyExists) {
         this.toastService.show({
           variant: 'warning',
           title: 'Member already exists!',
@@ -98,63 +110,63 @@ export class SplitFormStep1 {
 
       return [...customMembers, trimmedName];
     });
-
-    this.memberCheckedState.update((state) => ({
-      ...state,
-      [trimmedName]: true,
-    }));
   }
 
   protected toggleMemberChecked(memberName: string) {
-    this.memberCheckedState.update((state) => ({
-      ...state,
-      [memberName]: !(state[memberName] ?? true),
-    }));
+    const control = this.formModel().eventMembers();
+    const members = control.value();
+    const isSelected = members.includes(memberName);
+
+    let updatedMembers: string[];
+
+    if (isSelected) updatedMembers = members.filter((member) => member !== memberName);
+    else updatedMembers = [...members, memberName];
+
+    this.onPresentMembersChangeEvent.emit(updatedMembers);
   }
 
   constructor() {
     effect(() => {
       const selectedSquad = this.formModel().squadName().value();
-      this.selectedSquad.set(selectedSquad);
-    });
+      this.isSquadCustom.set(selectedSquad === 'CUSTOM');
 
-    effect(() => {
-      const squadName = this.selectedSquad();
-      const isSquadCustom = squadName === 'CUSTOM';
-      this.isSquadCustom.set(isSquadCustom);
+      const squadNameChanged =
+        this.previousSquadName !== null && this.previousSquadName !== selectedSquad;
 
-      this.splitMembers.set([]);
-
-      if (isSquadCustom) {
-        this.memberCheckedState.set({});
-      } else {
-        const squad = this.squads().find((s) => s.squadName === squadName);
-        const initialCheckedState: Record<string, boolean> = {};
-        squad?.squadMembers.forEach((member) => {
-          initialCheckedState[member] = true;
-        });
-        this.memberCheckedState.set(initialCheckedState);
+      if (!selectedSquad || selectedSquad === 'CUSTOM') {
+        this.splitMembers.set([]);
+        if (squadNameChanged) {
+          const alreadyEmpty = untracked(
+            () => this.formModel().eventMembers().value().length === 0,
+          );
+          if (!alreadyEmpty) {
+            this.onPresentMembersChangeEvent.emit([]);
+          }
+        }
+        this.previousSquadName = selectedSquad;
+        return;
       }
-    });
 
-    effect(() => {
-      // Track all dependencies that affect the final member list
-      const isCustom = this.isSquadCustom();
-      const selectedSquad = this.selectedSquad();
-      const customMembers = this.splitMembers();
-      const checkedState = this.memberCheckedState();
+      const squad = this.existingSquads().find((s) => s.squadName === selectedSquad);
 
-      // Get the source members list
-      const sourceMembers = isCustom
-        ? customMembers
-        : this.squads().find((squad) => squad.squadName === selectedSquad)?.squadMembers || [];
+      if (!squad) {
+        this.toastService.show({
+          variant: 'error',
+          title: "Couldn't find your squad!",
+          details: `Unable to find the [${selectedSquad}] squad.`,
+        });
+        this.previousSquadName = selectedSquad;
+        return;
+      }
 
-      // Compute selected members based on checked state (default to checked if not in state)
-      const selectedMembers = sourceMembers.filter((member) => checkedState[member] ?? true);
+      const memberNames = [...squad.squadMembers];
+      this.splitMembers.set(memberNames);
 
-      this.formModel().eventMembers().controlValue.set(selectedMembers);
+      if (squadNameChanged) {
+        this.onPresentMembersChangeEvent.emit(memberNames);
+      }
+
+      this.previousSquadName = selectedSquad;
     });
   }
 }
-
-type CheckedMember = Record<string, boolean>;
