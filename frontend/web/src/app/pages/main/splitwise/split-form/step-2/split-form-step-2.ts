@@ -34,13 +34,14 @@ export class SplitFormStep2 {
   // INPUTS
   readonly currency = input.required<string>();
   readonly presentMembers = input.required<string[]>();
+  readonly splittables = input.required<SplittableOrder[]>();
 
   // OUTPUTS
   readonly onBackIconClick = output<void>();
+  readonly onSplittablesChangeEvent = output<SplittableOrder[]>();
 
   // INTERNAL STATE
   protected readonly isFormVisible = signal<boolean>(false);
-  protected readonly splittables = signal<SplittableOrder[]>([]);
   protected readonly isSubmittingSplittable = signal<boolean>(false);
 
   // SERVICES
@@ -124,7 +125,13 @@ export class SplitFormStep2 {
   protected addNewSplittable(event: Event): void {
     event.preventDefault();
 
-    const { name, quantity: quantityStr, unitPrice, categoryTag, consumers } = this.splittableForm().value();
+    const {
+      name,
+      quantity: quantityStr,
+      unitPrice,
+      categoryTag,
+      consumers,
+    } = this.splittableForm().value();
 
     if (consumers.length < 1) {
       this.toastService.show({
@@ -158,8 +165,10 @@ export class SplitFormStep2 {
       settled: false,
     };
 
-    this.splittables.update((splittables) => [...splittables, newSplittable].reverse());
     this.resetSplittableForm();
+
+    const modifiedSplittables = [...this.splittables(), newSplittable].reverse();
+    this.onSplittablesChangeEvent.emit(modifiedSplittables);
   }
 
   protected updateEventSplittables(splittable: SplittableOrder) {
@@ -174,22 +183,23 @@ export class SplitFormStep2 {
       return;
     }
 
-    // Recalculate total to ensure it's always quantity * unitPrice
     const updatedSplittable: SplittableOrder = {
       ...splittable,
       total: splittable.quantity * splittable.unitPrice,
     };
 
-    this.splittables.update((splittables) =>
-      splittables.map((splittableItem) =>
-        splittableItem.id === updatedSplittable.id ? updatedSplittable : splittableItem,
-      ),
+    const modifiedSplittables = this.splittables().map((splittableItem) =>
+      splittableItem.id === updatedSplittable.id ? updatedSplittable : splittableItem,
     );
+
+    this.onSplittablesChangeEvent.emit(modifiedSplittables);
   }
 
   protected handleOnDeleteOrder(orderId: number) {
-    this.splittables.update((splittables) =>
-      splittables.filter((splittable) => splittable.id !== orderId),
+    const modifiedSplittables = this.splittables().filter(
+      (splittable) => splittable.id !== orderId,
     );
+
+    this.onSplittablesChangeEvent.emit(modifiedSplittables);
   }
 }

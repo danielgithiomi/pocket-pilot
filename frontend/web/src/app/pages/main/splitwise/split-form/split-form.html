@@ -19,7 +19,9 @@
         <split-form-step-2
           [currency]="defaultCurrency"
           (onBackIconClick)="goToPreviousStep(1)"
+          [splittables]="splitForm.splittables().value()"
           [presentMembers]="splitForm.eventMembers().value()"
+          (onSplittablesChangeEvent)="handleOnSplittablesChange($event)"
         />
       }
       @case (3) {

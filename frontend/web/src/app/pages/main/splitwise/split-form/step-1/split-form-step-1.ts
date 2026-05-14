@@ -107,8 +107,9 @@ export class SplitFormStep1 {
         });
         return customMembers;
       }
-
-      return [...customMembers, trimmedName];
+      const updatedMembers = [...customMembers, trimmedName];
+      this.onPresentMembersChangeEvent.emit(updatedMembers);
+      return updatedMembers;
     });
   }
 

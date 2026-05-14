@@ -1,11 +1,11 @@
 import { Button } from '@atoms/button';
 import { formatFullDate } from '@libs/utils';
 import { form } from '@angular/forms/signals';
-import { SplitwiseSquad } from '@global/types';
 import { Form, FormCloseEvent } from '@organisms/form';
 import { AccountsService } from '@api/accounts.service';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
+import { SplittableOrder, SplitwiseSquad } from '@global/types';
 import { Component, inject, input, output, signal } from '@angular/core';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
 import {
@@ -67,6 +67,10 @@ export class SplitwiseSplitForm {
 
   protected updateEventMembers(members: string[]) {
     this.splitForm.eventMembers().controlValue.set(members);
+  }
+
+  protected handleOnSplittablesChange(splittables: SplittableOrder[]){
+    this.splitForm.splittables().controlValue.set(splittables);
   }
 
   // SUBMISSIONS

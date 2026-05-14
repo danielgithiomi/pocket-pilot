@@ -37,9 +37,9 @@
       >
         <div class="w-full h-full grid place-items-center">
           <lucide-icon
+            [size]="iconSize"
             name="add-member-icon"
             [img]="isFormVisible() ? HideForm : ShowForm"
-            [size]="iconSize"
           />
         </div>
       </atom-button>
@@ -67,8 +67,8 @@
             class="flex-1"
             label="Quantity"
             [inverted]="true"
+            placeholder="Select quantity"
             [options]="orderQuantities()"
-            placeholder="Select the quantity"
             [formField]="splittableForm.quantity"
           />
         </div>
@@ -95,7 +95,7 @@
             [inverted]="true"
             wrapperClassName="my-0!"
             [options]="categoryTags()"
-            placeholder="Select a category"
+            placeholder="Select Category"
             [formField]="splittableForm.categoryTag"
           />
         </div>
@@ -128,19 +128,22 @@
           label="Reset"
           [inverted]="true"
           variant="secondary"
+          className="shadow-none"
           form="new-splittable-form"
           id="reset-splittable-form"
           (clicked)="resetSplittableForm()"
           [disabled]="!splittableForm().dirty() || isSubmittingSplittable()"
         />
 
+        @let hasConsumers = splittableForm().value().consumers.length > 0;
         <atom-button
           label="Add"
           type="submit"
+          className="shadow-none"
           form="new-splittable-form"
           id="submit-splittable-form"
           [isLoading]="isSubmittingSplittable()"
-          [disabled]="splittableForm().invalid() || isSubmittingSplittable()"
+          [disabled]="splittableForm().invalid() || !hasConsumers || isSubmittingSplittable()"
         />
       </div>
     </div>
