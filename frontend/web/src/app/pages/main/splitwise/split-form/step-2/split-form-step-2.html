@@ -8,7 +8,7 @@
         <lucide-angular
           name="back-arrow"
           [img]="leftArrow"
-          [size]="iconSize"
+          [size]="iconSize()"
           class="group-hover/back-icon:text-white text-inverted-text"
         />
       </div>
@@ -37,7 +37,7 @@
       >
         <div class="w-full h-full grid place-items-center">
           <lucide-icon
-            [size]="iconSize"
+            [size]="iconSize()"
             name="add-member-icon"
             [img]="isFormVisible() ? HideForm : ShowForm"
           />

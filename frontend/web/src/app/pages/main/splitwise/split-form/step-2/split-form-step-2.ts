@@ -26,12 +26,12 @@ import {
 })
 export class SplitFormStep2 {
   // ICONS
-  protected readonly iconSize = 20;
   protected readonly leftArrow = ArrowLeft;
   protected readonly HideForm = PanelTopClose;
   protected readonly ShowForm = PanelBottomClose;
 
   // INPUTS
+  readonly iconSize = input.required<number>();
   readonly currency = input.required<string>();
   readonly presentMembers = input.required<string[]>();
   readonly splittables = input.required<SplittableOrder[]>();

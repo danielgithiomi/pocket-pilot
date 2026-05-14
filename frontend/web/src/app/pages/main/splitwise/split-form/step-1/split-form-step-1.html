@@ -68,7 +68,7 @@
       variant="primary"
       class="shadow-none rounded-lg!"
       [disabled]="!isMemberNameValid() || isSubmittingForm()"
-      (clicked)="addNewMemberToPool(customMemberInput.value); customMemberInput.value = ''"
+      (clicked)="addCustomMemberToPool(customMemberInput.value); customMemberInput.value = ''"
     >
       <div class="w-full h-full grid place-items-center py-[1.5px]">
         <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize()" />

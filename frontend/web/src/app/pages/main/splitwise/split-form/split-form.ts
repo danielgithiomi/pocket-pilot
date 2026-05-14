@@ -6,8 +6,17 @@ import { AccountsService } from '@api/accounts.service';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
 import { SplittableOrder, SplitwiseSquad } from '@global/types';
-import { Component, inject, input, output, signal } from '@angular/core';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
+import {
+  input,
+  effect,
+  inject,
+  output,
+  signal,
+  computed,
+  untracked,
+  Component,
+} from '@angular/core';
 import {
   SplitFormSchema,
   InitialSplitFormState,
@@ -33,6 +42,7 @@ export class SplitwiseSplitForm {
   readonly closeSplitFormEvent = output<boolean>();
 
   // SIGNAL STATES
+  protected readonly customMembers = signal<string[]>([]);
   protected readonly splitFormStep = signal<FormStepOptions>(1);
   protected readonly isSubmittingSplitForm = signal<boolean>(false);
 
@@ -42,12 +52,22 @@ export class SplitwiseSplitForm {
   // DATA
   protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
 
+  // COMPUTED
+  protected readonly initalMemberPool = computed<string[]>(() => {
+    const squadName = this.splitForm.squadName().value();
+
+    const squad = this.squads().find((squad) => squad.squadName === squadName);
+
+    if (!squad) return this.customMembers();
+    return squad.squadMembers;
+  });
+
   // FORM
-  private initialLocalFormState: SplitFormSchema = {
+  private initialFormState: SplitFormSchema = {
     ...InitialSplitFormState,
     billingCurrency: this.defaultCurrency,
   };
-  protected readonly splitFormModel = signal<SplitFormSchema>(this.initialLocalFormState);
+  protected readonly splitFormModel = signal<SplitFormSchema>(this.initialFormState);
   protected readonly splitForm = form(this.splitFormModel, SplitFormValidationSchema);
 
   // METHODS
@@ -57,8 +77,9 @@ export class SplitwiseSplitForm {
   protected resetSplitForm() {
     this.splitForm().reset();
     this.splitFormStep.set(1);
-    this.splitFormModel.set(this.initialLocalFormState);
-  };
+    this.customMembers.set([]);
+    this.splitFormModel.set(this.initialFormState);
+  }
 
   protected handleSplitFormClose(event: FormCloseEvent) {
     if (event === 'icon') this.resetSplitForm();
@@ -66,10 +87,13 @@ export class SplitwiseSplitForm {
   }
 
   protected updateEventMembers(members: string[]) {
+    const isCustomSquad = this.splitForm.squadName().value() === 'CUSTOM';
+    if (isCustomSquad) this.customMembers.set(members);
+
     this.splitForm.eventMembers().controlValue.set(members);
   }
 
-  protected handleOnSplittablesChange(splittables: SplittableOrder[]){
+  protected handleOnSplittablesChange(splittables: SplittableOrder[]) {
     this.splitForm.splittables().controlValue.set(splittables);
   }
 
@@ -86,6 +110,17 @@ export class SplitwiseSplitForm {
     //   this.isSubmittingSplitForm.set(false);
     //   this.closeSplitFormEvent.emit(true);
     // }, 2000);
+  }
+
+  constructor() {
+    effect(() => {
+      const squadName = this.splitForm.squadName().value();
+
+      const squadMembers =
+        this.squads().find((squad) => squad.squadName === squadName)?.squadMembers || [];
+
+      untracked(() => this.splitForm.eventMembers().controlValue.set(squadMembers));
+    });
   }
 }
 

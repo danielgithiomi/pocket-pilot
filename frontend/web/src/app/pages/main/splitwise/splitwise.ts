@@ -7,9 +7,6 @@ import { SplitwiseSquardForm } from './squard-form/squard-form';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListPlus, Users } from 'lucide-angular';
 
-/** Stable fallback so `[squads]` does not get a new `[]` every CD while data is loading. */
-const EMPTY_SQUADS: SplitwiseSquad[] = [];
-
 @Component({
   selector: 'app-splitwise',
   styleUrl: './splitwise.css',
@@ -34,7 +31,7 @@ export class Splitwise {
 
   // COMPUTED
   protected isLoadingResources = computed<boolean>(() => this.userSquads.isLoading());
-  protected squads = computed<SplitwiseSquad[]>(() => this.userSquads.value()?.data ?? EMPTY_SQUADS);
+  protected squads = computed<SplitwiseSquad[]>(() => this.userSquads.value()?.data ?? []);
   protected allSquadMembers = computed<string[]>(() =>
     Array.from(new Set(this.squads().flatMap((squad) => squad.squadMembers))),
   );

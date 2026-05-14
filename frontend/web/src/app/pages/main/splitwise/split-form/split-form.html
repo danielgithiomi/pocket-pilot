@@ -11,12 +11,15 @@
           [iconSize]="iconSize"
           [formModel]="splitForm"
           [existingSquads]="squads()"
+          [memberPool]="initalMemberPool()"
           [isSubmittingForm]="isSubmittingSplitForm()"
+          [presentMembers]="splitForm.eventMembers().value()"
           (onPresentMembersChangeEvent)="updateEventMembers($event)"
         />
       }
       @case (2) {
         <split-form-step-2
+          [iconSize]="iconSize"
           [currency]="defaultCurrency"
           (onBackIconClick)="goToPreviousStep(1)"
           [splittables]="splitForm.splittables().value()"
@@ -34,12 +37,13 @@
     }
   </form>
 
+  @let selectedMemberCount = splitForm.eventMembers().value().length;
   @if (splitFormStep() === 2) {
     <div slot="sub-footer">
       <p class="text-muted-text text-right text-xs italic my-1">
         Details: <span class="font-bold text-primary">{{ splitFormModel().eventName }}</span> with
-        <span class="font-bold text-primary">{{ splitForm.eventMembers().value().length }}</span>
-        members on {{ formatDate(splitFormModel().eventDate) }}
+        <span class="font-bold text-primary">{{ selectedMemberCount }}</span>
+        people on {{ formatDate(splitFormModel().eventDate) }}
       </p>
     </div>
   }
@@ -74,12 +78,13 @@
 
     @switch (splitFormStep()) {
       @case (1) {
+        @let hasMinimumMembers = selectedMemberCount > 1;
         <atom-button
           type="button"
           variant="primary"
           id="to-splt-step-2"
           (clicked)="goToNextStep(2)"
-          [disabled]="splitForm().invalid() || isSubmittingSplitForm()"
+          [disabled]="!hasMinimumMembers || splitForm().invalid() || isSubmittingSplitForm()"
         >
           <div class="w-full flex flex-row items-center justify-between gap-4">
             <span>Next</span>
