@@ -37,7 +37,7 @@
     }
   </form>
 
-  @let selectedMemberCount = splitForm.eventMembers().value().length;
+  @let selectedMemberCount = splitForm.eventMembers().value().length + 1;
   @if (splitFormStep() === 2) {
     <div slot="sub-footer">
       <p class="text-muted-text text-right text-xs italic my-1">

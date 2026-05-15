@@ -157,7 +157,7 @@
         @for (splittable of splittables(); track splittable.id) {
           <order-item
             [order]="splittable"
-            [presentMembers]="presentMembers()"
+            [presentMembers]="consumerOptions()"
             (onDeleteClickEvent)="handleOnDeleteOrder($event)"
             (onUpdateSplittableEvent)="updateEventSplittables($event)"
           />

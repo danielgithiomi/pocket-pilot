@@ -17,6 +17,7 @@ import {
   InitialNewSplittableData,
   NewSplittableFormValidation,
 } from './split-form-step-2.types';
+import { AuthService } from '@api/auth.service';
 
 @Component({
   selector: 'split-form-step-2',
@@ -45,13 +46,19 @@ export class SplitFormStep2 {
   protected readonly isSubmittingSplittable = signal<boolean>(false);
 
   // SERVICES
+  private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
   private readonly splitwiseService = inject(SplitwiseService);
 
   // DATA
+  private readonly user = this.authService.user();
   protected readonly categoryTagsResource = this.splitwiseService.getOrderCategoryTags();
 
   // COMPUTED
+  protected readonly consumerOptions = computed<string[]>(() => {
+    const userFirstName = this.user?.name.split(' ')[0];
+    return [`${userFirstName}(Self)`, ...this.presentMembers()];
+  });
   protected readonly itemsCount = computed<number>(() => this.splittables().length);
   protected readonly isFetchingData = computed<boolean>(() =>
     this.categoryTagsResource.isLoading(),
@@ -80,7 +87,7 @@ export class SplitFormStep2 {
   });
   protected readonly formattedConsumers = computed<ISquadMember[]>(() => {
     const currentMembers = this.splittableForm().value().consumers;
-    return this.presentMembers().map((member) => ({
+    return this.consumerOptions().map((member) => ({
       memberName: member,
       isChecked: currentMembers.includes(member),
     }));
