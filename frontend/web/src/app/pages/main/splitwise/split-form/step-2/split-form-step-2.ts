@@ -59,6 +59,12 @@ export class SplitFormStep2 {
     const userFirstName = this.user?.name.split(' ')[0];
     return [`${userFirstName}(Self)`, ...this.presentMembers()];
   });
+  protected readonly canAddConsumer = computed<boolean>(() => {
+    const currentConsumers = this.splittableForm().value().consumers;
+    const orderQuantity = Number(this.splittableForm().value().quantity);
+
+    return currentConsumers.length < orderQuantity;
+  });
   protected readonly itemsCount = computed<number>(() => this.splittables().length);
   protected readonly isFetchingData = computed<boolean>(() =>
     this.categoryTagsResource.isLoading(),
@@ -108,14 +114,13 @@ export class SplitFormStep2 {
 
   protected addConsumerToOrder(memberName: string): void {
     const currentConsumers = this.splittableForm().value().consumers;
-    const orderQuantity = Number(this.splittableForm().value().quantity);
 
     let updatedMembers: string[];
     const memberExists = currentConsumers.includes(memberName);
 
     if (memberExists) updatedMembers = currentConsumers.filter((member) => member !== memberName);
     else {
-      if (currentConsumers.length >= orderQuantity) {
+      if (!this.canAddConsumer()) {
         this.toastService.show({
           variant: 'error',
           title: 'Quantity mismatch!',

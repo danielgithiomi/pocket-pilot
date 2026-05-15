@@ -14,6 +14,7 @@ import { Component, computed, input, output } from '@angular/core';
         'cursor-pointer!': isCheckable(),
         'bg-primary!': inverted() && isActive(),
         'bg-loader-primary! border border-primary': isActive(),
+        'opacity-50 cursor-not-allowed!': !isActive() && isDisabled()
       }"
       class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-1.5 cursor-default"
     >
@@ -37,6 +38,7 @@ export class SquadMember {
   // INPUTS
   readonly inverted = input<boolean>(false);
   readonly isCheckable = input<boolean>(true);
+  readonly isDisabled = input<boolean>(false);
   readonly member = input.required<ISquadMember>();
 
   // OUTPUTS

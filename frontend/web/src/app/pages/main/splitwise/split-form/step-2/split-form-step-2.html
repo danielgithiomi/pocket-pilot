@@ -115,6 +115,7 @@
                 [inverted]="true"
                 [member]="member"
                 [isCheckable]="true"
+                [isDisabled]="!canAddConsumer()"
                 (onMemberEventClick)="addConsumerToOrder($event)"
               />
             }
