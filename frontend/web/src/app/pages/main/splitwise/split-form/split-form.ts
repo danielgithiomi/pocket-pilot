@@ -72,7 +72,10 @@ export class SplitwiseSplitForm {
 
   // METHODS
   protected formatDate = (date: Date) => formatFullDate(date.toISOString());
-  protected goToNextStep = (step: FormStepOptions) => this.splitFormStep.set(step);
+  protected goToNextStep = (step: FormStepOptions) => {
+    this.splitFormStep.set(step);
+    console.log('Form state:', this.splitForm().value());
+  };
   protected goToPreviousStep = (step: FormStepOptions) => this.splitFormStep.set(step);
   protected resetSplitForm() {
     this.splitForm().reset();
@@ -90,6 +93,7 @@ export class SplitwiseSplitForm {
     const isCustomSquad = this.splitForm.squadName().value() === 'CUSTOM';
     if (isCustomSquad) this.customMembers.set(members);
 
+    this.splitForm.splittables().controlValue.set([]);
     this.splitForm.eventMembers().controlValue.set(members);
   }
 

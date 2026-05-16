@@ -115,6 +115,16 @@ export class OrderItem {
     }
 
     const quantity = Number(quantityStr);
+
+    if (consumers.length !== quantity) {
+      this.toastService.show({
+        variant: 'error',
+        title: 'Consumer Quantity Mismatch!',
+        details: "The quantity and the number of consumers don't match up",
+      });
+      return;
+    }
+
     const total = unitPrice * quantity;
 
     const updatedOrder: SplittableOrder = {
@@ -128,6 +138,8 @@ export class OrderItem {
     };
 
     this.onUpdateSplittableEvent.emit({ ...updatedOrder });
+    this.isExpanded.set(false);
+    this.updateSplittableForm().reset();
   }
 
   protected updateOrderConsumers(memberName: string): void {

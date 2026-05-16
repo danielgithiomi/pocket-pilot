@@ -7,6 +7,7 @@ export interface SplitFormSchema {
   squadName: string;
   eventMembers: string[];
   billingCurrency: string;
+  billTotal: number | null;
   splittables: SplittableOrder[];
 }
 
@@ -14,6 +15,7 @@ export const InitialSplitFormState = {
   eventName: '',
   squadName: '',
   splittables: [],
+  billTotal: null,
   eventMembers: [],
   eventDate: new Date(),
 };

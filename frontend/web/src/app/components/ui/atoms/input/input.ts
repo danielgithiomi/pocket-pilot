@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { AutoComplete, InputType } from './input.types';
 import { FieldTree, FormField } from '@angular/forms/signals';
-import { Eye, EyeOff, LucideAngularModule, X } from 'lucide-angular';
+import { Eye, EyeClosed, LucideAngularModule, X } from 'lucide-angular';
 import { Component, computed, input, output, signal } from '@angular/core';
 
 @Component({
@@ -36,9 +36,9 @@ export class Input {
 
   /* ICONS */
   readonly X = X;
-  readonly Eye = Eye;
+  readonly Visible = Eye;
   readonly iconSize = 18;
-  readonly EyeOff = EyeOff;
+  readonly Hidden = EyeClosed;
 
   /* SIGNALS */
   protected isPasswordVisible = signal(false);
