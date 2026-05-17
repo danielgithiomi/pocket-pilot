@@ -1,3 +1,4 @@
+import { LocalQuantitySplit } from '@global/types';
 import { required, schema, min } from '@angular/forms/signals';
 
 export type SplitStrategyVariant = 'sole' | 'equal' | 'quantity';
@@ -18,6 +19,7 @@ export interface NewSplittableSchema {
   consumers: string[];
   unitPrice: number | null;
   splitStrategy: SplitStrategyVariant;
+  quantitySplits: LocalQuantitySplit[];
 }
 
 export const InitialNewSplittableData: NewSplittableSchema = {
@@ -26,6 +28,7 @@ export const InitialNewSplittableData: NewSplittableSchema = {
   consumers: [],
   categoryTag: '',
   unitPrice: null,
+  quantitySplits: [],
   splitStrategy: 'sole',
 };
 

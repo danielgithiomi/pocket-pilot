@@ -57,6 +57,7 @@ export class MemberQuantifier {
   readonly iconSize = input.required<number>();
   readonly quantity = input.required<number>();
   readonly inverted = input.required<boolean>();
+  readonly isMaximumQuantityReached = input<boolean>(false);
 
   // OUTPUTS
   readonly onQuantityChangeEvent = output<QuantityChangeVariant>();
@@ -65,7 +66,7 @@ export class MemberQuantifier {
   protected readonly isMinimumQuantity = computed<boolean>(() => this.quantity() === 1);
   protected readonly memberQuantifierId = computed<string>(() => `${this.id()}-quantifier`);
   protected readonly isMaximumQuantity = computed<boolean>(
-    () => this.quantity() === this.maxQuantity(),
+    () => this.quantity() === this.maxQuantity() || this.isMaximumQuantityReached(),
   );
 }
 

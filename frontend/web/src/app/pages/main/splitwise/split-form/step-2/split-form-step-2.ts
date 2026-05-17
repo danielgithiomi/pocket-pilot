@@ -5,7 +5,7 @@ import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
 import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
-import { SplittableOrder } from '@global/types';
+import { LocalQuantitySplit, SplittableOrder } from '@global/types';
 import { OrderItem } from './order-item/order-item';
 import { Select, SelectOption } from '@atoms/select';
 import { SplitwiseService } from '@api/splitwise.service';
@@ -19,7 +19,11 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
+import {
+  ISquadMember,
+  SquadMember,
+  SquadMemberQuantityChangeEmmision,
+} from '@structural/main/squad-member/squad-member';
 import { ArrowLeft, PanelTopClose, PanelBottomClose, LucideAngularModule } from 'lucide-angular';
 import {
   NewSplittableSchema,
@@ -31,6 +35,7 @@ import {
   SplitStrategyOption,
 } from './split-form-step-2.types';
 import { AuthService } from '@api/auth.service';
+import { QuantityChangeVariant } from '@components/structural/main/squad-member/member-quantifier/member-quantifier';
 
 @Component({
   selector: 'split-form-step-2',
@@ -72,7 +77,20 @@ export class SplitFormStep2 {
     const userFirstName = this.user?.name.split(' ')[0];
     return [`${userFirstName}(Self)`, ...this.presentMembers()];
   });
+  protected readonly quantityAssisgnableRemaining = computed<number>(() => {
+    const orderSplits = this.splittableForm().value().quantitySplits;
+    const orderQuantity = Number(this.splittableForm().value().quantity);
+
+    const totalAssignedQuantity = orderSplits.reduce(
+      (acc, split) => acc + split.consumerQuantity,
+      0,
+    );
+
+    return orderQuantity - totalAssignedQuantity;
+  });
   protected readonly canAddConsumer = computed<boolean>(() => {
+    if (this.quantityAssisgnableRemaining() <= 0) return false;
+
     const currentConsumers = this.splittableForm().value().consumers;
     const orderQuantity = Number(this.splittableForm().value().quantity);
 
@@ -119,10 +137,13 @@ export class SplitFormStep2 {
     return formatCurrency(subtotal, this.currency(), 2, true);
   });
   protected readonly formattedConsumers = computed<ISquadMember[]>(() => {
-    const currentMembers = this.splittableForm().value().consumers;
+    const currentSplits = this.splittableForm().value().quantitySplits;
+    const currentMembers = currentSplits.map((split) => split.consumerName);
+
     return this.consumerOptions().map((member) => ({
       memberName: member,
       isChecked: currentMembers.includes(member),
+      quantity: currentSplits.find((split) => split.consumerName === member)?.consumerQuantity || 1,
     }));
   });
 
@@ -140,12 +161,14 @@ export class SplitFormStep2 {
   }
 
   protected addConsumerToOrder(memberName: string): void {
-    const currentConsumers = this.splittableForm().value().consumers;
+    const orderSplits = this.splittableForm().value().quantitySplits;
+    const consumersInOrder = orderSplits.map((split) => split.consumerName);
 
-    let updatedMembers: string[];
-    const memberExists = currentConsumers.includes(memberName);
+    let updatedSplits: LocalQuantitySplit[];
+    const memberExists = consumersInOrder.includes(memberName);
 
-    if (memberExists) updatedMembers = currentConsumers.filter((member) => member !== memberName);
+    if (memberExists)
+      updatedSplits = orderSplits.filter((split) => split.consumerName !== memberName);
     else {
       if (!this.canAddConsumer()) {
         this.toastService.show({
@@ -155,10 +178,40 @@ export class SplitFormStep2 {
         });
         return;
       }
-      updatedMembers = [...currentConsumers, memberName];
+      const newSplit: LocalQuantitySplit = {
+        id: crypto.randomUUID(),
+        consumerName: memberName,
+        consumerQuantity: 1,
+      };
+      updatedSplits = [...orderSplits, newSplit];
     }
 
-    this.splittableForm.consumers().controlValue.set(updatedMembers);
+    console.log('updatedSplits', updatedSplits);
+
+    this.splittableForm.quantitySplits().controlValue.set(updatedSplits);
+  }
+
+  protected handleOnConsumerQuantityChange(event: SquadMemberQuantityChangeEmmision): void {
+    console.log('handleOnConsumerQuantityChange', event);
+
+    const { memberName, quantityChangeVariant } = event;
+
+    const currentSplits = this.splittableForm().value().quantitySplits;
+
+    const updatedSplits = currentSplits.map((split) => {
+      if (split.consumerName === memberName)
+        return {
+          ...split,
+          consumerQuantity:
+            quantityChangeVariant === 'increase'
+              ? split.consumerQuantity + 1
+              : split.consumerQuantity - 1,
+        };
+
+      return split;
+    });
+
+    this.splittableForm.quantitySplits().controlValue.set(updatedSplits);
   }
 
   protected addNewSplittable(event: Event): void {

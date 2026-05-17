@@ -6,5 +6,6 @@ export const PlaceholderSplittableFormState = {
   consumers: [],
   unitPrice: null,
   categoryTag: '',
+  quantitySplits: [],
   splitStrategy: 'sole' as SplitStrategyVariant,
 };

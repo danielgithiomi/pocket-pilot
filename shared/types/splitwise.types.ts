@@ -31,3 +31,12 @@ export interface Splittable extends SplittablePayload {
 export interface SplittableOrder extends SplittablePayload {
   id: number;
 }
+
+export interface QuantitySplitPayload {
+  consumerName: string;
+  consumerQuantity: number;
+}
+
+export interface LocalQuantitySplit extends QuantitySplitPayload {
+  id: string;
+}

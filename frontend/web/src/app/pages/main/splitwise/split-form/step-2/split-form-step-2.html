@@ -120,6 +120,7 @@
           </div>
 
           <!-- Squad Member Container -->
+           <p class="text-xs text-muted-text!">Remaining quantity: {{ quantityAssisgnableRemaining() }}</p>
           <div
             class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
           >
@@ -130,7 +131,9 @@
                 [isCheckable]="true"
                 [isDisabled]="!canAddConsumer()"
                 [isQuantifiable]="isStrategyCustom()"
+                [isMaximumQuantityReached]="!canAddConsumer()"
                 (onMemberEventClick)="addConsumerToOrder($event)"
+                (onMemberQuantityChange)="handleOnConsumerQuantityChange($event)"
               />
             }
           </div>

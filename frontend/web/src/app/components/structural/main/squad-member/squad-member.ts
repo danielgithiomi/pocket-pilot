@@ -3,7 +3,7 @@ import { ToastService } from '@atoms/toast';
 import { formatToReadable } from '@libs/utils';
 import { LucideAngularModule, Check } from 'lucide-angular';
 import { MemberQuantifier, QuantityChangeVariant } from './member-quantifier';
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'squad-member',
@@ -31,8 +31,9 @@ import { Component, computed, inject, input, output, signal } from '@angular/cor
           <member-quantifier
             [id]="memberId()"
             [iconSize]="iconSize"
-            [quantity]="quantity()"
             [inverted]="inverted()"
+            [quantity]="member().quantity ?? 1"
+            [isMaximumQuantityReached]="isMaximumQuantityReached()"
             (onQuantityChangeEvent)="handleOnQuantityChange($event)"
           />
         } @else {
@@ -53,12 +54,11 @@ export class SquadMember {
   readonly isDisabled = input<boolean>(false);
   readonly isQuantifiable = input<boolean>(false);
   readonly member = input.required<ISquadMember>();
-
-  // STATE SIGNALS
-  protected readonly quantity = signal<number>(1);
+  readonly isMaximumQuantityReached = input<boolean>(false);
 
   // OUTPUTS
   readonly onMemberEventClick = output<string>();
+  readonly onMemberQuantityChange = output<SquadMemberQuantityChangeEmmision>();
 
   // SERVICES
   private readonly toastService = inject(ToastService);
@@ -76,21 +76,29 @@ export class SquadMember {
 
   // METHODS
   protected handleOnQuantityChange(event: QuantityChangeVariant): void {
-    if (this.quantity() === 1 && event === 'decrease') {
-      this.toastService.show({
-        variant: 'warning',
-        title: 'Minimum quantity reached!',
-        details: 'You cannot decrease the quantity below 1.',
-      });
-      return;
-    }
+    // if (this.quantity() === 1 && event === 'decrease') {
+    //   this.toastService.show({
+    //     variant: 'warning',
+    //     title: 'Minimum quantity reached!',
+    //     details: 'You cannot decrease the quantity below 1.',
+    //   });
+    //   return;
+    // }
 
-    if (event === 'increase') this.quantity.update((prev) => prev + 1);
-    else this.quantity.update((prev) => prev - 1);
+    this.onMemberQuantityChange.emit({
+      quantityChangeVariant: event,
+      memberName: this.member().memberName,
+    });
   }
 }
 
 export interface ISquadMember {
+  quantity?: number;
   memberName: string;
   isChecked: boolean;
+}
+
+export interface SquadMemberQuantityChangeEmmision {
+  memberName: string;
+  quantityChangeVariant: QuantityChangeVariant;
 }

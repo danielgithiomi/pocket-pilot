@@ -84,6 +84,7 @@ export class OrderItem {
   });
   protected readonly formattedConsumers = computed<ISquadMember[]>(() => {
     return this.presentMembers().map((consumer) => ({
+      quantity: 1,
       memberName: consumer,
       isChecked: this.updateSplittableForm().value().consumers.includes(consumer),
     }));
@@ -172,6 +173,7 @@ export class OrderItem {
       if (orderData)
         this.updateSplittableFormModel.set({
           ...orderData,
+          quantitySplits: [],
           splitStrategy: 'sole',
           quantity: orderData.quantity.toString(),
         });
