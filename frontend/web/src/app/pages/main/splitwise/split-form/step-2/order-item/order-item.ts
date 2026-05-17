@@ -172,6 +172,7 @@ export class OrderItem {
       if (orderData)
         this.updateSplittableFormModel.set({
           ...orderData,
+          splitStrategy: 'sole',
           quantity: orderData.quantity.toString(),
         });
     });

@@ -438,6 +438,10 @@ main {
     @apply w-full overflow-hidden truncate line-clamp-1;
   }
 
+  .required-asterix {
+    @apply text-sm text-expense! inline-block;
+  }
+
   /* ANIMATIONS START */
   .animate-left {
     animation: slideLeft 750ms ease-out forwards;

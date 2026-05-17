@@ -9,13 +9,26 @@ import { SplittableOrder } from '@global/types';
 import { OrderItem } from './order-item/order-item';
 import { Select, SelectOption } from '@atoms/select';
 import { SplitwiseService } from '@api/splitwise.service';
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+  untracked,
+} from '@angular/core';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import { ArrowLeft, PanelTopClose, PanelBottomClose, LucideAngularModule } from 'lucide-angular';
 import {
   NewSplittableSchema,
   InitialNewSplittableData,
   NewSplittableFormValidation,
+  SplitStrategyVariant,
+  STRATEGY_MAP,
+  SPLIT_STRATEGY_OPTIONS,
+  SplitStrategyOption,
 } from './split-form-step-2.types';
 import { AuthService } from '@api/auth.service';
 
@@ -87,6 +100,20 @@ export class SplitFormStep2 {
       return { label, value };
     });
   });
+  protected readonly isSplitStrategyVisible = computed<boolean>(() => {
+    const quantity = Number(this.splittableForm().value().quantity);
+    return quantity > 1;
+  });
+  protected readonly isStrategyCustom = computed<boolean>(() => {
+    const strategy = this.splittableForm().value().splitStrategy;
+    return strategy === 'quantity';
+  });
+  protected readonly splitStrategyOptions = computed<SelectOption[]>(() => {
+    return SPLIT_STRATEGY_OPTIONS.map((strategy: SplitStrategyOption) => ({
+      value: strategy,
+      label: STRATEGY_MAP[strategy],
+    }));
+  });
   protected readonly formattedSubTotal = computed<string>(() => {
     const subtotal = this.splittables().reduce((acc, splittable) => acc + splittable.total, 0);
     return formatCurrency(subtotal, this.currency(), 2, true);
@@ -137,6 +164,7 @@ export class SplitFormStep2 {
   protected addNewSplittable(event: Event): void {
     event.preventDefault();
 
+    console.log('addNewSplittable');
     const {
       name,
       quantity: quantityStr,
@@ -213,5 +241,19 @@ export class SplitFormStep2 {
     );
 
     this.onSplittablesChangeEvent.emit(modifiedSplittables);
+  }
+
+  constructor() {
+    effect(() => {
+      const quantity = Number(this.splittableForm.quantity().controlValue());
+      const nextStrategy: SplitStrategyVariant = quantity > 1 ? 'equal' : 'sole';
+
+      untracked(() => {
+        const strategyControl = this.splittableForm.splitStrategy().controlValue;
+        if (strategyControl() !== nextStrategy) {
+          strategyControl.set(nextStrategy);
+        }
+      });
+    });
   }
 }

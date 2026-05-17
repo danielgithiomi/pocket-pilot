@@ -1,11 +1,23 @@
 import { required, schema, min } from '@angular/forms/signals';
 
+export type SplitStrategyVariant = 'sole' | 'equal' | 'quantity';
+
+export const SPLIT_STRATEGY_OPTIONS = ['equal', 'sole', 'quantity'] as const;
+export type SplitStrategyOption = (typeof SPLIT_STRATEGY_OPTIONS)[number];
+
+export const STRATEGY_MAP: Record<SplitStrategyOption, string> = {
+  equal: 'Equal Split',
+  sole: 'Consumed By One',
+  quantity: 'Quantity Per Person',
+};
+
 export interface NewSplittableSchema {
   name: string;
   quantity: string;
   categoryTag: string;
   consumers: string[];
   unitPrice: number | null;
+  splitStrategy: SplitStrategyVariant;
 }
 
 export const InitialNewSplittableData: NewSplittableSchema = {
@@ -14,6 +26,7 @@ export const InitialNewSplittableData: NewSplittableSchema = {
   consumers: [],
   categoryTag: '',
   unitPrice: null,
+  splitStrategy: 'sole',
 };
 
 export const NewSplittableFormValidation = schema<NewSplittableSchema>((root) => {

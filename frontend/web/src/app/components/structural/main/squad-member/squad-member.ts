@@ -1,11 +1,13 @@
 import { NgClass } from '@angular/common';
+import { ToastService } from '@atoms/toast';
 import { formatToReadable } from '@libs/utils';
 import { LucideAngularModule, Check } from 'lucide-angular';
-import { Component, computed, input, output } from '@angular/core';
+import { MemberQuantifier, QuantityChangeVariant } from './member-quantifier';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'squad-member',
-  imports: [LucideAngularModule, NgClass],
+  imports: [LucideAngularModule, NgClass, MemberQuantifier],
   template: `
     <div
       [id]="memberId()"
@@ -14,7 +16,7 @@ import { Component, computed, input, output } from '@angular/core';
         'cursor-pointer!': isCheckable(),
         'bg-primary!': inverted() && isActive(),
         'bg-loader-primary! border border-primary': isActive(),
-        'opacity-50 cursor-not-allowed!': !isActive() && isDisabled()
+        'opacity-50 cursor-not-allowed!': !isActive() && isDisabled(),
       }"
       class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-1.5 cursor-default"
     >
@@ -25,7 +27,17 @@ import { Component, computed, input, output } from '@angular/core';
       <p class="text-xs text-white font-semibold">{{ formattedName() }}</p>
 
       @if (isActive()) {
-        <lucide-icon name="member-checked-icon" [img]="UserCheck" [size]="iconSize" />
+        @if (isQuantifiable()) {
+          <member-quantifier
+            [id]="memberId()"
+            [iconSize]="iconSize"
+            [quantity]="quantity()"
+            [inverted]="inverted()"
+            (onQuantityChangeEvent)="handleOnQuantityChange($event)"
+          />
+        } @else {
+          <lucide-icon name="member-checked-icon" [img]="UserCheck" [size]="iconSize" />
+        }
       }
     </div>
   `,
@@ -39,10 +51,17 @@ export class SquadMember {
   readonly inverted = input<boolean>(false);
   readonly isCheckable = input<boolean>(true);
   readonly isDisabled = input<boolean>(false);
+  readonly isQuantifiable = input<boolean>(false);
   readonly member = input.required<ISquadMember>();
+
+  // STATE SIGNALS
+  protected readonly quantity = signal<number>(1);
 
   // OUTPUTS
   readonly onMemberEventClick = output<string>();
+
+  // SERVICES
+  private readonly toastService = inject(ToastService);
 
   // COMPUTED
   protected readonly isChecked = computed<boolean>(() => this.member().isChecked);
@@ -54,6 +73,21 @@ export class SquadMember {
   protected readonly initial = computed<string>(() =>
     this.member().memberName.charAt(0).toUpperCase(),
   );
+
+  // METHODS
+  protected handleOnQuantityChange(event: QuantityChangeVariant): void {
+    if (this.quantity() === 1 && event === 'decrease') {
+      this.toastService.show({
+        variant: 'warning',
+        title: 'Minimum quantity reached!',
+        details: 'You cannot decrease the quantity below 1.',
+      });
+      return;
+    }
+
+    if (event === 'increase') this.quantity.update((prev) => prev + 1);
+    else this.quantity.update((prev) => prev - 1);
+  }
 }
 
 export interface ISquadMember {
