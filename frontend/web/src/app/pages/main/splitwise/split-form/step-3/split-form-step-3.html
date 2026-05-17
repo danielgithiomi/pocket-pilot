@@ -1,0 +1,28 @@
+<div class="w-full flex flex-col gap-1 mb-1">
+  <atom-input
+    type="text"
+    id="split-name"
+    [inverted]="true"
+    autocomplete="off"
+    wrapperClassName="mb-0!"
+    placeholder="Eg: 1210.00"
+    label="Bill Amount (Verification)"
+    [formField]="formModel().verificationTotal"
+    (clearOutput)="formModel().verificationTotal().controlValue.set(null)"
+  />
+
+  <p class="text-muted-text text-xs italic w-full text-right pr-2">
+    Bill Subtotal: <span class="text-primary font-semibold">{{ formattedBillSubtotal() }}</span>
+  </p>
+</div>
+
+<atom-select
+  label="Who Paid"
+  [inverted]="true"
+  id="bill-paid-by"
+  class="flex-1 w-full"
+  wrapperClassName="my-0"
+  placeholder="Select a payer"
+  [options]="billPaymentStrategyOptions()"
+  [formField]="formModel().billPayerStrategy"
+/>

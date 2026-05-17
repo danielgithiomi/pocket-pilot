@@ -5,6 +5,7 @@ import { Form, FormCloseEvent } from '@organisms/form';
 import { AccountsService } from '@api/accounts.service';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
+import { SplitFormStep3 } from './step-3/split-form-step-3';
 import { SplittableOrder, SplitwiseSquad } from '@global/types';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
 import {
@@ -26,7 +27,7 @@ import {
 @Component({
   selector: 'splitwise-split-form',
   templateUrl: './split-form.html',
-  imports: [LucideAngularModule, Form, Button, SplitFormStep1, SplitFormStep2],
+  imports: [LucideAngularModule, Form, Button, SplitFormStep1, SplitFormStep2, SplitFormStep3],
 })
 export class SplitwiseSplitForm {
   // ICONS
@@ -43,7 +44,7 @@ export class SplitwiseSplitForm {
 
   // SIGNAL STATES
   protected readonly customMembers = signal<string[]>([]);
-  protected readonly splitFormStep = signal<FormStepOptions>(1);
+  protected readonly splitFormStep = signal<FormStepOptions>(3);
   protected readonly isSubmittingSplitForm = signal<boolean>(false);
 
   // SERVICES

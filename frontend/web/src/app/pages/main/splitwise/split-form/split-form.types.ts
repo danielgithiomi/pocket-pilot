@@ -1,5 +1,6 @@
 import { SplittableOrder } from '@global/types';
 import { required, schema } from '@angular/forms/signals';
+import { PaymentOption } from './step-3/split-form-step-3.types';
 
 export interface SplitFormSchema {
   eventDate: Date;
@@ -7,17 +8,19 @@ export interface SplitFormSchema {
   squadName: string;
   eventMembers: string[];
   billingCurrency: string;
-  billTotal: number | null;
   splittables: SplittableOrder[];
+  verificationTotal: number | null;
+  billPayerStrategy: PaymentOption;
 }
 
 export const InitialSplitFormState = {
   eventName: '',
   squadName: '',
   splittables: [],
-  billTotal: null,
   eventMembers: [],
   eventDate: new Date(),
+  verificationTotal: null,
+  billPayerStrategy: 'one' as PaymentOption,
 };
 
 export const SplitFormValidationSchema = schema<SplitFormSchema>((root) => {

@@ -28,11 +28,11 @@
         />
       }
       @case (3) {
-        <!-- <split-form-step-3
+        <split-form-step-3
           [iconSize]="iconSize"
           [formModel]="splitForm"
-          [isSubmittingForm]="isSubmittingSplitForm()"
-        /> -->
+          [presentMembers]="splitForm.eventMembers().value()"
+        />
       }
     }
   </form>
