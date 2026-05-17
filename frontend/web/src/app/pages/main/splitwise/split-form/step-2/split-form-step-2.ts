@@ -89,12 +89,12 @@ export class SplitFormStep2 {
     return orderQuantity - totalAssignedQuantity;
   });
   protected readonly canAddConsumer = computed<boolean>(() => {
-    if (this.quantityAssisgnableRemaining() <= 0) return false;
+    const quantity = Number(this.splittableForm().value().quantity);
+    const splitStrategy = this.splittableForm().value().splitStrategy;
 
-    const currentConsumers = this.splittableForm().value().consumers;
-    const orderQuantity = Number(this.splittableForm().value().quantity);
+    if (splitStrategy === 'equal' && quantity >= 1) return true;
 
-    return currentConsumers.length < orderQuantity;
+    return this.quantityAssisgnableRemaining() > 0;
   });
   protected readonly itemsCount = computed<number>(() => this.splittables().length);
   protected readonly isFetchingData = computed<boolean>(() =>
@@ -161,8 +161,18 @@ export class SplitFormStep2 {
   }
 
   protected addConsumerToOrder(memberName: string): void {
+    const strategy = this.splittableForm().value().splitStrategy;
     const orderSplits = this.splittableForm().value().quantitySplits;
     const consumersInOrder = orderSplits.map((split) => split.consumerName);
+
+    if (strategy === 'sole' && consumersInOrder.length >= 1) {
+      this.toastService.show({
+        variant: 'warning',
+        title: 'Consumed by one!',
+        details: 'An item consumed by one cannot have more than one consumer.',
+      });
+      return;
+    }
 
     let updatedSplits: LocalQuantitySplit[];
     const memberExists = consumersInOrder.includes(memberName);
@@ -186,14 +196,10 @@ export class SplitFormStep2 {
       updatedSplits = [...orderSplits, newSplit];
     }
 
-    console.log('updatedSplits', updatedSplits);
-
     this.splittableForm.quantitySplits().controlValue.set(updatedSplits);
   }
 
   protected handleOnConsumerQuantityChange(event: SquadMemberQuantityChangeEmmision): void {
-    console.log('handleOnConsumerQuantityChange', event);
-
     const { memberName, quantityChangeVariant } = event;
 
     const currentSplits = this.splittableForm().value().quantitySplits;
@@ -217,16 +223,15 @@ export class SplitFormStep2 {
   protected addNewSplittable(event: Event): void {
     event.preventDefault();
 
-    console.log('addNewSplittable');
     const {
       name,
-      quantity: quantityStr,
       unitPrice,
       categoryTag,
-      consumers,
+      quantitySplits,
+      quantity: quantityStr,
     } = this.splittableForm().value();
 
-    if (consumers.length < 1) {
+    if (quantitySplits.length < 1) {
       this.toastService.show({
         variant: 'error',
         title: 'Consumers are required!',
@@ -253,8 +258,8 @@ export class SplitFormStep2 {
       total,
       quantity,
       unitPrice,
-      consumers,
       categoryTag,
+      quantitySplits,
       settled: false,
     };
 
@@ -302,6 +307,7 @@ export class SplitFormStep2 {
       const nextStrategy: SplitStrategyVariant = quantity > 1 ? 'equal' : 'sole';
 
       untracked(() => {
+        this.splittableForm.quantitySplits().controlValue.set([]); // reset splits when strategy changes
         const strategyControl = this.splittableForm.splitStrategy().controlValue;
         if (strategyControl() !== nextStrategy) {
           strategyControl.set(nextStrategy);

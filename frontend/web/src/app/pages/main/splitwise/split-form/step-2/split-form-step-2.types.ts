@@ -16,7 +16,6 @@ export interface NewSplittableSchema {
   name: string;
   quantity: string;
   categoryTag: string;
-  consumers: string[];
   unitPrice: number | null;
   splitStrategy: SplitStrategyVariant;
   quantitySplits: LocalQuantitySplit[];
@@ -25,7 +24,6 @@ export interface NewSplittableSchema {
 export const InitialNewSplittableData: NewSplittableSchema = {
   name: '',
   quantity: '1',
-  consumers: [],
   categoryTag: '',
   unitPrice: null,
   quantitySplits: [],
@@ -44,7 +42,7 @@ export const NewSplittableFormValidation = schema<NewSplittableSchema>((root) =>
   required(root.categoryTag, { message: 'The category tag is required field!' });
 
   // Consumers
-  required(root.consumers, { message: 'The consumers are required field!' });
+  required(root.quantitySplits, { message: 'The consumers are required field!' });
 
   // Unit Price
   required(root.unitPrice, { message: 'The unit price is required field!' });

@@ -20,8 +20,8 @@ export interface SplittablePayload {
   settled: boolean;
   quantity: number;
   unitPrice: number;
-  consumers: string[];
   categoryTag: string;
+  quantitySplits: QuantitySplitPayload[];
 }
 
 export interface Splittable extends SplittablePayload {

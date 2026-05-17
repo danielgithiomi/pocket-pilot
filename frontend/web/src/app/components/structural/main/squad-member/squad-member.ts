@@ -76,14 +76,14 @@ export class SquadMember {
 
   // METHODS
   protected handleOnQuantityChange(event: QuantityChangeVariant): void {
-    // if (this.quantity() === 1 && event === 'decrease') {
-    //   this.toastService.show({
-    //     variant: 'warning',
-    //     title: 'Minimum quantity reached!',
-    //     details: 'You cannot decrease the quantity below 1.',
-    //   });
-    //   return;
-    // }
+    if (this.member().quantity === 1 && event === 'decrease') {
+      this.toastService.show({
+        variant: 'warning',
+        title: 'Minimum quantity reached!',
+        details: 'You cannot decrease the quantity below 1.',
+      });
+      return;
+    }
 
     this.onMemberQuantityChange.emit({
       quantityChangeVariant: event,

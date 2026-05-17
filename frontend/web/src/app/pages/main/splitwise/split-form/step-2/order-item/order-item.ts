@@ -4,11 +4,11 @@ import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
 import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
-import { SplittableOrder } from '@global/types';
 import { Select, SelectOption } from '@atoms/select';
 import { AccountsService } from '@api/accounts.service';
 import { SplitwiseService } from '@api/splitwise.service';
-import { PlaceholderSplittableFormState as placeholder } from './order-tem.types';
+import { LocalQuantitySplit, SplittableOrder } from '@global/types';
+import { PlaceholderSplittableFormState as placeholder } from './order-item.types';
 import { LucideAngularModule, Trash2, ChevronDown, ChevronUp } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
@@ -33,6 +33,7 @@ export class OrderItem {
   // INPUTS
   readonly order = input.required<SplittableOrder>();
   readonly presentMembers = input.required<string[]>();
+  readonly splitStrategyOptions = input.required<SelectOption[]>();
 
   // OUTPUTS
   readonly onDeleteClickEvent = output<number>();
@@ -83,10 +84,14 @@ export class OrderItem {
     }));
   });
   protected readonly formattedConsumers = computed<ISquadMember[]>(() => {
+    const currentSplits = this.updateSplittableForm().value().quantitySplits;
+    const currentConsumers = currentSplits.map((split) => split.consumerName);
+
     return this.presentMembers().map((consumer) => ({
-      quantity: 1,
       memberName: consumer,
-      isChecked: this.updateSplittableForm().value().consumers.includes(consumer),
+      isChecked: currentConsumers.includes(consumer),
+      quantity:
+        currentSplits.find((split) => split.consumerName === consumer)?.consumerQuantity || 1,
     }));
   });
 
@@ -103,7 +108,7 @@ export class OrderItem {
       quantity: quantityStr,
       unitPrice,
       categoryTag,
-      consumers,
+      quantitySplits,
     } = this.updateSplittableForm().value();
 
     if (!unitPrice) {
@@ -117,7 +122,12 @@ export class OrderItem {
 
     const quantity = Number(quantityStr);
 
-    if (consumers.length !== quantity) {
+    const totalSplitsQuantity = quantitySplits.reduce(
+      (acc, split) => acc + split.consumerQuantity,
+      0,
+    );
+
+    if (totalSplitsQuantity !== quantity) {
       this.toastService.show({
         variant: 'error',
         title: 'Consumer Quantity Mismatch!',
@@ -134,8 +144,8 @@ export class OrderItem {
       total,
       quantity,
       unitPrice,
-      consumers,
       categoryTag,
+      quantitySplits,
     };
 
     this.onUpdateSplittableEvent.emit({ ...updatedOrder });
@@ -144,15 +154,17 @@ export class OrderItem {
   }
 
   protected updateOrderConsumers(memberName: string): void {
+    const orderSplits = this.updateSplittableForm().value().quantitySplits;
     const orderQuantity = Number(this.updateSplittableForm().value().quantity);
-    const currentConsumers = this.updateSplittableForm().value().consumers;
+    const totalSplitsQuantity = orderSplits.reduce((acc, split) => acc + split.consumerQuantity, 0);
 
-    let updatedMembers: string[];
-    const memberExists = currentConsumers.includes(memberName);
+    let updatedSplits: LocalQuantitySplit[];
+    const memberExists = orderSplits.map((split) => split.consumerName).includes(memberName);
 
-    if (memberExists) updatedMembers = currentConsumers.filter((member) => member !== memberName);
+    if (memberExists)
+      updatedSplits = orderSplits.filter((split) => split.consumerName !== memberName);
     else {
-      if (currentConsumers.length >= orderQuantity) {
+      if (totalSplitsQuantity >= orderQuantity) {
         this.toastService.show({
           variant: 'error',
           title: 'Quantity mismatch!',
@@ -160,10 +172,17 @@ export class OrderItem {
         });
         return;
       }
-      updatedMembers = [...currentConsumers, memberName];
+
+      const newSplit: LocalQuantitySplit = {
+        consumerQuantity: 1,
+        id: crypto.randomUUID(),
+        consumerName: memberName,
+      };
+
+      updatedSplits = [...orderSplits, newSplit];
     }
 
-    this.updateSplittableForm.consumers().controlValue.set(updatedMembers);
+    this.updateSplittableForm.quantitySplits().controlValue.set(updatedSplits);
   }
 
   // CONSTRUCTOR

@@ -99,19 +99,16 @@
             [formField]="splittableForm.categoryTag"
           />
         </div>
-        
-  
-        @if (isSplitStrategyVisible()) {
-            <atom-select
-              class="flex-1"
-              [inverted]="true"
-              id="split-strategy"
-              label="Split Strategy"
-              [options]="splitStrategyOptions()"
-              placeholder="Select split strategy"
-              [formField]="splittableForm.splitStrategy"
-            />
-          }
+
+        <atom-select
+          class="flex-1"
+          [inverted]="true"
+          id="split-strategy"
+          label="Split Strategy"
+          [options]="splitStrategyOptions()"
+          placeholder="Select split strategy"
+          [formField]="splittableForm.splitStrategy"
+        />
 
         <div class="flex flex-col space-y-2 mb-4">
           <!-- Member Selection -->
@@ -120,7 +117,6 @@
           </div>
 
           <!-- Squad Member Container -->
-           <p class="text-xs text-muted-text!">Remaining quantity: {{ quantityAssisgnableRemaining() }}</p>
           <div
             class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
           >
@@ -153,7 +149,7 @@
           [disabled]="!splittableForm().dirty() || isSubmittingSplittable()"
         />
 
-        @let hasConsumers = splittableForm().value().consumers.length > 0;
+        @let hasConsumers = splittableForm().value().quantitySplits.length > 0;
         <atom-button
           label="Add"
           type="submit"
@@ -176,6 +172,7 @@
           <order-item
             [order]="splittable"
             [presentMembers]="consumerOptions()"
+            [splitStrategyOptions]="splitStrategyOptions()"
             (onDeleteClickEvent)="handleOnDeleteOrder($event)"
             (onUpdateSplittableEvent)="updateEventSplittables($event)"
           />
