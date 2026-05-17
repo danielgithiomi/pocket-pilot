@@ -10,7 +10,7 @@ import { SplitwiseService } from '@api/splitwise.service';
 import { LocalQuantitySplit, SplittableOrder } from '@global/types';
 import { PlaceholderSplittableFormState as placeholder } from './order-item.types';
 import { LucideAngularModule, Trash2, ChevronDown, ChevronUp } from 'lucide-angular';
-import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
+import { ISquadMember, QuantityChangeEmmision, SquadMember } from '@structural/main/squad-member/squad-member';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import {
   NewSplittableSchema,
@@ -62,6 +62,10 @@ export class OrderItem {
 
   // COMPUTED
   protected readonly orderItemId = computed<string>(() => `order-item-${this.order().id}`);
+  protected readonly isStrategyCustom = computed<boolean>(() => {
+    const strategy = this.updateSplittableForm().value().splitStrategy;
+    return strategy === 'quantity';
+  });
   protected readonly orderQuantities = computed<SelectOption[]>(() =>
     QUANTITIES.map((quantity) => ({
       value: quantity.toString(),
@@ -93,6 +97,25 @@ export class OrderItem {
       quantity:
         currentSplits.find((split) => split.consumerName === consumer)?.consumerQuantity || 1,
     }));
+  });
+  protected readonly quantityAssisgnableRemaining = computed<number>(() => {
+    const orderSplits = this.updateSplittableForm().value().quantitySplits;
+    const orderQuantity = Number(this.updateSplittableForm().value().quantity);
+
+    const totalAssignedQuantity = orderSplits.reduce(
+      (acc, split) => acc + split.consumerQuantity,
+      0,
+    );
+
+    return orderQuantity - totalAssignedQuantity;
+  });
+  protected readonly canAddConsumer = computed<boolean>(() => {
+    const quantity = Number(this.updateSplittableForm().value().quantity);
+    const splitStrategy = this.updateSplittableForm().value().splitStrategy;
+
+    if (splitStrategy === 'equal' && quantity === 1) return true;
+
+    return this.quantityAssisgnableRemaining() > 0;
   });
 
   // FORMS
@@ -153,6 +176,27 @@ export class OrderItem {
     this.updateSplittableForm().reset();
   }
 
+  protected handleOnConsumerQuantityChange(event: QuantityChangeEmmision): void {
+    const { memberName, quantityChangeVariant } = event;
+
+    const currentSplits = this.updateSplittableForm().value().quantitySplits;
+
+    const updatedSplits = currentSplits.map((split) => {
+      if (split.consumerName === memberName)
+        return {
+          ...split,
+          consumerQuantity:
+            quantityChangeVariant === 'increase'
+              ? split.consumerQuantity + 1
+              : split.consumerQuantity - 1,
+        };
+
+      return split;
+    });
+
+    this.updateSplittableForm.quantitySplits().controlValue.set(updatedSplits);
+  }
+
   protected updateOrderConsumers(memberName: string): void {
     const orderSplits = this.updateSplittableForm().value().quantitySplits;
     const orderQuantity = Number(this.updateSplittableForm().value().quantity);
@@ -192,8 +236,6 @@ export class OrderItem {
       if (orderData)
         this.updateSplittableFormModel.set({
           ...orderData,
-          quantitySplits: [],
-          splitStrategy: 'sole',
           quantity: orderData.quantity.toString(),
         });
     });

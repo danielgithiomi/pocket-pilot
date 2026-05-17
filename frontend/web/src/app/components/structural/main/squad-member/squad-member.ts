@@ -2,8 +2,8 @@ import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { formatToReadable } from '@libs/utils';
 import { LucideAngularModule, Check } from 'lucide-angular';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { MemberQuantifier, QuantityChangeVariant } from './member-quantifier';
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 
 @Component({
   selector: 'squad-member',
@@ -58,7 +58,7 @@ export class SquadMember {
 
   // OUTPUTS
   readonly onMemberEventClick = output<string>();
-  readonly onMemberQuantityChange = output<SquadMemberQuantityChangeEmmision>();
+  readonly onMemberQuantityChange = output<QuantityChangeEmmision>();
 
   // SERVICES
   private readonly toastService = inject(ToastService);
@@ -98,7 +98,7 @@ export interface ISquadMember {
   isChecked: boolean;
 }
 
-export interface SquadMemberQuantityChangeEmmision {
+export interface QuantityChangeEmmision {
   memberName: string;
   quantityChangeVariant: QuantityChangeVariant;
 }

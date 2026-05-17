@@ -107,7 +107,11 @@
                 [inverted]="true"
                 [member]="member"
                 [isCheckable]="true"
+                [isDisabled]="!canAddConsumer()"
+                [isQuantifiable]="isStrategyCustom()"
+                [isMaximumQuantityReached]="!canAddConsumer()"
                 (onMemberEventClick)="updateOrderConsumers($event)"
+                (onMemberQuantityChange)="handleOnConsumerQuantityChange($event)"
               />
             }
           </div>

@@ -4,38 +4,37 @@ import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
 import { QUANTITIES } from '@libs/constants';
-import { form } from '@angular/forms/signals';
-import { LocalQuantitySplit, SplittableOrder } from '@global/types';
+import { disabled, form } from '@angular/forms/signals';
+import { AuthService } from '@api/auth.service';
 import { OrderItem } from './order-item/order-item';
 import { Select, SelectOption } from '@atoms/select';
 import { SplitwiseService } from '@api/splitwise.service';
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  output,
-  signal,
-  untracked,
-} from '@angular/core';
-import {
-  ISquadMember,
-  SquadMember,
-  SquadMemberQuantityChangeEmmision,
-} from '@structural/main/squad-member/squad-member';
+import { LocalQuantitySplit, SplittableOrder } from '@global/types';
 import { ArrowLeft, PanelTopClose, PanelBottomClose, LucideAngularModule } from 'lucide-angular';
 import {
+  input,
+  effect,
+  inject,
+  output,
+  signal,
+  computed,
+  untracked,
+  Component,
+} from '@angular/core';
+import {
+  SquadMember,
+  ISquadMember,
+  QuantityChangeEmmision,
+} from '@structural/main/squad-member/squad-member';
+import {
+  STRATEGY_MAP,
+  SplitStrategyOption,
   NewSplittableSchema,
+  SplitStrategyVariant,
+  SPLIT_STRATEGY_OPTIONS,
   InitialNewSplittableData,
   NewSplittableFormValidation,
-  SplitStrategyVariant,
-  STRATEGY_MAP,
-  SPLIT_STRATEGY_OPTIONS,
-  SplitStrategyOption,
 } from './split-form-step-2.types';
-import { AuthService } from '@api/auth.service';
-import { QuantityChangeVariant } from '@components/structural/main/squad-member/member-quantifier/member-quantifier';
 
 @Component({
   selector: 'split-form-step-2',
@@ -92,7 +91,7 @@ export class SplitFormStep2 {
     const quantity = Number(this.splittableForm().value().quantity);
     const splitStrategy = this.splittableForm().value().splitStrategy;
 
-    if (splitStrategy === 'equal' && quantity >= 1) return true;
+    if (splitStrategy === 'equal' && quantity === 1) return true;
 
     return this.quantityAssisgnableRemaining() > 0;
   });
@@ -118,18 +117,16 @@ export class SplitFormStep2 {
       return { label, value };
     });
   });
-  protected readonly isSplitStrategyVisible = computed<boolean>(() => {
-    const quantity = Number(this.splittableForm().value().quantity);
-    return quantity > 1;
-  });
   protected readonly isStrategyCustom = computed<boolean>(() => {
     const strategy = this.splittableForm().value().splitStrategy;
     return strategy === 'quantity';
   });
   protected readonly splitStrategyOptions = computed<SelectOption[]>(() => {
+    const quantity = Number(this.splittableForm().value().quantity);
     return SPLIT_STRATEGY_OPTIONS.map((strategy: SplitStrategyOption) => ({
       value: strategy,
       label: STRATEGY_MAP[strategy],
+      disabled: strategy === 'quantity' && quantity <= 1,
     }));
   });
   protected readonly formattedSubTotal = computed<string>(() => {
@@ -165,15 +162,6 @@ export class SplitFormStep2 {
     const orderSplits = this.splittableForm().value().quantitySplits;
     const consumersInOrder = orderSplits.map((split) => split.consumerName);
 
-    if (strategy === 'sole' && consumersInOrder.length >= 1) {
-      this.toastService.show({
-        variant: 'warning',
-        title: 'Consumed by one!',
-        details: 'An item consumed by one cannot have more than one consumer.',
-      });
-      return;
-    }
-
     let updatedSplits: LocalQuantitySplit[];
     const memberExists = consumersInOrder.includes(memberName);
 
@@ -188,6 +176,16 @@ export class SplitFormStep2 {
         });
         return;
       }
+
+      if (strategy === 'sole' && consumersInOrder.length >= 1) {
+        this.toastService.show({
+          variant: 'warning',
+          title: 'Consumed by one!',
+          details: 'An item consumed by one cannot have more than one consumer.',
+        });
+        return;
+      }
+
       const newSplit: LocalQuantitySplit = {
         id: crypto.randomUUID(),
         consumerName: memberName,
@@ -199,7 +197,7 @@ export class SplitFormStep2 {
     this.splittableForm.quantitySplits().controlValue.set(updatedSplits);
   }
 
-  protected handleOnConsumerQuantityChange(event: SquadMemberQuantityChangeEmmision): void {
+  protected handleOnConsumerQuantityChange(event: QuantityChangeEmmision): void {
     const { memberName, quantityChangeVariant } = event;
 
     const currentSplits = this.splittableForm().value().quantitySplits;
@@ -227,6 +225,7 @@ export class SplitFormStep2 {
       name,
       unitPrice,
       categoryTag,
+      splitStrategy,
       quantitySplits,
       quantity: quantityStr,
     } = this.splittableForm().value();
@@ -250,7 +249,7 @@ export class SplitFormStep2 {
     }
 
     const quantity = Number(quantityStr);
-    const total = quantity * unitPrice!;
+    const total = quantity * unitPrice;
 
     const newSplittable: SplittableOrder = {
       id: this.splittables().length + 1,
@@ -259,6 +258,7 @@ export class SplitFormStep2 {
       quantity,
       unitPrice,
       categoryTag,
+      splitStrategy,
       quantitySplits,
       settled: false,
     };

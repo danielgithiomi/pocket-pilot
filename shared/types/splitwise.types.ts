@@ -1,3 +1,5 @@
+import { SplitStrategyVariant } from "@pages/main/splitwise/split-form/step-2/split-form-step-2.types";
+
 export interface SplitwiseSquadPayload {
   squadName: string;
   squadMembers: string[];
@@ -21,7 +23,8 @@ export interface SplittablePayload {
   quantity: number;
   unitPrice: number;
   categoryTag: string;
-  quantitySplits: QuantitySplitPayload[];
+  splitStrategy: SplitStrategyVariant;
+  quantitySplits: LocalQuantitySplit[];
 }
 
 export interface Splittable extends SplittablePayload {
