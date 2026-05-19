@@ -1,5 +1,6 @@
 <div class="w-full flex flex-col gap-1 mb-1">
     @let showStatus = formModel().verificationTotal().dirty();
+    @let totalsMatch = totalsEqual();
     <atom-input
         type="text"
         id="split-name"
@@ -8,23 +9,21 @@
         placeholder="0.00"
         [numberStep]="0.01"
         wrapperClassName="mb-0!"
+        [showStatus]="showStatus"
+        [status]="totalsMatch ? 'success' : 'error'"
         label="Grand Total (Verification)"
         [formField]="formModel().verificationTotal"
         (clearOutput)="formModel().verificationTotal().controlValue.set(null)"
-        [ngClass]="{
-            'border-2 border-error': !totalsEqual() && showStatus,
-            'border-2 border-success': totalsEqual() && showStatus,
-        }"
     />
 
-    <div class="flex flex-row items-center justify-between px-2">
-        @if (formModel().verificationTotal().dirty()) {
+    <div class="flex flex-row items-center justify-between px-2 w-full mb-2 text-[0.7rem] italic">
+        @if (showStatus) {
             @let totalsMatch = totalsEqual();
             <div
-                class="flex flex-row items-center gap-2 text-[0.75rem] italic"
+                class="flex flex-row items-center gap-1.5 italic"
                 [ngClass]="{
                     'text-error': !totalsMatch,
-                    'text-success': totalsMatch,
+                    'text-primary': totalsMatch,
                 }"
             >
                 <lucide-icon
@@ -35,15 +34,15 @@
                 <p
                     [ngClass]="{
                         'text-error': !totalsMatch,
-                        'text-success': totalsMatch,
+                        'text-primary': totalsMatch,
                     }"
                 >
-                    Totals {{ totalsMatch ? 'match' : 'do not match' }}!
+                    Totals {{ totalsMatch ? 'match' : 'mismatch' }}!
                 </p>
             </div>
         }
 
-        <p class="text-muted-text text-[0.75rem] italic w-full text-right">
+        <p class="text-muted-text text-right max-w-1/2 ml-auto">
             Subtotal: <span class="text-primary font-semibold">{{ formattedBillSubtotal() }}</span>
         </p>
     </div>

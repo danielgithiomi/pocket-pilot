@@ -1,61 +1,61 @@
 <div class="input-field" [ngClass]="wrapperClassName()">
-  <label
-    [for]="inputId()"
-    [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
-  >
-    @if (required()) {
-      <span class="required">*</span>
-    }
-    {{ label() }}:
-  </label>
-
-  <div class="input-wrapper">
-    <input
-      [id]="inputId()"
-      [type]="inputType()"
-      [step]="numberStep()"
-      [formField]="formField()"
-      [ngClass]="inputClassName()"
-      [placeholder]="placeholder()"
-      [autocomplete]="autocomplete()"
-    />
-
-    @if (allowEndIcon()) {
-      <div
-        class="input-icon-wrapper"
-        [ngClass]="{
-          hidden: !fieldState().value(),
-          'text-inverted-text': invertedIcon(),
-        }"
-      >
-        @if (type() === 'password') {
-          <lucide-icon
-            [size]="iconSize"
-            name="password-eye"
-            class="input-icon"
-            (click)="togglePasswordVisibility()"
-            [img]="isPasswordVisible() ? Hidden : Visible"
-          />
-        } @else {
-          <lucide-icon
-            [img]="X"
-            [size]="iconSize"
-            name="field-clear"
-            class="input-icon"
-            (click)="clearOutput.emit()"
-          />
+    <label
+        [for]="inputId()"
+        [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
+    >
+        @if (required()) {
+            <span class="required">*</span>
         }
-      </div>
-    }
-  </div>
+        {{ label() }}:
+    </label>
 
-  @if (formField()().invalid() && formField()().touched()) {
-    <div class="input-field-errors-wrapper">
-      @for (error of formField()().errors(); track error.kind) {
-        <p class="input-field-error">
-          {{ error.message }}
-        </p>
-      }
+    <div class="input-wrapper rounded-lg">
+        <input
+            [id]="inputId()"
+            [type]="inputType()"
+            [step]="numberStep()"
+            [formField]="formField()"
+            [placeholder]="placeholder()"
+            [autocomplete]="autocomplete()"
+            [ngClass]="customInputClasses()"
+        />
+
+        @if (allowEndIcon()) {
+            <div
+                class="input-icon-wrapper"
+                [ngClass]="{
+                    hidden: !fieldState().value(),
+                    'text-inverted-text': invertedIcon(),
+                }"
+            >
+                @if (type() === 'password') {
+                    <lucide-icon
+                        [size]="iconSize"
+                        name="password-eye"
+                        class="input-icon"
+                        (click)="togglePasswordVisibility()"
+                        [img]="isPasswordVisible() ? Hidden : Visible"
+                    />
+                } @else {
+                    <lucide-icon
+                        [img]="X"
+                        [size]="iconSize"
+                        name="field-clear"
+                        class="input-icon"
+                        (click)="clearOutput.emit()"
+                    />
+                }
+            </div>
+        }
     </div>
-  }
+
+    @if (formField()().invalid() && formField()().touched()) {
+        <div class="input-field-errors-wrapper">
+            @for (error of formField()().errors(); track error.kind) {
+                <p class="input-field-error">
+                    {{ error.message }}
+                </p>
+            }
+        </div>
+    }
 </div>
