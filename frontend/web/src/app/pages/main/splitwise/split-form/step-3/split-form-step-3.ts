@@ -9,7 +9,16 @@ import { PayerInput } from './payer-input/payer-input';
 import { SelectOption } from '@atoms/select/select.types';
 import { LucideAngularModule, Check, X } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
-import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import {
+    Component,
+    computed,
+    effect,
+    inject,
+    input,
+    output,
+    signal,
+    untracked,
+} from '@angular/core';
 import {
     BillPayer,
     PaymentOption,
@@ -23,7 +32,6 @@ import {
     imports: [LucideAngularModule, NgClass, Input, Select, SquadMember, PayerInput],
 })
 export class SplitFormStep3 {
-
     // ICONS
     protected readonly CrossIcon = X;
     protected readonly CheckIcon = Check;
@@ -32,6 +40,9 @@ export class SplitFormStep3 {
     readonly iconSize = input.required<number>();
     readonly presentMembers = input.required<string[]>();
     readonly formModel = input.required<FieldTree<SplitFormSchema, string | number>>();
+
+    // OUTPUTS
+    readonly onValidationChangeEvent = output<boolean>();
 
     // STATE SIGNALS
     protected readonly billPayerList = signal<BillPayer[]>([]);
@@ -55,11 +66,11 @@ export class SplitFormStep3 {
             .value()
             .reduce((acc, splittable) => acc + splittable.total, 0);
     });
-    protected readonly totalsEqual = computed<boolean>(() => {
-        console.log('Bill subtotal:', this.billSubtotal());
-        console.log('Verification total:', this.formModel().verificationTotal().value());
-        return Math.abs(this.billSubtotal() - (this.formModel().verificationTotal().value() ?? 0)) < 0.01;
-    });
+    protected readonly totalsEqual = computed<boolean>(
+        () =>
+            Math.abs(this.billSubtotal() - (this.formModel().verificationTotal().value() ?? 0)) <
+            0.01,
+    );
     protected readonly formattedBillSubtotal = computed(() => {
         return formatCurrency(
             this.billSubtotal(),
@@ -146,15 +157,11 @@ export class SplitFormStep3 {
     }
 
     protected handlePayerAmountChange(payer: BillPayer) {
-        console.log('Passed payer:', payer);
-
         this.billPayerList.update((current) =>
             current.map((existing) =>
                 existing.name === payer.name ? { ...existing, amount: payer.amount } : existing,
             ),
         );
-
-        console.log('Updated bill payer list:', this.billPayerList());
     }
 
     protected handleRemovePayer(payerName: string) {
@@ -169,6 +176,11 @@ export class SplitFormStep3 {
     }
 
     constructor() {
+        effect(() => {
+            const isValid = this.totalsEqual() && this.billPayerList().length > 0;
+            this.onValidationChangeEvent.emit(isValid);
+        });
+
         effect(() => {
             const paymentStrategy = this.formModel().billPayerStrategy().value();
 

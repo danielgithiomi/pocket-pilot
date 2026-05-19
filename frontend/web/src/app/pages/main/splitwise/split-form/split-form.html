@@ -1,122 +1,130 @@
 <organism-form
-  id="split"
-  title="Log A New Split"
-  (closeForm)="handleSplitFormClose($event)"
-  description="Split shared expenses with your squad."
+    id="split"
+    title="Log A New Split"
+    (closeForm)="handleSplitFormClose($event)"
+    description="Split shared expenses with your squad."
 >
-  <form id="split-form" slot="content" (submit)="handleSplitFormSubmit($event)">
-    @switch (splitFormStep()) {
-      @case (1) {
-        <split-form-step-1
-          [iconSize]="iconSize"
-          [formModel]="splitForm"
-          [existingSquads]="squads()"
-          [memberPool]="initalMemberPool()"
-          [isSubmittingForm]="isSubmittingSplitForm()"
-          [presentMembers]="splitForm.eventMembers().value()"
-          (onPresentMembersChangeEvent)="updateEventMembers($event)"
-        />
-      }
-      @case (2) {
-        <split-form-step-2
-          [iconSize]="iconSize"
-          [currency]="defaultCurrency"
-          (onBackIconClick)="goToPreviousStep(1)"
-          [splittables]="splitForm.splittables().value()"
-          [presentMembers]="splitForm.eventMembers().value()"
-          (onSplittablesChangeEvent)="handleOnSplittablesChange($event)"
-        />
-      }
-      @case (3) {
-        <split-form-step-3
-          [iconSize]="iconSize"
-          [formModel]="splitForm"
-          [presentMembers]="splitForm.eventMembers().value()"
-        />
-      }
-    }
-  </form>
+    <form id="split-form" slot="content" (submit)="handleSplitFormSubmit($event)">
+        @switch (splitFormStep()) {
+            @case (1) {
+                <split-form-step-1
+                    [iconSize]="iconSize"
+                    [formModel]="splitForm"
+                    [existingSquads]="squads()"
+                    [memberPool]="initalMemberPool()"
+                    [isSubmittingForm]="isSubmittingSplitForm()"
+                    [presentMembers]="splitForm.eventMembers().value()"
+                    (onPresentMembersChangeEvent)="updateEventMembers($event)"
+                />
+            }
+            @case (2) {
+                <split-form-step-2
+                    [iconSize]="iconSize"
+                    [currency]="defaultCurrency"
+                    (onBackIconClick)="goToPreviousStep(1)"
+                    [splittables]="splitForm.splittables().value()"
+                    [presentMembers]="splitForm.eventMembers().value()"
+                    (onSplittablesChangeEvent)="handleOnSplittablesChange($event)"
+                />
+            }
+            @case (3) {
+                <split-form-step-3
+                    [iconSize]="iconSize"
+                    [formModel]="splitForm"
+                    [presentMembers]="splitForm.eventMembers().value()"
+                    (onValidationChangeEvent)="handleOnStep3ValidationChange($event)"
+                />
+            }
+        }
+    </form>
 
-  @let selectedMemberCount = splitForm.eventMembers().value().length + 1;
-  @if (splitFormStep() === 2) {
-    <div slot="sub-footer">
-      <p class="text-muted-text text-right text-xs italic my-1">
-        Details: <span class="font-bold text-primary">{{ splitFormModel().eventName }}</span> with
-        <span class="font-bold text-primary">{{ selectedMemberCount }}</span>
-        people on {{ formatDate(splitFormModel().eventDate) }}
-      </p>
-    </div>
-  }
-
-  <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
-    @if (splitFormStep() === 2 || splitFormStep() === 3) {
-      <atom-button
-        type="button"
-        [inverted]="true"
-        variant="secondary"
-        id="previous-split-step"
-        (clicked)="goToPreviousStep(splitFormStep() === 2 ? 1 : 2)"
-        [disabled]="isSubmittingSplitForm() || splitFormStep() === 1"
-      >
-        <div class="w-full flex flex-row items-center justify-between gap-4 py-1 lg:py-0">
-          <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="previous-split-step" />
-          <span class="hidden lg:block">Back</span>
+    @let selectedMemberCount = splitForm.eventMembers().value().length + 1;
+    @if (splitFormStep() === 2) {
+        <div slot="sub-footer">
+            <p class="text-muted-text text-right text-xs italic my-1">
+                Details:
+                <span class="font-bold text-primary">{{ splitFormModel().eventName }}</span> with
+                <span class="font-bold text-primary">{{ selectedMemberCount }}</span>
+                people on {{ formatDate(splitFormModel().eventDate) }}
+            </p>
         </div>
-      </atom-button>
     }
 
-    <atom-button
-      type="button"
-      label="Reset"
-      form="split-form"
-      [inverted]="true"
-      variant="secondary"
-      id="reset-split-form"
-      (clicked)="resetSplitForm()"
-      [disabled]="!splitForm().dirty() || isSubmittingSplitForm()"
-    />
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+        @if (splitFormStep() === 2 || splitFormStep() === 3) {
+            <atom-button
+                type="button"
+                [inverted]="true"
+                variant="secondary"
+                id="previous-split-step"
+                (clicked)="goToPreviousStep(splitFormStep() === 2 ? 1 : 2)"
+                [disabled]="isSubmittingSplitForm() || splitFormStep() === 1"
+            >
+                <div class="w-full flex flex-row items-center justify-between gap-4 py-1 lg:py-0">
+                    <lucide-icon
+                        [img]="PreviousIcon"
+                        [size]="iconSize"
+                        name="previous-split-step"
+                    />
+                    <span class="hidden lg:block">Back</span>
+                </div>
+            </atom-button>
+        }
 
-    @switch (splitFormStep()) {
-      @case (1) {
-        @let hasMinimumMembers = selectedMemberCount > 1;
         <atom-button
-          type="button"
-          variant="primary"
-          id="to-splt-step-2"
-          (clicked)="goToNextStep(2)"
-          [disabled]="!hasMinimumMembers || splitForm().invalid() || isSubmittingSplitForm()"
-        >
-          <div class="w-full flex flex-row items-center justify-between gap-4">
-            <span>Next</span>
-            <lucide-icon [img]="NextIcon" [size]="iconSize" name="next-goal-step" />
-          </div>
-        </atom-button>
-      }
-      @case (2) {
-        @let hasSplittables = splitForm.splittables().value().length > 0;
-        <atom-button
-          type="button"
-          variant="primary"
-          id="to-splt-step-3"
-          (clicked)="goToNextStep(3)"
-          [disabled]="!hasSplittables || splitForm().invalid() || isSubmittingSplitForm()"
-        >
-          <div class="w-full flex flex-row items-center justify-between gap-4">
-            <span>Next</span>
-            <lucide-icon [img]="NextIcon" [size]="iconSize" name="next-goal-step" />
-          </div>
-        </atom-button>
-      }
-      @case (3) {
-        <atom-button
-          type="submit"
-          label="Submit"
-          form="split-form"
-          id="submit-split-form"
-          [isLoading]="isSubmittingSplitForm()"
-          [disabled]="splitForm().invalid() || isSubmittingSplitForm()"
+            type="button"
+            label="Reset"
+            form="split-form"
+            [inverted]="true"
+            variant="secondary"
+            id="reset-split-form"
+            (clicked)="resetSplitForm()"
+            [disabled]="!splitForm().dirty() || isSubmittingSplitForm()"
         />
-      }
-    }
-  </div>
+
+        @switch (splitFormStep()) {
+            @case (1) {
+                @let hasMinimumMembers = selectedMemberCount > 1;
+                <atom-button
+                    type="button"
+                    variant="primary"
+                    id="to-splt-step-2"
+                    (clicked)="goToNextStep(2)"
+                    [disabled]="
+                        !hasMinimumMembers || splitForm().invalid() || isSubmittingSplitForm()
+                    "
+                >
+                    <div class="w-full flex flex-row items-center justify-between gap-4">
+                        <span>Next</span>
+                        <lucide-icon [img]="NextIcon" [size]="iconSize" name="next-goal-step" />
+                    </div>
+                </atom-button>
+            }
+            @case (2) {
+                @let hasSplittables = splitForm.splittables().value().length > 0;
+                <atom-button
+                    type="button"
+                    variant="primary"
+                    id="to-splt-step-3"
+                    (clicked)="goToNextStep(3)"
+                    [disabled]="!hasSplittables || splitForm().invalid() || isSubmittingSplitForm()"
+                >
+                    <div class="w-full flex flex-row items-center justify-between gap-4">
+                        <span>Next</span>
+                        <lucide-icon [img]="NextIcon" [size]="iconSize" name="next-goal-step" />
+                    </div>
+                </atom-button>
+            }
+            @case (3) {
+                <atom-button
+                    type="submit"
+                    label="Submit"
+                    form="split-form"
+                    id="submit-split-form"
+                    [isLoading]="isSubmittingSplitForm()"
+                    [disabled]="splitForm().invalid() || isSubmittingSplitForm() || !isStep3Valid()"
+                />
+            }
+        }
+    </div>
 </organism-form>

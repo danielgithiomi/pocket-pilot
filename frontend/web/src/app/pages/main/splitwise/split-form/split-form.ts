@@ -44,6 +44,7 @@ export class SplitwiseSplitForm {
 
     // SIGNAL STATES
     protected readonly customMembers = signal<string[]>([]);
+    protected readonly isStep3Valid = signal<boolean>(false);
     protected readonly splitFormStep = signal<FormStepOptions>(1);
     protected readonly isSubmittingSplitForm = signal<boolean>(false);
 
@@ -73,10 +74,7 @@ export class SplitwiseSplitForm {
 
     // METHODS
     protected formatDate = (date: Date) => formatFullDate(date.toISOString());
-    protected goToNextStep = (step: FormStepOptions) => {
-        this.splitFormStep.set(step);
-        console.log('Form state:', this.splitForm().value());
-    };
+    protected goToNextStep = (step: FormStepOptions) => this.splitFormStep.set(step);
     protected goToPreviousStep = (step: FormStepOptions) => this.splitFormStep.set(step);
     protected resetSplitForm() {
         this.splitForm().reset();
@@ -100,6 +98,10 @@ export class SplitwiseSplitForm {
 
     protected handleOnSplittablesChange(splittables: SplittableOrder[]) {
         this.splitForm.splittables().controlValue.set(splittables);
+    }
+
+    protected handleOnStep3ValidationChange(valid: boolean) {
+        this.isStep3Valid.set(valid);
     }
 
     // SUBMISSIONS
