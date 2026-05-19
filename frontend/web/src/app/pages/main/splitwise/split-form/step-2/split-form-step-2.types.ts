@@ -15,7 +15,7 @@ export const STRATEGY_MAP: Record<SplitStrategyOption, string> = {
 export interface NewSplittableSchema {
   name: string;
   quantity: string;
-  categoryTag: string;
+  // categoryTag: string;
   unitPrice: number | null;
   splitStrategy: SplitStrategyVariant;
   quantitySplits: LocalQuantitySplit[];
@@ -24,7 +24,7 @@ export interface NewSplittableSchema {
 export const InitialNewSplittableData: NewSplittableSchema = {
   name: '',
   quantity: '1',
-  categoryTag: '',
+  // categoryTag: '',
   unitPrice: null,
   quantitySplits: [],
   splitStrategy: 'sole',
@@ -39,7 +39,7 @@ export const NewSplittableFormValidation = schema<NewSplittableSchema>((root) =>
   min(root.quantity, 1, { message: 'The quantity must be at least 1 per item' });
 
   // Category
-  required(root.categoryTag, { message: 'The category tag is required field!' });
+  // required(root.categoryTag, { message: 'The category tag is required field!' });
 
   // Consumers
   required(root.quantitySplits, { message: 'The consumers are required field!' });

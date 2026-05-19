@@ -93,12 +93,13 @@
         </atom-button>
       }
       @case (2) {
+        @let hasSplittables = splitForm.splittables().value().length > 0;
         <atom-button
           type="button"
           variant="primary"
           id="to-splt-step-3"
           (clicked)="goToNextStep(3)"
-          [disabled]="splitForm().invalid() || isSubmittingSplitForm()"
+          [disabled]="!hasSplittables || splitForm().invalid() || isSubmittingSplitForm()"
         >
           <div class="w-full flex flex-row items-center justify-between gap-4">
             <span>Next</span>

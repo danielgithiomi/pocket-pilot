@@ -46,7 +46,11 @@
 @if (isCustomPaymentStrategy()) {
     <div class="my-2">
         @for (payer of billPayerList(); track payer) {
-            <payer-input [payer]="payer" />
+            <payer-input
+                [payer]="payer"
+                (onRemovePayerEvent)="handleRemovePayer($event)"
+                [billingCurrency]="formModel().billingCurrency().value()"
+            />
         }
     </div>
 }

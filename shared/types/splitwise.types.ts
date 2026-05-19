@@ -22,7 +22,7 @@ export interface SplittablePayload {
   settled: boolean;
   quantity: number;
   unitPrice: number;
-  categoryTag: string;
+  // categoryTag: string;
   splitStrategy: SplitStrategyVariant;
   quantitySplits: LocalQuantitySplit[];
 }

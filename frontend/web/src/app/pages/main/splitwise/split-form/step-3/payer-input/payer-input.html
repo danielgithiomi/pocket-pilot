@@ -1,25 +1,42 @@
-<div class="w-full flex flex-row items-center gap-4">
-    <!-- Avatar -->
-    <div class="size-6 bg-primary rounded-full grid place-items-center">
-        <p class="text-white">{{ initial() }}</p>
+<div
+    class="w-full flex flex-row items-center justify-between gap-4 p-4 shadow-lg rounded-lg cursor-default!"
+>
+    <div class="flex flex-row items-center gap-4">
+        <!-- Avatar -->
+        <div class="size-8 bg-primary rounded-full grid place-items-center">
+            <p class="text-white">{{ initial() }}</p>
+        </div>
+
+        <!-- Payer Name -->
+        <p class="text-inverted-text text-sm font-semibold">{{ payer() }}</p>
     </div>
 
-    <!-- Payer Name -->
-    <p class="text-inverted-text font-semibold">{{ payer() }}</p>
+    <div class="max-w-1/2 ml-auto flex flex-row items-center justify-end gap-2">
+        <!-- Amount -->
+        <div class="flex flex-row items-center gap-2 pr-4">
+            <p class="text-xs font-semibold text-muted-text">{{ billingCurrency() }}</p>
+            <input
+                type="text"
+                class="flex-1"
+                numberStep="0.01"
+                id="payer-amount"
+                autocomplete="off"
+                placeholder="0.00"
+                (input)="handlePayerAmountChange($event.target.value)"
+            />
+        </div>
 
-    <!-- Amount -->
-    <div class="flex flex-row items-center gap-2">
-        <p class="text-inverted-text">{{ defaultCurrency }}</p>
-        <input
-            type="text"
-            class="flex-1"
-            numberStep="0.01"
-            id="payer-amount"
-            autocomplete="off"
-            placeholder="0.00"
-            (input)="handlePayerAmountChange($event.target.value)"
-        />
+        <!-- Remove Payer -->
+        <div
+            (click)="onRemovePayerEvent.emit(payer().name)"
+            class="ml-auto size-6 rounded grid place-items-center cursor-pointer"
+        >
+            <lucide-icon
+                [size]="iconSize"
+                name="delete-payer"
+                [img]="DeleteIcon"
+                class="text-inverted-text hover:text-error transition-all duration-300 cursor-pointer"
+            />
+        </div>
     </div>
-
-    <!-- Remove Payer -->
 </div>

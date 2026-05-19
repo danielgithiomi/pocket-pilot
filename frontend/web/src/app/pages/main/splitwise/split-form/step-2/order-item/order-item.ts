@@ -130,7 +130,7 @@ export class OrderItem {
       name,
       quantity: quantityStr,
       unitPrice,
-      categoryTag,
+      // categoryTag,
       quantitySplits,
     } = this.updateSplittableForm().value();
 
@@ -167,7 +167,7 @@ export class OrderItem {
       total,
       quantity,
       unitPrice,
-      categoryTag,
+      // categoryTag,
       quantitySplits,
     };
 

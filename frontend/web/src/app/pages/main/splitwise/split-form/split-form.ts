@@ -44,7 +44,7 @@ export class SplitwiseSplitForm {
 
     // SIGNAL STATES
     protected readonly customMembers = signal<string[]>([]);
-    protected readonly splitFormStep = signal<FormStepOptions>(3);
+    protected readonly splitFormStep = signal<FormStepOptions>(1);
     protected readonly isSubmittingSplitForm = signal<boolean>(false);
 
     // SERVICES

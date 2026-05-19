@@ -224,7 +224,7 @@ export class SplitFormStep2 {
     const {
       name,
       unitPrice,
-      categoryTag,
+      // categoryTag,
       splitStrategy,
       quantitySplits,
       quantity: quantityStr,
@@ -257,7 +257,7 @@ export class SplitFormStep2 {
       total,
       quantity,
       unitPrice,
-      categoryTag,
+      // categoryTag,
       splitStrategy,
       quantitySplits,
       settled: false,

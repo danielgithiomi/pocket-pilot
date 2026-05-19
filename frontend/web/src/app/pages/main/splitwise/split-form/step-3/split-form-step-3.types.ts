@@ -7,3 +7,8 @@ export const PAYMENT_OPTIONS_MAP: Record<PaymentOption, string> = {
   equal: 'Split equally',
   custom: 'Custom payment',
 };
+
+export interface BillPayer {
+  name: string;
+  amount: number;
+}

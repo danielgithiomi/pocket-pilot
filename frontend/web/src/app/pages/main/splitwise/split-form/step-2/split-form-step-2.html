@@ -89,6 +89,17 @@
           />
 
           <atom-select
+          class="flex-1"
+          [inverted]="true"
+          id="split-strategy"
+          label="Split Strategy"
+          wrapperClassName="my-0!"
+          [options]="splitStrategyOptions()"
+          placeholder="Select split strategy"
+          [formField]="splittableForm.splitStrategy"
+        />
+
+          <!-- <atom-select
             label="Tag"
             class="flex-1"
             id="category-tag"
@@ -97,18 +108,8 @@
             [options]="categoryTags()"
             placeholder="Select Category"
             [formField]="splittableForm.categoryTag"
-          />
+          /> -->
         </div>
-
-        <atom-select
-          class="flex-1"
-          [inverted]="true"
-          id="split-strategy"
-          label="Split Strategy"
-          [options]="splitStrategyOptions()"
-          placeholder="Select split strategy"
-          [formField]="splittableForm.splitStrategy"
-        />
 
         <div class="flex flex-col space-y-2 mb-4">
           <!-- Member Selection -->
