@@ -9,124 +9,124 @@ import { SplitFormStep3 } from './step-3/split-form-step-3';
 import { SplittableOrder, SplitwiseSquad } from '@global/types';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
 import {
-  input,
-  effect,
-  inject,
-  output,
-  signal,
-  computed,
-  untracked,
-  Component,
+    input,
+    effect,
+    inject,
+    output,
+    signal,
+    computed,
+    untracked,
+    Component,
 } from '@angular/core';
 import {
-  SplitFormSchema,
-  InitialSplitFormState,
-  SplitFormValidationSchema,
+    SplitFormSchema,
+    InitialSplitFormState,
+    SplitFormValidationSchema,
 } from './split-form.types';
 
 @Component({
-  selector: 'splitwise-split-form',
-  templateUrl: './split-form.html',
-  imports: [LucideAngularModule, Form, Button, SplitFormStep1, SplitFormStep2, SplitFormStep3],
+    selector: 'splitwise-split-form',
+    templateUrl: './split-form.html',
+    imports: [LucideAngularModule, Form, Button, SplitFormStep1, SplitFormStep2, SplitFormStep3],
 })
 export class SplitwiseSplitForm {
-  // ICONS
-  protected readonly iconSize = 18;
-  protected readonly NextIcon = ChevronsRight;
-  protected readonly PreviousIcon = ChevronsLeft;
+    // ICONS
+    protected readonly iconSize = 18;
+    protected readonly NextIcon = ChevronsRight;
+    protected readonly PreviousIcon = ChevronsLeft;
 
-  // INPUTS
-  readonly squads = input.required<SplitwiseSquad[]>();
-  readonly isSplitFormOpen = input.required<boolean>();
+    // INPUTS
+    readonly squads = input.required<SplitwiseSquad[]>();
+    readonly isSplitFormOpen = input.required<boolean>();
 
-  // OUTPUTS
-  readonly closeSplitFormEvent = output<boolean>();
+    // OUTPUTS
+    readonly closeSplitFormEvent = output<boolean>();
 
-  // SIGNAL STATES
-  protected readonly customMembers = signal<string[]>([]);
-  protected readonly splitFormStep = signal<FormStepOptions>(3);
-  protected readonly isSubmittingSplitForm = signal<boolean>(false);
+    // SIGNAL STATES
+    protected readonly customMembers = signal<string[]>([]);
+    protected readonly splitFormStep = signal<FormStepOptions>(3);
+    protected readonly isSubmittingSplitForm = signal<boolean>(false);
 
-  // SERVICES
-  private readonly accountsService = inject(AccountsService);
+    // SERVICES
+    private readonly accountsService = inject(AccountsService);
 
-  // DATA
-  protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
+    // DATA
+    protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
 
-  // COMPUTED
-  protected readonly initalMemberPool = computed<string[]>(() => {
-    const squadName = this.splitForm.squadName().value();
+    // COMPUTED
+    protected readonly initalMemberPool = computed<string[]>(() => {
+        const squadName = this.splitForm.squadName().value();
 
-    const squad = this.squads().find((squad) => squad.squadName === squadName);
+        const squad = this.squads().find((squad) => squad.squadName === squadName);
 
-    if (!squad) return this.customMembers();
-    return squad.squadMembers;
-  });
-
-  // FORM
-  private initialFormState: SplitFormSchema = {
-    ...InitialSplitFormState,
-    billingCurrency: this.defaultCurrency,
-  };
-  protected readonly splitFormModel = signal<SplitFormSchema>(this.initialFormState);
-  protected readonly splitForm = form(this.splitFormModel, SplitFormValidationSchema);
-
-  // METHODS
-  protected formatDate = (date: Date) => formatFullDate(date.toISOString());
-  protected goToNextStep = (step: FormStepOptions) => {
-    this.splitFormStep.set(step);
-    console.log('Form state:', this.splitForm().value());
-  };
-  protected goToPreviousStep = (step: FormStepOptions) => this.splitFormStep.set(step);
-  protected resetSplitForm() {
-    this.splitForm().reset();
-    this.splitFormStep.set(1);
-    this.customMembers.set([]);
-    this.splitFormModel.set(this.initialFormState);
-  }
-
-  protected handleSplitFormClose(event: FormCloseEvent) {
-    if (event === 'icon') this.resetSplitForm();
-    this.closeSplitFormEvent.emit(false);
-  }
-
-  protected updateEventMembers(members: string[]) {
-    const isCustomSquad = this.splitForm.squadName().value() === 'CUSTOM';
-    if (isCustomSquad) this.customMembers.set(members);
-
-    this.splitForm.splittables().controlValue.set([]);
-    this.splitForm.eventMembers().controlValue.set(members);
-  }
-
-  protected handleOnSplittablesChange(splittables: SplittableOrder[]) {
-    this.splitForm.splittables().controlValue.set(splittables);
-  }
-
-  // SUBMISSIONS
-  protected handleSplitFormSubmit(event: Event) {
-    event.preventDefault();
-
-    const { ...payload } = this.splitFormModel();
-    console.log(payload);
-
-    // this.isSubmittingSplitForm.set(true);
-
-    // setTimeout(() => {
-    //   this.isSubmittingSplitForm.set(false);
-    //   this.closeSplitFormEvent.emit(true);
-    // }, 2000);
-  }
-
-  constructor() {
-    effect(() => {
-      const squadName = this.splitForm.squadName().value();
-
-      const squadMembers =
-        this.squads().find((squad) => squad.squadName === squadName)?.squadMembers || [];
-
-      untracked(() => this.splitForm.eventMembers().controlValue.set(squadMembers));
+        if (!squad) return this.customMembers();
+        return squad.squadMembers;
     });
-  }
+
+    // FORM
+    private initialFormState: SplitFormSchema = {
+        ...InitialSplitFormState,
+        billingCurrency: this.defaultCurrency,
+    };
+    protected readonly splitFormModel = signal<SplitFormSchema>(this.initialFormState);
+    protected readonly splitForm = form(this.splitFormModel, SplitFormValidationSchema);
+
+    // METHODS
+    protected formatDate = (date: Date) => formatFullDate(date.toISOString());
+    protected goToNextStep = (step: FormStepOptions) => {
+        this.splitFormStep.set(step);
+        console.log('Form state:', this.splitForm().value());
+    };
+    protected goToPreviousStep = (step: FormStepOptions) => this.splitFormStep.set(step);
+    protected resetSplitForm() {
+        this.splitForm().reset();
+        this.splitFormStep.set(1);
+        this.customMembers.set([]);
+        this.splitFormModel.set(this.initialFormState);
+    }
+
+    protected handleSplitFormClose(event: FormCloseEvent) {
+        if (event === 'icon') this.resetSplitForm();
+        this.closeSplitFormEvent.emit(false);
+    }
+
+    protected updateEventMembers(members: string[]) {
+        const isCustomSquad = this.splitForm.squadName().value() === 'CUSTOM';
+        if (isCustomSquad) this.customMembers.set(members);
+
+        this.splitForm.splittables().controlValue.set([]);
+        this.splitForm.eventMembers().controlValue.set(members);
+    }
+
+    protected handleOnSplittablesChange(splittables: SplittableOrder[]) {
+        this.splitForm.splittables().controlValue.set(splittables);
+    }
+
+    // SUBMISSIONS
+    protected handleSplitFormSubmit(event: Event) {
+        event.preventDefault();
+
+        const { ...payload } = this.splitFormModel();
+        console.log(payload);
+
+        // this.isSubmittingSplitForm.set(true);
+
+        // setTimeout(() => {
+        //   this.isSubmittingSplitForm.set(false);
+        //   this.closeSplitFormEvent.emit(true);
+        // }, 2000);
+    }
+
+    constructor() {
+        effect(() => {
+            const squadName = this.splitForm.squadName().value();
+
+            const squadMembers =
+                this.squads().find((squad) => squad.squadName === squadName)?.squadMembers || [];
+
+            untracked(() => this.splitForm.eventMembers().controlValue.set(squadMembers));
+        });
+    }
 }
 
 type FormStepOptions = 1 | 2 | 3;

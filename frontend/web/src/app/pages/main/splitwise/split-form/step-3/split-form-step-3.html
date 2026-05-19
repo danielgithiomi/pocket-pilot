@@ -1,28 +1,47 @@
 <div class="w-full flex flex-col gap-1 mb-1">
-  <atom-input
-    type="text"
-    id="split-name"
-    [inverted]="true"
-    autocomplete="off"
-    wrapperClassName="mb-0!"
-    placeholder="Eg: 1210.00"
-    label="Bill Amount (Verification)"
-    [formField]="formModel().verificationTotal"
-    (clearOutput)="formModel().verificationTotal().controlValue.set(null)"
-  />
+    <atom-input
+        type="text"
+        id="split-name"
+        [inverted]="true"
+        autocomplete="off"
+        wrapperClassName="mb-0!"
+        placeholder="Eg: 1210.00"
+        label="Grand Total (Verification)"
+        [formField]="formModel().verificationTotal"
+        (clearOutput)="formModel().verificationTotal().controlValue.set(null)"
+    />
 
-  <p class="text-muted-text text-xs italic w-full text-right pr-2">
-    Bill Subtotal: <span class="text-primary font-semibold">{{ formattedBillSubtotal() }}</span>
-  </p>
+    <p class="text-muted-text text-xs italic w-full text-right pr-2 mt-1">
+        Subtotal: <span class="text-primary font-semibold">{{ formattedBillSubtotal() }}</span>
+    </p>
 </div>
 
 <atom-select
-  label="Who Paid"
-  [inverted]="true"
-  id="bill-paid-by"
-  class="flex-1 w-full"
-  wrapperClassName="my-0"
-  placeholder="Select a payer"
-  [options]="billPaymentStrategyOptions()"
-  [formField]="formModel().billPayerStrategy"
+    label="Who Paid"
+    [inverted]="true"
+    id="bill-paid-by"
+    class="flex-1 w-full"
+    wrapperClassName="my-0"
+    placeholder="Select a payment strategy"
+    [options]="billPaymentStrategyOptions()"
+    [formField]="formModel().billPayerStrategy"
 />
+
+<div class="my-2">
+    <div
+        class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+    >
+        @for (member of billPayerOptions(); track member.memberName) {
+            <squad-member
+                [inverted]="true"
+                [member]="member"
+                [isCheckable]="true"
+                (onMemberEventClick)="handleAddMemberToPayerList($event)"
+            />
+        }
+    </div>
+</div>
+
+@if (isCustomPaymentStrategy()) {
+    <div class="my-2">This is a custom payment strategy</div>
+}

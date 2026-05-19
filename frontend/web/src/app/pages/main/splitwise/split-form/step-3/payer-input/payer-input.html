@@ -1,0 +1,23 @@
+<div class="w-full flex flex-row items-center gap-4">
+    <!-- Avatar -->
+    <div class="size-6 bg-primary rounded-full grid place-items-center">
+        <p class="text-white">{{ initial() }}</p>
+    </div>
+
+    <!-- Payer Name -->
+    <p class="text-inverted-text font-semibold">{{ payerName() }}</p>
+
+    <!-- Amount -->
+     <input
+      type="text"
+      
+      class="flex-1"
+      #customMemberInput
+      autocomplete="off"
+      id="add-member-name"
+      placeholder="Eg: John"
+      (input)="validateMemberName(customMemberInput.value)"
+    />
+
+    <!-- Remove Payer -->
+</div>
