@@ -5,6 +5,7 @@ import { AuthService } from '@api/auth.service';
 import { FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { SplitFormSchema } from '../split-form.types';
+import { PayerInput } from './payer-input/payer-input';
 import { SelectOption } from '@atoms/select/select.types';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
@@ -13,7 +14,7 @@ import { PAYMENT_OPTIONS, PAYMENT_OPTIONS_MAP, PaymentOption } from './split-for
 @Component({
     selector: 'split-form-step-3',
     templateUrl: './split-form-step-3.html',
-    imports: [LucideAngularModule, Input, Select, SquadMember],
+    imports: [LucideAngularModule, Input, Select, SquadMember, PayerInput],
 })
 export class SplitFormStep3 {
     // INPUTS
