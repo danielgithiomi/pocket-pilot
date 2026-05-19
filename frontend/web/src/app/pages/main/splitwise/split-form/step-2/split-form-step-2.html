@@ -1,105 +1,105 @@
 <div id="split-form-step-2">
-  <div class="header">
-    <div class="header-summary">
-      <div
-        (click)="onBackIconClick.emit()"
-        class="group/back-icon hover:bg-muted-text p-1 rounded-lg cursor-pointer"
-      >
-        <lucide-angular
-          name="back-arrow"
-          [img]="leftArrow"
-          [size]="iconSize()"
-          class="group-hover/back-icon:text-white text-inverted-text"
-        />
-      </div>
-      <div class="flex flex-col text-sm">
-        <p>Order Summary</p>
-        <p class="italic text-xs text-muted-text!">
-          <span class="text-primary!">{{ itemsCount() }}</span>
-          {{ itemsCount() === 1 ? 'item' : 'items' }}
-        </p>
-      </div>
-    </div>
-
-    @let hasItems = itemsCount() > 0;
-    <div class="header-totals">
-      @if (hasItems) {
-        <p>
-          Subtotal: <span class="font-semibold">{{ formattedSubTotal() }}</span>
-        </p>
-      }
-      <atom-button
-        id="add-item"
-        variant="primary"
-        className="shadow-none"
-        [disabled]="isSubmittingSplittable()"
-        (clicked)="isFormVisible.set(!isFormVisible())"
-      >
-        <div class="w-full h-full grid place-items-center">
-          <lucide-icon
-            [size]="iconSize()"
-            name="add-member-icon"
-            [img]="isFormVisible() ? HideForm : ShowForm"
-          />
-        </div>
-      </atom-button>
-    </div>
-  </div>
-
-  @if (isFormVisible()) {
-    <div class="new-item-form">
-      <form id="new-splittable-form" (submit)="addNewSplittable($event)">
-        <div class="flex flex-row gap-2">
-          <atom-input
-            type="text"
-            class="flex-2"
-            label="Item Name"
-            [inverted]="true"
-            autocomplete="off"
-            id="splittable-name"
-            [formField]="splittableForm.name"
-            placeholder="Eg: Margherita Pizza"
-            (clearOutput)="splittableForm.name().controlValue.set('')"
-          />
-
-          <atom-select
-            id="quantity"
-            class="flex-1"
-            label="Quantity"
-            [inverted]="true"
-            placeholder="Select quantity"
-            [options]="orderQuantities()"
-            [formField]="splittableForm.quantity"
-          />
+    <div class="header">
+        <div class="header-summary">
+            <div
+                (click)="onBackIconClick.emit()"
+                class="group/back-icon hover:bg-muted-text p-1 rounded-lg cursor-pointer"
+            >
+                <lucide-angular
+                    name="back-arrow"
+                    [img]="leftArrow"
+                    [size]="iconSize()"
+                    class="group-hover/back-icon:text-white text-inverted-text"
+                />
+            </div>
+            <div class="flex flex-col text-sm">
+                <p>Order Summary</p>
+                <p class="italic text-xs text-muted-text!">
+                    <span class="text-primary!">{{ itemsCount() }}</span>
+                    {{ itemsCount() === 1 ? 'item' : 'items' }}
+                </p>
+            </div>
         </div>
 
-        <div class="flex flex-row gap-2 mb-4">
-          <atom-input
-            type="number"
-            class="flex-1"
-            [inverted]="true"
-            label="Unit Price"
-            autocomplete="off"
-            [numberStep]="0.01"
-            wrapperClassName="my-0!"
-            placeholder="Eg: 760.50"
-            id="splittable-unit-price"
-            [formField]="splittableForm.unitPrice"
-            (clearOutput)="splittableForm.unitPrice().controlValue.set(null)"
-          />
+        @let hasItems = itemsCount() > 0;
+        <div class="header-totals">
+            @if (hasItems) {
+                <p>
+                    Subtotal: <span class="font-semibold">{{ formattedSubTotal() }}</span>
+                </p>
+            }
+            <atom-button
+                id="add-item"
+                variant="primary"
+                className="shadow-none"
+                [disabled]="isSubmittingSplittable()"
+                (clicked)="isFormVisible.set(!isFormVisible())"
+            >
+                <div class="w-full h-full grid place-items-center">
+                    <lucide-icon
+                        [size]="iconSize()"
+                        name="add-member-icon"
+                        [img]="isFormVisible() ? HideForm : ShowForm"
+                    />
+                </div>
+            </atom-button>
+        </div>
+    </div>
 
-          <atom-select
-          class="flex-1"
-          [inverted]="true"
-          id="split-strategy"
-          label="Split Strategy"
-          wrapperClassName="my-0!"
-          [options]="splitStrategyOptions()"
-          placeholder="Select split strategy"
-          [formField]="splittableForm.splitStrategy"
-        />
+    @if (isFormVisible()) {
+        <div class="new-item-form">
+            <form id="new-splittable-form" (submit)="addNewSplittable($event)">
+                <div class="flex flex-row gap-2">
+                    <atom-input
+                        type="text"
+                        class="flex-2"
+                        label="Item Name"
+                        [inverted]="true"
+                        autocomplete="off"
+                        id="splittable-name"
+                        [formField]="splittableForm.name"
+                        placeholder="Eg: Margherita Pizza"
+                        (clearOutput)="splittableForm.name().controlValue.set('')"
+                    />
 
-          <!-- <atom-select
+                    <atom-select
+                        id="quantity"
+                        class="flex-1"
+                        label="Quantity"
+                        [inverted]="true"
+                        placeholder="Select quantity"
+                        [options]="orderQuantities()"
+                        [formField]="splittableForm.quantity"
+                    />
+                </div>
+
+                <div class="flex flex-row gap-2 mb-4">
+                    <atom-input
+                        type="number"
+                        class="flex-1"
+                        [inverted]="true"
+                        label="Unit Price"
+                        autocomplete="off"
+                        [numberStep]="0.01"
+                        wrapperClassName="my-0!"
+                        placeholder="Eg: 760.50"
+                        id="splittable-unit-price"
+                        [formField]="splittableForm.unitPrice"
+                        (clearOutput)="splittableForm.unitPrice().controlValue.set(null)"
+                    />
+
+                    <atom-select
+                        class="flex-1"
+                        [inverted]="true"
+                        id="split-strategy"
+                        label="Split Strategy"
+                        wrapperClassName="my-0!"
+                        [options]="splitStrategyOptions()"
+                        placeholder="Select split strategy"
+                        [formField]="splittableForm.splitStrategy"
+                    />
+
+                    <!-- <atom-select
             label="Tag"
             class="flex-1"
             id="category-tag"
@@ -109,76 +109,80 @@
             placeholder="Select Category"
             [formField]="splittableForm.categoryTag"
           /> -->
+                </div>
+
+                <div class="flex flex-col space-y-2 mb-4">
+                    <!-- Member Selection -->
+                    <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
+                        <p class="text-inverted-text">
+                            <span class="required-asterix">*</span>Consumers:
+                        </p>
+                    </div>
+
+                    <!-- Squad Member Container -->
+                    <div
+                        class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+                    >
+                        @for (member of formattedConsumers(); track member.memberName) {
+                            <squad-member
+                                [inverted]="true"
+                                [member]="member"
+                                [isCheckable]="true"
+                                [isDisabled]="!canAddConsumer()"
+                                [isQuantifiable]="isStrategyCustom()"
+                                [isMaximumQuantityReached]="!canAddConsumer()"
+                                (onMemberEventClick)="addConsumerToOrder($event)"
+                                (onMemberQuantityChange)="handleOnConsumerQuantityChange($event)"
+                            />
+                        }
+                    </div>
+                </div>
+            </form>
+
+            <div class="form-buttons">
+                <atom-button
+                    type="button"
+                    label="Reset"
+                    [inverted]="true"
+                    variant="secondary"
+                    className="shadow-none"
+                    form="new-splittable-form"
+                    id="reset-splittable-form"
+                    (clicked)="resetSplittableForm()"
+                    [disabled]="!splittableForm().dirty() || isSubmittingSplittable()"
+                />
+
+                @let hasConsumers = splittableForm().value().quantitySplits.length > 0;
+                <atom-button
+                    label="Add"
+                    type="submit"
+                    className="shadow-none"
+                    form="new-splittable-form"
+                    id="submit-splittable-form"
+                    [isLoading]="isSubmittingSplittable()"
+                    [disabled]="
+                        splittableForm().invalid() || !hasConsumers || isSubmittingSplittable()
+                    "
+                />
+            </div>
         </div>
-
-        <div class="flex flex-col space-y-2 mb-4">
-          <!-- Member Selection -->
-          <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
-            <p class="text-inverted-text"><span class="required-asterix">*</span>Consumers:</p>
-          </div>
-
-          <!-- Squad Member Container -->
-          <div
-            class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
-          >
-            @for (member of formattedConsumers(); track member.memberName) {
-              <squad-member
-                [inverted]="true"
-                [member]="member"
-                [isCheckable]="true"
-                [isDisabled]="!canAddConsumer()"
-                [isQuantifiable]="isStrategyCustom()"
-                [isMaximumQuantityReached]="!canAddConsumer()"
-                (onMemberEventClick)="addConsumerToOrder($event)"
-                (onMemberQuantityChange)="handleOnConsumerQuantityChange($event)"
-              />
-            }
-          </div>
-        </div>
-      </form>
-
-      <div class="form-buttons">
-        <atom-button
-          type="button"
-          label="Reset"
-          [inverted]="true"
-          variant="secondary"
-          className="shadow-none"
-          form="new-splittable-form"
-          id="reset-splittable-form"
-          (clicked)="resetSplittableForm()"
-          [disabled]="!splittableForm().dirty() || isSubmittingSplittable()"
-        />
-
-        @let hasConsumers = splittableForm().value().quantitySplits.length > 0;
-        <atom-button
-          label="Add"
-          type="submit"
-          className="shadow-none"
-          form="new-splittable-form"
-          id="submit-splittable-form"
-          [isLoading]="isSubmittingSplittable()"
-          [disabled]="splittableForm().invalid() || !hasConsumers || isSubmittingSplittable()"
-        />
-      </div>
-    </div>
-  }
-
-  <div class="content" [ngClass]="{ 'grid place-items-center': !hasItems }">
-    @if (!hasItems) {
-      <p class="text-muted-text! text-sm">No order items added yet!</p>
-    } @else {
-      <div class="splittables-container">
-        @for (splittable of splittables(); track splittable.id) {
-          <order-item
-            [order]="splittable"
-            [presentMembers]="consumerOptions()"
-            [splitStrategyOptions]="splitStrategyOptions()"
-            (onDeleteClickEvent)="handleOnDeleteOrder($event)"
-            (onUpdateSplittableEvent)="updateEventSplittables($event)"
-          />
-        }
-      </div>
     }
-  </div>
+
+    <div class="content" [ngClass]="{ 'grid place-items-center': !hasItems }">
+        @if (!hasItems) {
+            <p class="text-muted-text! text-sm">No order items added yet!</p>
+        } @else {
+            <div class="splittables-container">
+                @for (splittable of splittables(); track splittable.id) {
+                    <order-item
+                        [order]="splittable"
+                        [presentMembers]="consumerOptions()"
+                        [splitStrategyOptions]="splitStrategyOptions()"
+                        (onDeleteClickEvent)="handleOnDeleteOrder($event)"
+                        (onUpdateSplittableEvent)="updateEventSplittables($event)"
+                    />
+                }
+            </div>
+        }
+    </div>
 </div>

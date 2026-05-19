@@ -18,6 +18,7 @@ export class PayerInput {
 
     // OUTPUT
     readonly onRemovePayerEvent = output<string>();
+    readonly onPayerAmountChangeEvent = output<BillPayer>();
 
     // COMPUTED
     protected readonly initial = computed(() => this.payer().name.substring(0, 1).toUpperCase());
@@ -27,6 +28,13 @@ export class PayerInput {
         const numericValue = parseFloat(value);
         if (isNaN(numericValue)) return;
 
-        console.log(numericValue);
+        const formattedAmount = Math.round(numericValue * 100) / 100;
+        console.log(formattedAmount);
+
+        const payer: BillPayer = {
+            name: this.payer().name,
+            amount: formattedAmount,
+        };
+        this.onPayerAmountChangeEvent.emit(payer);
     }
 }

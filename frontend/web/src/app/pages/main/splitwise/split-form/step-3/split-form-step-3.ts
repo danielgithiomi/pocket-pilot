@@ -1,27 +1,33 @@
 import { Input } from '@atoms/input';
 import { Select } from '@atoms/select';
+import { NgClass } from '@angular/common';
 import { formatCurrency } from '@libs/utils';
 import { AuthService } from '@api/auth.service';
 import { FieldTree } from '@angular/forms/signals';
-import { LucideAngularModule } from 'lucide-angular';
 import { SplitFormSchema } from '../split-form.types';
 import { PayerInput } from './payer-input/payer-input';
 import { SelectOption } from '@atoms/select/select.types';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { LucideAngularModule, Check, X } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
+import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import {
     BillPayer,
+    PaymentOption,
     PAYMENT_OPTIONS,
     PAYMENT_OPTIONS_MAP,
-    PaymentOption,
 } from './split-form-step-3.types';
 
 @Component({
     selector: 'split-form-step-3',
     templateUrl: './split-form-step-3.html',
-    imports: [LucideAngularModule, Input, Select, SquadMember, PayerInput],
+    imports: [LucideAngularModule, NgClass, Input, Select, SquadMember, PayerInput],
 })
 export class SplitFormStep3 {
+
+    // ICONS
+    protected readonly CrossIcon = X;
+    protected readonly CheckIcon = Check;
+
     // INPUTS
     readonly iconSize = input.required<number>();
     readonly presentMembers = input.required<string[]>();
@@ -49,6 +55,11 @@ export class SplitFormStep3 {
             .value()
             .reduce((acc, splittable) => acc + splittable.total, 0);
     });
+    protected readonly totalsEqual = computed<boolean>(() => {
+        console.log('Bill subtotal:', this.billSubtotal());
+        console.log('Verification total:', this.formModel().verificationTotal().value());
+        return Math.abs(this.billSubtotal() - (this.formModel().verificationTotal().value() ?? 0)) < 0.01;
+    });
     protected readonly formattedBillSubtotal = computed(() => {
         return formatCurrency(
             this.billSubtotal(),
@@ -57,6 +68,19 @@ export class SplitFormStep3 {
             true,
         );
     });
+    protected readonly remainingPayableAmount = computed<number>(
+        () =>
+            this.billSubtotal() -
+            this.billPayerList().reduce((acc, payer) => acc + payer.amount, 0),
+    );
+    protected readonly formattedRemainingPayableAmount = computed(() =>
+        formatCurrency(
+            this.remainingPayableAmount(),
+            this.formModel().billingCurrency().value(),
+            2,
+            true,
+        ),
+    );
     protected readonly billPaymentStrategyOptions = computed<SelectOption[]>(() => {
         return PAYMENT_OPTIONS.map((option) => ({
             value: option,
@@ -98,13 +122,19 @@ export class SplitFormStep3 {
                         name: memberName,
                         amount: newEqualAmount,
                     };
-                    this.billPayerList.update((current) => [...current, newPayer]);
+                    this.billPayerList.update((current) => [
+                        ...current.map((payer) => ({
+                            ...payer,
+                            amount: newEqualAmount,
+                        })),
+                        newPayer,
+                    ]);
                     break;
                 }
                 case 'custom' as PaymentOption: {
                     const newPayer: BillPayer = {
                         name: memberName,
-                        amount: this.formModel().verificationTotal().value() ?? 0,
+                        amount: 0,
                     };
                     this.billPayerList.update((current) => [...current, newPayer]);
                     break;
@@ -115,6 +145,18 @@ export class SplitFormStep3 {
         }
     }
 
+    protected handlePayerAmountChange(payer: BillPayer) {
+        console.log('Passed payer:', payer);
+
+        this.billPayerList.update((current) =>
+            current.map((existing) =>
+                existing.name === payer.name ? { ...existing, amount: payer.amount } : existing,
+            ),
+        );
+
+        console.log('Updated bill payer list:', this.billPayerList());
+    }
+
     protected handleRemovePayer(payerName: string) {
         this.billPayerList.update((current) => current.filter((payer) => payer.name !== payerName));
     }
@@ -123,7 +165,50 @@ export class SplitFormStep3 {
     private calculateEqualPayableAmount() {
         if (this.billPayerList().length === 0) return this.billSubtotal();
         const equalAmount = this.billSubtotal() / (this.billPayerList().length + 1);
-        const roundedAmount = Math.round(equalAmount * 100) / 100;
-        return roundedAmount;
+        return Math.round(equalAmount * 100) / 100;
+    }
+
+    constructor() {
+        effect(() => {
+            const paymentStrategy = this.formModel().billPayerStrategy().value();
+
+            untracked(() => {
+                const currentPayers = this.billPayerList();
+                const subtotal = this.billSubtotal();
+
+                switch (paymentStrategy) {
+                    case 'one' as PaymentOption: {
+                        if (currentPayers.length === 0) return;
+
+                        if (currentPayers.length > 1) {
+                            this.billPayerList.set([]);
+                            return;
+                        }
+
+                        const solePayer = currentPayers[0];
+                        this.billPayerList.set([{ name: solePayer.name, amount: subtotal }]);
+                        break;
+                    }
+                    case 'equal' as PaymentOption: {
+                        if (currentPayers.length === 0) return;
+
+                        const equalAmount = this.calculateEqualPayableAmount();
+
+                        this.billPayerList.update((current) =>
+                            current.map((payer) => ({ ...payer, amount: equalAmount })),
+                        );
+                        break;
+                    }
+                    case 'custom' as PaymentOption: {
+                        this.billPayerList.set(
+                            currentPayers.map((payer) => ({ ...payer, amount: 0 })),
+                        );
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+        });
     }
 }
