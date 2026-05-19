@@ -31,7 +31,9 @@
                 <split-form-step-3
                     [iconSize]="iconSize"
                     [formModel]="splitForm"
+                    [billPayerList]="splitForm.billPayers().value()"
                     [presentMembers]="splitForm.eventMembers().value()"
+                    (onBillPayersChangeEvent)="handleOnBillPayersChange($event)"
                     (onValidationChangeEvent)="handleOnStep3ValidationChange($event)"
                 />
             }
@@ -84,15 +86,13 @@
 
         @switch (splitFormStep()) {
             @case (1) {
-                @let hasMinimumMembers = selectedMemberCount > 1;
+                @let isStep1Valid = selectedMemberCount > 1;
                 <atom-button
                     type="button"
                     variant="primary"
                     id="to-splt-step-2"
                     (clicked)="goToNextStep(2)"
-                    [disabled]="
-                        !hasMinimumMembers || splitForm().invalid() || isSubmittingSplitForm()
-                    "
+                    [disabled]="splitForm().invalid() || !isStep1Valid"
                 >
                     <div class="w-full flex flex-row items-center justify-between gap-4">
                         <span>Next</span>
@@ -101,13 +101,13 @@
                 </atom-button>
             }
             @case (2) {
-                @let hasSplittables = splitForm.splittables().value().length > 0;
+                @let isStep2Valid = splitForm.splittables().value().length > 0;
                 <atom-button
                     type="button"
                     variant="primary"
                     id="to-splt-step-3"
                     (clicked)="goToNextStep(3)"
-                    [disabled]="!hasSplittables || splitForm().invalid() || isSubmittingSplitForm()"
+                    [disabled]="splitForm().invalid() || !isStep2Valid"
                 >
                     <div class="w-full flex flex-row items-center justify-between gap-4">
                         <span>Next</span>

@@ -10,14 +10,14 @@ import { SelectOption } from '@atoms/select/select.types';
 import { LucideAngularModule, Check, X } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import {
-    Component,
-    computed,
+    input,
     effect,
     inject,
-    input,
     output,
     signal,
+    computed,
     untracked,
+    Component,
 } from '@angular/core';
 import {
     BillPayer,
@@ -39,13 +39,15 @@ export class SplitFormStep3 {
     // INPUTS
     readonly iconSize = input.required<number>();
     readonly presentMembers = input.required<string[]>();
+    readonly billPayerList = input.required<BillPayer[]>();
     readonly formModel = input.required<FieldTree<SplitFormSchema, string | number>>();
 
     // OUTPUTS
     readonly onValidationChangeEvent = output<boolean>();
+    readonly onBillPayersChangeEvent = output<BillPayer[]>();
 
     // STATE SIGNALS
-    protected readonly billPayerList = signal<BillPayer[]>([]);
+    // protected readonly billPayerList = signal<BillPayer[]>([]);
 
     // SERVICES
     private readonly authService = inject(AuthService);
@@ -112,11 +114,10 @@ export class SplitFormStep3 {
     protected handleAddMemberToPayerList(memberName: string) {
         const isPresent = this.billPayerListNames().includes(memberName);
 
-        if (isPresent)
-            this.billPayerList.update((current) =>
-                current.filter((payer) => payer.name !== memberName),
-            );
-        else {
+        if (isPresent) {
+            const newPayerList = this.billPayerList().filter((payer) => payer.name !== memberName);
+            this.onBillPayersChangeEvent.emit(newPayerList);
+        } else {
             const paymentStrategy = this.formModel().billPayerStrategy().value();
             switch (paymentStrategy) {
                 case 'one' as PaymentOption: {
@@ -124,7 +125,7 @@ export class SplitFormStep3 {
                         name: memberName,
                         amount: this.billSubtotal(),
                     };
-                    this.billPayerList.set([newPayer]);
+                    this.onBillPayersChangeEvent.emit([newPayer]);
                     break;
                 }
                 case 'equal' as PaymentOption: {
@@ -133,13 +134,12 @@ export class SplitFormStep3 {
                         name: memberName,
                         amount: newEqualAmount,
                     };
-                    this.billPayerList.update((current) => [
-                        ...current.map((payer) => ({
-                            ...payer,
-                            amount: newEqualAmount,
-                        })),
-                        newPayer,
-                    ]);
+                    const newPayerList = this.billPayerList().map((payer) => ({
+                        ...payer,
+                        amount: newEqualAmount,
+                    }));
+
+                    this.onBillPayersChangeEvent.emit([newPayer, ...newPayerList]);
                     break;
                 }
                 case 'custom' as PaymentOption: {
@@ -147,7 +147,8 @@ export class SplitFormStep3 {
                         name: memberName,
                         amount: 0,
                     };
-                    this.billPayerList.update((current) => [...current, newPayer]);
+                    const newPayerList = [newPayer, ...this.billPayerList()];
+                    this.onBillPayersChangeEvent.emit(newPayerList);
                     break;
                 }
                 default:
@@ -157,15 +158,16 @@ export class SplitFormStep3 {
     }
 
     protected handlePayerAmountChange(payer: BillPayer) {
-        this.billPayerList.update((current) =>
-            current.map((existing) =>
-                existing.name === payer.name ? { ...existing, amount: payer.amount } : existing,
-            ),
+        const newPayerList = this.billPayerList().map((existing) =>
+            existing.name === payer.name ? { ...existing, amount: payer.amount } : existing,
         );
+
+        this.onBillPayersChangeEvent.emit(newPayerList);
     }
 
     protected handleRemovePayer(payerName: string) {
-        this.billPayerList.update((current) => current.filter((payer) => payer.name !== payerName));
+        const newPayerList = this.billPayerList().filter((payer) => payer.name !== payerName);
+        this.onBillPayersChangeEvent.emit(newPayerList);
     }
 
     // HELPER FUNCTIONS
@@ -177,7 +179,7 @@ export class SplitFormStep3 {
 
     constructor() {
         effect(() => {
-            const isValid = this.totalsEqual() && this.billPayerList().length > 0;
+            const isValid = this.totalsEqual() && Math.abs(this.remainingPayableAmount()) <= 0.01;
             this.onValidationChangeEvent.emit(isValid);
         });
 
@@ -185,34 +187,42 @@ export class SplitFormStep3 {
             const paymentStrategy = this.formModel().billPayerStrategy().value();
 
             untracked(() => {
-                const currentPayers = this.billPayerList();
                 const subtotal = this.billSubtotal();
+                const currentPayers = this.billPayerList();
 
                 switch (paymentStrategy) {
                     case 'one' as PaymentOption: {
                         if (currentPayers.length === 0) return;
 
                         if (currentPayers.length > 1) {
-                            this.billPayerList.set([]);
+                            this.onBillPayersChangeEvent.emit([]);
                             return;
                         }
 
                         const solePayer = currentPayers[0];
-                        this.billPayerList.set([{ name: solePayer.name, amount: subtotal }]);
+                        this.onBillPayersChangeEvent.emit([
+                            { name: solePayer.name, amount: subtotal },
+                        ]);
                         break;
                     }
                     case 'equal' as PaymentOption: {
                         if (currentPayers.length === 0) return;
 
-                        const equalAmount = this.calculateEqualPayableAmount();
+                        const equalAmount = this.billSubtotal() / this.billPayerList().length;
+                        const roundedEqualAmount = Math.round(equalAmount * 100) / 100;
 
-                        this.billPayerList.update((current) =>
-                            current.map((payer) => ({ ...payer, amount: equalAmount })),
-                        );
+                        const newPayerList = this.billPayerList().map((payer) => ({
+                            ...payer,
+                            amount: roundedEqualAmount,
+                        }));
+                        this.onBillPayersChangeEvent.emit(newPayerList);
+
                         break;
                     }
                     case 'custom' as PaymentOption: {
-                        this.billPayerList.set(
+                        if (currentPayers.length === 0) return;
+
+                        this.onBillPayersChangeEvent.emit(
                             currentPayers.map((payer) => ({ ...payer, amount: 0 })),
                         );
                         break;

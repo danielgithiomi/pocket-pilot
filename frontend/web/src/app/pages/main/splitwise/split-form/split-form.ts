@@ -6,6 +6,7 @@ import { AccountsService } from '@api/accounts.service';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
 import { SplitFormStep3 } from './step-3/split-form-step-3';
+import { BillPayer } from './step-3/split-form-step-3.types';
 import { SplittableOrder, SplitwiseSquad } from '@global/types';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
 import {
@@ -101,7 +102,12 @@ export class SplitwiseSplitForm {
     }
 
     protected handleOnStep3ValidationChange(valid: boolean) {
-        this.isStep3Valid.set(valid);
+        const compositeValid = valid && this.splitForm.billPayers().value().length > 0;
+        this.isStep3Valid.set(compositeValid);
+    }
+
+    protected handleOnBillPayersChange(billPayers: BillPayer[]) {
+        this.splitForm.billPayers().controlValue.set(billPayers);
     }
 
     // SUBMISSIONS
