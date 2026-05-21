@@ -1,10 +1,10 @@
 <organism-form
-    id="squad"
-    title="Create A New Squad"
+    id="squad-update"
+    title="Modify an existing squad"
     (closeForm)="handleUpdateSquadFormClose($event)"
     description="People you regularly share expenses with."
 >
-    <form id="create-squad-form" slot="content" (submit)="handleUpdateSquadFormSubmit($event)">
+    <form id="update-squad-form" slot="content" (submit)="handleUpdateSquadFormSubmit($event)">
         <atom-input
             type="text"
             id="squad-name"
@@ -19,7 +19,7 @@
         <!-- Member Selection -->
         <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
             <p class="text-inverted-text">
-                <span class="text-sm text-expense">*</span>Select Squad Members:
+                <span class="text-sm text-expense">*</span>Update Squad Members:
             </p>
         </div>
 
@@ -74,19 +74,20 @@
             label="Reset"
             [inverted]="true"
             variant="secondary"
-            form="create-squad-form"
-            id="reset-create-squad-form"
+            form="update-squad-form"
+            id="reset-update-squad-form"
             (clicked)="resetUpdateSquadForm()"
             [disabled]="!updateSquadForm().dirty() || isSubmittingUpdateSquadForm()"
         />
 
         <atom-button
             type="submit"
-            label="Create Squad"
-            form="create-squad-form"
-            id="submit-create-squad-form"
+            label="Update Squad"
+            form="update-squad-form"
+            id="submit-update-squad-form"
             [isLoading]="isSubmittingUpdateSquadForm()"
             [disabled]="
+                !updateSquadForm().dirty() ||
                 updateSquadForm().invalid() ||
                 isSubmittingUpdateSquadForm() ||
                 updateSquadFormModel().squadMembers.length === 0

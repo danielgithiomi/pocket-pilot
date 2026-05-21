@@ -29,6 +29,7 @@
         <splitwise-squads
           [isLoadingResources]="isLoadingResources()"
           [isCreateSquadFormOpen]="isCreateSquadFormOpen()"
+          (onUpdateSquadItemEvent)="handleOnUpdateSquadItemEvent($event)"
           (createSquadButtonClickEvent)="isCreateSquadFormOpen.set(true)"
         />
       </div>
@@ -39,7 +40,15 @@
 @if (isCreateSquadFormOpen()) {
   <splitwise-squard-form
     [existingSquadMembers]="allSquadMembers()"
-    (closeCreateFormSquadEvent)="handleCreateSquadFormClose($event)"
+    (closeCreateFormSquadEvent)="handleSquadFormClose($event)"
+  />
+}
+
+@if (isUpdateSquadFormOpen() && squadToUpdate()) {
+  <update-squad-form
+    [squad]="squadToUpdate()!"
+    [allSquadMembers]="allSquadMembers()"
+    (closeUpdateSquadFormEvent)="handleSquadFormClose($event)"
   />
 }
 

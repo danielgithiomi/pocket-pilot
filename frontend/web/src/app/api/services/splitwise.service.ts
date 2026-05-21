@@ -2,58 +2,90 @@ import { inject, Injectable } from '@angular/core';
 import { ApiServiceError } from './api-error.service';
 import { SplitwiseMutation } from '@methods/mutations';
 import { SplitwiseResource } from '@methods/resources';
-import { catchError, EMPTY, map, Observable } from 'rxjs';
+import { catchError, EMPTY, map, Observable, of } from 'rxjs';
 import {
-  IStandardError,
-  SplitwiseSquad,
-  IStandardResponse,
-  SplitwiseSquadPayload,
-  IVoidResourceResponse,
+    IStandardError,
+    SplitwiseSquad,
+    IStandardResponse,
+    SplitwiseSquadPayload,
+    IVoidResourceResponse,
 } from '@global/types';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class SplitwiseService {
-  private readonly mutation = inject(SplitwiseMutation);
-  private readonly resource = inject(SplitwiseResource);
-  private readonly errorService = inject(ApiServiceError);
+    private readonly mutation = inject(SplitwiseMutation);
+    private readonly resource = inject(SplitwiseResource);
+    private readonly errorService = inject(ApiServiceError);
 
-  getUserSquads = () => this.resource.getUserSplitwiseSquads;
+    getUserSquads = () => this.resource.getUserSplitwiseSquads;
 
-  getOrderCategoryTags = () => this.resource.getOrderCategoryTags;
+    getOrderCategoryTags = () => this.resource.getOrderCategoryTags;
 
-  // SQUAD
-  createNewUserSquad(payload: SplitwiseSquadPayload): Observable<SplitwiseSquad> {
-    return this.mutation.createNewSquad(payload).pipe(
-      map((response: IStandardResponse<SplitwiseSquad>) => response.data),
-      catchError((error: IStandardError) => {
-        this.errorService.renderToast(error);
-        return EMPTY;
-      }),
-    );
-  }
+    // SQUAD
+    getSquadById(squadId: string): Observable<SplitwiseSquad> {
+        this.getUserSquads().reload();
 
-  updateExistingUserSquad(squadId: string, payload: SplitwiseSquadPayload): Observable<SplitwiseSquad> {
-    return this.mutation.updateExistingUserSquad(squadId, payload).pipe(
-      map((response: IStandardResponse<SplitwiseSquad>) => response.data),
-      catchError((error: IStandardError) => {
-        this.errorService.renderToast(error);
-        return EMPTY;
-      }),
-    );
-  }
+        const resourceValue = this.getUserSquads().value();
 
-  deleteExistingUserSquad(squadId: string): Observable<IVoidResourceResponse> {
-    return this.mutation.deleteExistingUserSquad(squadId).pipe(
-      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
-      catchError((error: IStandardError) => {
-        this.errorService.renderToast(error);
-        return EMPTY;
-      }),
-    );
-  }
+        if (!resourceValue) {
+          this.errorService.renderToast({
+            type: 'error',
+            statusCode: 404,
+            title: 'Error fetching your squad!',
+            details: `Failed to load the squad resource in time.`,
+          });
+          return EMPTY;
+        };
 
-  // SPLITTABLES
-  
+        const squad = resourceValue.data.find((squad) => squad.id === squadId);
+
+        if (!squad) {
+            this.errorService.renderToast({
+                type: 'error',
+                statusCode: 404,
+                title: 'Squad not found!',
+                details: `No squad was found for this user. Please refresh the page.`,
+            });
+            return EMPTY;
+        }
+
+        return of(squad);
+    }
+
+    createNewUserSquad(payload: SplitwiseSquadPayload): Observable<SplitwiseSquad> {
+        return this.mutation.createNewSquad(payload).pipe(
+            map((response: IStandardResponse<SplitwiseSquad>) => response.data),
+            catchError((error: IStandardError) => {
+                this.errorService.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
+
+    updateExistingUserSquad(
+        squadId: string,
+        payload: SplitwiseSquadPayload,
+    ): Observable<SplitwiseSquad> {
+        return this.mutation.updateExistingUserSquad(squadId, payload).pipe(
+            map((response: IStandardResponse<SplitwiseSquad>) => response.data),
+            catchError((error: IStandardError) => {
+                this.errorService.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
+
+    deleteExistingUserSquad(squadId: string): Observable<IVoidResourceResponse> {
+        return this.mutation.deleteExistingUserSquad(squadId).pipe(
+            map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
+            catchError((error: IStandardError) => {
+                this.errorService.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
+
+    // SPLITTABLES
 }

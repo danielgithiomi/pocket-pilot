@@ -15,7 +15,7 @@ import { formatToReadable } from '@libs/utils';
     templateUrl: './update-squad.html',
     imports: [LucideAngularModule, NgClass, Form, Button, Input, SquadMember],
 })
-export class UpdateSquad {
+export class UpdateSplitwiseSquad {
     // ICONS
     protected readonly iconSize = 18;
     protected readonly AddUserIcon = UserPlus;
@@ -32,11 +32,14 @@ export class UpdateSquad {
     protected readonly isSubmittingUpdateSquadForm = signal<boolean>(false);
 
     // FORM
-    protected readonly updateSquadFormModel = signal<UpdateSquadSchema>({
+    protected readonly initialUpdateSquadData = {
         squadName: '',
         squadMembers: [],
         squadImageKey: '',
-    });
+    };
+    protected readonly updateSquadFormModel = signal<UpdateSquadSchema>(
+        this.initialUpdateSquadData,
+    );
     protected readonly updateSquadForm = form<UpdateSquadSchema>(
         this.updateSquadFormModel,
         createSquadValidationSchema,
@@ -77,7 +80,8 @@ export class UpdateSquad {
         const isExistingMember = squadMembers.includes(normalizedInput);
 
         let updatedList: string[] = [];
-        if (isExistingMember) updatedList = squadMembers.filter((member) => member !== normalizedInput);
+        if (isExistingMember)
+            updatedList = squadMembers.filter((member) => member !== normalizedInput);
         else updatedList = [...squadMembers, normalizedInput];
 
         this.updateSquadForm.squadMembers().controlValue.set(updatedList.map(formatToReadable));
@@ -94,7 +98,17 @@ export class UpdateSquad {
         this.closeUpdateSquadFormEvent.emit(false);
     }
 
-    protected resetUpdateSquadForm() {}
+    protected resetUpdateSquadForm() {
+        const { squadName, squadMembers, squadImageKey } = this.squad();
+
+        this.updateSquadForm().reset();
+        this.isMemberNameValid.set(false);
+        this.updateSquadFormModel.set({
+            squadName,
+            squadMembers,
+            squadImageKey,
+        });
+    }
 
     constructor() {
         effect(() => {

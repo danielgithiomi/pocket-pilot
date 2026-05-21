@@ -1,51 +1,54 @@
 <div class="h-full flex flex-col">
-  <div class="flex flex-row items-center justify-between">
-    <div class="card-header">
-      <p class="title">Split Squads</p>
-      <p class="subtitle">Manage your squads</p>
+    <div class="flex flex-row items-center justify-between">
+        <div class="card-header">
+            <p class="title">Split Squads</p>
+            <p class="subtitle">Manage your squads</p>
+        </div>
+
+        <atom-button
+            id="add-split"
+            variant="primary"
+            (clicked)="createSquadButtonClickEvent.emit()"
+            [disabled]="isFetchingSquads() || isCreateSquadFormOpen()"
+        >
+            <div class="w-full flex flex-row items-center justify-between gap-4">
+                <lucide-icon name="create-squad" [img]="Users" [size]="iconSize" />
+            </div>
+        </atom-button>
     </div>
 
-    <atom-button
-      id="add-split"
-      variant="primary"
-      (clicked)="createSquadButtonClickEvent.emit()"
-      [disabled]="isFetchingSquads() || isCreateSquadFormOpen()"
+    @let hasError = apiError();
+    @let hasNoData = userSquads().length === 0;
+    @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
+    <div
+        class="card-content h-full overflow-y-scroll no-scrollbar mt-4 pb-2"
+        [ngClass]="{ 'flex-1 grid place-items-center': centerContent }"
     >
-      <div class="w-full flex flex-row items-center justify-between gap-4">
-        <lucide-icon name="create-squad" [img]="Users" [size]="iconSize" />
-      </div>
-    </atom-button>
-  </div>
-
-  @let hasError = apiError();
-  @let hasNoData = userSquads().length === 0;
-  @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
-  <div
-    class="card-content h-full overflow-y-scroll no-scrollbar mt-4 pb-2"
-    [ngClass]="{ 'flex-1 grid place-items-center': centerContent }"
-  >
-    @if (isFetchingSquads()) {
-      <div class="dashboard-card-loader"></div>
-    } @else {
-      @if (hasError) {
-        <fetch-error
-          [messageClass]="animationMessageSize"
-          [animationDimensions]="animationDimensions"
-          message="Error loading squads. Please refresh."
-        />
-      } @else if (hasNoData) {
-        <no-data
-          message="Add a squad to get started"
-          [messageClass]="animationMessageSize"
-          [animationDimensions]="animationDimensions"
-        />
-      } @else {
-        <div class="flex flex-col gap-6 h-full">
-          @for (squad of userSquads(); track squad.id) {
-            <squad-item [squad]="squad" />
-          }
-        </div>
-      }
-    }
-  </div>
+        @if (isFetchingSquads()) {
+            <div class="dashboard-card-loader"></div>
+        } @else {
+            @if (hasError) {
+                <fetch-error
+                    [messageClass]="animationMessageSize"
+                    [animationDimensions]="animationDimensions"
+                    message="Error loading squads. Please refresh."
+                />
+            } @else if (hasNoData) {
+                <no-data
+                    message="Add a squad to get started"
+                    [messageClass]="animationMessageSize"
+                    [animationDimensions]="animationDimensions"
+                />
+            } @else {
+                <div class="flex flex-col gap-6 h-full">
+                    @for (squad of userSquads(); track squad.id) {
+                        <squad-item
+                            [squad]="squad"
+                            (onUpdateSquadItemEvent)="onUpdateSquadItemEvent.emit($event)"
+                        />
+                    }
+                </div>
+            }
+        }
+    </div>
 </div>

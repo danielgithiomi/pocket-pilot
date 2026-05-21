@@ -6,44 +6,63 @@ import { SplitwiseSplitForm } from './split-form/split-form';
 import { SplitwiseSquardForm } from './squard-form/squard-form';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListPlus, Users } from 'lucide-angular';
+import { UpdateSplitwiseSquad } from './squard-form/update-squad/update-squad';
 
 @Component({
-  selector: 'app-splitwise',
-  styleUrl: './splitwise.css',
-  templateUrl: './splitwise.html',
-  imports: [Button, LucideAngularModule, SplitwiseSquads, SplitwiseSquardForm, SplitwiseSplitForm],
+    selector: 'app-splitwise',
+    styleUrl: './splitwise.css',
+    templateUrl: './splitwise.html',
+    imports: [
+        Button,
+        SplitwiseSquads,
+        SplitwiseSplitForm,
+        LucideAngularModule,
+        SplitwiseSquardForm,
+        UpdateSplitwiseSquad,
+    ],
 })
 export class Splitwise {
-  // ICONS
-  protected readonly iconSize = 20;
-  protected readonly Users = Users;
-  protected readonly Plus = ListPlus;
+    // ICONS
+    protected readonly iconSize = 20;
+    protected readonly Users = Users;
+    protected readonly Plus = ListPlus;
 
-  // SIGNAL STATES
-  protected readonly isAddSplitFormOpen = signal<boolean>(false);
-  protected readonly isCreateSquadFormOpen = signal<boolean>(false);
+    // SIGNAL STATES
+    protected readonly isAddSplitFormOpen = signal<boolean>(false);
+    protected readonly isCreateSquadFormOpen = signal<boolean>(false);
+    protected readonly isUpdateSquadFormOpen = signal<boolean>(false);
+    protected readonly squadToUpdate = signal<SplitwiseSquad | null>(null);
 
-  // SERVICES
-  protected readonly splitwiseService = inject(SplitwiseService);
+    // SERVICES
+    protected readonly splitwiseService = inject(SplitwiseService);
 
-  // DATA
-  protected readonly userSquads = this.splitwiseService.getUserSquads();
+    // DATA
+    protected readonly userSquads = this.splitwiseService.getUserSquads();
 
-  // COMPUTED
-  protected isLoadingResources = computed<boolean>(() => this.userSquads.isLoading());
-  protected squads = computed<SplitwiseSquad[]>(() => this.userSquads.value()?.data ?? []);
-  protected allSquadMembers = computed<string[]>(() =>
-    Array.from(new Set(this.squads().flatMap((squad) => squad.squadMembers))),
-  );
+    // COMPUTED
+    protected isLoadingResources = computed<boolean>(() => this.userSquads.isLoading());
+    protected squads = computed<SplitwiseSquad[]>(() => this.userSquads.value()?.data ?? []);
+    protected allSquadMembers = computed<string[]>(() =>
+        Array.from(new Set(this.squads().flatMap((squad) => squad.squadMembers))),
+    );
 
-  // METHODS
-  protected handleSplitFormClose(reload: boolean) {
-    if (reload) this.userSquads.reload();
-    this.isAddSplitFormOpen.set(false);
-  }
+    // METHODS
+    protected handleOnUpdateSquadItemEvent(squadId: string) {
+        this.splitwiseService.getSquadById(squadId).subscribe({
+            next: (squad) => {
+                this.squadToUpdate.set(squad);
+                this.isUpdateSquadFormOpen.set(true);
+            },
+        });
+    }
 
-  protected handleCreateSquadFormClose(reload: boolean) {
-    if (reload) this.userSquads.reload();
-    this.isCreateSquadFormOpen.set(false);
-  }
+    protected handleSplitFormClose(reload: boolean) {
+        if (reload) this.userSquads.reload();
+        this.isAddSplitFormOpen.set(false);
+    }
+
+    protected handleSquadFormClose(reload: boolean) {
+        if (reload) this.userSquads.reload();
+        this.isCreateSquadFormOpen.set(false);
+    }
 }

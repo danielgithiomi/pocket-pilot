@@ -27,7 +27,8 @@ export class SplitwiseSquads {
   readonly isCreateSquadFormOpen = input.required<boolean>();
 
   // OUTPUTS
-  protected readonly createSquadButtonClickEvent = output<void>();
+  readonly onUpdateSquadItemEvent = output<string>();
+  readonly createSquadButtonClickEvent = output<void>();
 
   // SERVICES
   private readonly splitwiseService = inject(SplitwiseService);
