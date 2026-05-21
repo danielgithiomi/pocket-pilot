@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { SplitCategoryTag } from '@prisma/client';
 import { formatEnumForFrontend } from '@libs/utils';
 import { plainToInstance } from 'class-transformer';
-import { SquadsCache } from './caches/squads.cache';
-import { SplitwiseRepository } from './repositories/splitwise.repository';
-import { SplitwiseSquadDto, SplitwiseSquadPayload } from './dto/splitwise.dto';
+import { SquadsCache } from '../caches/squads.cache';
+import { SplitwiseRepository } from '../repositories/splitwise.repository';
+import { SplitwiseSquadDto, SplitwiseSquadPayload } from '../dto/splitwise.dto';
 
 @Injectable()
 export class SplitwiseService {

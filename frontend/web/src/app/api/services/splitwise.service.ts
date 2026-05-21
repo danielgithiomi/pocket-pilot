@@ -23,8 +23,19 @@ export class SplitwiseService {
 
   getOrderCategoryTags = () => this.resource.getOrderCategoryTags;
 
+  // SQUAD
   createNewUserSquad(payload: SplitwiseSquadPayload): Observable<SplitwiseSquad> {
     return this.mutation.createNewSquad(payload).pipe(
+      map((response: IStandardResponse<SplitwiseSquad>) => response.data),
+      catchError((error: IStandardError) => {
+        this.errorService.renderToast(error);
+        return EMPTY;
+      }),
+    );
+  }
+
+  updateExistingUserSquad(squadId: string, payload: SplitwiseSquadPayload): Observable<SplitwiseSquad> {
+    return this.mutation.updateExistingUserSquad(squadId, payload).pipe(
       map((response: IStandardResponse<SplitwiseSquad>) => response.data),
       catchError((error: IStandardError) => {
         this.errorService.renderToast(error);
@@ -42,4 +53,7 @@ export class SplitwiseService {
       }),
     );
   }
+
+  // SPLITTABLES
+  
 }

@@ -117,12 +117,12 @@ export class SplitwiseSplitForm {
         const { ...payload } = this.splitFormModel();
         console.log(payload);
 
-        // this.isSubmittingSplitForm.set(true);
+        this.isSubmittingSplitForm.set(true);
 
-        // setTimeout(() => {
-        //   this.isSubmittingSplitForm.set(false);
-        //   this.closeSplitFormEvent.emit(true);
-        // }, 2000);
+        setTimeout(() => {
+            // this.closeSplitFormEvent.emit(true);
+            this.isSubmittingSplitForm.set(false);
+        }, 2000);
     }
 
     constructor() {

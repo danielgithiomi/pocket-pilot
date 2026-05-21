@@ -1,7 +1,7 @@
 import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { hoursToMilliseconds } from '@libs/utils';
-import { SplitwiseService } from '../splitwise.service';
+import { SplitwiseService } from '../services/splitwise.service';
 import { Body, Delete, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { Public, Summary, UserInRequest } from '@common/decorators';
