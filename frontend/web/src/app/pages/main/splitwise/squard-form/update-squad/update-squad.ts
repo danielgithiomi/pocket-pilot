@@ -3,12 +3,12 @@ import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { form } from '@angular/forms/signals';
 import { SplitwiseSquad } from '@global/types';
-import { LucideAngularModule, UserPlus } from 'lucide-angular';
-import { Form, FormCloseEvent } from '@organisms/form';
-import { Component, computed, effect, input, output, signal } from '@angular/core';
-import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
-import { createSquadValidationSchema, UpdateSquadSchema } from '../squad-form.types';
 import { formatToReadable } from '@libs/utils';
+import { Form, FormCloseEvent } from '@organisms/form';
+import { LucideAngularModule, UserPlus } from 'lucide-angular';
+import { Component, computed, effect, input, output, signal } from '@angular/core';
+import { createSquadValidationSchema, UpdateSquadSchema } from '../squad-form.types';
+import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 
 @Component({
     selector: 'update-squad-form',
@@ -28,6 +28,7 @@ export class UpdateSplitwiseSquad {
     readonly closeUpdateSquadFormEvent = output<boolean>();
 
     // STATE SIGNALS
+    protected readonly customMembers = signal<string[]>([]);
     protected readonly isMemberNameValid = signal<boolean>(false);
     protected readonly isSubmittingUpdateSquadForm = signal<boolean>(false);
 
@@ -47,10 +48,20 @@ export class UpdateSplitwiseSquad {
 
     // COMPUTED
     protected readonly squadMembersPool = computed<ISquadMember[]>(() => {
-        return this.allSquadMembers().map((member) => ({
+
+        const squadMembers = this.updateSquadForm.squadMembers().value();
+
+        const inputMembers = this.allSquadMembers().map((member) => ({
             memberName: member,
-            isChecked: this.updateSquadFormModel().squadMembers.includes(member),
+            isChecked: squadMembers.includes(member),
         }));
+
+        const customMembers = this.customMembers().map((member) => ({
+            memberName: member,
+            isChecked: squadMembers.includes(member),
+        }));
+
+        return [...customMembers, ...inputMembers];
     });
 
     // METHODS
@@ -59,30 +70,31 @@ export class UpdateSplitwiseSquad {
             .flatMap((member) => member.memberName)
             .map((name) => name.toLowerCase());
 
-        const trimmedName = memberName.trim();
+        const normalizedName = memberName.trim().toLowerCase();
         const isValid =
-            trimmedName.length > 1 &&
-            trimmedName.length <= 20 &&
-            !allMemberNames.includes(trimmedName.toLowerCase());
+            normalizedName.length > 1 &&
+            normalizedName.length <= 20 &&
+            !allMemberNames.includes(normalizedName);
 
         this.isMemberNameValid.set(isValid);
     }
 
-    protected addNewMemberToPool(memberName: string) {
-        const trimmedName = memberName.trim();
-        const normalizedInput = trimmedName.toLowerCase();
+    protected addNewMemberToPool(memberName: string, custom: boolean = true) {
 
-        const squadMembers = this.updateSquadForm
-            .squadMembers()
-            .value()
-            .map((m) => m.toLowerCase());
+        const squadMembers = this.updateSquadForm.squadMembers().value();
 
-        const isExistingMember = squadMembers.includes(normalizedInput);
+        if (custom) {
+            const normalizedInput = memberName.trim();
+            this.customMembers.update((members) => [normalizedInput, ...members]);
+            this.updateSquadForm.squadMembers().controlValue.set([normalizedInput, ...squadMembers]);
+            return;
+        }
+ 
+        const isExistingMember = squadMembers.includes(memberName);
 
         let updatedList: string[] = [];
-        if (isExistingMember)
-            updatedList = squadMembers.filter((member) => member !== normalizedInput);
-        else updatedList = [...squadMembers, normalizedInput];
+        if (isExistingMember) updatedList = squadMembers.filter((member) => member !== memberName);
+        else updatedList = [...squadMembers, memberName];
 
         this.updateSquadForm.squadMembers().controlValue.set(updatedList.map(formatToReadable));
     }

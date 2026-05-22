@@ -1,8 +1,8 @@
 <organism-form
     id="squad-update"
-    title="Modify an existing squad"
+    title="Modify a squad"
     (closeForm)="handleUpdateSquadFormClose($event)"
-    description="People you regularly share expenses with."
+    description="Modify the name and members of an existing squad."
 >
     <form id="update-squad-form" slot="content" (submit)="handleUpdateSquadFormSubmit($event)">
         <atom-input
@@ -39,7 +39,7 @@
                 variant="primary"
                 class="shadow-none rounded-lg!"
                 [disabled]="!isMemberNameValid() || isSubmittingUpdateSquadForm()"
-                (clicked)="addNewMemberToPool(newMemberInput.value); newMemberInput.value = ''"
+                (clicked)="addNewMemberToPool(newMemberInput.value, true); newMemberInput.value = ''"
             >
                 <div class="w-full h-full grid place-items-center py-[2px]">
                     <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize" />
@@ -61,7 +61,7 @@
                         [inverted]="true"
                         [member]="member"
                         [isCheckable]="true"
-                        (onMemberEventClick)="addNewMemberToPool($event)"
+                        (onMemberEventClick)="addNewMemberToPool($event, false)"
                     />
                 }
             }
