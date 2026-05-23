@@ -27,6 +27,20 @@ export class SplitwiseService {
         return plainToInstance(SplitwiseSquadDto, createdSplitwiseSquad);
     }
 
+    async updateExistingUserSplitwiseSquad(
+        userId: string,
+        squadId: string,
+        payload: SplitwiseSquadPayload,
+    ): Promise<SplitwiseSquadDto> {
+        const updatedSplitwiseSquad = await this.splitwiseRepository.updateExistingUserSplitwiseSquad(
+            userId,
+            squadId,
+            payload,
+        );
+        await this.invalidateCache(userId);
+        return plainToInstance(SplitwiseSquadDto, updatedSplitwiseSquad);
+    }
+
     async deleteUserSplitwiseSquad(userId: string, squadId: string) {
         const deleteSquad = await this.splitwiseRepository.deleteUserSplitwiseSquad(userId, squadId);
         await this.invalidateCache(userId);

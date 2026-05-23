@@ -30,14 +30,14 @@ export class SplitwiseService {
         const resourceValue = this.getUserSquads().value();
 
         if (!resourceValue) {
-          this.errorService.renderToast({
-            type: 'error',
-            statusCode: 404,
-            title: 'Error fetching your squad!',
-            details: `Failed to load the squad resource in time.`,
-          });
-          return EMPTY;
-        };
+            this.errorService.renderToast({
+                type: 'error',
+                statusCode: 404,
+                title: 'Error fetching your squad!',
+                details: `Failed to load the squad resource in time.`,
+            });
+            return EMPTY;
+        }
 
         const squad = resourceValue.data.find((squad) => squad.id === squadId);
 

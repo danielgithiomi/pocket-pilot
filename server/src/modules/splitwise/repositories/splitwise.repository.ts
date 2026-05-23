@@ -14,6 +14,10 @@ export class SplitwiseRepository {
         return this.db.splitwiseSquad.findMany({ where: { creatorId: userId } });
     }
 
+    updateExistingUserSplitwiseSquad(userId: string, squadId: string, payload: SplitwiseSquadPayload) {
+        return this.db.splitwiseSquad.update({ where: { id: squadId, creatorId: userId }, data: payload });
+    }
+
     deleteUserSplitwiseSquad(userId: string, squadId: string) {
         return this.db.splitwiseSquad.delete({ where: { id: squadId, creatorId: userId } });
     }

@@ -2,11 +2,11 @@ import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { hoursToMilliseconds } from '@libs/utils';
 import { SplitwiseService } from '../services/splitwise.service';
-import { Body, Delete, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Delete, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { Public, Summary, UserInRequest } from '@common/decorators';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
-import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { SplitwiseSquadDto, SplitwiseSquadPayload } from '../dto/splitwise.dto';
 
@@ -65,6 +65,24 @@ export class SplitwiseController {
         @Body() payload: SplitwiseSquadPayload,
     ): Promise<SplitwiseSquadDto> {
         return this.splitwiseService.createSplitwiseSquad(user.id, payload);
+    }
+
+    @Put('squads/:squadId')
+    @HttpCode(200)
+    @ApiCookieAuth('access_token')
+    @ApiParam({ name: 'squadId', description: 'The ID of the squad to update' })
+    @ApiOperation({ summary: 'Update a user splitwise squad' })
+    @Summary('Splitwise squad updated', 'The user updated a splitwise squad')
+    @ApiResponse({
+        status: 200,
+        description: 'Splitwise user squad updated successfully',
+    })
+    updateExistingUserSplitwiseSquad(
+        @UserInRequest() user: User,
+        @Param('squadId') squadId: string,
+        @Body() payload: SplitwiseSquadPayload,
+    ): Promise<SplitwiseSquadDto> {
+        return this.splitwiseService.updateExistingUserSplitwiseSquad(user.id, squadId, payload);
     }
 
     @Delete('squads/:squadId')
