@@ -1,5 +1,5 @@
 import { required, schema } from '@angular/forms/signals';
-import { SplittableOrder, BillPayer, PaymentOption } from '@global/types';
+import { SplittableOrder, BillPayer, PaymentStrategyVariant } from '@global/types';
 
 export interface SplitFormSchema {
     eventDate: Date;
@@ -10,7 +10,7 @@ export interface SplitFormSchema {
     billingCurrency: string;
     splittables: SplittableOrder[];
     verificationTotal: number | null;
-    billPayerStrategy: PaymentOption;
+    billPayerStrategy: PaymentStrategyVariant;
 }
 
 export const InitialSplitFormState = {
@@ -21,7 +21,7 @@ export const InitialSplitFormState = {
     eventMembers: [],
     eventDate: new Date(),
     verificationTotal: null,
-    billPayerStrategy: 'one' as PaymentOption,
+    billPayerStrategy: 'ONE' as PaymentStrategyVariant,
 };
 
 export const SplitFormValidationSchema = schema<SplitFormSchema>((root) => {
@@ -33,7 +33,7 @@ export const SplitFormValidationSchema = schema<SplitFormSchema>((root) => {
 
     // Squad
     required(root.squadName, { message: 'The squad name is required field!' });
-    
+
     // Members
     required(root.eventMembers, { message: 'The event members are required field!' });
 

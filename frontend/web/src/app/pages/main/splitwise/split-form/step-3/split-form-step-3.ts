@@ -10,7 +10,12 @@ import { SelectOption } from '@atoms/select/select.types';
 import { LucideAngularModule, Check, X } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import { input, effect, inject, output, computed, untracked, Component } from '@angular/core';
-import { BillPayer, PaymentOption, PAYMENT_OPTIONS, PAYMENT_OPTIONS_MAP } from '@global/types';
+import {
+    BillPayer,
+    PaymentStrategyVariant,
+    PAYMENT_OPTIONS,
+    PAYMENT_OPTIONS_MAP,
+} from '@global/types';
 
 @Component({
     selector: 'split-form-step-3',
@@ -43,7 +48,7 @@ export class SplitFormStep3 {
         return this.billPayerList().length < this.presentMembers().length;
     });
     protected readonly isCustomPaymentStrategy = computed<boolean>(
-        () => this.formModel().billPayerStrategy().value() === ('custom' as PaymentOption),
+        () => this.formModel().billPayerStrategy().value() === ('custom' as PaymentStrategyVariant),
     );
     protected readonly billPayerListNames = computed<string[]>(() => {
         return this.billPayerList().map((p) => p.name);
@@ -106,7 +111,7 @@ export class SplitFormStep3 {
         } else {
             const paymentStrategy = this.formModel().billPayerStrategy().value();
             switch (paymentStrategy) {
-                case 'one' as PaymentOption: {
+                case 'ONE' as PaymentStrategyVariant: {
                     const newPayer: BillPayer = {
                         name: memberName,
                         amount: this.billSubtotal(),
@@ -114,7 +119,7 @@ export class SplitFormStep3 {
                     this.onBillPayersChangeEvent.emit([newPayer]);
                     break;
                 }
-                case 'equal' as PaymentOption: {
+                case 'EQUAL' as PaymentStrategyVariant: {
                     const newEqualAmount = this.calculateEqualPayableAmount();
                     const newPayer: BillPayer = {
                         name: memberName,
@@ -128,7 +133,7 @@ export class SplitFormStep3 {
                     this.onBillPayersChangeEvent.emit([newPayer, ...newPayerList]);
                     break;
                 }
-                case 'custom' as PaymentOption: {
+                case 'CUSTOM' as PaymentStrategyVariant: {
                     const newPayer: BillPayer = {
                         name: memberName,
                         amount: 0,
@@ -177,7 +182,7 @@ export class SplitFormStep3 {
                 const currentPayers = this.billPayerList();
 
                 switch (paymentStrategy) {
-                    case 'one' as PaymentOption: {
+                    case 'ONE' as PaymentStrategyVariant: {
                         if (currentPayers.length === 0) return;
 
                         if (currentPayers.length > 1) {
@@ -191,7 +196,7 @@ export class SplitFormStep3 {
                         ]);
                         break;
                     }
-                    case 'equal' as PaymentOption: {
+                    case 'EQUAL' as PaymentStrategyVariant: {
                         if (currentPayers.length === 0) return;
 
                         const equalAmount = this.billSubtotal() / this.billPayerList().length;
@@ -205,7 +210,7 @@ export class SplitFormStep3 {
 
                         break;
                     }
-                    case 'custom' as PaymentOption: {
+                    case 'CUSTOM': {
                         if (currentPayers.length === 0) return;
 
                         this.onBillPayersChangeEvent.emit(

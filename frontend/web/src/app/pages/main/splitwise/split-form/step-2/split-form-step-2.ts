@@ -93,7 +93,7 @@ export class SplitFormStep2 {
         const quantity = Number(this.splittableForm().value().quantity);
         const splitStrategy = this.splittableForm().value().splitStrategy;
 
-        if (splitStrategy === 'equal' && quantity === 1) return true;
+        if (splitStrategy === 'EQUAL' && quantity === 1) return true;
 
         return this.quantityAssisgnableRemaining() > 0;
     });
@@ -121,14 +121,14 @@ export class SplitFormStep2 {
     });
     protected readonly isStrategyCustom = computed<boolean>(() => {
         const strategy = this.splittableForm().value().splitStrategy;
-        return strategy === 'quantity';
+        return strategy === 'QUANTITY';
     });
     protected readonly splitStrategyOptions = computed<SelectOption[]>(() => {
         const quantity = Number(this.splittableForm().value().quantity);
         return SPLIT_STRATEGY_OPTIONS.map((strategy: SplitStrategyVariant) => ({
             value: strategy,
             label: SPLIT_STRATEGY_MAP[strategy],
-            disabled: strategy === 'quantity' && quantity <= 1,
+            disabled: strategy === 'QUANTITY' && quantity <= 1,
         }));
     });
     protected readonly formattedSubTotal = computed<string>(() => {
@@ -180,7 +180,7 @@ export class SplitFormStep2 {
                 return;
             }
 
-            if (strategy === 'sole' && consumersInOrder.length >= 1) {
+            if (strategy === 'SOLE' && consumersInOrder.length >= 1) {
                 this.toastService.show({
                     variant: 'warning',
                     title: 'Consumed by one!',
@@ -307,7 +307,7 @@ export class SplitFormStep2 {
     constructor() {
         effect(() => {
             const quantity = Number(this.splittableForm.quantity().controlValue());
-            const nextStrategy: SplitStrategyVariant = quantity > 1 ? 'equal' : 'sole';
+            const nextStrategy: SplitStrategyVariant = quantity > 1 ? 'EQUAL' : 'SOLE';
 
             untracked(() => {
                 this.splittableForm.quantitySplits().controlValue.set([]); // reset splits when strategy changes
