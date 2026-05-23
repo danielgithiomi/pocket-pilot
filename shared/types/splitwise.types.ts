@@ -52,10 +52,6 @@ export interface BillPayer {
     amount: number;
 }
 
-export interface Splittable extends SplittablePayload {
-    id: string;
-}
-
 export interface SplittableOrder extends SplittablePayload {
     id: number;
 }

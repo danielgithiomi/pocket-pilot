@@ -10,8 +10,8 @@ import { SplitwiseService } from '@api/splitwise.service';
 import { LocalQuantitySplit, SplittableOrder } from '@global/types';
 import { PlaceholderSplittableFormState as placeholder } from './order-item.types';
 import { LucideAngularModule, Trash2, ChevronDown, ChevronUp } from 'lucide-angular';
-import { ISquadMember, QuantityChangeEmmision, SquadMember } from '@structural/main/squad-member/squad-member';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { ISquadMember, QuantityChangeEmmision, SquadMember } from '@structural/main/squad-member/squad-member';
 import {
   NewSplittableSchema,
   NewSplittableFormValidation as FormValidation,
@@ -64,7 +64,7 @@ export class OrderItem {
   protected readonly orderItemId = computed<string>(() => `order-item-${this.order().id}`);
   protected readonly isStrategyCustom = computed<boolean>(() => {
     const strategy = this.updateSplittableForm().value().splitStrategy;
-    return strategy === 'quantity';
+    return strategy === 'QUANTITY';
   });
   protected readonly orderQuantities = computed<SelectOption[]>(() =>
     QUANTITIES.map((quantity) => ({
@@ -113,7 +113,7 @@ export class OrderItem {
     const quantity = Number(this.updateSplittableForm().value().quantity);
     const splitStrategy = this.updateSplittableForm().value().splitStrategy;
 
-    if (splitStrategy === 'equal' && quantity === 1) return true;
+    if (splitStrategy === 'EQUAL' && quantity === 1) return true;
 
     return this.quantityAssisgnableRemaining() > 0;
   });
@@ -130,7 +130,6 @@ export class OrderItem {
       name,
       quantity: quantityStr,
       unitPrice,
-      // categoryTag,
       quantitySplits,
     } = this.updateSplittableForm().value();
 
@@ -167,7 +166,6 @@ export class OrderItem {
       total,
       quantity,
       unitPrice,
-      // categoryTag,
       quantitySplits,
     };
 
