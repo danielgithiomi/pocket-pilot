@@ -1,14 +1,16 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
+import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { SplitwiseSquad } from '@global/types';
 import { formatToReadable } from '@libs/utils';
 import { Form, FormCloseEvent } from '@organisms/form';
+import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
-import { Component, computed, effect, input, output, signal } from '@angular/core';
 import { createSquadValidationSchema, UpdateSquadSchema } from '../squad-form.types';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 
 @Component({
     selector: 'update-squad-form',
@@ -26,6 +28,10 @@ export class UpdateSplitwiseSquad {
 
     // OUTPUTS
     readonly closeUpdateSquadFormEvent = output<boolean>();
+
+    // SERVICES
+    private readonly toastService = inject(ToastService);
+    private readonly splitwiseService = inject(SplitwiseService);
 
     // STATE SIGNALS
     protected readonly customMembers = signal<string[]>([]);
@@ -48,7 +54,6 @@ export class UpdateSplitwiseSquad {
 
     // COMPUTED
     protected readonly squadMembersPool = computed<ISquadMember[]>(() => {
-
         const squadMembers = this.updateSquadForm.squadMembers().value();
 
         const inputMembers = this.allSquadMembers().map((member) => ({
@@ -80,16 +85,17 @@ export class UpdateSplitwiseSquad {
     }
 
     protected addNewMemberToPool(memberName: string, custom: boolean = true) {
-
         const squadMembers = this.updateSquadForm.squadMembers().value();
 
         if (custom) {
             const normalizedInput = memberName.trim();
             this.customMembers.update((members) => [normalizedInput, ...members]);
-            this.updateSquadForm.squadMembers().controlValue.set([normalizedInput, ...squadMembers]);
+            this.updateSquadForm
+                .squadMembers()
+                .controlValue.set([normalizedInput, ...squadMembers]);
             return;
         }
- 
+
         const isExistingMember = squadMembers.includes(memberName);
 
         let updatedList: string[] = [];
@@ -97,12 +103,6 @@ export class UpdateSplitwiseSquad {
         else updatedList = [...squadMembers, memberName];
 
         this.updateSquadForm.squadMembers().controlValue.set(updatedList.map(formatToReadable));
-    }
-
-    protected handleUpdateSquadFormSubmit(event: Event) {
-        event.preventDefault();
-
-        const { ...payload } = this.updateSquadFormModel();
     }
 
     protected handleUpdateSquadFormClose(event: FormCloseEvent) {
@@ -120,6 +120,31 @@ export class UpdateSplitwiseSquad {
             squadMembers,
             squadImageKey,
         });
+    }
+
+    // SUBMISSION
+    protected handleUpdateSquadFormSubmit(event: Event) {
+        event.preventDefault();
+
+        this.isSubmittingUpdateSquadForm.set(true);
+
+        const { ...payload } = this.updateSquadFormModel();
+
+        setTimeout(() => {
+            this.splitwiseService.updateExistingUserSquad(this.squad().id, payload).subscribe({
+                next: (response: SplitwiseSquad) => {
+                    this.toastService.show({
+                        variant: 'success',
+                        title: 'Squad updated successfully!',
+                        details: `Your [${response.squadName}] squad has been updated successfully.`,
+                    });
+
+                    this.resetUpdateSquadForm();
+                    this.closeUpdateSquadFormEvent.emit(true);
+                },
+                complete: () => this.isSubmittingUpdateSquadForm.set(false),
+            });
+        }, 1000);
     }
 
     constructor() {

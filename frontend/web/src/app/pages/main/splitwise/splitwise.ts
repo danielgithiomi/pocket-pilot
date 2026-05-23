@@ -65,5 +65,6 @@ export class Splitwise {
         if (reload) this.userSquads.reload();
         this.isCreateSquadFormOpen.set(false);
         this.isUpdateSquadFormOpen.set(false);
+        this.squadToUpdate.set(null);
     }
 }
