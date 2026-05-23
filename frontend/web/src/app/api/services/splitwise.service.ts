@@ -25,8 +25,6 @@ export class SplitwiseService {
 
     // SQUAD
     getSquadById(squadId: string): Observable<SplitwiseSquad> {
-        this.getUserSquads().reload();
-
         const resourceValue = this.getUserSquads().value();
 
         if (!resourceValue) {

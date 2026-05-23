@@ -6,8 +6,7 @@ import { AccountsService } from '@api/accounts.service';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
 import { SplitFormStep3 } from './step-3/split-form-step-3';
-import { BillPayer } from './step-3/split-form-step-3.types';
-import { SplittableOrder, SplitwiseSquad } from '@global/types';
+import { SplittableOrder, SplitwiseSquad, BillPayer } from '@global/types';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
 import {
     input,
@@ -114,8 +113,8 @@ export class SplitwiseSplitForm {
     protected handleSplitFormSubmit(event: Event) {
         event.preventDefault();
 
-        const { ...payload } = this.splitFormModel();
-        console.log(payload);
+        const formData = this.splitForm().value();
+        console.log(formData);
 
         this.isSubmittingSplitForm.set(true);
 

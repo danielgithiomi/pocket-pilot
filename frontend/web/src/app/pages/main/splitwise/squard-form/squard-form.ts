@@ -9,11 +9,7 @@ import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { SquadMember, ISquadMember } from '@structural/main/squad-member/squad-member';
-import {
-    CreateSquadSchema,
-    initialCreateSquadData,
-    createSquadValidationSchema,
-} from './squad-form.types';
+import { squadSchema, initialCreateSquadData, squadValidationSchema } from './squad-form.types';
 
 @Component({
     selector: 'splitwise-squard-form',
@@ -41,11 +37,8 @@ export class SplitwiseSquardForm {
     protected readonly isSubmittingCreateSquadForm = signal<boolean>(false);
 
     // FORM
-    protected readonly createSquadFormModel = signal<CreateSquadSchema>(initialCreateSquadData);
-    protected readonly createSquadForm = form(
-        this.createSquadFormModel,
-        createSquadValidationSchema,
-    );
+    protected readonly createSquadFormModel = signal<squadSchema>(initialCreateSquadData);
+    protected readonly createSquadForm = form(this.createSquadFormModel, squadValidationSchema);
 
     // COMPUTED
     protected readonly formattedExistingMembers = computed<ISquadMember[]>(() =>

@@ -1,6 +1,6 @@
+import { BillPayer } from '@global/types';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
 import { Component, computed, input, output } from '@angular/core';
-import { BillPayer } from '../split-form-step-3.types';
 
 @Component({
     imports: [LucideAngularModule],

@@ -1,4 +1,4 @@
-import { SplitStrategyVariant } from '../split-form-step-2.types';
+import { SplitStrategyVariant } from '@global/types';
 
 export const PlaceholderSplittableFormState = {
   name: '',

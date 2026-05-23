@@ -8,7 +8,7 @@ import { formatToReadable } from '@libs/utils';
 import { Form, FormCloseEvent } from '@organisms/form';
 import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
-import { createSquadValidationSchema, UpdateSquadSchema } from '../squad-form.types';
+import { squadValidationSchema, squadSchema } from '../squad-form.types';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 
@@ -44,12 +44,10 @@ export class UpdateSplitwiseSquad {
         squadMembers: [],
         squadImageKey: '',
     };
-    protected readonly updateSquadFormModel = signal<UpdateSquadSchema>(
-        this.initialUpdateSquadData,
-    );
-    protected readonly updateSquadForm = form<UpdateSquadSchema>(
+    protected readonly updateSquadFormModel = signal<squadSchema>(this.initialUpdateSquadData);
+    protected readonly updateSquadForm = form<squadSchema>(
         this.updateSquadFormModel,
-        createSquadValidationSchema,
+        squadValidationSchema,
     );
 
     // COMPUTED

@@ -1,7 +1,5 @@
-import { SplittableOrder } from '@global/types';
 import { required, schema } from '@angular/forms/signals';
-import { BillPayer } from './step-3/split-form-step-3.types';
-import { PaymentOption } from './step-3/split-form-step-3.types';
+import { SplittableOrder, BillPayer, PaymentOption } from '@global/types';
 
 export interface SplitFormSchema {
     eventDate: Date;

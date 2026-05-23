@@ -9,22 +9,8 @@ import { PayerInput } from './payer-input/payer-input';
 import { SelectOption } from '@atoms/select/select.types';
 import { LucideAngularModule, Check, X } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
-import {
-    input,
-    effect,
-    inject,
-    output,
-    signal,
-    computed,
-    untracked,
-    Component,
-} from '@angular/core';
-import {
-    BillPayer,
-    PaymentOption,
-    PAYMENT_OPTIONS,
-    PAYMENT_OPTIONS_MAP,
-} from './split-form-step-3.types';
+import { input, effect, inject, output, computed, untracked, Component } from '@angular/core';
+import { BillPayer, PaymentOption, PAYMENT_OPTIONS, PAYMENT_OPTIONS_MAP } from '@global/types';
 
 @Component({
     selector: 'split-form-step-3',
