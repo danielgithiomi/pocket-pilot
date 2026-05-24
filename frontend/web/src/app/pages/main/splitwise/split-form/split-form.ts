@@ -3,11 +3,13 @@ import { formatFullDate } from '@libs/utils';
 import { form } from '@angular/forms/signals';
 import { Form, FormCloseEvent } from '@organisms/form';
 import { AccountsService } from '@api/accounts.service';
+import { SplitwiseService } from '@api/splitwise.service';
+import { ToastService } from '@atoms/toast/toast.service';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
 import { SplitFormStep3 } from './step-3/split-form-step-3';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
-import { SplittableOrder, SplitwiseSquad, BillPayer, SplitwiseEventPayload } from '@global/types';
+import { BillPayer, SplittableOrder, SplitwiseSquad, SplitwiseEventPayload } from '@global/types';
 import {
     input,
     effect,
@@ -49,7 +51,9 @@ export class SplitwiseSplitForm {
     protected readonly isSubmittingSplitForm = signal<boolean>(false);
 
     // SERVICES
+    private readonly toastService = inject(ToastService);
     private readonly accountsService = inject(AccountsService);
+    private readonly splitwiseService = inject(SplitwiseService);
 
     // DATA
     protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
@@ -110,15 +114,18 @@ export class SplitwiseSplitForm {
     }
 
     private formatPayload(formData: SplitFormSchema): SplitwiseEventPayload {
-        const splittables = formData.eventSplittables.map(({ id, quantitySplits, ...rest }) => ({
-            ...rest,
+        const { eventSplittables, eventDate, verificationTotal, ...rest } = formData;
+
+        const splittables = eventSplittables.map(({ id, quantitySplits, ...splittable }) => ({
+            ...splittable,
             quantitySplits: quantitySplits.map(({ id: _id, ...split }) => split),
         }));
 
         return {
-            ...formData,
+            ...rest,
             splittables,
-            eventDate: formData.eventDate.toISOString(),
+            eventDate: eventDate.toISOString(),
+            verificationTotal: verificationTotal === null ? null : Number(verificationTotal),
         } satisfies SplitwiseEventPayload;
     }
 
@@ -132,9 +139,23 @@ export class SplitwiseSplitForm {
 
         this.isSubmittingSplitForm.set(true);
 
+        console.log('splitwiseEventPayload', splitwiseEventPayload);
+
         setTimeout(() => {
-            // this.closeSplitFormEvent.emit(true);
-            this.isSubmittingSplitForm.set(false);
+            this.splitwiseService.createNewSplitwiseEvent(splitwiseEventPayload).subscribe({
+                next: (response) => {
+                    console.log('Splitwise event created successfully', response);
+                    this.toastService.show({
+                        variant: 'success',
+                        title: 'Splitwise event created successfully',
+                        details: 'Your splitwise event has been created successfully.',
+                    });
+
+                    this.resetSplitForm();
+                    this.closeSplitFormEvent.emit(true);
+                },
+                complete: () => this.isSubmittingSplitForm.set(false),
+            });
         }, 2000);
     }
 

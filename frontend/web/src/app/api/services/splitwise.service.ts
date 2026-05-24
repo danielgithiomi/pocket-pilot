@@ -2,13 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { ApiServiceError } from './api-error.service';
 import { SplitwiseMutation } from '@methods/mutations';
 import { SplitwiseResource } from '@methods/resources';
-import { catchError, EMPTY, map, Observable, of } from 'rxjs';
+import { catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
 import {
     IStandardError,
     SplitwiseSquad,
     IStandardResponse,
     SplitwiseSquadPayload,
     IVoidResourceResponse,
+    SplitwiseEventPayload,
 } from '@global/types';
 
 @Injectable({
@@ -86,4 +87,16 @@ export class SplitwiseService {
     }
 
     // SPLITTABLES
+    createNewSplitwiseEvent(payload: SplitwiseEventPayload) {
+        return this.mutation.createNewSplitwiseEvent(payload).pipe(
+            // map((response: IStandardResponse<SplitwiseEventPayload>) => response.data),
+            tap((response: IStandardResponse<SplitwiseEventPayload>) => {
+                console.log('Splitwise event created successfully', response);
+            }),
+            catchError((error: IStandardError) => {
+                this.errorService.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
 }

@@ -1,8 +1,7 @@
+import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsISO8601, IsNotEmpty, IsNumber, IsObject, IsString } from 'class-validator';
-
-export type PaymentStrategyVariant = 'ONE' | 'EQUAL' | 'CUSTOM';
-export type SplitStrategyVariant = 'EQUAL' | 'SOLE' | 'QUANTITY';
+import { IsArray, IsBoolean, IsISO8601, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { PaymentStrategy as PaymentStrategyVariant, SplitStrategy as SplitStrategyVariant } from '@prisma/client';
 
 // BILL PAYER - The people who paid for the order
 export class BillPayerPayload {
@@ -93,7 +92,8 @@ export class SplittablePayload {
     settled!: boolean;
 
     @IsArray()
-    @IsObject({ each: true, context: { type: QuantitySplitPayload } })
+    @ValidateNested({ each: true })
+    @Type(() => QuantitySplitPayload)
     @ApiProperty({
         description: 'How the item was split between the consumers',
         example: [{ consumerName: 'John Doe', consumerQuantity: 1 }],
@@ -120,15 +120,17 @@ export class SplitwiseEventPayload {
     squadName!: string;
 
     @IsArray()
-    @IsObject({ each: true, context: { type: BillPayerPayload } })
+    @Type(() => BillPayerPayload)
+    @ValidateNested({ each: true })
     @ApiProperty({
         description: 'The bill payers',
-        example: [{ name: 'John Doe', amount: 100 }],
+        example: [{ payerName: 'John Doe', payerAmount: 100 }],
     })
     billPayers!: BillPayerPayload[];
 
     @IsArray()
-    @IsObject({ each: true, context: { type: SplittablePayload } })
+    @Type(() => SplittablePayload)
+    @ValidateNested({ each: true })
     @ApiProperty({
         description: 'The splittables',
         example: [
