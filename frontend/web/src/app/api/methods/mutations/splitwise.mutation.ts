@@ -27,7 +27,7 @@ export class SplitwiseMutation {
 
     // EVENTS
     createNewSplitwiseEvent(payload: SplitwiseEventPayload) {
-        const endpoint = endpoints.squads;
+        const endpoint = endpoints.splitwise;
         return this.client.post<SplitwiseEventPayload, SplitwiseEventPayload>(endpoint, payload);
     }
 }

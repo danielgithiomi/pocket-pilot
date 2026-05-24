@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { CookiesAuthGuard } from '@common/guards';
 import { VoidResourceResponse } from '@common/types';
+import { SquadsService } from '../services/squads.service';
 import { Summary, UserInRequest } from '@common/decorators';
-import { SplitwiseService } from '../services/splitwise.service';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { SplitwiseSquadDto, SplitwiseSquadPayload } from '../dto/splitwise.dto';
 import { Body, Delete, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
@@ -11,7 +11,7 @@ import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@ne
 @Controller('splitwise/squads')
 @UseGuards(CookiesAuthGuard)
 export class SquadsController {
-    constructor(private readonly splitwiseService: SplitwiseService) {}
+    constructor(private readonly squadsService: SquadsService) {}
 
     @Get()
     @HttpCode(200)
@@ -25,7 +25,7 @@ export class SquadsController {
         description: 'Splitwise squads retrieved successfully',
     })
     getUserSplitwiseSquads(@UserInRequest() user: User): Promise<SplitwiseSquadDto[]> {
-        return this.splitwiseService.getUserSplitwiseSquads(user.id);
+        return this.squadsService.getUserSplitwiseSquads(user.id);
     }
 
     @Post()
@@ -39,7 +39,7 @@ export class SquadsController {
         @UserInRequest() user: User,
         @Body() payload: SplitwiseSquadPayload,
     ): Promise<SplitwiseSquadDto> {
-        return this.splitwiseService.createSplitwiseSquad(user.id, payload);
+        return this.squadsService.createSplitwiseSquad(user.id, payload);
     }
 
     @Put(':squadId')
@@ -58,7 +58,7 @@ export class SquadsController {
         @Param('squadId') squadId: string,
         @Body() payload: SplitwiseSquadPayload,
     ): Promise<SplitwiseSquadDto> {
-        return this.splitwiseService.updateExistingUserSplitwiseSquad(user.id, squadId, payload);
+        return this.squadsService.updateExistingUserSplitwiseSquad(user.id, squadId, payload);
     }
 
     @Delete(':squadId')
@@ -75,7 +75,7 @@ export class SquadsController {
         @UserInRequest() user: User,
         @Param('squadId') squadId: string,
     ): Promise<VoidResourceResponse> {
-        const deleteSquad = await this.splitwiseService.deleteUserSplitwiseSquad(user.id, squadId);
+        const deleteSquad = await this.squadsService.deleteUserSplitwiseSquad(user.id, squadId);
 
         return {
             message: 'Squad deleted successfully!',
