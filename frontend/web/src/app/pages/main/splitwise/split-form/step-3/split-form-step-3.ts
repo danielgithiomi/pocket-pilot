@@ -55,7 +55,7 @@ export class SplitFormStep3 {
     });
     protected readonly billSubtotal = computed<number>(() => {
         return this.formModel()
-            .splittables()
+            .eventSplittables()
             .value()
             .reduce((acc, splittable) => acc + splittable.total, 0);
     });

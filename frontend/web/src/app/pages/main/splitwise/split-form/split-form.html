@@ -22,8 +22,8 @@
                     [iconSize]="iconSize"
                     [currency]="defaultCurrency"
                     (onBackIconClick)="goToPreviousStep(1)"
-                    [splittables]="splitForm.splittables().value()"
                     [presentMembers]="splitForm.eventMembers().value()"
+                    [splittables]="splitForm.eventSplittables().value()"
                     (onSplittablesChangeEvent)="handleOnSplittablesChange($event)"
                 />
             }
@@ -101,7 +101,7 @@
                 </atom-button>
             }
             @case (2) {
-                @let isStep2Valid = splitForm.splittables().value().length > 0;
+                @let isStep2Valid = splitForm.eventSplittables().value().length > 0;
                 <atom-button
                     type="button"
                     variant="primary"

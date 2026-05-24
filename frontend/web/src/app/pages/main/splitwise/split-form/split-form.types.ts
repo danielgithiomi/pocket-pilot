@@ -8,8 +8,8 @@ export interface SplitFormSchema {
     eventMembers: string[];
     billPayers: BillPayer[];
     billingCurrency: string;
-    splittables: SplittableOrder[];
     verificationTotal: number | null;
+    eventSplittables: SplittableOrder[];
     billPaymentStrategy: PaymentStrategyVariant;
 }
 
@@ -17,8 +17,8 @@ export const InitialSplitFormState = {
     eventName: '',
     squadName: '',
     billPayers: [],
-    splittables: [],
     eventMembers: [],
+    eventSplittables: [],
     eventDate: new Date(),
     verificationTotal: null,
     billPaymentStrategy: 'ONE' as PaymentStrategyVariant,

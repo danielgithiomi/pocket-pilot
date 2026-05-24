@@ -92,12 +92,12 @@ export class SplitwiseSplitForm {
         const isCustomSquad = this.splitForm.squadName().value() === 'CUSTOM';
         if (isCustomSquad) this.customMembers.set(members);
 
-        this.splitForm.splittables().controlValue.set([]);
+        this.splitForm.eventSplittables().controlValue.set([]);
         this.splitForm.eventMembers().controlValue.set(members);
     }
 
     protected handleOnSplittablesChange(splittables: SplittableOrder[]) {
-        this.splitForm.splittables().controlValue.set(splittables);
+        this.splitForm.eventSplittables().controlValue.set(splittables);
     }
 
     protected handleOnStep3ValidationChange(valid: boolean) {
@@ -110,7 +110,7 @@ export class SplitwiseSplitForm {
     }
 
     private formatPayload(formData: SplitFormSchema): SplitwiseEventPayload {
-        const splittables = formData.splittables.map(({ id, quantitySplits, ...rest }) => ({
+        const splittables = formData.eventSplittables.map(({ id, quantitySplits, ...rest }) => ({
             ...rest,
             quantitySplits: quantitySplits.map(({ id: _id, ...split }) => split),
         }));
