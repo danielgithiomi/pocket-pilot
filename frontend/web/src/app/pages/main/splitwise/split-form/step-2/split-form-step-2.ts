@@ -261,9 +261,6 @@ export class SplitFormStep2 {
                         consumerQuantity: Math.floor(quantity / quantitySplits.length),
                 }));
 
-        console.log("quantitySplits", quantitySplits);
-        console.log("updatedQuantitySplits", updatedQuantitySplits);
-
         const newSplittable: SplittableOrder = {
             id: this.splittables().length + 1,
             name,
@@ -274,8 +271,6 @@ export class SplitFormStep2 {
             settled: false,
             quantitySplits: updatedQuantitySplits,
         };
-
-        console.log("newSplittable", newSplittable);
 
         this.resetSplittableForm();
 
