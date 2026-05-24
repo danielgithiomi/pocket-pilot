@@ -12,7 +12,9 @@ export class SquadsService {
     ) {}
 
     async getUserSplitwiseSquads(userId: string): Promise<SplitwiseSquadDto[]> {
-        return this.squadsRepository.getUserSplitwiseSquads(userId);
+        return this.squadCache.getOrSetCache<SplitwiseSquadDto[]>(userId, () =>
+            this.squadsRepository.getUserSplitwiseSquads(userId),
+        );
     }
 
     async createSplitwiseSquad(userId: string, payload: SplitwiseSquadPayload): Promise<SplitwiseSquadDto> {
