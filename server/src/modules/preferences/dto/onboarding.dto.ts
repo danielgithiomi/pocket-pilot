@@ -15,8 +15,8 @@ export class OnboardingPayload {
     @IsNotEmpty()
     preferredLanguage!: string;
 
-    @IsNumber()
     @IsNotEmpty()
+    @IsNumber({ maxDecimalPlaces: 2 })
     monthlySpendingLimit!: number;
 }
 

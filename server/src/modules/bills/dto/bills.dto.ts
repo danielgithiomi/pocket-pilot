@@ -16,9 +16,9 @@ export class CreateBillPayload {
     @ApiProperty({ example: BillType.MONTHLY, description: 'The recurrence pattern of the bill' })
     type!: BillType;
 
-    @IsNumber()
+    @IsNumber({ maxDecimalPlaces: 2 })
     @IsNotEmpty()
-    @ApiProperty({ example: 200.0, description: 'The amount of the bill' })
+    @ApiProperty({ example: 200, description: 'The amount of the bill' })
     amount!: number;
 
     @IsDate()

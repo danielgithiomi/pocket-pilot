@@ -35,12 +35,12 @@ export class CreateGoalDto {
     @ApiProperty({ enum: GoalCategory, example: GoalCategory.TRAVEL, description: 'The category of the goal' })
     category!: GoalCategory;
 
-    @IsNumber()
+    @IsNumber({ maxDecimalPlaces: 2 })
     @IsNotEmpty()
     @ApiProperty({ example: 1000, description: 'The monthly contribution to the goal' })
     monthlyContribution!: number;
 
-    @IsNumber()
+    @IsNumber({ maxDecimalPlaces: 2 })
     @IsNotEmpty()
     @ApiProperty({ example: 10000, description: 'The target amount for the goal' })
     targetAmount!: number;
