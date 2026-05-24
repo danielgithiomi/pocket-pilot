@@ -12,9 +12,9 @@ import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-m
 import { input, effect, inject, output, computed, untracked, Component } from '@angular/core';
 import {
     BillPayer,
-    PaymentStrategyVariant,
     PAYMENT_OPTIONS,
     PAYMENT_OPTIONS_MAP,
+    PaymentStrategyVariant,
 } from '@global/types';
 
 @Component({
@@ -37,9 +37,6 @@ export class SplitFormStep3 {
     readonly onValidationChangeEvent = output<boolean>();
     readonly onBillPayersChangeEvent = output<BillPayer[]>();
 
-    // STATE SIGNALS
-    // protected readonly billPayerList = signal<BillPayer[]>([]);
-
     // SERVICES
     private readonly authService = inject(AuthService);
 
@@ -48,7 +45,7 @@ export class SplitFormStep3 {
         return this.billPayerList().length < this.presentMembers().length;
     });
     protected readonly isCustomPaymentStrategy = computed<boolean>(
-        () => this.formModel().billPaymentStrategy().value() === ('custom' as PaymentStrategyVariant),
+        () => this.formModel().billPaymentStrategy().value() === ('CUSTOM' as PaymentStrategyVariant),
     );
     protected readonly billPayerListNames = computed<string[]>(() => {
         return this.billPayerList().map((p) => p.payerName);
@@ -106,7 +103,9 @@ export class SplitFormStep3 {
         const isPresent = this.billPayerListNames().includes(memberName);
 
         if (isPresent) {
-            const newPayerList = this.billPayerList().filter((payer) => payer.payerName !== memberName);
+            const newPayerList = this.billPayerList().filter(
+                (payer) => payer.payerName !== memberName,
+            );
             this.onBillPayersChangeEvent.emit(newPayerList);
         } else {
             const paymentStrategy = this.formModel().billPaymentStrategy().value();
@@ -150,7 +149,9 @@ export class SplitFormStep3 {
 
     protected handlePayerAmountChange(payer: BillPayer) {
         const newPayerList = this.billPayerList().map((existing) =>
-            existing.payerName === payer.payerName ? { ...existing, payerAmount: payer.payerAmount } : existing,
+            existing.payerName === payer.payerName
+                ? { ...existing, payerAmount: payer.payerAmount }
+                : existing,
         );
 
         this.onBillPayersChangeEvent.emit(newPayerList);

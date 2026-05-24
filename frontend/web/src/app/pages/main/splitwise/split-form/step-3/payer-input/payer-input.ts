@@ -29,7 +29,6 @@ export class PayerInput {
         if (isNaN(numericValue)) return;
 
         const formattedAmount = Math.round(numericValue * 100) / 100;
-        console.log(formattedAmount);
 
         const payer: BillPayer = {
             payerAmount: formattedAmount,
