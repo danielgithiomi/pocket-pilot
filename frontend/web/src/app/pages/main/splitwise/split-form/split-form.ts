@@ -6,7 +6,7 @@ import { AccountsService } from '@api/accounts.service';
 import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
 import { SplitFormStep3 } from './step-3/split-form-step-3';
-import { SplittableOrder, SplitwiseSquad, BillPayer } from '@global/types';
+import { SplittableOrder, SplitwiseSquad, BillPayer, SplitwiseEventPayload } from '@global/types';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
 import {
     input,
@@ -109,12 +109,29 @@ export class SplitwiseSplitForm {
         this.splitForm.billPayers().controlValue.set(billPayers);
     }
 
+    private formatPayload(formData: SplitFormSchema): SplitwiseEventPayload {
+        const splittables = formData.splittables.map(({ id, quantitySplits, ...rest }) => ({
+            ...rest,
+            quantitySplits: quantitySplits.map(({ id: _id, ...split }) => split),
+        }));
+
+        return {
+            ...formData,
+            splittables,
+            eventDate: formData.eventDate.toISOString(),
+        } satisfies SplitwiseEventPayload;
+    }
+
     // SUBMISSIONS
     protected handleSplitFormSubmit(event: Event) {
         event.preventDefault();
 
         const formData = this.splitForm().value();
-        console.log(formData);
+        console.log("formData", formData);
+
+        const splitwiseEventPayload = this.formatPayload(formData);
+
+        console.log("splitwiseEventPayload", splitwiseEventPayload);
 
         this.isSubmittingSplitForm.set(true);
 

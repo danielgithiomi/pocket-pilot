@@ -80,6 +80,6 @@ export interface SplitwiseEventPayload {
     billPayers: BillPayer[];
     billingCurrency: string;
     verificationTotal: number | null;
-    billPayerStrategy: PaymentStrategyVariant;
     splittables: SplitwiseSplittable[];
+    billPayerStrategy: PaymentStrategyVariant;
 }
