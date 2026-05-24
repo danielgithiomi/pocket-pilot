@@ -144,11 +144,10 @@ export class SplitwiseSplitForm {
         setTimeout(() => {
             this.splitwiseService.createNewSplitwiseEvent(splitwiseEventPayload).subscribe({
                 next: (response) => {
-                    console.log('Splitwise event created successfully', response);
                     this.toastService.show({
                         variant: 'success',
-                        title: 'Splitwise event created successfully',
-                        details: 'Your splitwise event has been created successfully.',
+                        title: 'Splitwise event created!',
+                        details: `Your [${response.data.eventName}] event has been created successfully.`,
                     });
 
                     this.resetSplitForm();
