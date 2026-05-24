@@ -4,7 +4,7 @@ import { VoidResourceResponse } from '@common/types';
 import { SquadsService } from '../services/squads.service';
 import { Summary, UserInRequest } from '@common/decorators';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
-import { SplitwiseSquadDto, SplitwiseSquadPayload } from '../dto/splitwise.dto';
+import { SplitwiseSquadDto, SplitwiseSquadPayload } from '../dto/squads.dto';
 import { Body, Delete, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 

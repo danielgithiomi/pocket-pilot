@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { SquadsCache } from '../caches/squads.cache';
 import { SquadsRepository } from '../repositories/squads.repository';
-import { SplitwiseSquadDto, SplitwiseSquadPayload } from '../dto/splitwise.dto';
+import { SplitwiseSquadDto, SplitwiseSquadPayload } from '../dto/squads.dto';
 
 @Injectable()
 export class SquadsService {

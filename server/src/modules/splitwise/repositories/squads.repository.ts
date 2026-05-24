@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SplitwiseSquadPayload } from '../dto/splitwise.dto';
+import { SplitwiseSquadPayload } from '../dto/squads.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()
