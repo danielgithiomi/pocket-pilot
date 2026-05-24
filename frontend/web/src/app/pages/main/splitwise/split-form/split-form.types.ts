@@ -10,7 +10,7 @@ export interface SplitFormSchema {
     billingCurrency: string;
     splittables: SplittableOrder[];
     verificationTotal: number | null;
-    billPayerStrategy: PaymentStrategyVariant;
+    billPaymentStrategy: PaymentStrategyVariant;
 }
 
 export const InitialSplitFormState = {
@@ -21,7 +21,7 @@ export const InitialSplitFormState = {
     eventMembers: [],
     eventDate: new Date(),
     verificationTotal: null,
-    billPayerStrategy: 'ONE' as PaymentStrategyVariant,
+    billPaymentStrategy: 'ONE' as PaymentStrategyVariant,
 };
 
 export const SplitFormValidationSchema = schema<SplitFormSchema>((root) => {

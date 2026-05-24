@@ -8,7 +8,7 @@
         </div>
 
         <!-- Payer Name -->
-        <p class="text-inverted-text text-sm font-semibold">{{ payer().name }}</p>
+        <p class="text-inverted-text text-sm font-semibold">{{ payer().payerName }}</p>
     </div>
 
     <div class="max-w-1/2 ml-auto flex flex-row items-center justify-end gap-2">
@@ -29,7 +29,7 @@
 
         <!-- Remove Payer -->
         <div
-            (click)="onRemovePayerEvent.emit(payer().name)"
+            (click)="onRemovePayerEvent.emit(payer().payerName)"
             class="ml-auto size-6 rounded grid place-items-center cursor-pointer"
         >
             <lucide-icon

@@ -56,7 +56,7 @@
     wrapperClassName="my-0"
     placeholder="Select a payment strategy"
     [options]="billPaymentStrategyOptions()"
-    [formField]="formModel().billPayerStrategy"
+    [formField]="formModel().billPaymentStrategy"
 />
 
 <div class="my-2">
@@ -74,7 +74,7 @@
     </div>
 </div>
 
-@if (formModel().billPayerStrategy().value() !== 'ONE') {
+@if (formModel().billPaymentStrategy().value() !== 'ONE') {
     <p class="text-[0.75rem] italic text-muted-text">
         Remaining payable amount:
         <span class="text-primary font-semibold">{{ formattedRemainingPayableAmount() }}</span>
@@ -83,7 +83,7 @@
 
 @if (isCustomPaymentStrategy()) {
     <div class="my-2">
-        @for (payer of billPayerList(); track payer.name) {
+        @for (payer of billPayerList(); track payer.payerName) {
             <payer-input
                 [payer]="payer"
                 (onRemovePayerEvent)="handleRemovePayer($event)"

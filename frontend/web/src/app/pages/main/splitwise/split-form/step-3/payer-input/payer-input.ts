@@ -21,7 +21,7 @@ export class PayerInput {
     readonly onPayerAmountChangeEvent = output<BillPayer>();
 
     // COMPUTED
-    protected readonly initial = computed(() => this.payer().name.substring(0, 1).toUpperCase());
+    protected readonly initial = computed(() => this.payer().payerName.substring(0, 1).toUpperCase());
 
     // METHODS
     protected handlePayerAmountChange(value: string) {
@@ -32,8 +32,8 @@ export class PayerInput {
         console.log(formattedAmount);
 
         const payer: BillPayer = {
-            name: this.payer().name,
-            amount: formattedAmount,
+            payerAmount: formattedAmount,
+            payerName: this.payer().payerName,
         };
         this.onPayerAmountChangeEvent.emit(payer);
     }

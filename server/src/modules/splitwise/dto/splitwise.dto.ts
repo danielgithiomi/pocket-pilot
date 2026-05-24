@@ -12,7 +12,7 @@ export class BillPayerPayload {
         example: 'John',
         description: 'The name of the bill payer',
     })
-    name!: string;
+    payerName!: string;
 
     @IsNumber({ maxDecimalPlaces: 2 })
     @IsNotEmpty()
@@ -20,7 +20,7 @@ export class BillPayerPayload {
         example: 100,
         description: 'The amount of the bill payer',
     })
-    amount!: number;
+    payerAmount!: number;
 }
 
 // QUANTITY SPLIT - The quantity of the item ordered
@@ -174,7 +174,7 @@ export class SplitwiseEventPayload {
         example: 'ONE',
         description: 'The bill payer strategy',
     })
-    billPayerStrategy!: PaymentStrategyVariant;
+    billPaymentStrategy!: PaymentStrategyVariant;
 
     @IsString()
     @IsNotEmpty()

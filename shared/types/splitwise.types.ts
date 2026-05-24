@@ -48,8 +48,8 @@ export interface SplittablePayload {
 
 // BILL PAYERS - The people who paid for the order
 export interface BillPayer {
-    name: string;
-    amount: number;
+    payerName: string;
+    payerAmount: number;
 }
 
 export interface SplittableOrder extends SplittablePayload {
@@ -81,5 +81,5 @@ export interface SplitwiseEventPayload {
     billingCurrency: string;
     verificationTotal: number | null;
     splittables: SplitwiseSplittable[];
-    billPayerStrategy: PaymentStrategyVariant;
+    billPaymentStrategy: PaymentStrategyVariant;
 }
