@@ -98,17 +98,6 @@
                         placeholder="Select split strategy"
                         [formField]="splittableForm.splitStrategy"
                     />
-
-                    <!-- <atom-select
-            label="Tag"
-            class="flex-1"
-            id="category-tag"
-            [inverted]="true"
-            wrapperClassName="my-0!"
-            [options]="categoryTags()"
-            placeholder="Select Category"
-            [formField]="splittableForm.categoryTag"
-          /> -->
                 </div>
 
                 <div class="flex flex-col space-y-2 mb-4">
@@ -177,7 +166,6 @@
                     <order-item
                         [order]="splittable"
                         [presentMembers]="consumerOptions()"
-                        [splitStrategyOptions]="splitStrategyOptions()"
                         (onDeleteClickEvent)="handleOnDeleteOrder($event)"
                         (onUpdateSplittableEvent)="updateEventSplittables($event)"
                     />

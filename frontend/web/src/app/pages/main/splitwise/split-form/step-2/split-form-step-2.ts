@@ -227,7 +227,6 @@ export class SplitFormStep2 {
         const {
             name,
             unitPrice,
-            // categoryTag,
             splitStrategy,
             quantitySplits,
             quantity: quantityStr,
@@ -254,17 +253,29 @@ export class SplitFormStep2 {
         const quantity = Number(quantityStr);
         const total = quantity * unitPrice;
 
+        const updatedQuantitySplits =
+            splitStrategy === 'QUANTITY'
+                ? quantitySplits
+                : quantitySplits.map((split) => ({
+                        ...split,
+                        consumerQuantity: Math.floor(quantity / quantitySplits.length),
+                }));
+
+        console.log("quantitySplits", quantitySplits);
+        console.log("updatedQuantitySplits", updatedQuantitySplits);
+
         const newSplittable: SplittableOrder = {
             id: this.splittables().length + 1,
             name,
             total,
             quantity,
             unitPrice,
-            // categoryTag,
             splitStrategy,
-            quantitySplits,
             settled: false,
+            quantitySplits: updatedQuantitySplits,
         };
+
+        console.log("newSplittable", newSplittable);
 
         this.resetSplittableForm();
 
