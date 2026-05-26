@@ -7,14 +7,14 @@ export class SplitwiseRepository {
     constructor(private readonly db: DatabaseService) {}
 
     async createSplitwiseEvent(userId: string, payload: SplitwiseEventPayload) {
-        const { billPayers, splittables, ...rest } = payload;
+        const { billPayers, eventSplittables, ...rest } = payload;
         return await this.db.splitwiseEvent.create({
             data: {
                 ...rest,
                 creatorId: userId,
                 billPayers: { create: billPayers },
                 eventSplittables: {
-                    create: splittables.map(({ quantitySplits, ...splittable }) => ({
+                    create: eventSplittables.map(({ quantitySplits, ...splittable }) => ({
                         ...splittable,
                         quantitySplits: { create: quantitySplits },
                     })),
@@ -24,6 +24,13 @@ export class SplitwiseRepository {
                 billPayers: true,
                 eventSplittables: { include: { quantitySplits: true } },
             },
+        });
+    }
+
+    getUserSplitwiseEvents(userId: string) {
+        return this.db.splitwiseEvent.findMany({
+            where: { creatorId: userId },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
         });
     }
 }

@@ -106,9 +106,10 @@ export interface SplitwiseEventPayload {
     eventName: string;
     eventMembers: string[];
     billingCurrency: string;
+    // TODO: Add settled & settledAt
     billPayers: BillPayerPayload[];
     verificationTotal: number | null;
-    splittables: SplitwiseSplittablePayload[];
+    eventSplittables: SplitwiseSplittablePayload[];
     billPaymentStrategy: PaymentStrategyVariant;
 }
 
@@ -126,6 +127,6 @@ export interface ISplitrEvent {
     billingCurrency: string;
     settledAt: string | null;
     verificationTotal: number;
-    billPaymentStrategy: string;
     eventSplittables: Splittable[];
+    billPaymentStrategy: PaymentStrategyVariant;
 }

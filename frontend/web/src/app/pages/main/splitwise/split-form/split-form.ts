@@ -10,9 +10,9 @@ import { SplitFormStep2 } from './step-2/split-form-step-2';
 import { SplitFormStep3 } from './step-3/split-form-step-3';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
 import {
-    BillPayerPayload,
-    SplittableOrder,
     SplitwiseSquad,
+    SplittableOrder,
+    BillPayerPayload,
     SplitwiseEventPayload,
 } from '@global/types';
 import {
@@ -121,14 +121,16 @@ export class SplitwiseSplitForm {
     private formatPayload(formData: SplitFormSchema): SplitwiseEventPayload {
         const { eventSplittables, eventDate, verificationTotal, ...rest } = formData;
 
-        const splittables = eventSplittables.map(({ id, quantitySplits, ...splittable }) => ({
-            ...splittable,
-            quantitySplits: quantitySplits.map(({ id: _id, ...split }) => split),
-        }));
+        const cleanedSplittables = eventSplittables.map(
+            ({ id: _splittableId, quantitySplits, ...splittable }) => ({
+                ...splittable,
+                quantitySplits: quantitySplits.map(({ id: _quantitySplitId, ...split }) => split),
+            }),
+        );
 
         return {
             ...rest,
-            splittables,
+            eventSplittables: cleanedSplittables,
             eventDate: eventDate.toISOString(),
             verificationTotal: verificationTotal === null ? null : Number(verificationTotal),
         } satisfies SplitwiseEventPayload;

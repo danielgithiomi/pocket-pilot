@@ -1,6 +1,6 @@
-import { Type } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsISO8601, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { IsArray, IsBoolean, IsDate, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
 import { PaymentStrategy as PaymentStrategyVariant, SplitStrategy as SplitStrategyVariant } from '@prisma/client';
 
 // BILL PAYER - The people who paid for the order
@@ -22,6 +22,38 @@ export class BillPayerPayload {
     payerAmount!: number;
 }
 
+// BILL PAYER DTO - The people who paid for the order
+@Exclude()
+export class BillPayerDto extends BillPayerPayload {
+    @Expose()
+    @ApiProperty({
+        description: 'The ID of the bill payer',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+    })
+    id!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: '2026-05-24T13:03:15.811Z',
+        description: 'The creation date of the bill payer',
+    })
+    createdAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        example: '2026-05-24T13:03:15.811Z',
+        description: 'The update date of the bill payer',
+    })
+    updatedAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'The ID of the owning splitwise event that this bill payer belongs to',
+    })
+    splitwiseEventId!: string;
+}
+
 // QUANTITY SPLIT - The quantity of the item ordered
 export class QuantitySplitPayload {
     @IsString()
@@ -41,7 +73,39 @@ export class QuantitySplitPayload {
     consumerQuantity!: number;
 }
 
-// SPLITTABLE ORDER
+// QUANTITY SPLIT DTO - How the item was split between the consumers
+@Exclude()
+export class QuantitySplitDto extends QuantitySplitPayload {
+    @Expose()
+    @ApiProperty({
+        description: 'The ID of the quantity split',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+    })
+    id!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: '2026-05-24T13:03:15.811Z',
+        description: 'The creation date of the quantity split',
+    })
+    createdAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        example: '2026-05-24T13:03:15.811Z',
+        description: 'The update date of the quantity split',
+    })
+    updatedAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'The ID of the owning splittable that this quantity split belongs to',
+    })
+    splittableId!: string;
+}
+
+// SPLITTABLE ORDER PAYLOAD - The item in the order that was split
 export class SplittablePayload {
     @IsString()
     @IsNotEmpty()
@@ -101,6 +165,49 @@ export class SplittablePayload {
     quantitySplits!: QuantitySplitPayload[];
 }
 
+// SPLITTABLE ORDER DTO - The item in the order that was split
+@Exclude()
+@ApiExtraModels(QuantitySplitDto)
+export class SplittableDto extends SplittablePayload {
+    @Expose()
+    @ApiProperty({
+        description: 'The ID of the splittable',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+    })
+    id!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: '2026-05-24T13:03:15.811Z',
+        description: 'The creation date of the splittable',
+    })
+    createdAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        example: '2026-05-24T13:03:15.811Z',
+        description: 'The update date of the splittable',
+    })
+    updatedAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'The ID of the owning splitwise event that this splittable belongs to',
+    })
+    splitEventId!: string;
+
+    @Expose()
+    @Type(() => QuantitySplitDto)
+    @ApiProperty({
+        type: 'array',
+        items: { $ref: getSchemaPath(QuantitySplitDto) },
+        description: 'How the item was split between the consumers',
+        example: [{ id: '123e4567-e89b-12d3-a456-426614174000', consumerName: 'John Doe', consumerQuantity: 1 }],
+    })
+    declare quantitySplits: QuantitySplitDto[];
+}
+
 // SPLITWISE EVENT PAYLOAD - The payload for the splitwise event
 export class SplitwiseEventPayload {
     @IsString()
@@ -132,19 +239,22 @@ export class SplitwiseEventPayload {
     @Type(() => SplittablePayload)
     @ValidateNested({ each: true })
     @ApiProperty({
+        type: 'array',
         description: 'The splittables',
+        items: { $ref: getSchemaPath(SplittableDto) },
         example: [
             {
-                name: 'Dinner',
                 total: 100,
                 quantity: 1,
+                settled: false,
+                name: 'Dinner',
                 unitPrice: 100,
                 splitStrategy: 'EQUAL',
                 quantitySplits: [{ consumerName: 'John Doe', consumerQuantity: 1 }],
             },
         ],
     })
-    splittables!: SplittablePayload[];
+    eventSplittables!: SplittablePayload[];
 
     @IsArray()
     @IsString({ each: true })
@@ -154,13 +264,15 @@ export class SplitwiseEventPayload {
     })
     eventMembers!: string[];
 
-    @IsString()
-    @IsISO8601({ strict: true })
+    @IsDate()
+    @Type(() => Date)
     @ApiProperty({
+        type: 'string',
+        format: 'date-time',
         example: '2026-05-24T13:03:15.811Z',
         description: 'The date of the event',
     })
-    eventDate!: string;
+    eventDate!: Date;
 
     @IsNumber({ maxDecimalPlaces: 2 })
     @IsNotEmpty()
@@ -185,4 +297,63 @@ export class SplitwiseEventPayload {
         description: 'The billing currency',
     })
     billingCurrency!: string;
+}
+
+// SPLITWISE EVENT DTO - The splitwise event
+@Exclude()
+@ApiExtraModels(BillPayerDto, SplittableDto)
+export class SplitwiseEventDto extends SplitwiseEventPayload {
+    @Expose()
+    @ApiProperty({
+        description: 'The ID of the splitwise event',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+    })
+    id!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'The ID of the creator of the splitwise event',
+    })
+    creatorId!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: '2026-05-24T13:03:15.811Z',
+        description: 'The creation date of the splitwise event',
+    })
+    createdAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        example: '2026-05-24T13:03:15.811Z',
+        description: 'The update date of the splitwise event',
+    })
+    updatedAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        nullable: true,
+        example: '2026-05-24T13:03:15.811Z',
+        description: 'The date of the event was settled',
+    })
+    settledAt!: Date | null;
+
+    @Expose()
+    @Type(() => BillPayerDto)
+    @ApiProperty({
+        type: 'array',
+        items: { $ref: getSchemaPath(BillPayerDto) },
+        description: 'The bill payers',
+    })
+    declare billPayers: BillPayerDto[];
+
+    @Expose()
+    @Type(() => SplittableDto)
+    @ApiProperty({
+        type: 'array',
+        items: { $ref: getSchemaPath(SplittableDto) },
+        description: 'The splittables',
+    })
+    declare eventSplittables: SplittableDto[];
 }
