@@ -9,7 +9,12 @@ import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
 import { SplitFormStep3 } from './step-3/split-form-step-3';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
-import { BillPayer, SplittableOrder, SplitwiseSquad, SplitwiseEventPayload } from '@global/types';
+import {
+    BillPayerPayload,
+    SplittableOrder,
+    SplitwiseSquad,
+    SplitwiseEventPayload,
+} from '@global/types';
 import {
     input,
     effect,
@@ -109,7 +114,7 @@ export class SplitwiseSplitForm {
         this.isStep3Valid.set(compositeValid);
     }
 
-    protected handleOnBillPayersChange(billPayers: BillPayer[]) {
+    protected handleOnBillPayersChange(billPayers: BillPayerPayload[]) {
         this.splitForm.billPayers().controlValue.set(billPayers);
     }
 

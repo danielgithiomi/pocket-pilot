@@ -1,10 +1,10 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
+import { ISplitrEvent } from '@global/types';
 import { ActivatedRoute } from '@angular/router';
 import { DrawerService } from '@infrastructure/services';
 import { SplitwiseService } from '@api/splitwise.service';
 import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
-import { ISplitrEvent } from '@pages/main/splitwise/events/events';
 import { Component, computed, inject, input } from '@angular/core';
 import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
 

@@ -1,12 +1,12 @@
 import { required, schema } from '@angular/forms/signals';
-import { SplittableOrder, BillPayer, PaymentStrategyVariant } from '@global/types';
+import { SplittableOrder, BillPayerPayload, PaymentStrategyVariant } from '@global/types';
 
 export interface SplitFormSchema {
     eventDate: Date;
     eventName: string;
     squadName: string;
     eventMembers: string[];
-    billPayers: BillPayer[];
+    billPayers: BillPayerPayload[];
     billingCurrency: string;
     verificationTotal: number | null;
     eventSplittables: SplittableOrder[];

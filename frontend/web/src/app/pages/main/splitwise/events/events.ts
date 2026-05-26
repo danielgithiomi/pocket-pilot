@@ -1,11 +1,12 @@
 import { Router } from '@angular/router';
+import { ISplitrEvent } from '@global/types';
 import { Component, inject, signal } from '@angular/core';
 import { SplitrEvent } from '@structural/main/splitr-event/splitr-event';
 
 @Component({
     selector: 'splitwise-events',
     templateUrl: './events.html',
-    imports: [SplitrEvent],
+    imports: [SplitrEvent]
 })
 export class SplitwiseEvents {
     // SERVICES
@@ -53,16 +54,25 @@ export class SplitwiseEvents {
                             id: '123',
                             consumerName: 'Joshua',
                             consumerQuantity: 1,
+                            createdAt: '2026-05-24T20:28:47.473Z',
+                            updatedAt: '2026-05-24T20:28:47.473Z',
+                            splittableId: '8f90f736-73d8-428c-b4f4-539f12afee5e',
                         },
                         {
                             id: '123',
                             consumerName: 'Michelle',
                             consumerQuantity: 1,
+                            createdAt: '2026-05-24T20:28:47.473Z',
+                            updatedAt: '2026-05-24T20:28:47.473Z',
+                            splittableId: '8f90f736-73d8-428c-b4f4-539f12afee5e',
                         },
                         {
                             id: '123',
                             consumerName: 'Julie',
                             consumerQuantity: 1,
+                            createdAt: '2026-05-24T20:28:47.473Z',
+                            updatedAt: '2026-05-24T20:28:47.473Z',
+                            splittableId: '8f90f736-73d8-428c-b4f4-539f12afee5e',
                         },
                     ],
                 },
@@ -82,6 +92,9 @@ export class SplitwiseEvents {
                             id: '123',
                             consumerName: 'Joshua',
                             consumerQuantity: 1,
+                            createdAt: '2026-05-24T20:28:47.473Z',
+                            updatedAt: '2026-05-24T20:28:47.473Z',
+                            splittableId: '8f90f736-73d8-428c-b4f4-539f12afee5e',
                         },
                     ],
                 },
@@ -93,44 +106,4 @@ export class SplitwiseEvents {
     handleOnSplitrEventClick(eventId: string) {
         this.router.navigate(['/splitwise', eventId], { replaceUrl: false });
     }
-}
-
-export interface ISplitrEvent {
-    id: string;
-    creatorId: string;
-    eventName: string;
-    eventDate: string;
-    squadName: string;
-    eventMembers: string[];
-    verificationTotal: number;
-    billingCurrency: string;
-    billPaymentStrategy: string;
-    settledAt: string | null;
-    updatedAt: string;
-    createdAt: string;
-    billPayers: {
-        id: string;
-        payerName: string;
-        payerAmount: number;
-        createdAt: string;
-        updatedAt: string;
-        splitwiseEventId: string;
-    }[];
-    eventSplittables: {
-        id: string;
-        name: string;
-        quantity: number;
-        unitPrice: number;
-        total: number;
-        settled: boolean;
-        splitStrategy: string;
-        updatedAt: string;
-        createdAt: string;
-        splitEventId: string;
-        quantitySplits: {
-            id: string;
-            consumerName: string;
-            consumerQuantity: number;
-        }[];
-    }[];
 }

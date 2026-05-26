@@ -11,7 +11,7 @@ import { LucideAngularModule, Check, X } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import { input, effect, inject, output, computed, untracked, Component } from '@angular/core';
 import {
-    BillPayer,
+    BillPayerPayload,
     PAYMENT_OPTIONS,
     PAYMENT_OPTIONS_MAP,
     PaymentStrategyVariant,
@@ -30,12 +30,12 @@ export class SplitFormStep3 {
     // INPUTS
     readonly iconSize = input.required<number>();
     readonly presentMembers = input.required<string[]>();
-    readonly billPayerList = input.required<BillPayer[]>();
+    readonly billPayerList = input.required<BillPayerPayload[]>();
     readonly formModel = input.required<FieldTree<SplitFormSchema, string | number>>();
 
     // OUTPUTS
     readonly onValidationChangeEvent = output<boolean>();
-    readonly onBillPayersChangeEvent = output<BillPayer[]>();
+    readonly onBillPayersChangeEvent = output<BillPayerPayload[]>();
 
     // SERVICES
     private readonly authService = inject(AuthService);
@@ -45,7 +45,8 @@ export class SplitFormStep3 {
         return this.billPayerList().length < this.presentMembers().length;
     });
     protected readonly isCustomPaymentStrategy = computed<boolean>(
-        () => this.formModel().billPaymentStrategy().value() === ('CUSTOM' as PaymentStrategyVariant),
+        () =>
+            this.formModel().billPaymentStrategy().value() === ('CUSTOM' as PaymentStrategyVariant),
     );
     protected readonly billPayerListNames = computed<string[]>(() => {
         return this.billPayerList().map((p) => p.payerName);
@@ -111,7 +112,7 @@ export class SplitFormStep3 {
             const paymentStrategy = this.formModel().billPaymentStrategy().value();
             switch (paymentStrategy) {
                 case 'ONE' as PaymentStrategyVariant: {
-                    const newPayer: BillPayer = {
+                    const newPayer: BillPayerPayload = {
                         payerName: memberName,
                         payerAmount: this.billSubtotal(),
                     };
@@ -120,7 +121,7 @@ export class SplitFormStep3 {
                 }
                 case 'EQUAL' as PaymentStrategyVariant: {
                     const newEqualAmount = this.calculateEqualPayableAmount();
-                    const newPayer: BillPayer = {
+                    const newPayer: BillPayerPayload = {
                         payerName: memberName,
                         payerAmount: newEqualAmount,
                     };
@@ -133,7 +134,7 @@ export class SplitFormStep3 {
                     break;
                 }
                 case 'CUSTOM' as PaymentStrategyVariant: {
-                    const newPayer: BillPayer = {
+                    const newPayer: BillPayerPayload = {
                         payerAmount: 0,
                         payerName: memberName,
                     };
@@ -147,7 +148,7 @@ export class SplitFormStep3 {
         }
     }
 
-    protected handlePayerAmountChange(payer: BillPayer) {
+    protected handlePayerAmountChange(payer: BillPayerPayload) {
         const newPayerList = this.billPayerList().map((existing) =>
             existing.payerName === payer.payerName
                 ? { ...existing, payerAmount: payer.payerAmount }

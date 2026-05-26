@@ -1,4 +1,4 @@
-import { BillPayer } from '@global/types';
+import { BillPayerPayload } from '@global/types';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
 import { Component, computed, input, output } from '@angular/core';
 
@@ -13,15 +13,17 @@ export class PayerInput {
     protected readonly DeleteIcon = Trash2;
 
     // INPUT
-    readonly payer = input.required<BillPayer>();
+    readonly payer = input.required<BillPayerPayload>();
     readonly billingCurrency = input.required<string>();
 
     // OUTPUT
     readonly onRemovePayerEvent = output<string>();
-    readonly onPayerAmountChangeEvent = output<BillPayer>();
+    readonly onPayerAmountChangeEvent = output<BillPayerPayload>();
 
     // COMPUTED
-    protected readonly initial = computed(() => this.payer().payerName.substring(0, 1).toUpperCase());
+    protected readonly initial = computed(() =>
+        this.payer().payerName.substring(0, 1).toUpperCase(),
+    );
 
     // METHODS
     protected handlePayerAmountChange(value: string) {
@@ -30,7 +32,7 @@ export class PayerInput {
 
         const formattedAmount = Math.round(numericValue * 100) / 100;
 
-        const payer: BillPayer = {
+        const payer: BillPayerPayload = {
             payerAmount: formattedAmount,
             payerName: this.payer().payerName,
         };

@@ -46,10 +46,38 @@ export interface SplittablePayload {
     quantitySplits: LocalQuantitySplit[];
 }
 
+export interface Splittable extends Omit<SplittablePayload, "quantitySplits"> {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    splitEventId: string;
+    quantitySplits: QuantitySplit[];
+}
+
 // BILL PAYERS - The people who paid for the order
-export interface BillPayer {
+export interface BillPayerPayload {
     payerName: string;
     payerAmount: number;
+}
+
+export interface BillPayer extends BillPayerPayload {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    splitwiseEventId: string;
+}
+
+// QUANTITY SPLITS - How the item was split between the consumers
+export interface QuantitySplitPayload {
+    consumerName: string;
+    consumerQuantity: number;
+}
+
+export interface QuantitySplit extends QuantitySplitPayload {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    splittableId: string;
 }
 
 export interface SplittableOrder extends SplittablePayload {
@@ -65,7 +93,7 @@ export interface LocalQuantitySplit extends QuantitySplitPayload {
     id: string;
 }
 
-export interface SplitwiseSplittable extends Omit<
+export interface SplitwiseSplittablePayload extends Omit<
     SplittableOrder,
     "id" | "quantitySplits"
 > {
@@ -77,9 +105,27 @@ export interface SplitwiseEventPayload {
     squadName: string;
     eventName: string;
     eventMembers: string[];
+    billingCurrency: string;
+    billPayers: BillPayerPayload[];
+    verificationTotal: number | null;
+    splittables: SplitwiseSplittablePayload[];
+    billPaymentStrategy: PaymentStrategyVariant;
+}
+
+// API RESPONSES
+export interface ISplitrEvent {
+    id: string;
+    creatorId: string;
+    eventName: string;
+    eventDate: string;
+    squadName: string;
+    updatedAt: string;
+    createdAt: string;
+    eventMembers: string[];
     billPayers: BillPayer[];
     billingCurrency: string;
-    verificationTotal: number | null;
-    splittables: SplitwiseSplittable[];
-    billPaymentStrategy: PaymentStrategyVariant;
+    settledAt: string | null;
+    verificationTotal: number;
+    billPaymentStrategy: string;
+    eventSplittables: Splittable[];
 }
