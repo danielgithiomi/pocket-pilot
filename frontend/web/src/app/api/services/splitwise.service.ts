@@ -89,6 +89,8 @@ export class SplitwiseService {
     // SPLITTABLES
     getUserSplitrEvents = () => this.resource.getUserSplitrEvents;
 
+    getUserSplitrEventById = (eventId: string) => this.resource.getSplitwiseEventById(eventId);
+
     createNewSplitwiseEvent(payload: SplitwiseEventPayload) {
         return this.mutation.createNewSplitwiseEvent(payload).pipe(
             // map((response: IStandardResponse<SplitwiseEventPayload>) => response.data),

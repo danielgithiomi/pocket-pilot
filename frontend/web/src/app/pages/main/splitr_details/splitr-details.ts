@@ -1,26 +1,24 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { ISplitrEvent } from '@global/types';
 import { ActivatedRoute } from '@angular/router';
+import { NoData } from '@structural/main/no-data/no-data';
 import { DrawerService } from '@infrastructure/services';
 import { SplitwiseService } from '@api/splitwise.service';
 import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
 
 @Component({
     selector: 'splitr-details',
     templateUrl: './splitr-details.html',
-    imports: [LucideAngularModule, NgClass, Button, Breadcrumbs],
+    imports: [LucideAngularModule, NgClass, Button, Breadcrumbs, FetchError, NoData],
 })
 export class SplitrDetails {
     // ICONS
     protected readonly iconSize = 18;
     protected readonly SettledIcon = CheckCheck;
     protected readonly BreadcrumbIcon = ReceiptText;
-
-    // INPUTS
-    readonly splittable = input.required<ISplitrEvent>();
 
     // SERVICES
     private readonly route = inject(ActivatedRoute);
@@ -29,10 +27,17 @@ export class SplitrDetails {
 
     // DATA
     protected readonly eventId = this.route.snapshot.paramMap.get('eventId') ?? '';
+    protected readonly splitrEventResource = this.splitwiseService.getUserSplitrEventById(this.eventId);
 
-    // REACTIVE
-    protected readonly hasError = computed<boolean>(() => false);
-    protected readonly isFetchingDetails = computed<boolean>(() => false);
+    // REACTIVE — three independent slices of the resource state
+    protected readonly isFetchingDetails = computed<boolean>(() =>
+        this.splitrEventResource.isLoading(),
+    );
+    protected readonly hasError = computed<boolean>(() => !!this.splitrEventResource.error());
+    protected readonly splitrEvent = computed(() => {
+        if (this.hasError()) return undefined;
+        return this.splitrEventResource.value()?.data;
+    });
 
     // COMPUTED
     protected readonly breadcrumbItems = computed(() => {

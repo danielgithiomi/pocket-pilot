@@ -26,4 +26,10 @@ export class SplitwiseResource {
     cache: 'no-cache',
     url: concatUrl(endpoints.splitwise),
   }));
+
+  getSplitwiseEventById = (eventId: string) => httpResource<IStandardResponse<ISplitrEvent>>(() => ({
+    method: 'GET',
+    cache: 'no-cache',
+    url: concatUrl(`${endpoints.splitwise}/${eventId}`),
+  }));
 }

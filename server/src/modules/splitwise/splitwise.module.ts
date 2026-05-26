@@ -11,7 +11,7 @@ import { SplitwiseRepository } from './repositories/splitwise.repository';
 
 @Module({
     imports: [IdentityModule],
-    controllers: [SplitwiseController, SquadsController],
+    controllers: [SquadsController, SplitwiseController],
     providers: [SplitwiseService, SquadsService, SquadsCache, SplitwiseCache, SplitwiseRepository, SquadsRepository],
 })
 export class SplitwiseModule {}

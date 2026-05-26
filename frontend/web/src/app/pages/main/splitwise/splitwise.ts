@@ -43,7 +43,11 @@ export class Splitwise {
 
     // COMPUTED
     protected isLoadingResources = computed<boolean>(() => this.userSquads.isLoading());
-    protected squads = computed<SplitwiseSquad[]>(() => this.userSquads.value()?.data ?? []);
+    protected hasSquadsError = computed<boolean>(() => !!this.userSquads.error());
+    protected squads = computed<SplitwiseSquad[]>(() => {
+        if (this.hasSquadsError()) return [];
+        return this.userSquads.value()?.data ?? [];
+    });
     protected allSquadMembers = computed<string[]>(() =>
         Array.from(new Set(this.squads().flatMap((squad) => squad.squadMembers))),
     );

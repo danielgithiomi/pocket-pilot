@@ -39,5 +39,8 @@ export class SplitwiseSquads {
   // COMPUTED
   protected readonly apiError = computed<boolean>(() => !!this.squads.error());
   protected readonly isFetchingSquads = computed<boolean>(() => this.squads.isLoading());
-  protected readonly userSquads = computed<SplitwiseSquad[]>(() => this.squads.value()?.data.reverse() || []);
+  protected readonly userSquads = computed<SplitwiseSquad[]>(() => {
+    if (this.apiError()) return [];
+    return this.squads.value()?.data.slice().reverse() ?? [];
+  });
 }

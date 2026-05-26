@@ -130,8 +130,8 @@ export class SplitwiseSplitForm {
 
         return {
             ...rest,
-            eventSplittables: cleanedSplittables,
             eventDate: eventDate.toISOString(),
+            eventSplittables: cleanedSplittables,
             verificationTotal: verificationTotal === null ? null : Number(verificationTotal),
         } satisfies SplitwiseEventPayload;
     }
