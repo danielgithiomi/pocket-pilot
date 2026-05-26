@@ -40,9 +40,9 @@
 
     <div
         class="page-container flex-1 flex flex-col space-y-6"
-        [ngClass]="{ 'grid! place-items-center!': hasError() || !resource }"
+        [ngClass]="{ 'grid! place-items-center!': hasError() }"
     >
-        @if (!hasError() && resource) {
+        @if (!hasError()) {
             <breadcrumbs
                 [icon]="breadcrumbIcon"
                 [isLoading]="isLoadingResources()"
