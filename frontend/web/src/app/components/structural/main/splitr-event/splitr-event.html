@@ -1,7 +1,6 @@
 <div [id]="splitrEvent().id" class="splitr-event group/event">
     <div class="splitr-event-content">
         <div class="splitr-event-details">
-
             <div class="splitr-event-info">
                 <div class="splitr-event-info-left">
                     <p class="splitr-event-title">{{ splitrEvent().eventName }}</p>
@@ -14,27 +13,32 @@
             </div>
 
             <div class="splitr-event-members">
-
                 <div class="splitr-event-members-wrapper">
                     @for (member of splitrEvent().eventMembers; track member) {
-                        <div class="size-4 bg-red-600 rounded-full"></div>
+                        <div class="size-4 bg-red-300 rounded-full"></div>
                     }
 
-                    <p class="splitr-event-members-count">{{ splitrEvent().eventMembers.length }} people</p>
+                    <p class="splitr-event-members-count">
+                        {{ splitrEvent().eventMembers.length }} people
+                    </p>
                 </div>
 
                 <div class="splitr-event-tags">
-                    <atom-badge variant="primary" label="1 Payer" />
-                    <atom-badge variant="tertiary" label="Settled" />
+                    <atom-badge variant="info" label="1 Payer" />
+                    <atom-badge variant="warning" label="Settled" />
                 </div>
-
             </div>
-
         </div>
 
-        <hr />
+        <div class="splitr-divider"></div>
 
-        <div class="splitr-event-meals"></div>
+        <div class="splitr-event-meals">
+            <div class="splitr-event-meals">
+                @for (splittable of splitrEvent().eventSplittables; track splittable.id) {
+                    <atom-badge variant="neutral" [label]="splittable.name" />
+                }
+            </div>
+        </div>
     </div>
 
     <div class="splitr-event-pointer">

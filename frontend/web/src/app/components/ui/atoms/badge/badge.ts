@@ -16,11 +16,12 @@ import { Component, computed, input } from '@angular/core';
 })
 export class Badge {
     // INPUTS
+    readonly className = input<string>('');
     readonly label = input.required<string>();
     readonly variant = input.required<BadgeVariant>();
 
     // COMPUTED
     protected readonly badgeClasses = computed<string>(() => {
-        return BADGE_STYLES[this.variant()];
+        return [BADGE_STYLES[this.variant()], this.className()].filter(Boolean).join(' ');
     });
 }

@@ -25,6 +25,14 @@
                 }
             }
         }
+
+        .splitr-divider {
+            @apply bg-(--body-background) h-[1px] mt-3 mb-2 mx-1 w-full;
+        }
+
+        .splitr-event-meals {
+            @apply flex flex-row gap-2;
+        }
     }
 
     .splitr-event-pointer {
