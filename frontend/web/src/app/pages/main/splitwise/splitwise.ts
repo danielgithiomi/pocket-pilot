@@ -1,6 +1,7 @@
 import { Button } from '@atoms/button';
 import { SplitwiseSquad } from '@global/types';
 import { SplitwiseSquads } from './squads/squads';
+import { SplitwiseEvents } from './events/events';
 import { SplitwiseService } from '@api/splitwise.service';
 import { SplitwiseSplitForm } from './split-form/split-form';
 import { SplitwiseSquardForm } from './squard-form/squard-form';
@@ -15,6 +16,7 @@ import { UpdateSplitwiseSquad } from './squard-form/update-squad/update-squad';
     imports: [
         Button,
         SplitwiseSquads,
+        SplitwiseEvents,
         SplitwiseSplitForm,
         LucideAngularModule,
         SplitwiseSquardForm,
