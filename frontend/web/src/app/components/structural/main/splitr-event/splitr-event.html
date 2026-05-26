@@ -13,6 +13,9 @@
                     <p class="font-bold tracking-wide text-md">
                         {{ formatCurrency(splitrEvent().verificationTotal) }}
                     </p>
+                    <p class="text-muted-text text-xs font-semibold text-end">
+                        {{ splitrEvent().billingCurrency.toUpperCase() }}
+                    </p>
                 </div>
             </div>
 

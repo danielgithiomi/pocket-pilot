@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .splitr-event {
-    @apply cursor-pointer! w-full rounded-xl py-4 px-2 flex flex-row items-center gap-3 border-[1px] border-solid border-(--muted-text) hover:border-white/45 transition-all duration-300;
+    @apply cursor-pointer! w-full rounded-xl py-4 px-2 flex flex-row items-center gap-3 border-[1px] border-solid border-(--muted-text) hover:border-black/25 hover:dark:border-white/45 transition-all hover:shadow-md duration-300;
 
     .splitr-event-content {
         @apply flex-1 pl-2 w-full;
@@ -27,7 +27,7 @@
         }
 
         .splitr-divider {
-            @apply bg-(--muted-text) group-hover/event:bg-white/45 h-[1px] mt-3 mb-2 mx-1 w-full transition-all duration-300;
+            @apply bg-(--muted-text) group-hover/event:bg-black/25 group-hover/event:dark:bg-white/45 h-[1px] mt-3 mb-2 mx-1 w-full transition-all duration-300;
         }
 
         .splitr-event-meals {
