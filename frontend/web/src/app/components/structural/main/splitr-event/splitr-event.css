@@ -19,6 +19,10 @@
                 .splitr-event-members-wrapper {
                     @apply flex flex-row gap-2;
                 }
+
+                .splitr-event-tags {
+                    @apply flex flex-row gap-2;
+                }
             }
         }
     }

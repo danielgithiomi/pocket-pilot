@@ -1,11 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { LucideAngularModule, ArrowBigRightDash } from 'lucide-angular';
+import { Badge } from "@components/ui/atoms/badge";
 
 @Component({
     selector: 'splitr-event',
     styleUrl: './splitr-event.css',
     templateUrl: './splitr-event.html',
-    imports: [LucideAngularModule]
+    imports: [LucideAngularModule, Badge]
 })
 export class SplitrEvent {
 

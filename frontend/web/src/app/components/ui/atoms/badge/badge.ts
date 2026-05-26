@@ -8,7 +8,7 @@ import { Component, computed, input } from '@angular/core';
     template: `
         <span
             [ngClass]="badgeClasses()"
-            class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ring-1 ring-inset"
+            class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ring-1 ring-inset"
         >
             {{ label() }}
         </span>
