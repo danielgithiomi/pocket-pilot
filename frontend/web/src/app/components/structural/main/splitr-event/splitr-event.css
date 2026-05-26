@@ -1,0 +1,33 @@
+@reference 'tailwindcss';
+
+.splitr-event {
+    @apply cursor-pointer! w-full bg-(--muted-text) rounded-lg py-4 px-2 flex flex-row items-center gap-4 border-[1px] border-solid border-white hover:border-(--primary);
+
+    .splitr-event-content {
+        @apply flex-1 pl-2 w-full;
+
+        .splitr-event-details {
+            @apply flex flex-col gap-2;
+
+            .splitr-event-info {
+                @apply flex flex-row gap-4 items-center justify-between;
+            }
+
+            .splitr-event-members {
+                @apply flex flex-row gap-4 items-center justify-between;
+
+                .splitr-event-members-wrapper {
+                    @apply flex flex-row gap-2;
+                }
+            }
+        }
+    }
+
+    .splitr-event-pointer {
+        @apply p-1 w-fit rounded-full grid place-items-center group-hover/event:bg-(--alternate-background);
+
+        lucide-icon {
+            @apply group-hover/event:text-(--primary);
+        }
+    }
+}

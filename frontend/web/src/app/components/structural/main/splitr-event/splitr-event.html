@@ -1,0 +1,47 @@
+<div [id]="splitrEvent().id" class="splitr-event group/event">
+    <div class="splitr-event-content">
+        <div class="splitr-event-details">
+
+            <div class="splitr-event-info">
+                <div class="splitr-event-info-left">
+                    <p class="splitr-event-title">{{ splitrEvent().eventName }}</p>
+                    <p class="splitr-event-date">{{ splitrEvent().eventDate }}</p>
+                </div>
+
+                <div class="splitr-event-info-right">
+                    <p class="splitr-event-squad-name">{{ splitrEvent().verificationTotal }}</p>
+                </div>
+            </div>
+
+            <div class="splitr-event-members">
+
+                <div class="splitr-event-members-wrapper">
+                    @for (member of splitrEvent().eventMembers; track member) {
+                        <div class="size-4 bg-red-600 rounded-full"></div>
+                    }
+
+                    <p class="splitr-event-members-count">{{ splitrEvent().eventMembers.length }} people</p>
+                </div>
+
+                <div class="splitr-event-tags">
+                    <div class="splitr-event-tag">
+                        <p class="splitr-event-tag-label">Food</p>
+                    </div>
+                    <div class="splitr-event-tag">
+                        <p class="splitr-event-tag-label">Food</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr />
+
+        <div class="splitr-event-meals"></div>
+    </div>
+
+    <div class="splitr-event-pointer">
+        <lucide-icon name="open-details-arrow" [img]="ArrowRght" [size]="16" />
+    </div>
+</div>
