@@ -2,13 +2,17 @@
     <div class="splitr-event-content">
         <div class="splitr-event-details">
             <div class="splitr-event-info">
-                <div class="splitr-event-info-left">
-                    <p class="splitr-event-title">{{ splitrEvent().eventName }}</p>
-                    <p class="splitr-event-date">{{ splitrEvent().eventDate }}</p>
+                <div>
+                    <p class="font-semibold">{{ splitrEvent().eventName }}</p>
+                    <p class="text-muted-text text-xs">
+                        {{ formatFullDate(splitrEvent().eventDate) }}
+                    </p>
                 </div>
 
                 <div class="splitr-event-info-right">
-                    <p class="splitr-event-squad-name">{{ splitrEvent().verificationTotal }}</p>
+                    <p class="font-bold tracking-wide text-md">
+                        {{ formatCurrency(splitrEvent().verificationTotal) }}
+                    </p>
                 </div>
             </div>
 
@@ -16,7 +20,7 @@
                 <div class="splitr-event-members-wrapper">
                     <atom-overlapper [items]="splitrEvent().eventMembers" />
 
-                    <p class="splitr-event-members-count">
+                    <p class="text-muted-text text-xs">
                         {{ splitrEvent().eventMembers.length }} people
                     </p>
                 </div>
@@ -34,9 +38,9 @@
             <div class="splitr-event-meals">
                 @for (splittable of splitrEvent().eventSplittables; track splittable.id) {
                     <atom-badge
-                    variant="neutral"
-                    [uppercase]="false"
-                    className="cursor-default py-1.5"
+                        variant="neutral"
+                        [uppercase]="false"
+                        className="cursor-default py-1.5"
                         [label]="splittable.name.toUpperCase() + ' x ' + splittable.quantity"
                     />
                 }

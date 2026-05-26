@@ -1,7 +1,7 @@
-@reference 'tailwindcss';
+@reference "tailwindcss";
 
 .splitr-event {
-    @apply cursor-pointer! w-full bg-(--muted-text) rounded-lg py-4 px-2 flex flex-row items-center gap-4 border-[1px] border-solid border-white hover:border-(--primary);
+    @apply cursor-pointer! w-full rounded-xl py-4 px-2 flex flex-row items-center gap-3 border-[1px] border-solid border-(--muted-text) hover:border-white/45 transition-all duration-300;
 
     .splitr-event-content {
         @apply flex-1 pl-2 w-full;
@@ -17,7 +17,7 @@
                 @apply flex flex-row gap-4 items-center justify-between;
 
                 .splitr-event-members-wrapper {
-                    @apply flex flex-row gap-2;
+                    @apply flex-row gap-2 items-center hidden md:flex;
                 }
 
                 .splitr-event-tags {
@@ -27,7 +27,7 @@
         }
 
         .splitr-divider {
-            @apply bg-(--body-background) h-[1px] mt-3 mb-2 mx-1 w-full;
+            @apply bg-(--muted-text) group-hover/event:bg-white/45 h-[1px] mt-3 mb-2 mx-1 w-full transition-all duration-300;
         }
 
         .splitr-event-meals {
@@ -36,10 +36,6 @@
     }
 
     .splitr-event-pointer {
-        @apply p-1 w-fit rounded-full grid place-items-center group-hover/event:bg-(--alternate-background);
-
-        lucide-icon {
-            @apply group-hover/event:text-(--primary);
-        }
+        @apply p-2 w-fit rounded-full grid place-items-center group-hover/event:bg-(--body-background) transition-all duration-300;
     }
 }

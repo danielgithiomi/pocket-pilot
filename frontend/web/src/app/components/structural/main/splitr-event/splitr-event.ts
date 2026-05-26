@@ -1,7 +1,9 @@
-import { Component, signal } from '@angular/core';
-import { LucideAngularModule, ArrowBigRightDash } from 'lucide-angular';
-import { Badge } from "@components/ui/atoms/badge";
-import { Overlapper } from "@components/ui/atoms/overlapper";
+import { Badge } from "@atoms/badge";
+import { Overlapper } from "@atoms/overlapper";
+import { AccountsService } from "@api/accounts.service";
+import { Component, inject, signal } from '@angular/core';
+import { formatFullDate, formatCurrency } from "@libs/utils";
+import { LucideAngularModule, ChevronRight } from 'lucide-angular';
 
 @Component({
     selector: 'splitr-event',
@@ -12,7 +14,22 @@ import { Overlapper } from "@components/ui/atoms/overlapper";
 export class SplitrEvent {
 
     // ICONS
-    protected readonly ArrowRght = ArrowBigRightDash;
+    protected readonly ArrowRght = ChevronRight;
+
+    // SERVICES
+    private readonly accountsService = inject(AccountsService);
+
+    // DATA
+    protected readonly currency = this.accountsService.getDefaultCurrency();
+
+    // UTILS
+    protected formatFullDate(date:string): string {
+        return formatFullDate(date);
+    };
+
+    protected formatCurrency(amount:number): string {
+        return formatCurrency(amount, this.currency, 2, true, false);
+    };
 
     // SIGNAL STATES
     protected readonly splitrEvent = signal<ISplitrEvent>({
