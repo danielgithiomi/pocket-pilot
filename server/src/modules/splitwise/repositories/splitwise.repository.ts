@@ -33,4 +33,11 @@ export class SplitwiseRepository {
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
         });
     }
+
+    getSplitwiseEventById(eventId: string) {
+        return this.db.splitwiseEvent.findUnique({
+            where: { id: eventId },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+        });
+    }
 }

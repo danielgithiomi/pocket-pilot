@@ -1,14 +1,14 @@
 import { ExposeEnumDto } from '@common/types';
 import { CookiesAuthGuard } from '@common/guards';
 import { hoursToMilliseconds } from '@libs/utils';
-import { Body, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { SplitwiseService } from '../services/splitwise.service';
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { Public, Summary, UserInRequest } from '@common/decorators';
+import { Body, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
-import { ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { SplitwiseEventDto, SplitwiseEventPayload } from '../dto/splitwise.dto';
+import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller('splitwise')
 @UseGuards(CookiesAuthGuard)
@@ -44,8 +44,26 @@ export class SplitwiseController {
         isArray: true,
         type: [SplitwiseEventDto],
     })
-    getSplitwiseEvents(@UserInRequest() user: User) {
+    getUserSplitwiseEvents(@UserInRequest() user: User) {
         return this.splitwiseService.getUserSplitwiseEvents(user.id);
+    }
+
+    @Get(':eventId')
+    @HttpCode(200)
+    @ApiCookieAuth('access_token')
+    @ApiOperation({ summary: 'Get a splitwise event by ID' })
+    @Summary('Splitwise event retrieved', 'The user retrieved a splitwise event by ID')
+    @ApiParam({
+        name: 'eventId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The ID of the splitwise event to retrieve',
+    })
+    @ApiResponse({
+        status: 200,
+        type: SplitwiseEventDto,
+    })
+    getUserSplitwiseEventById(@UserInRequest() user: User, @Param('eventId') eventId: string) {
+        return this.splitwiseService.getSplitwiseEventById(user.id, eventId);
     }
 
     @Post()
