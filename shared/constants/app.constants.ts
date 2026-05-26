@@ -91,6 +91,14 @@ export const LANGUAGES: LabelValueItem[] = [
   { value: "om", label: "Oromo" },
 ];
 
+export const COMMON_CURRENCIES: LabelValueItem[] = [
+  { value: "USD", label: "USD", descriptor: "US Dollar" },
+  { value: "EUR", label: "EUR", descriptor: "Euro" },
+  { value: "MUR", label: "MUR", descriptor: "Mauritian Rupee" },
+  { value: "KES", label: "KES", descriptor: "Kenyan Shilling" },
+  { value: "GBP", label: "GBP", descriptor: "British Pound" },
+];
+
 export const CURRENCIES: LabelValueItem[] = [
   { value: "USD", label: "USD", descriptor: "US Dollar" },
   { value: "EUR", label: "EUR", descriptor: "Euro" },

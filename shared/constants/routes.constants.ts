@@ -6,6 +6,7 @@ export const WEB_ROUTES = {
   login: "auth/login",
   accounts: "accounts",
   settings: "settings",
+  splitwise: "splitwise",
   dashboard: "dashboard",
   onboarding: "onboarding",
   register: "auth/register",
@@ -13,6 +14,7 @@ export const WEB_ROUTES = {
 
   // dynamic routes
   accountDetails: "accounts/:id",
+  splitrDetails: "splitwise/:eventId",
 } satisfies WebRoutes;
 
 export interface WebRoutes {
@@ -24,10 +26,12 @@ export interface WebRoutes {
   register: string;
   settings: string;
   accounts: string;
+  splitwise: string;
   dashboard: string;
   onboarding: string;
   transactions: string;
 
   // dynamic routes
+  splitrDetails: string;
   accountDetails: string;
 }

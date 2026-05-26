@@ -1,0 +1,104 @@
+<atom-input
+  type="text"
+  id="split-name"
+  [inverted]="true"
+  autocomplete="off"
+  label="Event Name"
+  placeholder="Eg: Drinks at Divino"
+  [formField]="formModel().eventName"
+  (clearOutput)="formModel().eventName().controlValue.set('')"
+/>
+
+<div class="w-full flex flex-col md:flex-row items-start gap-2 md:gap-4 mb-4 md:mb-0">
+  <organism-date-picker
+    [max]="maxDate"
+    [required]="true"
+    [inverted]="true"
+    label="Event Date"
+    class="flex-1 w-full"
+    id="event-split-date"
+    wrapperClassName="pt-0!"
+    placeholder="Select a date"
+    [showClearOutputIcon]="false"
+    [formField]="formModel().eventDate"
+  />
+
+  <atom-select
+    label="Currency"
+    [inverted]="true"
+    id="goal-currency"
+    class="flex-1 w-full"
+    [options]="currencies"
+    wrapperClassName="my-0"
+    placeholder="Select a currency"
+    [formField]="formModel().billingCurrency"
+  />
+</div>
+
+<!-- Member Selection -->
+<div class="w-full flex flex-col gap-1.5 text-[0.875rem] my-2">
+  <p class="text-inverted-text"><span class="text-expense">*</span>People Present:</p>
+
+  <atom-select
+    [inverted]="true"
+    id="squad-options"
+    label="Select a squad"
+    [includeLabel]="false"
+    wrapperClassName="my-0!"
+    [options]="squadDropdownOptions()"
+    [formField]="formModel().squadName"
+    placeholder="Pick from an existing squad"
+  />
+</div>
+
+@if (isSquadCustom()) {
+  <div class="flex flex-row items-end gap-2 w-full">
+    <input
+      type="text"
+      class="flex-1"
+      #customMemberInput
+      autocomplete="off"
+      id="add-member-name"
+      placeholder="Eg: John"
+      (input)="validateMemberName(customMemberInput.value)"
+    />
+
+    <atom-button
+      id="add-member"
+      variant="primary"
+      class="shadow-none rounded-lg!"
+      [disabled]="!isMemberNameValid() || isSubmittingForm()"
+      (clicked)="addCustomMemberToPool(customMemberInput.value); customMemberInput.value = ''"
+    >
+      <div class="w-full h-full grid place-items-center py-[1.5px]">
+        <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize()" />
+      </div>
+    </atom-button>
+  </div>
+}
+
+<!-- Squad Member Container -->
+@let splitMembersCount = formattedSplitMembers().length;
+<div
+  class="h-20 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+  [ngClass]="{ 'grid! place-items-center!': splitMembersCount === 0 }"
+>
+  @if (splitMembersCount === 0) {
+    <p class="text-xs text-inverted-text">
+      {{
+        isSquadCustom()
+          ? 'Add members to split the bill with.'
+          : 'Select a squad to split the bill with.'
+      }}
+    </p>
+  } @else {
+    @for (member of formattedSplitMembers(); track member.memberName) {
+      <squad-member
+        [inverted]="true"
+        [member]="member"
+        [isCheckable]="true"
+        (onMemberEventClick)="toggleMemberChecked($event)"
+      />
+    }
+  }
+</div>

@@ -11,8 +11,8 @@ import { Component, inject, input, output } from '@angular/core';
 })
 export class Form {
   // ICONS
-  protected readonly iconSize = 18;
   protected readonly X = X;
+  protected readonly iconSize = 18;
 
   // INPUTS
   id = input.required<string>();
@@ -21,8 +21,10 @@ export class Form {
   description = input.required<string>();
 
   // OUTPUTS
-  protected readonly closeForm = output<'icon' | 'overlay'>();
+  protected readonly closeForm = output<FormCloseEvent>();
 
   // SERVICES
   protected readonly drawerService: DrawerService = inject(DrawerService);
 }
+
+export type FormCloseEvent = 'icon' | 'overlay';

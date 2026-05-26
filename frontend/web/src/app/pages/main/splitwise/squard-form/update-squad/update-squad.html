@@ -1,0 +1,97 @@
+<organism-form
+    id="squad-update"
+    title="Modify a squad"
+    (closeForm)="handleUpdateSquadFormClose($event)"
+    description="Modify the name and members of an existing squad."
+>
+    <form id="update-squad-form" slot="content" (submit)="handleUpdateSquadFormSubmit($event)">
+        <atom-input
+            type="text"
+            id="squad-name"
+            [inverted]="true"
+            autocomplete="off"
+            label="Squad Name"
+            placeholder="Eg: Foodies"
+            [formField]="updateSquadForm.squadName"
+            (clearOutput)="updateSquadForm.squadName().controlValue.set('')"
+        />
+
+        <!-- Member Selection -->
+        <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
+            <p class="text-inverted-text">
+                <span class="text-sm text-expense">*</span>Update Squad Members:
+            </p>
+        </div>
+
+        <div class="flex flex-row items-end gap-2 w-full">
+            <input
+                type="text"
+                class="flex-1"
+                #newMemberInput
+                autocomplete="off"
+                id="add-member-name"
+                placeholder="Eg: John"
+                (input)="validateMemberName(newMemberInput.value)"
+            />
+
+            <atom-button
+                id="add-member"
+                variant="primary"
+                class="shadow-none rounded-lg!"
+                [disabled]="!isMemberNameValid() || isSubmittingUpdateSquadForm()"
+                (clicked)="addNewMemberToPool(newMemberInput.value, true); newMemberInput.value = ''"
+            >
+                <div class="w-full h-full grid place-items-center py-[2px]">
+                    <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize" />
+                </div>
+            </atom-button>
+        </div>
+
+        <!-- Squad Member Container -->
+        @let memberPoolCount = squadMembersPool().length;
+        <div
+            class="h-22.5 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+            [ngClass]="{ 'grid! place-items-center!': memberPoolCount === 0 }"
+        >
+            @if (memberPoolCount === 0) {
+                <p class="text-xs text-inverted-text">You don't have any existing members</p>
+            } @else {
+                @for (member of squadMembersPool(); track member.memberName) {
+                    <squad-member
+                        [inverted]="true"
+                        [member]="member"
+                        [isCheckable]="true"
+                        (onMemberEventClick)="addNewMemberToPool($event, false)"
+                    />
+                }
+            }
+        </div>
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+        <atom-button
+            type="button"
+            label="Reset"
+            [inverted]="true"
+            variant="secondary"
+            form="update-squad-form"
+            id="reset-update-squad-form"
+            (clicked)="resetUpdateSquadForm()"
+            [disabled]="!updateSquadForm().dirty() || isSubmittingUpdateSquadForm()"
+        />
+
+        <atom-button
+            type="submit"
+            label="Update Squad"
+            form="update-squad-form"
+            id="submit-update-squad-form"
+            [isLoading]="isSubmittingUpdateSquadForm()"
+            [disabled]="
+                !updateSquadForm().dirty() ||
+                updateSquadForm().invalid() ||
+                isSubmittingUpdateSquadForm() ||
+                updateSquadFormModel().squadMembers.length === 0
+            "
+        />
+    </div>
+</organism-form>

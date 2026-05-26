@@ -5,11 +5,11 @@ import { Button } from '@atoms/button';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { CURRENCIES } from '@global/constants';
+import { formatToReadable } from '@libs/utils';
 import { Account as IAccount } from '@global/types';
 import { AccountsService } from '@api/accounts.service';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './account.details.types';
-import { formatToReadable } from '@libs/utils';
 
 @Component({
   selector: 'edit-account-details-form',

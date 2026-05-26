@@ -10,7 +10,6 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    // url      = env("DATABASE_URL")
 }
 
 enum AccountType {
@@ -51,12 +50,12 @@ model Account {
 }
 
 model User {
-    id                  String  @id() @default(uuid())
-    name                String
-    email               String
-    password            String
-    phoneNumber         String?
-    profilePictureKey   String?
+    id                String  @id() @default(uuid())
+    name              String
+    email             String
+    password          String
+    phoneNumber       String?
+    profilePictureKey String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -128,9 +127,9 @@ model Transaction {
     targetAccount   Account? @relation("TargetAccountTransactions", fields: [targetAccountId], references: [id], onDelete: Cascade)
     targetAccountId String?
 
-    @@map("Transactions")
-    @@index([sourceAccountId])      
+    @@index([sourceAccountId])
     @@index([targetAccountId])
+    @@map("Transactions")
 }
 
 enum CategoryType {
@@ -146,7 +145,7 @@ model Categories {
     lastUpdated DateTime @updatedAt()
 
     // Link to user - one-to-many
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String @unique
 
     @@map("User Transaction Categories")
@@ -218,4 +217,119 @@ model Bills {
     createdAt DateTime @default(now())
 
     @@map("User Bills")
+}
+
+enum SplitCategoryTag {
+    FOOD
+    DESERT
+    DRINKS
+    SHOPPING
+    UTILITIES
+    TRANSPORT
+    ENTERTAINMENT
+}
+
+enum SplitStrategy {
+    SOLE
+    EQUAL
+    QUANTITY
+}
+
+enum PaymentStrategy {
+    ONE
+    EQUAL
+    CUSTOM
+}
+
+model SplitwiseSquad {
+    id            String    @id @default(uuid())
+    creatorId     String
+
+    squadName     String
+    squadImageKey String?
+    squadMembers  String[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt()
+
+    @@map("Splitwise Squads")
+}
+
+model QuantitySplit {
+    id String @id @default(uuid())
+
+    consumerQuantity Int
+    consumerName String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt()
+
+    // Link to splittable - one-to-many
+    splittableId String
+    splittable Splittable @relation(fields: [splittableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@map("Quantity Splits")
+}
+
+model BillPayer {
+    id String @id @default(uuid())
+
+    payerName   String
+    payerAmount Float
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt()
+
+    // Link to splitwise event - one-to-many
+    splitwiseEventId String
+    splitwiseEvent SplitwiseEvent @relation(fields: [splitwiseEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@map("Bill Payers")
+}
+
+model Splittable{
+    id            String        @id @default(uuid())
+
+    name          String
+    quantity      Int
+    unitPrice     Float
+    
+    total         Float
+    settled       Boolean       @default(false)
+    splitStrategy SplitStrategy
+
+    updatedAt     DateTime      @updatedAt()
+    createdAt     DateTime      @default(now())
+
+    // Link to quantity splits - one-to-many
+    quantitySplits QuantitySplit[]
+
+    splitEventId String
+    splitEvent   SplitwiseEvent @relation(fields: [splitEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@map("Splittables")
+}
+
+model SplitwiseEvent {
+    id            String    @id @default(uuid())
+    creatorId     String
+
+    eventName           String
+    eventDate           DateTime
+
+    squadName           String
+    eventMembers        String[]
+
+    verificationTotal   Float
+    billingCurrency     String
+    billPaymentStrategy PaymentStrategy
+    billPayers          BillPayer[]
+
+    eventSplittables    Splittable[]
+
+    settledAt     DateTime?
+    updatedAt     DateTime      @updatedAt()
+    createdAt     DateTime      @default(now())
+
+    @@map("Splitwise Events")
 }

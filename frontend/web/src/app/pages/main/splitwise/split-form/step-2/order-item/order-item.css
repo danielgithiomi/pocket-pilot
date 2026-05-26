@@ -1,0 +1,26 @@
+@reference "tailwindcss";
+
+.order-item {
+  @apply relative py-4 px-2 border bg-(--inverted-background) rounded-lg;
+
+  p,
+  span {
+    @apply text-(--inverted-text)!;
+  }
+
+  .order-item-header {
+    @apply text-sm w-full flex flex-row items-center justify-between gap-4 cursor-pointer!;
+
+    .order-item-name {
+      @apply flex-1 font-semibold;
+    }
+  }
+
+  .order-item-form {
+    @apply px-4 pt-2;
+
+    .form-buttons {
+      @apply flex flex-row gap-2 justify-end;
+    }
+  }
+}

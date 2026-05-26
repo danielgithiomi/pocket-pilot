@@ -13,7 +13,7 @@ import { ChevronDown, LucideAngularModule } from 'lucide-angular';
 export class Select {
   /* INPUTS */
   id = input.required<string>();
-  size = input<SelectSize>('sm');
+  size = input<SelectSize>('md');
   required = input<boolean>(true);
   label = input.required<string>();
   disabled = input<boolean>(false);
@@ -31,6 +31,8 @@ export class Select {
   selectedValue = input<string>('');
   options = input.required<SelectOption[]>();
   formField = input.required<FieldTree<string, string>>();
+
+  includeLabel = input<boolean>(true);
 
   /* ICONS */
   readonly iconSize = 18;

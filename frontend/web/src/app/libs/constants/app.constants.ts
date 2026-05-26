@@ -22,6 +22,11 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
     path: '/transactions',
   },
   {
+    icon: 'splitwise',
+    name: 'Splitwise',
+    path: '/splitwise',
+  },
+  {
     icon: 'goals',
     name: 'Goals_Bills',
     path: '/goals',
@@ -45,3 +50,5 @@ export const AdditionalDrawerNavigationLinks: DrawerNavigationLink[] = [
     path: '/support',
   },
 ];
+
+export const QUANTITIES: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

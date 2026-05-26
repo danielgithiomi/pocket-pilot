@@ -108,17 +108,3 @@ section:hover {
     }
   }
 }
-
-.loader {
-  width: 12px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 2px solid;
-  border-color: var(--error) transparent;
-  animation: l1 1s infinite;
-}
-@keyframes l1 {
-  to {
-    transform: rotate(0.5turn);
-  }
-}

@@ -9,7 +9,7 @@
       [disabled]="isLoadingAccounts()"
     >
       <div class="w-full flex flex-row items-center justify-between gap-4">
-        <lucide-icon name="create-wallet" [img]="Plus" [size]="iconSize"></lucide-icon>
+        <lucide-icon name="create-wallet" [img]="Plus" [size]="iconSize" />
         <span class="hidden sm:block">Add Account</span>
       </div>
     </atom-button>
@@ -19,7 +19,12 @@
     <div class="page-container flex-1">
       <div class="skeleton w-1/4 h-4"></div>
 
-      <div class="account-grid">
+      <div
+        class="account-grid"
+        [ngClass]="{
+          'md:grid-cols-1! lg:grid-cols-2! xl:grid-cols-3!': !drawerService.isDrawerCollapsed(),
+        }"
+      >
         @for (i of [1, 2, 3]; track i) {
           <account-card
             [id]="i.toString()"

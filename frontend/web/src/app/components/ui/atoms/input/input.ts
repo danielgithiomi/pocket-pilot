@@ -1,58 +1,73 @@
 import { NgClass } from '@angular/common';
 import { AutoComplete, InputType } from './input.types';
 import { FieldTree, FormField } from '@angular/forms/signals';
-import { Eye, EyeOff, LucideAngularModule, X } from 'lucide-angular';
+import { Eye, EyeClosed, LucideAngularModule, X } from 'lucide-angular';
 import { Component, computed, input, output, signal } from '@angular/core';
 
 @Component({
-  selector: 'atom-input',
-  templateUrl: './input.html',
-  imports: [LucideAngularModule, FormField, NgClass],
+    selector: 'atom-input',
+    templateUrl: './input.html',
+    imports: [LucideAngularModule, FormField, NgClass],
 })
 export class Input {
-  /* INPUTS */
-  id = input.required<string>();
-  numberStep = input<number>(1);
-  required = input<boolean>(true);
-  label = input.required<string>();
-  allowEndIcon = input<boolean>(true);
+    /* INPUTS */
+    id = input.required<string>();
+    numberStep = input<number>(1);
+    required = input<boolean>(true);
+    label = input.required<string>();
+    allowEndIcon = input<boolean>(true);
 
-  // Inversions
-  inverted = input<boolean>(false);
-  invertLabel = input<boolean>(false);
-  invertedIcon = input<boolean>(false);
+    // Inversions
+    inverted = input<boolean>(false);
+    invertLabel = input<boolean>(false);
+    invertedIcon = input<boolean>(false);
 
-  inputClassName = input<string>('');
-  wrapperClassName = input<string>('');
+    inputClassName = input<string>('');
+    wrapperClassName = input<string>('');
 
-  type = input<InputType>('text');
-  placeholder = input.required<string>();
-  autocomplete = input.required<AutoComplete>();
+    type = input<InputType>('text');
+    placeholder = input.required<string>();
+    autocomplete = input.required<AutoComplete>();
 
-  formField = input.required<FieldTree<string | number | null, string | number>>();
+    status = input<InputStatus>('error');
+    showStatus = input<boolean>(false);
 
-  /* OUTPUTS */
-  clearOutput = output<void>();
+    formField = input.required<FieldTree<string | number | null, string | number>>();
 
-  /* ICONS */
-  readonly X = X;
-  readonly Eye = Eye;
-  readonly iconSize = 18;
-  readonly EyeOff = EyeOff;
+    /* OUTPUTS */
+    clearOutput = output<void>();
 
-  /* SIGNALS */
-  protected isPasswordVisible = signal(false);
+    /* ICONS */
+    readonly X = X;
+    readonly Visible = Eye;
+    readonly iconSize = 18;
+    readonly Hidden = EyeClosed;
 
-  /* COMPUTED */
-  fieldState = computed(() => this.formField()());
-  inputId = computed<string>(() => `input-field-${this.id()}`);
-  inputType = computed<InputType>(() => {
-    if (this.type() !== 'password') return this.type();
-    return this.isPasswordVisible() ? 'text' : 'password';
-  });
+    /* SIGNALS */
+    protected isPasswordVisible = signal(false);
 
-  /* METHODS */
-  togglePasswordVisibility() {
-    this.isPasswordVisible.update((curr) => !curr);
-  }
+    /* COMPUTED */
+    fieldState = computed(() => this.formField()());
+    inputId = computed<string>(() => `input-field-${this.id()}`);
+    inputType = computed<InputType>(() => {
+        if (this.type() !== 'password') return this.type();
+        return this.isPasswordVisible() ? 'text' : 'password';
+    });
+    customInputClasses = computed<string>(() => {
+        if (!this.showStatus()) return this.inputClassName();
+
+        const statusBorderClasses =
+            this.status() === 'error'
+                ? 'border-2! border-solid! border-error! focus:outline-none!'
+                : 'border-2! border-solid! border-primary! focus:outline-none!';
+
+        return [statusBorderClasses, this.inputClassName()].filter(Boolean).join(' ');
+    });
+
+    /* METHODS */
+    togglePasswordVisibility() {
+        this.isPasswordVisible.update((curr) => !curr);
+    }
 }
+
+export type InputStatus = 'error' | 'success';

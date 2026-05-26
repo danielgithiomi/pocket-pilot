@@ -39,7 +39,7 @@
         </div>
 
         @if (isFetchingGoals()) {
-          <div class="card-content">
+          <div class="card-content no-scrollbar">
             @for (i of [1, 2, 3]; track i) {
               <goal-item-skeleton />
             }

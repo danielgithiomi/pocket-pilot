@@ -56,7 +56,6 @@ export class AccountDetails {
   protected readonly hasError = computed(() => !!this.accountWithTransactions.error());
   protected readonly isLoadingResources = computed(() => this.accountWithTransactions.isLoading());
   protected readonly resourceData = computed(() => {
-    // Guard: don't access .value() if resource is in error state
     if (this.accountWithTransactions.error()) return undefined;
 
     const resource = this.accountWithTransactions.value()?.data;

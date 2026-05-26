@@ -1,8 +1,8 @@
 export interface SelectOption {
-  value: string;
   label: string;
   disabled?: boolean;
   descriptor?: string;
+  value: string | number;
 }
 
 export type SelectSize = 'sm' | 'md' | 'lg';

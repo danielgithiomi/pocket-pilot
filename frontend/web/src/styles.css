@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './styles/loaders.css';
 @import './styles/calendar.css';
+@import './styles/uploader.css';
 @import './../../../node_modules/@syncfusion/ej2-base/styles/material3.css';
 @import './../../../node_modules/@syncfusion/ej2-calendars/styles/material3.css';
 
@@ -319,7 +320,7 @@ main {
 
     input,
     select {
-      @apply w-full bg-alternate-background focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
+      @apply w-full bg-alternate-background text-[0.875rem] focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
     }
 
     input::placeholder {
@@ -383,7 +384,12 @@ main {
 
         .card-content {
           @apply p-2;
+
+          .card-item-border {
+            @apply border-[1px] border-solid border-(--muted-text) hover:border-black/25 hover:dark:border-white/45 transition-all hover:shadow-md duration-300;
+          }
         }
+
       }
     }
   }
@@ -399,7 +405,7 @@ main {
   }
 
   .atom-icon {
-    @apply cursor-pointer hover:scale-105 duration-300 ease-in-out hover:text-primary;
+    @apply cursor-pointer! hover:scale-105 duration-300 ease-in-out hover:text-primary;
   }
   /* ICONS END */
 }
@@ -437,73 +443,9 @@ main {
     @apply w-full overflow-hidden truncate line-clamp-1;
   }
 
-  /* FILE DROPZONE START */
-  .file-dropzone {
-    @apply w-full h-full min-h-[200px] bg-alternate-background rounded-xl border-3 border-dashed border-primary transition-all duration-300 ease-in-out cursor-pointer;
-    @apply flex items-center justify-center;
+  .required-asterix {
+    @apply text-sm text-expense! inline-block;
   }
-
-  .file-dropzone:hover,
-  .file-dropzone.drag-over {
-    @apply border-quaternary;
-  }
-
-  .file-dropzone.has-file {
-    @apply border-solid border-quaternary;
-  }
-
-  .file-dropzone .file-input-hidden {
-    @apply absolute opacity-0 w-0 h-0 pointer-events-none;
-  }
-
-  .file-dropzone .dropzone-content {
-    @apply w-full h-full flex flex-col items-center justify-center p-6 cursor-pointer;
-  }
-
-  /* Upload Prompt Styles */
-  .file-dropzone .upload-prompt {
-    @apply flex flex-col items-center justify-center gap-2 text-center;
-  }
-
-  .file-dropzone .upload-icon-wrapper {
-    @apply w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white mb-2;
-    @apply shadow-lg shadow-primary/30 transition-transform duration-300 ease-in-out;
-  }
-
-  .file-dropzone:hover .upload-icon-wrapper,
-  .file-dropzone.drag-over .upload-icon-wrapper {
-    @apply scale-110;
-  }
-
-  .file-dropzone .select-text {
-    @apply text-primary font-medium text-base;
-  }
-
-  .file-dropzone .divider-text {
-    @apply text-muted-text text-sm;
-  }
-
-  .file-dropzone .drag-text {
-    @apply text-primary-text text-sm font-medium;
-  }
-
-  /* File Preview Styles */
-  .file-dropzone .file-preview {
-    @apply flex flex-col items-center justify-center gap-2 text-center;
-  }
-
-  .file-dropzone .file-icon {
-    @apply w-12 h-12 rounded-full bg-quaternary/20 flex items-center justify-center text-quaternary mb-2;
-  }
-
-  .file-dropzone .file-name {
-    @apply text-primary-text font-medium text-sm truncate max-w-[200px];
-  }
-
-  .file-dropzone .file-size {
-    @apply text-muted-text text-xs;
-  }
-  /* FILE DROPZONE END */
 
   /* ANIMATIONS START */
   .animate-left {

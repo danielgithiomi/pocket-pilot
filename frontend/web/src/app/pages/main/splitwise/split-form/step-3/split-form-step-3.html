@@ -1,0 +1,95 @@
+<div class="w-full flex flex-col gap-1 mb-1">
+    @let totalsMatch = totalsEqual();
+    @let showStatus = formModel().verificationTotal().dirty();
+    <atom-input
+        type="text"
+        id="split-name"
+        [inverted]="true"
+        autocomplete="off"
+        placeholder="0.00"
+        [numberStep]="0.01"
+        wrapperClassName="mb-0!"
+        [showStatus]="showStatus"
+        [status]="totalsMatch ? 'success' : 'error'"
+        label="Grand Total (Verification)"
+        [formField]="formModel().verificationTotal"
+        (clearOutput)="formModel().verificationTotal().controlValue.set(null)"
+    />
+
+    <div class="flex flex-row items-center justify-between px-2 w-full mb-2 text-[0.7rem] italic">
+        @if (showStatus) {
+            @let totalsMatch = totalsEqual();
+            <div
+                class="flex flex-row items-center gap-1.5 italic"
+                [ngClass]="{
+                    'text-error': !totalsMatch,
+                    'text-primary': totalsMatch,
+                }"
+            >
+                <lucide-icon
+                    [size]="15"
+                    name="totals-verification"
+                    [img]="totalsMatch ? CheckIcon : CrossIcon"
+                />
+                <p
+                    [ngClass]="{
+                        'text-error': !totalsMatch,
+                        'text-primary': totalsMatch,
+                    }"
+                >
+                    Totals {{ totalsMatch ? 'match' : 'mismatch' }}!
+                </p>
+            </div>
+        }
+
+        <p class="text-muted-text text-right max-w-1/2 ml-auto">
+            Subtotal: <span class="text-primary font-semibold">{{ formattedBillSubtotal() }}</span>
+        </p>
+    </div>
+</div>
+
+<atom-select
+    label="Who Paid"
+    [inverted]="true"
+    id="bill-paid-by"
+    class="flex-1 w-full"
+    wrapperClassName="my-0"
+    placeholder="Select a payment strategy"
+    [options]="billPaymentStrategyOptions()"
+    [formField]="formModel().billPaymentStrategy"
+/>
+
+<div class="my-2">
+    <div
+        class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+    >
+        @for (member of billPayerOptions(); track member.memberName) {
+            <squad-member
+                [inverted]="true"
+                [member]="member"
+                [isCheckable]="true"
+                (onMemberEventClick)="handleAddMemberToPayerList($event)"
+            />
+        }
+    </div>
+</div>
+
+@if (formModel().billPaymentStrategy().value() !== 'ONE') {
+    <p class="text-[0.75rem] italic text-muted-text">
+        Remaining payable amount:
+        <span class="text-primary font-semibold">{{ formattedRemainingPayableAmount() }}</span>
+    </p>
+}
+
+@if (isCustomPaymentStrategy()) {
+    <div class="my-2">
+        @for (payer of billPayerList(); track payer.payerName) {
+            <payer-input
+                [payer]="payer"
+                (onRemovePayerEvent)="handleRemovePayer($event)"
+                [billingCurrency]="formModel().billingCurrency().value()"
+                (onPayerAmountChangeEvent)="handlePayerAmountChange($event)"
+            />
+        }
+    </div>
+}

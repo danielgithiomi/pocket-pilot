@@ -1,0 +1,42 @@
+@reference "tailwindcss";
+
+#split-form-step-2 {
+  @apply h-full flex flex-col w-full border border-dashed p-2 border-(--primary) rounded-lg;
+
+  p,
+  span {
+    @apply text-(--inverted-text);
+  }
+
+  .header {
+    @apply flex flex-row items-center justify-between text-sm;
+
+    .header-summary {
+      @apply flex flex-row items-center gap-2;
+    }
+
+    .header-totals {
+      @apply flex flex-row items-center gap-2;
+
+      p {
+        @apply bg-(--gray4) rounded-lg p-2 text-xs py-2.5;
+      }
+    }
+  }
+
+  .new-item-form {
+    @apply py-2 px-4 shadow-lg rounded-xl;
+
+    .form-buttons {
+      @apply mb-2 flex flex-row gap-2 justify-end;
+    }
+  }
+
+  .content {
+    @apply flex-1 mt-4 border border-dashed border-(--primary) bg-(--gray4) rounded-lg min-h-20;
+
+    .splittables-container {
+      @apply flex flex-col gap-2 p-2;
+    }
+  }
+}
