@@ -7,7 +7,10 @@
     <div class="card-content my-4 overflow-y-scroll no-scrollbar">
         <div class="flex flex-col gap-4">
             @for (event of splitrEvents(); track event.id) {
-                <splitr-event [splitrEvent]="event" />
+                <splitr-event
+                    [splitrEvent]="event"
+                    (onSplitrEventClickEvent)="handleOnSplitrEventClick($event)"
+                />
             }
         </div>
     </div>

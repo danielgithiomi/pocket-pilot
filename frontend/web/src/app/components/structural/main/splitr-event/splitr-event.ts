@@ -1,10 +1,10 @@
-import { Badge } from "@atoms/badge";
-import { Overlapper } from "@atoms/overlapper";
-import { AccountsService } from "@api/accounts.service";
-import { formatFullDate, formatCurrency } from "@libs/utils";
-import { Component, inject, input, signal } from '@angular/core';
+import { Badge } from '@atoms/badge';
+import { Overlapper } from '@atoms/overlapper';
+import { AccountsService } from '@api/accounts.service';
+import { formatFullDate, formatCurrency } from '@libs/utils';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { LucideAngularModule, ChevronRight } from 'lucide-angular';
-import { ISplitrEvent } from "@pages/main/splitwise/events/events";
+import { ISplitrEvent } from '@pages/main/splitwise/events/events';
 
 @Component({
     selector: 'splitr-event',
@@ -18,6 +18,9 @@ export class SplitrEvent {
 
     // INPUTS
     readonly splitrEvent = input.required<ISplitrEvent>();
+
+    // OUTPUTS
+    readonly onSplitrEventClickEvent = output<string>();
 
     // SERVICES
     private readonly accountsService = inject(AccountsService);
@@ -33,6 +36,10 @@ export class SplitrEvent {
     protected formatCurrency(amount: number): string {
         return formatCurrency(amount, this.currency, 2, false, false);
     }
+
+    // METHODS
+    handleOnSplitrEventClick(event: Event) {
+        event.stopPropagation();
+        this.onSplitrEventClickEvent.emit(this.splitrEvent().id);
+    }
 }
-
-

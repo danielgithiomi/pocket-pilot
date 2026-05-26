@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
 import { SplitrEvent } from '@structural/main/splitr-event/splitr-event';
 
 @Component({
@@ -7,6 +8,9 @@ import { SplitrEvent } from '@structural/main/splitr-event/splitr-event';
     imports: [SplitrEvent],
 })
 export class SplitwiseEvents {
+    // SERVICES
+    private readonly router = inject(Router);
+
     // SIGNAL STATES
     protected readonly splitrEvents = signal<ISplitrEvent[]>([
         {
@@ -84,6 +88,11 @@ export class SplitwiseEvents {
             ],
         },
     ]);
+
+    // METHODS
+    handleOnSplitrEventClick(eventId: string) {
+        this.router.navigate(['/splitwise', eventId], { replaceUrl: false });
+    }
 }
 
 export interface ISplitrEvent {

@@ -20,11 +20,11 @@ export class SplitwiseService {
     private readonly resource = inject(SplitwiseResource);
     private readonly errorService = inject(ApiServiceError);
 
-    getUserSquads = () => this.resource.getUserSplitwiseSquads;
-
     getOrderCategoryTags = () => this.resource.getOrderCategoryTags;
 
     // SQUAD
+    getUserSquads = () => this.resource.getUserSplitwiseSquads;
+
     getSquadById(squadId: string): Observable<SplitwiseSquad> {
         const resourceValue = this.getUserSquads().value();
 
@@ -87,6 +87,8 @@ export class SplitwiseService {
     }
 
     // SPLITTABLES
+    getUserSplitrEvents = () => this.resource.getUserSplitrEvents;
+
     createNewSplitwiseEvent(payload: SplitwiseEventPayload) {
         return this.mutation.createNewSplitwiseEvent(payload).pipe(
             // map((response: IStandardResponse<SplitwiseEventPayload>) => response.data),

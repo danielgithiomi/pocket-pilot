@@ -80,6 +80,11 @@ export const routes: Routes = [
         loadComponent: () => import('@pages/main/splitwise/splitwise').then((m) => m.Splitwise),
       },
       {
+        title: 'Splitr Details | Pocket Pilot',
+        path: WEB_ROUTES.splitrDetails,
+        loadComponent: () => import('@pages/main/splitr_details/splitr-details').then((m) => m.SplitrDetails),
+      },
+      {
         title: 'Settings | Pocket Pilot',
         path: WEB_ROUTES.settings,
         loadComponent: () =>

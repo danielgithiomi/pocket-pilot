@@ -14,6 +14,7 @@ export const WEB_ROUTES = {
 
   // dynamic routes
   accountDetails: "accounts/:id",
+  splitrDetails: "splitwise/:eventId",
 } satisfies WebRoutes;
 
 export interface WebRoutes {
@@ -31,5 +32,6 @@ export interface WebRoutes {
   transactions: string;
 
   // dynamic routes
+  splitrDetails: string;
   accountDetails: string;
 }
