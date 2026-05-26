@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NoData } from '@structural/main/no-data/no-data';
 import { DrawerService } from '@infrastructure/services';
 import { SplitwiseService } from '@api/splitwise.service';
-import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
 import { Component, computed, inject } from '@angular/core';
+import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
 

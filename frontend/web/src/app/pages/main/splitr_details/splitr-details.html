@@ -18,19 +18,19 @@
 
     <div
         class="page-container flex-1 flex flex-col space-y-6"
-        [ngClass]="{ 'grid! place-items-center!': hasError() || !event }"
+        [ngClass]="{ 'grid! place-items-center!': hasError() }"
     >
-        @if (!hasError() && event) {
+        @if (!hasError()) {
             <breadcrumbs
-                [isLoading]="isFetchingDetails()"
                 [icon]="BreadcrumbIcon"
+                [isLoading]="isFetchingDetails()"
                 [breadcrumbItems]="breadcrumbItems()"
             />
         }
 
         @if (isFetchingDetails()) {
             <div class="h-full grid place-items-center">
-                <div class="dashboard-card-loader"></div>
+                <div class="layered-loader"></div>
             </div>
         } @else if (hasError()) {
             <fetch-error message="Error loading splitr event" />

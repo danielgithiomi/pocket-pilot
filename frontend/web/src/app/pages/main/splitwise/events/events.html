@@ -17,13 +17,13 @@
                 <fetch-error
                     [messageClass]="animationMessageSize"
                     [animationDimensions]="animationDimensions"
-                    message="Error loading squads. Please refresh."
+                    message="Error loading events. Please refresh the page."
                 />
             } @else if (hasNoData) {
                 <no-data
-                    message="Add a squad to get started"
-                    [messageClass]="animationMessageSize"
-                    [animationDimensions]="animationDimensions"
+                [messageClass]="animationMessageSize"
+                [animationDimensions]="animationDimensions"
+                message="Create a new split event to get started"
                 />
             } @else {
                 <div class="flex flex-col gap-4">
