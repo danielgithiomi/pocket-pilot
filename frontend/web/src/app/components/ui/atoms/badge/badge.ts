@@ -8,15 +8,16 @@ import { Component, computed, input } from '@angular/core';
     template: `
         <span
             [ngClass]="badgeClasses()"
-            class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ring-1 ring-inset"
+            class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 ring-inset"
         >
-            {{ label() }}
+            {{ uppercase() ? label().toUpperCase() : label() }}
         </span>
     `,
 })
 export class Badge {
     // INPUTS
     readonly className = input<string>('');
+    readonly uppercase = input<boolean>(true);
     readonly label = input.required<string>();
     readonly variant = input.required<BadgeVariant>();
 

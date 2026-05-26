@@ -14,9 +14,7 @@
 
             <div class="splitr-event-members">
                 <div class="splitr-event-members-wrapper">
-                    @for (member of splitrEvent().eventMembers; track member) {
-                        <div class="size-4 bg-red-300 rounded-full"></div>
-                    }
+                    <atom-overlapper [items]="splitrEvent().eventMembers" />
 
                     <p class="splitr-event-members-count">
                         {{ splitrEvent().eventMembers.length }} people
@@ -35,7 +33,12 @@
         <div class="splitr-event-meals">
             <div class="splitr-event-meals">
                 @for (splittable of splitrEvent().eventSplittables; track splittable.id) {
-                    <atom-badge variant="neutral" [label]="splittable.name" />
+                    <atom-badge
+                    variant="neutral"
+                    [uppercase]="false"
+                    className="cursor-default py-1.5"
+                        [label]="splittable.name.toUpperCase() + ' x ' + splittable.quantity"
+                    />
                 }
             </div>
         </div>
