@@ -384,7 +384,12 @@ main {
 
         .card-content {
           @apply p-2;
+
+          .card-item-border {
+            @apply border-[1px] border-solid border-(--muted-text) hover:border-black/25 hover:dark:border-white/45 transition-all hover:shadow-md duration-300;
+          }
         }
+
       }
     }
   }

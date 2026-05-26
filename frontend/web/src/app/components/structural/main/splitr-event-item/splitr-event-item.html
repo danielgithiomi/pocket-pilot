@@ -1,4 +1,8 @@
-<div [id]="splitrEvent().id" (click)="handleOnSplitrEventClick($event)" class="splitr-event group/event">
+<div
+    [id]="splitrEvent().id"
+    (click)="handleOnSplitrEventClick($event)"
+    class="splitr-event card-item-border group/event"
+>
     <div class="splitr-event-content">
         <div class="splitr-event-details">
             <div class="splitr-event-info">
@@ -43,7 +47,7 @@
                     <atom-badge
                         variant="neutral"
                         [uppercase]="false"
-                        className="cursor-default py-1.5"
+                        className="cursor-default py-1.5 text-black dark:text-white"
                         [label]="splittable.name.toUpperCase() + ' x ' + splittable.quantity"
                     />
                 }

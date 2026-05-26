@@ -1,61 +1,64 @@
 <div
-  [id]="squadId()"
-  class="squad-item"
-  (mouseleave)="isDeletingSquad() ? null : isDropdownOpen.set(false)"
+    [id]="squadId()"
+    class="squad-item card-item-border"
+    (mouseleave)="isDeletingSquad() ? null : isDropdownOpen.set(false)"
 >
-  @let hasImage = squad().squadImageKey;
-  <div class="squad-image" [ngClass]="{ 'grid place-items-center bg-body-background': !hasImage }">
-    @if (!hasImage) {
-      <p>{{ squadInitial() }}</p>
-    } @else {
-      <img [ngSrc]="squad().squadImageKey" [alt]="`${squadId()}-squad-image`" fill priority />
-    }
-  </div>
-
-  <div class="squad-content">
-    <p class="squad-name">{{ squad().squadName }}</p>
-
-    <div class="squad-members-container no-scrollbar">
-      @for (member of squadMembers(); track member) {
-        <squad-member [member]="member" [isCheckable]="false" />
-      }
+    @let hasImage = squad().squadImageKey;
+    <div
+        class="squad-image"
+        [ngClass]="{ 'grid place-items-center bg-body-background': !hasImage }"
+    >
+        @if (!hasImage) {
+            <p>{{ squadInitial() }}</p>
+        } @else {
+            <img [ngSrc]="squad().squadImageKey" [alt]="`${squadId()}-squad-image`" fill priority />
+        }
     </div>
-  </div>
 
-  <div class="squad-options" [ngClass]="{ 'bg-body-background': isDropdownOpen() }">
-    <lucide-angular
-      name="squad-options"
-      [img]="options"
-      [size]="iconSize"
-      (click)="isDropdownOpen.set(!isDropdownOpen())"
-    />
+    <div class="squad-content">
+        <p class="squad-name">{{ squad().squadName }}</p>
 
-    <!-- Squad Item Dropdown -->
-    @if (isDropdownOpen() || isDeletingSquad()) {
-      <div class="squad-item-dropdown">
-        <div class="dropdown-arrow"></div>
-        <div class="dropdown-content">
-          <lucide-angular
-            name="edit"
-            [img]="edit"
-            [size]="iconSize"
-            class="atom-icon"
-            (click)="handleOnItemEdit()"
-          />
-
-          @if (isDeletingSquad()) {
-            <div class="delete-loader"></div>
-          } @else {
-            <lucide-angular
-              name="delete"
-              [img]="delete"
-              [size]="iconSize"
-              (click)="handleOnItemDelete()"
-              class="atom-icon hover:text-expense"
-            />
-          }
+        <div class="squad-members-container no-scrollbar">
+            @for (member of squadMembers(); track member) {
+                <squad-member [member]="member" [isCheckable]="false" />
+            }
         </div>
-      </div>
-    }
-  </div>
+    </div>
+
+    <div class="squad-options" [ngClass]="{ 'bg-body-background': isDropdownOpen() }">
+        <lucide-angular
+            name="squad-options"
+            [img]="options"
+            [size]="iconSize"
+            (click)="isDropdownOpen.set(!isDropdownOpen())"
+        />
+
+        <!-- Squad Item Dropdown -->
+        @if (isDropdownOpen() || isDeletingSquad()) {
+            <div class="squad-item-dropdown">
+                <div class="dropdown-arrow"></div>
+                <div class="dropdown-content">
+                    <lucide-angular
+                        name="edit"
+                        [img]="edit"
+                        [size]="iconSize"
+                        class="atom-icon"
+                        (click)="handleOnItemEdit()"
+                    />
+
+                    @if (isDeletingSquad()) {
+                        <div class="delete-loader"></div>
+                    } @else {
+                        <lucide-angular
+                            name="delete"
+                            [img]="delete"
+                            [size]="iconSize"
+                            (click)="handleOnItemDelete()"
+                            class="atom-icon hover:text-expense"
+                        />
+                    }
+                </div>
+            </div>
+        }
+    </div>
 </div>

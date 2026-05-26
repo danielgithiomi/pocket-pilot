@@ -4,14 +4,37 @@
         <p class="subtitle">Manage your splitwise events</p>
     </div>
 
-    <div class="card-content my-4 overflow-y-scroll no-scrollbar">
-        <div class="flex flex-col gap-4">
-            @for (event of splitrEvents(); track event.id) {
-                <splitr-event
-                    [splitrEvent]="event"
-                    (onSplitrEventClickEvent)="handleOnSplitrEventClick($event)"
+    @let hasNoData = splitrEvents().length === 0;
+    @let centerContent = isFetchingEvents() || hasError() || hasNoData;
+    <div
+        [ngClass]="{ 'flex-1 grid place-items-center': centerContent }"
+        class="card-content h-full overflow-y-scroll no-scrollbar mt-4 pb-2"
+    >
+        @if (isFetchingEvents()) {
+            <div class="dashboard-card-loader"></div>
+        } @else {
+            @if (hasError()) {
+                <fetch-error
+                    [messageClass]="animationMessageSize"
+                    [animationDimensions]="animationDimensions"
+                    message="Error loading squads. Please refresh."
                 />
+            } @else if (hasNoData) {
+                <no-data
+                    message="Add a squad to get started"
+                    [messageClass]="animationMessageSize"
+                    [animationDimensions]="animationDimensions"
+                />
+            } @else {
+                <div class="flex flex-col gap-4">
+                    @for (event of splitrEvents(); track event.id) {
+                        <splitr-event
+                            [splitrEvent]="event"
+                            (onSplitrEventClickEvent)="handleOnSplitrEventClick($event)"
+                        />
+                    }
+                </div>
             }
-        </div>
+        }
     </div>
 </div>

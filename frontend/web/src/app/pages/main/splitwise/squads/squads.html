@@ -40,7 +40,7 @@
                     [animationDimensions]="animationDimensions"
                 />
             } @else {
-                <div class="flex flex-col gap-6 h-full">
+                <div class="flex flex-col gap-6">
                     @for (squad of userSquads(); track squad.id) {
                         <squad-item
                             [squad]="squad"

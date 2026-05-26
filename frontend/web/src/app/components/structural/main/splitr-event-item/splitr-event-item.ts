@@ -8,11 +8,11 @@ import { LucideAngularModule, ChevronRight } from 'lucide-angular';
 
 @Component({
     selector: 'splitr-event',
-    styleUrl: './splitr-event.css',
-    templateUrl: './splitr-event.html',
+    styleUrl: './splitr-event-item.css',
+    templateUrl: './splitr-event-item.html',
     imports: [LucideAngularModule, Badge, Overlapper],
 })
-export class SplitrEvent {
+export class SplitrEventItem {
     // ICONS
     protected readonly ArrowRght = ChevronRight;
 

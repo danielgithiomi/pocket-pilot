@@ -29,11 +29,9 @@ export class SplitrDetails {
     protected readonly eventId = this.route.snapshot.paramMap.get('eventId') ?? '';
     protected readonly splitrEventResource = this.splitwiseService.getUserSplitrEventById(this.eventId);
 
-    // REACTIVE — three independent slices of the resource state
-    protected readonly isFetchingDetails = computed<boolean>(() =>
-        this.splitrEventResource.isLoading(),
-    );
+    // COMPUTED
     protected readonly hasError = computed<boolean>(() => !!this.splitrEventResource.error());
+    protected readonly isFetchingDetails = computed<boolean>(() => this.splitrEventResource.isLoading());
     protected readonly splitrEvent = computed(() => {
         if (this.hasError()) return undefined;
         return this.splitrEventResource.value()?.data;
@@ -44,8 +42,8 @@ export class SplitrDetails {
         return [
             { label: 'Events', route: '/splitwise' },
             {
-                label: this.eventId,
-                route: `/splitwise/${this.eventId}`,
+                label: this.splitrEvent()?.eventName ?? '',
+                route: `/splitwise/${this.splitrEvent()?.id}`,
             },
         ];
     });
