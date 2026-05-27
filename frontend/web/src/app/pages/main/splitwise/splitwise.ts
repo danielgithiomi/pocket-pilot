@@ -63,7 +63,10 @@ export class Splitwise {
     }
 
     protected handleSplitFormClose(reload: boolean) {
-        if (reload) this.userSquads.reload();
+        if (reload) {
+            this.userSquads.reload();
+            this.splitwiseService.getUserSplitrEvents().reload();
+        }
         this.isAddSplitFormOpen.set(false);
     }
 

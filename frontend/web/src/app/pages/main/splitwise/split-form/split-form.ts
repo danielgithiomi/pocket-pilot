@@ -146,8 +146,6 @@ export class SplitwiseSplitForm {
 
         this.isSubmittingSplitForm.set(true);
 
-        console.log('splitwiseEventPayload', splitwiseEventPayload);
-
         setTimeout(() => {
             this.splitwiseService.createNewSplitwiseEvent(splitwiseEventPayload).subscribe({
                 next: (response) => {

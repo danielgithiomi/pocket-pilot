@@ -32,17 +32,33 @@
             <div class="h-full grid place-items-center">
                 <div class="layered-loader"></div>
             </div>
-        } @else if (hasError()) {
-            <fetch-error message="Error loading splitr event" />
-        } @else if (!event) {
-            <no-data message="No splitr event data available" />
         } @else {
-            <div
-                class="h-full flex flex-col md:flex-row gap-6"
-                [ngClass]="{
-                    'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
-                }"
-            ></div>
+            @if (hasError()) {
+                <fetch-error
+                    [messageClass]="animationMessageSize"
+                    message="Error loading splitr your event."
+                    [animationDimensions]="animationDimensions"
+                />
+            } @else if (!event) {
+                <no-data
+                    [messageClass]="animationMessageSize"
+                    message="No splitr event data available."
+                    [animationDimensions]="animationDimensions"
+                />
+            } @else {
+                <div
+                    class="h-full flex flex-col md:flex-row gap-6"
+                    [ngClass]="{
+                        'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
+                    }"
+                >
+                    <div class="w-full h-full flex-3">
+
+                    </div>
+
+                    <div class="w-full h-full flex-1"></div>
+            </div>
+            }
         }
     </div>
 </section>
