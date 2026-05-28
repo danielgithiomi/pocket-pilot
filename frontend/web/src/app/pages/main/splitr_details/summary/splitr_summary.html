@@ -1,1 +1,22 @@
-<
+<div class="splitr-summary h-full">
+    <p class="text-xl font-semibold">Split Summary</p>
+
+    <div class="bg-muted-text rounded-lg p-4 mt-6 mb-4">
+        <div class="flex flex-col gap-1 text-center">
+            <p>Grand Total</p>
+            <p class="font-bold text-xl">{{ formattedGrandTotal() }}</p>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="flex flex-col space-y-4">
+        @for (payerSummary of consumerSummaries(); track payerSummary.payerName) {
+            <div class="flex flex-col gap-1">
+                <p>{{ payerSummary.payerName }}</p>
+                <p>{{ payerSummary.itemsConsumed }}</p>
+                <p>{{ payerSummary.payerAmount }}</p>
+            </div>
+        }
+    </div>
+</div>
