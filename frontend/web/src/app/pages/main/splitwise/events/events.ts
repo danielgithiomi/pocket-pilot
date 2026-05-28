@@ -16,7 +16,7 @@ export class SplitwiseEvents {
     // ANIMATIONS
     protected readonly animationDimensions = '180px';
     protected readonly animationMessageSize = 'text-xs';
-    
+
     // SERVICES
     private readonly router = inject(Router);
     private readonly splitwiseService = inject(SplitwiseService);
@@ -31,7 +31,7 @@ export class SplitwiseEvents {
     );
     protected readonly splitrEvents = computed<ISplitrEvent[]>(() => {
         if (this.hasError()) return [];
-        return this.splitrEventsResource.value()?.data ?? [];
+        return this.splitrEventsResource.value()?.data.reverse() ?? [];
     });
 
     // METHODS

@@ -1,11 +1,10 @@
 import { Badge } from '@atoms/badge';
-import { ISplitrEvent } from '@global/types';
-import { formatCurrency, formatFullDate, hashFromName } from '@libs/utils';
-import { Component, computed, input } from '@angular/core';
-import { LucideAngularModule, Calendar1, Users } from 'lucide-angular';
-import { applyWhenValue } from '@angular/forms/signals';
-import { COLOR_PALETTE } from '@libs/constants';
 import { NgClass } from '@angular/common';
+import { COLOR_PALETTE } from '@libs/constants';
+import { Component, computed, input } from '@angular/core';
+import { ISplitrEvent, SPLIT_STRATEGY_MAP } from '@global/types';
+import { LucideAngularModule, Calendar1, Users } from 'lucide-angular';
+import { formatCurrency, formatFullDate, hashFromName } from '@libs/utils';
 
 @Component({
     selector: 'splitr-breakdown',
@@ -51,6 +50,24 @@ export class SplitrBreakdown {
             ),
         }));
     });
+
+    protected readonly orderedItems = computed<OrderedItem[]>(() => {
+        const { eventSplittables, billingCurrency } = this.splitrEvent();
+
+        return eventSplittables.map((splittable) => ({
+            id: splittable.id,
+            orderName: splittable.name,
+            orderQuantity: splittable.quantity,
+            splitStrategy: SPLIT_STRATEGY_MAP[splittable.splitStrategy],
+            unitPrice: formatCurrency(splittable.unitPrice, billingCurrency, 2, false),
+            orderTotal: formatCurrency(splittable.total, billingCurrency, 2, true, true),
+            orderQuantitySplits: splittable.quantitySplits.map((quantitySplit) => ({
+                id: quantitySplit.id,
+                consumerName: quantitySplit.consumerName,
+                consumerQuantity: quantitySplit.consumerQuantity,
+            })),
+        }));
+    });
 }
 
 interface EventPayer {
@@ -59,4 +76,20 @@ interface EventPayer {
     paidAmount: string;
     percentageContribution: number;
     avatar: { bg: string; fg: string };
+}
+
+interface QuantitySplit {
+    id: string;
+    consumerName: string;
+    consumerQuantity: number;
+}
+
+interface OrderedItem {
+    id: string;
+    unitPrice: string;
+    orderName: string;
+    orderTotal: string;
+    orderQuantity: number;
+    splitStrategy: string;
+    orderQuantitySplits: QuantitySplit[];
 }
