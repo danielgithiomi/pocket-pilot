@@ -52,10 +52,11 @@
                         'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
                     }"
                 >
-                    <div class="page-card flex-5">
-                    </div>
+                    <section class="flex-5">
+                        <splitr-breakdown [splitrEvent]="event" />
+                    </section>
 
-                    <section class="page-card flex-2">
+                    <section class="page-card shadow-none! flex-2">
                         <splitr-summary [splitrEvent]="event" />
                     </section>
                 </div>

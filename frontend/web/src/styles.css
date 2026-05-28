@@ -366,6 +366,10 @@ main {
         .page-container {
             @apply w-full pb-6;
 
+            .no-shadow-card {
+                @apply cursor-default bg-(--alternate-background) rounded-lg;
+            }
+
             .page-card {
                 @apply relative bg-(--alternate-background)/75 overflow-hidden rounded-xl p-4 shadow-[0_0px_2px_var(--primary)] hover:shadow-[0_0px_3px_var(--primary)] transition-all duration-300;
                 backdrop-filter: blur(25px);

@@ -1,19 +1,29 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { SplitrSummary } from "./summary/splitr-summary";
+import { SplitrSummary } from './summary/splitr-summary';
 import { DrawerService } from '@infrastructure/services';
 import { SplitwiseService } from '@api/splitwise.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { Component, computed, inject } from '@angular/core';
 import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
+import { SplitrBreakdown } from './breakdown/splitr-breakdown';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
 
 @Component({
     selector: 'splitr-details',
     templateUrl: './splitr-details.html',
-    imports: [LucideAngularModule, NgClass, Button, Breadcrumbs, FetchError, NoData, SplitrSummary],
+    imports: [
+        Button,
+        NoData,
+        NgClass,
+        FetchError,
+        Breadcrumbs,
+        SplitrSummary,
+        SplitrBreakdown,
+        LucideAngularModule,
+    ],
 })
 export class SplitrDetails {
     // ICONS
