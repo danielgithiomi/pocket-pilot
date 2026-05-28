@@ -4,7 +4,7 @@ import { Component, computed, input } from '@angular/core';
 
 @Component({
     selector: 'splitr-summary',
-    templateUrl: './splitr_summary.html',
+    templateUrl: './splitr-summary.html',
 })
 export class SplitrSummary {
     // INPUTS

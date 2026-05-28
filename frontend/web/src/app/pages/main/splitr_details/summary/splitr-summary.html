@@ -11,11 +11,11 @@
     <hr />
 
     <div class="flex flex-col space-y-4">
-        @for (payerSummary of consumerSummaries(); track payerSummary.payerName) {
+        @for (consumerSummary of consumerSummaries(); track consumerSummary.payerName) {
             <div class="flex flex-col gap-1">
-                <p>{{ payerSummary.payerName }}</p>
-                <p>{{ payerSummary.itemsConsumed }}</p>
-                <p>{{ payerSummary.payerAmount }}</p>
+                <p>{{ consumerSummary.payerName }}</p>
+                <p>{{ consumerSummary.itemsConsumed }}</p>
+                <p>{{ consumerSummary.payerAmount }}</p>
             </div>
         }
     </div>

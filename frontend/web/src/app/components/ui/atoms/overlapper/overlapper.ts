@@ -1,15 +1,13 @@
+import { hashFromName } from '@libs/utils';
+import { ColorPalette } from '@libs/types';
+import { COLOR_PALETTE } from '@libs/constants';
 import { Component, computed, input } from '@angular/core';
-import {
-    OverlapperSize,
-    OverlapperPalette,
-    OVERLAPPER_PALETTE,
-    OVERLAPPER_SIZE_STYLES,
-} from './overlapper.types';
+import { OverlapperSize, OVERLAPPER_SIZE_STYLES } from './overlapper.types';
 
 interface OverlapperItem {
     name: string;
     initials: string;
-    palette: OverlapperPalette;
+    palette: ColorPalette;
 }
 
 @Component({
@@ -44,7 +42,8 @@ export class Overlapper {
             .map((name) => ({
                 name,
                 initials: this.getInitials(name),
-                palette: OVERLAPPER_PALETTE[this.hash(name) % OVERLAPPER_PALETTE.length],
+                palette:
+                    COLOR_PALETTE[Math.abs(hashFromName(name)) % COLOR_PALETTE.length],
             }));
     });
 
@@ -65,7 +64,7 @@ export class Overlapper {
     private readonly baseItemClasses =
         'inline-flex items-center justify-center rounded-full font-semibold ring-1 first:ml-0';
 
-    protected itemClasses(palette: OverlapperPalette): string {
+    protected itemClasses(palette: ColorPalette): string {
         return [this.baseItemClasses, this.sizeClasses(), palette.bg, palette.fg].join(' ');
     }
 
@@ -82,13 +81,5 @@ export class Overlapper {
             return trimmed.slice(0, 2).replace(/^./, (c) => c.toUpperCase());
         }
         return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-    }
-
-    private hash(value: string): number {
-        let h = 0;
-        for (let i = 0; i < value.length; i++) {
-            h = (h * 31 + value.charCodeAt(i)) >>> 0;
-        }
-        return h;
     }
 }
