@@ -47,17 +47,18 @@
                 />
             } @else {
                 <div
-                    class="h-full flex flex-col md:flex-row gap-6"
+                    class="h-full flex flex-col md:flex-row gap-6 md:gap-8"
                     [ngClass]="{
                         'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
                     }"
                 >
-                    <div class="w-full h-full flex-3">
-
+                    <div class="page-card flex-3">
                     </div>
 
-                    <div class="w-full h-full flex-1"></div>
-            </div>
+                    <div class="page-card flex-1">
+                        <splitr-summary />
+                    </div>
+                </div>
             }
         }
     </div>

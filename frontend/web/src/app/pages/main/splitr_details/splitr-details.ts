@@ -8,11 +8,12 @@ import { Component, computed, inject } from '@angular/core';
 import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
+import { SplitrSummary } from "./summary/splitr_summary";
 
 @Component({
     selector: 'splitr-details',
     templateUrl: './splitr-details.html',
-    imports: [LucideAngularModule, NgClass, Button, Breadcrumbs, FetchError, NoData],
+    imports: [LucideAngularModule, NgClass, Button, Breadcrumbs, FetchError, NoData, SplitrSummary],
 })
 export class SplitrDetails {
     // ICONS
