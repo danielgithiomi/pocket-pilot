@@ -1,9 +1,11 @@
 import { ISplitrEvent } from '@global/types';
 import { formatCurrency } from '@libs/utils';
 import { Component, computed, input } from '@angular/core';
+import { ConsumerSummary, IConsumerSummary } from './consumer_summary/consumer-summary';
 
 @Component({
     selector: 'splitr-summary',
+    imports: [ConsumerSummary],
     templateUrl: './splitr-summary.html',
 })
 export class SplitrSummary {
@@ -13,10 +15,10 @@ export class SplitrSummary {
     // COMPUTED
     protected readonly formattedGrandTotal = computed(() => {
         const { verificationTotal, billingCurrency } = this.splitrEvent();
-        return formatCurrency(verificationTotal, billingCurrency, 2, true, false);
+        return formatCurrency(verificationTotal, billingCurrency, 2, true, true);
     });
 
-    protected readonly consumerSummaries = computed<PayerSummary[]>(() => {
+    protected readonly consumerSummaries = computed<IConsumerSummary[]>(() => {
         const { eventMembers, eventSplittables } = this.splitrEvent();
 
         const memberTotalAmount = (member: string) =>
@@ -43,19 +45,14 @@ export class SplitrSummary {
                 0,
             );
 
-        return eventMembers.map((member) => ({
-            isSettled: false,
-            payerName: member,
-            payerAmount: memberTotalAmount(member),
-            itemsConsumed: totalItemsConsumed(member),
-        }));
+        return eventMembers.map(
+            (member) =>
+                ({
+                    isSettled: false,
+                    consumerName: member,
+                    amountPayable: memberTotalAmount(member),
+                    itemsConsumed: totalItemsConsumed(member),
+                }),
+        );
     });
-}
-
-// INTERFACES
-interface PayerSummary {
-    payerName: string;
-    isSettled: boolean;
-    payerAmount: number;
-    itemsConsumed: number;
 }

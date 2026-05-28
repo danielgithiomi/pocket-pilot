@@ -1,22 +1,23 @@
 <div class="splitr-summary h-full">
     <p class="text-xl font-semibold">Split Summary</p>
 
-    <div class="bg-muted-text rounded-lg p-4 mt-6 mb-4">
-        <div class="flex flex-col gap-1 text-center">
-            <p>Grand Total</p>
-            <p class="font-bold text-xl">{{ formattedGrandTotal() }}</p>
-        </div>
-    </div>
-
-    <hr />
-
-    <div class="flex flex-col space-y-4">
-        @for (consumerSummary of consumerSummaries(); track consumerSummary.payerName) {
-            <div class="flex flex-col gap-1">
-                <p>{{ consumerSummary.payerName }}</p>
-                <p>{{ consumerSummary.itemsConsumed }}</p>
-                <p>{{ consumerSummary.payerAmount }}</p>
+    <div class="card-content">
+        <div class="bg-muted-text rounded-lg p-4 my-4">
+            <div class="flex flex-col gap-1 text-center">
+                <p>Grand Total</p>
+                <p class="font-bold text-xl">{{ formattedGrandTotal() }}</p>
             </div>
-        }
+        </div>
+
+        <hr />
+
+        <div class="flex flex-col mt-4 space-y-3">
+            @for (consumerSummary of consumerSummaries(); track consumerSummary.consumerName) {
+                <consumer-summary
+                    [consumerData]="consumerSummary"
+                    [billingCurrency]="splitrEvent().billingCurrency"
+                />
+            }
+        </div>
     </div>
 </div>
