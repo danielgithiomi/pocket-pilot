@@ -10,6 +10,7 @@ import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
 import { SplitrBreakdown } from './breakdown/splitr-breakdown';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
+import { AuthService } from '@api/auth.service';
 
 @Component({
     selector: 'splitr-details',
@@ -37,6 +38,7 @@ export class SplitrDetails {
 
     // SERVICES
     private readonly route = inject(ActivatedRoute);
+    private readonly authService = inject(AuthService);
     protected readonly drawerService = inject(DrawerService);
     private readonly splitwiseService = inject(SplitwiseService);
 
@@ -51,9 +53,18 @@ export class SplitrDetails {
     protected readonly isFetchingDetails = computed<boolean>(() =>
         this.splitrEventResource.isLoading(),
     );
+    protected readonly selfName = computed(() => {
+        const username = this.authService.user()?.name.split(' ')[0];
+        return `${username}(Self)`;
+    });
     protected readonly splitrEvent = computed(() => {
         if (this.hasError()) return undefined;
-        return this.splitrEventResource.value()?.data;
+        const event = this.splitrEventResource.value()?.data;
+        if (!event) return undefined;
+        return {
+            ...event,
+            eventMembers: [...event.eventMembers, this.selfName()],
+        };
     });
     protected readonly breadcrumbItems = computed(() => [
         { label: 'Events', route: '/splitwise' },

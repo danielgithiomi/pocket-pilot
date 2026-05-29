@@ -1,9 +1,8 @@
 import { Badge } from '@atoms/badge';
 import { NgClass } from '@angular/common';
-import { AuthService } from '@api/auth.service';
+import { Component, computed, input } from '@angular/core';
 import { formatCurrency, formatFullDate } from '@libs/utils';
 import { ISplitrEvent, SPLIT_STRATEGY_MAP } from '@global/types';
-import { Component, computed, inject, input } from '@angular/core';
 import { LucideAngularModule, Calendar1, Users } from 'lucide-angular';
 import { EventPayer, OrderedItem, Settlement } from './splitr-breakdown.types';
 import { buildAvatarMap, buildParticipantsMap, calculateSettlments } from './splitr-breakdown.utils';
@@ -37,15 +36,6 @@ export class SplitrBreakdown {
     // INPUTS
     readonly splitrEvent = input.required<ISplitrEvent>();
 
-    // SERVICES
-    private readonly authService = inject(AuthService);
-
-    // DATA
-    private readonly selfName = computed(() => {
-        const username = this.authService.user()?.name;
-        return `${username}(Self)`;
-    });
-
     // COMPUTED
     protected readonly eventId = computed(() => this.splitrEvent().id);
     protected readonly formattedEventDate = computed(() =>
@@ -77,7 +67,6 @@ export class SplitrBreakdown {
             id: splittable.id,
             orderName: splittable.name,
             orderQuantity: splittable.quantity,
-            strategyVariant: splittable.splitStrategy,
             splitStrategy: SPLIT_STRATEGY_MAP[splittable.splitStrategy],
             unitPrice: formatCurrency(splittable.unitPrice, billingCurrency, 2, false),
             orderTotal: formatCurrency(splittable.total, billingCurrency, 2, true, true),
@@ -92,7 +81,7 @@ export class SplitrBreakdown {
 
     protected readonly settlements = computed<Settlement[]>(() => {
         const { billingCurrency } = this.splitrEvent();
-        const participants = buildParticipantsMap(this.splitrEvent(), this.selfName());
+        const participants = buildParticipantsMap(this.splitrEvent());
         return calculateSettlments(participants, billingCurrency);
     });
 }

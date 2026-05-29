@@ -100,9 +100,7 @@
                             track individualSplit.id
                         ) {
                             @let consumerSummary =
-                                orderedItem.strategyVariant !== 'QUANTITY'
-                                    ? `${individualSplit.consumerName} - ${individualSplit.consumerTotal}`
-                                    : `[${individualSplit.consumerQuantity}] ${individualSplit.consumerName} - ${individualSplit.consumerTotal}`;
+                                `[${individualSplit.consumerQuantity}] ${individualSplit.consumerName} - ${individualSplit.consumerTotal}`;
                             <atom-badge
                                 variant="neutral"
                                 [label]="consumerSummary"
@@ -134,14 +132,26 @@
                     <div class="flex-1 flex flex-col gap-1">
                         <p class="text-sm font-semibold">{{ settlement.fromParticipant }}</p>
                         <p class="text-xs text-muted-text">
-                            To pay
-                            <span class="font-bold text-primary"
-                                >{{ settlement.settlementAmount }}</span
-                            >
-                            to {{ settlement.toParticipant }}
+                            @switch (settlement.kind) {
+                                @case ('pay') {
+                                    To pay
+                                    <span class="font-bold text-primary">{{
+                                        settlement.settlementAmount
+                                    }}</span>
+                                    to {{ settlement.toParticipant }}
+                                }
+                                @case ('receive') {
+                                    Is owed
+                                    <span class="font-bold text-primary">{{
+                                        settlement.settlementAmount
+                                    }}</span>
+                                }
+                                @case ('settled') {
+                                    Settled — no payment needed
+                                }
+                            }
                         </p>
                     </div>
-
                 </div>
             }
         </div>

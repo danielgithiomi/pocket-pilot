@@ -1,7 +1,8 @@
 import { ISplitrEvent } from '@global/types';
 import { formatCurrency } from '@libs/utils';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { ConsumerSummary, IConsumerSummary } from './consumer_summary/consumer-summary';
+import { AuthService } from '@api/auth.service';
 
 @Component({
     selector: 'splitr-summary',
