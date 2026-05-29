@@ -1,10 +1,12 @@
 import { Badge } from '@atoms/badge';
 import { NgClass } from '@angular/common';
-import { COLOR_PALETTE } from '@libs/constants';
-import { Component, computed, input } from '@angular/core';
+import { AuthService } from '@api/auth.service';
+import { formatCurrency, formatFullDate } from '@libs/utils';
+import { ISplitrEvent, SPLIT_STRATEGY_MAP } from '@global/types';
+import { Component, computed, inject, input } from '@angular/core';
 import { LucideAngularModule, Calendar1, Users } from 'lucide-angular';
-import { formatCurrency, formatFullDate, hashFromName } from '@libs/utils';
-import { ISplitrEvent, SPLIT_STRATEGY_MAP, SplitStrategyVariant } from '@global/types';
+import { EventPayer, OrderedItem, Settlement } from './splitr-breakdown.types';
+import { buildAvatarMap, buildParticipantsMap, calculateSettlments } from './splitr-breakdown.utils';
 
 @Component({
     selector: 'splitr-breakdown',
@@ -17,8 +19,12 @@ import { ISplitrEvent, SPLIT_STRATEGY_MAP, SplitStrategyVariant } from '@global/
             @apply text-(--primary);
         }
 
-        .section-title {
-            @apply font-bold uppercase text-(--primary-text);
+        .section {
+            @apply flex flex-col gap-2;
+
+            .section-title {
+                @apply font-bold uppercase text-(--primary-text);
+            }
         }
     `,
 })
@@ -27,8 +33,18 @@ export class SplitrBreakdown {
     protected readonly iconSize = 15;
     protected readonly Squads = Users;
     protected readonly CalendarIcon = Calendar1;
+
     // INPUTS
     readonly splitrEvent = input.required<ISplitrEvent>();
+
+    // SERVICES
+    private readonly authService = inject(AuthService);
+
+    // DATA
+    private readonly selfName = computed(() => {
+        const username = this.authService.user()?.name;
+        return `${username}(Self)`;
+    });
 
     // COMPUTED
     protected readonly eventId = computed(() => this.splitrEvent().id);
@@ -41,10 +57,8 @@ export class SplitrBreakdown {
         return billPayers.map((billPayer) => ({
             id: crypto.randomUUID(),
             payerName: billPayer.payerName,
+            avatar: buildAvatarMap(billPayer.payerName),
             paidAmount: formatCurrency(billPayer.payerAmount, billingCurrency, 2, true),
-            avatar: COLOR_PALETTE[
-                Math.abs(hashFromName(billPayer.payerName)) % COLOR_PALETTE.length
-            ],
             percentageContribution: Number(
                 ((billPayer.payerAmount / verificationTotal) * 100).toFixed(2),
             ),
@@ -57,7 +71,7 @@ export class SplitrBreakdown {
         const consumerTotal = (quantity: number, unitPrice: number) => {
             const total = quantity * unitPrice;
             return formatCurrency(total, billingCurrency, 2, false);
-        }
+        };
 
         return eventSplittables.map((splittable) => ({
             id: splittable.id,
@@ -75,30 +89,10 @@ export class SplitrBreakdown {
             })),
         }));
     });
-}
 
-interface EventPayer {
-    id: string;
-    payerName: string;
-    paidAmount: string;
-    percentageContribution: number;
-    avatar: { bg: string; fg: string };
-}
-
-interface QuantitySplit {
-    id: string;
-    consumerName: string;
-    consumerTotal: string;
-    consumerQuantity: number;
-}
-
-interface OrderedItem {
-    id: string;
-    unitPrice: string;
-    orderName: string;
-    orderTotal: string;
-    orderQuantity: number;
-    splitStrategy: string;
-    orderQuantitySplits: QuantitySplit[];
-    strategyVariant: SplitStrategyVariant;
+    protected readonly settlements = computed<Settlement[]>(() => {
+        const { billingCurrency } = this.splitrEvent();
+        const participants = buildParticipantsMap(this.splitrEvent(), this.selfName());
+        return calculateSettlments(participants, billingCurrency);
+    });
 }
