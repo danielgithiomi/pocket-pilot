@@ -2,9 +2,9 @@ import { Badge } from '@atoms/badge';
 import { NgClass } from '@angular/common';
 import { COLOR_PALETTE } from '@libs/constants';
 import { Component, computed, input } from '@angular/core';
-import { ISplitrEvent, SPLIT_STRATEGY_MAP } from '@global/types';
 import { LucideAngularModule, Calendar1, Users } from 'lucide-angular';
 import { formatCurrency, formatFullDate, hashFromName } from '@libs/utils';
+import { ISplitrEvent, SPLIT_STRATEGY_MAP, SplitStrategyVariant } from '@global/types';
 
 @Component({
     selector: 'splitr-breakdown',
@@ -54,10 +54,16 @@ export class SplitrBreakdown {
     protected readonly orderedItems = computed<OrderedItem[]>(() => {
         const { eventSplittables, billingCurrency } = this.splitrEvent();
 
+        const consumerTotal = (quantity: number, unitPrice: number) => {
+            const total = quantity * unitPrice;
+            return formatCurrency(total, billingCurrency, 2, false);
+        }
+
         return eventSplittables.map((splittable) => ({
             id: splittable.id,
             orderName: splittable.name,
             orderQuantity: splittable.quantity,
+            strategyVariant: splittable.splitStrategy,
             splitStrategy: SPLIT_STRATEGY_MAP[splittable.splitStrategy],
             unitPrice: formatCurrency(splittable.unitPrice, billingCurrency, 2, false),
             orderTotal: formatCurrency(splittable.total, billingCurrency, 2, true, true),
@@ -65,6 +71,7 @@ export class SplitrBreakdown {
                 id: quantitySplit.id,
                 consumerName: quantitySplit.consumerName,
                 consumerQuantity: quantitySplit.consumerQuantity,
+                consumerTotal: consumerTotal(quantitySplit.consumerQuantity, splittable.unitPrice),
             })),
         }));
     });
@@ -81,6 +88,7 @@ interface EventPayer {
 interface QuantitySplit {
     id: string;
     consumerName: string;
+    consumerTotal: string;
     consumerQuantity: number;
 }
 
@@ -92,4 +100,5 @@ interface OrderedItem {
     orderQuantity: number;
     splitStrategy: string;
     orderQuantitySplits: QuantitySplit[];
+    strategyVariant: SplitStrategyVariant;
 }

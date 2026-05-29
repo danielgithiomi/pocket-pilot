@@ -73,21 +73,42 @@
 
         <div class="flex flex-col gap-2">
             @for (orderedItem of orderedItems(); track orderedItem.id) {
-                <div class="flex flex-row items-center gap-4 w-full no-shadow-card p-4">
-                    <div class="flex-1 flex flex-col gap-1">
-                        <p class="font-semibold">{{ orderedItem.orderName }}</p>
-                        <p class="text-xs text-muted pl-1">
-                            {{ orderedItem.orderQuantity }} x {{ orderedItem.unitPrice }}
-                        </p>
+                <div class="flex flex-col gap-3 w-full no-shadow-card p-4">
+                    <div class="flex flex-row items-center gap-4">
+                        <div class="flex-1 flex flex-col gap-1">
+                            <p class="font-semibold">{{ orderedItem.orderName }}</p>
+                            <p class="text-xs text-muted pl-1">
+                                {{ orderedItem.orderQuantity }} x {{ orderedItem.unitPrice }}
+                            </p>
+                        </div>
+
+                        <div class="flex-1 flex flex-col gap-1 items-end">
+                            <p class="text-base font-bold">{{ orderedItem.orderTotal }}</p>
+                            <atom-badge
+                                variant="info"
+                                className="px-2!"
+                                [label]="orderedItem.splitStrategy.toUpperCase()"
+                            />
+                        </div>
                     </div>
 
-                    <div class="flex-1 flex flex-col gap-1 items-end">
-                        <p class="text-base font-bold">{{ orderedItem.orderTotal }}</p>
-                        <atom-badge
-                            variant="info"
-                            [label]="orderedItem.splitStrategy.toUpperCase()"
-                            className="px-2!"
-                        />
+                    <hr />
+
+                    <div class="flex flex-row gap-2 flex-wrap">
+                        @for (
+                            individualSplit of orderedItem.orderQuantitySplits;
+                            track individualSplit.id
+                        ) {
+                            @let consumerSummary =
+                                orderedItem.strategyVariant !== 'QUANTITY'
+                                    ? `${individualSplit.consumerName} - ${individualSplit.consumerTotal}`
+                                    : `[${individualSplit.consumerQuantity}] ${individualSplit.consumerName} - ${individualSplit.consumerTotal}`;
+                            <atom-badge
+                                variant="neutral"
+                                [label]="consumerSummary"
+                                className="text-xs! px-3 py-1.5 whitespace-normal"
+                            />
+                        }
                     </div>
                 </div>
             }

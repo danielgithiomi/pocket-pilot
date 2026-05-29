@@ -31,7 +31,7 @@ export class SplitwiseEvents {
     );
     protected readonly splitrEvents = computed<ISplitrEvent[]>(() => {
         if (this.hasError()) return [];
-        return this.splitrEventsResource.value()?.data.reverse() ?? [];
+        return this.splitrEventsResource.value()?.data ?? [];
     });
 
     // METHODS
