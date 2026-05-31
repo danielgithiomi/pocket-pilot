@@ -1,9 +1,10 @@
 import { SplitCategoryTag } from '@prisma/client';
 import { formatEnumForFrontend } from '@libs/utils';
+import { plainToInstance } from 'class-transformer';
 import { SplitwiseCache } from '../caches/splitwise.cache';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SplitwiseRepository } from '../repositories/splitwise.repository';
-import { SplitwiseEventDto, SplitwiseEventPayload } from '../dto/splitwise.dto';
+import { SettleSplitrPayload, SplitwiseEventDto, SplitwiseEventPayload } from '../dto/splitwise.dto';
 
 @Injectable()
 export class SplitwiseService {
@@ -17,9 +18,10 @@ export class SplitwiseService {
     }
 
     async getUserSplitwiseEvents(userId: string): Promise<SplitwiseEventDto[]> {
-        return this.splitwiseCache.getOrSetCache<SplitwiseEventDto[]>(userId, () =>
+        const userEvents = await this.splitwiseCache.getOrSetCache<SplitwiseEventDto[]>(userId, () =>
             this.splitwiseRepository.getUserSplitwiseEvents(userId),
         );
+        return userEvents.map(event => plainToInstance(SplitwiseEventDto, event));
     }
 
     async getSplitwiseEventById(userId: string, eventId: string): Promise<SplitwiseEventDto> {
@@ -37,7 +39,28 @@ export class SplitwiseService {
 
     async createSplitwiseEvent(userId: string, payload: SplitwiseEventPayload) {
         const createdEvent = await this.splitwiseRepository.createSplitwiseEvent(userId, payload);
-        console.log(createdEvent);
-        return createdEvent;
+        await this.invalidateCache(userId);
+        return plainToInstance(SplitwiseEventDto, createdEvent);
+    }
+
+    async markSplitwiseEventAsSettledOrPending(userId: string, eventId: string, payload: SettleSplitrPayload) {
+        const markedEvent = await this.splitwiseRepository.markSplitwiseEventAsSettledOrPending(
+            userId,
+            eventId,
+            payload,
+        );
+        await this.invalidateCache(userId);
+        return plainToInstance(SplitwiseEventDto, markedEvent);
+    }
+
+    async deleteSplitwiseEvent(userId: string, eventId: string) {
+        const deletedEvent = await this.splitwiseRepository.deleteSplitwiseEvent(userId, eventId);
+        await this.invalidateCache(userId);
+        return plainToInstance(SplitwiseEventDto, deletedEvent);
+    }
+
+    // HELPER FUNCTIONS
+    private async invalidateCache(userId: string) {
+        await this.splitwiseCache.invalidateCache(userId);
     }
 }

@@ -112,6 +112,8 @@ export interface SplitwiseEventPayload {
     eventSplittables: SplitwiseSplittablePayload[];
 }
 
+export type SettleSplitrPayload = Pick<SplitwiseEventPayload, "isSettled">;
+
 // API RESPONSES
 export interface ISplitrEvent {
     id: string;

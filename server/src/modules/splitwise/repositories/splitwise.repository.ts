@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SplitwiseEventPayload } from '../dto/splitwise.dto';
+import { SettleSplitrPayload, SplitwiseEventPayload } from '../dto/splitwise.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()
@@ -37,6 +37,22 @@ export class SplitwiseRepository {
     getSplitwiseEventById(eventId: string) {
         return this.db.splitwiseEvent.findUnique({
             where: { id: eventId },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+        });
+    }
+
+    markSplitwiseEventAsSettledOrPending(userId: string, eventId: string, payload: SettleSplitrPayload) {
+        const { isSettled } = payload;
+        return this.db.splitwiseEvent.update({
+            where: { id: eventId, creatorId: userId },
+            data: { isSettled },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+        });
+    }
+
+    deleteSplitwiseEvent(userId: string, eventId: string) {
+        return this.db.splitwiseEvent.delete({
+            where: { id: eventId, creatorId: userId },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
         });
     }

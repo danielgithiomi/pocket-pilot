@@ -357,3 +357,14 @@ export class SplitwiseEventDto extends SplitwiseEventPayload {
     })
     declare eventSplittables: SplittableDto[];
 }
+
+// SETTLE SPLITR PAYLOAD - The payload for the settle splitr event
+export class SettleSplitrPayload {
+    @IsBoolean()
+    @IsNotEmpty()
+    @ApiProperty({
+        example: false,
+        description: 'Whether the event is settled',
+    })
+    isSettled!: boolean;
+}
