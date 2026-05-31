@@ -20,8 +20,8 @@
       [height]="logoDimensions.height"
       class="drawer-logo dark:invert-100"
       [ngClass]="{
-        'invert-0!': themeService.theme() === 'LIGHT',
-        'invert-100!': themeService.theme() === 'DARK',
+        'invert-0!': themeService.activeTheme() === 'light',
+        'invert-100!': themeService.activeTheme() === 'dark',
       }"
     />
 

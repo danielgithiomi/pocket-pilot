@@ -12,6 +12,7 @@ import { CURRENCIES, LANGUAGES } from '@global/constants';
 import { UpdateUserPreferencesPayload } from '@global/types';
 import { PreferencesService } from '@api/preferences.service';
 import { Component, computed, inject, signal } from '@angular/core';
+import { normalizeThemePreference } from '@infrastructure/services/theme.utils';
 import {
   ThemeVariant,
   SettingsFormSchema,
@@ -68,9 +69,11 @@ export class Settings {
   );
 
   // FORM
-  private readonly initialSettingsFormState: SettingsFormSchema = {
+  private initialSettingsFormState: SettingsFormSchema = {
     defaultCurrency: this.defaultCurrency,
-    preferredTheme: this.themeService.theme(),
+    preferredTheme:
+      normalizeThemePreference(this.user()?.userPreferences.preferredTheme) ??
+      this.themeService.theme(),
     monthlySpendingLimit: this.monthlySpendingLimit,
     preferredLanguage: this.user()?.userPreferences.preferredLanguage ?? 'en',
   };
@@ -81,16 +84,20 @@ export class Settings {
   resetSettingsForm() {
     this.settingsForm().reset(this.initialSettingsFormState);
     this.settingsFormModel.set(this.initialSettingsFormState);
+    this.themeService.setTheme(this.initialSettingsFormState.preferredTheme);
   }
 
   protected onThemeChange(theme: string) {
     if (!ApplicationThemeOptions.includes(theme as ThemeVariant)) return;
     this.settingsForm.preferredTheme().controlValue.set(theme as ThemeVariant);
+    this.themeService.previewTheme(theme);
   }
 
   // SUBMISSIONS
   protected submitSettingsForm(event: Event) {
     event.preventDefault();
+
+    if (this.settingsForm().invalid()) return;
 
     this.isSubmittingSettingsForm.set(true);
 
@@ -99,14 +106,18 @@ export class Settings {
       monthlySpendingLimit: this.settingsFormModel().monthlySpendingLimit!,
     };
 
-    setTimeout(() => {
-      this.preferencesService.updateUserPreferences(payload).subscribe({
-        next: () => {
-          this.isSubmittingSettingsForm.set(false);
-          window.location.reload();
-        },
-        complete: () => this.isSubmittingSettingsForm.set(false),
-      });
-    }, 2000);
+    this.preferencesService.updateUserPreferences(payload).subscribe({
+      next: () => {
+        this.themeService.setTheme(payload.preferredTheme);
+        this.initialSettingsFormState = { ...this.settingsFormModel() };
+        this.toastService.show({
+          variant: 'success',
+          title: 'Settings updated',
+          details: 'Your preferences have been saved.',
+        });
+        this.isSubmittingSettingsForm.set(false);
+      },
+      error: () => this.isSubmittingSettingsForm.set(false),
+    });
   }
 }

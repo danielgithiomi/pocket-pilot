@@ -20,7 +20,7 @@ export class PreferencesService {
 
   updateUserPreferences(payload: UpdateUserPreferencesPayload) {
     return this.mutation.updateUserPreferences(payload).pipe(
-      tap(() => this.authService.reinitializeSession()),
+      tap(() => this.authService.patchUserPreferences(payload)),
       map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
       catchError((error: IStandardError) => {
         this.errorService.renderToast(error);

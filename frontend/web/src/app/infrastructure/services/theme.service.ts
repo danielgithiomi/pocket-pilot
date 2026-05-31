@@ -1,134 +1,120 @@
-import type { User } from '@global/types';
 import { AuthService } from '@api/auth.service';
-import { STORED_AUTH_USER_KEY } from '@libs/constants/auth.constants';
+import type { User } from '@global/types';
+import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { Injectable, signal, computed, effect, DestroyRef, inject } from '@angular/core';
+import {
+    applyThemeToDocument,
+    normalizeThemePreference,
+    readStoredThemePreference,
+    type ResolvedTheme,
+    type ThemePreference,
+} from './theme.utils';
 
-export type Theme = 'SYSTEM' | 'LIGHT' | 'DARK';
+/** @deprecated Use ThemePreference instead */
+export type Theme = ThemePreference;
+
+export type { ThemePreference, ResolvedTheme };
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class ThemeService {
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly authService = inject(AuthService);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly authService = inject(AuthService);
 
-  private systemMediaQuery: MediaQueryList | null = null;
-  private readonly currentTheme = signal<Theme>(
-    (this.authService.user()?.userPreferences?.preferredTheme as Theme) || 'system',
-  );
+    private systemMediaQuery: MediaQueryList | null = null;
+    private readonly preference = signal<ThemePreference>(readStoredThemePreference());
+    private readonly resolvedTheme = signal<ResolvedTheme>(
+        applyThemeToDocument(readStoredThemePreference()),
+    );
 
-  readonly theme = computed(() => this.currentTheme());
+    /** User preference: SYSTEM, LIGHT, or DARK */
+    readonly theme = computed(() => this.preference());
 
-  constructor() {
-    this.loadThemeFromStorage();
+    /** Resolved visual theme currently applied to the document */
+    readonly activeTheme = computed(() => this.resolvedTheme());
 
-    effect(() => {
-      this.applyTheme(this.currentTheme());
-    });
+    constructor() {
+        effect(() => {
+            this.applyPreference(this.preference());
+        });
 
-    this.setupStorageListener();
+        effect(() => {
+            const userTheme = this.authService.user()?.userPreferences?.preferredTheme;
+            const normalized = normalizeThemePreference(userTheme);
+            if (normalized && normalized !== this.preference()) {
+                this.preference.set(normalized);
+            }
+        });
 
-    this.destroyRef.onDestroy(() => {
-      this.cleanupSystemListener();
-      this.cleanupStorageListener();
-    });
-  }
-
-  setTheme(theme: Theme): void {
-    this.currentTheme.set(theme);
-    this.updateThemeInUser(theme);
-  }
-
-  private updateThemeInUser(theme: Theme): void {
-    const storedUser = localStorage.getItem(STORED_AUTH_USER_KEY);
-    if (storedUser) {
-      const user = JSON.parse(storedUser) as User;
-      user.userPreferences = {
-        ...user.userPreferences,
-        preferredTheme: theme,
-      };
-      localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
+        this.destroyRef.onDestroy(() => this.cleanupSystemListener());
     }
-  }
 
-  /** Call this after fetching user preferences from your backend */
-  initializeTheme(backendTheme?: Theme): void {
-    if (backendTheme && ['SYSTEM', 'LIGHT', 'DARK'].includes(backendTheme)) {
-      const stored = this.getThemeFromUser();
-      // Only override localStorage if it's different from what we have
-      if (stored !== backendTheme) {
-        this.setTheme(backendTheme);
-      }
+    setTheme(theme: ThemePreference | string): void {
+        const normalized = normalizeThemePreference(theme) ?? 'SYSTEM';
+        this.preference.set(normalized);
+        this.persistPreference(normalized);
     }
-  }
 
-  private getThemeFromUser(): Theme | null {
-    const storedUser = localStorage.getItem(STORED_AUTH_USER_KEY);
-    if (storedUser) {
-      const user = JSON.parse(storedUser) as User;
-      const theme = user.userPreferences?.preferredTheme;
-      if (theme && ['SYSTEM', 'LIGHT', 'DARK'].includes(theme)) {
-        return theme as Theme;
-      }
+    /** Apply theme visually without persisting — used while editing settings. */
+    previewTheme(theme: ThemePreference | string): void {
+        const normalized = normalizeThemePreference(theme) ?? 'SYSTEM';
+        this.preference.set(normalized);
     }
-    return null;
-  }
 
-  private loadThemeFromStorage(): void {
-    const stored = this.getThemeFromUser();
-    if (stored) {
-      this.currentTheme.set(stored);
+    initializeTheme(backendTheme?: ThemePreference | string): void {
+        const normalized = normalizeThemePreference(backendTheme);
+        if (normalized) {
+            this.setTheme(normalized);
+        }
     }
-  }
 
-  private applyTheme(theme: Theme): void {
-    const root = document.documentElement;
+    private applyPreference(preference: ThemePreference): void {
+        this.cleanupSystemListener();
 
-    root.classList.remove('light', 'dark');
-    this.cleanupSystemListener();
+        const resolved = applyThemeToDocument(preference);
+        this.resolvedTheme.set(resolved);
 
-    if (theme === 'SYSTEM') {
-      this.setupSystemListener();
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      root.classList.add(prefersDark ? 'dark' : 'light');
-    } else {
-      root.classList.add(theme?.toLowerCase() || 'system');
+        if (preference === 'SYSTEM') {
+            this.setupSystemListener();
+        }
     }
-  }
 
-  private setupSystemListener(): void {
-    this.systemMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    this.handleSystemChange(this.systemMediaQuery);
-    this.systemMediaQuery.addEventListener('change', this.handleSystemChange);
-  }
-
-  private cleanupSystemListener(): void {
-    if (this.systemMediaQuery) {
-      this.systemMediaQuery.removeEventListener('change', this.handleSystemChange);
-      this.systemMediaQuery = null;
+    private setupSystemListener(): void {
+        this.systemMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        this.systemMediaQuery.addEventListener('change', this.handleSystemChange);
     }
-  }
 
-  private handleSystemChange = (e: MediaQueryListEvent | MediaQueryList): void => {
-    const root = document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(e.matches ? 'dark' : 'light');
-  };
-
-  private setupStorageListener(): void {
-    window.addEventListener('storage', this.handleStorageChange);
-  }
-
-  private cleanupStorageListener(): void {
-    window.removeEventListener('storage', this.handleStorageChange);
-  }
-
-  private handleStorageChange = (event: StorageEvent): void => {
-    if (event.key === STORED_AUTH_USER_KEY && event.newValue) {
-      const theme = this.getThemeFromUser();
-      if (theme && theme !== this.currentTheme()) {
-        this.currentTheme.set(theme);
-      }
+    private cleanupSystemListener(): void {
+        if (this.systemMediaQuery) {
+            this.systemMediaQuery.removeEventListener('change', this.handleSystemChange);
+            this.systemMediaQuery = null;
+        }
     }
-  };
+
+    private handleSystemChange = (event: MediaQueryListEvent): void => {
+        if (this.preference() !== 'SYSTEM') return;
+
+        const resolved: ResolvedTheme = event.matches ? 'dark' : 'light';
+        const root = document.documentElement;
+        root.classList.remove('light', 'dark');
+        root.classList.add(resolved);
+        this.resolvedTheme.set(resolved);
+    };
+
+    private persistPreference(theme: ThemePreference): void {
+        try {
+            const storedUser = localStorage.getItem(STORED_AUTH_USER_KEY);
+            if (!storedUser) return;
+
+            const user = JSON.parse(storedUser) as User;
+            user.userPreferences = {
+                ...user.userPreferences,
+                preferredTheme: theme,
+            };
+            localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
+        } catch {
+            // Ignore malformed storage payloads
+        }
+    }
 }
