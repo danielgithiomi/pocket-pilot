@@ -75,7 +75,6 @@
   width: var(--progress);
   border-radius: 0.25rem 0 0 0.25rem;
   background-color: var(--fill-color);
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .progress-fill.vertical {
@@ -85,7 +84,6 @@
   width: 100%;
   height: var(--progress);
   border-radius: 0 0 0.25rem 0.25rem;
-  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .stripe-pattern {

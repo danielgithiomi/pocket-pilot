@@ -2,6 +2,11 @@ import { formatCurrency } from '@libs/utils';
 import { CommonModule } from '@angular/common';
 import { AccountsService } from '@api/accounts.service';
 import { LucideAngularModule, Pencil } from 'lucide-angular';
+import {
+  COMPONENT_ANIMATION_DURATION_MS,
+  deferAnimationFrame,
+  easeOutCubic,
+} from '@libs/constants';
 import { SpendingProgressBarColors, DEFAULT_COLORS, Variant } from './progress-bar.types';
 import { Component, computed, effect, input, signal, inject, output } from '@angular/core';
 
@@ -71,7 +76,7 @@ export class ProgressBar {
   readonly showPercentage = input<boolean>(false);
   readonly showValueLabels = input<boolean>(true);
   readonly variant = input<Variant>('horizontal');
-  readonly animationDuration = input<number>(600);
+  readonly animationDuration = input<number>(COMPONENT_ANIMATION_DURATION_MS);
   readonly currentValue = input.required<number>();
   readonly colors = input<Partial<SpendingProgressBarColors>>({});
 
@@ -127,7 +132,7 @@ export class ProgressBar {
       if (!this._hasInitialized) {
         this._hasInitialized = true;
         this._animatedPercentage.set(0);
-        requestAnimationFrame(() => {
+        deferAnimationFrame(() => {
           this.animateToValue(0, targetPercentage, duration);
         });
       } else {
@@ -145,7 +150,7 @@ export class ProgressBar {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      const eased = 1 - Math.pow(1 - progress, 3);
+      const eased = easeOutCubic(progress);
       const current = start + (target - start) * eased;
 
       this._animatedPercentage.set(Math.round(current * 10) / 10);

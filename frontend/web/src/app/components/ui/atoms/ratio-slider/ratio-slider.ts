@@ -1,4 +1,9 @@
 import {
+  COMPONENT_ANIMATION_DURATION_MS,
+  deferAnimationFrame,
+  easeOutCubic,
+} from '@libs/constants';
+import {
   input,
   signal,
   effect,
@@ -151,12 +156,11 @@ const DEFAULT_COLORS: RatioSliderColors = {
 
       .progress-circle {
         filter: drop-shadow(0 1px 2px black);
-        transition: stroke-dashoffset 0.02s linear;
       }
 
       .ball-indicator {
         opacity: 0;
-        transition: opacity 0.2s ease;
+        transition: opacity 0.15s ease;
         filter: drop-shadow(0 0 2px black);
       }
 
@@ -208,10 +212,11 @@ export class RatioSlider {
   readonly value = input<number>(0);
   readonly size = input<number>(160);
   readonly title = input<string>('Ratio Income');
-  readonly animationDuration = input<number>(500);
+  readonly animationDuration = input<number>(COMPONENT_ANIMATION_DURATION_MS);
   readonly colors = input<Partial<RatioSliderColors>>({});
 
   private animationFrameId: number | null = null;
+  private _hasInitialized = false;
 
   // View children
   readonly ballIndicator = viewChild<ElementRef<SVGCircleElement>>('ballIndicator');
@@ -251,9 +256,17 @@ export class RatioSlider {
   });
 
   constructor() {
-    // Effect to animate when value changes
     effect(() => {
       const targetValue = Math.min(100, Math.max(0, this.value()));
+
+      if (!this._hasInitialized) {
+        this._hasInitialized = true;
+        this.animatedValue.set(0);
+        this.animatedDisplayValue.set(0);
+        deferAnimationFrame(() => this.animateToValue(targetValue));
+        return;
+      }
+
       this.animateToValue(targetValue);
     });
 
@@ -280,9 +293,9 @@ export class RatioSlider {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+      const easeOut = easeOutCubic(progress);
 
-      const currentValue = startValue + (targetValue - startValue) * easeOutCubic;
+      const currentValue = startValue + (targetValue - startValue) * easeOut;
       this.animatedValue.set(currentValue);
       this.animatedDisplayValue.set(Math.round(currentValue));
 

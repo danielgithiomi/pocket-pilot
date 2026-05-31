@@ -1,3 +1,8 @@
+import {
+  COMPONENT_ANIMATION_DURATION_MS,
+  deferAnimationFrame,
+  easeOutCubic,
+} from '@libs/constants';
 import { MONTHS_ENUM } from '@global/constants';
 import { normalizeCategoryName } from '@global/utils';
 import { AccountsService } from '@api/accounts.service';
@@ -23,7 +28,7 @@ export class CostAnalysis {
   readonly currentMonth = input.required<string>();
   readonly totalMonthlySpending = input.required<number>();
   protected readonly allowAnimation = input<boolean>(true);
-  protected readonly animationDuration = input<number>(500);
+  protected readonly animationDuration = input<number>(COMPONENT_ANIMATION_DURATION_MS);
   protected readonly showMonthSelector = input<boolean>(true);
 
   // OUTPUTS
@@ -172,7 +177,7 @@ export class CostAnalysis {
         });
         this._animatedPercentages.set(initialPercentages);
 
-        requestAnimationFrame(() => {
+        deferAnimationFrame(() => {
           this.animateSegments(categories, duration);
         });
       } else {
@@ -192,7 +197,7 @@ export class CostAnalysis {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      const eased = 1 - Math.pow(1 - progress, 3);
+      const eased = easeOutCubic(progress);
 
       const newPercentages = new Map<string, number>();
       categories.forEach((cat) => {
