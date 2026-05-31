@@ -7,11 +7,11 @@ import { SplitrSummary } from './summary/splitr-summary';
 import { DrawerService } from '@infrastructure/services';
 import { SplitwiseService } from '@api/splitwise.service';
 import { NoData } from '@structural/main/no-data/no-data';
-import { Component, computed, inject } from '@angular/core';
 import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
 import { SplitrBreakdown } from './breakdown/splitr-breakdown';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
+import { LucideAngularModule, CheckCheck, ReceiptText, Trash2 } from 'lucide-angular';
 
 @Component({
     selector: 'splitr-details',
@@ -30,12 +30,17 @@ import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
 export class SplitrDetails {
     // ICONS
     protected readonly iconSize = 18;
+    protected readonly DeleteIcon = Trash2;
     protected readonly SettledIcon = CheckCheck;
     protected readonly BreadcrumbIcon = ReceiptText;
 
     // ANIMATIONS
     protected readonly animationDimensions = '250px';
     protected readonly animationMessageSize = 'text-sm';
+
+    // STATE SIGNALS
+    protected readonly isDeletingSplittable = signal<boolean>(false);
+    protected readonly isSettlingSplittable = signal<boolean>(false);
 
     // SERVICES
     private readonly route = inject(ActivatedRoute);

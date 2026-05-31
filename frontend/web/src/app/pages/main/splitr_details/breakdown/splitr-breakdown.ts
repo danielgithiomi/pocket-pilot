@@ -45,11 +45,11 @@ export class SplitrBreakdown {
 
     // COMPUTED
     protected readonly eventId = computed(() => this.splitrEvent().id);
-    
+    protected readonly settled = computed(() => this.splitrEvent().settled);
     protected readonly formattedEventDate = computed(() =>
         formatFullDate(this.splitrEvent().eventDate),
     );
-    
+
     protected readonly payers = computed<EventPayer[]>(() => {
         const { billPayers, verificationTotal, billingCurrency } = this.splitrEvent();
 

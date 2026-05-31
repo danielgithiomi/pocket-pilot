@@ -3,17 +3,36 @@
     <div class="page-header">
         <h1 class="page-title">Splitr Event Details</h1>
 
-        <atom-button
-            variant="secondary"
-            id="splitr-details-settle"
-            [disabled]="isFetchingDetails() || hasError() || !event"
-            (clicked)="handleOnSplittableSettledClick()"
-        >
-            <div class="w-full flex flex-row items-center justify-between gap-4">
-                <lucide-icon name="settle-splittable" [img]="SettledIcon" [size]="iconSize" />
-                <span class="hidden sm:block">Mark Settled</span>
-            </div>
-        </atom-button>
+        <div class="flex flex-row items-center gap-2">
+            @if (!event?.settled) {
+                <atom-button
+                    variant="secondary"
+                    id="splitr-details-settle"
+                    [isLoading]="isSettlingSplittable()"
+                    (clicked)="handleOnSplittableSettledClick()"
+                    [disabled]="isFetchingDetails() || hasError() || !event"
+                >
+                    <div class="w-full flex flex-row items-center justify-between gap-4">
+                        <lucide-icon
+                            name="settle-splittable"
+                            [img]="SettledIcon"
+                            [size]="iconSize"
+                        />
+                        <span class="hidden sm:block">Mark Settled</span>
+                    </div>
+                </atom-button>
+            }
+
+            <atom-button
+                variant="primary"
+                id="splitr-details-delete"
+                [isLoading]="isDeletingSplittable()"
+                (clicked)="handleOnSplittableDeleteClick()"
+                [disabled]="isFetchingDetails() || hasError() || !event"
+            >
+                <lucide-icon name="delete" [img]="DeleteIcon" [size]="iconSize" class="my-0.5" />
+            </atom-button>
+        </div>
     </div>
 
     <div

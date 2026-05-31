@@ -20,7 +20,11 @@
             </div>
 
             <!-- Right Side Content -->
-            <atom-badge variant="success" label="Settled" className="text-base! px-3!" />
+            <atom-badge
+                className="text-base! px-3!"
+                [variant]="settled() ? 'success' : 'warning'"
+                [label]="settled() ? 'Settled' : 'Unsettled'"
+            />
         </div>
 
         <hr />
@@ -147,9 +151,9 @@
                                 <icon-checked-circle
                                     [filled]="true"
                                     [size]="iconSize"
-                                    [color]="'var(--income)'"
-                                    [fillColor]="'var(--income)'"
-                                    [checkColor]="'var(--white)'"
+                                    [color]="'var(--body-background)'"
+                                    [checkColor]="'var(--body-background)'"
+                                    [fillColor]="'var(--inverted-background)'"
                                     class="absolute -bottom-1 -right-1 text-income shrink-0"
                                 />
                             }
