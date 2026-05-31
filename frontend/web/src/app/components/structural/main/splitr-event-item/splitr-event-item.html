@@ -33,8 +33,8 @@
                 </div>
 
                 <div class="splitr-event-tags">
-                    <atom-badge variant="info" label="1 Payer" />
-                    <atom-badge variant="warning" label="Settled" />
+                    <atom-badge variant="info" [label]="payerCount()" />
+                    <atom-badge variant="warning" [label]="settled() ? 'Settled' : 'Unsettled'" />
                 </div>
             </div>
         </div>

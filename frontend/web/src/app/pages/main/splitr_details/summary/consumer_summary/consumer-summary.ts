@@ -9,7 +9,7 @@ import { Component, computed, input } from '@angular/core';
     selector: 'consumer-summary',
     template: `
         <div
-            class="shadow-xl flex flex-row items-center justify-between px-3 py-4 gap-3 cursor-default! hover:cursor-pointer! card-item-border"
+            class="shadow-lg flex flex-row items-center justify-between px-3 py-4 gap-3 cursor-default! hover:cursor-pointer! card-item-border"
         >
             <div
                 class="rounded-full size-8 grid place-items-center shrink-0"
