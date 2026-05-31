@@ -17,8 +17,8 @@
           [width]="imageDimensions.width"
           [height]="imageDimensions.height"
           [ngClass]="{
-            'invert-0!': themeService.theme() === 'DARK',
-            'invert-100!': themeService.theme() === 'LIGHT',
+            'invert-0!': themeService.activeTheme() === 'dark',
+            'invert-100!': themeService.activeTheme() === 'light',
           }"
         />
         <lucide-icon name="nfc" [img]="NFC" [size]="22" />

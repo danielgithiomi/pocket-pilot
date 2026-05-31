@@ -7,7 +7,7 @@ import { concatUrl } from '@methods/methods.utils';
 import { catchError, EMPTY, firstValueFrom, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { STORED_AUTH_USER_KEY, STORED_ONBOARDING_USER_KEY } from '@libs/constants';
-import { User, LoginPayload, IStandardError, IStandardResponse } from '@global/types';
+import { User, LoginPayload, IStandardError, IStandardResponse, UserPreferences } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
@@ -149,6 +149,22 @@ export class AuthService {
   refreshSession(user: User) {
     this.clearSession();
     this.createSession(user);
+  }
+
+  patchUserPreferences(preferences: Partial<UserPreferences>): void {
+    const user = this.userSignal();
+    if (!user) return;
+
+    const updatedUser: User = {
+      ...user,
+      userPreferences: {
+        ...user.userPreferences,
+        ...preferences,
+      },
+    };
+
+    this.userSignal.set(updatedUser);
+    localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(updatedUser));
   }
 
   reinitializeSession() {

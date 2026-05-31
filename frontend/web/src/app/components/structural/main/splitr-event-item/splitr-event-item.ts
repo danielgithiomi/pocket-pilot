@@ -3,7 +3,7 @@ import { ISplitrEvent } from '@global/types';
 import { Overlapper } from '@atoms/overlapper';
 import { AccountsService } from '@api/accounts.service';
 import { formatFullDate, formatCurrency } from '@libs/utils';
-import { Component, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { LucideAngularModule, ChevronRight } from 'lucide-angular';
 
 @Component({
@@ -27,6 +27,15 @@ export class SplitrEventItem {
 
     // DATA
     protected readonly currency = this.accountsService.getDefaultCurrency();
+
+    // COMPUTED
+    protected readonly payerCount = computed<string>(() => {
+        return `${this.splitrEvent().billPayers.length} ${this.splitrEvent().billPayers.length === 1 ? 'Payer' : 'Payers'}`;
+    });
+
+    protected readonly settled = computed(() => {
+        return this.splitrEvent().isSettled;
+    });
 
     // UTILS
     protected formatFullDate(date: string): string {

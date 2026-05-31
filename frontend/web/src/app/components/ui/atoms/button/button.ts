@@ -1,85 +1,97 @@
+import { NgClass } from '@angular/common';
 import { ButtonType, ButtonVariant } from './button.types';
 import { input, output, computed, Component } from '@angular/core';
 
 @Component({
-  selector: 'atom-button',
-  styleUrl: './button.css',
-  template: `
-    <button
-      [type]="type()"
-      [id]="prefixedId()"
-      [attr.form]="form()"
-      (click)="handleClick()"
-      [class]="buttonClasses()"
-      [disabled]="disabled() || isLoading()"
-    >
-      <!-- Loader Overlay -->
-      @if (isLoading()) {
-        <div class="absolute inset-0 grid place-items-center z-1" [class]="loaderOverlayClasses()">
-          <div class="loader"></div>
-        </div>
-      }
+    selector: 'atom-button',
+    styleUrl: './button.css',
+    imports: [NgClass],
+    template: `
+        <button
+            [type]="type()"
+            [id]="prefixedId()"
+            [attr.form]="form()"
+            (click)="handleClick()"
+            [class]="buttonClasses()"
+            [disabled]="disabled() || isLoading()"
+        >
+            <!-- Loader Overlay -->
+            @if (isLoading()) {
+                <div
+                    class="absolute inset-0 grid place-items-center z-1"
+                    [class]="loaderOverlayClasses()"
+                >
+                    <div
+                        class="loader"
+                        [ngClass]="{
+                            'border-primary! border-t-transparent!': variant() === 'secondary',
+                        }"
+                    ></div>
+                </div>
+            }
 
-      <!-- Label / Projected Content -->
-      <span class="relative z-0">
-        @if (label()) {
-          {{ label() }}
-        } @else {
-          <ng-content></ng-content>
-        }
-      </span>
-    </button>
-  `,
+            <!-- Label / Projected Content -->
+            <span class="relative z-0">
+                @if (label()) {
+                    {{ label() }}
+                } @else {
+                    <ng-content></ng-content>
+                }
+            </span>
+        </button>
+    `,
 })
 export class Button {
-  // =========================
-  // Inputs (Signals API)
-  // =========================
-  form = input<string>('');
-  label = input<string>('');
-  id = input.required<string>();
-  className = input<string>('');
-  inverted = input<boolean>(false);
-  disabled = input<boolean>(false);
-  isLoading = input<boolean>(false);
-  type = input<ButtonType>('button');
-  variant = input<ButtonVariant>('primary');
+    // =========================
+    // Inputs (Signals API)
+    // =========================
+    form = input<string>('');
+    label = input<string>('');
+    id = input.required<string>();
+    className = input<string>('');
+    inverted = input<boolean>(false);
+    disabled = input<boolean>(false);
+    isLoading = input<boolean>(false);
+    type = input<ButtonType>('button');
+    variant = input<ButtonVariant>('primary');
 
-  // =========================
-  // Outputs
-  // =========================
-  clicked = output<void>();
+    // =========================
+    // Outputs
+    // =========================
+    clicked = output<void>();
 
-  // =========================
-  // Computed Values
-  // =========================
-  prefixedId = computed(() => `btn-${this.id()}`);
+    // =========================
+    // Computed Values
+    // =========================
+    prefixedId = computed(() => `btn-${this.id()}`);
 
-  buttonClasses = computed(() => {
-    const base = 'button overflow-hidden relative transition-all duration-250 cursor-pointer';
-    const loadingClasses = this.isLoading() ? 'opacity-80 cursor-progress' : '';
-    const variantClasses =
-      this.variant() === 'primary'
-        ? 'bg-primary text-white'
-        : this.inverted()
-          ? 'bg-body-background text-primary-text'
-          : 'bg-inverted-background text-inverted-text';
-    const disabledClasses = this.disabled() ? 'opacity-50 !cursor-not-allowed' : 'hover:scale-101';
+    buttonClasses = computed(() => {
+        const base = 'button overflow-hidden relative transition-all duration-250 cursor-pointer';
+        const loadingClasses = this.isLoading() ? 'opacity-80 cursor-progress' : '';
+        const variantClasses =
+            this.variant() === 'primary'
+                ? 'bg-primary text-white'
+                : this.inverted()
+                  ? 'bg-body-background text-primary-text'
+                  : 'bg-inverted-background text-inverted-text';
+        const disabledClasses = this.disabled()
+            ? 'opacity-50 !cursor-not-allowed'
+            : 'hover:scale-101';
 
-    return [base, variantClasses, loadingClasses, disabledClasses, this.className()]
-      .filter(Boolean)
-      .join(' ');
-  });
+        return [base, variantClasses, loadingClasses, disabledClasses, this.className()]
+            .filter(Boolean)
+            .join(' ');
+    });
 
-  loaderOverlayClasses = computed(() => {
-    return this.variant() === 'primary' ? 'bg-primary' : 'bg-inverted-background';
-  });
+    loaderOverlayClasses = computed(() => {
+        return this.variant() === 'primary' ? 'bg-primary' : 'bg-inverted-background';
+    });
 
-  // =========================
-  // Methods
-  // =========================
-  handleClick(): void {
-    if (this.disabled() || this.isLoading()) return;
-    this.clicked.emit();
-  }
+    // =========================
+    // Methods
+    // =========================
+    handleClick(): void {
+        if (this.disabled() || this.isLoading()) return;
+        this.clicked.emit();
+    }
 }

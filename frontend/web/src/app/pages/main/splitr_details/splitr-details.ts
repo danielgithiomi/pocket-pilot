@@ -1,59 +1,130 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { NoData } from '@structural/main/no-data/no-data';
+import { ToastService } from '@atoms/toast';
+import { AuthService } from '@api/auth.service';
+import { SplitrService } from '@api/splitr.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SplitrSummary } from './summary/splitr-summary';
 import { DrawerService } from '@infrastructure/services';
-import { SplitwiseService } from '@api/splitwise.service';
+import { NoData } from '@structural/main/no-data/no-data';
 import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
-import { Component, computed, inject } from '@angular/core';
+import { SplitrBreakdown } from './breakdown/splitr-breakdown';
+import { ISplitrEvent, IVoidResourceResponse } from '@global/types';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
+import { LucideAngularModule, CheckCheck, ReceiptText, Trash2 } from 'lucide-angular';
 
 @Component({
     selector: 'splitr-details',
     templateUrl: './splitr-details.html',
-    imports: [LucideAngularModule, NgClass, Button, Breadcrumbs, FetchError, NoData],
+    imports: [
+        Button,
+        NoData,
+        NgClass,
+        FetchError,
+        Breadcrumbs,
+        SplitrSummary,
+        SplitrBreakdown,
+        LucideAngularModule,
+    ],
 })
 export class SplitrDetails {
     // ICONS
     protected readonly iconSize = 18;
+    protected readonly DeleteIcon = Trash2;
     protected readonly SettledIcon = CheckCheck;
     protected readonly BreadcrumbIcon = ReceiptText;
 
+    // ANIMATIONS
+    protected readonly animationDimensions = '250px';
+    protected readonly animationMessageSize = 'text-sm';
+
+    // STATE SIGNALS
+    protected readonly isDeletingSplittable = signal<boolean>(false);
+    protected readonly isSettlingSplittable = signal<boolean>(false);
+
     // SERVICES
+    private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
+    private readonly authService = inject(AuthService);
+    private readonly toastService = inject(ToastService);
+    private readonly splitrService = inject(SplitrService);
     protected readonly drawerService = inject(DrawerService);
-    private readonly splitwiseService = inject(SplitwiseService);
 
     // DATA
     protected readonly eventId = this.route.snapshot.paramMap.get('eventId') ?? '';
-    protected readonly splitrEventResource = this.splitwiseService.getUserSplitrEventById(this.eventId);
+    protected readonly splitrEventResource = this.splitrService.getUserSplitrEventById(
+        this.eventId,
+    );
 
     // COMPUTED
     protected readonly hasError = computed<boolean>(() => !!this.splitrEventResource.error());
-    protected readonly isFetchingDetails = computed<boolean>(() => this.splitrEventResource.isLoading());
-    protected readonly splitrEvent = computed(() => {
+    protected readonly isFetchingDetails = computed<boolean>(() =>
+        this.splitrEventResource.isLoading(),
+    );
+    protected readonly selfName = computed(() => {
+        const username = this.authService.user()?.name.split(' ')[0];
+        return `${username}(Self)`;
+    });
+    protected readonly splitrEvent = computed<ISplitrEvent | undefined>(() => {
         if (this.hasError()) return undefined;
-        return this.splitrEventResource.value()?.data;
+        const event = this.splitrEventResource.value()?.data;
+        if (!event) return undefined;
+        return {
+            ...event,
+            eventMembers: [...event.eventMembers, this.selfName()],
+        };
     });
-
-    // COMPUTED
-    protected readonly breadcrumbItems = computed(() => {
-        return [
-            { label: 'Events', route: '/splitwise' },
-            {
-                label: this.splitrEvent()?.eventName ?? '',
-                route: `/splitwise/${this.splitrEvent()?.id}`,
-            },
-        ];
-    });
+    protected readonly breadcrumbItems = computed(() => [
+        { label: 'Events', route: '/splitr' },
+        {
+            label: this.splitrEvent()?.eventName ?? '',
+            route: `/splitr/${this.splitrEvent()?.id}`,
+        },
+    ]);
 
     // METHODS
-    handleOnSplittableSettledClick() {
-        //TODO: Implement settled click
+    handleOnSplittableSettledClick(isSettled: boolean) {
+        this.isSettlingSplittable.set(true);
+
+        setTimeout(() => {
+            this.splitrService
+                .markSplitrEventAsSettledOrPending(this.eventId, { isSettled: !isSettled })
+                .subscribe({
+                    next: (response: IVoidResourceResponse) => {
+                        const { message, details } = response;
+                        this.toastService.show({
+                            details,
+                            title: message,
+                            variant: 'success',
+                        });
+
+                        this.splitrEventResource.reload();
+                    },
+                    complete: () => this.isSettlingSplittable.set(false),
+                });
+        }, 2000);
     }
 
     handleOnSplittableDeleteClick() {
-        // TODO: Implement delete click
+        this.isDeletingSplittable.set(true);
+
+        setTimeout(() => {
+            this.splitrService.deleteExistingSplitrEvent(this.eventId).subscribe({
+                next: (response: IVoidResourceResponse) => {
+                    const { message, details } = response;
+                    this.toastService.show({
+                        details,
+                        title: message,
+                        variant: 'success',
+                    });
+
+                    this.splitrEventResource.reload();
+                    this.splitrService.getUserSplitrEvents().reload();
+                    this.router.navigate(['/splitr'], { replaceUrl: true });
+                },
+                complete: () => this.isDeletingSplittable.set(false),
+            });
+        }, 2000);
     }
 }

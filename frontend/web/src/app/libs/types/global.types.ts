@@ -6,7 +6,7 @@ export interface ImageDimensions {
 type AdditionalLinks = 'support';
 type UserLinks =
   // | 'home'
-  'goals' | 'profile' | 'accounts' | 'settings' | 'dashboard' | 'transactions' | 'splitwise';
+  'goals' | 'profile' | 'accounts' | 'settings' | 'dashboard' | 'transactions' | 'splitr';
 
 export interface DrawerNavigationLink {
   name: string;

@@ -29,9 +29,9 @@
             >
                 <div class="w-full grid place-items-center">
                     <lucide-icon
-                        name="delete-account"
-                        [img]="deleteIcon"
                         [size]="iconSize"
+                        [img]="deleteIcon"
+                        name="delete-account"
                     ></lucide-icon>
                 </div>
             </atom-button>
@@ -40,9 +40,9 @@
 
     <div
         class="page-container flex-1 flex flex-col space-y-6"
-        [ngClass]="{ 'grid! place-items-center!': hasError() || !resource }"
+        [ngClass]="{ 'grid! place-items-center!': hasError() }"
     >
-        @if (!hasError() && resource) {
+        @if (!hasError()) {
             <breadcrumbs
                 [icon]="breadcrumbIcon"
                 [isLoading]="isLoadingResources()"
@@ -52,7 +52,7 @@
 
         @if (isLoadingResources()) {
             <div class="h-full grid place-items-center">
-                <div class="dashboard-card-loader"></div>
+                <div class="layered-loader"></div>
             </div>
         } @else {
             @if (hasError()) {

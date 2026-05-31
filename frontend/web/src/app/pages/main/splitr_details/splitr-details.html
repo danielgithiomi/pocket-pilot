@@ -3,46 +3,81 @@
     <div class="page-header">
         <h1 class="page-title">Splitr Event Details</h1>
 
-        <atom-button
-            variant="secondary"
-            id="splitr-details-settle"
-            [disabled]="isFetchingDetails() || hasError() || !event"
-            (clicked)="handleOnSplittableSettledClick()"
-        >
-            <div class="w-full flex flex-row items-center justify-between gap-4">
-                <lucide-icon name="settle-splittable" [img]="SettledIcon" [size]="iconSize" />
-                <span class="hidden sm:block">Mark Settled</span>
-            </div>
-        </atom-button>
+        <div class="flex flex-row items-center gap-2">
+            @let isSettled = event?.isSettled;
+            <atom-button
+                id="splitr-details-settle"
+                [isLoading]="isSettlingSplittable()"
+                [variant]="isSettled ? 'secondary' : 'primary'"
+                [disabled]="isFetchingDetails() || hasError() || !event"
+                (clicked)="handleOnSplittableSettledClick(isSettled ?? false)"
+            >
+                <div class="w-full flex flex-row items-center justify-between gap-4">
+                    <lucide-icon [size]="iconSize" [img]="SettledIcon" name="settle-splittable" />
+                    <span class="hidden sm:block text-sm"
+                        >Mark {{ isSettled ? 'as pending' : 'as settled' }}!</span
+                    >
+                </div>
+            </atom-button>
+
+            <atom-button
+                variant="primary"
+                className="bg-error!"
+                id="splitr-details-delete"
+                [isLoading]="isDeletingSplittable()"
+                (clicked)="handleOnSplittableDeleteClick()"
+                [disabled]="isFetchingDetails() || hasError() || !event"
+            >
+                <lucide-icon name="delete" [img]="DeleteIcon" [size]="iconSize" class="my-0.5" />
+            </atom-button>
+        </div>
     </div>
 
     <div
         class="page-container flex-1 flex flex-col space-y-6"
-        [ngClass]="{ 'grid! place-items-center!': hasError() || !event }"
+        [ngClass]="{ 'grid! place-items-center!': hasError() }"
     >
-        @if (!hasError() && event) {
+        @if (!hasError()) {
             <breadcrumbs
-                [isLoading]="isFetchingDetails()"
                 [icon]="BreadcrumbIcon"
+                [isLoading]="isFetchingDetails()"
                 [breadcrumbItems]="breadcrumbItems()"
             />
         }
 
         @if (isFetchingDetails()) {
             <div class="h-full grid place-items-center">
-                <div class="dashboard-card-loader"></div>
+                <div class="layered-loader"></div>
             </div>
-        } @else if (hasError()) {
-            <fetch-error message="Error loading splitr event" />
-        } @else if (!event) {
-            <no-data message="No splitr event data available" />
         } @else {
-            <div
-                class="h-full flex flex-col md:flex-row gap-6"
-                [ngClass]="{
-                    'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
-                }"
-            ></div>
+            @if (hasError()) {
+                <fetch-error
+                    [messageClass]="animationMessageSize"
+                    message="Error loading splitr your event."
+                    [animationDimensions]="animationDimensions"
+                />
+            } @else if (!event) {
+                <no-data
+                    [messageClass]="animationMessageSize"
+                    message="No splitr event data available."
+                    [animationDimensions]="animationDimensions"
+                />
+            } @else {
+                <div
+                    class="flex flex-col md:flex-row gap-6 md:gap-8"
+                    [ngClass]="{
+                        'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
+                    }"
+                >
+                    <section class="flex-5">
+                        <splitr-breakdown [splitrEvent]="event" />
+                    </section>
+
+                    <section class="page-card shadow-none! flex-2">
+                        <splitr-summary [splitrEvent]="event" />
+                    </section>
+                </div>
+            }
         }
     </div>
 </section>

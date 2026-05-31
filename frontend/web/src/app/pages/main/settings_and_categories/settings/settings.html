@@ -71,7 +71,6 @@
         form="settings-form"
         label="Update My Settings"
         [isLoading]="isSubmittingSettingsForm()"
-        (click)="isSubmittingSettingsForm.set(true)"
         [disabled]="
           settingsForm().invalid() || !settingsForm().dirty() || isSubmittingSettingsForm()
         "

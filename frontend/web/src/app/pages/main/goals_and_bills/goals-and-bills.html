@@ -10,13 +10,13 @@
     </p>
 
     <div
-      class="w-full flex flex-col md:flex-row min-h-full gap-6 pb-4"
+      class="w-full flex flex-col md:flex-row min-h-full gap-6 md:gap-8 pb-4"
       [ngClass]="{
         'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
       }"
     >
       <div
-        class="goals-card no-scrollbar"
+        class="goals-card no-shadow-card no-scrollbar"
         [ngClass]="{
           'md:w-full!': !drawerService.isDrawerCollapsed(),
         }"
@@ -74,7 +74,7 @@
         }
       </div>
       <div
-        class="bills-card no-scrollbar"
+        class="bills-card no-shadow-card no-scrollbar"
         [ngClass]="{
           'md:w-full!': !drawerService.isDrawerCollapsed(),
         }"

@@ -41,10 +41,10 @@ export const API_ENDPOINTS = {
   // categories
   categories: "categories",
 
-  // splitwise
-  splitwise: "splitwise",
-  squads: "splitwise/squads",
-  orderTags: "splitwise/tags",
+  // splitr
+  splitr: "splitr",
+  squads: "splitr/squads",
+  orderTags: "splitr/tags",
 
   // transactions
   all_transactions: "accounts/transactions/all",
