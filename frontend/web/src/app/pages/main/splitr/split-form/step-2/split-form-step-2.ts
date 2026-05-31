@@ -6,9 +6,9 @@ import { formatCurrency } from '@libs/utils';
 import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
+import { SplitrService } from '@api/splitr.service';
 import { OrderItem } from './order-item/order-item';
 import { Select, SelectOption } from '@atoms/select';
-import { SplitwiseService } from '@api/splitwise.service';
 import { ArrowLeft, PanelTopClose, PanelBottomClose, LucideAngularModule } from 'lucide-angular';
 import {
     SplittableOrder,
@@ -67,11 +67,11 @@ export class SplitFormStep2 {
     // SERVICES
     private readonly authService = inject(AuthService);
     private readonly toastService = inject(ToastService);
-    private readonly splitwiseService = inject(SplitwiseService);
+    private readonly splitrService = inject(SplitrService);
 
     // DATA
     private readonly user = this.authService.user();
-    protected readonly categoryTagsResource = this.splitwiseService.getOrderCategoryTags();
+    protected readonly categoryTagsResource = this.splitrService.getOrderCategoryTags();
 
     // COMPUTED
     protected readonly consumerOptions = computed<string[]>(() => {
@@ -257,9 +257,9 @@ export class SplitFormStep2 {
             splitStrategy === 'QUANTITY'
                 ? quantitySplits
                 : quantitySplits.map((split) => ({
-                        ...split,
-                        consumerQuantity: Math.floor(quantity / quantitySplits.length),
-                }));
+                      ...split,
+                      consumerQuantity: Math.floor(quantity / quantitySplits.length),
+                  }));
 
         const newSplittable: SplittableOrder = {
             id: this.splittables().length + 1,

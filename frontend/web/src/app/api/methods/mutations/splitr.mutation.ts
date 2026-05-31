@@ -7,6 +7,7 @@ import {
     SplitrSquadPayload,
     SettleSplitrPayload,
     IVoidResourceResponse,
+    ISplitrEvent,
 } from '@global/types';
 
 @Injectable({
@@ -34,7 +35,7 @@ export class SplitrMutation {
     // EVENTS
     createNewSplitrEvent(payload: SplitrEventPayload) {
         const endpoint = endpoints.splitr;
-        return this.client.post<SplitrEventPayload, SplitrEventPayload>(endpoint, payload);
+        return this.client.post<ISplitrEvent, SplitrEventPayload>(endpoint, payload);
     }
 
     markSplitrEventAsSettledOrPending(eventId: string, payload: SettleSplitrPayload) {

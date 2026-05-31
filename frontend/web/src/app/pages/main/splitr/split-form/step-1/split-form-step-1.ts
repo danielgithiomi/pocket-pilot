@@ -2,9 +2,9 @@ import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { Select } from '@atoms/select';
 import { NgClass } from '@angular/common';
+import { SplitrSquad } from '@global/types';
 import { ToastService } from '@atoms/toast';
 import { SelectOption } from '@atoms/select';
-import { SplitwiseSquad } from '@global/types';
 import { FieldTree } from '@angular/forms/signals';
 import { DatePicker } from '@organisms/date-picker';
 import { COMMON_CURRENCIES } from '@global/constants';
@@ -36,7 +36,7 @@ export class SplitFormStep1 {
   readonly memberPool = input.required<string[]>();
   readonly presentMembers = input.required<string[]>();
   readonly isSubmittingForm = input.required<boolean>();
-  readonly existingSquads = input.required<SplitwiseSquad[]>();
+  readonly existingSquads = input.required<SplitrSquad[]>();
   readonly formModel = input.required<FieldTree<SplitFormSchema, string | number>>();
 
   // OUTPUTS

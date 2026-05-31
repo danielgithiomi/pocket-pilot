@@ -1,5 +1,3 @@
-import { SplitStrategyVariant } from '@global/types';
-
 export interface Avatar {
     bg: string;
     fg: string;

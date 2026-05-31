@@ -1,9 +1,9 @@
 import { ToastService } from '@atoms/toast';
-import { SplitwiseService } from '@api/splitwise.service';
+import { SplitrService } from '@api/splitr.service';
 import { SquadMember } from '../squad-member/squad-member';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { ISquadMember } from '../squad-member/squad-member';
-import { IVoidResourceResponse, SplitwiseSquad } from '@global/types';
+import { IVoidResourceResponse, SplitrSquad } from '@global/types';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { LucideAngularModule, EllipsisVertical, Trash2, Pencil } from 'lucide-angular';
 
@@ -21,7 +21,7 @@ export class SquadItem {
     protected readonly options = EllipsisVertical;
 
     // INPUTS
-    readonly squad = input.required<SplitwiseSquad>();
+    readonly squad = input.required<SplitrSquad>();
 
     // OUTPUTS
     readonly onUpdateSquadItemEvent = output<string>();
@@ -32,7 +32,7 @@ export class SquadItem {
 
     // SERVICES
     private readonly toastService = inject(ToastService);
-    private readonly splitwiseService = inject(SplitwiseService);
+    private readonly splitrService = inject(SplitrService);
 
     // COMPUTED
     protected readonly squadId = computed<string>(() => this.squad().id);
@@ -62,7 +62,7 @@ export class SquadItem {
         this.isDeletingSquad.set(true);
 
         setTimeout(() => {
-            this.splitwiseService.deleteExistingUserSquad(this.squadId()).subscribe({
+            this.splitrService.deleteExistingUserSquad(this.squadId()).subscribe({
                 next: (response: IVoidResourceResponse) => {
                     const { message, details } = response;
                     this.toastService.show({
@@ -72,7 +72,7 @@ export class SquadItem {
                     });
 
                     this.isDropdownOpen.set(false);
-                    this.splitwiseService.getUserSquads().reload();
+                    this.splitrService.getUserSquads().reload();
                 },
                 complete: () => this.isDeletingSquad.set(false),
             });

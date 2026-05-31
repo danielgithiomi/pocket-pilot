@@ -2,10 +2,10 @@ import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { AuthService } from '@api/auth.service';
+import { SplitrService } from '@api/splitr.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SplitrSummary } from './summary/splitr-summary';
 import { DrawerService } from '@infrastructure/services';
-import { SplitwiseService } from '@api/splitwise.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
 import { SplitrBreakdown } from './breakdown/splitr-breakdown';
@@ -48,12 +48,12 @@ export class SplitrDetails {
     private readonly route = inject(ActivatedRoute);
     private readonly authService = inject(AuthService);
     private readonly toastService = inject(ToastService);
+    private readonly splitrService = inject(SplitrService);
     protected readonly drawerService = inject(DrawerService);
-    private readonly splitwiseService = inject(SplitwiseService);
 
     // DATA
     protected readonly eventId = this.route.snapshot.paramMap.get('eventId') ?? '';
-    protected readonly splitrEventResource = this.splitwiseService.getUserSplitrEventById(
+    protected readonly splitrEventResource = this.splitrService.getUserSplitrEventById(
         this.eventId,
     );
 
@@ -88,7 +88,7 @@ export class SplitrDetails {
         this.isSettlingSplittable.set(true);
 
         setTimeout(() => {
-            this.splitwiseService
+            this.splitrService
                 .markSplitrEventAsSettledOrPending(this.eventId, { isSettled: !isSettled })
                 .subscribe({
                     next: (response: IVoidResourceResponse) => {
@@ -110,7 +110,7 @@ export class SplitrDetails {
         this.isDeletingSplittable.set(true);
 
         setTimeout(() => {
-            this.splitwiseService.deleteExistingSplitrEvent(this.eventId).subscribe({
+            this.splitrService.deleteExistingSplitrEvent(this.eventId).subscribe({
                 next: (response: IVoidResourceResponse) => {
                     const { message, details } = response;
                     this.toastService.show({
@@ -120,7 +120,7 @@ export class SplitrDetails {
                     });
 
                     this.splitrEventResource.reload();
-                    this.splitwiseService.getUserSplitrEvents().reload();
+                    this.splitrService.getUserSplitrEvents().reload();
                     this.router.navigate(['/splitwise'], { replaceUrl: true });
                 },
                 complete: () => this.isDeletingSplittable.set(false),

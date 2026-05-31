@@ -1,7 +1,7 @@
-import { SplitwiseSquadPayload } from '@global/types';
+import { SplitrSquadPayload } from '@global/types';
 import { maxLength, minLength, required, schema } from '@angular/forms/signals';
 
-export type squadSchema = SplitwiseSquadPayload;
+export type squadSchema = SplitrSquadPayload;
 
 export const initialCreateSquadData: squadSchema = {
     squadName: '',

@@ -2,11 +2,11 @@ import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
+import { SplitrSquad } from '@global/types';
 import { form } from '@angular/forms/signals';
-import { SplitwiseSquad } from '@global/types';
 import { formatToReadable } from '@libs/utils';
+import { SplitrService } from '@api/splitr.service';
 import { Form, FormCloseEvent } from '@organisms/form';
-import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { squadValidationSchema, squadSchema } from '../squad-form.types';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
@@ -23,7 +23,7 @@ export class UpdateSplitwiseSquad {
     protected readonly AddUserIcon = UserPlus;
 
     // INPUTS
-    readonly squad = input.required<SplitwiseSquad>();
+    readonly squad = input.required<SplitrSquad>();
     readonly allSquadMembers = input.required<string[]>();
 
     // OUTPUTS
@@ -31,7 +31,7 @@ export class UpdateSplitwiseSquad {
 
     // SERVICES
     private readonly toastService = inject(ToastService);
-    private readonly splitwiseService = inject(SplitwiseService);
+    private readonly splitrService = inject(SplitrService);
 
     // STATE SIGNALS
     protected readonly customMembers = signal<string[]>([]);
@@ -129,8 +129,8 @@ export class UpdateSplitwiseSquad {
         const { ...payload } = this.updateSquadFormModel();
 
         setTimeout(() => {
-            this.splitwiseService.updateExistingUserSquad(this.squad().id, payload).subscribe({
-                next: (response: SplitwiseSquad) => {
+            this.splitrService.updateExistingUserSquad(this.squad().id, payload).subscribe({
+                next: (response: SplitrSquad) => {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Squad updated successfully!',

@@ -4,9 +4,9 @@ import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
 import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
+import { SplitrService } from '@api/splitr.service';
 import { Select, SelectOption } from '@atoms/select';
 import { AccountsService } from '@api/accounts.service';
-import { SplitwiseService } from '@api/splitwise.service';
 import { PlaceholderSplittableFormState as placeholder } from './order-item.types';
 import { LucideAngularModule, Trash2, ChevronDown, ChevronUp } from 'lucide-angular';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
@@ -43,7 +43,6 @@ export class OrderItem {
     // INPUTS
     readonly order = input.required<SplittableOrder>();
     readonly presentMembers = input.required<string[]>();
-    // readonly splitStrategyOptions = input.required<SelectOption[]>();
 
     // OUTPUTS
     readonly onDeleteClickEvent = output<number>();
@@ -56,11 +55,11 @@ export class OrderItem {
     // SERVICES
     private readonly toastService = inject(ToastService);
     private readonly accountsService = inject(AccountsService);
-    private readonly splitwiseService = inject(SplitwiseService);
+    private readonly splitrService = inject(SplitrService);
 
     // DATA
     protected readonly currency = this.accountsService.getDefaultCurrency();
-    protected readonly categoryTags = this.splitwiseService.getOrderCategoryTags();
+    protected readonly categoryTags = this.splitrService.getOrderCategoryTags();
 
     // REACTIVE
     protected readonly formattedUnitPrice = computed<string>(() =>

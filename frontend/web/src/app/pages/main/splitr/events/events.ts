@@ -1,8 +1,8 @@
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { ISplitrEvent } from '@global/types';
+import { SplitrService } from '@api/splitr.service';
 import { NoData } from '@structural/main/no-data/no-data';
-import { SplitwiseService } from '@api/splitwise.service';
 import { Component, computed, inject } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { SplitrEventItem } from '@structural/main/splitr-event-item/splitr-event-item';
@@ -19,10 +19,10 @@ export class SplitwiseEvents {
 
     // SERVICES
     private readonly router = inject(Router);
-    private readonly splitwiseService = inject(SplitwiseService);
+    private readonly splitrService = inject(SplitrService);
 
     // DATA
-    protected readonly splitrEventsResource = this.splitwiseService.getUserSplitrEvents();
+    protected readonly splitrEventsResource = this.splitrService.getUserSplitrEvents();
 
     // COMPUTED
     protected readonly hasError = computed<boolean>(() => !!this.splitrEventsResource.error());
@@ -36,6 +36,6 @@ export class SplitwiseEvents {
 
     // METHODS
     handleOnSplitrEventClick(eventId: string) {
-        this.router.navigate(['/splitwise', eventId], { replaceUrl: false });
+        this.router.navigate(['/splitr', eventId], { replaceUrl: false });
     }
 }

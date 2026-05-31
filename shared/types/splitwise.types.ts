@@ -63,7 +63,7 @@ export interface BillPayer extends BillPayerPayload {
     id: string;
     createdAt: string;
     updatedAt: string;
-    splitwiseEventId: string;
+    splitrEventId: string;
 }
 
 // QUANTITY SPLITS - How the item was split between the consumers
@@ -92,7 +92,7 @@ export interface LocalQuantitySplit extends QuantitySplitPayload {
     id: string;
 }
 
-export interface SplitwiseSplittablePayload extends Omit<
+export interface SplitrSplittablePayload extends Omit<
     SplittableOrder,
     "id" | "quantitySplits"
 > {
@@ -109,7 +109,7 @@ export interface SplitrEventPayload {
     billPayers: BillPayerPayload[];
     verificationTotal: number | null;
     billPaymentStrategy: PaymentStrategyVariant;
-    eventSplittables: SplitwiseSplittablePayload[];
+    eventSplittables: SplitrSplittablePayload[];
 }
 
 export type SettleSplitrPayload = Pick<SplitrEventPayload, "isSettled">;

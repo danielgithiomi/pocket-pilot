@@ -17,9 +17,9 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
     path: '/transactions',
   },
   {
-    icon: 'splitwise',
-    name: 'Splitwise',
-    path: '/splitwise',
+    icon: 'splitr',
+    name: 'Splitr',
+    path: '/splitr',
   },
   {
     icon: 'goals',

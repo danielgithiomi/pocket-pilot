@@ -2,9 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { SplitrMutation } from '@methods/mutations';
 import { SplitrResource } from '@methods/resources';
 import { ApiServiceError } from './api-error.service';
-import { catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
+import { catchError, EMPTY, map, Observable, of } from 'rxjs';
 import {
     SplitrSquad,
+    ISplitrEvent,
     IStandardError,
     IStandardResponse,
     SplitrSquadPayload,
@@ -89,12 +90,9 @@ export class SplitrService {
 
     getUserSplitrEventById = (eventId: string) => this.resource.getSplitrEventById(eventId);
 
-    createNewSplitrEvent(payload: SplitrEventPayload) {
+    createNewSplitrEvent(payload: SplitrEventPayload): Observable<ISplitrEvent> {
         return this.mutation.createNewSplitrEvent(payload).pipe(
-            tap((response: IStandardResponse<SplitrEventPayload>) => {
-                console.log('Splitr event created successfully', response);
-            }),
-            map((response: IStandardResponse<SplitrEventPayload>) => response.data),
+            map((response: IStandardResponse<ISplitrEvent>) => response.data),
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;

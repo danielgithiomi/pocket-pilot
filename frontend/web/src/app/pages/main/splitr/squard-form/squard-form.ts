@@ -1,11 +1,11 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
+import { SplitrSquad } from '@global/types';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
-import { SplitwiseSquad } from '@global/types';
+import { SplitrService } from '@api/splitr.service';
 import { Form, FormCloseEvent } from '@organisms/form';
-import { SplitwiseService } from '@api/splitwise.service';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { SquadMember, ISquadMember } from '@structural/main/squad-member/squad-member';
@@ -29,7 +29,7 @@ export class SplitwiseSquardForm {
 
     // SERVICES
     private readonly toastService = inject(ToastService);
-    private readonly splitwiseService = inject(SplitwiseService);
+    private readonly splitrService = inject(SplitrService);
 
     // STATE SIGNALS
     protected readonly isMemberNameValid = signal<boolean>(false);
@@ -144,8 +144,8 @@ export class SplitwiseSquardForm {
         const { ...payload } = this.createSquadFormModel();
 
         setTimeout(() => {
-            this.splitwiseService.createNewUserSquad(payload).subscribe({
-                next: (response: SplitwiseSquad) => {
+            this.splitrService.createNewUserSquad(payload).subscribe({
+                next: (response: SplitrSquad) => {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Squad created successfully!',
