@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { SettleSplitrPayload, SplitwiseEventPayload } from '../dto/splitwise.dto';
+import { SettleSplitrPayload, SplitrEventPayload } from '../dto/splitr.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
 @Injectable()
-export class SplitwiseRepository {
+export class SplitrRepository {
     constructor(private readonly db: DatabaseService) {}
 
-    async createSplitwiseEvent(userId: string, payload: SplitwiseEventPayload) {
+    async createSplitrEvent(userId: string, payload: SplitrEventPayload) {
         const { billPayers, eventSplittables, ...rest } = payload;
-        return await this.db.splitwiseEvent.create({
+        return await this.db.splitrEvent.create({
             data: {
                 ...rest,
                 creatorId: userId,
@@ -27,31 +27,31 @@ export class SplitwiseRepository {
         });
     }
 
-    getUserSplitwiseEvents(userId: string) {
-        return this.db.splitwiseEvent.findMany({
+    getUserSplitrEvents(userId: string) {
+        return this.db.splitrEvent.findMany({
             where: { creatorId: userId },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
         });
     }
 
-    getSplitwiseEventById(eventId: string) {
-        return this.db.splitwiseEvent.findUnique({
+    getSplitrEventById(eventId: string) {
+        return this.db.splitrEvent.findUnique({
             where: { id: eventId },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
         });
     }
 
-    markSplitwiseEventAsSettledOrPending(userId: string, eventId: string, payload: SettleSplitrPayload) {
+    markSplitrEventAsSettledOrPending(userId: string, eventId: string, payload: SettleSplitrPayload) {
         const { isSettled } = payload;
-        return this.db.splitwiseEvent.update({
+        return this.db.splitrEvent.update({
             where: { id: eventId, creatorId: userId },
             data: { isSettled },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
         });
     }
 
-    deleteSplitwiseEvent(userId: string, eventId: string) {
-        return this.db.splitwiseEvent.delete({
+    deleteSplitrEvent(userId: string, eventId: string) {
+        return this.db.splitrEvent.delete({
             where: { id: eventId, creatorId: userId },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
         });

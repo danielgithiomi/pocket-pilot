@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 import { ArrayMinSize, IsArray, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
-export class SplitwiseSquadPayload {
+export class SplitrSquadPayload {
     @IsString()
     @IsNotEmpty()
     @MinLength(3, { message: 'Squad name must be at least 3 characters long' })
@@ -32,7 +32,7 @@ export class SplitwiseSquadPayload {
 }
 
 @Exclude()
-export class SplitwiseSquadDto {
+export class SplitrSquadDto {
     @Expose()
     @ApiProperty({
         description: 'The ID of the squad',

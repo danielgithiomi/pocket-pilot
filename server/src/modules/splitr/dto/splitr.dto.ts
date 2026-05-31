@@ -49,9 +49,9 @@ export class BillPayerDto extends BillPayerPayload {
     @Expose()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The ID of the owning splitwise event that this bill payer belongs to',
+        description: 'The ID of the owning splitr event that this bill payer belongs to',
     })
-    splitwiseEventId!: string;
+    splitrEventId!: string;
 }
 
 // QUANTITY SPLIT - The quantity of the item ordered
@@ -185,7 +185,7 @@ export class SplittableDto extends SplittablePayload {
     @Expose()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The ID of the owning splitwise event that this splittable belongs to',
+        description: 'The ID of the owning splitr event that this splittable belongs to',
     })
     splitEventId!: string;
 
@@ -200,8 +200,8 @@ export class SplittableDto extends SplittablePayload {
     declare quantitySplits: QuantitySplitDto[];
 }
 
-// SPLITWISE EVENT PAYLOAD - The payload for the splitwise event
-export class SplitwiseEventPayload {
+// SPLITR EVENT PAYLOAD - The payload for the splitr event
+export class SplitrEventPayload {
     @IsString()
     @IsNotEmpty()
     @ApiProperty({
@@ -299,13 +299,13 @@ export class SplitwiseEventPayload {
     billingCurrency!: string;
 }
 
-// SPLITWISE EVENT DTO - The splitwise event
+// SPLITR EVENT DTO - The splitr event
 @Exclude()
 @ApiExtraModels(BillPayerDto, SplittableDto)
-export class SplitwiseEventDto extends SplitwiseEventPayload {
+export class SplitrEventDto extends SplitrEventPayload {
     @Expose()
     @ApiProperty({
-        description: 'The ID of the splitwise event',
+        description: 'The ID of the splitr event',
         example: '123e4567-e89b-12d3-a456-426614174000',
     })
     id!: string;
@@ -313,21 +313,21 @@ export class SplitwiseEventDto extends SplitwiseEventPayload {
     @Expose()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The ID of the creator of the splitwise event',
+        description: 'The ID of the creator of the splitr event',
     })
     creatorId!: string;
 
     @Expose()
     @ApiProperty({
         example: '2026-05-24T13:03:15.811Z',
-        description: 'The creation date of the splitwise event',
+        description: 'The creation date of the splitr event',
     })
     createdAt!: Date;
 
     @Expose()
     @ApiProperty({
         example: '2026-05-24T13:03:15.811Z',
-        description: 'The update date of the splitwise event',
+        description: 'The update date of the splitr event',
     })
     updatedAt!: Date;
 

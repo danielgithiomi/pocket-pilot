@@ -241,7 +241,7 @@ enum PaymentStrategy {
     CUSTOM
 }
 
-model SplitwiseSquad {
+model SplitrSquad {
     id            String    @id @default(uuid())
     creatorId     String
 
@@ -252,7 +252,7 @@ model SplitwiseSquad {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt()
 
-    @@map("Splitwise Squads")
+    @@map("Splitr Squads")
 }
 
 model QuantitySplit {
@@ -280,9 +280,9 @@ model BillPayer {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt()
 
-    // Link to splitwise event - one-to-many
-    splitwiseEventId String
-    splitwiseEvent SplitwiseEvent @relation(fields: [splitwiseEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    // Link to splitr event - one-to-many
+    splitrEventId String
+    splitrEvent SplitrEvent @relation(fields: [splitrEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@map("Bill Payers")
 }
@@ -304,12 +304,12 @@ model Splittable{
     quantitySplits QuantitySplit[]
 
     splitEventId String
-    splitEvent   SplitwiseEvent @relation(fields: [splitEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    splitEvent   SplitrEvent @relation(fields: [splitEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@map("Splittables")
 }
 
-model SplitwiseEvent {
+model SplitrEvent {
     id            String    @id @default(uuid())
     creatorId     String
 
@@ -332,5 +332,5 @@ model SplitwiseEvent {
     updatedAt     DateTime      @updatedAt()
     createdAt     DateTime      @default(now())
 
-    @@map("Splitwise Events")
+    @@map("Splitr Events")
 }
