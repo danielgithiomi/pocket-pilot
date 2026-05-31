@@ -20,17 +20,11 @@ export function buildParticipantsMap(event: ISplitrEvent): Participant[] {
         });
     });
 
-    console.log('participantsMap', participantsMap);
-
-    // Get the amount each member paid
     billPayers.forEach((billPayer) => {
         const participant = participantsMap.get(billPayer.payerName);
         if (participant) participant.totalPaid += billPayer.payerAmount;
     });
 
-    console.log('participantsMap', participantsMap);
-
-    // Get amount owed by each participant
     eventSplittables.forEach((splittable) => {
         const { quantitySplits, unitPrice } = splittable;
 
@@ -42,8 +36,6 @@ export function buildParticipantsMap(event: ISplitrEvent): Participant[] {
         });
     });
 
-    console.log('final participantsMap', Array.from(participantsMap.values()));
-
     return Array.from(participantsMap.values());
 }
 
@@ -54,6 +46,8 @@ function isSettled(balance: number): boolean {
 }
 
 export function calculateSettlments(participants: Participant[], currency: string): Settlement[] {
+    const settlements: Settlement[] = [];
+
     const balances = participants.map((p) => ({
         id: p.id,
         name: p.name,
@@ -64,8 +58,7 @@ export function calculateSettlments(participants: Participant[], currency: strin
     const creditors = workingBalances.filter((b) => b.balance > BALANCE_EPSILON);
     const debtors = workingBalances.filter((b) => b.balance < -BALANCE_EPSILON);
 
-    const payeesByDebtor = new Map<string, Set<string>>();
-
+    let transferIndex = 0;
     let i = 0;
     let j = 0;
 
@@ -74,9 +67,15 @@ export function calculateSettlments(participants: Participant[], currency: strin
         const creditor = creditors[j];
         const amount = Math.min(Math.abs(debtor.balance), creditor.balance);
 
-        const payees = payeesByDebtor.get(debtor.id) ?? new Set<string>();
-        payees.add(creditor.name);
-        payeesByDebtor.set(debtor.id, payees);
+        settlements.push({
+            id: `${debtor.id}-${creditor.id}-${transferIndex++}`,
+            kind: 'pay',
+            fromParticipant: debtor.name,
+            toParticipant: creditor.name,
+            fromParticipantAvatar: buildAvatarMap(debtor.name),
+            toParticipantAvatar: buildAvatarMap(creditor.name),
+            settlementAmount: formatCurrency(amount, currency, 2, true, true),
+        });
 
         debtor.balance += amount;
         creditor.balance -= amount;
@@ -85,50 +84,33 @@ export function calculateSettlments(participants: Participant[], currency: strin
         if (isSettled(creditor.balance)) j++;
     }
 
-    return balances.map((participant) => {
-        const avatar = buildAvatarMap(participant.name);
-
-        if (participant.balance < -BALANCE_EPSILON) {
-            const payees = payeesByDebtor.get(participant.id);
-            const toParticipant = payees ? [...payees].join(', ') : '—';
-
-            return {
-                id: participant.id,
-                kind: 'pay',
-                fromParticipant: participant.name,
-                toParticipant,
-                fromParticipantAvatar: avatar,
-                toParticipantAvatar: buildAvatarMap(toParticipant.split(', ')[0] ?? participant.name),
-                settlementAmount: formatCurrency(
-                    Math.abs(participant.balance),
-                    currency,
-                    2,
-                    true,
-                    true,
-                ),
-            };
-        }
-
-        if (participant.balance > BALANCE_EPSILON) {
-            return {
-                id: participant.id,
+    balances
+        .filter((participant) => participant.balance > BALANCE_EPSILON)
+        .forEach((creditor) => {
+            settlements.push({
+                id: `receive-${creditor.id}`,
                 kind: 'receive',
+                fromParticipant: creditor.name,
+                toParticipant: '—',
+                fromParticipantAvatar: buildAvatarMap(creditor.name),
+                toParticipantAvatar: buildAvatarMap(creditor.name),
+                settlementAmount: formatCurrency(creditor.balance, currency, 2, true, true),
+            });
+        });
+
+    balances
+        .filter((participant) => isSettled(participant.balance))
+        .forEach((participant) => {
+            settlements.push({
+                id: participant.id,
+                kind: 'settled',
                 fromParticipant: participant.name,
                 toParticipant: '—',
-                fromParticipantAvatar: avatar,
-                toParticipantAvatar: avatar,
-                settlementAmount: formatCurrency(participant.balance, currency, 2, true, true),
-            };
-        }
+                fromParticipantAvatar: buildAvatarMap(participant.name),
+                toParticipantAvatar: buildAvatarMap(participant.name),
+                settlementAmount: formatCurrency(0, currency, 2, true, true),
+            });
+        });
 
-        return {
-            id: participant.id,
-            kind: 'settled',
-            fromParticipant: participant.name,
-            toParticipant: '—',
-            fromParticipantAvatar: avatar,
-            toParticipantAvatar: avatar,
-            settlementAmount: formatCurrency(0, currency, 2, true, true),
-        };
-    });
+    return settlements;
 }

@@ -3,9 +3,13 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { formatCurrency, formatFullDate } from '@libs/utils';
 import { ISplitrEvent, SPLIT_STRATEGY_MAP } from '@global/types';
-import { LucideAngularModule, Calendar1, Users } from 'lucide-angular';
 import { EventPayer, OrderedItem, Settlement } from './splitr-breakdown.types';
-import { buildAvatarMap, buildParticipantsMap, calculateSettlments } from './splitr-breakdown.utils';
+import { LucideAngularModule, Calendar1, Users, CircleCheck, ArrowRight } from 'lucide-angular';
+import {
+    buildAvatarMap,
+    calculateSettlments,
+    buildParticipantsMap,
+} from './splitr-breakdown.utils';
 
 @Component({
     selector: 'splitr-breakdown',
@@ -32,15 +36,19 @@ export class SplitrBreakdown {
     protected readonly iconSize = 15;
     protected readonly Squads = Users;
     protected readonly CalendarIcon = Calendar1;
+    protected readonly ArrowRightIcon = ArrowRight;
+    protected readonly CircleCheckIcon = CircleCheck;
 
     // INPUTS
     readonly splitrEvent = input.required<ISplitrEvent>();
 
     // COMPUTED
     protected readonly eventId = computed(() => this.splitrEvent().id);
+    
     protected readonly formattedEventDate = computed(() =>
         formatFullDate(this.splitrEvent().eventDate),
     );
+    
     protected readonly payers = computed<EventPayer[]>(() => {
         const { billPayers, verificationTotal, billingCurrency } = this.splitrEvent();
 
@@ -84,4 +92,9 @@ export class SplitrBreakdown {
         const participants = buildParticipantsMap(this.splitrEvent());
         return calculateSettlments(participants, billingCurrency);
     });
+
+    // METHODS
+    protected readonly getParticipantInitial = (participant: string): string => {
+        return participant.charAt(0).toUpperCase();
+    };
 }
