@@ -147,14 +147,6 @@ export class SplittablePayload {
     })
     splitStrategy!: SplitStrategyVariant;
 
-    @IsBoolean()
-    @IsNotEmpty()
-    @ApiProperty({
-        example: true,
-        description: 'Whether the splittable is settled',
-    })
-    settled!: boolean;
-
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => QuantitySplitPayload)
@@ -225,6 +217,14 @@ export class SplitwiseEventPayload {
         description: 'The name of the squad',
     })
     squadName!: string;
+
+    @IsBoolean()
+    @IsNotEmpty()
+    @ApiProperty({
+        example: false,
+        description: 'Whether the event is settled',
+    })
+    isSettled!: boolean;
 
     @IsArray()
     @Type(() => BillPayerPayload)
