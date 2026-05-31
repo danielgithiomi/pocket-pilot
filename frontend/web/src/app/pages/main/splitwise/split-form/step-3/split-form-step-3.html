@@ -74,7 +74,7 @@
     </div>
 </div>
 
-@if (formModel().billPaymentStrategy().value() !== 'ONE') {
+@if (formModel().billPaymentStrategy().value() === 'CUSTOM') {
     <p class="text-[0.75rem] italic text-muted-text">
         Remaining payable amount:
         <span class="text-primary font-semibold">{{ formattedRemainingPayableAmount() }}</span>

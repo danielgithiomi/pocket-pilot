@@ -100,7 +100,6 @@ export class SplitrDetails {
                         });
 
                         this.splitrEventResource.reload();
-                        this.splitwiseService.getUserSplitrEvents().reload();
                     },
                     complete: () => this.isSettlingSplittable.set(false),
                 });
@@ -121,6 +120,7 @@ export class SplitrDetails {
                     });
 
                     this.splitrEventResource.reload();
+                    this.splitwiseService.getUserSplitrEvents().reload();
                     this.router.navigate(['/splitwise'], { replaceUrl: true });
                 },
                 complete: () => this.isDeletingSplittable.set(false),
