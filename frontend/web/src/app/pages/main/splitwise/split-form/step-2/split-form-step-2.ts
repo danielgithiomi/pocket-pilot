@@ -268,7 +268,6 @@ export class SplitFormStep2 {
             quantity,
             unitPrice,
             splitStrategy,
-            settled: false,
             quantitySplits: updatedQuantitySplits,
         };
 

@@ -1,13 +1,13 @@
-import { AuthService } from '@api/auth.service';
 import type { User } from '@global/types';
+import { AuthService } from '@api/auth.service';
 import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { Injectable, signal, computed, effect, DestroyRef, inject } from '@angular/core';
 import {
+    type ResolvedTheme,
+    type ThemePreference,
     applyThemeToDocument,
     normalizeThemePreference,
     readStoredThemePreference,
-    type ResolvedTheme,
-    type ThemePreference,
 } from './theme.utils';
 
 /** @deprecated Use ThemePreference instead */

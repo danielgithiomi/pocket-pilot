@@ -22,8 +22,8 @@
             <!-- Right Side Content -->
             <atom-badge
                 className="text-sm! px-3!"
-                [label]="settled() ? 'Settled' : 'Pending'"
-                [variant]="settled() ? 'success' : 'warning'"
+                [label]="isSettled() ? 'Settled' : 'Pending'"
+                [variant]="isSettled() ? 'success' : 'warning'"
             />
         </div>
 

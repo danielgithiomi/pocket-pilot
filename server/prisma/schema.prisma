@@ -295,7 +295,6 @@ model Splittable{
     unitPrice     Float
     
     total         Float
-    settled       Boolean       @default(false)
     splitStrategy SplitStrategy
 
     updatedAt     DateTime      @updatedAt()
@@ -326,6 +325,8 @@ model SplitwiseEvent {
     billPayers          BillPayer[]
 
     eventSplittables    Splittable[]
+
+    isSettled     Boolean       @default(false)
 
     settledAt     DateTime?
     updatedAt     DateTime      @updatedAt()

@@ -34,7 +34,7 @@ export class SplitrEventItem {
     });
 
     protected readonly settled = computed(() => {
-        return this.splitrEvent().settled;
+        return this.splitrEvent().isSettled;
     });
 
     // UTILS

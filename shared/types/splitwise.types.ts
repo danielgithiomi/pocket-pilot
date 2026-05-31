@@ -39,7 +39,6 @@ export interface SplitwiseSquad {
 export interface SplittablePayload {
     name: string;
     total: number;
-    settled: boolean;
     quantity: number;
     unitPrice: number;
     splitStrategy: SplitStrategyVariant;
@@ -104,9 +103,9 @@ export interface SplitwiseEventPayload {
     eventDate: string;
     squadName: string;
     eventName: string;
+    isSettled: boolean;
     eventMembers: string[];
     billingCurrency: string;
-    // TODO: Add settled & settledAt
     billPayers: BillPayerPayload[];
     verificationTotal: number | null;
     billPaymentStrategy: PaymentStrategyVariant;
@@ -116,13 +115,13 @@ export interface SplitwiseEventPayload {
 // API RESPONSES
 export interface ISplitrEvent {
     id: string;
-    settled: boolean;
     creatorId: string;
     eventName: string;
     eventDate: string;
     squadName: string;
     updatedAt: string;
     createdAt: string;
+    isSettled: boolean;
     eventMembers: string[];
     billPayers: BillPayer[];
     billingCurrency: string;

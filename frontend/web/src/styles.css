@@ -390,7 +390,7 @@ main {
                     @apply p-2;
 
                     .card-item-border {
-                        @apply border-[1px] rounded-xl border-solid border-(--muted-text) hover:border-black/25 hover:dark:border-white/45 transition-all hover:shadow-md duration-300;
+                        @apply border-[1px] rounded-xl border-solid border-(--muted-text) hover:border-(--inverted-background)/45 transition-all hover:shadow-md duration-300;
                     }
                 }
             }

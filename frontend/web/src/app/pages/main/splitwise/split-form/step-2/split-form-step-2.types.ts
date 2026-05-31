@@ -5,7 +5,6 @@ import { required, schema, min } from '@angular/forms/signals';
 export interface NewSplittableSchema {
     name: string;
     quantity: string;
-    settled: boolean;
     unitPrice: number | null;
     splitStrategy: SplitStrategyVariant;
     quantitySplits: LocalQuantitySplit[];
@@ -14,7 +13,6 @@ export interface NewSplittableSchema {
 export const InitialNewSplittableData: NewSplittableSchema = {
     name: '',
     quantity: '1',
-    settled: false,
     unitPrice: null,
     quantitySplits: [],
     splitStrategy: 'SOLE' as SplitStrategyVariant,

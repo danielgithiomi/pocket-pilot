@@ -27,7 +27,7 @@
         }
 
         .splitr-divider {
-            @apply bg-(--muted-text) group-hover/event:bg-black/25 group-hover/event:dark:bg-white/45 h-[1px] mt-3 mb-2 mx-1 w-full transition-all duration-300;
+            @apply bg-(--muted-text) group-hover/event:bg-(--inverted-background)/45 h-[1px] mt-3 mb-2 mx-1 w-full transition-all duration-300;
         }
 
         .splitr-event-meals {

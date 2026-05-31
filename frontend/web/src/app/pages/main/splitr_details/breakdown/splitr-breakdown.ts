@@ -45,7 +45,7 @@ export class SplitrBreakdown {
 
     // COMPUTED
     protected readonly eventId = computed(() => this.splitrEvent().id);
-    protected readonly settled = computed(() => this.splitrEvent().settled);
+    protected readonly isSettled = computed(() => this.splitrEvent().isSettled);
     protected readonly formattedEventDate = computed(() =>
         formatFullDate(this.splitrEvent().eventDate),
     );
