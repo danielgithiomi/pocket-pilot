@@ -88,8 +88,8 @@ export interface Endpoints {
 
   presigned_url: string;
 
+  splitr: string;
   squads: string;
-  splitwise: string;
   orderTags: string;
 
   all_bills: string;

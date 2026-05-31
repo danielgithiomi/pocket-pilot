@@ -29,7 +29,7 @@ export class SplitwiseService {
             throw new NotFoundException({
                 name: 'SPLITWISE_EVENT_NOT_FOUND!',
                 title: 'Splitwise Event Not Found!',
-                details: `No splitwise event found with the ID: [${eventId}].`,
+                details: `No splitr event found with the ID provided.`,
             });
 
         return eventById;
@@ -42,17 +42,15 @@ export class SplitwiseService {
     }
 
     async markSplitwiseEventAsSettledOrPending(userId: string, eventId: string, payload: SettleSplitrPayload) {
-        const markedEvent = await this.splitwiseRepository.markSplitwiseEventAsSettledOrPending(
-            userId,
-            eventId,
-            payload,
-        );
+        const { id } = await this.getSplitwiseEventById(userId, eventId);
+        const updatedEvent = await this.splitwiseRepository.markSplitwiseEventAsSettledOrPending(userId, id, payload);
         await this.invalidateCache(userId);
-        return markedEvent;
+        return updatedEvent;
     }
 
     async deleteSplitwiseEvent(userId: string, eventId: string) {
-        const deletedEvent = await this.splitwiseRepository.deleteSplitwiseEvent(userId, eventId);
+        const { id } = await this.getSplitwiseEventById(userId, eventId);
+        const deletedEvent = await this.splitwiseRepository.deleteSplitwiseEvent(userId, id);
         await this.invalidateCache(userId);
         return deletedEvent;
     }

@@ -1,32 +1,32 @@
 import { inject, Injectable } from '@angular/core';
+import { SplitrMutation } from '@methods/mutations';
+import { SplitrResource } from '@methods/resources';
 import { ApiServiceError } from './api-error.service';
-import { SplitwiseMutation } from '@methods/mutations';
-import { SplitwiseResource } from '@methods/resources';
 import { catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
 import {
+    SplitrSquad,
     IStandardError,
-    SplitwiseSquad,
     IStandardResponse,
-    SplitwiseSquadPayload,
-    IVoidResourceResponse,
-    SplitwiseEventPayload,
+    SplitrSquadPayload,
+    SplitrEventPayload,
     SettleSplitrPayload,
+    IVoidResourceResponse,
 } from '@global/types';
 
 @Injectable({
     providedIn: 'root',
 })
-export class SplitwiseService {
-    private readonly mutation = inject(SplitwiseMutation);
-    private readonly resource = inject(SplitwiseResource);
+export class SplitrService {
+    private readonly mutation = inject(SplitrMutation);
+    private readonly resource = inject(SplitrResource);
     private readonly errorService = inject(ApiServiceError);
 
     getOrderCategoryTags = () => this.resource.getOrderCategoryTags;
 
     // SQUAD
-    getUserSquads = () => this.resource.getUserSplitwiseSquads;
+    getUserSquads = () => this.resource.getUserSplitrSquads;
 
-    getSquadById(squadId: string): Observable<SplitwiseSquad> {
+    getSquadById(squadId: string): Observable<SplitrSquad> {
         const resourceValue = this.getUserSquads().value();
 
         if (!resourceValue) {
@@ -54,9 +54,9 @@ export class SplitwiseService {
         return of(squad);
     }
 
-    createNewUserSquad(payload: SplitwiseSquadPayload): Observable<SplitwiseSquad> {
+    createNewUserSquad(payload: SplitrSquadPayload): Observable<SplitrSquad> {
         return this.mutation.createNewSquad(payload).pipe(
-            map((response: IStandardResponse<SplitwiseSquad>) => response.data),
+            map((response: IStandardResponse<SplitrSquad>) => response.data),
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
@@ -64,12 +64,9 @@ export class SplitwiseService {
         );
     }
 
-    updateExistingUserSquad(
-        squadId: string,
-        payload: SplitwiseSquadPayload,
-    ): Observable<SplitwiseSquad> {
+    updateExistingUserSquad(squadId: string, payload: SplitrSquadPayload): Observable<SplitrSquad> {
         return this.mutation.updateExistingUserSquad(squadId, payload).pipe(
-            map((response: IStandardResponse<SplitwiseSquad>) => response.data),
+            map((response: IStandardResponse<SplitrSquad>) => response.data),
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
@@ -90,14 +87,14 @@ export class SplitwiseService {
     // SPLITTABLES
     getUserSplitrEvents = () => this.resource.getUserSplitrEvents;
 
-    getUserSplitrEventById = (eventId: string) => this.resource.getSplitwiseEventById(eventId);
+    getUserSplitrEventById = (eventId: string) => this.resource.getSplitrEventById(eventId);
 
-    createNewSplitwiseEvent(payload: SplitwiseEventPayload) {
-        return this.mutation.createNewSplitwiseEvent(payload).pipe(
-            // map((response: IStandardResponse<SplitwiseEventPayload>) => response.data),
-            tap((response: IStandardResponse<SplitwiseEventPayload>) => {
-                console.log('Splitwise event created successfully', response);
+    createNewSplitrEvent(payload: SplitrEventPayload) {
+        return this.mutation.createNewSplitrEvent(payload).pipe(
+            tap((response: IStandardResponse<SplitrEventPayload>) => {
+                console.log('Splitr event created successfully', response);
             }),
+            map((response: IStandardResponse<SplitrEventPayload>) => response.data),
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
@@ -105,7 +102,10 @@ export class SplitwiseService {
         );
     }
 
-    markSplitrEventAsSettledOrPending(eventId: string, payload: SettleSplitrPayload): Observable<IVoidResourceResponse> {
+    markSplitrEventAsSettledOrPending(
+        eventId: string,
+        payload: SettleSplitrPayload,
+    ): Observable<IVoidResourceResponse> {
         return this.mutation.markSplitrEventAsSettledOrPending(eventId, payload).pipe(
             map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
             catchError((error: IStandardError) => {

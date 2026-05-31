@@ -4,6 +4,7 @@ export * from './auth.service';
 export * from './bills.service';
 export * from './goals.service';
 export * from './accounts.service';
+export * from './splitwise.service';
 export * from './categories.service';
 export * from './onboarding.service';
 export * from './preferences.service';

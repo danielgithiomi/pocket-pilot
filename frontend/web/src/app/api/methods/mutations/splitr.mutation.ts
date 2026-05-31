@@ -2,28 +2,28 @@ import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
 import {
-    SplitwiseSquad,
+    SplitrSquad,
+    SplitrEventPayload,
+    SplitrSquadPayload,
     SettleSplitrPayload,
     IVoidResourceResponse,
-    SplitwiseEventPayload,
-    SplitwiseSquadPayload,
 } from '@global/types';
 
 @Injectable({
     providedIn: 'root',
 })
-export class SplitwiseMutation {
+export class SplitrMutation {
     private readonly client = inject(ApiClient);
 
     // SQUADS
-    createNewSquad(payload: SplitwiseSquadPayload) {
+    createNewSquad(payload: SplitrSquadPayload) {
         const endpoint = endpoints.squads;
-        return this.client.post<SplitwiseSquad, SplitwiseSquadPayload>(endpoint, payload);
+        return this.client.post<SplitrSquad, SplitrSquadPayload>(endpoint, payload);
     }
 
-    updateExistingUserSquad(squadId: string, payload: SplitwiseSquadPayload) {
+    updateExistingUserSquad(squadId: string, payload: SplitrSquadPayload) {
         const endpoint = `${endpoints.squads}/${squadId}`;
-        return this.client.put<SplitwiseSquad, SplitwiseSquadPayload>(endpoint, payload);
+        return this.client.put<SplitrSquad, SplitrSquadPayload>(endpoint, payload);
     }
 
     deleteExistingUserSquad(squadId: string) {
@@ -32,18 +32,18 @@ export class SplitwiseMutation {
     }
 
     // EVENTS
-    createNewSplitwiseEvent(payload: SplitwiseEventPayload) {
-        const endpoint = endpoints.splitwise;
-        return this.client.post<SplitwiseEventPayload, SplitwiseEventPayload>(endpoint, payload);
+    createNewSplitrEvent(payload: SplitrEventPayload) {
+        const endpoint = endpoints.splitr;
+        return this.client.post<SplitrEventPayload, SplitrEventPayload>(endpoint, payload);
     }
 
     markSplitrEventAsSettledOrPending(eventId: string, payload: SettleSplitrPayload) {
-        const endpoint = `${endpoints.splitwise}/${eventId}/settle`;
+        const endpoint = `${endpoints.splitr}/${eventId}/settle`;
         return this.client.patch<IVoidResourceResponse, SettleSplitrPayload>(endpoint, payload);
     }
 
     deleteExistingSplitrEvent(eventId: string) {
-        const endpoint = `${endpoints.splitwise}/${eventId}`;
+        const endpoint = `${endpoints.splitr}/${eventId}`;
         return this.client.delete<IVoidResourceResponse>(endpoint);
     }
 }

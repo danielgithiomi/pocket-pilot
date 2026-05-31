@@ -105,8 +105,8 @@ export class SplitwiseController {
             payload,
         );
 
-        const message = 'Event marked as ' + (isSettled ? 'settled!' : 'pending!');
-        const details = `Your [${eventName}] splitwise event has been marked as ${isSettled ? 'settled' : 'pending'} successfully.`;
+        const message = 'Event status updated!';
+        const details = `Your [${eventName}] splitr event has been marked as ${isSettled ? 'settled' : 'pending'} successfully.`;
 
         return { message, details };
     }
@@ -132,8 +132,8 @@ export class SplitwiseController {
         const deletedEvent = await this.splitwiseService.deleteSplitwiseEvent(user.id, eventId);
 
         return {
-            message: 'Splitwise event deleted!',
-            details: `Your [${deletedEvent.eventName}] splitwise event has been deleted successfully.`,
+            message: 'Splitr event deleted!',
+            details: `Your [${deletedEvent.eventName}] splitr event has been deleted successfully.`,
         };
     }
 }

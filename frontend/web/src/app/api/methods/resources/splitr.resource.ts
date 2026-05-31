@@ -3,33 +3,35 @@ import { ISplitrEvent } from '@global/types';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
-import { IEnumResponse, IStandardResponse, SplitwiseSquad } from '@global/types';
+import { IEnumResponse, IStandardResponse, SplitrSquad } from '@global/types';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SplitwiseResource {
+export class SplitrResource {
   getOrderCategoryTags = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
     method: 'GET',
     cache: 'no-cache',
     url: concatUrl(endpoints.orderTags),
   }));
 
-  getUserSplitwiseSquads = httpResource<IStandardResponse<SplitwiseSquad[]>>(() => ({
+  // SQUADS
+  getUserSplitrSquads = httpResource<IStandardResponse<SplitrSquad[]>>(() => ({
     method: 'GET',
     cache: 'no-cache',
     url: concatUrl(endpoints.squads),
   }));
 
+  // EVENTS
   getUserSplitrEvents = httpResource<IStandardResponse<ISplitrEvent[]>>(() => ({
     method: 'GET',
     cache: 'no-cache',
-    url: concatUrl(endpoints.splitwise),
+    url: concatUrl(endpoints.splitr),
   }));
 
-  getSplitwiseEventById = (eventId: string) => httpResource<IStandardResponse<ISplitrEvent>>(() => ({
+  getSplitrEventById = (eventId: string) => httpResource<IStandardResponse<ISplitrEvent>>(() => ({
     method: 'GET',
     cache: 'no-cache',
-    url: concatUrl(`${endpoints.splitwise}/${eventId}`),
+    url: concatUrl(`${endpoints.splitr}/${eventId}`),
   }));
 }

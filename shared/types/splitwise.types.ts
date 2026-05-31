@@ -19,13 +19,13 @@ export const PAYMENT_OPTIONS_MAP: Record<PaymentStrategyVariant, string> = {
 };
 
 // SQUADS
-export interface SplitwiseSquadPayload {
+export interface SplitrSquadPayload {
     squadName: string;
     squadMembers: string[];
     squadImageKey?: string;
 }
 
-export interface SplitwiseSquad {
+export interface SplitrSquad {
     id: string;
     creatorId: string;
     squadName: string;
@@ -99,7 +99,7 @@ export interface SplitwiseSplittablePayload extends Omit<
     quantitySplits: QuantitySplitPayload[];
 }
 
-export interface SplitwiseEventPayload {
+export interface SplitrEventPayload {
     eventDate: string;
     squadName: string;
     eventName: string;
@@ -112,7 +112,7 @@ export interface SplitwiseEventPayload {
     eventSplittables: SplitwiseSplittablePayload[];
 }
 
-export type SettleSplitrPayload = Pick<SplitwiseEventPayload, "isSettled">;
+export type SettleSplitrPayload = Pick<SplitrEventPayload, "isSettled">;
 
 // API RESPONSES
 export interface ISplitrEvent {
