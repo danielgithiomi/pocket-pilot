@@ -8,11 +8,11 @@ import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { SplitrEventItem } from '@structural/main/splitr-event-item/splitr-event-item';
 
 @Component({
-    selector: 'splitwise-events',
+    selector: 'splitr-events',
     templateUrl: './events.html',
     imports: [NgClass, FetchError, NoData, SplitrEventItem],
 })
-export class SplitwiseEvents {
+export class SplitrEvents {
     // ANIMATIONS
     protected readonly animationDimensions = '180px';
     protected readonly animationMessageSize = 'text-xs';

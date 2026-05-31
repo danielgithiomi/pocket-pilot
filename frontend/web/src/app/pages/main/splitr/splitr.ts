@@ -1,13 +1,13 @@
 import { Button } from '@atoms/button';
 import { SplitrSquad } from '@global/types';
-import { SplitwiseSquads } from './squads/squads';
-import { SplitwiseEvents } from './events/events';
+import { SplitrEvents } from './events/events';
+import { SplitrSquads } from './squads/squads';
 import { SplitrService } from '@api/splitr.service';
-import { SplitwiseSplitForm } from './split-form/split-form';
+import { SplitrSplitForm } from './split-form/split-form';
 import { SplitwiseSquardForm } from './squard-form/squard-form';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListPlus, Users } from 'lucide-angular';
-import { UpdateSplitwiseSquad } from './squard-form/update-squad/update-squad';
+import { UpdateSplitrSquad } from './squard-form/update-squad/update-squad';
 
 @Component({
     selector: 'app-splitr',
@@ -15,12 +15,12 @@ import { UpdateSplitwiseSquad } from './squard-form/update-squad/update-squad';
     templateUrl: './splitr.html',
     imports: [
         Button,
-        SplitwiseSquads,
-        SplitwiseEvents,
-        SplitwiseSplitForm,
+        SplitrSquads,
+        SplitrEvents,
+        SplitrSplitForm,
+        UpdateSplitrSquad,
         LucideAngularModule,
         SplitwiseSquardForm,
-        UpdateSplitwiseSquad,
     ],
 })
 export class Splitr {

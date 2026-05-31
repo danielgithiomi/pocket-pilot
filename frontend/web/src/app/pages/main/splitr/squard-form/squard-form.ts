@@ -12,7 +12,7 @@ import { SquadMember, ISquadMember } from '@structural/main/squad-member/squad-m
 import { squadSchema, initialCreateSquadData, squadValidationSchema } from './squad-form.types';
 
 @Component({
-    selector: 'splitwise-squard-form',
+    selector: 'splitr-squard-form',
     templateUrl: './squard-form.html',
     imports: [LucideAngularModule, Form, Button, Input, SquadMember, NgClass],
 })

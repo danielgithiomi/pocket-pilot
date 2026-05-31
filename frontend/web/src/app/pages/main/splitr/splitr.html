@@ -1,4 +1,4 @@
-<section id="splitwise-page" class="page">
+<section id="splitr-page" class="page">
   <div class="page-header">
     <h1 class="page-title">Splitr</h1>
 
@@ -23,12 +23,12 @@
     <div class="h-full flex flex-row gap-6 md:gap-8 pb-4">
       <!-- Left Side -->
       <div class="flex-3 page-card">
-        <splitwise-events />
+        <splitr-events />
       </div>
 
       <!-- Right Side -->
       <div class="flex-2 page-card">
-        <splitwise-squads
+        <splitr-squads
           [isLoadingResources]="isLoadingResources()"
           [isCreateSquadFormOpen]="isCreateSquadFormOpen()"
           (onUpdateSquadItemEvent)="handleOnUpdateSquadItemEvent($event)"
@@ -40,7 +40,7 @@
 </section>
 
 @if (isCreateSquadFormOpen()) {
-  <splitwise-squard-form
+  <splitr-squard-form
     [existingSquadMembers]="allSquadMembers()"
     (closeCreateFormSquadEvent)="handleSquadFormClose($event)"
   />
@@ -55,7 +55,7 @@
 }
 
 @if (isAddSplitFormOpen()) {
-  <splitwise-split-form
+  <splitr-split-form
     [squads]="squads()"
     [isSplitFormOpen]="isAddSplitFormOpen()"
     (closeSplitFormEvent)="handleSplitFormClose($event)"

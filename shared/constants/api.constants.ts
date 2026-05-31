@@ -41,7 +41,7 @@ export const API_ENDPOINTS = {
   // categories
   categories: "categories",
 
-  // splitwise
+  // splitr
   splitr: "splitr",
   squads: "splitr/squads",
   orderTags: "splitr/tags",

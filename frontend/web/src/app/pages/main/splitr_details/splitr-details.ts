@@ -76,10 +76,10 @@ export class SplitrDetails {
         };
     });
     protected readonly breadcrumbItems = computed(() => [
-        { label: 'Events', route: '/splitwise' },
+        { label: 'Events', route: '/splitr' },
         {
             label: this.splitrEvent()?.eventName ?? '',
-            route: `/splitwise/${this.splitrEvent()?.id}`,
+            route: `/splitr/${this.splitrEvent()?.id}`,
         },
     ]);
 
@@ -121,7 +121,7 @@ export class SplitrDetails {
 
                     this.splitrEventResource.reload();
                     this.splitrService.getUserSplitrEvents().reload();
-                    this.router.navigate(['/splitwise'], { replaceUrl: true });
+                    this.router.navigate(['/splitr'], { replaceUrl: true });
                 },
                 complete: () => this.isDeletingSplittable.set(false),
             });

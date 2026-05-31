@@ -2,10 +2,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { AwsModule } from './aws/aws.module';
 import { BillsModule } from './bills/bills.module';
 import { GoalsModule } from './goals/goals.module';
+import { SplitrModule } from './splitr/splitr.module';
 import { WalletModule } from './wallet/wallet.module';
 import { Module, DynamicModule } from '@nestjs/common';
 import { IdentityModule } from './identity/identity.module';
-import { SplitwiseModule } from './splitr/splitwise.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { DatabaseModule } from '@infrastructure/database/database.module';
 
@@ -24,10 +24,10 @@ const JWTModule: DynamicModule = JwtModule.register({
         JWTModule,
         GoalsModule,
         BillsModule,
+        SplitrModule,
         WalletModule,
         IdentityModule,
         DatabaseModule,
-        SplitwiseModule,
         PreferencesModule,
     ],
 })

@@ -16,53 +16,53 @@ export class SplitrController {
     constructor(private readonly splitrService: SplitrService) {}
 
     @Get('tags')
-    @CacheKey('splitwise:tags')
+    @CacheKey('splitr:tags')
     @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
     @Public()
     @HttpCode(200)
     @ApiCookieAuth('access_token')
-    @ApiOperation({ summary: 'Get all splitwise category tags' })
-    @Summary('Splitwise category tags retrieved', 'The user retrieved all splitwise category tags')
+    @ApiOperation({ summary: 'Get all splitr category tags' })
+    @Summary('Splitr category tags retrieved', 'The user retrieved all splitr category tags')
     @ApiResponse({
         status: 200,
         isArray: true,
         type: ExposeEnumDto,
-        description: 'Splitwise category tags retrieved successfully',
+        description: 'Splitr category tags retrieved successfully',
     })
-    getSplitwiseCategories() {
-        return this.splitrService.getSplitwiseCategories();
+    getSplitrCategories() {
+        return this.splitrService.getSplitrCategories();
     }
 
     @Get()
     @HttpCode(200)
     @ApiCookieAuth('access_token')
-    @ApiOperation({ summary: 'Get all user splitwise events' })
-    @Summary('User splitwise events retrieved', 'The user retrieved all their splitwise events')
+    @ApiOperation({ summary: 'Get all user splitr events' })
+    @Summary('User splitr events retrieved', 'The user retrieved all their splitr events')
     @ApiResponse({
         status: 200,
         isArray: true,
         type: [SplitrEventDto],
     })
-    getUserSplitwiseEvents(@UserInRequest() user: User) {
+    getUserSplitrEvents(@UserInRequest() user: User) {
         return this.splitrService.getUserSplitrEvents(user.id);
     }
 
     @Get(':eventId')
     @HttpCode(200)
     @ApiCookieAuth('access_token')
-    @ApiOperation({ summary: 'Get a splitwise event by ID' })
-    @Summary('Splitwise event retrieved', 'The user retrieved a splitwise event by ID')
+    @ApiOperation({ summary: 'Get a splitr event by ID' })
+    @Summary('Splitr event retrieved', 'The user retrieved a splitr event by ID')
     @ApiParam({
         name: 'eventId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The ID of the splitwise event to retrieve',
+        description: 'The ID of the splitr event to retrieve',
     })
     @ApiResponse({
         status: 200,
         type: SplitrEventDto,
     })
-    getUserSplitwiseEventById(@UserInRequest() user: User, @Param('eventId') eventId: string) {
+    getSplitrEventById(@UserInRequest() user: User, @Param('eventId') eventId: string) {
         return this.splitrService.getSplitrEventById(user.id, eventId);
     }
 

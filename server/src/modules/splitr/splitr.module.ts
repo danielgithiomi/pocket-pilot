@@ -14,4 +14,4 @@ import { SplitrRepository } from './repositories/splitr.repository';
     controllers: [SquadsController, SplitrController],
     providers: [SplitrService, SquadsService, SquadsCache, SplitrCache, SplitrRepository, SquadsRepository],
 })
-export class SplitwiseModule {}
+export class SplitrModule {}

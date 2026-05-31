@@ -17,7 +17,7 @@ import { Component, computed, effect, inject, input, output, signal } from '@ang
     templateUrl: './update-squad.html',
     imports: [LucideAngularModule, NgClass, Form, Button, Input, SquadMember],
 })
-export class UpdateSplitwiseSquad {
+export class UpdateSplitrSquad {
     // ICONS
     protected readonly iconSize = 18;
     protected readonly AddUserIcon = UserPlus;

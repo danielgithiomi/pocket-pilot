@@ -33,11 +33,11 @@ import {
 } from './split-form.types';
 
 @Component({
-    selector: 'splitwise-split-form',
+    selector: 'splitr-split-form',
     templateUrl: './split-form.html',
     imports: [LucideAngularModule, Form, Button, SplitFormStep1, SplitFormStep2, SplitFormStep3],
 })
-export class SplitwiseSplitForm {
+export class SplitrSplitForm {
     // ICONS
     protected readonly iconSize = 18;
     protected readonly NextIcon = ChevronsRight;

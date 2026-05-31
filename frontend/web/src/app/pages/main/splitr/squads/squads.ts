@@ -9,11 +9,11 @@ import { Component, computed, inject, input, output } from '@angular/core';
 import { SquadItem } from '@components/structural/main/squad-item/squad-item';
 
 @Component({
-    selector: 'splitwise-squads',
+    selector: 'splitr-squads',
     templateUrl: './squads.html',
     imports: [LucideAngularModule, NgClass, Button, NoData, FetchError, SquadItem],
 })
-export class SplitwiseSquads {
+export class SplitrSquads {
     // ICONS
     protected readonly iconSize = 20;
     protected readonly Users = Users;

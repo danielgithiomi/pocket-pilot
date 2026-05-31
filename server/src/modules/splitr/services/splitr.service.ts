@@ -12,7 +12,7 @@ export class SplitrService {
         private readonly splitrRepository: SplitrRepository,
     ) {}
 
-    async getSplitwiseCategories() {
+    async getSplitrCategories() {
         return await Promise.resolve(Object.values(SplitCategoryTag).map(formatEnumForFrontend));
     }
 
