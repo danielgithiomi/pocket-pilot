@@ -1,5 +1,6 @@
 import { Badge } from '@atoms/badge';
 import { NgClass } from '@angular/common';
+import { CheckedCircle } from '@atoms/icons';
 import { Component, computed, input } from '@angular/core';
 import { formatCurrency, formatFullDate } from '@libs/utils';
 import { ISplitrEvent, SPLIT_STRATEGY_MAP } from '@global/types';
@@ -14,7 +15,7 @@ import {
 @Component({
     selector: 'splitr-breakdown',
     templateUrl: './splitr-breakdown.html',
-    imports: [LucideAngularModule, Badge, NgClass],
+    imports: [LucideAngularModule, Badge, NgClass, CheckedCircle],
     styles: `
         @reference "tailwindcss";
 

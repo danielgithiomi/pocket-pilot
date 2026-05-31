@@ -144,11 +144,13 @@
                             </div>
 
                             @if (settlement.kind === 'receive') {
-                                <lucide-icon
+                                <icon-checked-circle
+                                    [filled]="true"
                                     [size]="iconSize"
-                                    name="circle-check"
-                                    [img]="CircleCheckIcon"
-                                    class="absolute -bottom-0.5 -right-0.5 text-income"
+                                    [color]="'var(--income)'"
+                                    [fillColor]="'var(--income)'"
+                                    [checkColor]="'var(--white)'"
+                                    class="absolute -bottom-1 -right-1 text-income shrink-0"
                                 />
                             }
                         </div>

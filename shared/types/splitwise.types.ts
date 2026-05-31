@@ -109,13 +109,14 @@ export interface SplitwiseEventPayload {
     // TODO: Add settled & settledAt
     billPayers: BillPayerPayload[];
     verificationTotal: number | null;
-    eventSplittables: SplitwiseSplittablePayload[];
     billPaymentStrategy: PaymentStrategyVariant;
+    eventSplittables: SplitwiseSplittablePayload[];
 }
 
 // API RESPONSES
 export interface ISplitrEvent {
     id: string;
+    settled: boolean;
     creatorId: string;
     eventName: string;
     eventDate: string;

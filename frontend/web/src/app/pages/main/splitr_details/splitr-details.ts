@@ -1,5 +1,7 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
+import { ISplitrEvent } from '@global/types';
+import { AuthService } from '@api/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { SplitrSummary } from './summary/splitr-summary';
 import { DrawerService } from '@infrastructure/services';
@@ -10,7 +12,6 @@ import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
 import { SplitrBreakdown } from './breakdown/splitr-breakdown';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { LucideAngularModule, CheckCheck, ReceiptText } from 'lucide-angular';
-import { AuthService } from '@api/auth.service';
 
 @Component({
     selector: 'splitr-details',
@@ -57,7 +58,7 @@ export class SplitrDetails {
         const username = this.authService.user()?.name.split(' ')[0];
         return `${username}(Self)`;
     });
-    protected readonly splitrEvent = computed(() => {
+    protected readonly splitrEvent = computed<ISplitrEvent | undefined>(() => {
         if (this.hasError()) return undefined;
         const event = this.splitrEventResource.value()?.data;
         if (!event) return undefined;
