@@ -22,18 +22,11 @@ import { Component, computed, input } from '@angular/core';
 
             <div class="flex-1 flex flex-col gap-1">
                 <p class="text-sm font-semibold">{{ consumerData().consumerName }}</p>
-                <p class="text-xs text-muted-text">
-                    {{ consumerData().itemsConsumed }}
-                    {{ consumerData().itemsConsumed > 1 ? 'Ordered items' : 'Ordered item' }}
-                </p>
+                <atom-badge variant="warning" [label]="formattedItemsConsumed()" />
             </div>
 
             <div class="flex flex-col items-end gap-1">
                 <p class="text-sm font-bold">{{ formattedAmountPayable() }}</p>
-                <atom-badge
-                    [label]="consumerData().isSettled ? 'Settled' : 'Pending'"
-                    [variant]="consumerData().isSettled ? 'success' : 'warning'"
-                />
             </div>
         </div>
     `,
@@ -52,6 +45,9 @@ export class ConsumerSummary {
             true,
             true,
         );
+    });
+    protected readonly formattedItemsConsumed = computed(() => {
+        return `${this.consumerData().itemsConsumed} ${this.consumerData().itemsConsumed === 1 ? 'item' : 'items'}`;
     });
 
     protected readonly avatarClasses = computed<{ bg: string; fg: string }>(
