@@ -11,9 +11,9 @@ import { PlaceholderSplittableFormState as placeholder } from './order-item.type
 import { LucideAngularModule, Trash2, ChevronDown, ChevronUp } from 'lucide-angular';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import {
+    SquadMember,
     ISquadMember,
     QuantityChangeEmmision,
-    SquadMember,
 } from '@structural/main/squad-member/squad-member';
 import {
     NewSplittableSchema,
@@ -59,7 +59,6 @@ export class OrderItem {
 
     // DATA
     protected readonly currency = this.accountsService.getDefaultCurrency();
-    protected readonly categoryTags = this.splitrService.getOrderCategoryTags();
 
     // REACTIVE
     protected readonly formattedUnitPrice = computed<string>(() =>
@@ -89,21 +88,6 @@ export class OrderItem {
             label: quantity.toString(),
         })),
     );
-    protected readonly categoryTagOptions = computed<SelectOption[]>(() => {
-        if (this.categoryTags.error()) return [];
-
-        const tags = this.categoryTags.value()?.data;
-
-        if (!tags) {
-            console.log('No tag data found in the resource!');
-            return [];
-        }
-
-        return tags.map((tag) => ({
-            value: tag.value,
-            label: tag.label,
-        }));
-    });
     protected readonly formattedConsumers = computed<ISquadMember[]>(() => {
         const currentSplits = this.updateSplittableForm().value().quantitySplits;
         const currentConsumers = currentSplits.map((split) => split.consumerName);

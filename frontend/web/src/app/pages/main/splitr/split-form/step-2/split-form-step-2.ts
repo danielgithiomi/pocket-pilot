@@ -6,7 +6,6 @@ import { formatCurrency } from '@libs/utils';
 import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
-import { SplitrService } from '@api/splitr.service';
 import { OrderItem } from './order-item/order-item';
 import { Select, SelectOption } from '@atoms/select';
 import { ArrowLeft, PanelTopClose, PanelBottomClose, LucideAngularModule } from 'lucide-angular';
@@ -67,11 +66,9 @@ export class SplitFormStep2 {
     // SERVICES
     private readonly authService = inject(AuthService);
     private readonly toastService = inject(ToastService);
-    private readonly splitrService = inject(SplitrService);
 
     // DATA
     private readonly user = this.authService.user();
-    protected readonly categoryTagsResource = this.splitrService.getOrderCategoryTags();
 
     // COMPUTED
     protected readonly consumerOptions = computed<string[]>(() => {
@@ -98,26 +95,11 @@ export class SplitFormStep2 {
         return this.quantityAssisgnableRemaining() > 0;
     });
     protected readonly itemsCount = computed<number>(() => this.splittables().length);
-    protected readonly isFetchingData = computed<boolean>(() =>
-        this.categoryTagsResource.isLoading(),
-    );
     protected readonly orderQuantities = computed<SelectOption[]>(() => {
         return QUANTITIES.map((quantity) => ({
             value: quantity,
             label: quantity.toString(),
         }));
-    });
-    protected readonly categoryTags = computed<SelectOption[]>(() => {
-        if (this.categoryTagsResource.error()) return [];
-
-        const fetchedTags = this.categoryTagsResource.value()?.data;
-
-        if (!fetchedTags) return [];
-
-        return fetchedTags.map((tag) => {
-            const { label, value } = tag;
-            return { label, value };
-        });
     });
     protected readonly isStrategyCustom = computed<boolean>(() => {
         const strategy = this.splittableForm().value().splitStrategy;

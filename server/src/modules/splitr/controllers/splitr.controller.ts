@@ -1,11 +1,9 @@
 import { CookiesAuthGuard } from '@common/guards';
-import { hoursToMilliseconds } from '@libs/utils';
+import { VoidResourceResponse } from '@common/types';
+import { Controller, Get, Patch } from '@nestjs/common';
 import { SplitrService } from '../services/splitr.service';
-import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
-import { Public, Summary, UserInRequest } from '@common/decorators';
-import { Controller, Get, Patch, UseInterceptors } from '@nestjs/common';
+import { Summary, UserInRequest } from '@common/decorators';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
-import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { Body, Delete, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { SplitrEventDto, SplitrEventPayload, SettleSplitrPayload } from '../dto/splitr.dto';
@@ -14,25 +12,6 @@ import { SplitrEventDto, SplitrEventPayload, SettleSplitrPayload } from '../dto/
 @UseGuards(CookiesAuthGuard)
 export class SplitrController {
     constructor(private readonly splitrService: SplitrService) {}
-
-    @Get('tags')
-    @CacheKey('splitr:tags')
-    @CacheTTL(hoursToMilliseconds(24))
-    @UseInterceptors(CacheInterceptor)
-    @Public()
-    @HttpCode(200)
-    @ApiCookieAuth('access_token')
-    @ApiOperation({ summary: 'Get all splitr category tags' })
-    @Summary('Splitr category tags retrieved', 'The user retrieved all splitr category tags')
-    @ApiResponse({
-        status: 200,
-        isArray: true,
-        type: ExposeEnumDto,
-        description: 'Splitr category tags retrieved successfully',
-    })
-    getSplitrCategories() {
-        return this.splitrService.getSplitrCategories();
-    }
 
     @Get()
     @HttpCode(200)

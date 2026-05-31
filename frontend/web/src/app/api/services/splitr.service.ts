@@ -22,8 +22,6 @@ export class SplitrService {
     private readonly resource = inject(SplitrResource);
     private readonly errorService = inject(ApiServiceError);
 
-    getOrderCategoryTags = () => this.resource.getOrderCategoryTags;
-
     // SQUAD
     getUserSquads = () => this.resource.getUserSplitrSquads;
 

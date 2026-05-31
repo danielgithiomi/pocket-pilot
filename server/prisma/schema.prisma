@@ -219,16 +219,6 @@ model Bills {
     @@map("User Bills")
 }
 
-enum SplitCategoryTag {
-    FOOD
-    DESERT
-    DRINKS
-    SHOPPING
-    UTILITIES
-    TRANSPORT
-    ENTERTAINMENT
-}
-
 enum SplitStrategy {
     SOLE
     EQUAL
