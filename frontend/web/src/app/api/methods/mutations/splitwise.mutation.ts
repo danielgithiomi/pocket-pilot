@@ -37,7 +37,7 @@ export class SplitwiseMutation {
         return this.client.post<SplitwiseEventPayload, SplitwiseEventPayload>(endpoint, payload);
     }
 
-    markSplitrEventAsSettled(eventId: string, payload: SettleSplitrPayload) {
+    markSplitrEventAsSettledOrPending(eventId: string, payload: SettleSplitrPayload) {
         const endpoint = `${endpoints.splitwise}/${eventId}/settle`;
         return this.client.patch<IVoidResourceResponse, SettleSplitrPayload>(endpoint, payload);
     }

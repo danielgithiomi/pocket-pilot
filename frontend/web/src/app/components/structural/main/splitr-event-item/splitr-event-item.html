@@ -34,7 +34,10 @@
 
                 <div class="splitr-event-tags">
                     <atom-badge variant="info" [label]="payerCount()" />
-                    <atom-badge variant="warning" [label]="settled() ? 'Settled' : 'Unsettled'" />
+                    <atom-badge
+                        [label]="splitrEvent().isSettled ? 'Settled' : 'Pending'"
+                        [variant]="splitrEvent().isSettled ? 'success' : 'warning'"
+                    />
                 </div>
             </div>
         </div>

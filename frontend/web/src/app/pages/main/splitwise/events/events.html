@@ -27,7 +27,7 @@
                 />
             } @else {
                 <div class="flex flex-col gap-4">
-                    @for (event of splitrEvents().reverse(); track event.id) {
+                    @for (event of splitrEvents(); track event.id) {
                         <splitr-event
                             [splitrEvent]="event"
                             (onSplitrEventClickEvent)="handleOnSplitrEventClick($event)"

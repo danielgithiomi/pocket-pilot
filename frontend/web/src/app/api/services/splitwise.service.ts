@@ -10,6 +10,7 @@ import {
     SplitwiseSquadPayload,
     IVoidResourceResponse,
     SplitwiseEventPayload,
+    SettleSplitrPayload,
 } from '@global/types';
 
 @Injectable({
@@ -97,6 +98,26 @@ export class SplitwiseService {
             tap((response: IStandardResponse<SplitwiseEventPayload>) => {
                 console.log('Splitwise event created successfully', response);
             }),
+            catchError((error: IStandardError) => {
+                this.errorService.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
+
+    markSplitrEventAsSettledOrPending(eventId: string, payload: SettleSplitrPayload): Observable<IVoidResourceResponse> {
+        return this.mutation.markSplitrEventAsSettledOrPending(eventId, payload).pipe(
+            map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
+            catchError((error: IStandardError) => {
+                this.errorService.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
+
+    deleteExistingSplitrEvent(eventId: string): Observable<IVoidResourceResponse> {
+        return this.mutation.deleteExistingSplitrEvent(eventId).pipe(
+            map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;

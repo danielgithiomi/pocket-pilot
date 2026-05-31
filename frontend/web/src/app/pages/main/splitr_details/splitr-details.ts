@@ -1,14 +1,15 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { ISplitrEvent } from '@global/types';
+import { ToastService } from '@atoms/toast';
 import { AuthService } from '@api/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SplitrSummary } from './summary/splitr-summary';
 import { DrawerService } from '@infrastructure/services';
 import { SplitwiseService } from '@api/splitwise.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
 import { SplitrBreakdown } from './breakdown/splitr-breakdown';
+import { ISplitrEvent, IVoidResourceResponse } from '@global/types';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { LucideAngularModule, CheckCheck, ReceiptText, Trash2 } from 'lucide-angular';
@@ -43,8 +44,10 @@ export class SplitrDetails {
     protected readonly isSettlingSplittable = signal<boolean>(false);
 
     // SERVICES
+    private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
     private readonly authService = inject(AuthService);
+    private readonly toastService = inject(ToastService);
     protected readonly drawerService = inject(DrawerService);
     private readonly splitwiseService = inject(SplitwiseService);
 
@@ -81,11 +84,47 @@ export class SplitrDetails {
     ]);
 
     // METHODS
-    handleOnSplittableSettledClick() {
-        //TODO: Implement settled click
+    handleOnSplittableSettledClick(isSettled: boolean) {
+        this.isSettlingSplittable.set(true);
+
+        setTimeout(() => {
+            this.splitwiseService
+                .markSplitrEventAsSettledOrPending(this.eventId, { isSettled: !isSettled })
+                .subscribe({
+                    next: (response: IVoidResourceResponse) => {
+                        const { message, details } = response;
+                        this.toastService.show({
+                            details,
+                            title: message,
+                            variant: 'success',
+                        });
+
+                        this.splitrEventResource.reload();
+                        this.splitwiseService.getUserSplitrEvents().reload();
+                    },
+                    complete: () => this.isSettlingSplittable.set(false),
+                });
+        }, 2000);
     }
 
     handleOnSplittableDeleteClick() {
-        // TODO: Implement delete click
+        this.isDeletingSplittable.set(true);
+
+        setTimeout(() => {
+            this.splitwiseService.deleteExistingSplitrEvent(this.eventId).subscribe({
+                next: (response: IVoidResourceResponse) => {
+                    const { message, details } = response;
+                    this.toastService.show({
+                        details,
+                        title: message,
+                        variant: 'success',
+                    });
+
+                    this.splitrEventResource.reload();
+                    this.router.navigate(['/splitwise'], { replaceUrl: true });
+                },
+                complete: () => this.isDeletingSplittable.set(false),
+            });
+        }, 2000);
     }
 }

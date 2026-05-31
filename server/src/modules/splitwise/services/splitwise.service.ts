@@ -1,6 +1,5 @@
 import { SplitCategoryTag } from '@prisma/client';
 import { formatEnumForFrontend } from '@libs/utils';
-import { plainToInstance } from 'class-transformer';
 import { SplitwiseCache } from '../caches/splitwise.cache';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SplitwiseRepository } from '../repositories/splitwise.repository';
@@ -17,11 +16,10 @@ export class SplitwiseService {
         return await Promise.resolve(Object.values(SplitCategoryTag).map(formatEnumForFrontend));
     }
 
-    async getUserSplitwiseEvents(userId: string): Promise<SplitwiseEventDto[]> {
-        const userEvents = await this.splitwiseCache.getOrSetCache<SplitwiseEventDto[]>(userId, () =>
+    getUserSplitwiseEvents(userId: string): Promise<SplitwiseEventDto[]> {
+        return this.splitwiseCache.getOrSetCache<SplitwiseEventDto[]>(userId, () =>
             this.splitwiseRepository.getUserSplitwiseEvents(userId),
         );
-        return userEvents.map(event => plainToInstance(SplitwiseEventDto, event));
     }
 
     async getSplitwiseEventById(userId: string, eventId: string): Promise<SplitwiseEventDto> {
@@ -40,7 +38,7 @@ export class SplitwiseService {
     async createSplitwiseEvent(userId: string, payload: SplitwiseEventPayload) {
         const createdEvent = await this.splitwiseRepository.createSplitwiseEvent(userId, payload);
         await this.invalidateCache(userId);
-        return plainToInstance(SplitwiseEventDto, createdEvent);
+        return createdEvent;
     }
 
     async markSplitwiseEventAsSettledOrPending(userId: string, eventId: string, payload: SettleSplitrPayload) {
@@ -50,13 +48,13 @@ export class SplitwiseService {
             payload,
         );
         await this.invalidateCache(userId);
-        return plainToInstance(SplitwiseEventDto, markedEvent);
+        return markedEvent;
     }
 
     async deleteSplitwiseEvent(userId: string, eventId: string) {
         const deletedEvent = await this.splitwiseRepository.deleteSplitwiseEvent(userId, eventId);
         await this.invalidateCache(userId);
-        return plainToInstance(SplitwiseEventDto, deletedEvent);
+        return deletedEvent;
     }
 
     // HELPER FUNCTIONS
