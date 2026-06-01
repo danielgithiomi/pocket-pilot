@@ -248,7 +248,7 @@ model SplitrSquad {
 model QuantitySplit {
     id String @id @default(uuid())
 
-    consumerQuantity Int
+    consumerQuantity Float
     consumerName String
 
     createdAt DateTime @default(now())

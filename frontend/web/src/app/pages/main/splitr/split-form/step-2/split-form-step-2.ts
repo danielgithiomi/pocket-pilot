@@ -89,8 +89,10 @@ export class SplitFormStep2 {
     protected readonly canAddConsumer = computed<boolean>(() => {
         const quantity = Number(this.splittableForm().value().quantity);
         const splitStrategy = this.splittableForm().value().splitStrategy;
+        const quantitySplits = this.splittableForm().value().quantitySplits;
 
         if (splitStrategy === 'EQUAL' && quantity === 1) return true;
+        if (splitStrategy === 'SOLE' && quantitySplits.length >= 1) return true;
 
         return this.quantityAssisgnableRemaining() > 0;
     });
@@ -162,21 +164,14 @@ export class SplitFormStep2 {
                 return;
             }
 
-            if (strategy === 'SOLE' && consumersInOrder.length >= 1) {
-                this.toastService.show({
-                    variant: 'warning',
-                    title: 'Consumed by one!',
-                    details: 'An item consumed by one cannot have more than one consumer.',
-                });
-                return;
-            }
-
-            const newSplit: LocalQuantitySplit = {
+            const newQuantitySplit: LocalQuantitySplit = {
+                consumerQuantity: 1,
                 id: crypto.randomUUID(),
                 consumerName: memberName,
-                consumerQuantity: 1,
             };
-            updatedSplits = [...orderSplits, newSplit];
+
+            if (strategy === 'SOLE') updatedSplits = [newQuantitySplit];
+            else updatedSplits = [...orderSplits, newQuantitySplit];
         }
 
         this.splittableForm.quantitySplits().controlValue.set(updatedSplits);
@@ -239,9 +234,12 @@ export class SplitFormStep2 {
             splitStrategy === 'QUANTITY'
                 ? quantitySplits
                 : quantitySplits.map((split) => ({
-                      ...split,
-                      consumerQuantity: Math.floor(quantity / quantitySplits.length),
-                  }));
+                        ...split,
+                        consumerQuantity: quantity / quantitySplits.length,
+                    }
+                ));
+
+        console.log(updatedQuantitySplits);
 
         const newSplittable: SplittableOrder = {
             id: this.splittables().length + 1,
