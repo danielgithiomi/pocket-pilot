@@ -1,7 +1,11 @@
 <div id="support-page" class="page">
-    <section id="contact-us" class="page-section flex flex-col md:flex-row gap-4">
-        <div class="flex-1 h-full flex flex-col justify-around p-0 md:p-4">
-            <div class="flex flex-col space-y-3">
+    <section
+        id="contact-us"
+        class="page-section flex flex-col md:flex-row gap-4"
+        [ngClass]="{ 'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed() }"
+    >
+        <div class="flex-1 lg:flex-1 min-h-full flex flex-col justify-around p-0 md:p-4">
+            <div class="flex flex-col space-y-3 cursor-default!">
                 <div
                     class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary"
                 >
@@ -19,36 +23,37 @@
                 </div>
             </div>
 
-            <div class="w-full flex flex-col space-y-4">
+            <div class="flex flex-col space-y-4">
                 @for (item of contactItems; track item.value) {
                     <div
-                        class="flex flex-row items-center gap-2 group cursor-pointer hover:scale-[1.0025] transition-custom"
+                        class="w-fit flex flex-row items-center gap-2 group cursor-pointer hover:scale-[1.0025] transition-custom"
                     >
                         <div
-                            class="size-8 grid place-items-center border group-hover:border-loader-primary bg-alternate-background rounded-lg"
+                            class="size-8 grid place-items-center border group-hover:border-loader-primary bg-alternate-background rounded-lg transition-custom"
                         >
                             <lucide-icon [img]="item.icon" [size]="iconSize" [name]="item.id" />
                         </div>
                         <a
                             [href]="item.link"
-                            class="text-sm group-hover:underline group-hover:text-primary"
+                            class="text-sm group-hover:underline group-hover:text-primary transition-custom"
                             >{{ item.value }}</a
                         >
                     </div>
                 }
             </div>
         </div>
-        <div class="flex-1 h-full grid place-items-center p-0 md:p-4">
+        <div class="flex-2 lg:flex-1 min-h-full grid place-items-center p-0 md:p-4">
             <!-- CONTACT FORM -->
-            <div class="w-full min-h-3/4 border border-loader-primary rounded-xl p-4">
+            <div class="w-full min-h-3/4 border border-loader-primary rounded-xl p-6">
                 <h3 class="text-2xl font-semibold">Get in touch</h3>
 
-                <div class="mt-2 p-4">
+                <div class="mt-2 p-2">
                     <form id="contact-form" (submit)="submitContactForm($event)">
-                        <div class="flex flex-row gap-4">
+                        <div class="w-full flex flex-row gap-4">
                             <atom-input
-                                id="name"
                                 type="text"
+                                class="w-full"
+                                id="first-name"
                                 placeholder="John"
                                 label="First Name"
                                 autocomplete="name"
@@ -58,8 +63,9 @@
                             />
 
                             <atom-input
-                                id="name"
                                 type="text"
+                                id="last-name"
+                                class="w-full"
                                 label="Last Name"
                                 placeholder="Doe"
                                 autocomplete="name"

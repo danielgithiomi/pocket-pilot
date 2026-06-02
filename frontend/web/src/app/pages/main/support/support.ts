@@ -1,29 +1,31 @@
-import { buildFullPhoneNumber, parsePhoneNumber } from '@atoms/phone-number/phone-number.utils';
-import { DEFAULT_COUNTRY_ISO } from '@global/constants';
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
+import { NgClass } from '@angular/common';
 import { TextArea } from '@atoms/text-area';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
 import { PhoneNumber } from '@atoms/phone-number';
+import { DEFAULT_COUNTRY_ISO } from '@global/constants';
+import { DrawerService } from '@infrastructure/services';
 import { Component, computed, inject, signal } from '@angular/core';
+import { buildFullPhoneNumber, parsePhoneNumber } from '@atoms/phone-number';
 import { SupportFormSchema, SupportFormValidationSchema } from './support.form';
 import { SUPPORT_EMAIL, SUPPORT_PHONE, SUPPORT_INSTAGRAM, SUPPORT_X } from '@global/constants';
 import {
-    Instagram,
-    Twitter,
-    LucideAngularModule,
-    LucideIconData,
     Mail,
-    Phone,
     Send,
+    Phone,
+    Twitter,
+    Instagram,
+    LucideIconData,
+    LucideAngularModule,
 } from 'lucide-angular';
 
 @Component({
     selector: 'support',
     templateUrl: './support.html',
-    imports: [LucideAngularModule, Input, TextArea, PhoneNumber, Button],
+    imports: [NgClass, LucideAngularModule, Input, TextArea, PhoneNumber, Button],
 })
 export class Support {
     // ICONS
@@ -36,6 +38,7 @@ export class Support {
     // SERVICES
     private readonly authService = inject(AuthService);
     private readonly toastService = inject(ToastService);
+    protected readonly drawerService = inject(DrawerService);
 
     // DATA
     private readonly userData = computed(() => {
