@@ -2,8 +2,8 @@ import { ExposeEnumDto } from '@common/types';
 import { plainToInstance } from 'class-transformer';
 import { AccountsCache } from '../cache/accounts.cache';
 import { TransactionType, Account } from '@prisma/client';
+import { AccountDetailsCache } from '../cache/account-details.cache';
 import { AccountRepository } from '../repositories/account.repository';
-import { DatabaseService } from '@infrastructure/database/database.service';
 import { denormalizeCategoryName, formatEnumForFrontend } from '@libs/utils';
 import { TransactionRepository } from '../repositories/transaction.respository';
 import { TransactionDto, CreateTransactionDto, CompleteTransactionDto } from '../dto/transaction.dto';
@@ -12,9 +12,9 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException 
 @Injectable()
 export class TransactionService {
     constructor(
-        private readonly db: DatabaseService,
         private readonly accountsCache: AccountsCache,
         private readonly accountRepository: AccountRepository,
+        private readonly accountDetailsCache: AccountDetailsCache,
         private readonly transactionRepository: TransactionRepository,
     ) {}
 
@@ -73,7 +73,7 @@ export class TransactionService {
             accountId,
             transformedDto,
         );
-        await this.invalidateAccountCache(userId);
+        await this.invalidateAccountCache(userId, accountId);
         return createdTransaction;
     }
 
@@ -89,7 +89,7 @@ export class TransactionService {
         }
 
         await this.transactionRepository.deleteTransactionById(transactionId);
-        await this.invalidateAccountCache(userId);
+        await this.invalidateAccountCache(userId, accountId);
     }
 
     // HELPER FUNCTIONS
@@ -101,8 +101,9 @@ export class TransactionService {
         return type === TransactionType.TRANSFER || type === TransactionType.EXPENSE || type === TransactionType.INCOME;
     }
 
-    private async invalidateAccountCache(userId: string) {
+    private async invalidateAccountCache(userId: string, accountId: string) {
         await this.accountsCache.invalidateCache(userId);
+        await this.accountDetailsCache.invalidateCache(accountId);
     }
 
     private async confirmAccountExists(accountId: string): Promise<Account> {

@@ -152,8 +152,8 @@
     <div class="form-footer-buttons" slot="footer">
       <atom-button
         type="button"
+        label="Reset"
         [inverted]="true"
-        label="Reset Form"
         variant="secondary"
         form="transactions-form"
         id="reset-transaction-form"
@@ -163,8 +163,8 @@
 
       <atom-button
         type="submit"
+        label="Log Transaction"
         form="transactions-form"
-        label="Create Transaction"
         id="submit-transaction-form"
         [isLoading]="isSubmitting()"
         [disabled]="transactionForm().invalid() || isSubmitting()"
