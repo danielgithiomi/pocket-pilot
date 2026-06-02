@@ -63,3 +63,27 @@ export function filterCountries(countries: Country[], query: string): Country[] 
         return searchable.includes(normalizedQuery);
     });
 }
+
+export interface FormattedPhoneNumber {
+    flag: string;
+    dialCode: string;
+    countryName: string;
+    nationalNumber: string;
+}
+
+export function formatPhoneNumberForDisplay(
+    value: string | null | undefined,
+): FormattedPhoneNumber | null {
+    if (!value) return null;
+
+    const { country, nationalNumber } = parsePhoneNumber(value);
+
+    if (!nationalNumber) return null;
+
+    return {
+        flag: isoToFlag(country.iso),
+        dialCode: `+${country.dialCode}`,
+        countryName: country.name,
+        nationalNumber,
+    };
+}

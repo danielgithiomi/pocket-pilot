@@ -17,5 +17,22 @@
     .value {
       @apply text-sm font-semibold;
     }
+
+    .phone-value {
+      @apply flex items-center gap-1.5 font-normal;
+    }
+
+    .phone-flag {
+      @apply text-base leading-none shrink-0;
+    }
+
+    .phone-dial-code {
+      @apply text-sm font-medium shrink-0;
+      color: var(--muted-text);
+    }
+
+    .phone-national-number {
+      @apply text-sm font-semibold;
+    }
   }
 }

@@ -132,6 +132,12 @@
     color: var(--tertiary-dark);
 }
 
+.dial-code-prefix, .dial-code-suffix {
+    flex-shrink: 0;
+    font-weight: 600;
+    color: var(--primary);
+}
+
 /* Reset global form input styles while matching atom-input appearance */
 .phone-number-field .phone-number-input {
     flex: 1;

@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
+import { formatPhoneNumberForDisplay } from '@atoms/phone-number/phone-number.utils';
 import {
   User,
   Phone,
@@ -59,6 +60,17 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
               <p class="value truncate-text">{{ detailValue() }}</p>
             </div>
           }
+          @case ('phone') {
+            @if (formattedPhone(); as phone) {
+              <p class="value phone-value" [attr.aria-label]="phone.countryName + ' ' + phone.dialCode + ' ' + phone.nationalNumber">
+                <span class="phone-flag" aria-hidden="true">{{ phone.flag }}</span>
+                <span class="phone-dial-code">{{ phone.dialCode }}</span>
+                <span class="phone-national-number">{{ phone.nationalNumber }}</span>
+              </p>
+            } @else {
+              <p class="value truncate-text">{{ detailValue() }}</p>
+            }
+          }
           @default {
             <p class="value truncate-text">{{ detailValue() }}</p>
           }
@@ -72,6 +84,15 @@ export class ProfileDetail {
   isLast = input<boolean>(false);
   detailValue = input.required();
   detailVariant = input.required<DetailVariant>();
+
+  protected formattedPhone = computed(() => {
+    if (this.detailVariant() !== 'phone') return null;
+
+    const value = this.detailValue();
+    if (typeof value !== 'string') return null;
+
+    return formatPhoneNumberForDisplay(value);
+  });
 
   protected detailTitle = computed<string>(() => {
     switch (this.detailVariant()) {
