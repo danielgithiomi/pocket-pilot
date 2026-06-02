@@ -4,36 +4,36 @@ import { ToastProps, ToastInternal } from './toast.types';
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  private readonly _toasts = signal<ToastInternal[]>([]);
+    private readonly _toasts = signal<ToastInternal[]>([]);
 
-  readonly toasts = this._toasts.asReadonly();
+    readonly toasts = this._toasts.asReadonly();
 
-  show(config: ToastProps) {
-    const id = crypto.randomUUID();
+    show(config: ToastProps) {
+        const id = crypto.randomUUID();
 
-    const toast: ToastInternal = {
-      ...config,
-      duration: config.duration ?? 'short',
-      id,
-    };
+        const toast: ToastInternal = {
+            ...config,
+            duration: config.duration ?? 'short',
+            id,
+        };
 
-    if (this.checkSessionToastAlreadyExists(this._toasts(), toast)) return;
+        if (this.checkSessionToastAlreadyExists(this._toasts(), toast)) return;
 
-    this._toasts.update((prev) => [...prev, toast]);
-  }
+        this._toasts.update((prev) => [...prev, toast]);
+    }
 
-  remove(id: string) {
-    this._toasts.update((prev) => prev.filter((t) => t.id !== id));
-  }
+    remove(id: string) {
+        this._toasts.update((prev) => prev.filter((t) => t.id !== id));
+    }
 
-  private checkSessionToastAlreadyExists(toasts: ToastInternal[], toast: ToastInternal): boolean {
-    if (!toast || toast.title === undefined) return false;
+    private checkSessionToastAlreadyExists(toasts: ToastInternal[], toast: ToastInternal): boolean {
+        if (!toast || toast.title === undefined) return false;
 
-    const toastsLength: number = toasts.length;
-    if (toastsLength === 0) return false;
+        const toastsLength: number = toasts.length;
+        if (toastsLength === 0) return false;
 
-    const singleToastTitle: string[] = ['Session expired. Login again!'];
+        const singleToastTitle: string[] = ['Session expired. Login again!', 'Session Timed Out!'];
 
-    return singleToastTitle.includes(toast.title);
-  }
+        return singleToastTitle.includes(toast.title);
+    }
 }

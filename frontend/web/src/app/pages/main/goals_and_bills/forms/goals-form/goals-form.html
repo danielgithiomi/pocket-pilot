@@ -155,16 +155,16 @@
       >
         <div class="w-full flex flex-row items-center justify-between gap-4 py-1 lg:py-0">
           <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="previous-goal-step" />
-          <span class="hidden lg:block">Previous</span>
+          <span class="hidden lg:block">Back</span>
         </div>
       </atom-button>
     }
 
     <atom-button
       type="button"
+      label="Reset"
       form="goals-form"
       [inverted]="true"
-      label="Reset Form"
       variant="secondary"
       id="reset-goals-form"
       (clicked)="resetGoalForm()"
