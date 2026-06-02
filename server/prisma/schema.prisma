@@ -73,6 +73,15 @@ model User {
 
     // Link to categories - one-to-many
     categories Categories[]
+    
+    // Link to goals - one-to-many
+    goals Goals[]
+
+    // Link to bills - one-to-many
+    bills Bills[]
+
+    // Link to splitr events - one-to-many
+    splitrEvents SplitrEvent[]
 
     // Link to preferences - one-to-one
     userPreferences UserPreferences?
@@ -175,7 +184,6 @@ enum GoalCategory {
 
 model Goals {
     id     String @id @default(uuid())
-    userId String
 
     name        String
     currency    String
@@ -194,6 +202,10 @@ model Goals {
     updatedAt DateTime @updatedAt()
     createdAt DateTime @default(now())
 
+    // Link to user - one-to-many
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+
     @@map("Financial Goals")
 }
 
@@ -205,7 +217,6 @@ enum BillType {
 
 model Bills {
     id     String @id @default(uuid())
-    userId String
 
     amount   Float
     name     String
@@ -215,6 +226,10 @@ model Bills {
     dueDate DateTime
 
     createdAt DateTime @default(now())
+
+    // Link to user - one-to-many
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
 
     @@map("User Bills")
 }
@@ -293,15 +308,14 @@ model Splittable{
     // Link to quantity splits - one-to-many
     quantitySplits QuantitySplit[]
 
-    splitEventId String
-    splitEvent   SplitrEvent @relation(fields: [splitEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    splitrEventId String
+    splitrEvent   SplitrEvent @relation(fields: [splitrEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@map("Splittables")
 }
 
 model SplitrEvent {
     id            String    @id @default(uuid())
-    creatorId     String
 
     eventName           String
     eventDate           DateTime
@@ -321,6 +335,10 @@ model SplitrEvent {
     settledAt     DateTime?
     updatedAt     DateTime      @updatedAt()
     createdAt     DateTime      @default(now())
+
+    // Link to user - one-to-many
+    creatorId String
+    user   User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 
     @@map("Splitr Events")
 }

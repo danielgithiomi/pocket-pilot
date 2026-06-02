@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { CreateBillPayload } from '../dto/bills.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
@@ -17,13 +16,8 @@ export class BillsRepository {
         });
     }
 
-    createNewBill(userId: string, payload: CreateBillPayload): Promise<Prisma.BillsCreateInput> {
-        return this.db.bills.create({
-            data: {
-                ...payload,
-                userId,
-            },
-        });
+    createNewBill(userId: string, payload: CreateBillPayload) {
+        return this.db.bills.create({ data: { ...payload, userId } });
     }
 
     deleteBillById(userId: string, billId: string) {

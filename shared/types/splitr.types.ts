@@ -49,7 +49,7 @@ export interface Splittable extends Omit<SplittablePayload, "quantitySplits"> {
     id: string;
     createdAt: string;
     updatedAt: string;
-    splitEventId: string;
+    splitrEventId: string;
     quantitySplits: QuantitySplit[];
 }
 

@@ -1,4 +1,4 @@
-import { BillTypeEnum } from "@global/enums";
+import { BillTypeEnum } from "../enums/bills.enums";
 
 export type BillType = BillTypeEnum;
 
