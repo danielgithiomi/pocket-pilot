@@ -1,38 +1,38 @@
 @reference 'tailwindcss';
 
 .profile-detail {
-  @apply flex flex-row items-center gap-4 py-6 pointer-events-none;
+    @apply flex flex-row items-center gap-4 py-6 pointer-events-none;
 
-  .icon {
-    @apply size-10 rounded-full bg-(--body-background) grid place-items-center;
-  }
-
-  .info {
-    @apply flex flex-col grow gap-2;
-
-    .title {
-      @apply font-medium text-xs text-(--muted-text);
+    .icon {
+        @apply size-10 rounded-full bg-(--body-background) grid place-items-center;
     }
 
-    .value {
-      @apply text-sm font-semibold;
-    }
+    .info {
+        @apply flex flex-col grow gap-2;
 
-    .phone-value {
-      @apply flex items-center gap-1.5 font-normal;
-    }
+        .title {
+            @apply font-medium text-xs text-(--muted-text);
+        }
 
-    .phone-flag {
-      @apply text-base leading-none shrink-0;
-    }
+        .value {
+            @apply text-sm font-semibold;
+        }
 
-    .phone-dial-code {
-      @apply text-sm font-medium shrink-0;
-      color: var(--muted-text);
-    }
+        .phone-value {
+            @apply flex items-center gap-1.5 font-normal;
+        }
 
-    .phone-national-number {
-      @apply text-sm font-semibold;
+        .phone-flag {
+            @apply text-base leading-none shrink-0;
+        }
+
+        .phone-dial-code {
+            @apply text-sm font-medium shrink-0;
+            color: var(--muted-text);
+        }
+
+        .phone-national-number {
+            @apply text-sm font-semibold;
+        }
     }
-  }
 }

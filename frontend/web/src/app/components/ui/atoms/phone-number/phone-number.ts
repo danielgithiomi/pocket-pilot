@@ -3,8 +3,17 @@ import { NgClass } from '@angular/common';
 import { FieldTree } from '@angular/forms/signals';
 import { PhoneNumberStatus } from './phone-number.types';
 import { COUNTRIES, DEFAULT_COUNTRY_ISO } from '@global/constants';
-import { Component, computed, HostListener, input, output, signal } from '@angular/core';
 import { Check, ChevronDown, ChevronUp, LucideAngularModule, Search, X } from 'lucide-angular';
+import {
+    input,
+    output,
+    signal,
+    computed,
+    viewChild,
+    Component,
+    ElementRef,
+    HostListener,
+} from '@angular/core';
 import {
     isoToFlag,
     filterCountries,
@@ -59,6 +68,9 @@ export class PhoneNumber {
     protected readonly countrySearchQuery = signal('');
     protected readonly selectedCountry = signal<Country>(findCountryByIso(DEFAULT_COUNTRY_ISO));
 
+    private readonly countrySearchInput =
+        viewChild<ElementRef<HTMLInputElement>>('countrySearchInput');
+
     /* COMPUTED */
     fieldState = computed(() => this.formField()());
     inputId = computed<string>(() => `phone-number-field-${this.id()}`);
@@ -86,10 +98,12 @@ export class PhoneNumber {
     /* METHODS */
     toggleDropdown(event: Event) {
         event.stopPropagation();
-        this.isDropdownOpen.update((open) => !open);
+        const willOpen = !this.isDropdownOpen();
+        this.isDropdownOpen.set(willOpen);
 
-        if (this.isDropdownOpen()) {
+        if (willOpen) {
             this.countrySearchQuery.set('');
+            this.focusCountrySearch();
         }
     }
 
@@ -146,5 +160,9 @@ export class PhoneNumber {
         const fullNumber = buildFullPhoneNumber(this.selectedCountry(), this.nationalNumber());
 
         this.formField()().controlValue.set(fullNumber);
+    }
+
+    private focusCountrySearch() {
+        setTimeout(() => this.countrySearchInput()?.nativeElement.focus());
     }
 }

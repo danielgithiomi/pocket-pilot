@@ -71,13 +71,15 @@ export class Onboarding {
             monthlySpendingLimit: monthlySpendingLimit!,
         };
 
+        console.log(payload);
+
         setTimeout(() => {
             this.onboardingService.onboardUser(payload).subscribe({
                 next: (response: User) => {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Onboarding completed!',
-                        details: `You have completed the onbarding process ${response.name}. You can now enjoy Pocket Pilot!`,
+                        details: `You have completed the onboarding process [${response.name}]. You can now enjoy Pocket Pilot!`,
                     });
 
                     this.resetOnboardingForm();
