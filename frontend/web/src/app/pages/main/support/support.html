@@ -83,7 +83,30 @@
                             placeholder="1234567890"
                             [formField]="supportForm.phone"
                         />
+
+                        <div class="w-full flex justify-end mt-4">
+                            <atom-button
+                                id="submit-contact-form"
+                                label="Submit"
+                                variant="primary"
+                                [isLoading]="isSubmittingForm()"
+                                [disabled]="supportForm().invalid() || isSubmittingForm()"
+                            >
+                                <div
+                                    class="flex flex-row items-center justify-between gap-2"
+                                >
+                                    <span>Submit</span>
+                                    <lucide-icon [img]="SendIcon" [size]="iconSize" name="send-icon" />
+                                </div>
+                            </atom-button>
+                        </div>
                     </form>
+
+                    <p class="text-xs text-center text-tertiary-dark mt-4">
+                        By submitting this form, you agree to our Terms of Service.
+                        <br />
+                        Read our <a href="#" class="text-primary hover:underline">Privacy Policy</a>.
+                    </p>
                 </div>
             </div>
         </div>

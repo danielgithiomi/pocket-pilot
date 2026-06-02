@@ -1,7 +1,10 @@
 import { Input } from '@atoms/input';
-import { Component, signal } from '@angular/core';
+import { Button } from '@atoms/button';
+import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
-import { PhoneNumber } from "@atoms/phone-number";
+import { AuthService } from '@api/auth.service';
+import { PhoneNumber } from '@atoms/phone-number';
+import { Component, computed, inject, signal } from '@angular/core';
 import { SupportFormSchema, SupportFormValidationSchema } from './support.form';
 import { SUPPORT_EMAIL, SUPPORT_PHONE, SUPPORT_INSTAGRAM, SUPPORT_X } from '@global/constants';
 import {
@@ -11,16 +14,46 @@ import {
     LucideIconData,
     Mail,
     Phone,
+    Send
 } from 'lucide-angular';
 
 @Component({
     selector: 'support',
     templateUrl: './support.html',
-    imports: [LucideAngularModule, Input, PhoneNumber],
+    imports: [LucideAngularModule, Input, PhoneNumber, Button],
 })
 export class Support {
     // ICONS
     protected readonly iconSize = 15;
+    protected readonly SendIcon = Send;
+
+    // SIGNALS
+    protected readonly isSubmittingForm = signal(false);
+
+    // SERVICES
+    private readonly authService = inject(AuthService);
+    private readonly toastService = inject(ToastService);
+
+    // DATA
+    private readonly userData = computed(() => {
+        const user = this.authService.user();
+
+        if (!user)
+            return {
+                email: '',
+                phone: '',
+                lastName: '',
+                firstName: '',
+            };
+
+        const { email, name, phoneNumber: phone } = user;
+        const firstName = name.split(' ')[0];
+        const lastName = name.split(' ')[1] ?? '';
+
+        console.log(firstName, lastName, email, phone);
+
+        return { email, firstName, lastName, phone };
+    });
 
     // CONTACT ITEMS
     protected readonly contactItems: ContactItem[] = [
@@ -52,11 +85,8 @@ export class Support {
 
     // FORM
     private readonly INITIAL_FORM_STATE: SupportFormSchema = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
         message: '',
+        ...this.userData(),
     };
     protected readonly supportFormModel = signal<SupportFormSchema>(this.INITIAL_FORM_STATE);
     protected readonly supportForm = form(this.supportFormModel, SupportFormValidationSchema);

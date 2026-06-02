@@ -454,6 +454,10 @@ main {
         @apply text-sm text-expense! inline-block;
     }
 
+    .input-end-icon {
+        @apply text-tertiary-dark! hover:text-loader-primary! transition-all duration-300 ease-in-out;
+    }
+
     /* ANIMATIONS START */
     .transition-custom {
         @apply transition-all duration-300 ease-in-out;
