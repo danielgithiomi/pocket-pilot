@@ -71,9 +71,6 @@ export class Onboarding {
             monthlySpendingLimit: monthlySpendingLimit!,
         };
 
-        console.log(payload);
-        return;
-
         setTimeout(() => {
             this.onboardingService.onboardUser(payload).subscribe({
                 next: (response: User) => {
