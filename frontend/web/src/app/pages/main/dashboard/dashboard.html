@@ -75,6 +75,7 @@
             <div class="w-full cursor-pointer!" (click)="onSpendingLimitClick()">
               <atom-progress-bar
                 [showEditIcon]="false"
+                [showPercentage]="true"
                 id="spending-limit-progress"
                 [currentValue]="totalExpenses()"
                 [maxValue]="monthlySpendingLimit"
