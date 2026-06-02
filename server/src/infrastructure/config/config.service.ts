@@ -31,6 +31,9 @@ export class PPConfigService {
             secretAccessKey: this.service.getOrThrow<string>('AWS_SECRET_ACCESS_KEY'),
             connectionTimeout: this.service.getOrThrow<number>('AWS_MAX_CONNECTION_TIMEOUT'),
             presignedUrlExpiration: this.service.getOrThrow<number>('AWS_PRESIGNED_URL_EXPIRATION_IN_SECONDS'),
+            presignedReadUrlExpiration: this.service.getOrThrow<number>(
+                'AWS_PRESIGNED_READ_URL_EXPIRATION_IN_SECONDS',
+            ),
         };
     }
 }

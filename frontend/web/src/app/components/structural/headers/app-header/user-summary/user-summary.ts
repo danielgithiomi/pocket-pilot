@@ -51,7 +51,12 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
 
       <div id="avatar" class="avatar">
         @if (profilePictureUrl()) {
-          <img [alt]="initial()" [src]="profilePictureUrl()" class="w-full h-full object-cover" />
+          <img
+            [alt]="initial()"
+            [src]="profilePictureUrl()"
+            class="w-full h-full object-cover"
+            (error)="onProfilePictureError()"
+          />
         } @else {
           <p class="text-white">{{ initial() }}</p>
         }
@@ -88,4 +93,8 @@ export class UserSummary {
     const name = this.username();
     return name ? name.substring(0, 1).toUpperCase() : '';
   });
+
+  protected onProfilePictureError() {
+    void this.authService.refreshUser();
+  }
 }
