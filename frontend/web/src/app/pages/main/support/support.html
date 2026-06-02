@@ -82,9 +82,9 @@
                         <atom-phone-number
                             id="phone"
                             label="Phone"
-                            defaultCountryIso="MU"
                             placeholder="1234567890"
                             [formField]="supportForm.phone"
+                            [defaultCountryIso]="defaultPhoneCountryIso()"
                         />
 
                         <atom-text-area

@@ -1,4 +1,4 @@
-import { email, maxLength, minLength, required, schema } from '@angular/forms/signals';
+import { email, minLength, required, schema, validate } from '@angular/forms/signals';
 
 export interface SupportFormSchema {
     email: string;
@@ -21,10 +21,36 @@ export const SupportFormValidationSchema = schema<SupportFormSchema>((root) => {
     email(root.email, { message: 'The email address format is invalid!' });
     required(root.email, { message: 'The email address is required field!' });
 
-    // Phone
+    // Phone (international format: +{countryCode}{nationalNumber})
     required(root.phone, { message: 'The phone is required field!' });
-    minLength(root.phone, 8, { message: 'The phone must be at least 8 digits long!' });
-    maxLength(root.phone, 10, { message: 'The phone must be at most 10 digits long!' });
+    validate(root.phone, (control) => {
+        const number = control.value();
+        if (!number) return null;
+
+        if (!/^\+\d+$/.test(number)) {
+            return {
+                kind: 'phone-number-invalid',
+                message: 'Please enter a valid phone number!',
+            };
+        }
+
+        const nationalDigits = number.replace(/^\+\d{1,4}/, '');
+        if (nationalDigits.length < 7) {
+            return {
+                kind: 'phone-number-too-short',
+                message: 'The phone number must be at least 7 digits long!',
+            };
+        }
+
+        if (nationalDigits.length > 14) {
+            return {
+                kind: 'phone-number-too-long',
+                message: 'The phone number must not exceed 14 digits!',
+            };
+        }
+
+        return null;
+    });
 
     // Message
     required(root.message, { message: 'The message is required field!' });

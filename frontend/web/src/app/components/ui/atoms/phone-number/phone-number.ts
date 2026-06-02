@@ -8,6 +8,7 @@ import {
     input,
     output,
     signal,
+    effect,
     computed,
     viewChild,
     Component,
@@ -18,6 +19,7 @@ import {
     isoToFlag,
     filterCountries,
     findCountryByIso,
+    parsePhoneNumber,
     buildFullPhoneNumber,
 } from './phone-number.utils';
 
@@ -94,6 +96,20 @@ export class PhoneNumber {
     showErrors = computed(
         () => this.fieldState().invalid() && (this.fieldState().touched() || this.hasBlurred()),
     );
+
+    private readonly syncFromFormValue = effect(() => {
+        const value = this.fieldState().value() ?? '';
+        const currentValue = buildFullPhoneNumber(
+            this.selectedCountry(),
+            this.nationalNumber(),
+        );
+
+        if (value === currentValue) return;
+
+        const parsed = parsePhoneNumber(value, this.defaultCountryIso());
+        this.selectedCountry.set(parsed.country);
+        this.nationalNumber.set(parsed.nationalNumber);
+    });
 
     /* METHODS */
     toggleDropdown(event: Event) {

@@ -1,3 +1,5 @@
+import { buildFullPhoneNumber, parsePhoneNumber } from '@atoms/phone-number/phone-number.utils';
+import { DEFAULT_COUNTRY_ISO } from '@global/constants';
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { TextArea } from '@atoms/text-area';
@@ -15,7 +17,7 @@ import {
     LucideIconData,
     Mail,
     Phone,
-    Send
+    Send,
 } from 'lucide-angular';
 
 @Component({
@@ -39,22 +41,32 @@ export class Support {
     private readonly userData = computed(() => {
         const user = this.authService.user();
 
-        if (!user)
+        if (!user) {
             return {
                 email: '',
                 phone: '',
                 lastName: '',
                 firstName: '',
+                phoneCountryIso: DEFAULT_COUNTRY_ISO,
             };
+        }
 
-        const { email, name, phoneNumber: phone } = user;
-        const firstName = name.split(' ')[0];
-        const lastName = name.split(' ')[1] ?? '';
+        const { email, name, phoneNumber } = user;
+        const nameParts = name.trim().split(/\s+/);
+        const firstName = nameParts[0] ?? '';
+        const lastName = nameParts.slice(1).join(' ');
+        const { country, nationalNumber } = parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO);
 
-        console.log(firstName, lastName, email, phone);
-
-        return { email, firstName, lastName, phone };
+        return {
+            email,
+            firstName,
+            lastName,
+            phoneCountryIso: country.iso,
+            phone: buildFullPhoneNumber(country, nationalNumber),
+        };
     });
+
+    protected readonly defaultPhoneCountryIso = computed(() => this.userData().phoneCountryIso);
 
     // CONTACT ITEMS
     protected readonly contactItems: ContactItem[] = [
@@ -85,17 +97,24 @@ export class Support {
     ].reverse();
 
     // FORM
-    private readonly INITIAL_FORM_STATE: SupportFormSchema = {
-        message: '',
-        ...this.userData(),
-    };
-    protected readonly supportFormModel = signal<SupportFormSchema>(this.INITIAL_FORM_STATE);
+    private getInitialFormState(): SupportFormSchema {
+        const { email, phone, lastName, firstName } = this.userData();
+
+        return {
+            message: '',
+            email,
+            phone,
+            lastName,
+            firstName,
+        };
+    }
+
+    protected readonly supportFormModel = signal<SupportFormSchema>(this.getInitialFormState());
     protected readonly supportForm = form(this.supportFormModel, SupportFormValidationSchema);
 
     // SUBMIT CONTACT FORM
     protected submitContactForm(event: Event) {
         event.preventDefault();
-        console.log('submitContactForm');
 
         this.isSubmittingForm.set(true);
 
@@ -103,11 +122,12 @@ export class Support {
             this.toastService.show({
                 variant: 'success',
                 title: 'Message sent!',
-                details: 'Your message has been sent successfully. We will get back to you as soon as possible.',
+                details:
+                    'Your message has been sent successfully. We will get back to you as soon as possible.',
             });
 
             this.isSubmittingForm.set(false);
-            this.supportFormModel.set(this.INITIAL_FORM_STATE);
+            this.supportFormModel.set(this.getInitialFormState());
         }, 2000);
     }
 }

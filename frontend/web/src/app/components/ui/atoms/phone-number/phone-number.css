@@ -30,7 +30,7 @@
     overflow: hidden;
     align-items: stretch;
     border-radius: 0.5rem;
-    padding: 0.15rem 0.25rem;
+    padding: 0.15rem 0 0.15rem 0.25rem;
     background: var(--alternate-background);
     box-shadow:
         0 10px 15px -3px rgba(0, 0, 0, 0.1),
@@ -107,10 +107,10 @@
 
 .phone-input-section {
     display: flex;
-    flex: 1;
+    flex: 1 1 auto;
     align-items: center;
     min-width: 0;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0 0.5rem 1rem;
 }
 
 .phone-input-row {
@@ -166,21 +166,28 @@
 
 .phone-clear-button {
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    padding: 0 0.75rem;
+    align-items: center;
+    align-self: stretch;
+    justify-content: center;
+    margin-left: auto;
     border: none;
     cursor: pointer;
+    padding: 0 0.5rem 0 0.25rem;
+}
+
+.phone-number-field .phone-number-container .phone-clear-button {
+    padding: 0 0.5rem 0 0.25rem;
 }
 
 .phone-clear-icon {
-    color: var(--muted-text);
+    cursor: pointer !important;
+    color: var(--tertiary-dark);
     transition: color 300ms ease;
 }
 
 .phone-clear-icon:hover {
-    color: var(--primary);
+    color: var(--loader-primary);
 }
 
 .phone-number-field.phone-number-hover-scale .phone-clear-icon:hover {
