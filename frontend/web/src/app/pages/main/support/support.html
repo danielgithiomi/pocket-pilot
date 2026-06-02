@@ -1,7 +1,7 @@
 <div id="support-page" class="page">
     <section id="contact-us" class="page-section flex flex-col md:flex-row gap-4">
-        <div class="flex-1 h-full flex flex-col justify-around items-start p-4">
-            <div class="flex flex-col space-y-2">
+        <div class="flex-1 h-full flex flex-col justify-around p-0 md:p-4">
+            <div class="flex flex-col space-y-3">
                 <div
                     class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary"
                 >
@@ -11,7 +11,7 @@
                 <h4 class="text-3xl md:text-4xl font-bold">We're here to help!</h4>
 
                 <div class="overflow-hidden w-3/5 mt-4">
-                    <p class="overflow-hidden text-tertiary-dark text-ellipsis">
+                    <p class="overflow-hidden text-sm text-tertiary-dark text-ellipsis">
                         Need support or have a question? Our Pocket Pilot Support Team is here to
                         assist you with any questions or issues you may have. Please use the form to
                         contact us.
@@ -38,6 +38,54 @@
                 }
             </div>
         </div>
-        <div class="flex-1 bg-blue-500"></div>
+        <div class="flex-1 h-full grid place-items-center p-0 md:p-4">
+            <!-- CONTACT FORM -->
+            <div class="w-full min-h-3/4 border border-loader-primary rounded-xl p-4">
+                <h3 class="text-2xl font-semibold">Get in touch</h3>
+
+                <div class="mt-2 p-4">
+                    <form id="contact-form" (submit)="submitContactForm($event)">
+                        <div class="flex flex-row gap-4">
+                            <atom-input
+                                id="name"
+                                type="text"
+                                placeholder="John"
+                                label="First Name"
+                                autocomplete="name"
+                                wrapperClassName="flex-1 my-0!"
+                                [formField]="supportForm.firstName"
+                            />
+
+                            <atom-input
+                                id="name"
+                                type="text"
+                                label="Last Name"
+                                placeholder="Doe"
+                                autocomplete="name"
+                                wrapperClassName="flex-1 my-0!"
+                                [formField]="supportForm.lastName"
+                            />
+                        </div>
+
+                        <atom-input
+                            id="email"
+                            type="email"
+                            label="Email"
+                            autocomplete="email"
+                            [formField]="supportForm.email"
+                            placeholder="john.doe@example.com"
+                        />
+
+                        <atom-phone-number
+                            id="phone"
+                            label="Phone"
+                            defaultCountryIso="MU"
+                            placeholder="1234567890"
+                            [formField]="supportForm.phone"
+                        />
+                    </form>
+                </div>
+            </div>
+        </div>
     </section>
 </div>

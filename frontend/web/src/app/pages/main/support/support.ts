@@ -1,15 +1,24 @@
-import { Component } from '@angular/core';
-import { SUPPORT_EMAIL, SUPPORT_PHONE, SUPPORT_INSTAGRAM, SUPPORT_TIKTOK, SUPPORT_X } from '@global/constants';
-import { Instagram, Twitter, LucideAngularModule, LucideIconData, Mail, Phone } from 'lucide-angular';
+import { Input } from '@atoms/input';
+import { Component, signal } from '@angular/core';
+import { form } from '@angular/forms/signals';
+import { PhoneNumber } from "@atoms/phone-number";
+import { SupportFormSchema, SupportFormValidationSchema } from './support.form';
+import { SUPPORT_EMAIL, SUPPORT_PHONE, SUPPORT_INSTAGRAM, SUPPORT_X } from '@global/constants';
+import {
+    Instagram,
+    Twitter,
+    LucideAngularModule,
+    LucideIconData,
+    Mail,
+    Phone,
+} from 'lucide-angular';
 
 @Component({
     selector: 'support',
     templateUrl: './support.html',
-    imports: [LucideAngularModule],
+    imports: [LucideAngularModule, Input, PhoneNumber],
 })
 export class Support {
-
-
     // ICONS
     protected readonly iconSize = 15;
 
@@ -40,6 +49,23 @@ export class Support {
             link: `https://www.instagram.com/${SUPPORT_INSTAGRAM}`,
         },
     ].reverse();
+
+    // FORM
+    private readonly INITIAL_FORM_STATE: SupportFormSchema = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        message: '',
+    };
+    protected readonly supportFormModel = signal<SupportFormSchema>(this.INITIAL_FORM_STATE);
+    protected readonly supportForm = form(this.supportFormModel, SupportFormValidationSchema);
+
+    // SUBMIT CONTACT FORM
+    protected submitContactForm(event: Event) {
+        event.preventDefault();
+        console.log('submitContactForm');
+    }
 }
 
 interface ContactItem {
