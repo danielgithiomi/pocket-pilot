@@ -1,11 +1,43 @@
 <div id="support-page" class="page">
-  <div class="page-header">
-    <h1 class="page-title">Support</h1>
-  </div>
+    <section id="contact-us" class="page-section flex flex-col md:flex-row gap-4">
+        <div class="flex-1 h-full flex flex-col justify-around items-start p-4">
+            <div class="flex flex-col space-y-2">
+                <div
+                    class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary"
+                >
+                    <p class="text-xs text-primary font-semibold shadow-xl">Contact Us</p>
+                </div>
 
-  <div class="page-container flex-1 flex flex-col gap-4">
-    <p class="page-subtitle">
-      Need help? Our support team is here to assist you.
-    </p>
-  </div>
+                <h4 class="text-3xl md:text-4xl font-bold">We're here to help!</h4>
+
+                <div class="overflow-hidden w-3/5 mt-4">
+                    <p class="overflow-hidden text-tertiary-dark text-ellipsis">
+                        Need support or have a question? Our Pocket Pilot Support Team is here to
+                        assist you with any questions or issues you may have. Please use the form to
+                        contact us.
+                    </p>
+                </div>
+            </div>
+
+            <div class="w-full flex flex-col space-y-4">
+                @for (item of contactItems; track item.value) {
+                    <div
+                        class="flex flex-row items-center gap-2 group cursor-pointer hover:scale-[1.0025] transition-custom"
+                    >
+                        <div
+                            class="size-8 grid place-items-center border group-hover:border-loader-primary bg-alternate-background rounded-lg"
+                        >
+                            <lucide-icon [img]="item.icon" [size]="iconSize" [name]="item.id" />
+                        </div>
+                        <a
+                            [href]="item.link"
+                            class="text-sm group-hover:underline group-hover:text-primary"
+                            >{{ item.value }}</a
+                        >
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="flex-1 bg-blue-500"></div>
+    </section>
 </div>
