@@ -1,0 +1,141 @@
+<div
+    class="phone-number-field"
+    [ngClass]="[
+        wrapperClassName(),
+        inverted() ? 'phone-number-field-inverted' : '',
+        enableHoverScale() ? 'phone-number-hover-scale' : '',
+    ]"
+>
+    <label
+        [for]="inputId()"
+        class="phone-number-label"
+        [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
+    >
+        @if (required()) {
+            <span class="required">*</span>
+        }
+        {{ label() }}:
+    </label>
+
+    <div class="phone-number-wrapper">
+        <div
+            class="phone-number-container"
+            [ngClass]="[
+                customContainerClasses(),
+                isDropdownOpen() ? 'phone-number-container-open' : '',
+            ]"
+        >
+            <button
+                type="button"
+                class="country-selector"
+                aria-label="Select country"
+                (click)="toggleDropdown($event)"
+            >
+                <span class="country-flag" aria-hidden="true">{{ selectedCountryFlag() }}</span>
+                <lucide-icon
+                    [size]="iconSize"
+                    class="country-chevron"
+                    [img]="isDropdownOpen() ? ChevronUp : ChevronDown"
+                    [name]="
+                        isDropdownOpen() ? 'phone-country-chevron-up' : 'phone-country-chevron-down'
+                    "
+                />
+            </button>
+
+            <div class="phone-number-divider" aria-hidden="true"></div>
+
+            <div class="phone-input-section">
+                <div class="phone-input-row">
+                    <span class="dial-code">+{{ selectedCountry().dialCode }}</span>
+                    <input
+                        type="tel"
+                        [id]="inputId()"
+                        autocomplete="tel"
+                        (blur)="onPhoneBlur()"
+                        class="phone-number-input"
+                        [value]="nationalNumber()"
+                        [placeholder]="placeholder()"
+                        (input)="onPhoneInput($event)"
+                    />
+                </div>
+            </div>
+
+            @if (showClearIcon()) {
+                <button
+                    type="button"
+                    class="phone-clear-button"
+                    aria-label="Clear phone number"
+                    (click)="onClear($event)"
+                >
+                    <lucide-icon
+                        [img]="X"
+                        [size]="iconSize"
+                        name="phone-number-clear"
+                        class="phone-clear-icon"
+                        [ngClass]="{ 'text-inverted-text': invertedIcon() }"
+                    />
+                </button>
+            }
+        </div>
+
+        @if (isDropdownOpen()) {
+            <div class="country-dropdown" (click)="onDropdownClick($event)">
+                <div class="country-search-wrapper">
+                    <lucide-icon
+                        [img]="Search"
+                        [size]="iconSize"
+                        name="country-search"
+                        class="country-search-icon"
+                    />
+                    <input
+                        type="text"
+                        class="country-search-input"
+                        placeholder="Search for countries"
+                        [value]="countrySearchQuery()"
+                        (click)="onSearchClick($event)"
+                        (input)="onSearchInput($event)"
+                    />
+                </div>
+
+                <ul class="country-list" role="listbox" aria-label="Countries">
+                    @for (country of filteredCountries(); track country.iso) {
+                        <li
+                            role="option"
+                            class="country-option"
+                            [attr.aria-selected]="isCountrySelected(country)"
+                            [class.country-option-selected]="isCountrySelected(country)"
+                            (click)="selectCountry(country)"
+                        >
+                            <span class="country-option-flag" aria-hidden="true">
+                                {{ isoToFlag(country.iso) }}
+                            </span>
+                            <span class="country-option-label">
+                                {{ country.name }} (+{{ country.dialCode }})
+                            </span>
+                            @if (isCountrySelected(country)) {
+                                <lucide-icon
+                                    [img]="Check"
+                                    [size]="iconSize"
+                                    name="country-selected"
+                                    class="country-option-check"
+                                />
+                            }
+                        </li>
+                    } @empty {
+                        <li class="country-empty">No countries found</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+
+    @if (showErrors()) {
+        <div class="input-field-errors-wrapper">
+            @for (error of fieldState().errors(); track error.kind) {
+                <p class="input-field-error">
+                    {{ error.message }}
+                </p>
+            }
+        </div>
+    }
+</div>

@@ -273,7 +273,8 @@ main {
 
     form {
         .input-field,
-        .select-field {
+        .select-field,
+        .phone-number-field {
             @apply flex flex-col gap-2 w-full my-4;
 
             .input-wrapper,

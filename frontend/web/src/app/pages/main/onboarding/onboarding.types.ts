@@ -1,4 +1,4 @@
-import { maxLength, minLength, required, schema, validate } from '@angular/forms/signals';
+import { required, schema, validate } from '@angular/forms/signals';
 
 // FORM SCHEMA
 export interface OnboardingFormSchema {
@@ -16,21 +16,36 @@ export const INITIAL_ONBOARDING_FORM_STATE: OnboardingFormSchema = {
 };
 
 export const ONBOARDING_FORM_VALIDATION_SCHEMA = schema<OnboardingFormSchema>((root) => {
-  // Phone Number
+  // Phone Number (international format: +{countryCode}{nationalNumber})
   required(root.phoneNumber, { message: 'The phone number is required field!' });
-  maxLength(root.phoneNumber, 10, { message: 'The phone number must not exceed 10 digits!' });
-  minLength(root.phoneNumber, 8, { message: 'The phone number must be at least 8 digits long!' });
   validate(root.phoneNumber, (control) => {
     const number = control.value();
-    if (number && !/^\d+$/.test(number)) {
+    if (!number) return null;
+
+    if (!/^\+\d+$/.test(number)) {
       return {
         kind: 'phone-number-invalid',
-        message: 'The phone number must contain only digits!',
+        message: 'Please enter a valid phone number!',
       };
     }
+
+    const nationalDigits = number.replace(/^\+\d{1,4}/, '');
+    if (nationalDigits.length < 7) {
+      return {
+        kind: 'phone-number-too-short',
+        message: 'The phone number must be at least 7 digits long!',
+      };
+    }
+
+    if (nationalDigits.length > 14) {
+      return {
+        kind: 'phone-number-too-long',
+        message: 'The phone number must not exceed 14 digits!',
+      };
+    }
+
     return null;
   });
-  // TODO: Improve number validation (e.g., check if it's a valid phone number) → add country code selector
 
   // Default Currency
   required(root.defaultCurrency, { message: 'The default currency is required field!' });
