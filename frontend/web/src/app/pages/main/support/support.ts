@@ -1,5 +1,6 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
+import { TextArea } from '@atoms/text-area';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
@@ -20,11 +21,11 @@ import {
 @Component({
     selector: 'support',
     templateUrl: './support.html',
-    imports: [LucideAngularModule, Input, PhoneNumber, Button],
+    imports: [LucideAngularModule, Input, TextArea, PhoneNumber, Button],
 })
 export class Support {
     // ICONS
-    protected readonly iconSize = 15;
+    protected readonly iconSize = 14;
     protected readonly SendIcon = Send;
 
     // SIGNALS
@@ -95,6 +96,19 @@ export class Support {
     protected submitContactForm(event: Event) {
         event.preventDefault();
         console.log('submitContactForm');
+
+        this.isSubmittingForm.set(true);
+
+        setTimeout(() => {
+            this.toastService.show({
+                variant: 'success',
+                title: 'Message sent!',
+                details: 'Your message has been sent successfully. We will get back to you as soon as possible.',
+            });
+
+            this.isSubmittingForm.set(false);
+            this.supportFormModel.set(this.INITIAL_FORM_STATE);
+        }, 2000);
     }
 }
 

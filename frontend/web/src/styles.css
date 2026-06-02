@@ -275,18 +275,22 @@ main {
     form {
         .input-field,
         .select-field,
+        .text-area-field,
         .phone-number-field {
             @apply flex flex-col gap-2 w-full my-4;
 
             .input-wrapper,
-            .select-wrapper {
+            .select-wrapper,
+            .text-area-wrapper {
                 @apply w-full relative;
 
                 .input-icon-wrapper,
+                .text-area-icon-wrapper,
                 .select-dropdown-wrapper {
-                    @apply absolute right-2 top-1/2 -translate-y-1/2;
+                    @apply absolute right-2;
 
                     .input-icon,
+                    .text-area-icon,
                     .select-icon {
                         @apply cursor-pointer hover:text-primary hover:scale-105 transition-all duration-300 ease-in-out;
                     }
@@ -294,6 +298,15 @@ main {
                     .select-icon-disabled {
                         @apply cursor-not-allowed! text-muted-text hover:text-muted-text!;
                     }
+                }
+
+                .input-icon-wrapper,
+                .select-dropdown-wrapper {
+                    @apply top-1/2 -translate-y-1/2;
+                }
+
+                .text-area-icon-wrapper {
+                    @apply top-2;
                 }
             }
 
@@ -319,11 +332,17 @@ main {
         }
 
         input,
-        select {
+        select,
+        textarea {
             @apply w-full bg-alternate-background text-[0.875rem] focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
         }
 
-        input::placeholder {
+        textarea {
+            @apply min-h-24;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
             @apply text-muted-text;
         }
 

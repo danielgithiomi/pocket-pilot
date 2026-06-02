@@ -1,0 +1,52 @@
+<div class="text-area-field" [ngClass]="wrapperClassName()">
+    <label
+        [for]="textAreaId()"
+        [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
+    >
+        @if (required()) {
+            <span class="required">*</span>
+        }
+        {{ label() }}:
+    </label>
+
+    <div class="text-area-wrapper rounded-lg">
+        <fieldset [disabled]="disabled()" style="border: none; padding: 0; margin: 0; min-width: 0">
+            <textarea
+                [id]="textAreaId()"
+                [rows]="rows()"
+                [formField]="formField()"
+                [placeholder]="placeholder()"
+                [autocomplete]="autocomplete()"
+                [ngClass]="customTextAreaClasses()"
+            ></textarea>
+        </fieldset>
+
+        @if (allowEndIcon()) {
+            <div
+                class="text-area-icon-wrapper"
+                [ngClass]="{
+                    hidden: !fieldState().value(),
+                    'text-inverted-text': invertedIcon(),
+                }"
+            >
+                <lucide-icon
+                    [img]="X"
+                    [size]="iconSize"
+                    name="field-clear"
+                    (click)="clearOutput.emit()"
+                    class="text-area-icon input-end-icon"
+                />
+            </div>
+        }
+    </div>
+
+    @if (formField()().invalid() && formField()().touched()) {
+        <div class="input-field-errors-wrapper">
+            @for (error of formField()().errors(); track error.kind) {
+                <p class="input-field-error">
+                    {{ error.message }}
+                </p>
+            }
+        </div>
+    }
+</div>

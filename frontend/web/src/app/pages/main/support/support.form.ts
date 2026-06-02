@@ -23,8 +23,8 @@ export const SupportFormValidationSchema = schema<SupportFormSchema>((root) => {
 
     // Phone
     required(root.phone, { message: 'The phone is required field!' });
-    minLength(root.phone, 8, { message: 'The phone must be at least 8 characters long!' });
-    maxLength(root.phone, 10, { message: 'The phone must be at most 10 characters long!' });
+    minLength(root.phone, 8, { message: 'The phone must be at least 8 digits long!' });
+    maxLength(root.phone, 10, { message: 'The phone must be at most 10 digits long!' });
 
     // Message
     required(root.message, { message: 'The message is required field!' });

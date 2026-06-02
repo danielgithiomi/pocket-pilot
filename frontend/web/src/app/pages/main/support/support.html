@@ -52,8 +52,9 @@
                                 placeholder="John"
                                 label="First Name"
                                 autocomplete="name"
-                                wrapperClassName="flex-1 my-0!"
+                                wrapperClassName="flex-1 my-1!"
                                 [formField]="supportForm.firstName"
+                                (clearOutput)="supportForm.firstName().controlValue.set('')"
                             />
 
                             <atom-input
@@ -62,8 +63,9 @@
                                 label="Last Name"
                                 placeholder="Doe"
                                 autocomplete="name"
-                                wrapperClassName="flex-1 my-0!"
+                                wrapperClassName="flex-1 my-1!"
                                 [formField]="supportForm.lastName"
+                                (clearOutput)="supportForm.lastName().controlValue.set('')"
                             />
                         </div>
 
@@ -74,6 +76,7 @@
                             autocomplete="email"
                             [formField]="supportForm.email"
                             placeholder="john.doe@example.com"
+                            (clearOutput)="supportForm.email().controlValue.set('')"
                         />
 
                         <atom-phone-number
@@ -84,19 +87,27 @@
                             [formField]="supportForm.phone"
                         />
 
+                        <atom-text-area
+                            [rows]="3"
+                            id="message"
+                            resize="none"
+                            label="Message"
+                            autocomplete="off"
+                            placeholder="How can we help you?"
+                            [formField]="supportForm.message"
+                            (clearOutput)="supportForm.message().controlValue.set('')"
+                        />
+
                         <div class="w-full flex justify-end mt-4">
                             <atom-button
-                                id="submit-contact-form"
-                                label="Submit"
                                 variant="primary"
+                                id="submit-contact-form"
                                 [isLoading]="isSubmittingForm()"
                                 [disabled]="supportForm().invalid() || isSubmittingForm()"
                             >
-                                <div
-                                    class="flex flex-row items-center justify-between gap-2"
-                                >
+                                <div class="flex flex-row items-center justify-between gap-3">
+                                    <lucide-icon name="send" [img]="SendIcon" [size]="iconSize" />
                                     <span>Submit</span>
-                                    <lucide-icon [img]="SendIcon" [size]="iconSize" name="send-icon" />
                                 </div>
                             </atom-button>
                         </div>
@@ -105,7 +116,8 @@
                     <p class="text-xs text-center text-tertiary-dark mt-4">
                         By submitting this form, you agree to our Terms of Service.
                         <br />
-                        Read our <a href="#" class="text-primary hover:underline">Privacy Policy</a>.
+                        Read our
+                        <a href="#" class="text-primary hover:underline">Privacy Policy</a>.
                     </p>
                 </div>
             </div>
