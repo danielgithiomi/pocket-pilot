@@ -4,6 +4,7 @@ export const WEB_ROUTES = {
   goals: "goals",
   splitr: "splitr",
   profile: "profile",
+  support: "support",
   login: "auth/login",
   accounts: "accounts",
   settings: "settings",
@@ -23,6 +24,7 @@ export interface WebRoutes {
   login: string;
   splitr: string;
   profile: string;
+  support: string;
   register: string;
   settings: string;
   accounts: string;
