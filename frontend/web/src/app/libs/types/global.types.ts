@@ -3,7 +3,7 @@ export interface ImageDimensions {
   height: number;
 }
 
-type AdditionalLinks = 'support';
+type AdditionalLinks = 'support' | 'privacy' | 'faqs_features';
 type UserLinks =
   // | 'home'
   'goals' | 'profile' | 'accounts' | 'settings' | 'dashboard' | 'transactions' | 'splitr';

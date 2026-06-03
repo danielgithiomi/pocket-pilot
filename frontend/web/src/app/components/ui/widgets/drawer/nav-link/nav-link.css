@@ -13,7 +13,7 @@
 }
 
 .navigation-content {
-  @apply flex flex-row items-center gap-3;
+  @apply flex flex-row items-center gap-2.5;
 
   .icon-wrapper {
     @apply p-2 flex items-center justify-center bg-(--body-background) rounded-lg;
