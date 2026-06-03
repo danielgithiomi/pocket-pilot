@@ -7,9 +7,9 @@ import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
 import { PhoneNumber } from '@atoms/phone-number';
 import { DrawerService } from '@infrastructure/services';
+import { Send, LucideAngularModule } from 'lucide-angular';
 import { Component, computed, inject, signal } from '@angular/core';
 import { CONTACT_ITEMS, DEFAULT_COUNTRY_ISO } from '@global/constants';
-import { Send, LucideIconData, LucideAngularModule } from 'lucide-angular';
 import { buildFullPhoneNumber, parsePhoneNumber } from '@atoms/phone-number';
 import { SupportFormSchema, SupportFormValidationSchema } from './support.form';
 
@@ -97,11 +97,4 @@ export class Support {
             this.supportFormModel.set(this.getInitialFormState());
         }, 2000);
     }
-}
-
-interface ContactItem {
-    id: string;
-    link: string;
-    value: string;
-    icon: LucideIconData;
 }
