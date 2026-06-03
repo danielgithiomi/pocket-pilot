@@ -29,7 +29,8 @@
       "@widgets/*": ["src/app/components/ui/widgets/*"],
       "@infrastructure/*": ["src/app/infrastructure/*"],
       "@structural/*": ["src/app/components/structural/*"],
-      "@organisms/*": ["src/app/components/ui/organisms/*"]
+      "@organisms/*": ["src/app/components/ui/organisms/*"],
+      "@molecules/*": ["src/app/components/ui/molecules/*"]
     }
   },
   "angularCompilerOptions": {
