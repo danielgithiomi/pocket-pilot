@@ -7,8 +7,8 @@
 .accordion-item {
     overflow: hidden;
     border-radius: 0.625rem;
-    background: var(--white);
-    border: 1px solid color-mix(in srgb, var(--muted-text) 20%, transparent);
+    background: var(--alternate-background);
+    border: 1px solid color-mix(in srgb, var(--tertiary-dark) 20%, transparent);
     box-shadow: 0 8px 20px rgba(16, 16, 17, 0.05);
     transition:
         border-color 180ms ease,
@@ -23,7 +23,7 @@
 
 .accordion-item-expanded {
     border-color: color-mix(in srgb, var(--primary) 65%, transparent);
-    box-shadow: 0 12px 28px rgba(91, 146, 121, 0.14);
+    box-shadow: 0 8px 16px rgba(91, 146, 121, 0.14);
 }
 
 .accordion-trigger {
@@ -51,8 +51,9 @@
     place-items: center;
     border-radius: 0.5rem;
     font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--primary);
+    letter-spacing: 0.05em;
     background: color-mix(in srgb, var(--primary) 10%, transparent);
 }
 
@@ -60,8 +61,8 @@
     margin: 0;
     font-weight: 600;
     line-height: 1.35;
-    font-size: 0.85rem;
-    color: var(--inverted-text);
+    font-size: 0.9rem;
+    color: var(--primary-text);
 }
 
 .accordion-toggle {
@@ -103,7 +104,7 @@
 
 .accordion-answer {
     margin: 0;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     line-height: 1.72;
     color: var(--muted-text);
 }

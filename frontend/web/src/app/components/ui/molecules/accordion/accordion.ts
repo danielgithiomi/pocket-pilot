@@ -13,6 +13,7 @@ import { Component, computed, effect, input, signal } from '@angular/core';
 })
 export class Accordion {
     /* INPUTS */
+    id = input.required<string>();
     showIndex = input<boolean>(true);
     wrapperClassName = input<string>('');
     items = input.required<AccordionItem[]>();
@@ -27,6 +28,7 @@ export class Accordion {
     private readonly expandedIndexes = signal<ReadonlySet<number>>(new Set());
 
     /* COMPUTED */
+    accordionId = computed<string>(() => `accordion-${this.id()}`);
     allowMultiple = computed(() => this.expandMode() === 'multiple');
 
     private readonly initializeExpanded = effect(() => {

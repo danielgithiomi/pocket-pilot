@@ -1,4 +1,4 @@
-<div class="accordion" [ngClass]="wrapperClassName()" role="presentation">
+<div [id]="accordionId()" class="accordion" [ngClass]="wrapperClassName()" role="presentation">
     @for (item of items(); track trackItem($index, item)) {
         <article
             class="accordion-item"
@@ -42,7 +42,7 @@
                 [@accordionContent]="isExpanded($index) ? 'expanded' : 'collapsed'"
             >
                 <div class="accordion-content">
-                    <p class="accordion-answer">{{ item.content }}</p>
+                    <p class="accordion-answer dark:text-tertiary-dark!">{{ item.content }}</p>
                 </div>
             </div>
         </article>
