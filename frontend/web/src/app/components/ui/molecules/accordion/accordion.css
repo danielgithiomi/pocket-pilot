@@ -30,17 +30,17 @@
     width: 100%;
     border: none;
     display: grid;
-    cursor: pointer;
-    min-height: 4rem;
-    align-items: center;
+    gap: 0.8125rem;
+    color: inherit;
+    transform: none;
     text-align: left;
+    min-height: 4rem;
+    box-shadow: none;
+    align-items: center;
     padding: 0.875rem 1rem;
     background: transparent;
+    cursor: pointer !important;
     grid-template-columns: auto 1fr auto;
-    gap: 0.8125rem;
-    box-shadow: none;
-    transform: none;
-    color: inherit;
 }
 
 .accordion-index {
@@ -58,10 +58,10 @@
 
 .accordion-title {
     margin: 0;
-    font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.35;
-    color: var(--primary-text);
+    font-size: 0.85rem;
+    color: var(--inverted-text);
 }
 
 .accordion-toggle {
@@ -81,10 +81,10 @@
 }
 
 .accordion-toggle-expanded {
-    color: var(--inverted-text);
+    color: var(--white);
+    transform: rotate(180deg);
     background: var(--primary);
     border-color: var(--primary);
-    transform: rotate(180deg);
 }
 
 .accordion-panel {

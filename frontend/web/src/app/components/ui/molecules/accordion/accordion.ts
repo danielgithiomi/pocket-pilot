@@ -1,27 +1,27 @@
 import { NgClass } from '@angular/common';
-import { AccordionExpandMode, AccordionItem } from './accordion.types';
-import { accordionContentAnimation } from './accordion.animations';
 import { ChevronDown, LucideAngularModule } from 'lucide-angular';
+import { accordionContentAnimation } from './accordion.animations';
+import { AccordionExpandMode, AccordionItem } from './accordion.types';
 import { Component, computed, effect, input, signal } from '@angular/core';
 
 @Component({
-    selector: 'molecule-accordion',
     styleUrl: './accordion.css',
+    selector: 'molecule-accordion',
     templateUrl: './accordion.html',
     animations: [accordionContentAnimation],
     imports: [NgClass, LucideAngularModule],
 })
 export class Accordion {
     /* INPUTS */
-    items = input.required<AccordionItem[]>();
-    expandMode = input<AccordionExpandMode>('single');
-    defaultExpandedIndexes = input<number[]>([]);
     showIndex = input<boolean>(true);
     wrapperClassName = input<string>('');
+    items = input.required<AccordionItem[]>();
+    defaultExpandedIndexes = input<number[]>([]);
+    expandMode = input<AccordionExpandMode>('single');
 
     /* ICONS */
-    readonly ChevronDown = ChevronDown;
-    readonly iconSize = 16;
+    protected readonly iconSize = 16;
+    protected readonly ChevronDown = ChevronDown;
 
     /* STATE */
     private readonly expandedIndexes = signal<ReadonlySet<number>>(new Set());
