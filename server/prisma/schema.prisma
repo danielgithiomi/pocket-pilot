@@ -12,6 +12,47 @@ datasource db {
     provider = "postgresql"
 }
 
+model User {
+    id                String  @id() @default(uuid())
+    name              String
+    email             String
+    password          String
+    phoneNumber       String?
+    profilePictureKey String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Account locking
+    lastLoginAt         DateTime?
+    failedLoginAttempts Int       @default(0)
+    isAccountLocked     Boolean   @default(false)
+
+    // Onboarding
+    isOnboarded Boolean @default(false)
+
+    // Link to accounts - one-to-many
+    accounts Account[]
+
+    // Link to categories - one-to-many
+    categories Categories[]
+
+    // Link to goals - one-to-many
+    goals Goals[]
+
+    // Link to bills - one-to-many
+    bills Bills[]
+
+    // Link to splitr events - one-to-many
+    splitrEvents SplitrEvent[]
+
+    // Link to preferences - one-to-one
+    userPreferences UserPreferences?
+
+    @@unique([email])
+    @@map("Users")
+}
+
 enum AccountType {
     LOAN
     BANK
@@ -38,7 +79,7 @@ model Account {
     isBalanceVisible Boolean @default(true)
 
     // Link to user - one-to-many
-    holder   User   @relation(fields: [holderId], references: [id], onDelete: Cascade)
+    holder   User  @relation(fields: [holderId], references: [id], onDelete: Cascade)
     holderId String
 
     // Transactions where this account is the SOURCE
@@ -49,47 +90,6 @@ model Account {
 
     @@unique([name, holderId])
     @@map("Accounts")
-}
-
-model User {
-    id                String  @id() @default(uuid())
-    name              String
-    email             String
-    password          String
-    phoneNumber       String?
-    profilePictureKey String?
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    // Account locking
-    lastLoginAt         DateTime?
-    failedLoginAttempts Int       @default(0)
-    isAccountLocked     Boolean   @default(false)
-
-    // Onboarding
-    isOnboarded Boolean @default(false)
-
-    // Link to accounts - one-to-many
-    accounts Account[]
-
-    // Link to categories - one-to-many
-    categories Categories[]
-    
-    // Link to goals - one-to-many
-    goals Goals[]
-
-    // Link to bills - one-to-many
-    bills Bills[]
-
-    // Link to splitr events - one-to-many
-    splitrEvents SplitrEvent[]
-
-    // Link to preferences - one-to-one
-    userPreferences UserPreferences?
-
-    @@unique([email])
-    @@map("Users")
 }
 
 enum ApplicationTheme {
@@ -109,7 +109,7 @@ model UserPreferences {
     createdAt DateTime @default(now())
 
     // Link to user - one-to-one
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
     @@unique([userId])
@@ -185,7 +185,7 @@ enum GoalCategory {
 }
 
 model Goals {
-    id     String @id @default(uuid())
+    id String @id @default(uuid())
 
     name        String
     currency    String
@@ -194,7 +194,7 @@ model Goals {
     endDate   DateTime
     startDate DateTime
 
-    status   GoalStatus   @default(ACTIVE)
+    status   GoalStatus  @default(ACTIVE)
     category GoalCategory
 
     monthlyContribution Float
@@ -205,7 +205,7 @@ model Goals {
     createdAt DateTime @default(now())
 
     // Link to user - one-to-many
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
     @@map("Financial Goals")
@@ -218,7 +218,7 @@ enum BillType {
 }
 
 model Bills {
-    id     String @id @default(uuid())
+    id String @id @default(uuid())
 
     amount   Float
     name     String
@@ -230,7 +230,7 @@ model Bills {
     createdAt DateTime @default(now())
 
     // Link to user - one-to-many
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
     @@map("User Bills")
@@ -249,8 +249,8 @@ enum PaymentStrategy {
 }
 
 model SplitrSquad {
-    id            String    @id @default(uuid())
-    creatorId     String
+    id        String @id @default(uuid())
+    creatorId String
 
     squadName     String
     squadImageKey String?
@@ -266,14 +266,14 @@ model QuantitySplit {
     id String @id @default(uuid())
 
     consumerQuantity Float
-    consumerName String
+    consumerName     String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt()
 
     // Link to splittable - one-to-many
     splittableId String
-    splittable Splittable @relation(fields: [splittableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    splittable   Splittable @relation(fields: [splittableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@map("Quantity Splits")
 }
@@ -289,23 +289,23 @@ model BillPayer {
 
     // Link to splitr event - one-to-many
     splitrEventId String
-    splitrEvent SplitrEvent @relation(fields: [splitrEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    splitrEvent   SplitrEvent @relation(fields: [splitrEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@map("Bill Payers")
 }
 
-model Splittable{
-    id            String        @id @default(uuid())
+model Splittable {
+    id String @id @default(uuid())
 
-    name          String
-    quantity      Int
-    unitPrice     Float
-    
+    name      String
+    quantity  Int
+    unitPrice Float
+
     total         Float
     splitStrategy SplitStrategy
 
-    updatedAt     DateTime      @updatedAt()
-    createdAt     DateTime      @default(now())
+    updatedAt DateTime @updatedAt()
+    createdAt DateTime @default(now())
 
     // Link to quantity splits - one-to-many
     quantitySplits QuantitySplit[]
@@ -317,30 +317,74 @@ model Splittable{
 }
 
 model SplitrEvent {
-    id            String    @id @default(uuid())
+    id String @id @default(uuid())
 
-    eventName           String
-    eventDate           DateTime
+    eventName String
+    eventDate DateTime
 
-    squadName           String
-    eventMembers        String[]
+    squadName    String
+    eventMembers String[]
 
     verificationTotal   Float
     billingCurrency     String
     billPaymentStrategy PaymentStrategy
     billPayers          BillPayer[]
 
-    eventSplittables    Splittable[]
+    eventSplittables Splittable[]
 
-    isSettled     Boolean       @default(false)
+    isSettled Boolean @default(false)
 
-    settledAt     DateTime?
-    updatedAt     DateTime      @updatedAt()
-    createdAt     DateTime      @default(now())
+    settledAt DateTime?
+    updatedAt DateTime  @updatedAt()
+    createdAt DateTime  @default(now())
 
     // Link to user - one-to-many
     creatorId String
-    user   User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+    user      User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 
     @@map("Splitr Events")
+}
+
+enum FeatureStatus {
+    NEW
+    SHIPPED
+    PLANNED
+    REJECTED
+    IN_PROGRESS
+    UNDER_REVIEW
+}
+
+enum FeatureCategory {
+    OTHER
+    UI_UX
+    SPLITR
+    PROFILE
+    ACCOUNTS
+    ANALYSIS
+    SECURITY
+    BUDGETING
+    BUG_REPORT
+    PERFORMANCE
+    NEW_FEATURE
+    TRANSACTIONS
+    BILLS_AND_GOALS
+}
+
+model Feature {
+    id String @id @default(uuid())
+
+    featureTitle   String
+    featureContent String
+
+    featureScore  Int @default(0)
+    upvoteCount   Int @default(0)
+    downvoteCount Int @default(0)
+
+    featureStatus   FeatureStatus
+    featureCategory FeatureCategory
+
+    updatedAt DateTime @updatedAt()
+    createdAt DateTime @default(now())
+
+    @@map("Features")
 }

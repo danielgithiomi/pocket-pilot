@@ -31,6 +31,7 @@ export class SplitrRepository {
         return this.db.splitrEvent.findMany({
             where: { creatorId: userId },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+            orderBy: { createdAt: 'desc' },
         });
     }
 
