@@ -5,7 +5,7 @@ import { Component, computed, input } from '@angular/core';
 import { formatCurrency, formatFullDate } from '@libs/utils';
 import { ISplitrEvent, SPLIT_STRATEGY_MAP } from '@global/types';
 import { EventPayer, OrderedItem, Settlement } from './splitr-breakdown.types';
-import { LucideAngularModule, Calendar1, Users, CircleCheck, ArrowRight } from 'lucide-angular';
+import { Users, Calendar1, ArrowRight, CircleCheck, LucideAngularModule } from 'lucide-angular';
 import {
     buildAvatarMap,
     calculateSettlments,

@@ -28,7 +28,7 @@
     @apply flex-1 overflow-y-auto py-4;
 
     .links {
-      @apply flex flex-col gap-2 p-2;
+      @apply flex flex-col gap-1 p-2;
     }
   }
 

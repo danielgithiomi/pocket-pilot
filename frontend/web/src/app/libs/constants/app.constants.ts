@@ -1,49 +1,59 @@
 import { ColorPalette, DrawerNavigationLink } from '@libs/types';
 
 export const DrawerNavigationLinks: DrawerNavigationLink[] = [
-  {
-    icon: 'dashboard',
-    name: 'Dashboard',
-    path: '/dashboard',
-  },
-  {
-    icon: 'accounts',
-    name: 'Accounts',
-    path: '/accounts',
-  },
-  {
-    icon: 'transactions',
-    name: 'Transactions',
-    path: '/transactions',
-  },
-  {
-    icon: 'splitr',
-    name: 'Splitr',
-    path: '/splitr',
-  },
-  {
-    icon: 'goals',
-    name: 'Goals_Bills',
-    path: '/goals',
-  },
-  {
-    icon: 'settings',
-    name: 'Settings',
-    path: '/settings',
-  },
-  {
-    icon: 'profile',
-    name: 'Profile',
-    path: '/profile',
-  },
+    {
+        icon: 'dashboard',
+        name: 'Dashboard',
+        path: '/dashboard',
+    },
+    {
+        icon: 'accounts',
+        name: 'Accounts',
+        path: '/accounts',
+    },
+    {
+        icon: 'transactions',
+        name: 'Transactions',
+        path: '/transactions',
+    },
+    {
+        icon: 'splitr',
+        name: 'Splitr',
+        path: '/splitr',
+    },
+    {
+        icon: 'goals',
+        name: 'Goals_Bills',
+        path: '/goals',
+    },
+    {
+        icon: 'settings',
+        name: 'Settings',
+        path: '/settings',
+    },
+    {
+        icon: 'profile',
+        name: 'Profile',
+        path: '/profile',
+    },
 ];
 
 export const AdditionalDrawerNavigationLinks: DrawerNavigationLink[] = [
-  {
-    icon: 'support',
-    name: 'Support',
-    path: '/support',
-  },
+    {
+        icon: 'support',
+        name: 'Support',
+        path: '/support',
+    },
+    {
+        icon: 'privacy',
+        name: 'Privacy-Policy',
+        path: '/privacy',
+    },
+    {
+        icon: 'faqs_features',
+        name: 'FAQs_Features',
+        path: '/faqs_features',
+    },
 ];
 
 export const QUANTITIES: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

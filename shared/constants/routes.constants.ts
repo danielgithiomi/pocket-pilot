@@ -12,6 +12,7 @@ export const WEB_ROUTES = {
     onboarding: "onboarding",
     register: "auth/register",
     transactions: "transactions",
+    faqsFeatures: "faqs_features",
 
     // dynamic routes
     accountDetails: "accounts/:id",
@@ -31,6 +32,7 @@ export interface WebRoutes {
     dashboard: string;
     onboarding: string;
     transactions: string;
+    faqsFeatures: string;
 
     // dynamic routes
     splitrDetails: string;

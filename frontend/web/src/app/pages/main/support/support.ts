@@ -6,21 +6,12 @@ import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
 import { PhoneNumber } from '@atoms/phone-number';
-import { DEFAULT_COUNTRY_ISO } from '@global/constants';
 import { DrawerService } from '@infrastructure/services';
+import { Send, LucideAngularModule } from 'lucide-angular';
 import { Component, computed, inject, signal } from '@angular/core';
+import { CONTACT_ITEMS, DEFAULT_COUNTRY_ISO } from '@global/constants';
 import { buildFullPhoneNumber, parsePhoneNumber } from '@atoms/phone-number';
 import { SupportFormSchema, SupportFormValidationSchema } from './support.form';
-import { SUPPORT_EMAIL, SUPPORT_PHONE, SUPPORT_INSTAGRAM, SUPPORT_X } from '@global/constants';
-import {
-    Mail,
-    Send,
-    Phone,
-    Twitter,
-    Instagram,
-    LucideIconData,
-    LucideAngularModule,
-} from 'lucide-angular';
 
 @Component({
     selector: 'support',
@@ -41,6 +32,7 @@ export class Support {
     protected readonly drawerService = inject(DrawerService);
 
     // DATA
+    protected readonly contactItems = CONTACT_ITEMS;
     private readonly userData = computed(() => {
         const user = this.authService.user();
 
@@ -70,34 +62,6 @@ export class Support {
     });
 
     protected readonly defaultPhoneCountryIso = computed(() => this.userData().phoneCountryIso);
-
-    // CONTACT ITEMS
-    protected readonly contactItems: ContactItem[] = [
-        {
-            id: 'email',
-            icon: Mail,
-            value: SUPPORT_EMAIL,
-            link: `mailto:${SUPPORT_EMAIL}`,
-        },
-        {
-            id: 'phone',
-            icon: Phone,
-            value: SUPPORT_PHONE,
-            link: `tel:${SUPPORT_PHONE}`,
-        },
-        {
-            id: 'tiktok',
-            icon: Twitter,
-            value: SUPPORT_X,
-            link: `https://x.com/${SUPPORT_X}`,
-        },
-        {
-            id: 'instagram',
-            icon: Instagram,
-            value: SUPPORT_INSTAGRAM,
-            link: `https://www.instagram.com/${SUPPORT_INSTAGRAM}`,
-        },
-    ].reverse();
 
     // FORM
     private getInitialFormState(): SupportFormSchema {
@@ -133,11 +97,4 @@ export class Support {
             this.supportFormModel.set(this.getInitialFormState());
         }, 2000);
     }
-}
-
-interface ContactItem {
-    id: string;
-    link: string;
-    value: string;
-    icon: LucideIconData;
 }

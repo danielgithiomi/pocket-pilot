@@ -1,0 +1,50 @@
+<div [id]="accordionId()" class="accordion" [ngClass]="wrapperClassName()" role="presentation">
+    @for (item of items(); track trackItem($index, item)) {
+        <article
+            class="accordion-item"
+            [class.accordion-item-no-index]="!showIndex()"
+            [class.accordion-item-expanded]="isExpanded($index)"
+        >
+            <button
+                type="button"
+                class="accordion-trigger"
+                (click)="toggleItem($index)"
+                [attr.aria-expanded]="isExpanded($index)"
+                [class.accordion-trigger-no-index]="!showIndex()"
+                [attr.aria-controls]="'accordion-panel-' + $index"
+            >
+                @if (showIndex()) {
+                    <span class="accordion-index" aria-hidden="true">
+                        {{ formatIndex($index) }}
+                    </span>
+                }
+
+                <span class="accordion-title">{{ item.title }}</span>
+
+                <span
+                    class="accordion-toggle"
+                    [class.accordion-toggle-expanded]="isExpanded($index)"
+                    aria-hidden="true"
+                >
+                    <lucide-icon
+                        [size]="iconSize"
+                        [img]="ChevronDown"
+                        [name]="'accordion-chevron-' + $index"
+                    />
+                </span>
+            </button>
+
+            <div
+                [id]="'accordion-panel-' + $index"
+                class="accordion-panel"
+                role="region"
+                [attr.aria-hidden]="!isExpanded($index)"
+                [@accordionContent]="isExpanded($index) ? 'expanded' : 'collapsed'"
+            >
+                <div class="accordion-content">
+                    <p class="accordion-answer dark:text-tertiary-dark!">{{ item.content }}</p>
+                </div>
+            </div>
+        </article>
+    }
+</div>

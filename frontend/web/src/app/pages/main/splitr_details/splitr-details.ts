@@ -12,7 +12,7 @@ import { SplitrBreakdown } from './breakdown/splitr-breakdown';
 import { ISplitrEvent, IVoidResourceResponse } from '@global/types';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { LucideAngularModule, CheckCheck, ReceiptText, Trash2 } from 'lucide-angular';
+import { LucideAngularModule, CheckCheck, ReceiptText, Trash2, Hourglass } from 'lucide-angular';
 
 @Component({
     selector: 'splitr-details',
@@ -32,6 +32,7 @@ export class SplitrDetails {
     // ICONS
     protected readonly iconSize = 18;
     protected readonly DeleteIcon = Trash2;
+    protected readonly PendingIcon = Hourglass;
     protected readonly SettledIcon = CheckCheck;
     protected readonly BreadcrumbIcon = ReceiptText;
 

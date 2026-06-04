@@ -108,6 +108,11 @@ export const routes: Routes = [
                 loadComponent: () => import('@pages/main/support/support').then((m) => m.Support),
             },
             {
+                title: 'FAQs & Features | Pocket Pilot',
+                path: WEB_ROUTES.faqsFeatures,
+                loadComponent: () => import('@pages/main/faqs_features/faqs-features').then((m) => m.FaqsFeatures),
+            },
+            {
                 path: '**',
                 component: NotFound,
                 title: '404 | Page Not Found',
