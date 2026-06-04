@@ -172,6 +172,20 @@ export class AuthService {
     this.initializeSession();
   }
 
+  async refreshUser(): Promise<void> {
+    try {
+      const response = await firstValueFrom(
+        this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
+          credentials: 'include',
+        }),
+      );
+
+      this.createSession(response.data);
+    } catch {
+      this.clearSession();
+    }
+  }
+
   private renderToast = (error: IStandardError) => {
     const { title, details } = error;
     this.toastService.show({

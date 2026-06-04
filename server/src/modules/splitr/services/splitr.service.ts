@@ -1,5 +1,3 @@
-import { SplitCategoryTag } from '@prisma/client';
-import { formatEnumForFrontend } from '@libs/utils';
 import { SplitrCache } from '../caches/splitr.cache';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SplitrRepository } from '../repositories/splitr.repository';
@@ -11,10 +9,6 @@ export class SplitrService {
         private readonly splitrCache: SplitrCache,
         private readonly splitrRepository: SplitrRepository,
     ) {}
-
-    async getSplitrCategories() {
-        return await Promise.resolve(Object.values(SplitCategoryTag).map(formatEnumForFrontend));
-    }
 
     getUserSplitrEvents(userId: string): Promise<SplitrEventDto[]> {
         return this.splitrCache.getOrSetCache<SplitrEventDto[]>(userId, () =>

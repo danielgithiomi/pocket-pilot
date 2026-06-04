@@ -43,7 +43,12 @@ import { Component, computed, inject, output, signal } from '@angular/core';
       }
 
       @if (profilePictureUrl()) {
-        <img [src]="profilePictureUrl()" alt="Profile Picture" class="h-full w-full object-cover" />
+        <img
+          [src]="profilePictureUrl()"
+          alt="Profile Picture"
+          class="h-full w-full object-cover"
+          (error)="onProfilePictureError()"
+        />
       } @else {
         <div class="flex items-center justify-center h-full">
           <p class="text-white text-5xl">{{ initial() }}</p>
@@ -75,4 +80,8 @@ export class ProfilePicture {
     const name = this.authService.user()?.name;
     return name ? name.substring(0, 1).toUpperCase() : '';
   });
+
+  protected onProfilePictureError() {
+    void this.authService.refreshUser();
+  }
 }

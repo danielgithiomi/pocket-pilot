@@ -2,8 +2,6 @@
 @import './styles/loaders.css';
 @import './styles/calendar.css';
 @import './styles/uploader.css';
-@import './../../../node_modules/@syncfusion/ej2-base/styles/material3.css';
-@import './../../../node_modules/@syncfusion/ej2-calendars/styles/material3.css';
 
 @font-face {
     font-family: Geist Mono;
@@ -170,13 +168,14 @@
     --color-scrollbar-track: var(--scrollbar-track);
 
     /* State */
+    --color-error: var(--error);
+    --color-muted: var(--muted);
+    --color-income: var(--income);
     --color-success: var(--success);
     --color-warning: var(--warning);
-    --color-error: var(--error);
-    --color-income: var(--income);
     --color-expense: var(--expense);
     --color-transfer: var(--transfer);
-    --color-muted: var(--muted);
+    --color-tertiary-dark: var(--tertiary-dark);
 
     /* Raw Palette */
     --color-dark: var(--dark);
@@ -275,18 +274,23 @@ main {
 
     form {
         .input-field,
-        .select-field {
+        .select-field,
+        .text-area-field,
+        .phone-number-field {
             @apply flex flex-col gap-2 w-full my-4;
 
             .input-wrapper,
-            .select-wrapper {
+            .select-wrapper,
+            .text-area-wrapper {
                 @apply w-full relative;
 
                 .input-icon-wrapper,
+                .text-area-icon-wrapper,
                 .select-dropdown-wrapper {
-                    @apply absolute right-2 top-1/2 -translate-y-1/2;
+                    @apply absolute right-2;
 
                     .input-icon,
+                    .text-area-icon,
                     .select-icon {
                         @apply cursor-pointer hover:text-primary hover:scale-105 transition-all duration-300 ease-in-out;
                     }
@@ -294,6 +298,15 @@ main {
                     .select-icon-disabled {
                         @apply cursor-not-allowed! text-muted-text hover:text-muted-text!;
                     }
+                }
+
+                .input-icon-wrapper,
+                .select-dropdown-wrapper {
+                    @apply top-1/2 -translate-y-1/2;
+                }
+
+                .text-area-icon-wrapper {
+                    @apply top-2;
                 }
             }
 
@@ -319,11 +332,17 @@ main {
         }
 
         input,
-        select {
+        select,
+        textarea {
             @apply w-full bg-alternate-background text-[0.875rem] focus:outline-primary rounded-lg border-none focus:border-none focus:outline-2 pl-4 pr-10 py-2 shadow-lg;
         }
 
-        input::placeholder {
+        textarea {
+            @apply min-h-24;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
             @apply text-muted-text;
         }
 
@@ -350,6 +369,10 @@ main {
     .page {
         @apply p-4 h-full;
 
+        .page-section {
+            @apply h-full;
+        }
+
         .page-header {
             @apply flex flex-row items-center justify-between mb-6 cursor-default!;
             animation: slideDown 0.3s ease-in-out;
@@ -367,7 +390,7 @@ main {
             @apply w-full pb-6;
 
             .no-shadow-card {
-                @apply cursor-default bg-(--alternate-background) rounded-lg;
+                @apply cursor-default bg-alternate-background rounded-lg;
             }
 
             .page-card {
@@ -390,7 +413,7 @@ main {
                     @apply p-2;
 
                     .card-item-border {
-                        @apply border-[1px] rounded-xl border-solid border-(--muted-text) hover:border-(--inverted-background)/45 transition-all hover:shadow-md duration-300;
+                        @apply border rounded-xl border-solid border-muted-text hover:border-inverted-background/45 transition-all hover:shadow-md duration-300;
                     }
                 }
             }
@@ -450,7 +473,15 @@ main {
         @apply text-sm text-expense! inline-block;
     }
 
+    .input-end-icon {
+        @apply text-tertiary-dark! hover:text-loader-primary! transition-all duration-300 ease-in-out;
+    }
+
     /* ANIMATIONS START */
+    .transition-custom {
+        @apply transition-all duration-300 ease-in-out;
+    }
+
     .animate-left {
         animation: slideLeft 750ms ease-out forwards;
     }

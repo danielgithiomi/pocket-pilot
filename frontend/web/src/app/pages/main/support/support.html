@@ -1,0 +1,132 @@
+<div id="support-page" class="page">
+    <section
+        id="contact-us"
+        class="page-section flex flex-col md:flex-row gap-4"
+        [ngClass]="{ 'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed() }"
+    >
+        <div class="flex-1 lg:flex-1 min-h-full flex flex-col justify-around p-0 md:p-4">
+            <div class="flex flex-col space-y-3 cursor-default!">
+                <div
+                    class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary"
+                >
+                    <p class="text-xs text-primary font-semibold shadow-xl">Contact Us</p>
+                </div>
+
+                <h4 class="text-3xl md:text-4xl font-bold">We're here to help!</h4>
+
+                <div class="overflow-hidden w-3/5 mt-4">
+                    <p class="overflow-hidden text-sm text-tertiary-dark text-ellipsis">
+                        Need support or have a question? Our Pocket Pilot Support Team is here to
+                        assist you with any questions or issues you may have. Please use the form to
+                        contact us.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col space-y-4">
+                @for (item of contactItems; track item.value) {
+                    <div
+                        class="w-fit flex flex-row items-center gap-2 group cursor-pointer hover:scale-[1.0025] transition-custom"
+                    >
+                        <div
+                            class="size-8 grid place-items-center border group-hover:border-loader-primary bg-alternate-background rounded-lg transition-custom"
+                        >
+                            <lucide-icon [img]="item.icon" [size]="iconSize" [name]="item.id" />
+                        </div>
+                        <a
+                            [href]="item.link"
+                            class="text-sm group-hover:underline group-hover:text-primary transition-custom"
+                            >{{ item.value }}</a
+                        >
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="flex-2 lg:flex-1 min-h-full grid place-items-center p-0 md:p-4">
+            <!-- CONTACT FORM -->
+            <div class="w-full min-h-3/4 border border-loader-primary rounded-xl p-6">
+                <h3 class="text-2xl font-semibold">Get in touch</h3>
+
+                <div class="mt-2 p-2">
+                    <form id="contact-form" (submit)="submitContactForm($event)">
+                        <div class="w-full flex flex-row gap-4">
+                            <atom-input
+                                type="text"
+                                class="w-full"
+                                id="first-name"
+                                placeholder="John"
+                                label="First Name"
+                                autocomplete="name"
+                                wrapperClassName="flex-1 my-1!"
+                                [formField]="supportForm.firstName"
+                                (clearOutput)="supportForm.firstName().controlValue.set('')"
+                            />
+
+                            <atom-input
+                                type="text"
+                                id="last-name"
+                                class="w-full"
+                                label="Last Name"
+                                placeholder="Doe"
+                                autocomplete="name"
+                                wrapperClassName="flex-1 my-1!"
+                                [formField]="supportForm.lastName"
+                                (clearOutput)="supportForm.lastName().controlValue.set('')"
+                            />
+                        </div>
+
+                        <atom-input
+                            id="email"
+                            type="email"
+                            label="Email"
+                            autocomplete="email"
+                            [formField]="supportForm.email"
+                            placeholder="john.doe@example.com"
+                            (clearOutput)="supportForm.email().controlValue.set('')"
+                        />
+
+                        <atom-phone-number
+                            id="phone"
+                            label="Phone"
+                            placeholder="1234567890"
+                            [formField]="supportForm.phone"
+                            [defaultCountryIso]="defaultPhoneCountryIso()"
+                        />
+
+                        <atom-text-area
+                            [rows]="3"
+                            id="message"
+                            resize="none"
+                            label="Message"
+                            autocomplete="off"
+                            placeholder="How can we help you?"
+                            [formField]="supportForm.message"
+                            (clearOutput)="supportForm.message().controlValue.set('')"
+                        />
+
+                        <div class="w-full flex justify-end mt-4">
+                            <atom-button
+                                variant="primary"
+                                id="submit-contact-form"
+                                [isLoading]="isSubmittingForm()"
+                                [disabled]="supportForm().invalid() || isSubmittingForm()"
+                            >
+                                <div class="flex flex-row items-center justify-between gap-3">
+                                    <lucide-icon name="send" [img]="SendIcon" [size]="iconSize" />
+                                    <span>Submit</span>
+                                </div>
+                            </atom-button>
+                        </div>
+                    </form>
+
+                    <p class="text-xs text-center text-tertiary-dark mt-4">
+                        By submitting this form, you agree to our Terms of Service.
+                        <br />
+                        Read our
+                        <a href="#" class="text-primary hover:underline">Privacy Policy</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

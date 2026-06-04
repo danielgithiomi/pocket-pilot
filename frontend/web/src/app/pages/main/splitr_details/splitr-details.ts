@@ -83,6 +83,12 @@ export class SplitrDetails {
         },
     ]);
 
+    // UTILITIES
+    reloadResources = () => {
+        this.splitrEventResource.reload();
+        this.splitrService.getUserSplitrEvents().reload();
+    };
+
     // METHODS
     handleOnSplittableSettledClick(isSettled: boolean) {
         this.isSettlingSplittable.set(true);
@@ -99,7 +105,7 @@ export class SplitrDetails {
                             variant: 'success',
                         });
 
-                        this.splitrEventResource.reload();
+                        this.reloadResources();
                     },
                     complete: () => this.isSettlingSplittable.set(false),
                 });
@@ -119,8 +125,7 @@ export class SplitrDetails {
                         variant: 'success',
                     });
 
-                    this.splitrEventResource.reload();
-                    this.splitrService.getUserSplitrEvents().reload();
+                    this.reloadResources();
                     this.router.navigate(['/splitr'], { replaceUrl: true });
                 },
                 complete: () => this.isDeletingSplittable.set(false),

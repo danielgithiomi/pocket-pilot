@@ -32,7 +32,7 @@
                     <lucide-icon
                         [size]="iconSize"
                         name="password-eye"
-                        class="input-icon"
+                        class="input-icon input-end-icon"
                         (click)="togglePasswordVisibility()"
                         [img]="isPasswordVisible() ? Hidden : Visible"
                     />
@@ -41,8 +41,8 @@
                         [img]="X"
                         [size]="iconSize"
                         name="field-clear"
-                        class="input-icon"
                         (click)="clearOutput.emit()"
+                        class="input-icon input-end-icon"
                     />
                 }
             </div>

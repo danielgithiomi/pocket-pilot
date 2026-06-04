@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { SquadsCache } from '../caches/squads.cache';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SquadsRepository } from '../repositories/squads.repository';
 import { SplitrSquadDto, SplitrSquadPayload } from '../dto/squads.dto';
 
@@ -17,6 +17,20 @@ export class SquadsService {
         );
     }
 
+    async getSplitrSquadById(userId: string, squadId: string): Promise<SplitrSquadDto> {
+        const userSquads = await this.getUserSplitrSquads(userId);
+        const squadById = userSquads.find(squad => squad.id === squadId);
+
+        if (!squadById)
+            throw new NotFoundException({
+                name: 'SPLITR_SQUAD_NOT_FOUND!',
+                title: 'Splitr Squad Not Found!',
+                details: `No splitr squad found with the ID provided.`,
+            });
+
+        return squadById;
+    }
+
     async createSplitrSquad(userId: string, payload: SplitrSquadPayload): Promise<SplitrSquadDto> {
         const createdSplitrSquad = await this.squadsRepository.createNewSplitrSquad(userId, payload);
         await this.invalidateCache(userId);
@@ -28,17 +42,21 @@ export class SquadsService {
         squadId: string,
         payload: SplitrSquadPayload,
     ): Promise<SplitrSquadDto> {
-        const updatedSplitwiseSquad = await this.squadsRepository.updateExistingUserSplitrSquad(
+        const { id: squadIdToUpdate } = await this.getSplitrSquadById(userId, squadId);
+
+        const updatedSplitrSquad = await this.squadsRepository.updateExistingUserSplitrSquad(
             userId,
-            squadId,
+            squadIdToUpdate,
             payload,
         );
         await this.invalidateCache(userId);
-        return plainToInstance(SplitrSquadDto, updatedSplitwiseSquad);
+        return plainToInstance(SplitrSquadDto, updatedSplitrSquad);
     }
 
     async deleteUserSplitrSquad(userId: string, squadId: string) {
-        const deleteSquad = await this.squadsRepository.deleteUserSplitrSquad(userId, squadId);
+        const { id: squadIdToDelete } = await this.getSplitrSquadById(userId, squadId);
+
+        const deleteSquad = await this.squadsRepository.deleteUserSplitrSquad(userId, squadIdToDelete);
         await this.invalidateCache(userId);
         return deleteSquad;
     }

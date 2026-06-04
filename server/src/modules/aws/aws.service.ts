@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PPConfigService } from '@infrastructure/config';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
-import { PutObjectCommand, HeadObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand, HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 @Injectable()
 export class AwsService {
@@ -57,9 +57,14 @@ export class AwsService {
     }
 
     async generateProfilePictureUrl(profilePictureKey: string): Promise<string> {
-        const s3BucketName = this.s3BucketName;
-        const region = await this.s3Client.config.region();
-        return `https://${s3BucketName}.s3.${region}.amazonaws.com/${profilePictureKey}`;
+        const { presignedReadUrlExpiration: expiresIn } = this.configService.aws;
+
+        const getObjectCommand = new GetObjectCommand({
+            Bucket: this.s3BucketName,
+            Key: profilePictureKey,
+        });
+
+        return getSignedUrl(this.s3Client, getObjectCommand, { expiresIn });
     }
 
     async checkAndGenerateProfilePictureUrl(profilePictureKey: string | null): Promise<string | null> {

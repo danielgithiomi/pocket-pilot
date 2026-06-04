@@ -6,7 +6,6 @@ import { formatCurrency } from '@libs/utils';
 import { QUANTITIES } from '@libs/constants';
 import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
-import { SplitrService } from '@api/splitr.service';
 import { OrderItem } from './order-item/order-item';
 import { Select, SelectOption } from '@atoms/select';
 import { ArrowLeft, PanelTopClose, PanelBottomClose, LucideAngularModule } from 'lucide-angular';
@@ -67,11 +66,9 @@ export class SplitFormStep2 {
     // SERVICES
     private readonly authService = inject(AuthService);
     private readonly toastService = inject(ToastService);
-    private readonly splitrService = inject(SplitrService);
 
     // DATA
     private readonly user = this.authService.user();
-    protected readonly categoryTagsResource = this.splitrService.getOrderCategoryTags();
 
     // COMPUTED
     protected readonly consumerOptions = computed<string[]>(() => {
@@ -92,32 +89,19 @@ export class SplitFormStep2 {
     protected readonly canAddConsumer = computed<boolean>(() => {
         const quantity = Number(this.splittableForm().value().quantity);
         const splitStrategy = this.splittableForm().value().splitStrategy;
+        const quantitySplits = this.splittableForm().value().quantitySplits;
 
         if (splitStrategy === 'EQUAL' && quantity === 1) return true;
+        if (splitStrategy === 'SOLE' && quantitySplits.length >= 1) return true;
 
         return this.quantityAssisgnableRemaining() > 0;
     });
     protected readonly itemsCount = computed<number>(() => this.splittables().length);
-    protected readonly isFetchingData = computed<boolean>(() =>
-        this.categoryTagsResource.isLoading(),
-    );
     protected readonly orderQuantities = computed<SelectOption[]>(() => {
         return QUANTITIES.map((quantity) => ({
             value: quantity,
             label: quantity.toString(),
         }));
-    });
-    protected readonly categoryTags = computed<SelectOption[]>(() => {
-        if (this.categoryTagsResource.error()) return [];
-
-        const fetchedTags = this.categoryTagsResource.value()?.data;
-
-        if (!fetchedTags) return [];
-
-        return fetchedTags.map((tag) => {
-            const { label, value } = tag;
-            return { label, value };
-        });
     });
     protected readonly isStrategyCustom = computed<boolean>(() => {
         const strategy = this.splittableForm().value().splitStrategy;
@@ -180,21 +164,14 @@ export class SplitFormStep2 {
                 return;
             }
 
-            if (strategy === 'SOLE' && consumersInOrder.length >= 1) {
-                this.toastService.show({
-                    variant: 'warning',
-                    title: 'Consumed by one!',
-                    details: 'An item consumed by one cannot have more than one consumer.',
-                });
-                return;
-            }
-
-            const newSplit: LocalQuantitySplit = {
+            const newQuantitySplit: LocalQuantitySplit = {
+                consumerQuantity: 1,
                 id: crypto.randomUUID(),
                 consumerName: memberName,
-                consumerQuantity: 1,
             };
-            updatedSplits = [...orderSplits, newSplit];
+
+            if (strategy === 'SOLE') updatedSplits = [newQuantitySplit];
+            else updatedSplits = [...orderSplits, newQuantitySplit];
         }
 
         this.splittableForm.quantitySplits().controlValue.set(updatedSplits);
@@ -257,9 +234,12 @@ export class SplitFormStep2 {
             splitStrategy === 'QUANTITY'
                 ? quantitySplits
                 : quantitySplits.map((split) => ({
-                      ...split,
-                      consumerQuantity: Math.floor(quantity / quantitySplits.length),
-                  }));
+                        ...split,
+                        consumerQuantity: quantity / quantitySplits.length,
+                    }
+                ));
+
+        console.log(updatedQuantitySplits);
 
         const newSplittable: SplittableOrder = {
             id: this.splittables().length + 1,

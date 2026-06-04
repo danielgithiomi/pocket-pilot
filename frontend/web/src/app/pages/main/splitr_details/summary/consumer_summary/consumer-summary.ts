@@ -47,7 +47,9 @@ export class ConsumerSummary {
         );
     });
     protected readonly formattedItemsConsumed = computed(() => {
-        return `${this.consumerData().itemsConsumed} ${this.consumerData().itemsConsumed === 1 ? 'item' : 'items'}`;
+        const itemsConsumed = Math.ceil(this.consumerData().itemsConsumed);
+
+        return `${itemsConsumed} ${itemsConsumed === 1 ? 'item' : 'items'}`;
     });
 
     protected readonly avatarClasses = computed<{ bg: string; fg: string }>(

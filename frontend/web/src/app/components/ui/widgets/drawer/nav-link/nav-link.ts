@@ -6,8 +6,8 @@ import { Component, computed, inject, input, output } from '@angular/core';
 import {
   Split,
   Wallet,
-  Target,
   Headset,
+  Crosshair,
   Settings2,
   UserRoundCog,
   ChevronRight,
@@ -70,7 +70,7 @@ export class NavLink {
   protected readonly chevronRight = ChevronRight;
   protected iconSize = computed(() => (this.isDrawerExpanded() ? 16 : 20));
   protected readonly iconMap: Record<DrawerNavigationLink['icon'], any> = {
-    goals: Target,
+    goals: Crosshair,
     splitr: Split,
     accounts: Wallet,
     support: Headset,

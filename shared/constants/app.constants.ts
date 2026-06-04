@@ -1,5 +1,11 @@
 import { LabelValueItem } from "../types";
 
+export const SUPPORT_X= 'pocket_pilot';
+export const SUPPORT_TIKTOK = 'pocket_pilot';
+export const SUPPORT_INSTAGRAM = 'pocketpilot';
+export const SUPPORT_PHONE = '+1(555)123-4567';
+export const SUPPORT_EMAIL = 'support@pocketpilot.com';
+
 export const MONTHS_ENUM: LabelValueItem[] = [
   { value: "january", label: "January" },
   { value: "february", label: "February" },

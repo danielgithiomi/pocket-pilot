@@ -165,14 +165,20 @@ export class SplitrSplitForm {
     }
 
     constructor() {
-        effect(() => {
-            const squadName = this.splitForm.squadName().value();
+        effect(
+            () => {
+                const squadName = this.splitForm.squadName().value();
 
-            const squadMembers =
-                this.squads().find((squad) => squad.squadName === squadName)?.squadMembers || [];
+                untracked(() => {
+                    const squadMembers =
+                        this.squads().find((squad) => squad.squadName === squadName)
+                            ?.squadMembers || [];
 
-            untracked(() => this.splitForm.eventMembers().controlValue.set(squadMembers));
-        });
+                    this.splitForm.eventMembers().controlValue.set(squadMembers);
+                });
+            },
+            { allowSignalWrites: false },
+        );
     }
 }
 

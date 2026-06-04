@@ -131,8 +131,8 @@
     <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
       <atom-button
         type="button"
+        label="Reset"
         [inverted]="true"
-        label="Reset Form"
         variant="secondary"
         form="accounts-form"
         id="reset-account-form"
@@ -143,7 +143,7 @@
       <atom-button
         type="submit"
         form="accounts-form"
-        label="Create A New Account"
+        label="Create Account"
         id="submit-account-form"
         [isLoading]="isSubmitting()"
         [disabled]="accountsForm().invalid() || isSubmitting()"

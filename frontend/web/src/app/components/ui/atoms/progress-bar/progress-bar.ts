@@ -36,7 +36,7 @@ import {
                         <div class="stripe-pattern"></div>
                     </div>
 
-                    @if (showPercentage()) {
+                    @if (showPercentage() && animatedPercentage() > 0) {
                         <div class="percentage-badge" [class.vertical]="variant() === 'vertical'">
                             {{ animatedPercentage() | number: '1.0-0' }}%
                         </div>
