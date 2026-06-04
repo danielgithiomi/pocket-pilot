@@ -7,6 +7,7 @@ export const DummyAccountData: Account = {
   holderId: "",
   type: "CURRENT",
   currency: "USD",
+  isBalanceVisible: true,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };

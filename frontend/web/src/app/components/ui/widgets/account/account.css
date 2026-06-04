@@ -68,7 +68,7 @@ section:hover {
   @apply flex-1 mt-6 flex flex-col items-start justify-between;
 
   .balance {
-    @apply flex flex-row items-center gap-2 w-full overflow-hidden;
+    @apply flex flex-row items-center gap-3 w-full overflow-hidden;
 
     .currency {
       @apply text-xs italic;
@@ -90,14 +90,18 @@ section:hover {
       @apply relative p-1 rounded-md z-1;
 
       .dropdown {
-        @apply absolute cursor-pointer! bottom-full -right-1 mb-2 size-8 bg-(--inverted-background) rounded-md shadow-lg z-5 grid place-items-center;
+        @apply absolute cursor-pointer! bottom-full -right-1 mb-2 p-2 bg-(--inverted-background) rounded-md shadow-lg z-5 grid place-items-center;
 
         .pointer {
           @apply size-3 bg-(--inverted-background) rotate-45 -bottom-1 right-2.5 absolute;
         }
 
+        .visibility {
+          @apply text-(--inverted-text) hover:text-(--primary) z-10 cursor-pointer!;
+        }
+
         .delete {
-          @apply text-(--error) z-10 cursor-pointer!;
+          @apply text-(--inverted-text) hover:text-(--error) z-10 cursor-pointer!;
         }
       }
     }

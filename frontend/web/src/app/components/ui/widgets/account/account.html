@@ -1,82 +1,72 @@
-<section
-  [id]="accountId()"
-  class="account-wrapper"
-  [ngClass]="{ 'border border-primary': variant() === 'detail' }"
->
-  <div
-    class="container"
-    [routerLink]="isLoading() ? null : ['/accounts', id()]"
-    (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)"
-  >
+<section [id]="accountId()" class="account-wrapper" [ngClass]="{ 'border border-primary': variant() === 'detail' }">
+  <div class="container" [routerLink]="isLoading() ? null : ['/accounts', id()]"
+    (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)">
     <div class="card" [ngClass]="{ 'border-none!': variant() === 'detail' }">
       <div class="header">
-        <img
-          [ngSrc]="logoUrl"
-          alt="Account Card Logo"
-          class="invert dark:invert-0"
-          [width]="imageDimensions.width"
-          [height]="imageDimensions.height"
-          [ngClass]="{
+        <img [ngSrc]="logoUrl" alt="Account Card Logo" class="invert dark:invert-0" [width]="imageDimensions.width"
+          [height]="imageDimensions.height" [ngClass]="{
             'invert-0!': themeService.activeTheme() === 'dark',
             'invert-100!': themeService.activeTheme() === 'light',
-          }"
-        />
+          }" />
         <lucide-icon name="nfc" [img]="NFC" [size]="22" />
       </div>
 
       <div class="card-details">
         @if (isLoading()) {
-          <div class="skeleton w-2/3 h-10"></div>
+        <div class="skeleton w-2/3 h-10"></div>
         } @else {
-          <div class="balance">
-            <span class="currency">{{ account().currency }}</span>
-            <span class="value">{{ formattedBalance() }}</span>
-          </div>
+        <div class="balance">
+          <span class="currency">{{ account().currency }}</span>
+          <span class="value" [ngClass]='{ "tracking-widest": !account().isBalanceVisible }'>{{ formattedBalance()
+            }}</span>
+        </div>
         }
 
         <div class="identity">
           <div class="account-name">
             @if (isLoading()) {
-              <div class="skeleton size-4"></div>
-              <div class="">
-                <div class="skeleton w-30 h-4"></div>
-                <div class="skeleton w-15 h-3 mt-1"></div>
-              </div>
+            <div class="skeleton size-4"></div>
+            <div class="">
+              <div class="skeleton w-30 h-4"></div>
+              <div class="skeleton w-15 h-3 mt-1"></div>
+            </div>
             } @else {
-              <lucide-icon name="identity-icon" [img]="IdentityIcon" [size]="12" class="mt-0.5" />
-              <div class="flex flex-col">
-                <p class="capitalize text-sm">{{ account().name }}</p>
-                <p class="text-[10px] text-muted-text">{{ account().type }}</p>
-              </div>
+            <lucide-icon name="identity-icon" [img]="IdentityIcon" [size]="12" class="mt-0.5" />
+            <div class="flex flex-col">
+              <p class="capitalize text-sm">{{ account().name }}</p>
+              <p class="text-[10px] text-muted-text">{{ account().type }}</p>
+            </div>
             }
           </div>
 
           @if (variant() === 'default') {
-            <div class="card-options">
-              @if (isLoading()) {
-                <div class="skeleton size-5"></div>
-              } @else {
-                <lucide-icon
-                  [size]="16"
-                  name="options"
-                  [img]="Options"
-                  (click)="toggleOptions($event)"
-                />
-              }
+          <div class="card-options">
+            @if (isLoading()) {
+            <div class="skeleton size-5"></div>
+            } @else {
+            <lucide-icon [size]="iconSize" name="options" [img]="Options" (click)="toggleOptions($event)" />
+            }
 
-              <!-- Card Options Drop Down -->
-              @if (isOptionsOpen()) {
-                <div class="dropdown" (click)="deleteAccount($event)">
-                  <div class="pointer"></div>
+            <!-- Card Options Drop Down -->
+            @if (isOptionsOpen()) {
+            <div class="dropdown">
+              <div class="pointer"></div>
 
-                  @if (isDeleting()) {
-                    <div class="delete-loader"></div>
-                  } @else {
-                    <lucide-icon name="delete" [img]="Trash" [size]="16" class="delete" />
-                  }
-                </div>
-              }
+              <div class="flex flex-row items-center justify-between gap-3 w-full">
+
+                <lucide-icon name="scan" [img]="account().isBalanceVisible ? EyeOff : EyeOpen" [size]="iconSize"
+                  class="visibility" (click)="toggleBalanceVisibility($event)" />
+
+                @if (isDeleting()) {
+                <div class="delete-loader"></div>
+                } @else {
+                <lucide-icon name="delete" [img]="Trash" [size]="iconSize" class="delete"
+                  (click)="deleteAccount($event)" />
+                }
+              </div>
             </div>
+            }
+          </div>
           }
         </div>
       </div>

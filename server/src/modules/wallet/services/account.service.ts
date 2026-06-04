@@ -11,6 +11,7 @@ import {
     AccountWithHolder,
     UpdateAccountPayload,
     AccountWithTransactionsDto,
+    UpdateAccountBalanceVisibilityPayload,
 } from '../dto/account.dto';
 import {
     Injectable,
@@ -128,6 +129,27 @@ export class AccountService {
                 details: 'An unexpected error occurred while updating the account.',
             });
         }
+    }
+
+    async updateAccountBalanceVisibility(
+        userId: string,
+        accountId: string,
+        payload: UpdateAccountBalanceVisibilityPayload,
+    ): Promise<Account> {
+        const accounts: Account[] = await this.getUserAccounts(userId);
+        const foundAccount = this.verifyAccountAndOwnership(accounts, userId, accountId);
+
+        if (await this.accountHasTransactions(foundAccount.id)) {
+            throw new ConflictException({
+                name: 'ACCOUNT_DELETE_FAILED',
+                title: 'Account Delete Failed!',
+                details: 'This account has transactions and cannot be deleted.',
+            });
+        }
+
+        const updatedAccount = await this.accountRepository.updateAccountBalanceVisibilityById(accountId, payload);
+        await this.invalidateCachesByAccountId(userId, updatedAccount.id);
+        return updatedAccount;
     }
 
     async deleteAccountById(userId: string, accountId: string): Promise<Account> {

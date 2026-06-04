@@ -71,6 +71,7 @@
                   [account]="account"
                   [isLoading]="isLoadingAccounts()"
                   (onAccountDelete)="accountsWithCount.reload()"
+                  (onAccountBalanceVisibilityToggle)="accountsWithCount.reload()"
                 />
               }
             </div>

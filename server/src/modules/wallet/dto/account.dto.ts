@@ -2,7 +2,7 @@ import { AccountType, Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { TransactionInAccountDto } from './transaction.dto';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export type FullAccount = Prisma.AccountCreateInput;
 
@@ -24,9 +24,21 @@ export class CreateAccountDto {
     @IsNotEmpty()
     @ApiProperty({ example: 'USD', description: 'The currency of the account' })
     currency!: string;
+
+    @IsBoolean()
+    @IsNotEmpty()
+    @ApiProperty({ example: true, description: 'Whether the balance is visible' })
+    isBalanceVisible!: boolean;
 }
 
 export class UpdateAccountPayload extends CreateAccountDto {}
+
+export class UpdateAccountBalanceVisibilityPayload {
+    @IsBoolean()
+    @IsNotEmpty()
+    @ApiProperty({ example: true, description: 'Whether the balance is visible' })
+    isBalanceVisible!: boolean;
+}
 
 // OUTPUT
 @Exclude()
@@ -74,6 +86,13 @@ export class Account {
     })
     @Type(() => Date)
     createdAt!: Date;
+
+    @Expose()
+    @ApiProperty({
+        example: true,
+        description: 'Whether the balance is visible',
+    })
+    isBalanceVisible!: boolean;
 
     @Expose()
     @ApiProperty({

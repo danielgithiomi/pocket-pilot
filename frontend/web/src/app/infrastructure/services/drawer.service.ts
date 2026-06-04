@@ -5,7 +5,7 @@ import { computed, Injectable, signal } from '@angular/core';
 })
 export class DrawerService {
   private readonly dropdownOpen$ = signal(false);
-  private readonly drawerCollapsed$ = signal(false);
+  private readonly drawerCollapsed$ = signal(true);
   private readonly isMobileDrawerOpen$ = signal(false);
 
   isDropdownOpen = computed(() => this.dropdownOpen$());

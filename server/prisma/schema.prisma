@@ -35,6 +35,8 @@ model Account {
     updatedAt DateTime    @updatedAt
     balance   Float       @default(0)
 
+    isBalanceVisible Boolean @default(true)
+
     // Link to user - one-to-many
     holder   User   @relation(fields: [holderId], references: [id], onDelete: Cascade)
     holderId String

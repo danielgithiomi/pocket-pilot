@@ -8,6 +8,7 @@ import {
   UpdateAccountPayload,
   CreateAccountPayload,
   IVoidResourceResponse,
+  UpdateAccountBalanceVisibilityPayload,
 } from '@global/types';
 
 @Injectable({
@@ -22,6 +23,10 @@ export class AccountsMutation {
 
   updateAccountById(accountId: string, payload: UpdateAccountPayload): Observable<IStandardResponse<Account>> {
     return this.client.put<Account, UpdateAccountPayload>(`${endpoints.accounts}/${accountId}`, payload);
+  }
+
+  updateAccountBalanceVisibilityById(accountId: string, payload: UpdateAccountBalanceVisibilityPayload): Observable<IStandardResponse<Account>> {
+    return this.client.patch<Account, UpdateAccountBalanceVisibilityPayload>(`${endpoints.accounts}/${accountId}/visibility`, payload);
   }
 
   deleteAccountById(accountId: string): Observable<IStandardResponse<IVoidResourceResponse>> {
