@@ -33,7 +33,7 @@ export class CreateAccountDto {
 
 export class UpdateAccountPayload extends CreateAccountDto {}
 
-export class UpdateAccountBalanceVisibilityPayload {
+export class ToggleAccountBalanceVisibilityPayload {
     @IsBoolean()
     @IsNotEmpty()
     @ApiProperty({ example: true, description: 'Whether the balance is visible' })

@@ -11,7 +11,7 @@ import {
     AccountWithHolder,
     UpdateAccountPayload,
     AccountWithTransactionsDto,
-    UpdateAccountBalanceVisibilityPayload,
+    ToggleAccountBalanceVisibilityPayload,
 } from '../dto/account.dto';
 import {
     Injectable,
@@ -131,23 +131,15 @@ export class AccountService {
         }
     }
 
-    async updateAccountBalanceVisibility(
+    async toggleAccountBalanceVisibility(
         userId: string,
         accountId: string,
-        payload: UpdateAccountBalanceVisibilityPayload,
+        payload: ToggleAccountBalanceVisibilityPayload,
     ): Promise<Account> {
         const accounts: Account[] = await this.getUserAccounts(userId);
-        const foundAccount = this.verifyAccountAndOwnership(accounts, userId, accountId);
+        this.verifyAccountAndOwnership(accounts, userId, accountId);
 
-        if (await this.accountHasTransactions(foundAccount.id)) {
-            throw new ConflictException({
-                name: 'ACCOUNT_DELETE_FAILED',
-                title: 'Account Delete Failed!',
-                details: 'This account has transactions and cannot be deleted.',
-            });
-        }
-
-        const updatedAccount = await this.accountRepository.updateAccountBalanceVisibilityById(accountId, payload);
+        const updatedAccount = await this.accountRepository.toggleAccountBalanceVisibilityById(accountId, payload);
         await this.invalidateCachesByAccountId(userId, updatedAccount.id);
         return updatedAccount;
     }
@@ -176,7 +168,7 @@ export class AccountService {
         if (!accountExists)
             throw new NotFoundException({
                 name: 'ACCOUNT_NOT_FOUND',
-                title: 'Account Not Found',
+                title: 'Account Not Found!',
                 details: `The account you are trying to access with id: {${accountId}} does not exist.`,
             });
 

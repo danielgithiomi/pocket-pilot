@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAccountDto, UpdateAccountBalanceVisibilityPayload, UpdateAccountPayload } from '../dto/account.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
+import { CreateAccountDto, ToggleAccountBalanceVisibilityPayload, UpdateAccountPayload } from '../dto/account.dto';
 
 @Injectable()
 export class AccountRepository {
@@ -39,7 +39,7 @@ export class AccountRepository {
         return this.db.account.update({ where: { id: accountId }, data: payload });
     }
 
-    updateAccountBalanceVisibilityById(accountId: string, payload: UpdateAccountBalanceVisibilityPayload) {
+    toggleAccountBalanceVisibilityById(accountId: string, payload: ToggleAccountBalanceVisibilityPayload) {
         return this.db.account.update({
             where: { id: accountId },
             data: { isBalanceVisible: payload.isBalanceVisible },

@@ -17,7 +17,7 @@ import {
     AccountWithHolderDto,
     UserAccountsResponseDto,
     AccountWithTransactionsResponseDto,
-    UpdateAccountBalanceVisibilityPayload,
+    ToggleAccountBalanceVisibilityPayload,
 } from '../dto/account.dto';
 
 @ApiTags('Accounts')
@@ -186,12 +186,12 @@ export class AccountController {
         type: Account,
         description: 'Account balance visibility updated successfully',
     })
-    updateAccountBalanceVisibility(
+    toggleAccountBalanceVisibility(
         @UserInRequest() user: User,
         @Param('accountId') accountId: string,
-        @Body() payload: UpdateAccountBalanceVisibilityPayload,
+        @Body() payload: ToggleAccountBalanceVisibilityPayload,
     ): Promise<Account> {
-        return this.accountService.updateAccountBalanceVisibility(user.id!, accountId, payload);
+        return this.accountService.toggleAccountBalanceVisibility(user.id!, accountId, payload);
     }
 
     @Delete(':accountId')
