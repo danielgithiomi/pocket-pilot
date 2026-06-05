@@ -3,11 +3,11 @@ import { hoursToMilliseconds } from '@libs/utils';
 import { CookiesAuthGuard } from '@common/guards';
 import { Summary, UserInRequest } from '@common/decorators';
 import { FeaturesService } from '../services/features.service';
-import { FeatureDto, FeaturePayload } from '../dto/features.dto';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { Body, Controller, Get, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FeatureDto, FeaturePayload, FeaturesWithCountDto } from '../dto/features.dto';
+import { Body, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 
 @Controller('features')
 export class FeaturesController {
@@ -15,7 +15,7 @@ export class FeaturesController {
 
     @Get('categories')
     @ApiCookieAuth('access_token')
-    @CacheKey('feature:categories')
+    @CacheKey('features:categories')
     @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
     @Summary('Feature categories retrieved', 'The application retrieved all feature categories')
@@ -31,8 +31,8 @@ export class FeaturesController {
     }
 
     @Get('status')
+    @CacheKey('features:status')
     @ApiCookieAuth('access_token')
-    @CacheKey('feature:status')
     @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
     @Summary('Feature status retrieved', 'The application retrieved all feature status')
@@ -49,9 +49,9 @@ export class FeaturesController {
 
     @Get('vote-variants')
     @ApiCookieAuth('access_token')
-    @CacheKey('feature:vote-variants')
     @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
+    @CacheKey('features:vote-variants')
     @Summary('Feature vote variants retrieved', 'The application retrieved all feature vote variants')
     @ApiOperation({ summary: 'Get all feature vote variants', description: 'Get all feature vote variants' })
     @ApiResponse({
@@ -80,23 +80,25 @@ export class FeaturesController {
 
     @Get()
     @UseGuards(CookiesAuthGuard)
-    @CacheKey('feature:requests')
     @ApiCookieAuth('access_token')
+    @CacheKey('features:all-requests')
     @UseInterceptors(CacheInterceptor)
     @CacheTTL(hoursToMilliseconds(12))
     @Summary('Feature requests retrieved', 'The application retrieved all feature requests')
     @ApiOperation({ summary: 'Get all feature requests', description: 'Get all feature requests' })
     @ApiResponse({
         status: 200,
-        isArray: true,
-        type: FeatureDto,
-        description: 'Feature requests fetched successfully',
+        type: FeaturesWithCountDto,
+        description: 'Feature requests with count fetched successfully',
     })
-    async getFeatureRequests(): Promise<FeatureDto[]> {
-        return this.featuresService.getFeatureRequests();
+    async getFeatureRequests(): Promise<FeaturesWithCountDto> {
+        const features = await this.featuresService.getFeatureRequests();
+        const count = features.length;
+
+        return { count, features };
     }
 
-    @Get(':userId')
+    @Get('user')
     @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
     @ApiParam({ name: 'userId', description: 'The ID of the user to retrieve feature requests for' })
@@ -111,7 +113,7 @@ export class FeaturesController {
         type: FeatureDto,
         description: 'User feature requests fetched successfully',
     })
-    async getUserFeatureRequests(@Param('userId') userId: string): Promise<FeatureDto[]> {
-        return this.featuresService.getUserFeatureRequests(userId);
+    async getUserFeatureRequests(@UserInRequest() user: User): Promise<FeatureDto[]> {
+        return this.featuresService.getUserFeatureRequests(user.id);
     }
 }

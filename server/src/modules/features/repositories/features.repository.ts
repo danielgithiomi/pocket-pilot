@@ -19,13 +19,14 @@ export class FeaturesRepository {
     }
 
     getFeatureRequests(): Promise<FeatureDto[]> {
-        return this.db.feature.findMany({ include: { featureVotes: true } });
+        return this.db.feature.findMany({ include: { featureVotes: true }, orderBy: { createdAt: 'desc' } });
     }
 
     getUserFeatureRequests(userId: string): Promise<FeatureDto[]> {
         return this.db.feature.findMany({
             where: { authorId: userId },
             include: { featureVotes: true },
+            orderBy: { createdAt: 'desc' },
         });
     }
 }

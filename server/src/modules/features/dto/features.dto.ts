@@ -127,3 +127,15 @@ export class FeatureWithCommentsDto extends FeatureDto {
     @ApiProperty({ type: FeatureCommentsDto, isArray: true, description: 'The comments on the feature' })
     featureComments!: FeatureCommentsDto[];
 }
+
+@Exclude()
+export class FeaturesWithCountDto {
+    @Expose()
+    @ApiProperty({ example: 1, description: 'The total number of features' })
+    count!: number;
+
+    @Expose()
+    @Type(() => FeatureDto)
+    @ApiProperty({ type: FeatureDto, isArray: true, description: 'The features' })
+    features!: FeatureDto[];
+}
