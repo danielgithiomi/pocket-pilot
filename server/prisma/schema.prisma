@@ -46,6 +46,12 @@ model User {
     // Link to splitr events - one-to-many
     splitrEvents SplitrEvent[]
 
+    // Link to features - one-to-many
+    features Feature[]
+
+    // Link to feature votes - one-to-many
+    featureVotes FeatureVotes[]
+
     // Link to preferences - one-to-one
     userPreferences UserPreferences?
 
@@ -386,5 +392,56 @@ model Feature {
     updatedAt DateTime @updatedAt()
     createdAt DateTime @default(now())
 
+    // Link to feature votes - one-to-many
+    featureVotes FeatureVotes[]
+
+    // Link to feature comments - one-to-many
+    featureComments FeatureComments[]
+
+    // Link to user - one-to-many
+    userId String
+    user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([id, userId])
     @@map("Features")
+}
+
+enum VoteType {
+    UPVOTE
+    DOWNVOTE
+}
+
+model FeatureVotes {
+    id String @id @default(uuid())
+
+    voteType VoteType
+
+    updatedAt DateTime @updatedAt()
+    createdAt DateTime @default(now())
+
+    // Link to user - many-to-one
+    voterId String
+    voter   User   @relation(fields: [voterId], references: [id], onDelete: Cascade)
+
+    // Link to feature - one-to-one
+    featureId String
+    feature   Feature   @relation(fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@unique([featureId, voterId])
+
+    @@map("Feature Votes")
+}
+
+model FeatureComments {
+    id String @id @default(uuid())
+
+    comment String
+
+    createdAt DateTime @default(now())
+
+    // Link to feature - one-to-many
+    featureId String
+    feature   Feature @relation(fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@map("Feature Comments")
 }
