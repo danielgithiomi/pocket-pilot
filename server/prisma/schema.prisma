@@ -393,10 +393,10 @@ model Feature {
     createdAt DateTime @default(now())
 
     // Link to feature votes - one-to-many
-    featureVotes FeatureVotes[]
+    featureVotes FeatureVotes[] @relation("FeatureVotes")
 
     // Link to feature comments - one-to-many
-    featureComments FeatureComments[]
+    featureComments FeatureComments[] @relation("FeatureComments")
 
     // Link to user - one-to-many
     authorId String
@@ -425,7 +425,7 @@ model FeatureVotes {
 
     // Link to feature - one-to-one
     featureId String
-    feature   Feature   @relation(fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    feature   Feature   @relation("FeatureVotes", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@unique([featureId, voterId])
 
@@ -441,7 +441,7 @@ model FeatureComments {
 
     // Link to feature - one-to-many
     featureId String
-    feature   Feature @relation(fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    feature   Feature @relation("FeatureComments", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@map("Feature Comments")
 }

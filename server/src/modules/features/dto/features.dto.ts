@@ -7,17 +7,17 @@ export class FeaturePayload {
     @IsString()
     @IsNotEmpty()
     @ApiProperty({ example: 'My Feature Title', description: 'The title of the feature' })
-    title!: string;
+    featureTitle!: string;
 
     @IsString()
     @IsNotEmpty()
     @ApiProperty({ example: 'My Feature Description', description: 'The description of the feature' })
-    description!: string;
+    featureContent!: string;
 
     @IsNotEmpty()
     @IsEnum(FeatureCategory)
     @ApiProperty({ enum: FeatureCategory, example: FeatureCategory.OTHER, description: 'The category of the feature' })
-    category!: FeatureCategory;
+    featureCategory!: FeatureCategory;
 }
 
 @Exclude()
