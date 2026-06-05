@@ -406,7 +406,7 @@ model Feature {
     @@map("Features")
 }
 
-enum VoteType {
+enum VoteVariant {
     UPVOTE
     DOWNVOTE
 }
@@ -414,7 +414,7 @@ enum VoteType {
 model FeatureVotes {
     id String @id @default(uuid())
 
-    voteType VoteType
+    voteVariant VoteVariant
 
     updatedAt DateTime @updatedAt()
     createdAt DateTime @default(now())

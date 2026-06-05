@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsNotEmpty, IsString, IsEnum } from 'class-validator';
-import { FeatureCategory, FeatureStatus, VoteType } from '@prisma/client';
+import { FeatureCategory, FeatureStatus, VoteVariant } from '@prisma/client';
 
 export class FeaturePayload {
     @IsString()
@@ -27,8 +27,8 @@ export class FeatureVotesDto {
     id!: string;
 
     @Expose()
-    @ApiProperty({ enum: VoteType, example: VoteType.UPVOTE, description: 'The type of the vote' })
-    voteType!: VoteType;
+    @ApiProperty({ enum: VoteVariant, example: VoteVariant.UPVOTE, description: 'The type of the vote' })
+    voteVariant!: VoteVariant;
 
     @Expose()
     @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the user who voted' })
