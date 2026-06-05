@@ -17,7 +17,7 @@ export class CreateAccountDto {
 
     @IsString()
     @IsNotEmpty()
-    @ApiProperty({ enum: AccountType, description: 'The type of the account' })
+    @ApiProperty({ enum: AccountType, example: AccountType.WALLET, description: 'The type of the account' })
     type!: AccountType;
 
     @IsString()

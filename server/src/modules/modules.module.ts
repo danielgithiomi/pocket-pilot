@@ -4,7 +4,8 @@ import { BillsModule } from './bills/bills.module';
 import { GoalsModule } from './goals/goals.module';
 import { SplitrModule } from './splitr/splitr.module';
 import { WalletModule } from './wallet/wallet.module';
-import { Module, DynamicModule } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
+import { FeaturesModule } from './features/features.module';
 import { IdentityModule } from './identity/identity.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { DatabaseModule } from '@infrastructure/database/database.module';
@@ -27,6 +28,7 @@ const JWTModule: DynamicModule = JwtModule.register({
         SplitrModule,
         WalletModule,
         IdentityModule,
+        FeaturesModule,
         DatabaseModule,
         PreferencesModule,
     ],

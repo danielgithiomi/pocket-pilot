@@ -2,9 +2,8 @@ import { ExposeEnumDto } from '@common/types';
 import { formatEnumForFrontend } from '@libs/utils';
 import { plainToInstance } from 'class-transformer';
 import { Account, AccountType, Prisma } from '@prisma/client';
-import { AccountsCache } from '@modules/wallet/cache/accounts.cache';
-import { AccountDetailsCache } from '../cache/account-details.cache';
 import { AccountRepository } from '../repositories/account.repository';
+import { AccountsCache, AccountDetailsCache } from '../cache/wallet.cache';
 import { TransactionRepository } from '../repositories/transaction.respository';
 import {
     CreateAccountDto,

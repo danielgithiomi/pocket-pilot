@@ -386,7 +386,7 @@ model Feature {
     upvoteCount   Int @default(0)
     downvoteCount Int @default(0)
 
-    featureStatus   FeatureStatus
+    featureStatus   FeatureStatus @default(NEW)
     featureCategory FeatureCategory
 
     updatedAt DateTime @updatedAt()
@@ -399,10 +399,10 @@ model Feature {
     featureComments FeatureComments[]
 
     // Link to user - one-to-many
-    userId String
-    user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    authorId String
+    user   User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
-    @@unique([id, userId])
+    @@unique([id, authorId])
     @@map("Features")
 }
 

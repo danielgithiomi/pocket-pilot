@@ -1,9 +1,9 @@
 import { CategoryType } from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
+import { CategoriesCache } from '../cache/wallet.cache';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
 import { normalizeCategories, normalizeCategoryName } from '@libs/utils';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { CategoriesCache } from '@modules/wallet/cache/categories.cache';
 import { CategoriesRepository } from '../repositories/categories.repository';
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@common/constants';
 import { CategoriesDto, CreateCategoryDto, DeleteCategoryPayload } from '../dto/categories.dto';

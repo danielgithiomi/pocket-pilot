@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { SquadsCache } from './caches/squads.cache';
-import { SplitrCache } from './caches/splitr.cache';
 import { SquadsService } from './services/squads.service';
 import { SplitrService } from './services/splitr.service';
+import { SquadsCache, SplitrCache } from './caches/splitr.cache';
 import { IdentityModule } from '@modules/identity/identity.module';
 import { SquadsController } from './controllers/squads.controller';
 import { SplitrController } from './controllers/splitr.controller';
