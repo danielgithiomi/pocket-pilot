@@ -1,9 +1,10 @@
-import { Button } from "@atoms/button";
+import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { ContactItem } from '@global/types';
 import { RouterLink } from '@angular/router';
 import { Accordion } from '@molecules/accordion';
 import { LucideAngularModule } from 'lucide-angular';
+import { TabList, TabListItem } from '@atoms/tab-list';
 import { CONTACT_ITEMS, FAQ_ITEMS } from '@global/constants';
 import { Component, computed, inject, signal } from '@angular/core';
 import { DrawerService } from '@infrastructure/services/drawer.service';
@@ -12,13 +13,14 @@ import { DrawerService } from '@infrastructure/services/drawer.service';
     selector: 'faqs-features',
     styleUrl: './faqs-features.css',
     templateUrl: './faqs-features.html',
-    imports: [NgClass, LucideAngularModule, Accordion, RouterLink, Button],
+    imports: [NgClass, LucideAngularModule, Accordion, RouterLink, Button, TabList],
 })
 export class FaqsFeatures {
     // ICONS
     protected readonly iconSize = 14;
 
     // SIGNAL STATES
+    protected readonly activeTabIndex = signal<number>(0);
     protected readonly isFeatureFormOpen = signal<boolean>(false);
     protected readonly isLoadingFeatures = signal<boolean>(false);
 
@@ -31,6 +33,18 @@ export class FaqsFeatures {
         CONTACT_ITEMS.filter((item) => item.id === 'email'),
     );
 
+    // COMPUTED
+    protected readonly tabItems = computed<TabListItem[]>(() => [
+        {
+            value: 'all',
+            label: 'All Requests',
+        },
+        {
+            value: 'personal',
+            label: 'My Requests',
+        },
+    ]);
+
     // UTILITIES
     protected handleOpenFeatureForm() {
         this.isFeatureFormOpen.set(true);
@@ -38,5 +52,9 @@ export class FaqsFeatures {
 
     protected handleCloseFeatureForm() {
         this.isFeatureFormOpen.set(false);
+    }
+
+    protected onTabSelected(index: number) {
+        this.activeTabIndex.set(index);
     }
 }

@@ -6,7 +6,9 @@
     >
         <div class="faqs-features-panel-primary">
             <div class="flex flex-col space-y-3 cursor-default!">
-                <div class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary">
+                <div
+                    class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary"
+                >
                     <p class="text-xs text-primary font-semibold shadow-xl">FAQs</p>
                 </div>
 
@@ -14,7 +16,8 @@
 
                 <div class="overflow-hidden w-3/4 mt-4">
                     <p class="overflow-hidden text-sm text-tertiary-dark text-ellipsis">
-                        Find answers to common questions about Pocket Pilot, its features, and how to use it.
+                        Find answers to common questions about Pocket Pilot, its features, and how
+                        to use it.
                     </p>
                 </div>
             </div>
@@ -37,13 +40,17 @@
                         <div
                             class="size-8 grid place-items-center border group-hover:border-loader-primary bg-alternate-background rounded-lg transition-custom"
                         >
-                            <lucide-icon [img]="contactItem.icon" [size]="iconSize" [name]="contactItem.id" />
+                            <lucide-icon
+                                [size]="iconSize"
+                                [name]="contactItem.id"
+                                [img]="contactItem.icon"
+                            />
                         </div>
                         <a
                             [href]="contactItem.link"
                             class="text-sm group-hover:underline group-hover:text-primary transition-custom"
-                            >{{ contactItem.value }}</a
-                        >
+                            >{{ contactItem.value }}
+                        </a>
                     </div>
                 }
             </div>
@@ -51,7 +58,11 @@
 
         <div class="faqs-features-panel-secondary">
             <div class="w-full flex-1 py-0 lg:py-6">
-                <molecule-accordion id="faqs-accordion" [items]="faqItems" [defaultExpandedIndexes]="[0]" />
+                <molecule-accordion
+                    id="faqs-accordion"
+                    [items]="faqItems"
+                    [defaultExpandedIndexes]="[0]"
+                />
             </div>
         </div>
     </section>
@@ -62,14 +73,24 @@
         [ngClass]="{ 'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed() }"
     >
         <div class="faqs-features-panel-secondary">
+            <atom-tab-list
+                [items]="tabItems()"
+                [activeItem]="activeTabIndex()"
+                (selectedIndex)="onTabSelected($event)"
+            />
 
-            
-            
+            <div class="w-full flex-1 py-0 lg:py-6">
+
+                
+
+            </div>
         </div>
 
         <div class="faqs-features-panel-primary">
             <div class="flex flex-col space-y-3 cursor-default!">
-                <div class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary">
+                <div
+                    class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary"
+                >
                     <p class="text-xs text-primary font-semibold shadow-xl">Features</p>
                 </div>
 
@@ -77,8 +98,9 @@
 
                 <div class="overflow-hidden w-3/4 mt-4">
                     <p class="overflow-hidden text-sm text-tertiary-dark text-ellipsis">
-                        At Pocket Pilot, we're always looking for ways to improve and add new features to make your
-                        experience better. If you have an idea for a new feature, please let us know.
+                        At Pocket Pilot, we're always looking for ways to improve and add new
+                        features to make your experience better. If you have an idea for a new
+                        feature, please let us know.
                     </p>
                 </div>
             </div>
@@ -86,8 +108,8 @@
             <div class="flex flex-col space-y-6 w-full lg:w-3/4 overflow-hidden">
                 <div class="flex flex-col space-y-4">
                     <p class="text-sm text-tertiary-dark text-ellipsis">
-                        You can suggest a feature by upvoting, downvoting or commenting on a feature. Can't see the
-                        feature you're looking for?
+                        You can suggest a feature by upvoting, downvoting or commenting on a
+                        feature. Can't see the feature you're looking for?
                     </p>
 
                     <atom-button

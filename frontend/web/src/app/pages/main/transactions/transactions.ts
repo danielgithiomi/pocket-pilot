@@ -67,11 +67,11 @@ export class Transactions {
   protected readonly transactionCategories = this.categoriesService.getTransactionCategories;
 
   // States
-  protected activeTabIndex = signal<number>(0);
   protected isDeleting = signal<boolean>(false);
   protected isFormOpen = signal<boolean>(false);
   protected isSubmitting = signal<boolean>(false);
-  protected isTransferTransaction = signal<boolean>(false);
+  protected readonly activeTabIndex = signal<number>(0);
+  protected readonly isTransferTransaction = signal<boolean>(false);
 
   // Computed
   protected isFetching = computed(() => {
