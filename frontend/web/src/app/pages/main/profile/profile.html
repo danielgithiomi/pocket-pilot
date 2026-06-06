@@ -108,13 +108,12 @@
         (clearOutput)="editProfileForm.email().controlValue.set('')"
       />
 
-      <atom-input
-        id="update-phone-number"
-        type="text"
+      <atom-phone-number
         [inverted]="true"
         label="Phone Number"
-        placeholder="123467890"
-        autocomplete="phone-number"
+        defaultCountryIso="MU"
+        placeholder="1234 5678"
+        id="update-phone-number"
         [formField]="editProfileForm.phoneNumber"
         (clearOutput)="editProfileForm.phoneNumber().controlValue.set('')"
       />
