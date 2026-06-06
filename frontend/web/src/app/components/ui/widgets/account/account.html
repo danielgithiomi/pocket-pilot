@@ -56,9 +56,16 @@
 
                                     <div class="flex flex-row items-center justify-between gap-3 w-full">
 
-                                        <lucide-icon (click)="toggleBalanceVisibility($event)" [img]="account().isBalanceVisible ? EyeOff : EyeOpen"
-                                                     [size]="iconSize" class="visibility"
-                                                     name="scan"/>
+                                        @if (isTogglingBalanceVisibility()) {
+                                            <div class="visibility-loader"></div>
+                                        }@else {
+                                            <lucide-icon 
+                                            (click)="toggleBalanceVisibility($event)" 
+                                            [ngClass]="{ 'animate-pulse': isTogglingBalanceVisibility() }"
+                                            [img]="account().isBalanceVisible ? EyeOff : EyeOpen"
+                                                         [size]="iconSize" class="visibility"
+                                                         name="scan"/>
+                                        }
 
                                         @if (isDeleting()) {
                                             <div class="delete-loader"></div>
