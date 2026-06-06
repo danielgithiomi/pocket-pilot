@@ -30,10 +30,14 @@
 :root {
     /* Base Colors */
     /* --primary: #e6ff2b; */
-    --primary: #5b9279; /* Jungle Teal */
-    --secondary: #0b4650; /* Blue */
-    --tertiary: #c6ff33; /* Yellow */
-    --quaternary: #fe7f2d; /* Orange */
+    --primary: #5b9279;
+    /* Jungle Teal */
+    --secondary: #0b4650;
+    /* Blue */
+    --tertiary: #c6ff33;
+    /* Yellow */
+    --quaternary: #fe7f2d;
+    /* Orange */
     --transparent: transparent;
     --loader-primary: rgba(91, 146, 121, 50%);
     --loader-secondary: rgba(254, 127, 45, 50%);
@@ -43,7 +47,8 @@
     --success: #22c55d;
     --warning: #fbbf24;
     --error: #fa2c05;
-    --info: #009cbc; /* Cyan */
+    --info: #009cbc;
+    /* Cyan */
     /* --info: #6290c8; Dusty Denim */
     --income: var(--emerald);
     --expense: var(--apple-red);
@@ -82,14 +87,15 @@
 
     /* Semantic Colors */
     --body-background: var(--white);
-    --alternate-background: var(--gray3);
     --inverted-background: var(--dark);
+    --alternate-background: var(--gray3);
 
-    --primary-text: var(--dark);
-    --alternate-text: var(--gray1);
-    --inverted-text: var(--white);
     --muted: var(--muted);
     --muted-text: var(--gray2);
+    --primary-text: var(--dark);
+    --inverted-text: var(--white);
+    --alternate-text: var(--gray1);
+    --reactive-text: var(--muted-text);
 
     /* Font & Styles */
     --filter-blur: 3px;
@@ -113,6 +119,7 @@
     --alternate-text: var(--gray1);
     --muted: var(--muted);
     --muted-text: var(--gray2);
+    --reactive-text: var(--muted-text);
 }
 
 :root.dark {
@@ -125,6 +132,7 @@
     --alternate-text: var(--gray4);
     --muted: var(--muted);
     --muted-text: var(--gray2);
+    --reactive-text: var(--tertiary-dark);
 }
 
 /* Default: Follow system preference when no class is set */
@@ -139,6 +147,7 @@
         --alternate-text: var(--gray1);
         --muted: var(--muted);
         --muted-text: var(--gray2);
+        --reactive-text: var(--muted-text);
     }
 }
 
@@ -153,6 +162,7 @@
         --alternate-text: var(--gray4);
         --muted: var(--muted);
         --muted-text: var(--gray2);
+        --reactive-text: var(--tertiary-dark);
     }
 }
 
@@ -193,6 +203,7 @@
     --color-alternate-text: var(--alternate-text);
     --color-inverted-text: var(--inverted-text);
     --color-muted-text: var(--muted-text);
+    --color-reactive-text: var(--reactive-text);
 }
 
 /* Body & Layout */
@@ -223,16 +234,19 @@ main {
 }
 
 @layer base {
+
     /* HEADER START */
     header {
         @apply w-full bg-alternate-background inset-0 h-[8vh] flex flex-row items-center;
     }
+
     /* HEADER END */
 
     /* SECTION START */
     section {
         @apply w-full flex flex-col;
     }
+
     /* SECTION END */
 
     /* HEADINGS START */
@@ -273,6 +287,7 @@ main {
     }
 
     form {
+
         .input-field,
         .select-field,
         .text-area-field,
@@ -365,6 +380,7 @@ main {
 }
 
 @layer components {
+
     /* PAGES START */
     .page {
         @apply p-4 h-full;
@@ -501,6 +517,7 @@ main {
         transform: translateX(-100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -512,6 +529,7 @@ main {
         transform: translateX(100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -523,6 +541,7 @@ main {
         transform: translateY(-100%);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -534,6 +553,7 @@ main {
         transform: translateY(-25%);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -545,6 +565,7 @@ main {
         transform: translateX(-50%) translateY(50%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0) translateY(0);
         opacity: 1;
@@ -556,6 +577,7 @@ main {
         transform: translateX(50%) translateY(-50%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0) translateY(0);
         opacity: 1;
@@ -566,6 +588,7 @@ main {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }

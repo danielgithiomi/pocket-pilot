@@ -8,12 +8,13 @@ import { TabList, TabListItem } from '@atoms/tab-list';
 import { CONTACT_ITEMS, FAQ_ITEMS } from '@global/constants';
 import { Component, computed, inject, signal } from '@angular/core';
 import { DrawerService } from '@infrastructure/services/drawer.service';
+import { FeatureItem } from '@structural/main/feature-item/feature-item';
 
 @Component({
     selector: 'faqs-features',
     styleUrl: './faqs-features.css',
     templateUrl: './faqs-features.html',
-    imports: [NgClass, LucideAngularModule, Accordion, RouterLink, Button, TabList],
+    imports: [NgClass, LucideAngularModule, Accordion, RouterLink, Button, TabList, FeatureItem],
 })
 export class FaqsFeatures {
     // ICONS
