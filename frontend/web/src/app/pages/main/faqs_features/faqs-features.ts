@@ -10,6 +10,7 @@ import { DrawerService } from '@infrastructure/services/drawer.service';
 
 @Component({
     selector: 'faqs-features',
+    styleUrl: './faqs-features.css',
     templateUrl: './faqs-features.html',
     imports: [NgClass, LucideAngularModule, Accordion, RouterLink, Button],
 })
