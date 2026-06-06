@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { FeatureDto, FeaturePayload } from '../dto/features.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
+import { FeatureDto, FeaturePayload, UpdateFeatureStatusPayload } from '../dto/features.dto';
 
 @Injectable()
 export class FeaturesRepository {
@@ -27,6 +27,16 @@ export class FeaturesRepository {
             where: { authorId: userId },
             include: { featureVotes: true },
             orderBy: { createdAt: 'desc' },
+        });
+    }
+
+    updateFeatureStatusById(featureId: string, payload: UpdateFeatureStatusPayload): Promise<FeatureDto> {
+        const { featureStatus } = payload;
+
+        return this.db.feature.update({
+            where: { id: featureId },
+            data: { featureStatus },
+            include: { featureVotes: true },
         });
     }
 

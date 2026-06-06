@@ -6,8 +6,8 @@ import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { FeatureDto, FeaturePayload, FeaturesWithCountDto } from '../dto/features.dto';
-import { Body, Controller, Delete, Get, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FeatureDto, FeaturePayload, FeaturesWithCountDto, UpdateFeatureStatusPayload } from '../dto/features.dto';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 
 @Controller('features')
 export class FeaturesController {
@@ -115,6 +115,32 @@ export class FeaturesController {
     })
     async getUserFeatureRequests(@UserInRequest() user: User): Promise<FeatureDto[]> {
         return this.featuresService.getUserFeatureRequests(user.id);
+    }
+
+    @Patch(':featureId/status')
+    @UseGuards(CookiesAuthGuard)
+    @ApiCookieAuth('access_token')
+    @Summary('Feature status updated', 'The user updated the status of a feature request')
+    @ApiParam({ name: 'featureId', description: 'The ID of the feature to update the status of' })
+    @ApiOperation({
+        summary: 'Update the feature status',
+        description: 'Modify the status of a feature by its ID',
+    })
+    @ApiResponse({
+        status: 200,
+        type: FeatureDto,
+        description: 'Feature status updated successfully',
+    })
+    async updateFeatureStatusById(
+        @Param('featureId') featureId: string,
+        @Body() payload: UpdateFeatureStatusPayload,
+    ): Promise<VoidResourceResponse> {
+        const updatedFeature = await this.featuresService.updateFeatureStatusById(featureId, payload);
+
+        return {
+            message: 'Feature status updated!',
+            details: `Your [${updatedFeature.featureTitle}] feature status has been updated to [${updatedFeature.featureStatus}] successfuly.`,
+        };
     }
 
     @Delete(':featureId')

@@ -2,7 +2,7 @@ import { ExposeEnumDto } from '@common/types/api.types';
 import { FeaturesCache } from '../cache/features.cache';
 import { formatEnumForFrontend } from '@libs/utils/formatters';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { FeatureDto, FeaturePayload } from '../dto/features.dto';
+import { FeatureDto, FeaturePayload, UpdateFeatureStatusPayload } from '../dto/features.dto';
 import { FeaturesRepository } from '../repositories/features.repository';
 import { FeatureCategory, FeatureStatus, VoteVariant } from '@prisma/client';
 
@@ -39,6 +39,13 @@ export class FeaturesService {
         return this.featureCache.getOrSetCache<FeatureDto[]>(userId, () =>
             this.featuresRepository.getUserFeatureRequests(userId),
         );
+    }
+
+    async updateFeatureStatusById(featureId: string, payload: UpdateFeatureStatusPayload): Promise<FeatureDto> {
+        const updatedFeature = await this.featuresRepository.updateFeatureStatusById(featureId, payload);
+        const { authorId } = updatedFeature;
+        await this.invalidateCache(authorId);
+        return updatedFeature;
     }
 
     async deleteFeatureRequestById(userId: string, featureId: string): Promise<FeatureDto> {

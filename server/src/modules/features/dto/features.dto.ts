@@ -20,6 +20,13 @@ export class FeaturePayload {
     featureCategory!: FeatureCategory;
 }
 
+export class UpdateFeatureStatusPayload {
+    @IsNotEmpty()
+    @IsEnum(FeatureStatus)
+    @ApiProperty({ enum: FeatureStatus, example: FeatureStatus.NEW, description: 'The status of the feature' })
+    featureStatus!: FeatureStatus;
+}
+
 @Exclude()
 export class FeatureVotesDto {
     @Expose()
