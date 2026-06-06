@@ -80,9 +80,17 @@
                 (selectedIndex)="onTabSelected($event)"
             />
 
-            <div class="w-full flex-1 py-0 lg:py-6 flex flex-col space-y-4 mt-4">
-                @for (feature of displayFeatures(); track feature.id) {
-                    <feature-item [id]="feature.id" [feature]="feature" />
+            @let isLoading = isLoadingFeatures();
+            <div
+                class="w-full flex-1 py-0 lg:py-6 flex flex-col space-y-4 mt-4"
+                [ngClass]="{ 'grid place-items-center': isLoading }"
+            >
+                @if (isLoading) {
+                    <div class="layered-loader"></div>
+                } @else {
+                    @for (feature of displayFeatures(); track feature.id) {
+                        <feature-item [id]="feature.id" [feature]="feature" />
+                    }
                 }
             </div>
         </div>
@@ -115,8 +123,8 @@
 
                     <atom-button
                         variant="primary"
-                        id="suggest-feature-button"
                         label="Suggest a Feature"
+                        id="suggest-feature-button"
                         [disabled]="isLoadingFeatures()"
                         (clicked)="handleOpenFeatureForm()"
                     />

@@ -29,3 +29,14 @@ export interface Feature {
     featureVotes: FeatureVote[];
     featureComments: FeatureComment[];
 }
+
+export interface FeaturesWithCount {
+    count: number;
+    features: Feature[];
+}
+
+export interface FeatureServiceConstants {
+    featureStatuses: FeatureStatusEnum[];
+    featureVoteVariants: VoteVariantEnum[];
+    featureCategories: FeatureCategoryEnum[];
+}

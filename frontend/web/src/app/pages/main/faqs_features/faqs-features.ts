@@ -5,6 +5,7 @@ import { Accordion } from '@molecules/accordion';
 import { ContactItem, Feature } from '@global/types';
 import { LucideAngularModule } from 'lucide-angular';
 import { TabList, TabListItem } from '@atoms/tab-list';
+import { FeaturesService } from '@api/features.service';
 import { CONTACT_ITEMS, FAQ_ITEMS } from '@global/constants';
 import { Component, computed, inject, signal } from '@angular/core';
 import { DrawerService } from '@infrastructure/services/drawer.service';
@@ -21,12 +22,12 @@ export class FaqsFeatures {
     protected readonly iconSize = 14;
 
     // SIGNAL STATES
-    protected readonly activeTabIndex = signal<number>(0);
+    protected readonly activeTabIndex = signal<0 | 1>(0);
     protected readonly isFeatureFormOpen = signal<boolean>(false);
-    protected readonly isLoadingFeatures = signal<boolean>(false);
 
     // SERVICES
     protected readonly drawerService = inject(DrawerService);
+    protected readonly featuresService = inject(FeaturesService);
 
     // DATA
     protected readonly faqItems = FAQ_ITEMS;
@@ -34,7 +35,16 @@ export class FaqsFeatures {
         CONTACT_ITEMS.filter((item) => item.id === 'email'),
     );
 
+    // STORE
+    private readonly featureStatuses = this.featuresService.getFeatureStatuses();
+    private readonly featureRequests = this.featuresService.getFeatureRequests();
+    private readonly featureCategories = this.featuresService.getFeatureCategories();
+    private readonly featureVoteVariants = this.featuresService.getFeatureVoteVariants();
+    private readonly userFeatureRequests = this.featuresService.getUserFeatureRequests();
+
     // COMPUTED
+    protected readonly isLoadingFeatures = this.featuresService.isLoading();
+    protected readonly hasFeaturesError = this.featuresService.hasError();
     protected readonly tabItems = computed<TabListItem[]>(() => [
         {
             value: 'all',
@@ -45,7 +55,9 @@ export class FaqsFeatures {
             label: 'My Requests',
         },
     ]);
-    protected readonly displayFeatures = computed<Feature[]>(() => []);
+    protected readonly displayFeatures = computed<Feature[]>(() =>
+        this.activeTabIndex() === 0 ? this.featureRequests().features : this.userFeatureRequests(),
+    );
 
     // UTILITIES
     protected handleOpenFeatureForm() {
@@ -57,6 +69,6 @@ export class FaqsFeatures {
     }
 
     protected onTabSelected(index: number) {
-        this.activeTabIndex.set(index);
+        this.activeTabIndex.set(index as 0 | 1);
     }
 }

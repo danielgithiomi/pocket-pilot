@@ -1,8 +1,8 @@
 import { Badge } from '@atoms/badge';
 import { Feature } from '@global/types';
-import { Component, computed, input } from '@angular/core';
+import { formatDate } from '@libs/utils';
+import { Component, computed, effect, input } from '@angular/core';
 import { LucideAngularModule, ChevronsUp, MessageSquareReply } from 'lucide-angular';
-import { formatFullDate } from '@libs/utils';
 
 @Component({
     selector: 'feature-item',
@@ -22,7 +22,22 @@ export class FeatureItem {
     // COMPUTED
     protected readonly featureId = computed<string>(() => `feature-item-${this.id()}`);
     protected readonly formattedDate = computed<string>(() => {
-        const date = this.feature().createdAt.toISOString();
-        return formatFullDate(date);
+        const date = this.feature().createdAt.toString();
+        console.log('date', date);
+        return formatDate(date);
+    });
+    protected readonly formattedAuthorName = computed<string>(() => {
+        return this.feature().authorId.slice(0, 6);
+        // const author = this.feature().authorId;
+        // const [firstName, lastName] = author.split(' ');
+
+        // const initial = lastName.charAt(0).toUpperCase();
+
+        // return `${firstName} ${initial}.`;
+    });
+
+    private readonly effectTest = effect(() => {
+        const feature = this.feature();
+        console.log(feature);
     });
 }

@@ -45,8 +45,8 @@ export class TabList {
     if (this.disabled()) return;
 
     this.activeTab.set(item.value);
-    this.selectedValue.emit(item.value);
     this.selectedIndex.emit(index);
+    this.selectedValue.emit(item.value);
   }
 
   isActive(item: TabListItem): boolean {
