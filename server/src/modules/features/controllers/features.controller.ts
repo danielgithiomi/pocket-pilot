@@ -91,11 +91,8 @@ export class FeaturesController {
         type: FeaturesWithCountDto,
         description: 'Feature requests with count fetched successfully',
     })
-    async getFeatureRequests(): Promise<FeaturesWithCountDto> {
-        const features = await this.featuresService.getFeatureRequests();
-        const count = features.length;
-
-        return { count, features };
+    getFeatureRequests(): Promise<FeaturesWithCountDto> {
+        return this.featuresService.getFeatureRequests();
     }
 
     @Get('user')

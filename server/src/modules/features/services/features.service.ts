@@ -1,10 +1,10 @@
 import { ExposeEnumDto } from '@common/types/api.types';
 import { FeaturesCache } from '../cache/features.cache';
 import { formatEnumForFrontend } from '@libs/utils/formatters';
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { FeatureDto, FeaturePayload, UpdateFeatureStatusPayload } from '../dto/features.dto';
 import { FeaturesRepository } from '../repositories/features.repository';
 import { FeatureCategory, FeatureStatus, VoteVariant } from '@prisma/client';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { FeatureDto, FeaturePayload, FeaturesWithCountDto, UpdateFeatureStatusPayload } from '../dto/features.dto';
 
 @Injectable()
 export class FeaturesService {
@@ -31,8 +31,11 @@ export class FeaturesService {
         return createdFeature;
     }
 
-    getFeatureRequests(): Promise<FeatureDto[]> {
-        return this.featuresRepository.getFeatureRequests();
+    getFeatureRequests(): Promise<FeaturesWithCountDto> {
+        return this.featureCache.getOrSetCache<FeaturesWithCountDto>('all-features', async () => {
+            const features = await this.featuresRepository.getFeatureRequests();
+            return { count: features.length, features };
+        });
     }
 
     getUserFeatureRequests(userId: string): Promise<FeatureDto[]> {
@@ -41,7 +44,24 @@ export class FeaturesService {
         );
     }
 
+    async getFeatureById(featureId: string): Promise<FeatureDto> {
+        const { features }: FeaturesWithCountDto = await this.getFeatureRequests();
+
+        const foundFeature = features.find(feature => feature.id === featureId);
+
+        if (!foundFeature)
+            throw new NotFoundException({
+                name: 'FEATURE_NOT_FOUND',
+                title: 'Feature Not Found!',
+                message: 'The feature you are trying to access does not exist in the database.',
+            });
+
+        return foundFeature;
+    }
+
     async updateFeatureStatusById(featureId: string, payload: UpdateFeatureStatusPayload): Promise<FeatureDto> {
+        await this.assertainFeatureExists(featureId);
+
         const updatedFeature = await this.featuresRepository.updateFeatureStatusById(featureId, payload);
         const { authorId } = updatedFeature;
         await this.invalidateCache(authorId);
@@ -49,16 +69,12 @@ export class FeaturesService {
     }
 
     async deleteFeatureRequestById(userId: string, featureId: string): Promise<FeatureDto> {
+        await this.assertainFeatureExists(featureId);
+
         const deletedFeature = await this.featuresRepository.deleteFeatureRequestById(featureId);
         const { authorId } = deletedFeature;
 
-        if (authorId !== userId) {
-            throw new ForbiddenException({
-                name: 'FORBIDDEN_OPERATION',
-                title: 'Feature Delete Forbidden!',
-                message: 'You are not authorized to delete this feature request.',
-            });
-        }
+        await this.assertainFeatureBelongsToUser(featureId, userId);
 
         await this.invalidateCache(authorId);
         return deletedFeature;
@@ -68,5 +84,36 @@ export class FeaturesService {
     private async invalidateCache(userId: string): Promise<void> {
         await this.featureCache.invalidateCache(userId);
         await this.featureCache.invalidateCache('all-features');
+    }
+
+    private async assertainFeatureExists(featureId: string): Promise<boolean> {
+        const { features }: FeaturesWithCountDto = await this.getFeatureRequests();
+
+        const foundFeature = features.find(feature => feature.id === featureId);
+
+        if (!foundFeature)
+            throw new NotFoundException({
+                name: 'FEATURE_NOT_FOUND',
+                title: 'Feature Not Found!',
+                message: 'The feature you are trying to access does not exist in the database.',
+            });
+
+        return !!foundFeature;
+    }
+
+    private async assertainFeatureBelongsToUser(featureId: string, userId: string): Promise<boolean> {
+        await this.assertainFeatureExists(featureId);
+
+        const feature = await this.getFeatureById(featureId);
+        const isOwnedByUser = feature.authorId === userId;
+
+        if (!isOwnedByUser)
+            throw new ForbiddenException({
+                name: 'FORBIDDEN_OPERATION',
+                title: 'Feature Access Forbidden!',
+                message: 'You are not authorized to access this feature or modify it.',
+            });
+
+        return !!isOwnedByUser;
     }
 }
