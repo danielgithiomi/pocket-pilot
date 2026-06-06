@@ -1,13 +1,13 @@
-import { ExposeEnumDto } from '@common/types';
 import { hoursToMilliseconds } from '@libs/utils';
 import { CookiesAuthGuard } from '@common/guards';
 import { Summary, UserInRequest } from '@common/decorators';
 import { FeaturesService } from '../services/features.service';
+import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { FeatureDto, FeaturePayload, FeaturesWithCountDto } from '../dto/features.dto';
-import { Body, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 
 @Controller('features')
 export class FeaturesController {
@@ -81,7 +81,7 @@ export class FeaturesController {
     @Get()
     @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
-    @CacheKey('features:all-requests')
+    @CacheKey('features:all-features')
     @UseInterceptors(CacheInterceptor)
     @CacheTTL(hoursToMilliseconds(12))
     @Summary('Feature requests retrieved', 'The application retrieved all feature requests')
@@ -115,5 +115,28 @@ export class FeaturesController {
     })
     async getUserFeatureRequests(@UserInRequest() user: User): Promise<FeatureDto[]> {
         return this.featuresService.getUserFeatureRequests(user.id);
+    }
+
+    @Delete(':featureId')
+    @UseGuards(CookiesAuthGuard)
+    @ApiCookieAuth('access_token')
+    @Summary('Feature deleted', 'The user deleted a feature request')
+    @ApiParam({ name: 'featureId', description: 'The ID of the feature to delete' })
+    @ApiOperation({ summary: 'Delete a feature request', description: 'Delete a feature request by its ID' })
+    @ApiResponse({
+        status: 200,
+        type: VoidResourceResponse,
+        description: 'Feature request deleted successfully',
+    })
+    async deleteFeatureRequestById(
+        @UserInRequest() user: User,
+        @Param('featureId') featureId: string,
+    ): Promise<VoidResourceResponse> {
+        const deletedFeature = await this.featuresService.deleteFeatureRequestById(user.id, featureId);
+
+        return {
+            message: 'Feature request deleted!',
+            details: `Your [${deletedFeature.featureTitle}] feature request has been deleted successfuly.`,
+        };
     }
 }

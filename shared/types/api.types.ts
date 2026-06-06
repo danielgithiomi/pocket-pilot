@@ -95,4 +95,10 @@ export interface Endpoints {
   all_bills: string;
   user_bills: string;
   bill_types: string;
+
+  features: string;
+  user_features: string;
+  feature_status: string;
+  feature_categories: string;
+  feature_vote_variants: string;
 }

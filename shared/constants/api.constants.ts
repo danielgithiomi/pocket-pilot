@@ -46,6 +46,13 @@ export const API_ENDPOINTS = {
   squads: "splitr/squads",
   orderTags: "splitr/tags",
 
+  // features
+  features: "features",
+  user_features: "features/user",
+  feature_status: "features/status",
+  feature_categories: "features/categories",
+  feature_vote_variants: "features/vote-variants",
+
   // transactions
   all_transactions: "accounts/transactions/all",
   user_transactions: "accounts/transactions/user",

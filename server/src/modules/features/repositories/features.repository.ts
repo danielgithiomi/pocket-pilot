@@ -29,4 +29,8 @@ export class FeaturesRepository {
             orderBy: { createdAt: 'desc' },
         });
     }
+
+    deleteFeatureRequestById(featureId: string): Promise<FeatureDto> {
+        return this.db.feature.delete({ where: { id: featureId }, include: { featureVotes: true } });
+    }
 }

@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { ExposeEnumDto } from '@common/types/api.types';
 import { FeaturesCache } from '../cache/features.cache';
 import { formatEnumForFrontend } from '@libs/utils/formatters';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { FeatureDto, FeaturePayload } from '../dto/features.dto';
 import { FeaturesRepository } from '../repositories/features.repository';
 import { FeatureCategory, FeatureStatus, VoteVariant } from '@prisma/client';
@@ -41,9 +41,25 @@ export class FeaturesService {
         );
     }
 
+    async deleteFeatureRequestById(userId: string, featureId: string): Promise<FeatureDto> {
+        const deletedFeature = await this.featuresRepository.deleteFeatureRequestById(featureId);
+        const { authorId } = deletedFeature;
+
+        if (authorId !== userId) {
+            throw new ForbiddenException({
+                name: 'FORBIDDEN_OPERATION',
+                title: 'Feature Delete Forbidden!',
+                message: 'You are not authorized to delete this feature request.',
+            });
+        }
+
+        await this.invalidateCache(authorId);
+        return deletedFeature;
+    }
+
     // HELPER METHODS
     private async invalidateCache(userId: string): Promise<void> {
         await this.featureCache.invalidateCache(userId);
-        await this.featureCache.invalidateCache('all-requests');
+        await this.featureCache.invalidateCache('all-features');
     }
 }
