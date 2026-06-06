@@ -1,3 +1,4 @@
+import { getNationalNumberDigits } from '@atoms/phone-number';
 import { required, schema, validate } from '@angular/forms/signals';
 
 // FORM SCHEMA
@@ -16,7 +17,6 @@ export const INITIAL_ONBOARDING_FORM_STATE: OnboardingFormSchema = {
 };
 
 export const ONBOARDING_FORM_VALIDATION_SCHEMA = schema<OnboardingFormSchema>((root) => {
-  // Phone Number (international format: +{countryCode}{nationalNumber})
   required(root.phoneNumber, { message: 'The phone number is required field!' });
   validate(root.phoneNumber, (control) => {
     const number = control.value();
@@ -29,7 +29,7 @@ export const ONBOARDING_FORM_VALIDATION_SCHEMA = schema<OnboardingFormSchema>((r
       };
     }
 
-    const nationalDigits = number.replace(/^\+\d{1,4}/, '');
+    const nationalDigits = getNationalNumberDigits(number);
     if (nationalDigits.length < 7) {
       return {
         kind: 'phone-number-too-short',

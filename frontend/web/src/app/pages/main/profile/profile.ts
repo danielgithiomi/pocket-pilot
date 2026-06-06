@@ -6,6 +6,7 @@ import { form } from '@angular/forms/signals';
 import { AwsService } from '@api/aws.service';
 import { AuthService } from '@api/auth.service';
 import { UserService } from '@api/user.service';
+import { DEFAULT_COUNTRY_ISO } from '@global/constants';
 import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,11 +17,11 @@ import { ProfileDetail } from './profile-detail/profile-detail';
 import { ChangePassword } from './change-password/change-password';
 import { ProfileSummary } from './profile-summary/profile-summary';
 import { Component, computed, inject, signal } from '@angular/core';
+import { buildFullPhoneNumber, parsePhoneNumber, PhoneNumber } from '@atoms/phone-number';
 import {
-  EditProfileSchema,
-  editProfileFormValidationSchema,
+    EditProfileSchema,
+    editProfileFormValidationSchema,
 } from './profile-summary/profile-summary.types';
-import { PhoneNumber } from '@atoms/phone-number';
 
 @Component({
     selector: 'app-profile',
@@ -30,11 +31,11 @@ import { PhoneNumber } from '@atoms/phone-number';
         Input,
         Button,
         NgClass,
+        PhoneNumber,
         ProfileDetail,
         ProfileSummary,
         ChangePassword,
         ReactiveFormsModule,
-        PhoneNumber,
     ],
 })
 export class Profile {
@@ -58,11 +59,22 @@ export class Profile {
     // DATA
     protected readonly user = this.authService.user;
     protected readonly uploadProgress = this.awsService.progress;
-    protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => ({
-        name: this.user()!.name,
-        email: this.user()!.email,
-        phoneNumber: this.user()!.phoneNumber,
-    }));
+    protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => {
+        const { name, email, phoneNumber } = this.user()!;
+        const { country, nationalNumber } = parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO);
+
+        return {
+            name,
+            email,
+            phoneNumber: buildFullPhoneNumber(country, nationalNumber),
+        };
+    });
+    protected readonly defaultPhoneCountryIso = computed(() => {
+        const phoneNumber = this.user()?.phoneNumber;
+        if (!phoneNumber) return DEFAULT_COUNTRY_ISO;
+
+        return parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO).country.iso;
+    });
 
     // COMPUTED
     protected readonly formattedDate = computed<string>(() => {

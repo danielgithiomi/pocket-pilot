@@ -53,6 +53,13 @@ export function buildFullPhoneNumber(country: Country, nationalNumber: string): 
     return `+${country.dialCode}${digits}`;
 }
 
+export function getNationalNumberDigits(
+    value: string,
+    fallbackIso: string = DEFAULT_COUNTRY_ISO,
+): string {
+    return parsePhoneNumber(value, fallbackIso).nationalNumber;
+}
+
 export function filterCountries(countries: Country[], query: string): Country[] {
     const normalizedQuery = query.trim().toLowerCase();
     if (!normalizedQuery) return countries;
