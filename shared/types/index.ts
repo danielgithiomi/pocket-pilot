@@ -7,6 +7,7 @@ export * from "./goals.types";
 export * from "./bills.types";
 export * from './splitr.types';
 export * from './country.types';
+export * from './features.types';
 export * from "./accounts.types";
 export * from "./categories.types";
 export * from "./onboarding.types";

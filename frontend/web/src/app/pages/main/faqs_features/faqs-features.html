@@ -81,11 +81,9 @@
             />
 
             <div class="w-full flex-1 py-0 lg:py-6 flex flex-col space-y-4 mt-4">
-                <feature-item id="1" />
-                <feature-item id="2" />
-                <feature-item id="3" />
-                <feature-item id="4" />
-                <feature-item id="5" />
+                @for (feature of displayFeatures(); track feature.id) {
+                    <feature-item [id]="feature.id" [feature]="feature" />
+                }
             </div>
         </div>
 

@@ -1,8 +1,8 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { ContactItem } from '@global/types';
 import { RouterLink } from '@angular/router';
 import { Accordion } from '@molecules/accordion';
+import { ContactItem, Feature } from '@global/types';
 import { LucideAngularModule } from 'lucide-angular';
 import { TabList, TabListItem } from '@atoms/tab-list';
 import { CONTACT_ITEMS, FAQ_ITEMS } from '@global/constants';
@@ -45,6 +45,7 @@ export class FaqsFeatures {
             label: 'My Requests',
         },
     ]);
+    protected readonly displayFeatures = computed<Feature[]>(() => []);
 
     // UTILITIES
     protected handleOpenFeatureForm() {
