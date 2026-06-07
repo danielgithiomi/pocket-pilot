@@ -27,7 +27,7 @@ export class AccountController {
     constructor(private readonly accountService: AccountService) {}
 
     @Get('types')
-    @CacheKey('account:types')
+    @CacheKey('accounts:types')
     @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
     @Summary('Account Types Retrieved!', 'You have successfully retrieved all account types.')

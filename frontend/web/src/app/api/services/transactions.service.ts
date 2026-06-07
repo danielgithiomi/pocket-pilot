@@ -4,75 +4,77 @@ import { TransactionsResource } from '@methods/resources';
 import { ToastService } from '@components/ui/atoms/toast';
 import { TransactionsMutation } from '@methods/mutations';
 import {
-  IStandardError,
-  IStandardResponse,
-  IVoidResourceResponse,
-  CreateTransactionRequest,
+    IStandardError,
+    IStandardResponse,
+    IVoidResourceResponse,
+    CreateTransactionRequest,
 } from '@global/types';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class TransactionsService {
-  private readonly toastService = inject(ToastService);
-  private readonly transactionsMutation = inject(TransactionsMutation);
-  private readonly transactionsResource = inject(TransactionsResource);
+    private readonly toastService = inject(ToastService);
+    private readonly transactionsMutation = inject(TransactionsMutation);
+    private readonly transactionsResource = inject(TransactionsResource);
 
-  getAllTransactions() {
-    return this.transactionsResource.allTransactions;
-  }
-
-  getUserTransactions() {
-    return this.transactionsResource.userTransactions;
-  }
-
-  getTransactionTypes() {
-    return this.transactionsResource.transactionTypes;
-  }
-
-  createTransaction(accountId: string, payload: CreateTransactionRequest) {
-    const type = payload.type;
-
-    if (type === 'TRANSFER') {
-      return this.transactionsMutation.createTransferTransaction(accountId, payload).pipe(
-        catchError((error: IStandardError) => {
-          this.renderToast(error);
-          return EMPTY;
-        }),
-      );
+    getAllTransactions() {
+        return this.transactionsResource.allTransactions;
     }
 
-    return this.transactionsMutation.createTransaction(accountId, payload).pipe(
-      catchError((error: IStandardError) => {
-        this.renderToast(error);
-        return EMPTY;
-      }),
-    );
-  }
+    getUserTransactions() {
+        return this.transactionsResource.userTransactions;
+    }
 
-  deleteTransaction(accountId: string, transactionId: string) {
-    return this.transactionsMutation.deleteTransaction(accountId, transactionId).pipe(
-      map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
-      catchError((error: IStandardError) => {
-        this.renderToast(error);
-        return EMPTY;
-      }),
-    );
-  }
+    getTransactionTypes() {
+        return this.transactionsResource.transactionTypes;
+    }
 
-  // HELPER FUNCTIONS
-  private renderToast = (error: IStandardError) => {
-    const { title, details } = error;
-    this.toastService.show({
-      title,
-      details: details as string,
-      variant: 'error',
-    });
-  };
+    createTransaction(accountId: string, payload: CreateTransactionRequest) {
+        const type = payload.type;
 
-  isNegativeBalance(availableBalance: number, payload: CreateTransactionRequest) {
-    return (
-      availableBalance >= 0 && payload.amount! > availableBalance && payload.type === 'EXPENSE'
-    );
-  }
+        if (type === 'TRANSFER') {
+            return this.transactionsMutation.createTransferTransaction(accountId, payload).pipe(
+                catchError((error: IStandardError) => {
+                    this.renderToast(error);
+                    return EMPTY;
+                }),
+            );
+        }
+
+        return this.transactionsMutation.createTransaction(accountId, payload).pipe(
+            catchError((error: IStandardError) => {
+                this.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
+
+    deleteTransaction(accountId: string, transactionId: string) {
+        return this.transactionsMutation.deleteTransaction(accountId, transactionId).pipe(
+            map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
+            catchError((error: IStandardError) => {
+                this.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
+
+    // HELPER FUNCTIONS
+    private renderToast = (error: IStandardError) => {
+        const { title, details } = error;
+        this.toastService.show({
+            title,
+            details: details as string,
+            variant: 'error',
+        });
+    };
+
+    isNegativeBalance(availableBalance: number, payload: CreateTransactionRequest) {
+        return (
+            availableBalance >= 0 &&
+            payload.amount! > availableBalance &&
+            payload.type === 'EXPENSE'
+        );
+    }
 }

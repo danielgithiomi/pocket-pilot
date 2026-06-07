@@ -18,9 +18,9 @@
  * For production, use environment.production.ts
  */
 export const environment = {
-  production: false,
-  awsRegion: 'aws-region-goes-here',
-  API_BASE_URL: 'api-base-url-goes-here',
-  awsS3BucketName: 'aws-s3-bucket-name-goes-here',
-  syncfusionLicenseKey: 'syncfusion-license-key-goes-here',
+    production: false,
+    awsRegion: 'aws-region-goes-here',
+    API_BASE_URL: 'api-base-url-goes-here',
+    awsS3BucketName: 'aws-s3-bucket-name-goes-here',
+    syncfusionLicenseKey: 'syncfusion-license-key-goes-here',
 };

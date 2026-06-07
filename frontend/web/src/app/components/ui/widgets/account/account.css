@@ -1,114 +1,114 @@
 @reference "tailwindcss";
 
 section {
-  width: 100%;
-  display: flex;
-  min-width: 200px;
-  overflow: hidden;
-  position: relative;
-  align-items: center;
-  border-radius: 25px;
-  justify-content: center;
-  background: var(--body-background);
+    width: 100%;
+    display: flex;
+    min-width: 200px;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    border-radius: 25px;
+    justify-content: center;
+    background: var(--body-background);
 }
 
 section::before {
-  content: '';
-  width: 240px;
-  height: 240px;
-  position: absolute;
-  border-radius: 50%;
-  transform: translate(-150px, -100px);
-  background: linear-gradient(90deg, var(--primary), var(--alternate-background));
+    content: '';
+    width: 240px;
+    height: 240px;
+    position: absolute;
+    border-radius: 50%;
+    transform: translate(-150px, -100px);
+    background: linear-gradient(90deg, var(--primary), var(--alternate-background));
 }
 
 section::after {
-  content: '';
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  position: absolute;
-  transform: translate(150px, 100px);
-  background: linear-gradient(90deg, var(--alternate-background), var(--quaternary));
+    content: '';
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(150px, 100px);
+    background: linear-gradient(90deg, var(--alternate-background), var(--quaternary));
 }
 
 section:hover {
-  @apply scale-101 transition-transform ease-in-out duration-400;
+    @apply scale-101 transition-transform ease-in-out duration-400;
 }
 
 .container {
-  width: 100%;
-  z-index: 100;
-  height: 200px;
-  transition: 0.6s;
-  position: relative;
-  perspective: 1000px;
-  cursor: pointer !important;
-  transform: translateZ(40px);
-  transform-style: preserve-3d;
-  background-color: color-mix(in srgb, var(--alternate-background) 40%, transparent);
+    width: 100%;
+    z-index: 100;
+    height: 200px;
+    transition: 0.6s;
+    position: relative;
+    perspective: 1000px;
+    cursor: pointer !important;
+    transform: translateZ(40px);
+    transform-style: preserve-3d;
+    background-color: color-mix(in srgb, var(--alternate-background) 40%, transparent);
 }
 
 .container .card {
-  @apply flex flex-col;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  position: absolute;
-  border-radius: 25px;
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--primary);
-  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25);
+    @apply flex flex-col;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    position: absolute;
+    border-radius: 25px;
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--primary);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25);
 }
 
 .header {
-  @apply flex flex-row items-center justify-between;
+    @apply flex flex-row items-center justify-between;
 }
 .card-details {
-  @apply flex-1 mt-6 flex flex-col items-start justify-between;
+    @apply flex-1 mt-6 flex flex-col items-start justify-between;
 
-  .balance {
-    @apply flex flex-row items-center gap-3 w-full overflow-hidden;
+    .balance {
+        @apply flex flex-row items-center gap-3 w-full overflow-hidden;
 
-    .currency {
-      @apply text-xs italic;
-    }
-
-    .value {
-      @apply text-3xl md:text-4xl font-semibold truncate;
-    }
-  }
-
-  .identity {
-    @apply w-full flex flex-row items-center justify-between;
-
-    .account-name {
-      @apply flex flex-row items-start gap-2;
-    }
-
-    .card-options {
-      @apply relative p-1 rounded-md z-1;
-
-      .dropdown {
-        @apply absolute cursor-pointer! bottom-full -right-1 mb-2 p-2 bg-(--inverted-background) rounded-md shadow-lg z-5 grid place-items-center;
-
-        .pointer {
-          @apply size-3 bg-(--inverted-background) rotate-45 -bottom-1 right-2.5 absolute;
+        .currency {
+            @apply text-xs italic;
         }
 
-        .visibility {
-          @apply text-(--inverted-text) hover:text-(--primary) z-10 cursor-pointer!;
+        .value {
+            @apply text-3xl md:text-4xl font-semibold truncate;
         }
-
-        .delete {
-          @apply text-(--inverted-text) hover:text-(--error) z-10 cursor-pointer!;
-        }
-      }
     }
 
-    .card-options:hover {
-      @apply transition-all duration-400;
-      background-color: color-mix(in srgb, var(--quaternary) 50%, transparent);
+    .identity {
+        @apply w-full flex flex-row items-center justify-between;
+
+        .account-name {
+            @apply flex flex-row items-start gap-2;
+        }
+
+        .card-options {
+            @apply relative p-1 rounded-md z-1;
+
+            .dropdown {
+                @apply absolute cursor-pointer! bottom-full -right-1 mb-2 p-2 bg-(--inverted-background) rounded-md shadow-lg z-5 grid place-items-center;
+
+                .pointer {
+                    @apply size-3 bg-(--inverted-background) rotate-45 -bottom-1 right-2.5 absolute;
+                }
+
+                .visibility {
+                    @apply text-(--inverted-text) hover:text-(--primary) z-10 cursor-pointer!;
+                }
+
+                .delete {
+                    @apply text-(--inverted-text) hover:text-(--error) z-10 cursor-pointer!;
+                }
+            }
+        }
+
+        .card-options:hover {
+            @apply transition-all duration-400;
+            background-color: color-mix(in srgb, var(--quaternary) 50%, transparent);
+        }
     }
-  }
 }

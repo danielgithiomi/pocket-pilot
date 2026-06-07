@@ -1,14 +1,27 @@
-<section [id]="accountId()" class="account-wrapper" [ngClass]="{ 'border border-primary': variant() === 'detail' }">
-    <div (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)" [routerLink]="isLoading() ? null : ['/accounts', id()]"
-         class="container">
+<section
+    [id]="accountId()"
+    class="account-wrapper"
+    [ngClass]="{ 'border border-primary': variant() === 'detail' }"
+>
+    <div
+        (mouseleave)="isDeleting() ? null : isOptionsOpen.set(false)"
+        [routerLink]="isLoading() ? null : ['/accounts', id()]"
+        class="container"
+    >
         <div [ngClass]="{ 'border-none!': variant() === 'detail' }" class="card">
             <div class="header">
-                <img [height]="imageDimensions.height" [ngClass]="{
-            'invert-0!': themeService.activeTheme() === 'dark',
-            'invert-100!': themeService.activeTheme() === 'light',
-          }" [ngSrc]="logoUrl"
-                     [width]="imageDimensions.width" alt="Account Card Logo" class="invert dark:invert-0" />
-                <lucide-icon [img]="NFC" [size]="22" name="nfc"/>
+                <img
+                    [height]="imageDimensions.height"
+                    [ngClass]="{
+                        'invert-0!': themeService.activeTheme() === 'dark',
+                        'invert-100!': themeService.activeTheme() === 'light',
+                    }"
+                    [ngSrc]="logoUrl"
+                    [width]="imageDimensions.width"
+                    alt="Account Card Logo"
+                    class="invert dark:invert-0"
+                />
+                <lucide-icon [img]="NFC" [size]="22" name="nfc" />
             </div>
 
             <div class="card-details">
@@ -17,9 +30,11 @@
                 } @else {
                     <div class="balance">
                         <span class="currency">{{ account().currency }}</span>
-                        <span [ngClass]='{ "tracking-widest": !account().isBalanceVisible }' class="value">{{
-                                formattedBalance()
-                            }}</span>
+                        <span
+                            [ngClass]="{ 'tracking-widest': !account().isBalanceVisible }"
+                            class="value"
+                            >{{ formattedBalance() }}</span
+                        >
                     </div>
                 }
 
@@ -32,7 +47,12 @@
                                 <div class="skeleton w-15 h-3 mt-1"></div>
                             </div>
                         } @else {
-                            <lucide-icon [img]="IdentityIcon" [size]="12" class="mt-0.5" name="identity-icon"/>
+                            <lucide-icon
+                                [img]="IdentityIcon"
+                                [size]="12"
+                                class="mt-0.5"
+                                name="identity-icon"
+                            />
                             <div class="flex flex-col">
                                 <p class="capitalize text-sm">{{ account().name }}</p>
                                 <p class="text-[10px] text-muted-text">{{ account().type }}</p>
@@ -45,8 +65,12 @@
                             @if (isLoading()) {
                                 <div class="skeleton size-5"></div>
                             } @else {
-                                <lucide-icon (click)="toggleOptions($event)" [img]="Options" [size]="iconSize"
-                                             name="options"/>
+                                <lucide-icon
+                                    (click)="toggleOptions($event)"
+                                    [img]="Options"
+                                    [size]="iconSize"
+                                    name="options"
+                                />
                             }
 
                             <!-- Card Options Drop Down -->
@@ -54,24 +78,36 @@
                                 <div class="dropdown">
                                     <div class="pointer"></div>
 
-                                    <div class="flex flex-row items-center justify-between gap-3 w-full">
-
+                                    <div
+                                        class="flex flex-row items-center justify-between gap-3 w-full"
+                                    >
                                         @if (isTogglingBalanceVisibility()) {
                                             <div class="visibility-loader"></div>
-                                        }@else {
-                                            <lucide-icon 
-                                            (click)="toggleBalanceVisibility($event)" 
-                                            [ngClass]="{ 'animate-pulse': isTogglingBalanceVisibility() }"
-                                            [img]="account().isBalanceVisible ? EyeOff : EyeOpen"
-                                                         [size]="iconSize" class="visibility"
-                                                         name="scan"/>
+                                        } @else {
+                                            <lucide-icon
+                                                (click)="toggleBalanceVisibility($event)"
+                                                [ngClass]="{
+                                                    'animate-pulse': isTogglingBalanceVisibility(),
+                                                }"
+                                                [img]="
+                                                    account().isBalanceVisible ? EyeOff : EyeOpen
+                                                "
+                                                [size]="iconSize"
+                                                class="visibility"
+                                                name="scan"
+                                            />
                                         }
 
                                         @if (isDeleting()) {
                                             <div class="delete-loader"></div>
                                         } @else {
-                                            <lucide-icon (click)="deleteAccount($event)" [img]="Trash" [size]="iconSize" class="delete"
-                                                         name="delete"/>
+                                            <lucide-icon
+                                                (click)="deleteAccount($event)"
+                                                [img]="Trash"
+                                                [size]="iconSize"
+                                                class="delete"
+                                                name="delete"
+                                            />
                                         }
                                     </div>
                                 </div>

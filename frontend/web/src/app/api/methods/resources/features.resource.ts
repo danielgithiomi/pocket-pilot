@@ -6,7 +6,6 @@ import { Feature, FeaturesWithCount, IEnumResponse, IStandardResponse } from '@g
 
 @Injectable({ providedIn: 'root' })
 export class FeaturesResource {
-
     getFeatureStatus = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
@@ -36,5 +35,4 @@ export class FeaturesResource {
         cache: 'no-cache',
         url: concatUrl(endpoints.user_features),
     }));
-
 }

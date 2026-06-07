@@ -4,17 +4,17 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { Bill, CreateBillPayload, IVoidResourceResponse } from '@global/types';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class BillsMutation {
-  private readonly client = inject(ApiClient);
+    private readonly client = inject(ApiClient);
 
-  createNewUserBill(payload: CreateBillPayload) {
-    return this.client.post<Bill, CreateBillPayload>(endpoints.user_bills, payload);
-  }
+    createNewUserBill(payload: CreateBillPayload) {
+        return this.client.post<Bill, CreateBillPayload>(endpoints.user_bills, payload);
+    }
 
-  deleteUserBillById(billId: string) {
-    const url = `${endpoints.user_bills}/${billId}`;
-    return this.client.delete<IVoidResourceResponse>(url);
-  }
+    deleteUserBillById(billId: string) {
+        const url = `${endpoints.user_bills}/${billId}`;
+        return this.client.delete<IVoidResourceResponse>(url);
+    }
 }

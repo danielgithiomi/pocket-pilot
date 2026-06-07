@@ -13,55 +13,55 @@ import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
 
 @Component({
-  selector: 'app-login',
-  styleUrl: './login.css',
-  templateUrl: './login.html',
-  imports: [FormField, AuthBranding, CheckedShield, Button, LucideAngularModule, Input],
+    selector: 'app-login',
+    styleUrl: './login.css',
+    templateUrl: './login.html',
+    imports: [FormField, AuthBranding, CheckedShield, Button, LucideAngularModule, Input],
 })
 export class Login {
-  // ICONS
-  protected readonly Eye = Eye;
-  protected readonly iconSize = 18;
-  protected readonly EyeOff = EyeOff;
+    // ICONS
+    protected readonly Eye = Eye;
+    protected readonly iconSize = 18;
+    protected readonly EyeOff = EyeOff;
 
-  // FORM
-  protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
-  protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
+    // FORM
+    protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
+    protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
 
-  // INJECTS
-  private readonly router = inject(Router);
-  private readonly authService = inject(AuthService);
-  private readonly toastService = inject(ToastService);
+    // INJECTS
+    private readonly router = inject(Router);
+    private readonly authService = inject(AuthService);
+    private readonly toastService = inject(ToastService);
 
-  // SIGNALS
-  readonly isSubmitting = signal<boolean>(false);
-  protected isPasswordVisible = signal<boolean>(false);
+    // SIGNALS
+    readonly isSubmitting = signal<boolean>(false);
+    protected isPasswordVisible = signal<boolean>(false);
 
-  // METHODS
-  togglePasswordVisibility = () => {
-    this.isPasswordVisible.set(!this.isPasswordVisible());
-  };
+    // METHODS
+    togglePasswordVisibility = () => {
+        this.isPasswordVisible.set(!this.isPasswordVisible());
+    };
 
-  routeTo = (route: string) => this.router.navigate([route], { replaceUrl: true });
+    routeTo = (route: string) => this.router.navigate([route], { replaceUrl: true });
 
-  submitLoginForm = (event: Event) => {
-    event.preventDefault();
+    submitLoginForm = (event: Event) => {
+        event.preventDefault();
 
-    const { email, password } = this.loginFormModel();
+        const { email, password } = this.loginFormModel();
 
-    this.isSubmitting.set(true);
+        this.isSubmitting.set(true);
 
-    this.authService.login({ email, password }).subscribe({
-      next: (response: IStandardResponse<User>) => {
-        this.toastService.show({
-          variant: 'success',
-          title: response.summary.title,
-          details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
+        this.authService.login({ email, password }).subscribe({
+            next: (response: IStandardResponse<User>) => {
+                this.toastService.show({
+                    variant: 'success',
+                    title: response.summary.title,
+                    details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
+                });
+
+                this.routeTo(WEB_ROUTES.dashboard);
+            },
+            complete: () => this.isSubmitting.set(false),
         });
-
-        this.routeTo(WEB_ROUTES.dashboard);
-      },
-      complete: () => this.isSubmitting.set(false),
-    });
-  };
+    };
 }

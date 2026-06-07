@@ -1,15 +1,15 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const RequestInterceptor: HttpInterceptorFn = (req, next) => {
-  const cloned = req.clone({
-    responseType: 'json',
-    reportProgress: false,
-    credentials: 'include',
-    setHeaders: {
-      'X-App-Version': '1.0.0',
-      'Accept': 'application/json'
-    },
-  });
+    const cloned = req.clone({
+        responseType: 'json',
+        reportProgress: false,
+        credentials: 'include',
+        setHeaders: {
+            'X-App-Version': '1.0.0',
+            Accept: 'application/json',
+        },
+    });
 
-  return next(cloned);
+    return next(cloned);
 };

@@ -1,63 +1,63 @@
 <section id="splitr-page" class="page">
-  <div class="page-header">
-    <h1 class="page-title">Splitr</h1>
+    <div class="page-header">
+        <h1 class="page-title">Splitr</h1>
 
-    <atom-button
-      id="add-split"
-      variant="primary"
-      [disabled]="isLoadingResources()"
-      (clicked)="isAddSplitFormOpen.set(true)"
-    >
-      <div class="w-full flex flex-row items-center justify-between gap-4">
-        <lucide-icon name="create-split" [img]="Plus" [size]="iconSize"></lucide-icon>
-        <span class="hidden sm:block">Add Split</span>
-      </div>
-    </atom-button>
-  </div>
-
-  <div class="page-container flex-1 space-y-4">
-    <p class="page-subtitle mb-6">
-      Keep track of <span class="font-semibold text-primary">shared</span> bills and expenses.
-    </p>
-
-    <div class="h-full flex flex-row gap-6 md:gap-8 pb-4">
-      <!-- Left Side -->
-      <div class="flex-3 page-card">
-        <splitr-events />
-      </div>
-
-      <!-- Right Side -->
-      <div class="flex-2 page-card">
-        <splitr-squads
-          [isLoadingResources]="isLoadingResources()"
-          [isCreateSquadFormOpen]="isCreateSquadFormOpen()"
-          (onUpdateSquadItemEvent)="handleOnUpdateSquadItemEvent($event)"
-          (createSquadButtonClickEvent)="isCreateSquadFormOpen.set(true)"
-        />
-      </div>
+        <atom-button
+            id="add-split"
+            variant="primary"
+            [disabled]="isLoadingResources()"
+            (clicked)="isAddSplitFormOpen.set(true)"
+        >
+            <div class="w-full flex flex-row items-center justify-between gap-4">
+                <lucide-icon name="create-split" [img]="Plus" [size]="iconSize"></lucide-icon>
+                <span class="hidden sm:block">Add Split</span>
+            </div>
+        </atom-button>
     </div>
-  </div>
+
+    <div class="page-container flex-1 space-y-4">
+        <p class="page-subtitle mb-6">
+            Keep track of <span class="font-semibold text-primary">shared</span> bills and expenses.
+        </p>
+
+        <div class="h-full flex flex-row gap-6 md:gap-8 pb-4">
+            <!-- Left Side -->
+            <div class="flex-3 page-card">
+                <splitr-events />
+            </div>
+
+            <!-- Right Side -->
+            <div class="flex-2 page-card">
+                <splitr-squads
+                    [isLoadingResources]="isLoadingResources()"
+                    [isCreateSquadFormOpen]="isCreateSquadFormOpen()"
+                    (onUpdateSquadItemEvent)="handleOnUpdateSquadItemEvent($event)"
+                    (createSquadButtonClickEvent)="isCreateSquadFormOpen.set(true)"
+                />
+            </div>
+        </div>
+    </div>
 </section>
 
 @if (isCreateSquadFormOpen()) {
-  <splitr-squard-form
-    [existingSquadMembers]="allSquadMembers()"
-    (closeCreateFormSquadEvent)="handleSquadFormClose($event)"
-  />
+    <splitr-squard-form
+        [existingSquadMembers]="allSquadMembers()"
+        (closeCreateFormSquadEvent)="handleSquadFormClose($event)"
+    />
 }
 
 @if (isUpdateSquadFormOpen() && squadToUpdate()) {
-  <update-squad-form
-    [squad]="squadToUpdate()!"
-    [allSquadMembers]="allSquadMembers()"
-    (closeUpdateSquadFormEvent)="handleSquadFormClose($event)"
-  />
+    <update-squad-form
+        [squad]="squadToUpdate()!"
+        [allSquadMembers]="allSquadMembers()"
+        (closeUpdateSquadFormEvent)="handleSquadFormClose($event)"
+    />
 }
 
 @if (isAddSplitFormOpen()) {
-  <splitr-split-form
-    [squads]="squads()"
-    [isSplitFormOpen]="isAddSplitFormOpen()"
-    (closeSplitFormEvent)="handleSplitFormClose($event)"
-  />
+    <splitr-split-form
+        [squads]="squads()"
+        [isSplitFormOpen]="isAddSplitFormOpen()"
+        (closeSplitFormEvent)="handleSplitFormClose($event)"
+    />
 }
