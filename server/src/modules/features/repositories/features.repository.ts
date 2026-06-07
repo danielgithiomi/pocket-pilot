@@ -4,6 +4,8 @@ import { FeatureWithUser, FeaturePayload, UpdateFeatureStatusPayload } from '../
 
 @Injectable()
 export class FeaturesRepository {
+    private readonly FEATURE_REQUESTS_LIMIT = 5;
+
     constructor(private readonly db: DatabaseService) {}
 
     createFeatureRequest(userId: string, payload: FeaturePayload): Promise<FeatureWithUser> {
@@ -21,16 +23,18 @@ export class FeaturesRepository {
 
     getFeatureRequests(): Promise<FeatureWithUser[]> {
         return this.db.feature.findMany({
-            orderBy: { createdAt: 'desc' },
             include: { featureVotes: true, user: { select: { name: true } } },
+            orderBy: { createdAt: 'desc' },
+            take: this.FEATURE_REQUESTS_LIMIT,
         });
     }
 
     getUserFeatureRequests(userId: string): Promise<FeatureWithUser[]> {
         return this.db.feature.findMany({
             where: { authorId: userId },
-            orderBy: { createdAt: 'desc' },
             include: { featureVotes: true, user: { select: { name: true } } },
+            orderBy: { createdAt: 'desc' },
+            take: this.FEATURE_REQUESTS_LIMIT,
         });
     }
 

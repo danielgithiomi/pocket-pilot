@@ -97,9 +97,9 @@ export class FeaturesService {
 
     refreshAll(): void {
         this.resource.getFeatureStatus.reload();
-        this.resource.getFeatureCategories.reload();
-        this.resource.getFeatureVoteVariants.reload();
         this.resource.getFeatureRequests.reload();
+        this.resource.getFeatureCategories.reload();
         this.resource.getUserFeatureRequests.reload();
+        this.resource.getFeatureVoteVariants.reload();
     }
 }
