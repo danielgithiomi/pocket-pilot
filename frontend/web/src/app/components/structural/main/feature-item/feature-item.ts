@@ -1,4 +1,4 @@
-import { Badge } from '@atoms/badge';
+import { Badge, BadgeVariant } from '@atoms/badge';
 import { formatDate } from '@libs/utils';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
@@ -8,6 +8,7 @@ import { FeaturesService } from '@api/features.service';
 import { Feature, IVoidResourceResponse } from '@global/types';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { LucideAngularModule, ChevronsUp, MessageSquareReply, Trash2 } from 'lucide-angular';
+import { FeatureStatusEnum } from '@global/enums';
 
 @Component({
     selector: 'feature-item',
@@ -48,8 +49,20 @@ export class FeatureItem {
     });
     protected readonly formattedCategory = computed<string>(() => {
         const category = this.feature().featureCategory;
-        if (category === "UI_UX") return "UI/UX";
+        if (category === 'UI_UX') return 'UI/UX';
         return denormalizeCategoryName(category);
+    });
+    protected readonly featureItemBadgeVariant = computed<BadgeVariant>(() => {
+        const VARIANT_MAP: Record<FeatureStatusEnum, BadgeVariant> = {
+            NEW: 'info',
+            REJECTED: 'error',
+            SHIPPED: 'success',
+            PLANNED: 'success',
+            IN_PROGRESS: 'info',
+            UNDER_REVIEW: 'warning',
+        };
+
+        return VARIANT_MAP[this.feature().featureStatus];
     });
     protected readonly formattedAuthorName = computed<string>(() => {
         const author = this.feature().authorName;
