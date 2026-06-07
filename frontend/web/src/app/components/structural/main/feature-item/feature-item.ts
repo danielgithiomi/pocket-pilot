@@ -2,6 +2,8 @@ import { Badge } from '@atoms/badge';
 import { formatDate } from '@libs/utils';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
+import { AuthService } from '@api/auth.service';
+import { denormalizeCategoryName } from '@global/utils';
 import { FeaturesService } from '@api/features.service';
 import { Feature, IVoidResourceResponse } from '@global/types';
 import { Component, computed, inject, input, signal } from '@angular/core';
@@ -24,6 +26,7 @@ export class FeatureItem {
     protected readonly isUserUpvoted = signal<boolean>(false);
 
     // SERVICES
+    protected readonly authService = inject(AuthService);
     protected readonly toastService = inject(ToastService);
     protected readonly featuresService = inject(FeaturesService);
 
@@ -34,10 +37,19 @@ export class FeatureItem {
 
     // COMPUTED
     protected readonly hasUserUpvoted = computed<boolean>(() => true);
+    protected readonly isOwnedByCurrentUser = computed<boolean>(() => {
+        const userId = this.authService.user()?.id;
+        return this.feature().authorId === userId;
+    });
     protected readonly featureId = computed<string>(() => `feature-item-${this.id()}`);
     protected readonly formattedDate = computed<string>(() => {
         const date = this.feature().createdAt.toString();
         return formatDate(date);
+    });
+    protected readonly formattedCategory = computed<string>(() => {
+        const category = this.feature().featureCategory;
+        if (category === "UI_UX") return "UI/UX";
+        return denormalizeCategoryName(category);
     });
     protected readonly formattedAuthorName = computed<string>(() => {
         const author = this.feature().authorName;

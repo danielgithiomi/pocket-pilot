@@ -3,7 +3,7 @@
     (click)="handleFeatureClick()"
     class="relative w-full cursor-pointer! lg:w-5/6 flex flex-row bg-alternate-background p-4 rounded-lg items-start gap-6 md:gap-4 subtle-item-hover"
 >
-    @if (showDeleteIcon()) {
+    @if (isOwnedByCurrentUser() && showDeleteIcon()) {
         <div
             (click)="handleOnFeatureDelete()"
             class="absolute top-4 right-4 size-6 grid place-items-center"
@@ -51,15 +51,19 @@
 
                 <div class="flex flex-row items-center gap-2">
                     <atom-badge [label]="feature().featureStatus" variant="info" />
-                    <atom-badge [label]="feature().featureCategory" variant="neutral" />
+                    <atom-badge [label]="formattedCategory()" variant="neutral" />
                 </div>
             </div>
 
             <div class="flex flex-row items-center gap-0.5 text-xs!">
-                <p class="text-reactive-text">
-                    By:<span class="text-primary font-semibold">{{ formattedAuthorName() }}</span>
-                </p>
-                <span class="text-lg text-reactive-text">•</span>
+                @if (!isOwnedByCurrentUser()) {
+                    <p class="text-reactive-text">
+                        By:<span class="text-primary font-semibold">{{
+                            formattedAuthorName()
+                        }}</span>
+                    </p>
+                    <span class="text-lg text-reactive-text">•</span>
+                }
                 <p class="text-reactive-text">{{ formattedDate() }}</p>
             </div>
         </div>
