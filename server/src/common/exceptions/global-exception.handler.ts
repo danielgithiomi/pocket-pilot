@@ -12,7 +12,6 @@
  */
 
 import { randomUUID } from 'crypto';
-import { IGlobalError } from '@common/types';
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 
 @Catch()
@@ -53,7 +52,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
                     timestamp: new Date().toISOString(),
                     requestId: randomUUID(),
                 },
-            } as IGlobalError);
+            });
         }
 
         // =========================
@@ -101,6 +100,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
                 timestamp: new Date().toISOString(),
                 requestId: randomUUID(),
             },
-        } as IGlobalError);
+        });
     }
 }

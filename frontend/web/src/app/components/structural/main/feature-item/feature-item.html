@@ -1,6 +1,7 @@
 <div
     [id]="featureId()"
-    class="w-full lg:w-5/6 flex flex-row bg-alternate-background p-4 rounded-lg items-start gap-6 md:gap-4"
+    (click)="handleFeatureClick()"
+    class="w-full cursor-pointer! lg:w-5/6 flex flex-row bg-alternate-background p-4 rounded-lg items-start gap-6 md:gap-4 subtle-item-hover"
 >
     <div class="flex flex-col items-center gap-2">
         <div

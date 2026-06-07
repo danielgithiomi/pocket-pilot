@@ -34,8 +34,8 @@ export class FeatureItem {
         return `${firstName} ${initial}.`;
     });
 
-    private readonly effectTest = effect(() => {
-        const feature = this.feature();
-        console.log(feature);
-    });
+    // METHODS
+    handleFeatureClick() {
+        console.log('feature clicked', this.feature());
+    }
 }
