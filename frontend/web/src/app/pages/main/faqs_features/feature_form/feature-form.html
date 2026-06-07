@@ -11,13 +11,14 @@
             id="feature-name"
             [inverted]="true"
             autocomplete="off"
-            label="Feature Name"
+            label="Feature Title"
+            placeholder="Suggested Feature Title"
             [formField]="featureForm.featureTitle"
-            placeholder="Eg: New Suggested Feature"
             (clearOutput)="featureForm.featureTitle().controlValue.set('')"
         />
 
         <atom-select
+            [inverted]="true"
             id="feature-category"
             label="Feature Category"
             placeholder="Select a category"
@@ -25,5 +26,37 @@
             [formField]="featureForm.featureCategory"
             [selectedValue]="featureForm.featureCategory().value()"
         />
+
+        <atom-text-area
+            [rows]="4"
+            [inverted]="true"
+            id="feature-content"
+            label="Feature Content"
+            [formField]="featureForm.featureContent"
+            placeholder="Give us a detailed description of the feature"
+            (clearOutput)="featureForm.featureContent().controlValue.set('')"
+        />
     </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+        <atom-button
+            label="Reset"
+            [inverted]="true"
+            variant="secondary"
+            id="reset-feature-form"
+            form="suggest-feature-form"
+            (clicked)="resetFeatureForm()"
+            [disabled]="!featureForm().dirty() || isSubmittingFeatureForm()"
+        />
+
+        <atom-button
+            label="Submit"
+            [inverted]="true"
+            variant="primary"
+            id="submit-feature-form"
+            form="suggest-feature-form"
+            [isLoading]="isSubmittingFeatureForm()"
+            [disabled]="featureForm().invalid() || isSubmittingFeatureForm()"
+        />
+    </div>
 </organism-form>

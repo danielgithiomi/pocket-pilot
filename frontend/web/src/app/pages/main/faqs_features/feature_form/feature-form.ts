@@ -5,19 +5,19 @@ import { form } from '@angular/forms/signals';
 import { FeaturePayload } from '@global/types';
 import { FeatureCategoryEnum } from '@global/enums';
 import { LucideAngularModule } from 'lucide-angular';
-import { Select, SelectOption } from "@atoms/select";
+import { Select, SelectOption } from '@atoms/select';
 import { Form, FormCloseEvent } from '@organisms/form';
 import { FeaturesService } from '@api/features.service';
+import { TextArea } from '@components/ui/atoms/text-area';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { FeatureSchema, INITAL_FEATURE_STATE, suggestFeatureSchema } from './feature-form.types';
 
 @Component({
     selector: 'suggest-feature-form',
     templateUrl: 'feature-form.html',
-    imports: [LucideAngularModule, Form, Input, Select],
+    imports: [LucideAngularModule, Form, Input, Select, TextArea, Button],
 })
 export class SuggestFeatureForm {
-
     // INPUTS
     isFeatureFormOpen = input.required<boolean>();
 
@@ -30,8 +30,6 @@ export class SuggestFeatureForm {
     // SERVICES
     private readonly toastService = inject(ToastService);
     private readonly featuresService = inject(FeaturesService);
-
-    // DATA
 
     // COMPUTED
     protected readonly formattedFeatureCategories = computed<SelectOption[]>(() => {
@@ -46,10 +44,14 @@ export class SuggestFeatureForm {
         }
 
         const categories = this.featuresService.getFeatureCategories();
-        return categories().map((category) => ({
-            value: category.value,
-            label: category.label,
-        }));
+        return categories().map((category) => {
+            const { value, label } = category;
+
+            return {
+                value: value,
+                label: label === 'Ui Ux' ? 'UI/UX' : label,
+            };
+        });
     });
 
     // FORM
@@ -60,6 +62,10 @@ export class SuggestFeatureForm {
     handleCloseFeatureForm(source: FormCloseEvent) {
         if (source === 'icon') this.featureForm().reset();
         this.featureFormClosedEvent.emit(true);
+    }
+
+    resetFeatureForm() {
+        this.featureForm().reset(INITAL_FEATURE_STATE);
     }
 
     // SUBMISSIONS
@@ -74,6 +80,5 @@ export class SuggestFeatureForm {
             featureContent: this.featureForm.featureContent().value(),
             featureCategory: this.featureForm.featureCategory().value() as FeatureCategoryEnum,
         };
-
     }
 }
