@@ -10,6 +10,7 @@ import {
     IStandardError,
     FeaturesWithCount,
     IStandardResponse,
+    IVoidResourceResponse,
 } from '@global/types';
 
 @Injectable({
@@ -24,6 +25,16 @@ export class FeaturesService {
     createNewFeature(payload: FeaturePayload): Observable<Feature> {
         return this.mutation.createNewFeature(payload).pipe(
             map((response: IStandardResponse<Feature>) => response.data),
+            catchError((error: IStandardError) => {
+                this.errorService.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
+
+    deleteFeatureRequestById(featureId: string): Observable<IVoidResourceResponse> {
+        return this.mutation.deleteFeatureRequestById(featureId).pipe(
+            map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;

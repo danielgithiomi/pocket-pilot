@@ -106,7 +106,7 @@
                         />
                     } @else {
                         @for (feature of displayFeatures(); track feature.id) {
-                            <feature-item [id]="feature.id" [feature]="feature" />
+                            <feature-item [id]="feature.id" [feature]="feature" [showDeleteIcon]="activeTabIndex() === 1" />
                         }
                     }
                 }

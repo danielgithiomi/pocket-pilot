@@ -176,6 +176,7 @@
     --color-muted: var(--muted);
     --color-loader-primary: var(--loader-primary);
     --color-scrollbar-track: var(--scrollbar-track);
+    --color-loader-secondary: var(--loader-secondary);
 
     /* State */
     --color-error: var(--error);
@@ -196,14 +197,14 @@
     --color-gray4: var(--gray4);
     --color-white: var(--white);
 
-    --color-body-background: var(--body-background);
-    --color-alternate-background: var(--alternate-background);
-    --color-inverted-background: var(--inverted-background);
-    --color-primary-text: var(--primary-text);
-    --color-alternate-text: var(--alternate-text);
-    --color-inverted-text: var(--inverted-text);
     --color-muted-text: var(--muted-text);
+    --color-primary-text: var(--primary-text);
+    --color-inverted-text: var(--inverted-text);
     --color-reactive-text: var(--reactive-text);
+    --color-alternate-text: var(--alternate-text);
+    --color-body-background: var(--body-background);
+    --color-inverted-background: var(--inverted-background);
+    --color-alternate-background: var(--alternate-background);
 }
 
 /* Body & Layout */

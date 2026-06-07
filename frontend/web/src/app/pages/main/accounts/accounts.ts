@@ -1,10 +1,10 @@
+import { Input } from '@atoms/input';
 import { Form } from '@organisms/form';
+import { Button } from '@atoms/button';
+import { Select } from '@atoms/select';
 import { NgClass } from '@angular/common';
 import { Account } from '@widgets/account';
 import { form } from '@angular/forms/signals';
-import { Input } from '@components/ui/atoms/input';
-import { Button } from '@components/ui/atoms/button';
-import { Select } from '@components/ui/atoms/select';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
@@ -26,15 +26,15 @@ import { CURRENCIES, DummyAccountData as DummyAccount } from '@global/constants'
         }
     `,
     imports: [
-        NoData,
-        Button,
-        LucideAngularModule,
         Form,
         Input,
+        NoData,
+        Select,
+        Button,
         NgClass,
         Account,
-        Select,
         FetchError,
+        LucideAngularModule,
     ],
 })
 export class Accounts {

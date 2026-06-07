@@ -8,9 +8,7 @@ import { ToastService } from '@components/ui/atoms/toast';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
 import {
-    IStandardResponse,
     Account as IAccount,
-    CreateAccountPayload,
     IVoidResourceResponse,
     UpdateAccountBalanceVisibilityPayload,
 } from '@global/types';
@@ -130,8 +128,8 @@ export class Account implements OnInit {
                 next: (response: IVoidResourceResponse) => {
                     this.toastService.show({
                         variant: 'success',
-                        title: 'Account deleted successfully',
                         details: response.details,
+                        title: 'Account deleted successfully!',
                     });
                 },
                 complete: () => {

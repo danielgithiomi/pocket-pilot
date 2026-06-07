@@ -1,8 +1,26 @@
 <div
     [id]="featureId()"
     (click)="handleFeatureClick()"
-    class="w-full cursor-pointer! lg:w-5/6 flex flex-row bg-alternate-background p-4 rounded-lg items-start gap-6 md:gap-4 subtle-item-hover"
+    class="relative w-full cursor-pointer! lg:w-5/6 flex flex-row bg-alternate-background p-4 rounded-lg items-start gap-6 md:gap-4 subtle-item-hover"
 >
+    @if (showDeleteIcon()) {
+        <div
+            (click)="handleOnFeatureDelete()"
+            class="absolute top-4 right-4 size-6 grid place-items-center"
+        >
+            @if (isDeleting()) {
+                <div class="delete-loader"></div>
+            } @else {
+                <lucide-icon
+                    [img]="DeleteIcon"
+                    [size]="iconSize + 2"
+                    name="delete-feature"
+                    class="text-reactive-text cursor-pointer! hover:text-error transition-custom"
+                />
+            }
+        </div>
+    }
+
     <div class="flex flex-col items-center gap-2">
         <div
             (click)="handleUpvoteClick($event)"
