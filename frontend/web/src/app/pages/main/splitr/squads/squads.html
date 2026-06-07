@@ -31,14 +31,14 @@
             @if (hasError) {
                 <fetch-error
                     [messageClass]="animationMessageSize"
+                    [animationDimensions]="animationDimensions"
                     message="Error loading squads. Please refresh."
-                    [animationDimensions]="isCollapsed ? animationDimensions : '130px'"
                 />
             } @else if (hasNoData) {
                 <no-data
                     [messageClass]="animationMessageSize"
+                    [animationDimensions]="animationDimensions"
                     message="You have no squads yet. Create one today!"
-                    [animationDimensions]="isCollapsed ? animationDimensions : '130px'"
                 />
             } @else {
                 <div class="flex flex-col gap-6">

@@ -2,9 +2,10 @@ import { Badge } from '@atoms/badge';
 import { ISplitrEvent } from '@global/types';
 import { Overlapper } from '@atoms/overlapper';
 import { AccountsService } from '@api/accounts.service';
+import { DrawerService } from '@infrastructure/services';
 import { formatFullDate, formatCurrency } from '@libs/utils';
-import { Component, computed, inject, input, output } from '@angular/core';
 import { LucideAngularModule, ChevronRight } from 'lucide-angular';
+import { Component, computed, inject, input, output } from '@angular/core';
 
 @Component({
     selector: 'splitr-event',
@@ -23,6 +24,7 @@ export class SplitrEventItem {
     readonly onSplitrEventClickEvent = output<string>();
 
     // SERVICES
+    protected readonly drawerService = inject(DrawerService);
     private readonly accountsService = inject(AccountsService);
 
     // DATA
