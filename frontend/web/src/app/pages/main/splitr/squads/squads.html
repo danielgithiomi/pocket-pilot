@@ -19,10 +19,11 @@
 
     @let hasError = apiError();
     @let hasNoData = userSquads().length === 0;
+    @let isCollapsed = drawerService.isDrawerCollapsed();
     @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
     <div
         class="card-content h-full overflow-y-scroll no-scrollbar mt-4 pb-2"
-        [ngClass]="{ 'flex-1 grid place-items-center': centerContent }"
+        [ngClass]="{ 'flex-1 grid place-items-center': centerContent, 'mt-0!': !isCollapsed }"
     >
         @if (isFetchingSquads()) {
             <div class="dashboard-card-loader"></div>
@@ -30,14 +31,14 @@
             @if (hasError) {
                 <fetch-error
                     [messageClass]="animationMessageSize"
-                    [animationDimensions]="animationDimensions"
                     message="Error loading squads. Please refresh."
+                    [animationDimensions]="isCollapsed ? animationDimensions : '130px'"
                 />
             } @else if (hasNoData) {
                 <no-data
-                    message="You have no squads yet. Create one today!"
                     [messageClass]="animationMessageSize"
-                    [animationDimensions]="animationDimensions"
+                    message="You have no squads yet. Create one today!"
+                    [animationDimensions]="isCollapsed ? animationDimensions : '130px'"
                 />
             } @else {
                 <div class="flex flex-col gap-6">

@@ -20,7 +20,12 @@
             Keep track of <span class="font-semibold text-primary">shared</span> bills and expenses.
         </p>
 
-        <div class="h-full flex flex-row gap-6 md:gap-8 pb-4">
+        <div
+            class="h-full flex flex-col-reverse md:flex-row gap-6 md:gap-8 pb-4"
+            [ngClass]="{
+                'md:flex-col-reverse! lg:flex-row!': !drawerService.isDrawerCollapsed(),
+            }"
+        >
             <!-- Left Side -->
             <div class="flex-3 page-card">
                 <splitr-events />
@@ -42,6 +47,7 @@
 @if (isCreateSquadFormOpen()) {
     <splitr-squard-form
         [existingSquadMembers]="allSquadMembers()"
+        [isSquadFormOpen]="isCreateSquadFormOpen()"
         (closeCreateFormSquadEvent)="handleSquadFormClose($event)"
     />
 }
