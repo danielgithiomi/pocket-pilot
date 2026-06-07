@@ -112,7 +112,7 @@
                 }
             </div>
         </div>
-        
+
         <div class="faqs-features-panel-primary">
             <div class="flex flex-col space-y-3 cursor-default!">
                 <div
@@ -151,3 +151,10 @@
         </div>
     </section>
 </section>
+
+@if (isFeatureFormOpen()) {
+    <suggest-feature-form
+        [isFeatureFormOpen]="isFeatureFormOpen()"
+        (featureFormClosedEvent)="handleCloseFeatureForm($event)"
+    />
+}

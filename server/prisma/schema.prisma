@@ -386,8 +386,8 @@ model Feature {
     upvoteCount   Int @default(0)
     downvoteCount Int @default(0)
 
-    featureStatus   FeatureStatus @default(NEW)
     featureCategory FeatureCategory
+    featureStatus   FeatureStatus @default(NEW)
 
     updatedAt DateTime @updatedAt()
     createdAt DateTime @default(now())

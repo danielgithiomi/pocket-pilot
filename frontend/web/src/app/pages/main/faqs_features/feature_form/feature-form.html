@@ -1,0 +1,29 @@
+<organism-form
+    id="suggest-feature-form"
+    title="Suggest A New Feature"
+    [class.hidden]="!isFeatureFormOpen()"
+    (closeForm)="handleCloseFeatureForm($event)"
+    description="Suggest a new feature for Pocket Pilot."
+>
+    <form id="suggest-feature-form" slot="content" (submit)="handleSuggestFeatureFormSubmit($event)">
+        <atom-input
+            type="text"
+            id="feature-name"
+            [inverted]="true"
+            autocomplete="off"
+            label="Feature Name"
+            [formField]="featureForm.featureTitle"
+            placeholder="Eg: New Suggested Feature"
+            (clearOutput)="featureForm.featureTitle().controlValue.set('')"
+        />
+
+        <atom-select
+            id="feature-category"
+            label="Feature Category"
+            placeholder="Select a category"
+            [options]="formattedFeatureCategories()"
+            [formField]="featureForm.featureCategory"
+            [selectedValue]="featureForm.featureCategory().value()"
+        />
+    </form>
+</organism-form>

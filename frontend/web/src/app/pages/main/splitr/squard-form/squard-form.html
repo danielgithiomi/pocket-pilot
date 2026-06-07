@@ -1,6 +1,7 @@
 <organism-form
     id="squad"
     title="Create A New Squad"
+    [class.hidden]="!isSquadFormOpen()"
     (closeForm)="handleCreateSquadFormClose($event)"
     description="People you regularly share expenses with."
 >

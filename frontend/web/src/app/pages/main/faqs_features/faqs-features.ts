@@ -1,6 +1,7 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { FormCloseEvent } from '@organisms/form';
 import { Accordion } from '@molecules/accordion';
 import { ContactItem, Feature } from '@global/types';
 import { LucideAngularModule } from 'lucide-angular';
@@ -8,6 +9,7 @@ import { TabList, TabListItem } from '@atoms/tab-list';
 import { FeaturesService } from '@api/features.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { CONTACT_ITEMS, FAQ_ITEMS } from '@global/constants';
+import { SuggestFeatureForm } from './feature_form/feature-form';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { DrawerService } from '@infrastructure/services/drawer.service';
@@ -26,6 +28,7 @@ import { FeatureItem } from '@structural/main/feature-item/feature-item';
         RouterLink,
         FetchError,
         FeatureItem,
+        SuggestFeatureForm,
         LucideAngularModule,
     ],
 })
@@ -64,11 +67,11 @@ export class FaqsFeatures {
     protected readonly tabItems = computed<TabListItem[]>(() => [
         {
             value: 'all',
-            label: `All Requests [${this.featureRequests().count}]`,
+            label: `All Suggestions [${this.featureRequests().count}]`,
         },
         {
             value: 'personal',
-            label: 'My Requests',
+            label: 'My Suggestions',
         },
     ]);
     protected readonly displayFeatures = computed<Feature[]>(() =>
@@ -86,7 +89,8 @@ export class FaqsFeatures {
         this.isFeatureFormOpen.set(true);
     }
 
-    protected handleCloseFeatureForm() {
+    protected handleCloseFeatureForm(reload: boolean) {
+        if (reload) this.featuresService.refreshAll();
         this.isFeatureFormOpen.set(false);
     }
 

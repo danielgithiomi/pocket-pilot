@@ -1,11 +1,11 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { SplitrSquad } from '@global/types';
 import { ToastService } from '@atoms/toast';
+import { SplitrSquad } from '@global/types';
 import { form } from '@angular/forms/signals';
-import { SplitrService } from '@api/splitr.service';
 import { Form, FormCloseEvent } from '@organisms/form';
+import { SplitrService } from '@api/splitr.service';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { SquadMember, ISquadMember } from '@structural/main/squad-member/squad-member';
@@ -22,6 +22,7 @@ export class SplitwiseSquardForm {
     protected readonly AddUserIcon = UserPlus;
 
     // INPUTS
+    readonly isSquadFormOpen = input.required<boolean>();
     readonly existingSquadMembers = input.required<string[]>();
 
     // OUTPUTS

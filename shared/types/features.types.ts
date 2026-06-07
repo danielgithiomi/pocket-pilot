@@ -1,5 +1,13 @@
 import { VoteVariantEnum, FeatureCategoryEnum, FeatureStatusEnum } from "../enums/features.enums";
 
+// PAYLOADS
+export interface FeaturePayload {
+    featureTitle: string;
+    featureContent: string;
+    featureCategory: FeatureCategoryEnum;
+}
+
+// RESPONSES
 export interface FeatureVote {
     id: string;
     createdAt: Date;

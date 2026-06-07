@@ -1,13 +1,14 @@
 import { Badge } from '@atoms/badge';
 import { Feature } from '@global/types';
 import { formatDate } from '@libs/utils';
-import { Component, computed, effect, input } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, computed, input, signal } from '@angular/core';
 import { LucideAngularModule, ChevronsUp, MessageSquareReply } from 'lucide-angular';
 
 @Component({
     selector: 'feature-item',
     templateUrl: 'feature-item.html',
-    imports: [LucideAngularModule, Badge],
+    imports: [NgClass, LucideAngularModule, Badge],
 })
 export class FeatureItem {
     // ICONS
@@ -15,11 +16,15 @@ export class FeatureItem {
     protected readonly UpVoteIcon = ChevronsUp;
     protected readonly CommentIcon = MessageSquareReply;
 
+    // SIGNAL STATES
+    protected readonly isUserUpvoted = signal<boolean>(false);
+
     // INPUTS
     readonly id = input.required<string>();
     readonly feature = input.required<Feature>();
 
     // COMPUTED
+    protected readonly hasUserUpvoted = computed<boolean>(() => true);
     protected readonly featureId = computed<string>(() => `feature-item-${this.id()}`);
     protected readonly formattedDate = computed<string>(() => {
         const date = this.feature().createdAt.toString();
@@ -37,5 +42,10 @@ export class FeatureItem {
     // METHODS
     handleFeatureClick() {
         console.log('feature clicked', this.feature());
+    }
+
+    handleUpvoteClick(event: Event) {
+        event.stopPropagation();
+        this.isUserUpvoted.set(!this.isUserUpvoted());
     }
 }
