@@ -2,11 +2,11 @@ import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
-import { FeaturePayload } from '@global/types';
 import { FeatureCategoryEnum } from '@global/enums';
 import { LucideAngularModule } from 'lucide-angular';
 import { Select, SelectOption } from '@atoms/select';
 import { Form, FormCloseEvent } from '@organisms/form';
+import { Feature, FeaturePayload } from '@global/types';
 import { FeaturesService } from '@api/features.service';
 import { TextArea } from '@components/ui/atoms/text-area';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
@@ -61,7 +61,7 @@ export class SuggestFeatureForm {
     // METHODS
     handleCloseFeatureForm(source: FormCloseEvent) {
         if (source === 'icon') this.featureForm().reset();
-        this.featureFormClosedEvent.emit(true);
+        this.featureFormClosedEvent.emit(false);
     }
 
     resetFeatureForm() {
@@ -71,7 +71,6 @@ export class SuggestFeatureForm {
     // SUBMISSIONS
     handleSuggestFeatureFormSubmit(event: Event) {
         event.preventDefault();
-        event.stopPropagation();
 
         this.isSubmittingFeatureForm.set(true);
 
@@ -80,5 +79,19 @@ export class SuggestFeatureForm {
             featureContent: this.featureForm.featureContent().value(),
             featureCategory: this.featureForm.featureCategory().value() as FeatureCategoryEnum,
         };
+
+        this.featuresService.createNewFeature(payload).subscribe({
+            next: (feature: Feature) => {
+                this.toastService.show({
+                    variant: 'success',
+                    title: 'Feature Suggested Logged!',
+                    details: `Your [${feature.featureCategory}] feature has been logged successfully.`,
+                });
+
+                this.resetFeatureForm();
+                this.featureFormClosedEvent.emit(true);
+            },
+            complete: () => this.isSubmittingFeatureForm.set(false),
+        });
     }
 }

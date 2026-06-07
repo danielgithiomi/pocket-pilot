@@ -1,13 +1,37 @@
 import { FeaturesResource } from '@methods/resources';
-import { Feature, FeaturesWithCount, IEnumResponse } from '@global/types';
+import { FeaturesMutation } from '@methods/mutations';
+import { ApiServiceError } from './api-error.service';
+import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { computed, effect, inject, Injectable, Signal, signal } from '@angular/core';
+import {
+    Feature,
+    IEnumResponse,
+    FeaturePayload,
+    IStandardError,
+    FeaturesWithCount,
+    IStandardResponse,
+} from '@global/types';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FeaturesService {
+    private readonly mutation = inject(FeaturesMutation);
     private readonly resource = inject(FeaturesResource);
+    private readonly errorService = inject(ApiServiceError);
 
+    // MUTATIONS
+    createNewFeature(payload: FeaturePayload): Observable<Feature> {
+        return this.mutation.createNewFeature(payload).pipe(
+            map((response: IStandardResponse<Feature>) => response.data),
+            catchError((error: IStandardError) => {
+                this.errorService.renderToast(error);
+                return EMPTY;
+            }),
+        );
+    }
+
+    // RESOURCES
     private readonly _userFeatureRequests = signal<Feature[]>([]);
     private readonly _featureStatuses = signal<IEnumResponse[]>([]);
     private readonly _featureCategories = signal<IEnumResponse[]>([]);
@@ -17,18 +41,18 @@ export class FeaturesService {
     private readonly _isLoading = computed(
         () =>
             this.resource.getFeatureStatus.isLoading() ||
+            this.resource.getFeatureRequests.isLoading() ||
             this.resource.getFeatureCategories.isLoading() ||
             this.resource.getFeatureVoteVariants.isLoading() ||
-            this.resource.getFeatureRequests.isLoading() ||
             this.resource.getUserFeatureRequests.isLoading(),
     );
 
     private readonly _hasError = computed(
         () =>
             !!this.resource.getFeatureStatus.error() ||
+            !!this.resource.getFeatureRequests.error() ||
             !!this.resource.getFeatureCategories.error() ||
             !!this.resource.getFeatureVoteVariants.error() ||
-            !!this.resource.getFeatureRequests.error() ||
             !!this.resource.getUserFeatureRequests.error(),
     );
 

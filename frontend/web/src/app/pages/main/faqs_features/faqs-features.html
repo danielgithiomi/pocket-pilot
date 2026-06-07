@@ -86,7 +86,7 @@
             @let isLoading = isLoadingFeatures();
             @let count = displayFeatures().length;
             <div
-                class="w-full flex-1 py-0 lg:py-6 flex flex-col space-y-4"
+                class="w-full flex-1 py-0 lg:py-6 flex flex-col space-y-4 mt-4 lg:mt-0"
                 [ngClass]="{ 'grid place-items-center': isLoading || error || count === 0 }"
             >
                 @if (isLoading) {
