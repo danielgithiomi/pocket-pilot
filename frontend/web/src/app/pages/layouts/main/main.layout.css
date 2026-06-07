@@ -1,52 +1,52 @@
 @reference 'tailwindcss';
 
 .main-layout {
-  @apply relative h-screen w-full flex flex-row overflow-hidden;
+    @apply relative h-screen w-full flex flex-row overflow-hidden;
 
-  .mobile-drawer {
-    @apply absolute md:hidden inset-0 w-screen h-screen z-9999;
+    .mobile-drawer {
+        @apply absolute md:hidden inset-0 w-screen h-screen z-9999;
 
-    .mobile-drawer-overlay {
-      @apply absolute inset-0;
-      background: var(--overlay-background);
-      backdrop-filter: blur(var(--filter-blur));
-      -webkit-backdrop-filter: blur(var(--filter-blur));
+        .mobile-drawer-overlay {
+            @apply absolute inset-0;
+            background: var(--overlay-background);
+            backdrop-filter: blur(var(--filter-blur));
+            -webkit-backdrop-filter: blur(var(--filter-blur));
+        }
+
+        .secondary-drawer {
+            @apply absolute top-0 left-0 w-[270px] h-screen bg-(--inverted-background);
+            animation: slideLeft 400ms ease-in-out;
+        }
     }
 
-    .secondary-drawer {
-      @apply absolute top-0 left-0 w-[270px] h-screen bg-(--inverted-background);
-      animation: slideLeft 400ms ease-in-out;
-    }
-  }
-
-  .drawer {
-    @apply h-screen hidden md:block flex-col bg-(--inverted-background) transition-all duration-300 ease-in-out;
-  }
-
-  .expanded {
-    width: 280px;
-  }
-
-  .collapsed {
-    width: 72px;
-  }
-
-  .main {
-    @apply relative flex flex-col flex-1 h-screen overflow-hidden;
-
-    .header {
-      @apply w-full h-[8vh];
+    .drawer {
+        @apply h-screen hidden md:block flex-col bg-(--inverted-background) transition-all duration-300 ease-in-out;
     }
 
-    #content {
-      @apply flex-1 overflow-y-auto w-full p-5 pr-3;
+    .expanded {
+        width: 280px;
     }
-  }
 
-  .dropdown-overlay {
-    @apply absolute inset-0 cursor-default z-999;
-    background: var(--overlay-background);
-    backdrop-filter: blur(var(--filter-blur));
-    -webkit-backdrop-filter: blur(var(--filter-blur));
-  }
+    .collapsed {
+        width: 72px;
+    }
+
+    .main {
+        @apply relative flex flex-col flex-1 h-screen overflow-hidden;
+
+        .header {
+            @apply w-full h-[8vh];
+        }
+
+        #content {
+            @apply flex-1 overflow-y-auto w-full p-5 pr-3;
+        }
+    }
+
+    .dropdown-overlay {
+        @apply absolute inset-0 cursor-default z-999;
+        background: var(--overlay-background);
+        backdrop-filter: blur(var(--filter-blur));
+        -webkit-backdrop-filter: blur(var(--filter-blur));
+    }
 }

@@ -5,10 +5,9 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { Goal, IEnumResponse, IStandardResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class GoalsResource {
-
     getGoalCategories = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
@@ -20,5 +19,4 @@ export class GoalsResource {
         cache: 'no-cache',
         url: concatUrl(endpoints.goals),
     }));
-    
 }

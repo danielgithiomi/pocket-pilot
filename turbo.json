@@ -1,43 +1,25 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalDependencies": [
-    "package.json",
-    "turbo.json"
-  ],
+  "globalDependencies": ["package.json", "turbo.json"],
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**",
-        "build/**"
-      ],
-      "inputs": [
-        "src/**",
-        "package.json"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "build/**"],
+      "inputs": ["src/**", "package.json"]
     },
     "clean": {
       "cache": false,
-      "outputs": [
-        "dist/**",
-        "build/**"
-      ]
+      "outputs": ["dist/**", "build/**"]
     },
     "test": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "outputs": []
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "lint": {
       "cache": false,

@@ -69,7 +69,10 @@ export class AccountsService {
         );
     }
 
-    updateAccountBalanceVisibilityById(accountId: string, payload: UpdateAccountBalanceVisibilityPayload) {
+    updateAccountBalanceVisibilityById(
+        accountId: string,
+        payload: UpdateAccountBalanceVisibilityPayload,
+    ) {
         return this.accountsMutation.updateAccountBalanceVisibilityById(accountId, payload).pipe(
             map((response: IStandardResponse<Account>) => response.data),
             catchError((error: IStandardError) => {

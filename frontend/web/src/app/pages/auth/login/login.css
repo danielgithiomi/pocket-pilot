@@ -1,14 +1,13 @@
 @reference "tailwindcss";
 
 #form {
-  @apply flex-1 grid place-items-center;
+    @apply flex-1 grid place-items-center;
 
-  .form-wrapper {
-    @apply flex flex-col items-start w-3/4 xl:w-1/2;
+    .form-wrapper {
+        @apply flex flex-col items-start w-3/4 xl:w-1/2;
 
-    #login-form {
-      @apply my-4 w-full;
+        #login-form {
+            @apply my-4 w-full;
+        }
     }
-  }
-
 }

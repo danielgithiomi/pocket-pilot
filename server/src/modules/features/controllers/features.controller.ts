@@ -6,8 +6,8 @@ import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { FeatureDto, FeaturePayload, FeaturesWithCountDto, UpdateFeatureStatusPayload } from '../dto/features.dto';
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FeatureDto, FeaturePayload, FeaturesWithCountDto, UpdateFeatureStatusPayload } from '../dto/features.dto';
 
 @Controller('features')
 export class FeaturesController {
@@ -129,10 +129,11 @@ export class FeaturesController {
         description: 'Feature status updated successfully',
     })
     async updateFeatureStatusById(
+        @UserInRequest() user: User,
         @Param('featureId') featureId: string,
         @Body() payload: UpdateFeatureStatusPayload,
     ): Promise<VoidResourceResponse> {
-        const updatedFeature = await this.featuresService.updateFeatureStatusById(featureId, payload);
+        const updatedFeature = await this.featuresService.updateFeatureStatusById(user.id, featureId, payload);
 
         return {
             message: 'Feature status updated!',

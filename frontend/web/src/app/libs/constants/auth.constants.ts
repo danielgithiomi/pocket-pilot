@@ -4,20 +4,20 @@ export const STORED_AUTH_USER_KEY: string = 'PP_AUTH_USER';
 export const STORED_ONBOARDING_USER_KEY: string = 'PP_ONBOARDING_USER';
 
 export const APP_FEATURES: Auth_Feature[] = [
-  {
-    id: 1,
-    name: 'Expense & Revenue Tracking',
-  },
-  {
-    id: 2,
-    name: 'Real-time Account Balances',
-  },
-  {
-    id: 3,
-    name: 'Smart Insights & Analytics',
-  },
-  {
-    id: 4,
-    name: 'Secure Authentication',
-  },
+    {
+        id: 1,
+        name: 'Expense & Revenue Tracking',
+    },
+    {
+        id: 2,
+        name: 'Real-time Account Balances',
+    },
+    {
+        id: 3,
+        name: 'Smart Insights & Analytics',
+    },
+    {
+        id: 4,
+        name: 'Secure Authentication',
+    },
 ];

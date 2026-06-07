@@ -234,7 +234,6 @@ main {
 }
 
 @layer base {
-
     /* HEADER START */
     header {
         @apply w-full bg-alternate-background inset-0 h-[8vh] flex flex-row items-center;
@@ -287,7 +286,6 @@ main {
     }
 
     form {
-
         .input-field,
         .select-field,
         .text-area-field,
@@ -380,7 +378,6 @@ main {
 }
 
 @layer components {
-
     /* PAGES START */
     .page {
         @apply p-4 h-full;

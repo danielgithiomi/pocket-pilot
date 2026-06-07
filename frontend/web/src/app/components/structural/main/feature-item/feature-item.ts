@@ -23,17 +23,15 @@ export class FeatureItem {
     protected readonly featureId = computed<string>(() => `feature-item-${this.id()}`);
     protected readonly formattedDate = computed<string>(() => {
         const date = this.feature().createdAt.toString();
-        console.log('date', date);
         return formatDate(date);
     });
     protected readonly formattedAuthorName = computed<string>(() => {
-        return this.feature().authorId.slice(0, 6);
-        // const author = this.feature().authorId;
-        // const [firstName, lastName] = author.split(' ');
+        const author = this.feature().authorName;
+        const [firstName, lastName] = author.split(' ');
 
-        // const initial = lastName.charAt(0).toUpperCase();
+        const initial = lastName.charAt(0).toUpperCase();
 
-        // return `${firstName} ${initial}.`;
+        return `${firstName} ${initial}.`;
     });
 
     private readonly effectTest = effect(() => {

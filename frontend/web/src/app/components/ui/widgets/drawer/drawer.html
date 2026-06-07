@@ -1,79 +1,82 @@
 <aside id="drawer" class="drawer">
-  @if (!isMobile()) {
-    <div class="drawer-toggler" (click)="desktopDrawerCloseOutput.emit()">
-      <icon-chevron
-        [size]="10"
-        color="var(--body-background)"
-        fillColor="var(--body-background)"
-        [direction]="drawerOpen() ? 'left' : 'right'"
-      />
-    </div>
-  }
-
-  <div class="drawer-header">
-    <img
-      priority
-      id="drawer-logo"
-      [ngSrc]="logoUrl"
-      alt="Pocket Pilot Logo"
-      [width]="logoDimensions.width"
-      [height]="logoDimensions.height"
-      class="drawer-logo dark:invert-100"
-      [ngClass]="{
-        'invert-0!': themeService.activeTheme() === 'light',
-        'invert-100!': themeService.activeTheme() === 'dark',
-      }"
-    />
-
-    @if (isMobile()) {
-      <div class="close-icon-wrapper group" (click)="mobileDrawerCloseOutput.emit()">
-        <lucide-angular
-          [img]="X"
-          class="close-icon"
-          name="close-mobile-drawer"
-          color="var(--inverted-text)"
-        />
-      </div>
-    }
-  </div>
-
-  <div class="drawer-content">
-    <div class="links">
-      @for (link of links; track link.name) {
-        <nav-link
-          [link]="link"
-          [isDrawerExpanded]="drawerOpen()"
-          (navLinkClicked)="linkClicked.emit()"
-        />
-      }
-    </div>
-
-    <hr class="mx-3 my-1" />
-
-    <div class="links">
-      @for (link of additionalLinks; track link.name) {
-        <nav-link
-          [link]="link"
-          [isDrawerExpanded]="drawerOpen()"
-          (navLinkClicked)="linkClicked.emit()"
-        />
-      }
-    </div>
-  </div>
-
-  <div class="drawer-footer">
-    <div class="bordered-card p-3! items-center!" [ngClass]="{ 'justify-center!': !drawerOpen() }">
-      <div class="relative">
-        <span class="h-2 w-2 rounded-full bg-success block"></span>
-        <span class="absolute inset-0 h-2 w-2 rounded-full bg-success animate-ping"></span>
-      </div>
-
-      @if (drawerOpen()) {
-        <div class="flex-1 flex flex-row items-center justify-between">
-          <p>System Online</p>
-          <p class="text-muted-text!">v1.0.0</p>
+    @if (!isMobile()) {
+        <div class="drawer-toggler" (click)="desktopDrawerCloseOutput.emit()">
+            <icon-chevron
+                [size]="10"
+                color="var(--body-background)"
+                fillColor="var(--body-background)"
+                [direction]="drawerOpen() ? 'left' : 'right'"
+            />
         </div>
-      }
+    }
+
+    <div class="drawer-header">
+        <img
+            priority
+            id="drawer-logo"
+            [ngSrc]="logoUrl"
+            alt="Pocket Pilot Logo"
+            [width]="logoDimensions.width"
+            [height]="logoDimensions.height"
+            class="drawer-logo dark:invert-100"
+            [ngClass]="{
+                'invert-0!': themeService.activeTheme() === 'light',
+                'invert-100!': themeService.activeTheme() === 'dark',
+            }"
+        />
+
+        @if (isMobile()) {
+            <div class="close-icon-wrapper group" (click)="mobileDrawerCloseOutput.emit()">
+                <lucide-angular
+                    [img]="X"
+                    class="close-icon"
+                    name="close-mobile-drawer"
+                    color="var(--inverted-text)"
+                />
+            </div>
+        }
     </div>
-  </div>
+
+    <div class="drawer-content">
+        <div class="links">
+            @for (link of links; track link.name) {
+                <nav-link
+                    [link]="link"
+                    [isDrawerExpanded]="drawerOpen()"
+                    (navLinkClicked)="linkClicked.emit()"
+                />
+            }
+        </div>
+
+        <hr class="mx-3 my-1" />
+
+        <div class="links">
+            @for (link of additionalLinks; track link.name) {
+                <nav-link
+                    [link]="link"
+                    [isDrawerExpanded]="drawerOpen()"
+                    (navLinkClicked)="linkClicked.emit()"
+                />
+            }
+        </div>
+    </div>
+
+    <div class="drawer-footer">
+        <div
+            class="bordered-card p-3! items-center!"
+            [ngClass]="{ 'justify-center!': !drawerOpen() }"
+        >
+            <div class="relative">
+                <span class="h-2 w-2 rounded-full bg-success block"></span>
+                <span class="absolute inset-0 h-2 w-2 rounded-full bg-success animate-ping"></span>
+            </div>
+
+            @if (drawerOpen()) {
+                <div class="flex-1 flex flex-row items-center justify-between">
+                    <p>System Online</p>
+                    <p class="text-muted-text!">v1.0.0</p>
+                </div>
+            }
+        </div>
+    </div>
 </aside>

@@ -132,7 +132,8 @@
     color: var(--tertiary-dark);
 }
 
-.dial-code-prefix, .dial-code-suffix {
+.dial-code-prefix,
+.dial-code-suffix {
     flex-shrink: 0;
     font-weight: 600;
     color: var(--primary);

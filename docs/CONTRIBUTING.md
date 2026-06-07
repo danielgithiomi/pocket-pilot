@@ -27,7 +27,7 @@ All commit messages must follow this structure:
   - Derived from the branch name
   - Branches must be named like:
 
-    ``` (shell)
+    ```(shell)
     PP-001-feature-description
     ```
 

@@ -1,96 +1,96 @@
 <organism-form
-  id="squad"
-  title="Create A New Squad"
-  (closeForm)="handleCreateSquadFormClose($event)"
-  description="People you regularly share expenses with."
+    id="squad"
+    title="Create A New Squad"
+    (closeForm)="handleCreateSquadFormClose($event)"
+    description="People you regularly share expenses with."
 >
-  <form id="create-squad-form" slot="content" (submit)="handleCreateSquadFormSubmit($event)">
-    <atom-input
-      type="text"
-      id="squad-name"
-      [inverted]="true"
-      autocomplete="off"
-      label="Squad Name"
-      placeholder="Eg: Foodies"
-      [formField]="createSquadForm.squadName"
-      (clearOutput)="createSquadForm.squadName().controlValue.set('')"
-    />
-
-    <!-- Member Selection -->
-    <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
-      <p class="text-inverted-text">
-        <span class="text-sm text-expense">*</span>Select Squad Members:
-      </p>
-    </div>
-
-    <div class="flex flex-row items-end gap-2 w-full">
-      <input
-        type="text"
-        class="flex-1"
-        #newMemberInput
-        autocomplete="off"
-        id="add-member-name"
-        placeholder="Eg: John"
-        (input)="validateMemberName(newMemberInput.value)"
-      />
-
-      <atom-button
-        id="add-member"
-        variant="primary"
-        class="shadow-none rounded-lg!"
-        [disabled]="!isMemberNameValid() || isSubmittingCreateSquadForm()"
-        (clicked)="addNewMemberToPool(newMemberInput.value); newMemberInput.value = ''"
-      >
-        <div class="w-full h-full grid place-items-center py-[2px]">
-          <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize" />
-        </div>
-      </atom-button>
-    </div>
-
-    <!-- Squad Member Container -->
-    @let memberPoolCount = squadMembersPool().length;
-    <div
-      class="h-22.5 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
-      [ngClass]="{ 'grid! place-items-center!': memberPoolCount === 0 }"
-    >
-      @if (memberPoolCount === 0) {
-        <p class="text-xs text-inverted-text">You don't have any existing members</p>
-      } @else {
-        @for (member of squadMembersPool(); track member.memberName) {
-          <squad-member
+    <form id="create-squad-form" slot="content" (submit)="handleCreateSquadFormSubmit($event)">
+        <atom-input
+            type="text"
+            id="squad-name"
             [inverted]="true"
-            [member]="member"
-            [isCheckable]="true"
-            (onMemberEventClick)="addNewMemberToPool($event)"
-          />
-        }
-      }
+            autocomplete="off"
+            label="Squad Name"
+            placeholder="Eg: Foodies"
+            [formField]="createSquadForm.squadName"
+            (clearOutput)="createSquadForm.squadName().controlValue.set('')"
+        />
+
+        <!-- Member Selection -->
+        <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
+            <p class="text-inverted-text">
+                <span class="text-sm text-expense">*</span>Select Squad Members:
+            </p>
+        </div>
+
+        <div class="flex flex-row items-end gap-2 w-full">
+            <input
+                type="text"
+                class="flex-1"
+                #newMemberInput
+                autocomplete="off"
+                id="add-member-name"
+                placeholder="Eg: John"
+                (input)="validateMemberName(newMemberInput.value)"
+            />
+
+            <atom-button
+                id="add-member"
+                variant="primary"
+                class="shadow-none rounded-lg!"
+                [disabled]="!isMemberNameValid() || isSubmittingCreateSquadForm()"
+                (clicked)="addNewMemberToPool(newMemberInput.value); newMemberInput.value = ''"
+            >
+                <div class="w-full h-full grid place-items-center py-[2px]">
+                    <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize" />
+                </div>
+            </atom-button>
+        </div>
+
+        <!-- Squad Member Container -->
+        @let memberPoolCount = squadMembersPool().length;
+        <div
+            class="h-22.5 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
+            [ngClass]="{ 'grid! place-items-center!': memberPoolCount === 0 }"
+        >
+            @if (memberPoolCount === 0) {
+                <p class="text-xs text-inverted-text">You don't have any existing members</p>
+            } @else {
+                @for (member of squadMembersPool(); track member.memberName) {
+                    <squad-member
+                        [inverted]="true"
+                        [member]="member"
+                        [isCheckable]="true"
+                        (onMemberEventClick)="addNewMemberToPool($event)"
+                    />
+                }
+            }
+        </div>
+    </form>
+
+    <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
+        <atom-button
+            type="button"
+            label="Reset"
+            [inverted]="true"
+            variant="secondary"
+            form="create-squad-form"
+            id="reset-create-squad-form"
+            (clicked)="resetCreateSquadForm()"
+            [disabled]="!createSquadForm().dirty() || isSubmittingCreateSquadForm()"
+        />
+
+        <atom-button
+            type="submit"
+            label="Create Squad"
+            form="create-squad-form"
+            id="submit-create-squad-form"
+            [isLoading]="isSubmittingCreateSquadForm()"
+            [disabled]="
+                createSquadForm().invalid() ||
+                isSubmittingCreateSquadForm() ||
+                selectedSquadMembers().length == 0
+            "
+        />
     </div>
-  </form>
-
-  <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
-    <atom-button
-      type="button"
-      label="Reset"
-      [inverted]="true"
-      variant="secondary"
-      form="create-squad-form"
-      id="reset-create-squad-form"
-      (clicked)="resetCreateSquadForm()"
-      [disabled]="!createSquadForm().dirty() || isSubmittingCreateSquadForm()"
-    />
-
-    <atom-button
-      type="submit"
-      label="Create Squad"
-      form="create-squad-form"
-      id="submit-create-squad-form"
-      [isLoading]="isSubmittingCreateSquadForm()"
-      [disabled]="
-        createSquadForm().invalid() ||
-        isSubmittingCreateSquadForm() ||
-        selectedSquadMembers().length == 0
-      "
-    />
-  </div>
 </organism-form>

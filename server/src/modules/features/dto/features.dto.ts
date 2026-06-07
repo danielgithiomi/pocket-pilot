@@ -1,8 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsNotEmpty, IsString, IsEnum } from 'class-validator';
-import { FeatureCategory, FeatureStatus, VoteVariant } from '@prisma/client';
+import { FeatureCategory, FeatureStatus, Prisma, VoteVariant } from '@prisma/client';
 
+// PRISMA TYPES
+export type FeatureWithUser = Prisma.FeatureGetPayload<{
+    include: { featureVotes: true; user: { select: { name: true } } };
+}>;
+
+// SERVER DTOs
 export class FeaturePayload {
     @IsString()
     @IsNotEmpty()
@@ -69,6 +75,10 @@ export class FeatureDto {
         description: 'The ID of the user who created the feature',
     })
     authorId!: string;
+
+    @Expose()
+    @ApiProperty({ example: 'John Doe', description: 'The name of the user who created the feature' })
+    authorName!: string;
 
     @Expose()
     @ApiProperty({ example: 'My Feature Title', description: 'The title of the feature' })

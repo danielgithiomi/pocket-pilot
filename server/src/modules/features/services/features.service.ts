@@ -4,7 +4,14 @@ import { formatEnumForFrontend } from '@libs/utils/formatters';
 import { FeaturesRepository } from '../repositories/features.repository';
 import { FeatureCategory, FeatureStatus, VoteVariant } from '@prisma/client';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { FeatureDto, FeaturePayload, FeaturesWithCountDto, UpdateFeatureStatusPayload } from '../dto/features.dto';
+import {
+    FeatureDto,
+    FeaturePayload,
+    FeatureWithUser,
+    FeaturesWithCountDto,
+    UpdateFeatureStatusPayload,
+} from '../dto/features.dto';
+import { flattenFeature } from './features.mappers';
 
 @Injectable()
 export class FeaturesService {
@@ -26,22 +33,23 @@ export class FeaturesService {
     }
 
     async createFeatureRequest(userId: string, payload: FeaturePayload): Promise<FeatureDto> {
-        const createdFeature = await this.featuresRepository.createFeatureRequest(userId, payload);
+        const createdFeature: FeatureWithUser = await this.featuresRepository.createFeatureRequest(userId, payload);
         await this.invalidateCache(userId);
-        return createdFeature;
+        return flattenFeature(createdFeature);
     }
 
     getFeatureRequests(): Promise<FeaturesWithCountDto> {
         return this.featureCache.getOrSetCache<FeaturesWithCountDto>('all-features', async () => {
             const features = await this.featuresRepository.getFeatureRequests();
-            return { count: features.length, features };
+            return { count: features.length, features: features.map(flattenFeature) };
         });
     }
 
     getUserFeatureRequests(userId: string): Promise<FeatureDto[]> {
-        return this.featureCache.getOrSetCache<FeatureDto[]>(userId, () =>
-            this.featuresRepository.getUserFeatureRequests(userId),
-        );
+        return this.featureCache.getOrSetCache<FeatureDto[]>(userId, async () => {
+            const userFeatures: FeatureWithUser[] = await this.featuresRepository.getUserFeatureRequests(userId);
+            return userFeatures.map(flattenFeature);
+        });
     }
 
     async getFeatureById(featureId: string): Promise<FeatureDto> {
@@ -59,25 +67,35 @@ export class FeaturesService {
         return foundFeature;
     }
 
-    async updateFeatureStatusById(featureId: string, payload: UpdateFeatureStatusPayload): Promise<FeatureDto> {
+    async updateFeatureStatusById(
+        userId: string,
+        featureId: string,
+        payload: UpdateFeatureStatusPayload,
+    ): Promise<FeatureDto> {
         await this.assertainFeatureExists(featureId);
+        await this.assertainFeatureBelongsToUser(featureId, userId);
 
-        const updatedFeature = await this.featuresRepository.updateFeatureStatusById(featureId, payload);
+        const updatedFeature: FeatureWithUser = await this.featuresRepository.updateFeatureStatusById(
+            featureId,
+            payload,
+        );
+
         const { authorId } = updatedFeature;
         await this.invalidateCache(authorId);
-        return updatedFeature;
+
+        return flattenFeature(updatedFeature);
     }
 
     async deleteFeatureRequestById(userId: string, featureId: string): Promise<FeatureDto> {
         await this.assertainFeatureExists(featureId);
-
-        const deletedFeature = await this.featuresRepository.deleteFeatureRequestById(featureId);
-        const { authorId } = deletedFeature;
-
         await this.assertainFeatureBelongsToUser(featureId, userId);
 
+        const deletedFeature: FeatureWithUser = await this.featuresRepository.deleteFeatureRequestById(featureId);
+
+        const { authorId } = deletedFeature;
         await this.invalidateCache(authorId);
-        return deletedFeature;
+
+        return flattenFeature(deletedFeature);
     }
 
     // HELPER METHODS

@@ -1,53 +1,53 @@
 @reference "tailwindcss";
 
 .dashboard-card {
-  @apply cursor-default! hover:scale-[1.0025] bg-(--alternate-background) rounded-lg p-6 shadow-[0_0px_2px_var(--primary)] hover:shadow-[0_0px_3px_var(--primary)] transition-all duration-300 flex flex-col justify-between space-y-6 w-full h-full;
+    @apply cursor-default! hover:scale-[1.0025] bg-(--alternate-background) rounded-lg p-6 shadow-[0_0px_2px_var(--primary)] hover:shadow-[0_0px_3px_var(--primary)] transition-all duration-300 flex flex-col justify-between space-y-6 w-full h-full;
 
-  .header {
-    @apply flex items-center justify-between;
+    .header {
+        @apply flex items-center justify-between;
 
-    .title {
-      @apply text-[1rem] font-semibold grow overflow-hidden line-clamp-1 truncate;
+        .title {
+            @apply text-[1rem] font-semibold grow overflow-hidden line-clamp-1 truncate;
+        }
     }
-  }
 
-  .body {
-    @apply flex flex-col justify-center;
+    .body {
+        @apply flex flex-col justify-center;
 
-    /* Hide default value when custom content is present */
-    &:has([custom-content]) .value {
-      @apply hidden;
+        /* Hide default value when custom content is present */
+        &:has([custom-content]) .value {
+            @apply hidden;
+        }
     }
-  }
 
-  .value {
-    @apply text-3xl sm:text-2xl pl-1 group-hover:scale-102 font-semibold tracking-tighter group-hover:text-(--primary) transition-all duration-300 overflow-hidden line-clamp-1 truncate;
-  }
-
-  .footer {
-    .subtitle {
-      @apply text-xs text-(--muted-text) overflow-hidden line-clamp-1 truncate;
+    .value {
+        @apply text-3xl sm:text-2xl pl-1 group-hover:scale-102 font-semibold tracking-tighter group-hover:text-(--primary) transition-all duration-300 overflow-hidden line-clamp-1 truncate;
     }
-  }
+
+    .footer {
+        .subtitle {
+            @apply text-xs text-(--muted-text) overflow-hidden line-clamp-1 truncate;
+        }
+    }
 }
 
 /* Skeleton styles */
 .skeleton-header {
-  @apply flex flex-row items-center justify-between;
+    @apply flex flex-row items-center justify-between;
 
-  .title {
-    @apply w-3/4 h-4;
-  }
+    .title {
+        @apply w-3/4 h-4;
+    }
 
-  .icon {
-    @apply size-4;
-  }
+    .icon {
+        @apply size-4;
+    }
 }
 
 .skeleton-body {
-  @apply w-3/5 h-8;
+    @apply w-3/5 h-8;
 }
 
 .skeleton-footer {
-  @apply w-3/4 h-4;
+    @apply w-3/4 h-4;
 }

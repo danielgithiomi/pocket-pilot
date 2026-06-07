@@ -1,168 +1,171 @@
 <section id="dashboard" class="page">
-  <div class="page-header">
-    <h1 class="page-title">Dashboard</h1>
-  </div>
-
-  <div class="page-container flex-1 flex flex-col space-y-6">
-    <p class="cursor-default">
-      Your effortless financial <span class="font-semibold text-primary">command center!</span>
-    </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <!-- Accounts -->
-      <dashboard-card
-        id="accounts"
-        title="Accounts"
-        [icon]="walletIcon"
-        [value]="accountsCount()"
-        subtitle="Active accounts"
-        [isLoading]="isDataLoading()"
-      />
-
-      <!-- Transactions -->
-      <dashboard-card
-        id="transactions"
-        title="Transactions"
-        [icon]="transactionIcon"
-        [value]="transactionsCount()"
-        [isLoading]="isDataLoading()"
-        subtitle="Transactions made this month"
-      />
-
-      <!-- Net Cash Flow -->
-      <dashboard-card
-        id="net-cash-flow"
-        title="Net Cash Flow"
-        [icon]="handCoinsIcon"
-        [isLoading]="isDataLoading()"
-        [value]="formattedNetCashFlow()"
-        subtitle="Total transacted this month"
-      />
-
-      <!-- Incomes -->
-      <dashboard-card
-        id="incomes"
-        title="Incomes"
-        [icon]="incomeIcon"
-        [isLoading]="isDataLoading()"
-        subtitle="Total revenue this month"
-        [value]="formatCurrency(totalRevenue().toString())"
-      />
-
-      <!-- Expenses -->
-      <dashboard-card
-        id="expenses"
-        title="Expenses"
-        [icon]="expenseIcon"
-        [isLoading]="isDataLoading()"
-        subtitle="Total expenses this month"
-        [value]="formatCurrency(totalExpenses().toString())"
-      />
-
-      <!-- Spending Limits -->
-      <dashboard-card
-        id="spending-limits"
-        title="Spending Limit"
-        [icon]="spendingLimitIcon"
-        [isLoading]="isDataLoading()"
-        subtitle="Your monthly spending limit"
-        [iconClassName]="totalExpenses() > monthlySpendingLimit ? 'group-hover:text-error!' : ''"
-      >
-        <div custom-content class="w-full grid place-items-center">
-          @if (isDataLoading()) {
-            <div class="loader"></div>
-          } @else {
-            <div class="w-full cursor-pointer!" (click)="onSpendingLimitClick()">
-              <atom-progress-bar
-                [showEditIcon]="false"
-                [showPercentage]="true"
-                id="spending-limit-progress"
-                [currentValue]="totalExpenses()"
-                [maxValue]="monthlySpendingLimit"
-              />
-            </div>
-          }
-        </div>
-      </dashboard-card>
+    <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <!-- Ratio Card -->
-      <dashboard-card
-        id="ratio"
-        class="col-span-1"
-        [icon]="gaugeIcon"
-        [isLoading]="false"
-        title="Spending Ratio"
-        subtitle="Your monthly spending so far."
-      >
-        <div custom-content class="min-h-[150px] w-full grid place-items-center">
-          @if (isDataLoading()) {
-            <div class="ratio-loader"></div>
-          } @else {
-            <div class="flex flex-row md:flex-col items-center gap-6 md:gap-0">
-              <atom-ratio-slider [value]="spendingRatio()" />
+    <div class="page-container flex-1 flex flex-col space-y-6">
+        <p class="cursor-default">
+            Your effortless financial
+            <span class="font-semibold text-primary">command center!</span>
+        </p>
 
-              <div class="legend">
-                <div class="legend-item justify-start">
-                  <span class="bg-primary"></span>
-                  <p>Incomes</p>
-                </div>
-
-                <div class="legend-item justify-end">
-                  <span class="bg-(--apple-red)"></span>
-                  <p>Expenses</p>
-                </div>
-              </div>
-            </div>
-          }
-        </div>
-      </dashboard-card>
-
-      <!-- Calendar Card -->
-      <dashboard-card
-        id="calendar"
-        title="Calendar"
-        class="col-span-1"
-        [isLoading]="false"
-        [icon]="calendarIcon"
-        wrapperClassName="px-2!"
-        subtitle="The monthly calendar"
-        [ngClass]="{ 'md:col-span-2! xl:col-span-1!': !drawerService.isDrawerCollapsed() }"
-      >
-        <div custom-content class="w-full grid place-items-center">
-          <ejs-calendar [min]="minDate" />
-        </div>
-      </dashboard-card>
-
-      <!-- Analysis Card -->
-      <dashboard-card
-        id="analysis"
-        [icon]="pilesIcon"
-        [isLoading]="false"
-        title="Spending Analysis"
-        class="col-span-1 md:col-span-2"
-        subtitle="Your monthly spending analysis"
-      >
-        <div custom-content class="w-full grid place-items-center">
-          @if (isDataLoading()) {
-            <div class="analysis-loader"></div>
-          } @else {
-            <widget-cost-analysis
-              [actualMonth]="actualMonth"
-              [currentMonth]="currentMonth()"
-              (monthChange)="onMonthChange($event)"
-              [totalMonthlySpending]="totalExpenses()"
-              (resetMonthEvent)="onMonthChange(actualMonth)"
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Accounts -->
+            <dashboard-card
+                id="accounts"
+                title="Accounts"
+                [icon]="walletIcon"
+                [value]="accountsCount()"
+                subtitle="Active accounts"
+                [isLoading]="isDataLoading()"
             />
-          }
-        </div>
-      </dashboard-card>
-    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <!-- Upcoming Bills -->
-      <upcoming-bills class="col-span-2" [iconSize]="iconSize" />
+            <!-- Transactions -->
+            <dashboard-card
+                id="transactions"
+                title="Transactions"
+                [icon]="transactionIcon"
+                [value]="transactionsCount()"
+                [isLoading]="isDataLoading()"
+                subtitle="Transactions made this month"
+            />
+
+            <!-- Net Cash Flow -->
+            <dashboard-card
+                id="net-cash-flow"
+                title="Net Cash Flow"
+                [icon]="handCoinsIcon"
+                [isLoading]="isDataLoading()"
+                [value]="formattedNetCashFlow()"
+                subtitle="Total transacted this month"
+            />
+
+            <!-- Incomes -->
+            <dashboard-card
+                id="incomes"
+                title="Incomes"
+                [icon]="incomeIcon"
+                [isLoading]="isDataLoading()"
+                subtitle="Total revenue this month"
+                [value]="formatCurrency(totalRevenue().toString())"
+            />
+
+            <!-- Expenses -->
+            <dashboard-card
+                id="expenses"
+                title="Expenses"
+                [icon]="expenseIcon"
+                [isLoading]="isDataLoading()"
+                subtitle="Total expenses this month"
+                [value]="formatCurrency(totalExpenses().toString())"
+            />
+
+            <!-- Spending Limits -->
+            <dashboard-card
+                id="spending-limits"
+                title="Spending Limit"
+                [icon]="spendingLimitIcon"
+                [isLoading]="isDataLoading()"
+                subtitle="Your monthly spending limit"
+                [iconClassName]="
+                    totalExpenses() > monthlySpendingLimit ? 'group-hover:text-error!' : ''
+                "
+            >
+                <div custom-content class="w-full grid place-items-center">
+                    @if (isDataLoading()) {
+                        <div class="loader"></div>
+                    } @else {
+                        <div class="w-full cursor-pointer!" (click)="onSpendingLimitClick()">
+                            <atom-progress-bar
+                                [showEditIcon]="false"
+                                [showPercentage]="true"
+                                id="spending-limit-progress"
+                                [currentValue]="totalExpenses()"
+                                [maxValue]="monthlySpendingLimit"
+                            />
+                        </div>
+                    }
+                </div>
+            </dashboard-card>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Ratio Card -->
+            <dashboard-card
+                id="ratio"
+                class="col-span-1"
+                [icon]="gaugeIcon"
+                [isLoading]="false"
+                title="Spending Ratio"
+                subtitle="Your monthly spending so far."
+            >
+                <div custom-content class="min-h-[150px] w-full grid place-items-center">
+                    @if (isDataLoading()) {
+                        <div class="ratio-loader"></div>
+                    } @else {
+                        <div class="flex flex-row md:flex-col items-center gap-6 md:gap-0">
+                            <atom-ratio-slider [value]="spendingRatio()" />
+
+                            <div class="legend">
+                                <div class="legend-item justify-start">
+                                    <span class="bg-primary"></span>
+                                    <p>Incomes</p>
+                                </div>
+
+                                <div class="legend-item justify-end">
+                                    <span class="bg-(--apple-red)"></span>
+                                    <p>Expenses</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </dashboard-card>
+
+            <!-- Calendar Card -->
+            <dashboard-card
+                id="calendar"
+                title="Calendar"
+                class="col-span-1"
+                [isLoading]="false"
+                [icon]="calendarIcon"
+                wrapperClassName="px-2!"
+                subtitle="The monthly calendar"
+                [ngClass]="{ 'md:col-span-2! xl:col-span-1!': !drawerService.isDrawerCollapsed() }"
+            >
+                <div custom-content class="w-full grid place-items-center">
+                    <ejs-calendar [min]="minDate" />
+                </div>
+            </dashboard-card>
+
+            <!-- Analysis Card -->
+            <dashboard-card
+                id="analysis"
+                [icon]="pilesIcon"
+                [isLoading]="false"
+                title="Spending Analysis"
+                class="col-span-1 md:col-span-2"
+                subtitle="Your monthly spending analysis"
+            >
+                <div custom-content class="w-full grid place-items-center">
+                    @if (isDataLoading()) {
+                        <div class="analysis-loader"></div>
+                    } @else {
+                        <widget-cost-analysis
+                            [actualMonth]="actualMonth"
+                            [currentMonth]="currentMonth()"
+                            (monthChange)="onMonthChange($event)"
+                            [totalMonthlySpending]="totalExpenses()"
+                            (resetMonthEvent)="onMonthChange(actualMonth)"
+                        />
+                    }
+                </div>
+            </dashboard-card>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Upcoming Bills -->
+            <upcoming-bills class="col-span-2" [iconSize]="iconSize" />
+        </div>
     </div>
-  </div>
 </section>

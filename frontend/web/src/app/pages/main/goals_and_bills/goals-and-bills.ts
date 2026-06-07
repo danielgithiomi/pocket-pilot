@@ -13,57 +13,57 @@ import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { GoalItem, BillItem, BillItemSkeleton, GoalItemSkeleton } from './items';
 
 @Component({
-  selector: 'goals-and-bill',
-  styleUrl: './goals-and-bills.css',
-  templateUrl: './goals-and-bills.html',
-  imports: [
-    NoData,
-    Button,
-    NgClass,
-    GoalItem,
-    BillItem,
-    GoalsForm,
-    BillsForm,
-    FetchError,
-    CalendarModule,
-    GoalItemSkeleton,
-    BillItemSkeleton,
-    LucideAngularModule,
-  ],
+    selector: 'goals-and-bill',
+    styleUrl: './goals-and-bills.css',
+    templateUrl: './goals-and-bills.html',
+    imports: [
+        NoData,
+        Button,
+        NgClass,
+        GoalItem,
+        BillItem,
+        GoalsForm,
+        BillsForm,
+        FetchError,
+        CalendarModule,
+        GoalItemSkeleton,
+        BillItemSkeleton,
+        LucideAngularModule,
+    ],
 })
 export class Goals {
-  // Icons
-  protected readonly iconSize = 16;
-  protected readonly PlusIcon = Plus;
+    // Icons
+    protected readonly iconSize = 16;
+    protected readonly PlusIcon = Plus;
 
-  // Services
-  protected readonly billsService = inject(BillsService);
-  protected readonly goalsService = inject(GoalsService);
-  protected readonly drawerService = inject(DrawerService);
-  protected readonly accountsService = inject(AccountsService);
+    // Services
+    protected readonly billsService = inject(BillsService);
+    protected readonly goalsService = inject(GoalsService);
+    protected readonly drawerService = inject(DrawerService);
+    protected readonly accountsService = inject(AccountsService);
 
-  // Signals
-  protected readonly isGoalsFormOpen = signal<boolean>(false);
-  protected readonly isBillsFormOpen = signal<boolean>(false);
+    // Signals
+    protected readonly isGoalsFormOpen = signal<boolean>(false);
+    protected readonly isBillsFormOpen = signal<boolean>(false);
 
-  // Data
-  protected readonly bills$ = this.billsService.getUserBills();
-  protected readonly goals$ = this.goalsService.getUserGoals();
-  protected readonly currency = this.accountsService.getDefaultCurrency() || 'USD';
+    // Data
+    protected readonly bills$ = this.billsService.getUserBills();
+    protected readonly goals$ = this.goalsService.getUserGoals();
+    protected readonly currency = this.accountsService.getDefaultCurrency() || 'USD';
 
-  // Computed
-  protected readonly isFetchingBills = computed(() => this.bills$.isLoading());
-  protected readonly isFetchingGoals = computed(() => this.goals$.isLoading());
+    // Computed
+    protected readonly isFetchingBills = computed(() => this.bills$.isLoading());
+    protected readonly isFetchingGoals = computed(() => this.goals$.isLoading());
 
-  // Methods
-  protected onFormClose(form: 'goals' | 'bills') {
-    switch (form) {
-      case 'goals':
-        this.isGoalsFormOpen.set(false);
-        break;
-      case 'bills':
-        this.isBillsFormOpen.set(false);
-        break;
+    // Methods
+    protected onFormClose(form: 'goals' | 'bills') {
+        switch (form) {
+            case 'goals':
+                this.isGoalsFormOpen.set(false);
+                break;
+            case 'bills':
+                this.isBillsFormOpen.set(false);
+                break;
+        }
     }
-  }
 }

@@ -18,6 +18,7 @@ export interface Feature {
     authorId: string;
     createdAt: Date;
     updatedAt: Date;
+    authorName: string;
     upvoteCount: number;
     featureTitle: string;
     featureScore: number;

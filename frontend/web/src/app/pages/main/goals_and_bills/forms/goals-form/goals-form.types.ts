@@ -6,75 +6,74 @@ export const TargetCompletionStrategies = ['date', 'amount'] as const;
 export type TargetCompletionStrategy = (typeof TargetCompletionStrategies)[number];
 
 export interface EffectResponse {
-  rawValue: number;
-  ceiledValue: number;
+    rawValue: number;
+    ceiledValue: number;
 }
-
 
 // FORM
 export type NewGoalSchema = {
-  name: string;
-  endDate: Date;
-  startDate: Date;
-  currency: string;
-  description: string;
-  targetAmount: number | null;
-  category: GoalCategoryEnum | '';
-  monthlyContribution: number | null;
-  targetCompletionStrategy: TargetCompletionStrategy | null;
+    name: string;
+    endDate: Date;
+    startDate: Date;
+    currency: string;
+    description: string;
+    targetAmount: number | null;
+    category: GoalCategoryEnum | '';
+    monthlyContribution: number | null;
+    targetCompletionStrategy: TargetCompletionStrategy | null;
 };
 
 export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
-  // Name
-  required(root.name, { message: 'The goal name is required field!' });
+    // Name
+    required(root.name, { message: 'The goal name is required field!' });
 
-  // Description
-  required(root.description, { message: 'The goal description is required field!' });
+    // Description
+    required(root.description, { message: 'The goal description is required field!' });
 
-  // Start Date
-  required(root.startDate, { message: 'The goal start date is required field!' });
+    // Start Date
+    required(root.startDate, { message: 'The goal start date is required field!' });
 
-  // End Date
-  required(root.endDate, { message: 'The goal end date is required field!' });
+    // End Date
+    required(root.endDate, { message: 'The goal end date is required field!' });
 
-  // Category
-  required(root.category, { message: 'The goal category is required field!' });
+    // Category
+    required(root.category, { message: 'The goal category is required field!' });
 
-  // Target Amount
-  required(root.targetAmount, { message: 'The goal target amount is required field!' });
-  validate(root.targetAmount, (context) => {
-    const value = context.value();
-    if (value === null) return undefined;
+    // Target Amount
+    required(root.targetAmount, { message: 'The goal target amount is required field!' });
+    validate(root.targetAmount, (context) => {
+        const value = context.value();
+        if (value === null) return undefined;
 
-    const asString = value.toString();
-    const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
+        const asString = value.toString();
+        const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
 
-    // const isValid = Math.round(value * 100) === value * 100;
-    // const isValid = Math.abs(value * 100 - Math.round(value * 100)) < Number.EPSILON;
+        // const isValid = Math.round(value * 100) === value * 100;
+        // const isValid = Math.abs(value * 100 - Math.round(value * 100)) < Number.EPSILON;
 
-    return isValid
-      ? undefined
-      : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
-  });
+        return isValid
+            ? undefined
+            : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
+    });
 
-  // Monthly Contribution
-  required(root.monthlyContribution, {
-    message: 'The goal monthly contribution is required field!',
-  });
-  validate(root.monthlyContribution, (context) => {
-    const value = context.value();
-    if (value === null) return undefined;
+    // Monthly Contribution
+    required(root.monthlyContribution, {
+        message: 'The goal monthly contribution is required field!',
+    });
+    validate(root.monthlyContribution, (context) => {
+        const value = context.value();
+        if (value === null) return undefined;
 
-    const asString = value.toString();
-    const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
+        const asString = value.toString();
+        const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
 
-    return isValid
-      ? undefined
-      : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
-  });
+        return isValid
+            ? undefined
+            : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
+    });
 
-  // Target Completion Strategy
-  required(root.targetCompletionStrategy, {
-    message: 'The goal target completion strategy is required field!',
-  });
+    // Target Completion Strategy
+    required(root.targetCompletionStrategy, {
+        message: 'The goal target completion strategy is required field!',
+    });
 });

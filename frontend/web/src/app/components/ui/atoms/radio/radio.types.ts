@@ -1,7 +1,7 @@
 export type RadioOption = {
-  value: string;
-  label: string;
-  disabled?: boolean;
+    value: string;
+    label: string;
+    disabled?: boolean;
 };
 
 export type SelectionMode = 'single' | 'multiple';

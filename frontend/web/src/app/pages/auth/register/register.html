@@ -1,71 +1,73 @@
 <section class="flex flex-row min-h-screen" id="register">
-  <div class="animate-left flex-1" id="form">
-    <div class="form-wrapper">
-      <div class="space-y-4">
-        <h3>Hello there,</h3>
-        <p>Create a new account to continue</p>
-      </div>
+    <div class="animate-left flex-1" id="form">
+        <div class="form-wrapper">
+            <div class="space-y-4">
+                <h3>Hello there,</h3>
+                <p>Create a new account to continue</p>
+            </div>
 
-      <!--   FORM START   -->
-      <form (submit)="submitRegistrationForm($event)" id="register-form">
-        <atom-input
-          id="email"
-          type="email"
-          autocomplete="email"
-          label="Email Address"
-          placeholder="johndoe@gmail.com"
-          [formField]="registerForm.email"
-          (clearOutput)="registerForm.email().controlValue.set('')"
-        />
+            <!--   FORM START   -->
+            <form (submit)="submitRegistrationForm($event)" id="register-form">
+                <atom-input
+                    id="email"
+                    type="email"
+                    autocomplete="email"
+                    label="Email Address"
+                    placeholder="johndoe@gmail.com"
+                    [formField]="registerForm.email"
+                    (clearOutput)="registerForm.email().controlValue.set('')"
+                />
 
-        <atom-input
-          type="text"
-          id="username"
-          label="Username"
-          placeholder="John Doe"
-          autocomplete="username"
-          [formField]="registerForm.name"
-          (clearOutput)="registerForm.name().controlValue.set('')"
-        />
+                <atom-input
+                    type="text"
+                    id="username"
+                    label="Username"
+                    placeholder="John Doe"
+                    autocomplete="username"
+                    [formField]="registerForm.name"
+                    (clearOutput)="registerForm.name().controlValue.set('')"
+                />
 
-        <atom-input
-          id="password"
-          type="password"
-          label="Password"
-          placeholder="••••••••"
-          autocomplete="new-password"
-          [formField]="registerForm.password"
-        />
+                <atom-input
+                    id="password"
+                    type="password"
+                    label="Password"
+                    placeholder="••••••••"
+                    autocomplete="new-password"
+                    [formField]="registerForm.password"
+                />
 
-        <atom-input
-          type="password"
-          id="confirm-password"
-          placeholder="••••••••"
-          label="Confirm Password"
-          autocomplete="new-password"
-          [formField]="registerForm.confirmPassword"
-        />
+                <atom-input
+                    type="password"
+                    id="confirm-password"
+                    placeholder="••••••••"
+                    label="Confirm Password"
+                    autocomplete="new-password"
+                    [formField]="registerForm.confirmPassword"
+                />
 
-        <atom-button
-          id="register"
-          type="submit"
-          label="Register"
-          form="register-form"
-          [isLoading]="isSubmitting()"
-          [disabled]="registerForm().invalid() || isSubmitting()"
-        />
-      </form>
-      <!--   FORM END   -->
+                <atom-button
+                    id="register"
+                    type="submit"
+                    label="Register"
+                    form="register-form"
+                    [isLoading]="isSubmitting()"
+                    [disabled]="registerForm().invalid() || isSubmitting()"
+                />
+            </form>
+            <!--   FORM END   -->
 
-      <p (click)="routeToLogin()" class="form-redirect-text">Already have an account? Log in</p>
+            <p (click)="routeToLogin()" class="form-redirect-text">
+                Already have an account? Log in
+            </p>
 
-      <div class="secure-auth">
-        <hr />
-        <p class="text-muted-text capitalize">Secure Registration</p>
-        <hr />
-      </div>
+            <div class="secure-auth">
+                <hr />
+                <p class="text-muted-text capitalize">Secure Registration</p>
+                <hr />
+            </div>
+        </div>
     </div>
-  </div>
 
-  <auth-branding class="flex-1 hidden md:block animate-right" contentAlign="right" />
+    <auth-branding class="flex-1 hidden md:block animate-right" contentAlign="right" />
 </section>
