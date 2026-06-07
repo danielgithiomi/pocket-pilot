@@ -6,8 +6,10 @@ import { ContactItem, Feature } from '@global/types';
 import { LucideAngularModule } from 'lucide-angular';
 import { TabList, TabListItem } from '@atoms/tab-list';
 import { FeaturesService } from '@api/features.service';
+import { NoData } from '@structural/main/no-data/no-data';
 import { CONTACT_ITEMS, FAQ_ITEMS } from '@global/constants';
 import { Component, computed, inject, signal } from '@angular/core';
+import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { DrawerService } from '@infrastructure/services/drawer.service';
 import { FeatureItem } from '@structural/main/feature-item/feature-item';
 
@@ -15,11 +17,25 @@ import { FeatureItem } from '@structural/main/feature-item/feature-item';
     selector: 'faqs-features',
     styleUrl: './faqs-features.css',
     templateUrl: './faqs-features.html',
-    imports: [NgClass, LucideAngularModule, Accordion, RouterLink, Button, TabList, FeatureItem],
+    imports: [
+        Button,
+        NoData,
+        NgClass,
+        TabList,
+        Accordion,
+        RouterLink,
+        FetchError,
+        FeatureItem,
+        LucideAngularModule,
+    ],
 })
 export class FaqsFeatures {
     // ICONS
     protected readonly iconSize = 14;
+
+    // ANIMATIONS
+    protected readonly animationDimensions = '180px';
+    protected readonly animationMessageSize = 'text-xs';
 
     // SIGNAL STATES
     protected readonly activeTabIndex = signal<0 | 1>(0);
@@ -37,18 +53,18 @@ export class FaqsFeatures {
 
     // STORE
     private readonly featureStatuses = this.featuresService.getFeatureStatuses();
-    private readonly featureRequests = this.featuresService.getFeatureRequests();
-    private readonly userFeatureRequests = this.featuresService.getUserFeatureRequests();
+    protected readonly featureRequests = this.featuresService.getFeatureRequests();
     private readonly featureCategories = this.featuresService.getFeatureCategories();
+    private readonly userFeatureRequests = this.featuresService.getUserFeatureRequests();
     private readonly featureVoteVariants = this.featuresService.getFeatureVoteVariants();
 
     // COMPUTED
-    protected readonly isLoadingFeatures = this.featuresService.isLoading();
     protected readonly hasFeaturesError = this.featuresService.hasError();
+    protected readonly isLoadingFeatures = this.featuresService.isLoading();
     protected readonly tabItems = computed<TabListItem[]>(() => [
         {
             value: 'all',
-            label: 'All Requests',
+            label: `All Requests [${this.featureRequests().count}]`,
         },
         {
             value: 'personal',
@@ -58,6 +74,12 @@ export class FaqsFeatures {
     protected readonly displayFeatures = computed<Feature[]>(() =>
         this.activeTabIndex() === 0 ? this.featureRequests().features : this.userFeatureRequests(),
     );
+    protected readonly featuresSubtitle = computed<string>(() => {
+        const allsubtitle = 'Most Popular Feature Requests';
+        const personalsubtitle = 'My Suggested Feature Requests';
+
+        return this.activeTabIndex() === 0 ? allsubtitle : personalsubtitle;
+    });
 
     // UTILITIES
     protected handleOpenFeatureForm() {

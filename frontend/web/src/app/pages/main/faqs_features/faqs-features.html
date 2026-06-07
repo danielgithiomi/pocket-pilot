@@ -80,21 +80,39 @@
                 (selectedIndex)="onTabSelected($event)"
             />
 
+            <p class="text-sm text-tertiary-dark text-ellipsis mt-4">{{ featuresSubtitle() }}</p>
+
+            @let error = hasFeaturesError();
             @let isLoading = isLoadingFeatures();
+            @let count = displayFeatures().length;
             <div
-                class="w-full flex-1 py-0 lg:py-6 flex flex-col space-y-4 mt-2"
-                [ngClass]="{ 'grid place-items-center': isLoading }"
+                class="w-full flex-1 py-0 lg:py-6 flex flex-col space-y-4"
+                [ngClass]="{ 'grid place-items-center': isLoading || error || count === 0 }"
             >
                 @if (isLoading) {
                     <div class="layered-loader"></div>
+                } @else if (error) {
+                    <fetch-error
+                        message="Failed to load feature requests."
+                        [messageClass]="animationMessageSize"
+                        [animationDimensions]="animationDimensions"
+                    />
                 } @else {
-                    @for (feature of displayFeatures(); track feature.id) {
-                        <feature-item [id]="feature.id" [feature]="feature" />
+                    @if (count === 0) {
+                        <no-data
+                            message="No feature requests found. Add one today!"
+                            [messageClass]="animationMessageSize"
+                            [animationDimensions]="animationDimensions"
+                        />
+                    } @else {
+                        @for (feature of displayFeatures(); track feature.id) {
+                            <feature-item [id]="feature.id" [feature]="feature" />
+                        }
                     }
                 }
             </div>
         </div>
-
+        
         <div class="faqs-features-panel-primary">
             <div class="flex flex-col space-y-3 cursor-default!">
                 <div
