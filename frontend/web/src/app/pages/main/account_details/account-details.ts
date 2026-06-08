@@ -12,7 +12,8 @@ import { AccountDetailsForm } from './account-details.form';
 import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionsComponent } from './transactions/transactions';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { LucideAngularModule, Wallet, SquarePen, Trash2 } from 'lucide-angular';
+import { UpdateAccountBalanceVisibilityPayload, Account as IAccount } from '@global/types';
+import { LucideAngularModule, Wallet, SquarePen, Trash2, ScanEye, EyeOff } from 'lucide-angular';
 
 @Component({
     templateUrl: './account-details.html',
@@ -31,14 +32,17 @@ import { LucideAngularModule, Wallet, SquarePen, Trash2 } from 'lucide-angular';
 export class AccountDetails {
     // ICONS
     protected readonly iconSize = 18;
-    protected readonly deleteIcon = Trash2;
-    protected readonly editIcon = SquarePen;
-    protected readonly breadcrumbIcon = Wallet;
+    protected readonly DeleteIcon = Trash2;
+    protected readonly EditIcon = SquarePen;
+    protected readonly BreadcrumbIcon = Wallet;
+    protected readonly HideBalanceIcon = EyeOff;
+    protected readonly ShowBalanceIcon = ScanEye;
 
     // SIGNALS
     protected readonly deleteClickCount = signal<1 | 2>(1);
     protected readonly isEditFormOpen = signal<boolean>(false);
     protected readonly isDeletingAccount = signal<boolean>(false);
+    protected readonly isTogglingBalanceVisibility = signal<boolean>(false);
 
     // SERVICES
     private readonly router = inject(Router);
@@ -53,6 +57,9 @@ export class AccountDetails {
         this.accountsService.getAccountWithItsTransactionsById(this.accountId!);
 
     // COMPUTED
+    protected readonly balanceVisibility = computed(
+        () => this.resourceData()?.account?.isBalanceVisible ?? false,
+    );
     protected readonly hasError = computed(() => !!this.accountWithTransactions.error());
     protected readonly isLoadingResources = computed(() =>
         this.accountWithTransactions.isLoading(),
@@ -94,6 +101,34 @@ export class AccountDetails {
     protected handleEditFormClose(cause: 'submit' | 'icon' | 'overlay') {
         if (cause === 'submit') this.reloadResources();
         this.isEditFormOpen.set(false);
+    }
+
+    protected handleOnBalanceVisibilityToggle() {
+        const data = this.resourceData();
+        if (!data) return;
+
+        const {
+            account: { id: accountId, name, isBalanceVisible },
+        } = data;
+
+        this.isTogglingBalanceVisibility.set(true);
+
+        const payload: UpdateAccountBalanceVisibilityPayload = {
+            isBalanceVisible: !isBalanceVisible,
+        };
+
+        this.accountsService.updateAccountBalanceVisibilityById(accountId, payload).subscribe({
+            next: (account: IAccount) => {
+                this.toastService.show({
+                    variant: 'success',
+                    title: 'Balance visibility toggled!',
+                    details: `Your [${account.name}] balance has been ${account.isBalanceVisible ? 'made visible' : 'hidden'}.`,
+                });
+
+                this.reloadResources();
+            },
+            complete: () => this.isTogglingBalanceVisibility.set(false),
+        });
     }
 
     protected handleOnDeleteAccountClick(accountId: string) {

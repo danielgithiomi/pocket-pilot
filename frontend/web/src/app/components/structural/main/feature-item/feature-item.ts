@@ -84,6 +84,9 @@ export class FeatureItem {
     }
 
     handleOnFeatureDelete() {
+
+        this.isDeleting.set(true);
+
         this.featuresService.deleteFeatureRequestById(this.feature().id).subscribe({
             next: (response: IVoidResourceResponse) => {
                 const { details } = response;
@@ -95,6 +98,7 @@ export class FeatureItem {
 
                 this.featuresService.refreshAll();
             },
+            complete: () => this.isDeleting.set(false),
         });
     }
 }

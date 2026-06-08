@@ -4,6 +4,24 @@
         <h1 class="page-title">Account Details</h1>
 
         <div class="flex flex-row items-center gap-4">
+            <!-- Visibility Toggle Button -->
+            <atom-button
+                variant="primary"
+                id="account-balance-toggle"
+                [isLoading]="isTogglingBalanceVisibility()"
+                (clicked)="handleOnBalanceVisibilityToggle()"
+            >
+                <div class="w-full grid place-items-center">
+                    <lucide-icon
+                        name="toggle-balance-visibility"
+                        [img]="
+                            resource?.account?.isBalanceVisible ? HideBalanceIcon : ShowBalanceIcon
+                        "
+                        [size]="iconSize"
+                    />
+                </div>
+            </atom-button>
+
             <!-- Edit Button -->
             <atom-button
                 id="account-details-edit"
@@ -11,11 +29,7 @@
                 (clicked)="handleOnEditClick()"
             >
                 <div class="w-full grid place-items-center">
-                    <lucide-icon
-                        name="edit-account"
-                        [img]="editIcon"
-                        [size]="iconSize"
-                    ></lucide-icon>
+                    <lucide-icon name="edit-account" [img]="EditIcon" [size]="iconSize" />
                 </div>
             </atom-button>
 
@@ -28,11 +42,7 @@
                 (clicked)="handleOnDeleteAccountClick(resource?.account?.id || '')"
             >
                 <div class="w-full grid place-items-center">
-                    <lucide-icon
-                        [size]="iconSize"
-                        [img]="deleteIcon"
-                        name="delete-account"
-                    ></lucide-icon>
+                    <lucide-icon [size]="iconSize" [img]="DeleteIcon" name="delete-account" />
                 </div>
             </atom-button>
         </div>
@@ -44,7 +54,7 @@
     >
         @if (!hasError()) {
             <breadcrumbs
-                [icon]="breadcrumbIcon"
+                [icon]="BreadcrumbIcon"
                 [isLoading]="isLoadingResources()"
                 [breadcrumbItems]="breadcrumbItems()"
             />
