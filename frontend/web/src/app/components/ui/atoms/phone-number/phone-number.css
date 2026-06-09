@@ -19,8 +19,9 @@
 }
 
 .phone-number-wrapper {
-    position: relative;
     width: 100%;
+    position: relative;
+    
 }
 
 .phone-number-container {

@@ -8,8 +8,8 @@
             <atom-button
                 variant="primary"
                 id="account-balance-toggle"
-                [isLoading]="isTogglingBalanceVisibility()"
                 (clicked)="handleOnBalanceVisibilityToggle()"
+                [isLoading]="isTogglingBalanceVisibility() || isLoadingResources()"
             >
                 <div class="w-full grid place-items-center">
                     <lucide-icon
