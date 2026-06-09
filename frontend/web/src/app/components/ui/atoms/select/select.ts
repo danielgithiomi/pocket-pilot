@@ -4,6 +4,11 @@ import { SelectOption, SelectSize } from './select.types';
 import { Component, computed, input } from '@angular/core';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { ChevronDown, LucideAngularModule } from 'lucide-angular';
+import {
+    FORM_FIELD_ERROR_BORDER_CLASSES,
+    isFormFieldInError,
+    resolveFormFieldVisualState,
+} from '../form-field-visual-state';
 
 @Component({
     selector: 'atom-select',
@@ -33,6 +38,7 @@ export class Select {
     formField = input.required<FieldTree<string, string>>();
 
     includeLabel = input<boolean>(true);
+    showStatus = input<boolean>(true);
 
     /* ICONS */
     readonly iconSize = 18;
@@ -42,6 +48,10 @@ export class Select {
     fieldState = computed(() => this.formField()());
     selectId = computed<string>(() => `select-field-${this.id()}`);
     currentValue = computed(() => this.selectedValue() || this.fieldState().value());
+    showFieldErrors = computed(() => isFormFieldInError(this.fieldState()));
+    fieldVisualState = computed(() =>
+        resolveFormFieldVisualState(this.showStatus(), this.fieldState()),
+    );
 
     formattedOptions = computed(() => {
         const options = this.options();
@@ -50,6 +60,16 @@ export class Select {
             ...option,
             label: capitalize(option.label),
         }));
+    });
+
+    customSelectClasses = computed<string>(() => {
+        const classes = [this.selectClassName()];
+
+        if (this.fieldVisualState() === 'error') {
+            classes.push(FORM_FIELD_ERROR_BORDER_CLASSES);
+        }
+
+        return classes.filter(Boolean).join(' ');
     });
 
     /* METHODS */

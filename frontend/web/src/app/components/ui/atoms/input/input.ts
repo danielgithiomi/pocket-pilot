@@ -3,6 +3,11 @@ import { AutoComplete, InputType } from './input.types';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { Eye, EyeClosed, LucideAngularModule, X } from 'lucide-angular';
 import { Component, computed, input, output, signal } from '@angular/core';
+import {
+    FORM_FIELD_ERROR_BORDER_CLASSES,
+    isFormFieldInError,
+    resolveFormFieldVisualState,
+} from '../form-field-visual-state';
 
 @Component({
     selector: 'atom-input',
@@ -29,9 +34,7 @@ export class Input {
     placeholder = input.required<string>();
     autocomplete = input.required<AutoComplete>();
 
-    status = input<InputStatus>('error');
-    showStatus = input<boolean>(false);
-
+    showStatus = input<boolean>(true);
     formField = input.required<FieldTree<string | number | null, string | number>>();
 
     /* OUTPUTS */
@@ -49,19 +52,24 @@ export class Input {
     /* COMPUTED */
     fieldState = computed(() => this.formField()());
     inputId = computed<string>(() => `input-field-${this.id()}`);
+    showFieldErrors = computed(() => isFormFieldInError(this.fieldState()));
+    fieldVisualState = computed(() =>
+        resolveFormFieldVisualState(this.showStatus(), this.fieldState()),
+    );
+
     inputType = computed<InputType>(() => {
         if (this.type() !== 'password') return this.type();
         return this.isPasswordVisible() ? 'text' : 'password';
     });
+
     customInputClasses = computed<string>(() => {
-        if (!this.showStatus()) return this.inputClassName();
+        const classes = [this.inputClassName()];
 
-        const statusBorderClasses =
-            this.status() === 'error'
-                ? 'border-2! border-solid! border-error! focus:outline-none!'
-                : 'border-2! border-solid! border-primary! focus:outline-none!';
+        if (this.fieldVisualState() === 'error') {
+            classes.push(FORM_FIELD_ERROR_BORDER_CLASSES);
+        }
 
-        return [statusBorderClasses, this.inputClassName()].filter(Boolean).join(' ');
+        return classes.filter(Boolean).join(' ');
     });
 
     /* METHODS */
@@ -69,5 +77,3 @@ export class Input {
         this.isPasswordVisible.update((curr) => !curr);
     }
 }
-
-export type InputStatus = 'error' | 'success';
