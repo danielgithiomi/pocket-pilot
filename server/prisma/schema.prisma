@@ -450,7 +450,7 @@ model ExchangeRateSnapshot {
 
     baseCurrency String
 
-    nextUpdateYime  DateTime
+    nextUpdateTime  DateTime
     lastUpdatedTime DateTime
 
     exchangeRates ExchangeRate[]

@@ -21,6 +21,14 @@ export class PPConfigService {
         };
     }
 
+    get exchangeRate() {
+        return {
+            apiKey: this.service.getOrThrow<string>('EXCHANGE_RATE_API_KEY'),
+            apiUrl: this.service.getOrThrow<string>('EXCHANGE_RATE_BASE_URL'),
+            defaultCurrency: this.service.getOrThrow<string>('EXCHANGE_RATE_DEFAULT_CURRENCY'),
+        };
+    }
+
     get aws() {
         return {
             region: this.service.getOrThrow<string>('AWS_S3_REGION'),

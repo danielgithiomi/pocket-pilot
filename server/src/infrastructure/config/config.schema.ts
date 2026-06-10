@@ -15,6 +15,11 @@ export const PPConfigSchema = z.object({
     REDIS_PORT: z.coerce.number().default(6379),
     REDIS_DEFAULT_TTL_SECONDS: z.coerce.number().int().positive().default(15), // 15 seconds
 
+    // Exchange Rate
+    EXCHANGE_RATE_DEFAULT_CURRENCY: z.string().default('USD'),
+    EXCHANGE_RATE_API_KEY: z.string().default('EXCHANGE_RATE_API_KEY'),
+    EXCHANGE_RATE_BASE_URL: z.string().default('https://api.exchangerate.host/latest'),
+
     // AWS
     AWS_MAX_ATTEMPTS: z.coerce.number().default(5),
     AWS_S3_REGION: z.string().default('AWS_S3_REGION'),
