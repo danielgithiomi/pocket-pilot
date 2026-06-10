@@ -11,8 +11,6 @@ export class ExchangeRateRepository {
     createExchangeRateSnapshot(payload: ExchangeRatePayload) {
         const { baseCurrency, nextUpdateTime, lastUpdatedTime, exchangeRates } = payload;
 
-        console.log('Creating exchange rate snapshot', payload);
-
         return this.db.exchangeRateSnapshot.create({
             data: {
                 baseCurrency,
@@ -31,7 +29,7 @@ export class ExchangeRateRepository {
             where: { baseCurrency },
             orderBy: { lastUpdatedTime: 'desc' },
             include: { exchangeRates: true },
-            take: 1, // Get the latest snapshot
+            take: 1,
         });
     }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { PPConfigService } from '@infrastructure/config';
 import { EXCHANGE_RATE_CACHE_KEY } from '@common/constants/api.constants';
 import { ExchangeRateRepository } from '../repositories/exchange-rate.respository';
@@ -12,6 +12,8 @@ import {
 
 @Injectable()
 export class ExchangeRateService {
+    private readonly logger = new Logger(ExchangeRateService.name);
+
     constructor(
         private readonly configService: PPConfigService,
         private readonly exchangeRateCache: ExchangeRateCache,
@@ -19,43 +21,64 @@ export class ExchangeRateService {
     ) {}
 
     async getThirdPartyExchangeRates() {
+        const { defaultCurrency } = this.configService.exchangeRate;
+
+        try {
+            const latestExchangeRateResponse: ExchangeRateDto = await this.exchangeRateCache.getOrSetCache(
+                EXCHANGE_RATE_CACHE_KEY,
+                async () => {
+                    // Invalidate cache
+                    await this.exchangeRateCache.invalidateCache(EXCHANGE_RATE_CACHE_KEY);
+
+                    // Fetch from database
+                    const dbSnapshot = await this.fetchFromDatabase(defaultCurrency);
+                    if (dbSnapshot) return dbSnapshot;
+
+                    // Nothing found in DB, fetch from third party
+                    const thirdPartyData: ExchangeRateResponse = await this.fetchThirdPartyExchangeRates();
+
+                    // Persist fetched data to database
+                    return await this.saveThirdPartyDataToDB(thirdPartyData);
+                },
+            );
+
+            return latestExchangeRateResponse;
+        } catch (error) {
+            this.logger.error('Error fetching exchange rates', error);
+            throw new InternalServerErrorException({
+                name: 'EXCHANGE_RATE_FETCH_ERROR',
+                title: 'Error fetching exchange rates',
+                message: 'Error fetching exchange rates',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'There was an error fetching the exchange rates. Please try again later.',
+            });
+        }
+    }
+
+    private async fetchFromDatabase(defaultCurrency: string): Promise<ExchangeRateDto | null> {
+        const latestDBSnapshot = await this.exchangeRateRepository.getLatestExchangeRateSnapshot(defaultCurrency);
+
+        if (!latestDBSnapshot) return null;
+
+        return this.toExchangeRateDto(latestDBSnapshot);
+    }
+
+    private async fetchThirdPartyExchangeRates(): Promise<ExchangeRateResponse> {
         const { apiKey, apiUrl, defaultCurrency } = this.configService.exchangeRate;
 
         //https://v6.exchangerate-api.com/v6/YOUR-API-KEY/latest/USD
         const finalUrl = `${apiUrl}/${apiKey}/latest/${defaultCurrency}`;
 
-        try {
-            const latestExchangeRateResponse = await this.exchangeRateCache.getOrSetCache(EXCHANGE_RATE_CACHE_KEY, () =>
-                this.fetchThirdPartyExchangeRates(finalUrl, defaultCurrency),
-            );
-
-            console.log('Latest exchange rate response', latestExchangeRateResponse);
-            // return latestExchangeRateResponse;
-        } catch (error) {
-            console.log(error);
-            return undefined;
-        }
-    }
-
-    private async fetchThirdPartyExchangeRates(apiUrl: string, defaultCurrency: string): Promise<ExchangeRateDto> {
-        await this.exchangeRateCache.invalidateCache(EXCHANGE_RATE_CACHE_KEY);
-
-        const latestDBSnapshot = await this.exchangeRateRepository.getLatestExchangeRateSnapshot(defaultCurrency);
-
-        if (latestDBSnapshot) {
-            console.log('Latest DB snapshot found', latestDBSnapshot);
-            return this.toExchangeRateDto(latestDBSnapshot);
-        }
-
-        const rawResponse = await fetch(apiUrl, {
+        const rawResponse = await fetch(finalUrl, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
 
-        const exchangeRateData = (await rawResponse.json()) as ExchangeRateResponse;
-        const { base_code, conversion_rates, time_last_update_utc, time_next_update_utc } = exchangeRateData;
+        return rawResponse.json() as Promise<ExchangeRateResponse>;
+    }
 
-        console.log('Exchange rate data', exchangeRateData);
+    private async saveThirdPartyDataToDB(thirdPartyData: ExchangeRateResponse): Promise<ExchangeRateDto> {
+        const { base_code, conversion_rates, time_last_update_utc, time_next_update_utc } = thirdPartyData;
 
         const payload = {
             baseCurrency: base_code,
@@ -65,9 +88,8 @@ export class ExchangeRateService {
         } satisfies ExchangeRatePayload;
 
         const savedSnapshot = await this.exchangeRateRepository.createExchangeRateSnapshot(payload);
-        console.log('Saved snapshot', savedSnapshot);
 
-        await this.deleteOutdatedExchangeRateSnapshots(defaultCurrency);
+        await this.deleteOutdatedExchangeRateSnapshots(payload.baseCurrency);
 
         return this.toExchangeRateDto(savedSnapshot);
     }

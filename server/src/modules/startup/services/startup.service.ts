@@ -1,5 +1,6 @@
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
+import { ExchangeRateDto } from '@modules/exchange-rate/dtos/exchange-rate.dto';
 import { ExchangeRateService } from '@modules/exchange-rate/services/exchange-rate.service';
 
 @Injectable()
@@ -9,9 +10,21 @@ export class StartupService implements OnApplicationBootstrap {
     constructor(private readonly exchangeRateService: ExchangeRateService) {}
 
     // RUN ON APP STARTUP
-    onApplicationBootstrap() {
+    async onApplicationBootstrap() {
         this.logger.log('Application is started up and ready to serve requests!');
-        // await this.exchangeRateService.getThirdPartyExchangeRates();
+        const { baseCurrency, nextUpdateTime, lastUpdatedTime }: ExchangeRateDto =
+            await this.exchangeRateService.getThirdPartyExchangeRates();
+
+        this.logger.warn({
+            name: 'EXCHANGE_RATE_FETCH_SUCCESS',
+            title: 'Exchange Rate Data Fetch Success',
+            message: 'Successfully fetched exchange rate data from third party API',
+            exchangeRate: {
+                baseCurrency,
+                nextUpdateTime,
+                lastUpdatedTime,
+            },
+        });
     }
 
     // SETUP CRON JOBS

@@ -458,7 +458,7 @@ model ExchangeRateSnapshot {
     fetchedAt DateTime @default(now())
 
     @@unique([baseCurrency, lastUpdatedTime])
-    @@map("Exchange Rates")
+    @@map("Exchange Rate Snapshots")
 }
 
 model ExchangeRate {
@@ -471,4 +471,5 @@ model ExchangeRate {
     rate     Decimal @db.Decimal(18, 8)
 
     @@unique([snapshotId, currency])
+    @@map("Exchange Rates")
 }
