@@ -85,7 +85,7 @@ model Account {
     isBalanceVisible Boolean @default(true)
 
     // Link to user - one-to-many
-    holder   User  @relation(fields: [holderId], references: [id], onDelete: Cascade)
+    holder   User   @relation(fields: [holderId], references: [id], onDelete: Cascade)
     holderId String
 
     // Transactions where this account is the SOURCE
@@ -115,7 +115,7 @@ model UserPreferences {
     createdAt DateTime @default(now())
 
     // Link to user - one-to-one
-    user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
     @@unique([userId])
@@ -200,7 +200,7 @@ model Goals {
     endDate   DateTime
     startDate DateTime
 
-    status   GoalStatus  @default(ACTIVE)
+    status   GoalStatus   @default(ACTIVE)
     category GoalCategory
 
     monthlyContribution Float
@@ -211,7 +211,7 @@ model Goals {
     createdAt DateTime @default(now())
 
     // Link to user - one-to-many
-    user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
     @@map("Financial Goals")
@@ -236,7 +236,7 @@ model Bills {
     createdAt DateTime @default(now())
 
     // Link to user - one-to-many
-    user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
     @@map("User Bills")
@@ -387,7 +387,7 @@ model Feature {
     downvoteCount Int @default(0)
 
     featureCategory FeatureCategory
-    featureStatus   FeatureStatus @default(NEW)
+    featureStatus   FeatureStatus   @default(NEW)
 
     updatedAt DateTime @updatedAt()
     createdAt DateTime @default(now())
@@ -400,7 +400,7 @@ model Feature {
 
     // Link to user - one-to-many
     authorId String
-    user   User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    user     User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
     @@unique([id, authorId])
     @@map("Features")
@@ -425,10 +425,9 @@ model FeatureVotes {
 
     // Link to feature - one-to-one
     featureId String
-    feature   Feature   @relation("FeatureVotes", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    feature   Feature @relation("FeatureVotes", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@unique([featureId, voterId])
-
     @@map("Feature Votes")
 }
 
@@ -444,4 +443,32 @@ model FeatureComments {
     feature   Feature @relation("FeatureComments", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@map("Feature Comments")
+}
+
+model ExchangeRateSnapshot {
+    id String @id @default(uuid())
+
+    baseCurrency String
+
+    nextUpdateYime  DateTime
+    lastUpdatedTime DateTime
+
+    exchangeRates ExchangeRate[]
+
+    fetchedAt DateTime @default(now())
+
+    @@unique([baseCurrency, lastUpdatedTime])
+    @@map("Exchange Rates")
+}
+
+model ExchangeRate {
+    id String @id @default(uuid())
+
+    snapshotId String
+    snapshot   ExchangeRateSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+
+    currency String // USD, EUR, GBP
+    rate     Decimal @db.Decimal(18, 8)
+
+    @@unique([snapshotId, currency])
 }
