@@ -43,6 +43,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                         });
 
                         return {
+                            name,
                             type,
                             statusCode: 401,
                             title: 'Session Expired!',
@@ -52,6 +53,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                     }
 
                     return {
+                        name,
                         details,
                         message,
                         type: type,

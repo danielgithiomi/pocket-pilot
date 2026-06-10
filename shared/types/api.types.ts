@@ -51,6 +51,7 @@ export interface IGlobalException {
 export interface IStandardError {
   type: string;
   title: string;
+  name?: string;
   message?: string;
   details?: unknown;
   statusCode: number;

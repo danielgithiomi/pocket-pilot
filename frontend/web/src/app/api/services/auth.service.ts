@@ -4,15 +4,21 @@ import { WEB_ROUTES } from '@global/constants';
 import { AuthMutation } from '@methods/mutations';
 import { HttpClient } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
-import { catchError, EMPTY, firstValueFrom, tap } from 'rxjs';
+import { catchError, EMPTY, firstValueFrom, tap, of, throwError, Observable } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { STORED_AUTH_USER_KEY, STORED_ONBOARDING_USER_KEY } from '@libs/constants';
+import {
+    STORED_AUTH_USER_KEY,
+    INVALID_EMAIL_IDENTIFIER,
+    STORED_ONBOARDING_USER_KEY,
+    INVALID_PASSWORD_IDENTIFIER,
+    AuthError,
+} from '@libs/constants';
 import {
     User,
     LoginPayload,
     IStandardError,
-    IStandardResponse,
     UserPreferences,
+    IStandardResponse,
 } from '@global/types';
 
 @Injectable({
@@ -123,10 +129,28 @@ export class AuthService {
             tap((response: IStandardResponse<User>) => {
                 this.createSession(response.data);
             }),
-            catchError((error: IStandardError) => {
-                this.renderToast(error);
-                return EMPTY;
-            }),
+            catchError(
+                (error: IStandardError): Observable<{ type: AuthError; message: string }> => {
+                    this.renderToast(error);
+                    const { name } = error;
+                    if (!name) return EMPTY;
+
+                    switch (name) {
+                        case INVALID_EMAIL_IDENTIFIER:
+                            return of({
+                                type: 'email' as const,
+                                message: error.message ?? 'This email address is invalid',
+                            });
+                        case INVALID_PASSWORD_IDENTIFIER:
+                            return of({
+                                type: 'password' as const,
+                                message: error.message ?? 'The password entered in incorrect',
+                            });
+                        default:
+                            return EMPTY;
+                    }
+                },
+            ),
         );
     }
 

@@ -1,22 +1,24 @@
+import { firstValueFrom } from 'rxjs';
 import { Button } from '@atoms/button';
 import { Router } from '@angular/router';
+import { AuthError } from '@libs/constants';
 import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
+import { LoginPayload } from '@global/types';
 import { AuthService } from '@api/auth.service';
 import { Input } from '@components/ui/atoms/input';
-import { User, IStandardResponse } from '@global/types';
-import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { Eye, EyeOff, LucideAngularModule } from 'lucide-angular';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
+import { FieldTree, form, FormField, FormRoot } from '@angular/forms/signals';
 import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@libs/types';
 
 @Component({
     selector: 'app-login',
     styleUrl: './login.css',
     templateUrl: './login.html',
-    imports: [FormField, AuthBranding, CheckedShield, Button, LucideAngularModule, Input],
+    imports: [FormRoot, FormField, AuthBranding, CheckedShield, Button, LucideAngularModule, Input],
 })
 export class Login {
     // ICONS
@@ -26,7 +28,12 @@ export class Login {
 
     // FORM
     protected loginFormModel = signal<LoginSchema>(initialLoginFormState);
-    protected loginForm = form(this.loginFormModel, loginFormValidationSchema);
+    protected loginForm = form(this.loginFormModel, loginFormValidationSchema, {
+        submission: {
+            ignoreValidators: 'none',
+            action: (field: FieldTree<LoginSchema>) => this.handleLoginFormSubmission(field),
+        },
+    });
 
     // INJECTS
     private readonly router = inject(Router);
@@ -34,7 +41,6 @@ export class Login {
     private readonly toastService = inject(ToastService);
 
     // SIGNALS
-    readonly isSubmitting = signal<boolean>(false);
     protected isPasswordVisible = signal<boolean>(false);
 
     // METHODS
@@ -44,24 +50,44 @@ export class Login {
 
     routeTo = (route: string) => this.router.navigate([route], { replaceUrl: true });
 
-    submitLoginForm = (event: Event) => {
-        event.preventDefault();
+    // FORM SUBMISSIONS
+    private async handleLoginFormSubmission(field: FieldTree<LoginSchema>) {
+        const { email, password } = field;
+        const payload: LoginPayload = {
+            email: email().value(),
+            password: password().value(),
+        };
 
-        const { email, password } = this.loginFormModel();
+        const response = await firstValueFrom(this.authService.login(payload));
 
-        this.isSubmitting.set(true);
-
-        this.authService.login({ email, password }).subscribe({
-            next: (response: IStandardResponse<User>) => {
+        if ('data' in response) {
+            this.routeTo(WEB_ROUTES.dashboard).then(() => {
                 this.toastService.show({
                     variant: 'success',
                     title: response.summary.title,
                     details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
                 });
+            });
+            return;
+        } else {
+            const { type, message } = response as { type: AuthError; message: string };
 
-                this.routeTo(WEB_ROUTES.dashboard);
-            },
-            complete: () => this.isSubmitting.set(false),
-        });
-    };
+            switch (type) {
+                case 'email':
+                    return {
+                        message,
+                        kind: 'email',
+                        fieldTree: field.email,
+                    };
+                case 'password':
+                    return {
+                        message,
+                        kind: 'password',
+                        fieldTree: field.password,
+                    };
+                default:
+                    return;
+            }
+        }
+    }
 }

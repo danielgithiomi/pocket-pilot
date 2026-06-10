@@ -8,7 +8,7 @@
                 <p>Sign in to your account to continue</p>
             </div>
 
-            <form (submit)="submitLoginForm($event)" id="login-form">
+            <form [formRoot]="loginForm" id="login-form">
                 <atom-input
                     id="email"
                     type="email"
@@ -33,8 +33,8 @@
                     type="submit"
                     label="Log In"
                     form="login-form"
-                    [isLoading]="isSubmitting()"
-                    [disabled]="loginForm().invalid() || isSubmitting()"
+                    [isLoading]="loginForm().submitting()"
+                    [disabled]="loginForm().invalid() || loginForm().submitting()"
                 />
             </form>
 
