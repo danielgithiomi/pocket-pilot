@@ -1,174 +1,185 @@
 <section id="transactions-page" class="page">
-  <div class="page-header">
-    <h1 class="page-title">Transactions</h1>
+    <div class="page-header">
+        <h1 class="page-title">Transactions</h1>
 
-    <atom-button
-      variant="primary"
-      id="add-transaction"
-      [disabled]="isFetching()"
-      (clicked)="handleOpenForm()"
-    >
-      <div class="w-full flex flex-row items-center justify-between gap-4">
-        <lucide-icon name="create-transaction" [img]="Plus" [size]="iconSize"></lucide-icon>
-        <span class="hidden sm:block">Log Transaction</span>
-      </div>
-    </atom-button>
-  </div>
-
-  @if (isFetching()) {
-    <div class="page-container flex-1">
-      <div class="skeleton w-1/4 h-5 mb-6"></div>
-
-      <organism-table
-        [isLoading]="true"
-        [data]="skeletonData"
-        [columns]="transactionColumns"
-        id="transactions-table-skeleton"
-      />
+        <atom-button
+            variant="primary"
+            id="add-transaction"
+            [disabled]="isFetching()"
+            (clicked)="handleOpenForm()"
+        >
+            <div class="w-full flex flex-row items-center justify-between gap-4">
+                <lucide-icon name="create-transaction" [img]="Plus" [size]="iconSize"></lucide-icon>
+                <span class="hidden sm:block">Log Transaction</span>
+            </div>
+        </atom-button>
     </div>
-  } @else {
-    @let hasError = !!transactions.error();
-    @let response = transactions.value()?.data;
-    @let count = response?.count;
-    <div
-      class="page-container flex-1"
-      [ngClass]="{ 'grid place-items-center': count === 0 || hasError }"
-    >
-      @if (hasError) {
-        <fetch-error message="Failed to retrieve your transactions" />
-      } @else if (count === 0) {
-        <no-data message="You have no transactions yet! Log one today." messageClass="text-sm" />
-      } @else {
-        <div>
-          <p class="mb-6 page-subtitle cursor-default">
-            You have {{ count === 1 ? 'only' : '' }}
-            <span class="font-semibold text-primary">{{ count }}</span>
-            {{ count! > 1 ? 'total transactions logged' : 'logged transaction' }}!
-          </p>
 
-          <div class="mb-6">
-            <atom-tab-list
-              [items]="tabListItems"
-              [activeItem]="activeTabIndex()"
-              (selectedIndex)="onTabSelected($event)"
+    @if (isFetching()) {
+        <div class="page-container flex-1">
+            <div class="skeleton w-1/4 h-5 mb-6"></div>
+
+            <organism-table
+                [isLoading]="true"
+                [data]="skeletonData"
+                [columns]="transactionColumns"
+                id="transactions-table-skeleton"
             />
-          </div>
-
-          <organism-table
-            id="transactions-table"
-            [isLoading]="isFetching()"
-            [columns]="transactionColumns"
-            [emptyMessage]="editStateText()"
-            [data]="formattedTransactions()"
-            (deleteRow)="deleteDataRow($event)"
-          />
         </div>
-      }
-    </div>
-  }
+    } @else {
+        @let hasError = !!transactions.error();
+        @let response = transactions.value()?.data;
+        @let count = response?.count;
+        <div
+            class="page-container flex-1"
+            [ngClass]="{ 'grid place-items-center': count === 0 || hasError }"
+        >
+            @if (hasError) {
+                <fetch-error message="Failed to retrieve your transactions" />
+            } @else if (count === 0) {
+                <no-data
+                    message="You have no transactions yet! Log one today."
+                    messageClass="text-sm"
+                />
+            } @else {
+                <div>
+                    <p class="mb-6 page-subtitle cursor-default">
+                        You have {{ count === 1 ? 'only' : '' }}
+                        <span class="font-semibold text-primary">{{ count }}</span>
+                        {{ count! > 1 ? 'total transactions logged' : 'logged transaction' }}!
+                    </p>
+
+                    <div class="mb-6">
+                        <atom-tab-list
+                            [items]="tabListItems"
+                            [activeItem]="activeTabIndex()"
+                            (selectedIndex)="onTabSelected($event)"
+                        />
+                    </div>
+
+                    <organism-table
+                        id="transactions-table"
+                        [isLoading]="isFetching()"
+                        [columns]="transactionColumns"
+                        [emptyMessage]="editStateText()"
+                        [data]="formattedTransactions()"
+                        (deleteRow)="deleteDataRow($event)"
+                    />
+                </div>
+            }
+        </div>
+    }
 </section>
 
 @if (isFormOpen()) {
-  <organism-form
-    id="transactions"
-    title="Log Transaction"
-    [class.hidden]="!isFormOpen()"
-    (closeForm)="handleCloseForm($event)"
-    description="Record a new transaction"
-  >
-    @let categories = transactionCategories();
-    @let types = transactionTypes.value()?.data;
-    <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
-      <atom-input
-        id="name"
-        type="number"
-        label="Amount"
-        [inverted]="true"
-        autocomplete="off"
-        [numberStep]="0.01"
-        placeholder="Eg: 100"
-        [formField]="transactionForm.amount"
-        (clearOutput)="transactionForm.amount().controlValue.set(null)"
-      />
+    <organism-form
+        id="transactions"
+        title="Log Transaction"
+        [class.hidden]="!isFormOpen()"
+        (closeForm)="handleCloseForm($event)"
+        description="Record a new transaction"
+    >
+        @let categories = transactionCategories();
+        @let types = transactionTypes.value()?.data;
+        <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
+            <atom-input
+                id="name"
+                type="number"
+                label="Amount"
+                [inverted]="true"
+                autocomplete="off"
+                [numberStep]="0.01"
+                placeholder="Eg: 100"
+                [formField]="transactionForm.amount"
+                (clearOutput)="transactionForm.amount().controlValue.set(null)"
+            />
 
-      <atom-input
-        type="text"
-        id="description"
-        [inverted]="true"
-        [required]="false"
-        autocomplete="off"
-        label="Description"
-        placeholder="Eg: Dinner with friends"
-        [formField]="transactionForm.description"
-        (clearOutput)="transactionForm.description().controlValue.set('')"
-      />
+            <atom-input
+                type="text"
+                id="description"
+                [inverted]="true"
+                [required]="false"
+                autocomplete="off"
+                label="Description"
+                placeholder="Eg: Dinner with friends"
+                [formField]="transactionForm.description"
+                (clearOutput)="transactionForm.description().controlValue.set('')"
+            />
 
-      <div class="flex flex-col sm:flex-row gap-4">
-        <atom-select
-          id="type"
-          class="flex-1"
-          [inverted]="true"
-          wrapperClassName="my-0"
-          label="Transaction Type"
-          placeholder="Select a type"
-          [formField]="transactionForm.type"
-          [options]="types || [{ value: '', label: 'No transaction types found' }]"
-        />
+            <div class="flex flex-col sm:flex-row gap-4">
+                <atom-select
+                    id="type"
+                    class="flex-1"
+                    [inverted]="true"
+                    wrapperClassName="my-0"
+                    label="Transaction Type"
+                    placeholder="Select a type"
+                    [formField]="transactionForm.type"
+                    [options]="types || [{ value: '', label: 'No transaction types found' }]"
+                />
 
-        <atom-select
-          class="flex-1"
-          id="categories"
-          [inverted]="true"
-          wrapperClassName="my-0"
-          label="Transaction Category"
-          placeholder="Select a category"
-          [disabled]="isTransferTransaction()"
-          [formField]="transactionForm.category"
-          [options]="categories || [{ value: '', label: 'No transaction categories found' }]"
-        />
-      </div>
+                <atom-select
+                    class="flex-1"
+                    id="categories"
+                    [inverted]="true"
+                    wrapperClassName="my-0"
+                    label="Transaction Category"
+                    placeholder="Select a category"
+                    [disabled]="isTransferTransaction()"
+                    [formField]="transactionForm.category"
+                    [options]="
+                        categories || [{ value: '', label: 'No transaction categories found' }]
+                    "
+                />
+            </div>
 
-      <atom-select
-        id="source-account"
-        [inverted]="true"
-        placeholder="Select source account"
-        [formField]="transactionForm.sourceAccountId"
-        [label]="isTransferTransaction() ? 'Source Account' : 'Associated Account'"
-        [options]="sourceAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
-      />
+            <atom-select
+                id="source-account"
+                [inverted]="true"
+                placeholder="Select source account"
+                [formField]="transactionForm.sourceAccountId"
+                [label]="isTransferTransaction() ? 'Source Account' : 'Associated Account'"
+                [options]="
+                    sourceAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]
+                "
+            />
 
-      @if (isTransferTransaction()) {
-        <atom-select
-          id="target-account"
-          [inverted]="true"
-          label="Target Account"
-          placeholder="Select target account"
-          [formField]="transactionForm.targetAccountId"
-          [options]="targetAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"
-        />
-      }
-    </form>
+            @if (isTransferTransaction()) {
+                <atom-select
+                    id="target-account"
+                    [inverted]="true"
+                    label="Target Account"
+                    placeholder="Select target account"
+                    [formField]="transactionForm.targetAccountId"
+                    [options]="
+                        targetAccountDropdown() || [
+                            { value: '', label: 'You have no accounts yet' },
+                        ]
+                    "
+                />
+            }
+        </form>
 
-    <div class="form-footer-buttons" slot="footer">
-      <atom-button
-        type="button"
-        label="Reset"
-        [inverted]="true"
-        variant="secondary"
-        form="transactions-form"
-        id="reset-transaction-form"
-        (clicked)="resetTransactionForm()"
-        [disabled]="!transactionForm().dirty() || isSubmitting()"
-      />
+        <div class="form-footer-buttons" slot="footer">
+            <atom-button
+                type="button"
+                label="Reset"
+                [inverted]="true"
+                variant="secondary"
+                form="transactions-form"
+                id="reset-transaction-form"
+                (clicked)="resetTransactionForm()"
+                [disabled]="!transactionForm().dirty() || isSubmitting()"
+            />
 
-      <atom-button
-        type="submit"
-        label="Log Transaction"
-        form="transactions-form"
-        id="submit-transaction-form"
-        [isLoading]="isSubmitting()"
-        [disabled]="transactionForm().invalid() || isSubmitting()"
-      />
-    </div>
-  </organism-form>
+            <atom-button
+                type="submit"
+                label="Log Transaction"
+                form="transactions-form"
+                id="submit-transaction-form"
+                [isLoading]="isSubmitting()"
+                [disabled]="transactionForm().invalid() || isSubmitting()"
+            />
+        </div>
+    </organism-form>
 }

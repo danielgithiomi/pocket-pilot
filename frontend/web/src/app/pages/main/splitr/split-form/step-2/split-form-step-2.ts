@@ -234,10 +234,9 @@ export class SplitFormStep2 {
             splitStrategy === 'QUANTITY'
                 ? quantitySplits
                 : quantitySplits.map((split) => ({
-                        ...split,
-                        consumerQuantity: quantity / quantitySplits.length,
-                    }
-                ));
+                      ...split,
+                      consumerQuantity: quantity / quantitySplits.length,
+                  }));
 
         console.log(updatedQuantitySplits);
 

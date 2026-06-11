@@ -4,9 +4,15 @@ export interface CreateAccountPayload {
   name: string;
   currency: string;
   type: AccountType | "";
+  isBalanceVisible: boolean;
 }
 
 export type UpdateAccountPayload = CreateAccountPayload;
+
+export type UpdateAccountBalanceVisibilityPayload = Omit<
+  Required<CreateAccountPayload>,
+  "name" | "currency" | "type"
+>;
 
 export interface Account {
   id: string;
@@ -17,6 +23,8 @@ export interface Account {
   createdAt: string;
   updatedAt: string;
   type: AccountType;
+  baseBalance?: number;
+  isBalanceVisible: boolean;
 }
 
 export interface UserAccountsWithCount {

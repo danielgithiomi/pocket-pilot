@@ -3,3 +3,8 @@ export const JWT_ACCESS_TOKEN_VALIDITY_MINUTES: number = 60;
 
 export const RAW_RESPONSE_REFLECTOR_KEY = 'RAW_RESPONSE';
 export const RESPONSE_SUMMARY_REFLECTOR_KEY = 'WRAPPED_RESPONSE';
+
+export const EXCHANGE_RATE_CACHE_KEY: string = 'latest';
+export const EXCHANGE_RATE_SNAPSHOT_RETENTION_DAYS: number = 2;
+export const EXCHANGE_RATE_CACHE_PREFIX: string = 'exchange-rates';
+export const EXCHANGE_RATE_CACHE_TTL_HOURS: number = 24 * EXCHANGE_RATE_SNAPSHOT_RETENTION_DAYS;

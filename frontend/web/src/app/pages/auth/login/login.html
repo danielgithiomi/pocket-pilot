@@ -1,63 +1,64 @@
 <section class="flex flex-row min-h-screen" id="login">
-  <auth-branding class="flex-1 hidden md:block animate-left" contentAlign="left" />
+    <auth-branding class="flex-1 hidden md:block animate-left" contentAlign="left" />
 
-  <div class="animate-right flex-1" id="form">
-    <div class="form-wrapper">
-      <div class="space-y-4">
-        <h3>Welcome back,</h3>
-        <p>Sign in to your account to continue</p>
-      </div>
+    <div class="animate-right flex-1" id="form">
+        <div class="form-wrapper">
+            <div class="space-y-4">
+                <h3>Welcome back,</h3>
+                <p>Sign in to your account to continue</p>
+            </div>
 
-      <form (submit)="submitLoginForm($event)" id="login-form">
-        <atom-input
-          id="email"
-          type="email"
-          autocomplete="email"
-          label="Email Address"
-          placeholder="johndoe@gmail.com"
-          [formField]="loginForm.email"
-          (clearOutput)="loginForm.email().controlValue.set('')"
-        />
+            <form [formRoot]="loginForm" id="login-form">
+                <atom-input
+                    id="email"
+                    type="email"
+                    autocomplete="email"
+                    label="Email Address"
+                    placeholder="johndoe@gmail.com"
+                    [formField]="loginForm.email"
+                    (clearOutput)="loginForm.email().controlValue.set('')"
+                />
 
-        <atom-input
-          id="password"
-          type="password"
-          label="Password"
-          placeholder="••••••••"
-          autocomplete="current-password"
-          [formField]="loginForm.password"
-        />
+                <atom-input
+                    id="password"
+                    type="password"
+                    label="Password"
+                    placeholder="••••••••"
+                    autocomplete="current-password"
+                    [formField]="loginForm.password"
+                />
 
-        <atom-button
-          id="login"
-          type="submit"
-          label="Log In"
-          form="login-form"
-          [isLoading]="isSubmitting()"
-          [disabled]="loginForm().invalid() || isSubmitting()"
-        />
-      </form>
+                <atom-button
+                    id="login"
+                    type="submit"
+                    label="Log In"
+                    form="login-form"
+                    [isLoading]="loginForm().submitting()"
+                    [disabled]="loginForm().invalid() || loginForm().submitting()"
+                />
+            </form>
 
-      <p (click)="routeTo('/auth/register')" class="form-redirect-text">
-        Don't have an account? Sign Up
-      </p>
+            <p (click)="routeTo('/auth/register')" class="form-redirect-text">
+                Don't have an account? Sign Up
+            </p>
 
-      <div class="secure-auth">
-        <hr />
-        <p class="text-muted-text capitalize">Secure Login</p>
-        <hr />
-      </div>
+            <div class="secure-auth">
+                <hr />
+                <p class="text-muted-text capitalize">Secure Login</p>
+                <hr />
+            </div>
 
-      <div class="bordered-card">
-        <icon-checked-shield />
+            <div class="bordered-card">
+                <icon-checked-shield />
 
-        <div class="space-y-2">
-          <p>Protected by two-factor authentication!</p>
-          <p class="text-muted-text">
-            Your account security is our priority. You may be asked to verify your identity.
-          </p>
+                <div class="space-y-2">
+                    <p>Protected by two-factor authentication!</p>
+                    <p class="text-muted-text">
+                        Your account security is our priority. You may be asked to verify your
+                        identity.
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>

@@ -1,6 +1,5 @@
-import { AccountsCache } from '../cache/accounts.cache';
 import { ConflictException, Injectable } from '@nestjs/common';
-import { AccountDetailsCache } from '../cache/account-details.cache';
+import { AccountsCache, AccountDetailsCache } from '../cache/wallet.cache';
 import { TransactionRepository } from '../repositories/transaction.respository';
 import { CreateTransferTransactionPayload, CompleteTransactionDto } from '../dto/transaction.dto';
 
@@ -24,6 +23,7 @@ export class TransferService {
 
         const createdTranferTransaction =
             this.transactionRepository.createTransferTransactionAndUpdateBalances(payload);
+
         await this.invalidateCaches(userId, sourceAccountId, targetAccountId);
         return createdTranferTransaction;
     }

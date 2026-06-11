@@ -125,9 +125,9 @@ export class TransactionsResponseDto {
 
     @ApiProperty({
         type: 'array',
-        items: { $ref: getSchemaPath(TransactionDto) },
+        items: { $ref: getSchemaPath(CompleteTransactionDto) },
     })
-    data!: TransactionDto[];
+    data!: CompleteTransactionDto[];
 }
 
 @ApiExtraModels(CompleteTransactionDto)

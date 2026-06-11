@@ -14,10 +14,10 @@
             }
 
             .splitr-event-members {
-                @apply flex flex-row gap-4 items-center justify-between;
+                @apply flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between;
 
                 .splitr-event-members-wrapper {
-                    @apply flex-row gap-2 items-center hidden md:flex;
+                    @apply flex flex-row gap-2 items-center;
                 }
 
                 .splitr-event-tags {
@@ -31,7 +31,7 @@
         }
 
         .splitr-event-meals {
-            @apply flex flex-row gap-2;
+            @apply flex flex-row gap-2 flex-wrap;
         }
     }
 

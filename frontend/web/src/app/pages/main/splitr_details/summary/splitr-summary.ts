@@ -45,14 +45,11 @@ export class SplitrSummary {
                 0,
             );
 
-        return eventMembers.map(
-            (member) =>
-                ({
-                    isSettled: false,
-                    consumerName: member,
-                    amountPayable: memberTotalAmount(member),
-                    itemsConsumed: totalItemsConsumed(member),
-                }),
-        );
+        return eventMembers.map((member) => ({
+            isSettled: false,
+            consumerName: member,
+            amountPayable: memberTotalAmount(member),
+            itemsConsumed: totalItemsConsumed(member),
+        }));
     });
 }

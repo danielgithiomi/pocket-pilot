@@ -2,6 +2,7 @@ import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { SplitrSquad } from '@global/types';
 import { SplitrService } from '@api/splitr.service';
+import { DrawerService } from '@infrastructure/services';
 import { NoData } from '@structural/main/no-data/no-data';
 import { LucideAngularModule, Users } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
@@ -32,6 +33,7 @@ export class SplitrSquads {
 
     // SERVICES
     private readonly splitrService = inject(SplitrService);
+    protected readonly drawerService = inject(DrawerService);
 
     // DATA
     protected readonly squads = this.splitrService.getUserSquads();

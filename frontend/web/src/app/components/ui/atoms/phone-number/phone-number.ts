@@ -1,7 +1,6 @@
 import { Country } from '@global/types';
 import { NgClass } from '@angular/common';
 import { FieldTree } from '@angular/forms/signals';
-import { PhoneNumberStatus } from './phone-number.types';
 import { COUNTRIES, DEFAULT_COUNTRY_ISO } from '@global/constants';
 import { Check, ChevronDown, ChevronUp, LucideAngularModule, Search, X } from 'lucide-angular';
 import {
@@ -45,8 +44,7 @@ export class PhoneNumber {
     inputClassName = input<string>('');
     wrapperClassName = input<string>('');
 
-    showStatus = input<boolean>(false);
-    status = input<PhoneNumberStatus>('error');
+    showStatus = input<boolean>(true);
 
     formField = input.required<FieldTree<string, string>>();
 
@@ -82,27 +80,28 @@ export class PhoneNumber {
 
     showClearIcon = computed(() => this.nationalNumber().length > 0);
 
-    customContainerClasses = computed<string>(() => {
-        if (!this.showStatus()) return this.inputClassName();
-
-        const statusBorderClasses =
-            this.status() === 'error'
-                ? 'phone-number-container-error'
-                : 'phone-number-container-success';
-
-        return [statusBorderClasses, this.inputClassName()].filter(Boolean).join(' ');
-    });
-
-    showErrors = computed(
+    showFieldErrors = computed(
         () => this.fieldState().invalid() && (this.fieldState().touched() || this.hasBlurred()),
     );
 
+    fieldVisualState = computed(() => {
+        if (!this.showStatus()) return 'neutral' as const;
+        return this.showFieldErrors() ? ('error' as const) : ('neutral' as const);
+    });
+
+    customContainerClasses = computed<string>(() => {
+        const classes = [this.inputClassName()];
+
+        if (this.fieldVisualState() === 'error') {
+            classes.push('phone-number-container-error');
+        }
+
+        return classes.filter(Boolean).join(' ');
+    });
+
     private readonly syncFromFormValue = effect(() => {
         const value = this.fieldState().value() ?? '';
-        const currentValue = buildFullPhoneNumber(
-            this.selectedCountry(),
-            this.nationalNumber(),
-        );
+        const currentValue = buildFullPhoneNumber(this.selectedCountry(), this.nationalNumber());
 
         if (value === currentValue) return;
 

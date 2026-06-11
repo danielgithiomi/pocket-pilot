@@ -8,70 +8,70 @@ import { LucideAngularModule, Sailboat, Trash } from 'lucide-angular';
 import { Component, computed, inject, input, signal } from '@angular/core';
 
 @Component({
-  selector: 'bill-item',
-  styleUrl: './bill-item.css',
-  templateUrl: './bill-item.html',
-  imports: [LucideAngularModule, NgClass],
+    selector: 'bill-item',
+    styleUrl: './bill-item.css',
+    templateUrl: './bill-item.html',
+    imports: [LucideAngularModule, NgClass],
 })
 export class BillItem {
-  // Icons
-  protected readonly iconSize = 20;
-  protected readonly trash = Trash;
-  protected readonly sailboat = Sailboat;
+    // Icons
+    protected readonly iconSize = 20;
+    protected readonly trash = Trash;
+    protected readonly sailboat = Sailboat;
 
-  // Inputs
-  readonly billItem = input.required<Bill>();
+    // Inputs
+    readonly billItem = input.required<Bill>();
 
-  // Signals
-  readonly isDeleting = signal<boolean>(false);
+    // Signals
+    readonly isDeleting = signal<boolean>(false);
 
-  // Services
-  private readonly toastService = inject(ToastService);
-  protected readonly billsService = inject(BillsService);
-  protected readonly accountsService = inject(AccountsService);
+    // Services
+    private readonly toastService = inject(ToastService);
+    protected readonly billsService = inject(BillsService);
+    protected readonly accountsService = inject(AccountsService);
 
-  // Data
-  protected readonly currency = this.accountsService.getDefaultCurrency();
+    // Data
+    protected readonly currency = this.accountsService.getDefaultCurrency();
 
-  // Computed
-  protected readonly billItemId = computed(() => `bill-item-${this.billItem().id}`);
+    // Computed
+    protected readonly billItemId = computed(() => `bill-item-${this.billItem().id}`);
 
-  protected readonly formattedAmount = computed<string>(() => {
-    const amount = this.billItem().amount;
-    return formatCurrency(amount, this.billItem().currency, 2, true, false);
-  });
+    protected readonly formattedAmount = computed<string>(() => {
+        const amount = this.billItem().amount;
+        return formatCurrency(amount, this.billItem().currency, 2, true, false);
+    });
 
-  protected readonly formattedDate = computed<string>(() => {
-    const date = this.billItem().dueDate;
-    return formatDate(date);
-  });
+    protected readonly formattedDate = computed<string>(() => {
+        const date = this.billItem().dueDate;
+        return formatDate(date);
+    });
 
-  protected readonly covertedCurrencyAmount = computed<string>(() => {
-    const amount = this.billItem().amount;
-    const convertedAmount = amount * 46.52;
-    return formatCurrency(convertedAmount, this.currency, 2, true);
-  });
+    protected readonly covertedCurrencyAmount = computed<string>(() => {
+        const amount = this.billItem().amount;
+        const convertedAmount = amount * 46.52;
+        return formatCurrency(convertedAmount, this.currency, 2, true);
+    });
 
-  // API Methods
-  protected deleteBillItem(billItemId: string) {
-    this.isDeleting.set(true);
+    // API Methods
+    protected deleteBillItem(billItemId: string) {
+        this.isDeleting.set(true);
 
-    setTimeout(() => {
-      this.billsService.deleteBillById(billItemId).subscribe({
-        next: (response: IVoidResourceResponse) => {
-          const { message, details } = response;
-          this.toastService.show({
-            details,
-            title: message,
-            variant: 'success',
-          });
+        setTimeout(() => {
+            this.billsService.deleteBillById(billItemId).subscribe({
+                next: (response: IVoidResourceResponse) => {
+                    const { message, details } = response;
+                    this.toastService.show({
+                        details,
+                        title: message,
+                        variant: 'success',
+                    });
 
-          this.billsService.getUserBills().reload();
-        },
-        complete: () => {
-          this.isDeleting.set(false);
-        },
-      });
-    }, 2500);
-  }
+                    this.billsService.getUserBills().reload();
+                },
+                complete: () => {
+                    this.isDeleting.set(false);
+                },
+            });
+        }, 2500);
+    }
 }

@@ -13,7 +13,7 @@
 
     <div class="select-wrapper">
         <fieldset [disabled]="disabled()" style="border: none; padding: 0; margin: 0">
-            <select [formField]="formField()" [id]="selectId()" [ngClass]="selectClassName()">
+            <select [formField]="formField()" [id]="selectId()" [ngClass]="customSelectClasses()">
                 @if (placeholder()) {
                     <option value="" disabled [selected]="!currentValue()">
                         {{ placeholder() }}
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    @if (formField()().invalid() && formField()().touched()) {
+    @if (showFieldErrors()) {
         <div class="input-field-errors-wrapper">
             @for (error of formField()().errors(); track error.kind) {
                 <p class="input-field-error">

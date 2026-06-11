@@ -20,12 +20,12 @@ import { Component, computed, input } from '@angular/core';
                 </p>
             </div>
 
-            <div class="flex-1 flex flex-col gap-1">
-                <p class="text-sm font-semibold">{{ consumerData().consumerName }}</p>
-                <atom-badge variant="warning" [label]="formattedItemsConsumed()" />
-            </div>
+            <div class="flex-1 flex flex-col gap-2 xl:flex-row xl:items-center">
+                <div class="flex-1 flex flex-col gap-1">
+                    <p class="text-sm font-semibold">{{ consumerData().consumerName }}</p>
+                    <atom-badge variant="warning" [label]="formattedItemsConsumed()" />
+                </div>
 
-            <div class="flex flex-col items-end gap-1">
                 <p class="text-sm font-bold">{{ formattedAmountPayable() }}</p>
             </div>
         </div>

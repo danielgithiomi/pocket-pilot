@@ -1,5 +1,5 @@
 import { plainToInstance } from 'class-transformer';
-import { SquadsCache } from '../caches/squads.cache';
+import { SquadsCache } from '../caches/splitr.cache';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SquadsRepository } from '../repositories/squads.repository';
 import { SplitrSquadDto, SplitrSquadPayload } from '../dto/squads.dto';

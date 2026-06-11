@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
-  selector: 'auth-header',
-  imports: [NgOptimizedImage],
-  templateUrl: './auth-header.html',
+    selector: 'auth-header',
+    imports: [NgOptimizedImage],
+    templateUrl: './auth-header.html',
 })
 export class AuthHeader {
-  protected readonly logoSize: number = 140;
-  protected readonly logoPath = '/images/branding/logo.png';
+    protected readonly logoSize: number = 140;
+    protected readonly logoPath = '/images/branding/logo.png';
 }

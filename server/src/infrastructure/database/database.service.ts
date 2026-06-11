@@ -2,13 +2,29 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 
+const withUtcDatabaseTimezone = (connectionString: string): string => {
+    try {
+        const url = new URL(connectionString);
+        const options = url.searchParams.get('options') ?? '';
+
+        if (!/timezone\s*=\s*utc/i.test(options)) {
+            const utcOption = '-c timezone=UTC';
+            url.searchParams.set('options', options ? `${options} ${utcOption}` : utcOption);
+        }
+
+        return url.toString();
+    } catch {
+        return connectionString;
+    }
+};
+
 @Injectable()
 export class DatabaseService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
     private readonly logger = new Logger('DATABASE');
 
     constructor() {
         const adapter = new PrismaPg({
-            connectionString: process.env.DATABASE_URL,
+            connectionString: withUtcDatabaseTimezone(process.env.DATABASE_URL ?? ''),
         });
 
         super({ adapter });

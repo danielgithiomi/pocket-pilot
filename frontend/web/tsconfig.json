@@ -1,51 +1,51 @@
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "ES2022",
-    "module": "preserve",
-    "baseUrl": "./",
-    "paths": {
-      "@libs/*": ["src/app/libs/*"],
-      "@pages/*": ["src/app/pages/*"],
-      "@global/*": ["../../shared/*"],
-      "@api/*": ["src/app/api/services/*"],
-      "@methods/*": ["src/app/api/methods/*"],
-      "@layouts/*": ["src/app/pages/layouts/*"],
-      "@components/*": ["src/app/components/*"],
-      "@environments/*": ["src/environments/*"],
-      "@constants/*": ["src/app/libs/constants/*"],
-      "@atoms/*": ["src/app/components/ui/atoms/*"],
-      "@widgets/*": ["src/app/components/ui/widgets/*"],
-      "@infrastructure/*": ["src/app/infrastructure/*"],
-      "@structural/*": ["src/app/components/structural/*"],
-      "@organisms/*": ["src/app/components/ui/organisms/*"],
-      "@molecules/*": ["src/app/components/ui/molecules/*"]
-    }
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
-  },
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
+    "compileOnSave": false,
+    "compilerOptions": {
+        "strict": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "isolatedModules": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "ES2022",
+        "module": "preserve",
+        "baseUrl": "./",
+        "paths": {
+            "@libs/*": ["src/app/libs/*"],
+            "@pages/*": ["src/app/pages/*"],
+            "@global/*": ["../../shared/*"],
+            "@api/*": ["src/app/api/services/*"],
+            "@methods/*": ["src/app/api/methods/*"],
+            "@layouts/*": ["src/app/pages/layouts/*"],
+            "@components/*": ["src/app/components/*"],
+            "@environments/*": ["src/environments/*"],
+            "@constants/*": ["src/app/libs/constants/*"],
+            "@atoms/*": ["src/app/components/ui/atoms/*"],
+            "@widgets/*": ["src/app/components/ui/widgets/*"],
+            "@infrastructure/*": ["src/app/infrastructure/*"],
+            "@structural/*": ["src/app/components/structural/*"],
+            "@organisms/*": ["src/app/components/ui/organisms/*"],
+            "@molecules/*": ["src/app/components/ui/molecules/*"]
+        }
     },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+    "angularCompilerOptions": {
+        "enableI18nLegacyMessageIdFormat": false,
+        "strictInjectionParameters": true,
+        "strictInputAccessModifiers": true,
+        "strictTemplates": true
+    },
+    "files": [],
+    "references": [
+        {
+            "path": "./tsconfig.app.json"
+        },
+        {
+            "path": "./tsconfig.spec.json"
+        }
+    ]
 }

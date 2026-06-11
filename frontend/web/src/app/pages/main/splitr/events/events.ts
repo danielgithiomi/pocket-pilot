@@ -42,12 +42,10 @@ export class SplitrEvents {
 
         if (!rawEvents) return [];
 
-        const events = rawEvents.data.map((event) => ({
+        return rawEvents.data.map((event) => ({
             ...event,
             eventMembers: [...event.eventMembers, this.selfName()],
         }));
-
-        return events.reverse();
     });
 
     // METHODS

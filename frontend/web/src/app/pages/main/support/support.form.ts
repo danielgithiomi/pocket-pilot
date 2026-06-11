@@ -1,3 +1,4 @@
+import { getNationalNumberDigits } from '@atoms/phone-number';
 import { email, minLength, required, schema, validate } from '@angular/forms/signals';
 
 export interface SupportFormSchema {
@@ -34,7 +35,7 @@ export const SupportFormValidationSchema = schema<SupportFormSchema>((root) => {
             };
         }
 
-        const nationalDigits = number.replace(/^\+\d{1,4}/, '');
+        const nationalDigits = getNationalNumberDigits(number);
         if (nationalDigits.length < 7) {
             return {
                 kind: 'phone-number-too-short',

@@ -25,6 +25,9 @@ export const API_ENDPOINTS = {
   // aws
   presigned_url: "aws/presigned-url",
 
+  // exchange rates
+  exchange_rates: "exchange-rate",
+
   // bills
   user_bills: "bills",
   all_bills: "bills/all",
@@ -45,6 +48,13 @@ export const API_ENDPOINTS = {
   splitr: "splitr",
   squads: "splitr/squads",
   orderTags: "splitr/tags",
+
+  // features
+  features: "features",
+  user_features: "features/user",
+  feature_status: "features/status",
+  feature_categories: "features/categories",
+  feature_vote_variants: "features/vote-variants",
 
   // transactions
   all_transactions: "accounts/transactions/all",

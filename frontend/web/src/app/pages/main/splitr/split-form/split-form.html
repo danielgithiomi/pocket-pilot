@@ -1,6 +1,7 @@
 <organism-form
     id="split"
     title="Log A New Split"
+    [class.hidden]="!isSplitFormOpen()"
     (closeForm)="handleSplitFormClose($event)"
     description="Split shared expenses with your squad."
 >

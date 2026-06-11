@@ -4,9 +4,7 @@ import { STORED_AUTH_USER_KEY } from '@libs/constants';
 export type ThemePreference = 'SYSTEM' | 'LIGHT' | 'DARK';
 export type ResolvedTheme = 'light' | 'dark';
 
-export function normalizeThemePreference(
-    value: string | null | undefined,
-): ThemePreference | null {
+export function normalizeThemePreference(value: string | null | undefined): ThemePreference | null {
     const upper = value?.trim().toUpperCase();
     if (upper === 'SYSTEM' || upper === 'LIGHT' || upper === 'DARK') {
         return upper;

@@ -29,9 +29,9 @@ export class ExampleComponent {
     { value: 'female', label: 'Female' },
     { value: 'other', label: 'Other' }
   ];
-  
+
   genderControl = new FormControl('', Validators.required);
-  
+
   onGenderChange(value: string) {
     console.log('Selected gender:', value);
   }
@@ -59,9 +59,9 @@ export class ExampleComponent {
 
 ```typescript
 interface RadioOption {
-  value: string;
-  label: string;
-  disabled?: boolean;
+    value: string;
+    label: string;
+    disabled?: boolean;
 }
 
 type SelectionMode = 'single' | 'multiple';

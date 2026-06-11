@@ -1,24 +1,24 @@
 @reference "tailwindcss";
 
 #goals-and-bills {
-  .primary-span {
-    @apply font-semibold text-(--primary);
-  }
-
-  .goals-card,
-  .bills-card {
-    @apply flex-1 w-full md:w-1/2 p-4 lg:p-6 flex flex-col gap-4 overflow-y-scroll;
-
-    .card-header {
-      @apply flex flex-row justify-between items-center;
-
-      .card-title {
-        @apply text-lg font-semibold;
-      }
+    .primary-span {
+        @apply font-semibold text-(--primary);
     }
 
-    .card-content {
-      @apply flex-1 p-1 overflow-y-scroll flex flex-col space-y-2;
+    .goals-card,
+    .bills-card {
+        @apply flex-1 w-full md:w-1/2 p-4 lg:p-6 flex flex-col gap-4 overflow-y-scroll;
+
+        .card-header {
+            @apply flex flex-row justify-between items-center;
+
+            .card-title {
+                @apply text-lg font-semibold;
+            }
+        }
+
+        .card-content {
+            @apply flex-1 p-1 overflow-y-scroll flex flex-col space-y-2;
+        }
     }
-  }
 }

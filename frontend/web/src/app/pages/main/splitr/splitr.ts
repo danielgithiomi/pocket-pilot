@@ -1,4 +1,5 @@
 import { Button } from '@atoms/button';
+import { NgClass } from '@angular/common';
 import { SplitrSquad } from '@global/types';
 import { SplitrEvents } from './events/events';
 import { SplitrSquads } from './squads/squads';
@@ -7,6 +8,7 @@ import { SplitrSplitForm } from './split-form/split-form';
 import { SplitwiseSquardForm } from './squard-form/squard-form';
 import { Component, computed, inject, signal } from '@angular/core';
 import { LucideAngularModule, ListPlus, Users } from 'lucide-angular';
+import { DrawerService } from '@infrastructure/services/drawer.service';
 import { UpdateSplitrSquad } from './squard-form/update-squad/update-squad';
 
 @Component({
@@ -15,6 +17,7 @@ import { UpdateSplitrSquad } from './squard-form/update-squad/update-squad';
     templateUrl: './splitr.html',
     imports: [
         Button,
+        NgClass,
         SplitrSquads,
         SplitrEvents,
         SplitrSplitForm,
@@ -36,6 +39,7 @@ export class Splitr {
     protected readonly squadToUpdate = signal<SplitrSquad | null>(null);
 
     // SERVICES
+    protected readonly drawerService = inject(DrawerService);
     protected readonly splitrService = inject(SplitrService);
 
     // DATA

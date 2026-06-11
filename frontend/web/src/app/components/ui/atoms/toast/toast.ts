@@ -1,115 +1,118 @@
 import { TOAST_THEMES, ToastInternal, ToastTheme } from './toast.types';
 import { input, output, OnInit, OnDestroy, Component, computed } from '@angular/core';
 import {
-  CrossIcon,
-  InfoCircle,
-  CrossedCircle,
-  CheckedCircle,
-  CorneredWarningIcon,
+    CrossIcon,
+    InfoCircle,
+    CrossedCircle,
+    CheckedCircle,
+    CorneredWarningIcon,
 } from '@atoms/icons';
 
 @Component({
-  selector: 'atom-toast',
-  styleUrl: './toast.css',
-  imports: [CheckedCircle, CrossIcon, CorneredWarningIcon, InfoCircle, CrossedCircle],
-  template: `
-    <div class="toast" (mouseenter)="pause()" (mouseleave)="resume()">
-      <div class="content">
-        <div class="text">
-          @if (toast().title) {
-            <div class="flex flex-row gap-2 items-center">
-              @switch (theme().icon) {
-                @case ('success') {
-                  <icon-checked-circle [color]="theme().color" [checkColor]="theme().color" />
-                }
-                @case ('error') {
-                  <icon-crossed-circle [color]="theme().color" />
-                }
-                @case ('warning') {
-                  <icon-cornered-warning [color]="theme().color" />
-                }
-                @case ('info') {
-                  <icon-info-circle [color]="theme().color" />
-                }
-              }
+    selector: 'atom-toast',
+    styleUrl: './toast.css',
+    imports: [CheckedCircle, CrossIcon, CorneredWarningIcon, InfoCircle, CrossedCircle],
+    template: `
+        <div class="toast" (mouseenter)="pause()" (mouseleave)="resume()">
+            <div class="content">
+                <div class="text">
+                    @if (toast().title) {
+                        <div class="flex flex-row gap-2 items-center">
+                            @switch (theme().icon) {
+                                @case ('success') {
+                                    <icon-checked-circle
+                                        [color]="theme().color"
+                                        [checkColor]="theme().color"
+                                    />
+                                }
+                                @case ('error') {
+                                    <icon-crossed-circle [color]="theme().color" />
+                                }
+                                @case ('warning') {
+                                    <icon-cornered-warning [color]="theme().color" />
+                                }
+                                @case ('info') {
+                                    <icon-info-circle [color]="theme().color" />
+                                }
+                            }
 
-              <p class="title">{{ toast().title }}</p>
+                            <p class="title">{{ toast().title }}</p>
+                        </div>
+                    }
+                    <p class="message">{{ toast().details }}</p>
+                </div>
+
+                <button class="close" (click)="close()">
+                    <icon-cross [color]="theme().color" />
+                </button>
             </div>
-          }
-          <p class="message">{{ toast().details }}</p>
+
+            <div
+                class="progress"
+                [class.paused]="isPaused"
+                [style.backgroundColor]="theme().color"
+                [style.animationDuration.ms]="remaining"
+            ></div>
         </div>
-
-        <button class="close" (click)="close()">
-          <icon-cross [color]="theme().color" />
-        </button>
-      </div>
-
-      <div
-        class="progress"
-        [class.paused]="isPaused"
-        [style.backgroundColor]="theme().color"
-        [style.animationDuration.ms]="remaining"
-      ></div>
-    </div>
-  `,
+    `,
 })
 export class Toast implements OnInit, OnDestroy {
-  closed = output<void>();
-  toast = input.required<ToastInternal>();
-  theme = computed<ToastTheme>(() => TOAST_THEMES[this.toast().variant]);
+    closed = output<void>();
+    toast = input.required<ToastInternal>();
+    theme = computed<ToastTheme>(() => TOAST_THEMES[this.toast().variant]);
 
-  private timeoutId?: ReturnType<typeof setTimeout>;
-  private startTime = 0;
-  private elapsed = 0;
+    private timeoutId?: ReturnType<typeof setTimeout>;
+    private startTime = 0;
+    private elapsed = 0;
 
-  isPaused = false;
-  remaining = 3500;
+    isPaused = false;
+    remaining = 3500;
 
-  private get durationMs() {
-    return this.toast().duration === 'long' ? 7000 : 3500;
-  }
-
-  ngOnInit() {
-    this.remaining = this.durationMs;
-    this.startTimer();
-  }
-
-  ngOnDestroy() {
-    this.clearTimer();
-  }
-
-  private startTimer() {
-    this.startTime = Date.now();
-    this.timeoutId = setTimeout(() => {
-      this.close();
-    }, this.remaining);
-  }
-
-  private clearTimer() {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId);
+    private get durationMs() {
+        return this.toast().duration === 'long' ? 7000 : 3500;
     }
-  }
 
-  pause() {
-    if (this.isPaused) return;
+    ngOnInit() {
+        this.remaining = this.durationMs;
+        this.startTimer();
+    }
 
-    this.isPaused = true;
-    this.clearTimer();
+    ngOnDestroy() {
+        this.clearTimer();
+    }
 
-    this.elapsed += Date.now() - this.startTime;
-    this.remaining = this.durationMs - this.elapsed;
-  }
+    private startTimer() {
+        this.startTime = Date.now();
+        this.timeoutId = setTimeout(() => {
+            this.close();
+        }, this.remaining);
+    }
 
-  resume() {
-    if (!this.isPaused) return;
+    private clearTimer() {
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+    }
 
-    this.isPaused = false;
-    this.startTimer();
-  }
+    pause() {
+        if (this.isPaused) return;
 
-  close() {
-    this.clearTimer();
-    this.closed.emit();
-  }
+        this.isPaused = true;
+        this.clearTimer();
+
+        this.elapsed += Date.now() - this.startTime;
+        this.remaining = this.durationMs - this.elapsed;
+    }
+
+    resume() {
+        if (!this.isPaused) return;
+
+        this.isPaused = false;
+        this.startTimer();
+    }
+
+    close() {
+        this.clearTimer();
+        this.closed.emit();
+    }
 }

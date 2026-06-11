@@ -42,8 +42,7 @@ export class Overlapper {
             .map((name) => ({
                 name,
                 initials: this.getInitials(name),
-                palette:
-                    COLOR_PALETTE[Math.abs(hashFromName(name)) % COLOR_PALETTE.length],
+                palette: COLOR_PALETTE[Math.abs(hashFromName(name)) % COLOR_PALETTE.length],
             }));
     });
 

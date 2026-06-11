@@ -1,33 +1,33 @@
 @reference "tailwindcss";
 
 .navigation-link {
-  @apply w-full cursor-pointer hover:bg-(--muted-text) hover:scale-102 transition-all duration-300 p-2 rounded-lg flex flex-row justify-between items-center;
+    @apply w-full cursor-pointer hover:bg-(--muted-text) hover:scale-102 transition-all duration-300 p-2 rounded-lg flex flex-row justify-between items-center;
 }
 
 .active {
-  @apply bg-(--muted-text);
+    @apply bg-(--muted-text);
 
-  .navigation-arrow {
-    @apply opacity-100;
-  }
+    .navigation-arrow {
+        @apply opacity-100;
+    }
 }
 
 .navigation-content {
-  @apply flex flex-row items-center gap-2.5;
+    @apply flex flex-row items-center gap-2.5;
 
-  .icon-wrapper {
-    @apply p-2 flex items-center justify-center bg-(--body-background) rounded-lg;
-  }
+    .icon-wrapper {
+        @apply p-2 flex items-center justify-center bg-(--body-background) rounded-lg;
+    }
 
-  .link-text {
-    @apply text-sm text-(--inverted-text) group-hover:text-(--white) transition-all duration-300;
-  }
+    .link-text {
+        @apply text-sm text-(--inverted-text) group-hover:text-(--white) transition-all duration-300;
+    }
 }
 
 .navigation-arrow {
-  @apply opacity-0 group-hover:opacity-100 transition-opacity duration-300;
+    @apply opacity-0 group-hover:opacity-100 transition-opacity duration-300;
 }
 
 .active-icon {
-  @apply text-(--primary);
+    @apply text-(--primary);
 }

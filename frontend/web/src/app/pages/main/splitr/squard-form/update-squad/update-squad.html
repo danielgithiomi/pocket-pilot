@@ -39,7 +39,9 @@
                 variant="primary"
                 class="shadow-none rounded-lg!"
                 [disabled]="!isMemberNameValid() || isSubmittingUpdateSquadForm()"
-                (clicked)="addNewMemberToPool(newMemberInput.value, true); newMemberInput.value = ''"
+                (clicked)="
+                    addNewMemberToPool(newMemberInput.value, true); newMemberInput.value = ''
+                "
             >
                 <div class="w-full h-full grid place-items-center py-[2px]">
                     <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize" />

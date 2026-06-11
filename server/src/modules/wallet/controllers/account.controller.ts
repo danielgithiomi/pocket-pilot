@@ -7,7 +7,7 @@ import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { denormalizeCategoryName, hoursToMilliseconds } from '@libs/utils';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import {
     Account,
     CreateAccountDto,
@@ -17,6 +17,7 @@ import {
     AccountWithHolderDto,
     UserAccountsResponseDto,
     AccountWithTransactionsResponseDto,
+    ToggleAccountBalanceVisibilityPayload,
 } from '../dto/account.dto';
 
 @ApiTags('Accounts')
@@ -26,7 +27,7 @@ export class AccountController {
     constructor(private readonly accountService: AccountService) {}
 
     @Get('types')
-    @CacheKey('account:types')
+    @CacheKey('accounts:types')
     @CacheTTL(hoursToMilliseconds(24))
     @UseInterceptors(CacheInterceptor)
     @Summary('Account Types Retrieved!', 'You have successfully retrieved all account types.')
@@ -163,6 +164,34 @@ export class AccountController {
         @Body() payload: UpdateAccountPayload,
     ): Promise<Account> {
         return this.accountService.updateAccount(user.id!, accountId, payload);
+    }
+
+    @Patch(':accountId/visibility')
+    @ApiCookieAuth('access_token')
+    @ApiParam({
+        required: true,
+        name: 'accountId',
+        schema: { type: 'string', format: 'uuid' },
+        description: 'The id of the account to update the balance visibility.',
+    })
+    @ApiBody({ type: UpdateAccountPayload })
+    @Summary('Balance Visibility Updated!', 'You have successfully updated the balance visibility.')
+    @ApiOperation({
+        summary: 'Update Account Balance Visibility',
+        description: 'Update the balance visibility of an account by its id',
+    })
+    @ApiResponse({
+        status: 200,
+        isArray: false,
+        type: Account,
+        description: 'Account balance visibility updated successfully',
+    })
+    toggleAccountBalanceVisibility(
+        @UserInRequest() user: User,
+        @Param('accountId') accountId: string,
+        @Body() payload: ToggleAccountBalanceVisibilityPayload,
+    ): Promise<Account> {
+        return this.accountService.toggleAccountBalanceVisibility(user.id!, accountId, payload);
     }
 
     @Delete(':accountId')

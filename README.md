@@ -73,16 +73,16 @@ and Splitr flows are finalized.
 
 Technologies used to develop this project:
 
-| Layer | Technologies |
-| --- | --- |
-| Monorepo | npm workspaces, Turborepo |
-| Backend | NestJS 11, TypeScript, Prisma 7, PostgreSQL, Redis, Swagger |
-| Authentication | JWT, HTTP-only cookies, Argon2 password hashing, route guards |
-| Web | Angular 21, RxJS, TypeScript, Angular Router, Angular HTTP interceptors |
-| UI | Tailwind CSS 4, Syncfusion calendars, Lottie, Lucide icons, custom components |
-| Storage | AWS S3 presigned URLs for profile picture upload and retrieval |
-| DevOps | Docker Compose for PostgreSQL and Redis |
-| Testing | Jest for the server, Angular/Vitest tooling for the web app |
+| Layer          | Technologies                                                                  |
+| -------------- | ----------------------------------------------------------------------------- |
+| Monorepo       | npm workspaces, Turborepo                                                     |
+| Backend        | NestJS 11, TypeScript, Prisma 7, PostgreSQL, Redis, Swagger                   |
+| Authentication | JWT, HTTP-only cookies, Argon2 password hashing, route guards                 |
+| Web            | Angular 21, RxJS, TypeScript, Angular Router, Angular HTTP interceptors       |
+| UI             | Tailwind CSS 4, Syncfusion calendars, Lottie, Lucide icons, custom components |
+| Storage        | AWS S3 presigned URLs for profile picture upload and retrieval                |
+| DevOps         | Docker Compose for PostgreSQL and Redis                                       |
+| Testing        | Jest for the server, Angular/Vitest tooling for the web app                   |
 
 ---
 
@@ -165,16 +165,16 @@ flowchart LR
 
 ### Backend Modules
 
-| Module | Responsibility |
-| --- | --- |
-| `identity` | Registration, login, logout, current user, profile updates, password changes |
-| `wallet` | Accounts, transactions, transfers, transaction categories |
-| `preferences` | Onboarding and user preference updates |
-| `goals` | Financial goal creation, listing, deletion, and goal category exposure |
-| `bills` | Bill creation, listing, deletion, and bill type exposure |
-| `splitr` | Shared expense squads, events, splittables, payers, and settlement state |
-| `aws` | S3 presigned upload and read URLs |
-| `infrastructure` | Database, validated config, and Redis cache setup |
+| Module           | Responsibility                                                               |
+| ---------------- | ---------------------------------------------------------------------------- |
+| `identity`       | Registration, login, logout, current user, profile updates, password changes |
+| `wallet`         | Accounts, transactions, transfers, transaction categories                    |
+| `preferences`    | Onboarding and user preference updates                                       |
+| `goals`          | Financial goal creation, listing, deletion, and goal category exposure       |
+| `bills`          | Bill creation, listing, deletion, and bill type exposure                     |
+| `splitr`         | Shared expense squads, events, splittables, payers, and settlement state     |
+| `aws`            | S3 presigned upload and read URLs                                            |
+| `infrastructure` | Database, validated config, and Redis cache setup                            |
 
 ---
 
@@ -395,20 +395,20 @@ When the backend is running, Swagger documentation is available at:
 
 The API is organized around these route groups:
 
-| Group | Base route |
-| --- | --- |
-| Auth | `/api/v1/auth` |
-| Users | `/api/v1/users` |
-| Onboarding | `/api/v1/onboarding` |
-| Preferences | `/api/v1/preferences` |
-| Accounts | `/api/v1/accounts` |
-| Transactions | `/api/v1/accounts/transactions` |
-| Categories | `/api/v1/categories` |
-| Goals | `/api/v1/goals` |
-| Bills | `/api/v1/bills` |
-| Splitr events | `/api/v1/splitr` |
-| Splitr squads | `/api/v1/splitr/squads` |
-| AWS | `/api/v1/aws` |
+| Group         | Base route                      |
+| ------------- | ------------------------------- |
+| Auth          | `/api/v1/auth`                  |
+| Users         | `/api/v1/users`                 |
+| Onboarding    | `/api/v1/onboarding`            |
+| Preferences   | `/api/v1/preferences`           |
+| Accounts      | `/api/v1/accounts`              |
+| Transactions  | `/api/v1/accounts/transactions` |
+| Categories    | `/api/v1/categories`            |
+| Goals         | `/api/v1/goals`                 |
+| Bills         | `/api/v1/bills`                 |
+| Splitr events | `/api/v1/splitr`                |
+| Splitr squads | `/api/v1/splitr/squads`         |
+| AWS           | `/api/v1/aws`                   |
 
 Successful API responses are wrapped like this:
 
@@ -438,18 +438,18 @@ The Angular web app converts that response into a standard frontend shape with `
 
 Run these from the repository root unless noted otherwise.
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start all workspace development servers through Turborepo |
-| `npm run build` | Build all workspaces |
-| `npm run lint` | Run lint tasks across workspaces |
-| `npm run test` | Run workspace tests |
-| `npm run docker:up` | Start PostgreSQL and Redis for the backend |
-| `npm run prisma:generate` | Generate Prisma client for the server |
-| `npm run prisma:migrate` | Run Prisma migrations for the server |
-| `npm run prisma:reset` | Reset the Prisma database |
-| `npm run prisma:studio` | Open Prisma Studio |
-| `npm run clean` | Remove generated caches, dependencies, and build artifacts |
+| Command                   | Description                                                |
+| ------------------------- | ---------------------------------------------------------- |
+| `npm run dev`             | Start all workspace development servers through Turborepo  |
+| `npm run build`           | Build all workspaces                                       |
+| `npm run lint`            | Run lint tasks across workspaces                           |
+| `npm run test`            | Run workspace tests                                        |
+| `npm run docker:up`       | Start PostgreSQL and Redis for the backend                 |
+| `npm run prisma:generate` | Generate Prisma client for the server                      |
+| `npm run prisma:migrate`  | Run Prisma migrations for the server                       |
+| `npm run prisma:reset`    | Reset the Prisma database                                  |
+| `npm run prisma:studio`   | Open Prisma Studio                                         |
+| `npm run clean`           | Remove generated caches, dependencies, and build artifacts |
 
 Workspace-specific commands:
 

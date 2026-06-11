@@ -110,7 +110,8 @@ export const routes: Routes = [
             {
                 title: 'FAQs & Features | Pocket Pilot',
                 path: WEB_ROUTES.faqsFeatures,
-                loadComponent: () => import('@pages/main/faqs_features/faqs-features').then((m) => m.FaqsFeatures),
+                loadComponent: () =>
+                    import('@pages/main/faqs_features/faqs-features').then((m) => m.FaqsFeatures),
             },
             {
                 path: '**',

@@ -2,7 +2,12 @@ import { NgClass } from '@angular/common';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { Component, computed, input, output } from '@angular/core';
-import { TextAreaAutoComplete, TextAreaResize, TextAreaStatus } from './text-area.types';
+import { TextAreaAutoComplete, TextAreaResize } from './text-area.types';
+import {
+    FORM_FIELD_ERROR_BORDER_CLASSES,
+    isFormFieldInError,
+    resolveFormFieldVisualState,
+} from '../form-field-visual-state';
 
 @Component({
     selector: 'atom-text-area',
@@ -36,9 +41,7 @@ export class TextArea {
     placeholder = input.required<string>();
     autocomplete = input<TextAreaAutoComplete>('off');
 
-    showStatus = input<boolean>(false);
-    status = input<TextAreaStatus>('error');
-
+    showStatus = input<boolean>(true);
     formField = input.required<FieldTree<string, string>>();
 
     /* OUTPUTS */
@@ -49,8 +52,12 @@ export class TextArea {
     readonly iconSize = 18;
 
     /* COMPUTED */
-    fieldState = computed(() => this.formField()());
     textAreaId = computed<string>(() => `text-area-field-${this.id()}`);
+    fieldState = computed(() => this.formField()());
+    showFieldErrors = computed(() => isFormFieldInError(this.fieldState()));
+    fieldVisualState = computed(() =>
+        resolveFormFieldVisualState(this.showStatus(), this.fieldState()),
+    );
 
     resizeClass = computed<string>(() => {
         switch (this.resize()) {
@@ -68,13 +75,8 @@ export class TextArea {
     customTextAreaClasses = computed<string>(() => {
         const classes = [this.resizeClass(), this.textAreaClassName()];
 
-        if (this.showStatus()) {
-            const statusBorderClasses =
-                this.status() === 'error'
-                    ? 'border-2! border-solid! border-error! focus:outline-none!'
-                    : 'border-2! border-solid! border-primary! focus:outline-none!';
-
-            classes.push(statusBorderClasses);
+        if (this.fieldVisualState() === 'error') {
+            classes.push(FORM_FIELD_ERROR_BORDER_CLASSES);
         }
 
         return classes.filter(Boolean).join(' ');

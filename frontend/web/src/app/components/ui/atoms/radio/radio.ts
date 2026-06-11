@@ -6,64 +6,64 @@ import { RadioOption, SelectionMode, RadioLayout } from './radio.types';
 import { Circle, CircleCheckBig, CircleMinus, LucideAngularModule } from 'lucide-angular';
 
 @Component({
-  selector: 'atom-radio',
-  styleUrl: './radio.css',
-  templateUrl: './radio.html',
-  imports: [LucideAngularModule, NgClass, CheckedCircle],
+    selector: 'atom-radio',
+    styleUrl: './radio.css',
+    templateUrl: './radio.html',
+    imports: [LucideAngularModule, NgClass, CheckedCircle],
 })
 export class Radio {
-  /* INPUTS */
-  id = input.required<string>();
-  required = input<boolean>(true);
-  label = input.required<string>();
-  inverted = input<boolean>(false);
-  invertLabel = input<boolean>(false);
-  selectedValue = input<string | null | number>(null);
+    /* INPUTS */
+    id = input.required<string>();
+    required = input<boolean>(true);
+    label = input.required<string>();
+    inverted = input<boolean>(false);
+    invertLabel = input<boolean>(false);
+    selectedValue = input<string | null | number>(null);
 
-  layout = input<RadioLayout>('vertical');
-  options = input.required<RadioOption[]>();
-  selectionMode = input<SelectionMode>('single');
-  maxSelections = input<number | undefined>(undefined);
+    layout = input<RadioLayout>('vertical');
+    options = input.required<RadioOption[]>();
+    selectionMode = input<SelectionMode>('single');
+    maxSelections = input<number | undefined>(undefined);
 
-  formField = input.required<FieldTree<string | null | number, string>>();
+    formField = input.required<FieldTree<string | null | number, string>>();
 
-  /* OUTPUTS */
-  selectionChange = output<string>();
+    /* OUTPUTS */
+    selectionChange = output<string>();
 
-  /* ICONS */
-  readonly iconSize = 18;
-  readonly Unchecked = Circle;
-  readonly PartialCheck = CircleMinus;
-  readonly CompleteCheck = CircleCheckBig;
+    /* ICONS */
+    readonly iconSize = 18;
+    readonly Unchecked = Circle;
+    readonly PartialCheck = CircleMinus;
+    readonly CompleteCheck = CircleCheckBig;
 
-  /* COMPUTED */
-  fieldState = computed(() => this.formField()());
-  inputId = computed<string>(() => `radio-${this.id()}`);
+    /* COMPUTED */
+    fieldState = computed(() => this.formField()());
+    inputId = computed<string>(() => `radio-${this.id()}`);
 
-  isMultiple = computed(() => this.selectionMode() === 'multiple');
-  canSelectMore = computed(() => {
-    if (!this.isMultiple()) return true;
-    const max = this.maxSelections();
-    return max === undefined || true; // Simplified for single selection
-  });
-
-  isOptionSelected = (option: RadioOption) => {
-    return computed(() => {
-      const currentValue = this.selectedValue() ?? this.fieldState().value();
-      return currentValue === option.value;
+    isMultiple = computed(() => this.selectionMode() === 'multiple');
+    canSelectMore = computed(() => {
+        if (!this.isMultiple()) return true;
+        const max = this.maxSelections();
+        return max === undefined || true; // Simplified for single selection
     });
-  };
 
-  isOptionDisabled = (option: RadioOption) => {
-    return computed(() => {
-      return option.disabled;
-    });
-  };
+    isOptionSelected = (option: RadioOption) => {
+        return computed(() => {
+            const currentValue = this.selectedValue() ?? this.fieldState().value();
+            return currentValue === option.value;
+        });
+    };
 
-  /* METHODS */
-  onOptionClick(option: RadioOption) {
-    if (this.isOptionDisabled(option)()) return;
-    if (this.isOptionSelected(option)()) return;
-    this.selectionChange.emit(option.value);
-  }
+    isOptionDisabled = (option: RadioOption) => {
+        return computed(() => {
+            return option.disabled;
+        });
+    };
+
+    /* METHODS */
+    onOptionClick(option: RadioOption) {
+        if (this.isOptionDisabled(option)()) return;
+        if (this.isOptionSelected(option)()) return;
+        this.selectionChange.emit(option.value);
+    }
 }

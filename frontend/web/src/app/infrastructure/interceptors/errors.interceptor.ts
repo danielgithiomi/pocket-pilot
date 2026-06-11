@@ -43,14 +43,17 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                         });
 
                         return {
+                            name,
                             type,
                             statusCode: 401,
                             title: 'Session Expired!',
-                            details: 'Your session timed out and you were logged out. Please login again.',
+                            details:
+                                'Your session timed out and you were logged out. Please login again.',
                         } satisfies IStandardError;
                     }
 
                     return {
+                        name,
                         details,
                         message,
                         type: type,

@@ -12,43 +12,6 @@ datasource db {
     provider = "postgresql"
 }
 
-enum AccountType {
-    LOAN
-    BANK
-    CRYPTO
-    CREDIT
-    WALLET
-    SAVINGS
-    CURRENT
-    DEPOSIT
-    OVERDRAFT
-    BROKERAGE
-    RETIREMENT
-}
-
-model Account {
-    id        String      @id @default(uuid())
-    type      AccountType
-    name      String
-    currency  String
-    createdAt DateTime    @default(now())
-    updatedAt DateTime    @updatedAt
-    balance   Float       @default(0)
-
-    // Link to user - one-to-many
-    holder   User   @relation(fields: [holderId], references: [id], onDelete: Cascade)
-    holderId String
-
-    // Transactions where this account is the SOURCE
-    outgoingTransactions Transaction[] @relation("SourceAccountTransactions")
-
-    // Transactions where this account is the TARGET
-    incomingTransactions Transaction[] @relation("TargetAccountTransactions")
-
-    @@unique([name, holderId])
-    @@map("Accounts")
-}
-
 model User {
     id                String  @id() @default(uuid())
     name              String
@@ -73,7 +36,7 @@ model User {
 
     // Link to categories - one-to-many
     categories Categories[]
-    
+
     // Link to goals - one-to-many
     goals Goals[]
 
@@ -83,11 +46,56 @@ model User {
     // Link to splitr events - one-to-many
     splitrEvents SplitrEvent[]
 
+    // Link to features - one-to-many
+    features Feature[]
+
+    // Link to feature votes - one-to-many
+    featureVotes FeatureVotes[]
+
     // Link to preferences - one-to-one
     userPreferences UserPreferences?
 
     @@unique([email])
     @@map("Users")
+}
+
+enum AccountType {
+    LOAN
+    BANK
+    CRYPTO
+    CREDIT
+    WALLET
+    SAVINGS
+    CURRENT
+    DEPOSIT
+    OVERDRAFT
+    BROKERAGE
+    RETIREMENT
+}
+
+model Account {
+    id        String      @id @default(uuid())
+    type      AccountType
+    name      String
+    currency  String
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+    balance   Float       @default(0)
+
+    isBalanceVisible Boolean @default(true)
+
+    // Link to user - one-to-many
+    holder   User   @relation(fields: [holderId], references: [id], onDelete: Cascade)
+    holderId String
+
+    // Transactions where this account is the SOURCE
+    outgoingTransactions Transaction[] @relation("SourceAccountTransactions")
+
+    // Transactions where this account is the TARGET
+    incomingTransactions Transaction[] @relation("TargetAccountTransactions")
+
+    @@unique([name, holderId])
+    @@map("Accounts")
 }
 
 enum ApplicationTheme {
@@ -183,7 +191,7 @@ enum GoalCategory {
 }
 
 model Goals {
-    id     String @id @default(uuid())
+    id String @id @default(uuid())
 
     name        String
     currency    String
@@ -216,7 +224,7 @@ enum BillType {
 }
 
 model Bills {
-    id     String @id @default(uuid())
+    id String @id @default(uuid())
 
     amount   Float
     name     String
@@ -247,8 +255,8 @@ enum PaymentStrategy {
 }
 
 model SplitrSquad {
-    id            String    @id @default(uuid())
-    creatorId     String
+    id        String @id @default(uuid())
+    creatorId String
 
     squadName     String
     squadImageKey String?
@@ -264,14 +272,14 @@ model QuantitySplit {
     id String @id @default(uuid())
 
     consumerQuantity Float
-    consumerName String
+    consumerName     String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt()
 
     // Link to splittable - one-to-many
     splittableId String
-    splittable Splittable @relation(fields: [splittableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    splittable   Splittable @relation(fields: [splittableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@map("Quantity Splits")
 }
@@ -287,23 +295,23 @@ model BillPayer {
 
     // Link to splitr event - one-to-many
     splitrEventId String
-    splitrEvent SplitrEvent @relation(fields: [splitrEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    splitrEvent   SplitrEvent @relation(fields: [splitrEventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     @@map("Bill Payers")
 }
 
-model Splittable{
-    id            String        @id @default(uuid())
+model Splittable {
+    id String @id @default(uuid())
 
-    name          String
-    quantity      Int
-    unitPrice     Float
-    
+    name      String
+    quantity  Int
+    unitPrice Float
+
     total         Float
     splitStrategy SplitStrategy
 
-    updatedAt     DateTime      @updatedAt()
-    createdAt     DateTime      @default(now())
+    updatedAt DateTime @updatedAt()
+    createdAt DateTime @default(now())
 
     // Link to quantity splits - one-to-many
     quantitySplits QuantitySplit[]
@@ -315,30 +323,153 @@ model Splittable{
 }
 
 model SplitrEvent {
-    id            String    @id @default(uuid())
+    id String @id @default(uuid())
 
-    eventName           String
-    eventDate           DateTime
+    eventName String
+    eventDate DateTime
 
-    squadName           String
-    eventMembers        String[]
+    squadName    String
+    eventMembers String[]
 
     verificationTotal   Float
     billingCurrency     String
     billPaymentStrategy PaymentStrategy
     billPayers          BillPayer[]
 
-    eventSplittables    Splittable[]
+    eventSplittables Splittable[]
 
-    isSettled     Boolean       @default(false)
+    isSettled Boolean @default(false)
 
-    settledAt     DateTime?
-    updatedAt     DateTime      @updatedAt()
-    createdAt     DateTime      @default(now())
+    settledAt DateTime?
+    updatedAt DateTime  @updatedAt()
+    createdAt DateTime  @default(now())
 
     // Link to user - one-to-many
     creatorId String
-    user   User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+    user      User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 
     @@map("Splitr Events")
+}
+
+enum FeatureStatus {
+    NEW
+    SHIPPED
+    PLANNED
+    REJECTED
+    IN_PROGRESS
+    UNDER_REVIEW
+}
+
+enum FeatureCategory {
+    OTHER
+    UI_UX
+    SPLITR
+    PROFILE
+    ACCOUNTS
+    ANALYSIS
+    SECURITY
+    BUDGETING
+    BUG_REPORT
+    PERFORMANCE
+    NEW_FEATURE
+    TRANSACTIONS
+    BILLS_AND_GOALS
+}
+
+model Feature {
+    id String @id @default(uuid())
+
+    featureTitle   String
+    featureContent String
+
+    featureScore  Int @default(0)
+    upvoteCount   Int @default(0)
+    downvoteCount Int @default(0)
+
+    featureCategory FeatureCategory
+    featureStatus   FeatureStatus   @default(NEW)
+
+    updatedAt DateTime @updatedAt()
+    createdAt DateTime @default(now())
+
+    // Link to feature votes - one-to-many
+    featureVotes FeatureVotes[] @relation("FeatureVotes")
+
+    // Link to feature comments - one-to-many
+    featureComments FeatureComments[] @relation("FeatureComments")
+
+    // Link to user - one-to-many
+    authorId String
+    user     User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+    @@unique([id, authorId])
+    @@map("Features")
+}
+
+enum VoteVariant {
+    UPVOTE
+    DOWNVOTE
+}
+
+model FeatureVotes {
+    id String @id @default(uuid())
+
+    voteVariant VoteVariant
+
+    updatedAt DateTime @updatedAt()
+    createdAt DateTime @default(now())
+
+    // Link to user - many-to-one
+    voterId String
+    voter   User   @relation(fields: [voterId], references: [id], onDelete: Cascade)
+
+    // Link to feature - one-to-one
+    featureId String
+    feature   Feature @relation("FeatureVotes", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@unique([featureId, voterId])
+    @@map("Feature Votes")
+}
+
+model FeatureComments {
+    id String @id @default(uuid())
+
+    comment String
+
+    createdAt DateTime @default(now())
+
+    // Link to feature - one-to-many
+    featureId String
+    feature   Feature @relation("FeatureComments", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@map("Feature Comments")
+}
+
+model ExchangeRateSnapshot {
+    id String @id @default(uuid())
+
+    baseCurrency String
+
+    nextUpdateTime  DateTime @db.Timestamptz(3)
+    lastUpdatedTime DateTime @db.Timestamptz(3)
+
+    exchangeRates ExchangeRate[]
+
+    fetchedAt DateTime @default(now()) @db.Timestamptz(3)
+
+    @@unique([baseCurrency, lastUpdatedTime])
+    @@map("Exchange Rate Snapshots")
+}
+
+model ExchangeRate {
+    id String @id @default(uuid())
+
+    snapshotId String
+    snapshot   ExchangeRateSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+
+    currency String // USD, EUR, GBP
+    rate     Decimal @db.Decimal(18, 8)
+
+    @@unique([snapshotId, currency])
+    @@map("Exchange Rates")
 }

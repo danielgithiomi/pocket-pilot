@@ -134,7 +134,7 @@
         }
     </div>
 
-    @if (showErrors()) {
+    @if (showFieldErrors()) {
         <div class="input-field-errors-wrapper">
             @for (error of fieldState().errors(); track error.kind) {
                 <p class="input-field-error">

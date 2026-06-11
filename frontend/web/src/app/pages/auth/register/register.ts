@@ -9,52 +9,52 @@ import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import {
-  RegisterSchema,
-  initialRegisterFormState,
-  registerFormValidationSchema,
+    RegisterSchema,
+    initialRegisterFormState,
+    registerFormValidationSchema,
 } from '@libs/types';
 
 @Component({
-  selector: 'app-register',
-  styleUrl: './register.css',
-  templateUrl: './register.html',
-  imports: [AuthBranding, FormField, Button, Input],
+    selector: 'app-register',
+    styleUrl: './register.css',
+    templateUrl: './register.html',
+    imports: [AuthBranding, FormField, Button, Input],
 })
 export class Register {
-  // SIGNALS
-  protected isSubmitting = signal<boolean>(false);
+    // SIGNALS
+    protected isSubmitting = signal<boolean>(false);
 
-  // FORM
-  protected registerFormModel = signal<RegisterSchema>(initialRegisterFormState);
-  protected registerForm = form(this.registerFormModel, registerFormValidationSchema);
+    // FORM
+    protected registerFormModel = signal<RegisterSchema>(initialRegisterFormState);
+    protected registerForm = form(this.registerFormModel, registerFormValidationSchema);
 
-  // INJECTS
-  private readonly router = inject(Router);
-  private readonly userService = inject(UserService);
-  private readonly toastService = inject(ToastService);
+    // INJECTS
+    private readonly router = inject(Router);
+    private readonly userService = inject(UserService);
+    private readonly toastService = inject(ToastService);
 
-  // METHODS
-  routeToLogin = () => this.router.navigate([WEB_ROUTES.login]);
+    // METHODS
+    routeToLogin = () => this.router.navigate([WEB_ROUTES.login]);
 
-  submitRegistrationForm = (event: Event) => {
-    event.preventDefault();
+    submitRegistrationForm = (event: Event) => {
+        event.preventDefault();
 
-    this.isSubmitting.set(true);
+        this.isSubmitting.set(true);
 
-    const { email, name, password } = this.registerFormModel();
+        const { email, name, password } = this.registerFormModel();
 
-    this.userService.register({ name, email, password }).subscribe({
-      next: (response: User) => {
-        const { name } = response;
-        this.toastService.show({
-          variant: 'success',
-          title: 'Registration Successful!',
-          details: `Welcome ${name}! You are now part of the Pocket Pilot family!`,
+        this.userService.register({ name, email, password }).subscribe({
+            next: (response: User) => {
+                const { name } = response;
+                this.toastService.show({
+                    variant: 'success',
+                    title: 'Registration Successful!',
+                    details: `Welcome ${name}! You are now part of the Pocket Pilot family!`,
+                });
+
+                this.router.navigate([WEB_ROUTES.onboarding], { replaceUrl: true });
+            },
+            complete: () => this.isSubmitting.set(false),
         });
-
-        this.router.navigate([WEB_ROUTES.onboarding], { replaceUrl: true });
-      },
-      complete: () => this.isSubmitting.set(false),
-    });
-  };
+    };
 }

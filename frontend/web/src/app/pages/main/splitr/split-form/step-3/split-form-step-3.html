@@ -1,6 +1,6 @@
 <div class="w-full flex flex-col gap-1 mb-1">
     @let totalsMatch = totalsEqual();
-    @let showStatus = formModel().verificationTotal().dirty();
+    @let showVerificationStatus = formModel().verificationTotal().dirty();
     <atom-input
         type="text"
         id="split-name"
@@ -9,15 +9,21 @@
         placeholder="0.00"
         [numberStep]="0.01"
         wrapperClassName="mb-0!"
-        [showStatus]="showStatus"
-        [status]="totalsMatch ? 'success' : 'error'"
+        [showStatus]="false"
+        [inputClassName]="
+            showVerificationStatus
+                ? totalsMatch
+                    ? 'border-2! border-solid! border-primary! focus:outline-none!'
+                    : 'border-2! border-solid! border-error! focus:outline-none!'
+                : ''
+        "
         label="Grand Total (Verification)"
         [formField]="formModel().verificationTotal"
         (clearOutput)="formModel().verificationTotal().controlValue.set(null)"
     />
 
     <div class="flex flex-row items-center justify-between px-2 w-full mb-2 text-[0.7rem] italic">
-        @if (showStatus) {
+        @if (showVerificationStatus) {
             @let totalsMatch = totalsEqual();
             <div
                 class="flex flex-row items-center gap-1.5 italic"

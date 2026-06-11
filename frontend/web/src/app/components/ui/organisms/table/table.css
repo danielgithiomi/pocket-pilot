@@ -1,60 +1,60 @@
 @reference 'tailwindcss';
 :host {
-  display: contents;
+    display: contents;
 }
 
 .table-container {
-  @apply flex flex-col w-full overflow-hidden rounded border border-(--primary) bg-(--alternate-background);
+    @apply flex flex-col w-full overflow-hidden rounded border border-(--primary) bg-(--alternate-background);
 }
 
 .table-header {
-  @apply grid items-center bg-(--primary)/75 border-b border-(--secondary) p-4 font-medium text-sm text-(--primary-text);
+    @apply grid items-center bg-(--primary)/75 border-b border-(--secondary) p-4 font-medium text-sm text-(--primary-text);
 }
 
 .header-cell {
-  @apply font-semibold overflow-hidden line-clamp-1 truncate pr-2;
+    @apply font-semibold overflow-hidden line-clamp-1 truncate pr-2;
 }
 
 .text-left {
-  @apply text-left;
+    @apply text-left;
 }
 
 .text-center {
-  @apply text-center;
+    @apply text-center;
 }
 
 .text-right {
-  @apply text-right;
+    @apply text-right;
 }
 
 .table-body {
-  @apply flex-1 h-full divide-y divide-(--muted-text)/30;
+    @apply flex-1 h-full divide-y divide-(--muted-text)/30;
 }
 
 .table-row {
-  @apply grid cursor-pointer hover:scale-x-[1.0025] items-center px-4 py-2 transition-all duration-300 hover:bg-(--muted-text)/30;
+    @apply grid cursor-pointer hover:scale-x-[1.0025] items-center px-4 py-2 transition-all duration-300 hover:bg-(--muted-text)/30;
 }
 
 .table-cell {
-  @apply text-sm text-(--alternate-text) overflow-hidden rounded-xl p-1 line-clamp-1 truncate mr-2;
+    @apply text-sm text-(--alternate-text) overflow-hidden rounded-xl p-1 line-clamp-1 truncate mr-2;
 }
 
 .actions-container {
-  @apply flex justify-end items-center;
+    @apply flex justify-end items-center;
 }
 
 .action-icon {
-  @apply cursor-pointer rounded p-1 text-(--muted-text) transition-colors;
+    @apply cursor-pointer rounded p-1 text-(--muted-text) transition-colors;
 }
 
 .delete-icon:hover {
-  @apply scale-101 transition-transform duration-300 text-(--apple-red);
+    @apply scale-101 transition-transform duration-300 text-(--apple-red);
 }
 
 .empty-state {
-  @apply grid place-items-center min-h-[145px];
+    @apply grid place-items-center min-h-[145px];
 }
 
 .empty-message {
-  @apply text-(--muted-text) text-center;
+    @apply text-(--muted-text) text-center;
 }

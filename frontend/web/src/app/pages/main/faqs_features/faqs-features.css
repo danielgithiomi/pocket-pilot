@@ -1,0 +1,18 @@
+@reference 'tailwindcss';
+
+/* Stack two full-viewport panels; parent scrolls inside #content */
+.faqs-features-page.page {
+    @apply flex min-h-full h-auto flex-col;
+}
+
+.faqs-features-panel.page-section {
+    @apply flex h-auto w-full min-h-[calc(100dvh-8vh-2.5rem)] flex-1 flex-col gap-2 md:gap-4 md:flex-row;
+}
+
+.faqs-features-panel-primary {
+    @apply flex min-h-full min-w-0 flex-3 flex-col gap-8 lg:gap-4 justify-around p-4 md:p-2;
+}
+
+.faqs-features-panel-secondary {
+    @apply flex min-h-full min-w-0 flex-4 flex-col p-4 md:p-2;
+}
