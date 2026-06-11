@@ -81,6 +81,14 @@ export class Account {
 
     @Expose()
     @ApiProperty({
+        example: 1000,
+        description: 'The balance of the account in the base currency',
+    })
+    @Type(() => Number)
+    baseBalance?: number;
+
+    @Expose()
+    @ApiProperty({
         example: '2022-01-01T00:00:00.000Z',
         description: 'The creation date of the account',
     })

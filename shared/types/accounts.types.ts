@@ -22,6 +22,7 @@ export interface Account {
   createdAt: string;
   updatedAt: string;
   type: AccountType;
+  baseBalance?: number;
   isBalanceVisible: boolean;
 }
 

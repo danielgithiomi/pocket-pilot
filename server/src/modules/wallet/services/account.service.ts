@@ -1,10 +1,13 @@
 import { ExposeEnumDto } from '@common/types';
 import { formatEnumForFrontend } from '@libs/utils';
 import { plainToInstance } from 'class-transformer';
-import { Account, AccountType, Prisma } from '@prisma/client';
+import { AccountType, Prisma } from '@prisma/client';
+import { Account as IAccount } from './../dto/account.dto';
+import { UserService } from '@modules/identity/services/user.service';
 import { AccountRepository } from '../repositories/account.repository';
 import { AccountsCache, AccountDetailsCache } from '../cache/wallet.cache';
 import { TransactionRepository } from '../repositories/transaction.respository';
+import { ExchangeRateService } from '@modules/exchange-rate/services/exchange-rate.service';
 import {
     CreateAccountDto,
     AccountWithHolder,
@@ -23,9 +26,11 @@ import {
 @Injectable()
 export class AccountService {
     constructor(
+        private readonly userService: UserService,
         private readonly accountsCache: AccountsCache,
         private readonly accountRepository: AccountRepository,
         private readonly accountDetailsCache: AccountDetailsCache,
+        private readonly exchangeRateService: ExchangeRateService,
         private readonly transactionRepository: TransactionRepository,
     ) {}
 
@@ -39,20 +44,22 @@ export class AccountService {
         );
     }
 
-    async getUserAccounts(holderId: string): Promise<Account[]> {
-        return this.accountsCache.getOrSetCache<Account[]>(holderId, () =>
-            this.accountRepository.getUserAccounts(holderId),
-        );
+    async getUserAccounts(holderId: string): Promise<IAccount[]> {
+        return this.accountsCache.getOrSetCache<IAccount[]>(holderId, async () => {
+            const dbUserAccounts = await this.accountRepository.getUserAccounts(holderId);
+
+            return Promise.all(dbUserAccounts.map(account => this.mapAccountToBaseBalanced(account)));
+        });
     }
 
-    async getAccountById(userId: string, accountId: string): Promise<Account> {
+    async getAccountById(userId: string, accountId: string): Promise<IAccount> {
         const accounts = await this.getUserAccounts(userId);
         return this.verifyAccountAndOwnership(accounts, userId, accountId);
     }
 
     async getAccountAndTransactions(userId: string, accountId: string): Promise<AccountWithTransactionsDto> {
         const getAccountAndItsTransactions = async () => {
-            const accounts: Account[] = await this.getUserAccounts(userId);
+            const accounts: IAccount[] = await this.getUserAccounts(userId);
             const foundAccount = this.verifyAccountAndOwnership(accounts, userId, accountId);
 
             const account = await this.accountRepository.getAccountWithTransactions(foundAccount.id);
@@ -79,7 +86,7 @@ export class AccountService {
         );
     }
 
-    async createAccount(userId: string, payload: CreateAccountDto): Promise<Account> {
+    async createAccount(userId: string, payload: CreateAccountDto): Promise<IAccount> {
         await this.checkIfAccountNameAlreadyExists(userId, payload.name, true);
 
         try {
@@ -103,7 +110,7 @@ export class AccountService {
         }
     }
 
-    async updateAccount(userId: string, accountId: string, payload: UpdateAccountPayload): Promise<Account> {
+    async updateAccount(userId: string, accountId: string, payload: UpdateAccountPayload): Promise<IAccount> {
         const accounts = await this.getUserAccounts(userId);
         this.verifyAccountAndOwnership(accounts, userId, accountId);
 
@@ -134,8 +141,8 @@ export class AccountService {
         userId: string,
         accountId: string,
         payload: ToggleAccountBalanceVisibilityPayload,
-    ): Promise<Account> {
-        const accounts: Account[] = await this.getUserAccounts(userId);
+    ): Promise<IAccount> {
+        const accounts: IAccount[] = await this.getUserAccounts(userId);
         this.verifyAccountAndOwnership(accounts, userId, accountId);
 
         const updatedAccount = await this.accountRepository.toggleAccountBalanceVisibilityById(accountId, payload);
@@ -143,8 +150,8 @@ export class AccountService {
         return updatedAccount;
     }
 
-    async deleteAccountById(userId: string, accountId: string): Promise<Account> {
-        const accounts: Account[] = await this.getUserAccounts(userId);
+    async deleteAccountById(userId: string, accountId: string): Promise<IAccount> {
+        const accounts: IAccount[] = await this.getUserAccounts(userId);
 
         const foundAccount = this.verifyAccountAndOwnership(accounts, userId, accountId);
 
@@ -161,7 +168,7 @@ export class AccountService {
         return deletedAccount;
     }
 
-    private verifyAccountAndOwnership(accounts: Account[], userId: string, accountId: string): Account {
+    private verifyAccountAndOwnership(accounts: IAccount[], userId: string, accountId: string): IAccount {
         const accountExists = accounts.find(account => account.id === accountId);
 
         if (!accountExists)
@@ -221,6 +228,40 @@ export class AccountService {
         }
 
         return;
+    }
+
+    private async performCurrencyConversion(
+        balance: number,
+        fromCurrency: string,
+        toCurrency: string,
+    ): Promise<number> {
+        const exchangeRateSnapshot = await this.exchangeRateService.getThirdPartyExchangeRates();
+
+        const toCurrencyRate = exchangeRateSnapshot.exchangeRates[toCurrency] ?? 1;
+        const fromCurrencyRate = exchangeRateSnapshot.exchangeRates[fromCurrency] ?? 1;
+
+        return (balance * toCurrencyRate) / fromCurrencyRate;
+    }
+
+    private async mapAccountToBaseBalanced(account: IAccount): Promise<IAccount> {
+        const baseCurrency = 'USD';
+
+        const { currency: accountCurrency, balance, holderId } = account;
+        const {
+            userPreferences: { defaultCurrency },
+        } = await this.userService.findUserById(holderId);
+
+        console.log(accountCurrency, defaultCurrency);
+
+        if (accountCurrency === defaultCurrency) return account;
+
+        const baseBalance = await this.performCurrencyConversion(balance, accountCurrency, baseCurrency);
+        const convertedBalance = await this.performCurrencyConversion(baseBalance, baseCurrency, defaultCurrency);
+
+        return {
+            ...account,
+            baseBalance: convertedBalance,
+        };
     }
 
     private async accountHasTransactions(accountId: string): Promise<boolean> {
