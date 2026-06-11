@@ -131,7 +131,13 @@ export class AuthService {
             }),
             catchError(
                 (error: IStandardError): Observable<{ type: AuthError; message: string }> => {
-                    this.renderToast(error);
+
+                    const toastError = {
+                        ...error,
+                        title: error.title.split('!')[0]
+                    }
+                    this.renderToast(toastError);
+
                     const { name } = error;
                     if (!name) return EMPTY;
 
@@ -139,12 +145,12 @@ export class AuthService {
                         case INVALID_EMAIL_IDENTIFIER:
                             return of({
                                 type: 'email' as const,
-                                message: error.message ?? 'This email address is invalid',
+                                message: error.title ?? 'This email address is invalid! Please confirm.',
                             });
                         case INVALID_PASSWORD_IDENTIFIER:
                             return of({
                                 type: 'password' as const,
-                                message: error.message ?? 'The password entered in incorrect',
+                                message: error.title ?? 'The password you entered is incorrect! Please try again.',
                             });
                         default:
                             return EMPTY;

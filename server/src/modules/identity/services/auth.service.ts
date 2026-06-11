@@ -11,6 +11,8 @@ import { JWTPayload, LoginInputDto, LoginOutputDto, ValidationResult } from '../
 
 @Injectable()
 export class AuthService {
+    private readonly failedLoginAttemptsThreshold = 3;
+
     constructor(
         private readonly awsService: AwsService,
         private readonly cookiesService: CookiesService,
@@ -38,8 +40,9 @@ export class AuthService {
 
         if (!isValid) {
             const currentFailedAttempts: number = user.failedLoginAttempts;
+            const remainingAttempts: number = this.failedLoginAttemptsThreshold - (currentFailedAttempts + 1);
 
-            if (currentFailedAttempts >= 3) {
+            if (currentFailedAttempts >= this.failedLoginAttemptsThreshold) {
                 await this.authRepository.lockAccount(email);
 
                 throw new LockedException({
@@ -55,8 +58,8 @@ export class AuthService {
 
             throw new UnauthorizedException({
                 name: 'INVALID_CREDENTIALS',
-                title: 'Invalid Credentials!',
-                details: `Incorrect email or password. Please confirm and try again.`,
+                details: `Incorrect password. Please confirm and try again.`,
+                title: `Incorrect password! ${remainingAttempts === 0 ? 'No' : remainingAttempts} ${remainingAttempts === 1 ? 'attempt' : 'attempts'} remaining.`,
             });
         }
 
@@ -80,7 +83,7 @@ export class AuthService {
         if (!user)
             throw new NotFoundException({
                 name: 'USER_NOT_FOUND',
-                title: 'Invalid email address!',
+                title: 'Invalid email address! Please confirm.',
                 details: `No user in our records has the email: [${email}].`,
             });
 
