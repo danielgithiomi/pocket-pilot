@@ -4,6 +4,7 @@ export interface CreateAccountPayload {
   name: string;
   currency: string;
   type: AccountType | "";
+  isBalanceVisible: boolean;
 }
 
 export type UpdateAccountPayload = CreateAccountPayload;

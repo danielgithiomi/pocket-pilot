@@ -14,21 +14,18 @@
             <summary-item label="Name" id="account-name" [value]="account().name" />
             <summary-item label="Type" id="account-type" [value]="account().type" />
             <summary-item label="Currency" id="account-currency" [value]="account().currency" />
+            <summary-item id="transaction-count" label="Transaction count" [value]="transactionCount().toString()" />
+
             <summary-item label="Balance" id="account-balance" [value]="formatBalance()" />
 
             @if (isDifferentCurrency()) {
                 <summary-item
                     label="Conversion"
                     id="account-conversion"
-                    [value]="formatConversion()"
+                    [value]="formatConversion(account().baseBalance!)"
                 />
             }
 
-            <summary-item
-                id="transaction-count"
-                label="No. of Transactions"
-                [value]="transactionCount().toString()"
-            />
             <summary-item
                 id="date-created"
                 label="Date Created"

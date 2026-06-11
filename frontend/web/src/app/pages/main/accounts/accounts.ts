@@ -5,6 +5,7 @@ import { Select } from '@atoms/select';
 import { NgClass } from '@angular/common';
 import { Account } from '@widgets/account';
 import { form } from '@angular/forms/signals';
+import { CreateAccountPayload } from '@global/types';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
@@ -81,6 +82,7 @@ export class Accounts {
     private readonly INITIAL_FORM_STATE: AccountsSchema = {
         name: '',
         type: '',
+        isBalanceVisible: true,
         currency: this.currency,
     };
     protected accountsFormModel = signal<AccountsSchema>(this.INITIAL_FORM_STATE);
@@ -100,7 +102,7 @@ export class Accounts {
     protected submitAccountsForm = (event: Event) => {
         event.preventDefault();
 
-        const payload = this.accountsFormModel();
+        const payload: CreateAccountPayload = this.accountsFormModel();
 
         this.isSubmitting.set(true);
 

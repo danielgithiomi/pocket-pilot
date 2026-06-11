@@ -110,6 +110,7 @@ export class AccountDetailsForm {
         name: '',
         type: '',
         currency: '',
+        isBalanceVisible: true,
     });
 
     protected readonly editAccountForm = form<UpdateAccountDetailsSchema>(
@@ -119,8 +120,8 @@ export class AccountDetailsForm {
 
     constructor() {
         effect(() => {
-            const { name, type, currency } = this.account();
-            this.editAccountFormModel.set({ name: formatToReadable(name), type, currency });
+            const { name, type, currency, isBalanceVisible } = this.account();
+            this.editAccountFormModel.set({ name: formatToReadable(name), type, currency, isBalanceVisible });
         });
     }
 
@@ -132,6 +133,7 @@ export class AccountDetailsForm {
             name: acc.name,
             type: acc.type,
             currency: acc.currency,
+            isBalanceVisible: acc.isBalanceVisible,
         });
     }
 

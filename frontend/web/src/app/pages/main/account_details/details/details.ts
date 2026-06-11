@@ -2,7 +2,7 @@ import { Account } from '@widgets/account';
 import { SummaryItem } from './summary-item';
 import { Account as IAccount } from '@global/types';
 import { AccountsService } from '@api/accounts.service';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input } from '@angular/core';
 import { formatToReadable, formatCurrency, formatDate } from '@libs/utils';
 
 @Component({
@@ -39,7 +39,7 @@ export class DetailsComponent {
         return formatCurrency(this.account().balance, this.account().currency, 2, true, false);
     }
 
-    protected formatConversion() {
-        return formatCurrency(this.account().balance * 45, this.defaultCurrency, 2, true, false);
+    protected formatConversion(baseBalance: number) {
+        return formatCurrency(baseBalance, this.defaultCurrency, 2, true, false);
     }
 }

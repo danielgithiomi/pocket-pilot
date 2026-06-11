@@ -72,8 +72,10 @@ export class AccountService {
                 });
             }
 
+            const baseBalancedAccount = await this.mapAccountToBaseBalanced(account);
+
             const accountWithTransactions = {
-                ...account,
+                ...baseBalancedAccount,
                 transactions: [...account.incomingTransactions, ...account.outgoingTransactions],
             };
 
@@ -92,7 +94,7 @@ export class AccountService {
         try {
             const createdAccount = await this.accountRepository.createNewAccount(userId, payload);
             await this.invalidateCachesByAccountId(userId, createdAccount.id);
-            return createdAccount;
+            return await this.mapAccountToBaseBalanced(createdAccount);
         } catch (error) {
             if (this.isPrismaError(error) === 'unique-constraint') {
                 throw new ConflictException({
@@ -119,7 +121,7 @@ export class AccountService {
         try {
             const updatedAccount = await this.accountRepository.updateAccountById(accountId, payload);
             await this.invalidateCachesByAccountId(userId, updatedAccount.id);
-            return updatedAccount;
+            return await this.mapAccountToBaseBalanced(updatedAccount);
         } catch (error) {
             if (this.isPrismaError(error) === 'unique-constraint') {
                 throw new ConflictException({
@@ -147,7 +149,7 @@ export class AccountService {
 
         const updatedAccount = await this.accountRepository.toggleAccountBalanceVisibilityById(accountId, payload);
         await this.invalidateCachesByAccountId(userId, updatedAccount.id);
-        return updatedAccount;
+        return await this.mapAccountToBaseBalanced(updatedAccount);
     }
 
     async deleteAccountById(userId: string, accountId: string): Promise<IAccount> {
@@ -165,7 +167,7 @@ export class AccountService {
 
         const deletedAccount = await this.accountRepository.deleteAccountById(userId, accountId);
         await this.invalidateCachesByAccountId(userId, accountId);
-        return deletedAccount;
+        return await this.mapAccountToBaseBalanced(deletedAccount);
     }
 
     private verifyAccountAndOwnership(accounts: IAccount[], userId: string, accountId: string): IAccount {
