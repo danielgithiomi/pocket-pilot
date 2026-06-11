@@ -25,4 +25,11 @@ export class TransactionsResource {
         cache: 'no-cache',
         url: concatUrl(endpoints.transaction_types),
     }));
+
+    allTransactionsRelatedToAccountId = (accountId: string) =>
+        httpResource<IStandardResponse<TransactionsWithAccountWithCount>>(() => ({
+            method: 'GET',
+            cache: 'no-cache',
+            url: concatUrl(`accounts/${accountId}/transactions`),
+        }));
 }

@@ -9,11 +9,16 @@ import { DrawerService } from '@infrastructure/services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NoData } from '@structural/main/no-data/no-data';
 import { AccountDetailsForm } from './account-details.form';
+import { TransactionsService } from '@api/transactions.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionsComponent } from './transactions/transactions';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { UpdateAccountBalanceVisibilityPayload, Account as IAccount } from '@global/types';
 import { LucideAngularModule, Wallet, SquarePen, Trash2, ScanEye, EyeOff } from 'lucide-angular';
+import {
+    UpdateAccountBalanceVisibilityPayload,
+    Account as IAccount,
+    TransactionWithAccount,
+} from '@global/types';
 
 @Component({
     templateUrl: './account-details.html',
@@ -50,29 +55,44 @@ export class AccountDetails {
     private readonly toastService = inject(ToastService);
     protected readonly drawerService = inject(DrawerService);
     private readonly accountsService = inject(AccountsService);
+    private readonly transactionsService = inject(TransactionsService);
 
     // DATA
     protected readonly accountId = this.route.snapshot.paramMap.get('id');
-    protected readonly accountWithTransactions =
-        this.accountsService.getAccountWithItsTransactionsById(this.accountId!);
+    protected readonly accountResource = this.accountsService.getAccountWithItsTransactionsById(
+        this.accountId!,
+    );
+    protected readonly transactionsResource =
+        this.transactionsService.getAllTransactionsRelatedToAccountId(this.accountId!);
 
     // COMPUTED
     protected readonly balanceVisibility = computed(
         () => this.resourceData()?.account?.isBalanceVisible ?? false,
     );
-    protected readonly hasError = computed(() => !!this.accountWithTransactions.error());
-    protected readonly isLoadingResources = computed(() =>
-        this.accountWithTransactions.isLoading(),
+    protected readonly hasError = computed(
+        () => !!this.accountResource.error() || !!this.transactionsResource.error(),
+    );
+    protected readonly isLoadingResources = computed(
+        () => this.accountResource.isLoading() || this.transactionsResource.isLoading(),
     );
     protected readonly resourceData = computed(() => {
-        if (this.accountWithTransactions.error()) return undefined;
+        if (this.accountResource.error()) return undefined;
 
-        const resource = this.accountWithTransactions.value()?.data;
-        if (!resource) return undefined;
+        const accountResource = this.accountResource.value()?.data;
+        if (!accountResource) return undefined;
 
-        const { count, data } = resource;
-        const { transactions, ...account } = data;
-        return { count, account, transactions };
+        const transactionsResource = this.transactionsResource.value()?.data;
+        if (!transactionsResource) return undefined;
+
+        const {
+            count,
+            data: { transactions, ...account },
+        } = accountResource;
+        const { data: transactionsData } = transactionsResource;
+        return { count, account, transactions: transactionsData };
+    });
+    protected readonly transactionsData = computed<TransactionWithAccount[]>(() => {
+        return this.transactionsResource.value()?.data.data ?? [];
     });
 
     protected readonly breadcrumbItems = computed(() => {
@@ -90,7 +110,8 @@ export class AccountDetails {
 
     // METHODS
     private reloadResources = () => {
-        this.accountWithTransactions.reload();
+        this.accountResource.reload();
+        this.transactionsResource.reload();
         this.accountsService.getUserAccounts().reload();
     };
 

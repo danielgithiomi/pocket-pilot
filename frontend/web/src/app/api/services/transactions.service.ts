@@ -30,6 +30,9 @@ export class TransactionsService {
         return this.transactionsResource.transactionTypes;
     }
 
+    getAllTransactionsRelatedToAccountId = (accountId: string) =>
+        this.transactionsResource.allTransactionsRelatedToAccountId(accountId);
+
     createTransaction(accountId: string, payload: CreateTransactionRequest) {
         const type = payload.type;
 
