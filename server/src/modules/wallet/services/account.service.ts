@@ -232,37 +232,23 @@ export class AccountService {
         return;
     }
 
-    private async performCurrencyConversion(
-        balance: number,
-        fromCurrency: string,
-        toCurrency: string,
-    ): Promise<number> {
-        const exchangeRateSnapshot = await this.exchangeRateService.getThirdPartyExchangeRates();
-
-        const toCurrencyRate = exchangeRateSnapshot.exchangeRates[toCurrency] ?? 1;
-        const fromCurrencyRate = exchangeRateSnapshot.exchangeRates[fromCurrency] ?? 1;
-
-        return (balance * toCurrencyRate) / fromCurrencyRate;
-    }
-
     private async mapAccountToBaseBalanced(account: IAccount): Promise<IAccount> {
-        const baseCurrency = 'USD';
-
         const { currency: accountCurrency, balance, holderId } = account;
         const {
             userPreferences: { defaultCurrency },
         } = await this.userService.findUserById(holderId);
 
-        console.log(accountCurrency, defaultCurrency);
-
         if (accountCurrency === defaultCurrency) return account;
 
-        const baseBalance = await this.performCurrencyConversion(balance, accountCurrency, baseCurrency);
-        const convertedBalance = await this.performCurrencyConversion(baseBalance, baseCurrency, defaultCurrency);
+        const result = await this.exchangeRateService.performCurrencyConversion(
+            balance,
+            accountCurrency,
+            defaultCurrency,
+        );
 
         return {
             ...account,
-            baseBalance: convertedBalance,
+            baseBalance: result.target.amount,
         };
     }
 

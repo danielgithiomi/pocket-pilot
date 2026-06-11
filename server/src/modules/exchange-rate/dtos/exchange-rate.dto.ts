@@ -3,6 +3,21 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 
+export interface CurrencyConversionResult {
+    source: {
+        amount: number;
+        currency: string;
+    };
+    target: {
+        amount: number;
+        currency: string;
+    };
+    base: {
+        amount: number;
+        currency: string;
+    };
+}
+
 export interface ExchangeRateResponse {
     result: string;
     base_code: string;

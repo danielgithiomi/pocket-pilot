@@ -1,11 +1,15 @@
 import { TransactionType } from '@prisma/client';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseService } from '@infrastructure/database/database.service';
+import { ExchangeRateService } from '@modules/exchange-rate/services/exchange-rate.service';
 import { CompleteTransactionDto, CreateTransactionDto, CreateTransferTransactionPayload } from '../dto/transaction.dto';
 
 @Injectable()
 export class TransactionRepository {
-    constructor(private readonly db: DatabaseService) {}
+    constructor(
+        private readonly db: DatabaseService,
+        private readonly exchangeRateService: ExchangeRateService,
+    ) {}
 
     async getAllTransactionsAndAccountData() {
         return this.db.transaction.findMany({
@@ -105,7 +109,7 @@ export class TransactionRepository {
     ): Promise<CompleteTransactionDto> {
         return this.db.$transaction(async prisma => {
             let createdTransferTransaction: CompleteTransactionDto;
-            const { sourceAccountId, targetAccountId, amount } = payload;
+            const { sourceAccountId, targetAccountId } = payload;
 
             try {
                 createdTransferTransaction = await prisma.transaction.create({
@@ -124,16 +128,18 @@ export class TransactionRepository {
                 });
             }
 
+            const { sourceAmount, targetAmount } = await this.getTransferAmounts(createdTransferTransaction);
+
             // Decrement from source account
             await prisma.account.update({
                 where: { id: sourceAccountId },
-                data: { balance: { decrement: amount } },
+                data: { balance: { decrement: sourceAmount } },
             });
 
             // Increment the target account
             await prisma.account.update({
                 where: { id: targetAccountId },
-                data: { balance: { increment: amount } },
+                data: { balance: { increment: targetAmount } },
             });
 
             return createdTransferTransaction;
@@ -144,5 +150,40 @@ export class TransactionRepository {
         await this.db.transaction.delete({
             where: { id: transactionId },
         });
+    }
+
+    // HELPER FUNCTIONS
+    private async getTransferAmounts(
+        createdTransaction: CompleteTransactionDto,
+    ): Promise<{ sourceAmount: number; targetAmount: number }> {
+        if (!createdTransaction.targetAccount)
+            throw new InternalServerErrorException({
+                name: 'TARGET_ACCOUNT_NOT_FOUND',
+                title: 'Target account not found!',
+                message: 'Could not create transaction with no target account',
+                details: {
+                    transaction: createdTransaction,
+                    transactionId: createdTransaction.id,
+                    sourceAccount: createdTransaction.sourceAccount,
+                },
+            });
+
+        const {
+            amount,
+            sourceAccount: { currency: sourceAccountCurrency },
+            targetAccount: { currency: targetAccountCurrency },
+        } = createdTransaction;
+
+        if (targetAccountCurrency !== sourceAccountCurrency) {
+            const conversion = await this.exchangeRateService.performCurrencyConversion(
+                amount,
+                sourceAccountCurrency,
+                targetAccountCurrency,
+            );
+
+            return { sourceAmount: conversion.source.amount, targetAmount: conversion.target.amount };
+        }
+
+        return { sourceAmount: amount, targetAmount: amount };
     }
 }

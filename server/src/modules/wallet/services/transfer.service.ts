@@ -23,6 +23,7 @@ export class TransferService {
 
         const createdTranferTransaction =
             this.transactionRepository.createTransferTransactionAndUpdateBalances(payload);
+
         await this.invalidateCaches(userId, sourceAccountId, targetAccountId);
         return createdTranferTransaction;
     }

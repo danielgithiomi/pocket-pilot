@@ -1,9 +1,10 @@
-import { HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { PPConfigService } from '@infrastructure/config';
 import { EXCHANGE_RATE_CACHE_KEY } from '@common/constants/api.constants';
 import { ExchangeRateRepository } from '../repositories/exchange-rate.respository';
 import { ExchangeRateCache } from '@modules/exchange-rate/cache/exchange-rate.cache';
+import { HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import {
+    CurrencyConversionResult,
     ExchangeRateDto,
     ExchangeRatePayload,
     ExchangeRateResponse,
@@ -12,6 +13,7 @@ import {
 
 @Injectable()
 export class ExchangeRateService {
+    private readonly BASE_CURRENCY: string = 'USD' as const;
     private readonly logger = new Logger(ExchangeRateService.name);
 
     constructor(
@@ -55,6 +57,41 @@ export class ExchangeRateService {
         }
     }
 
+    async performCurrencyConversion(
+        amount: number,
+        fromCurrency: string,
+        toCurrency: string,
+    ): Promise<CurrencyConversionResult> {
+        const exchangeRateSnapshot = await this.getThirdPartyExchangeRates();
+
+        // CONVERSION CLOSURE
+        const convertAmount = (amount: number, sourceCurrency: string, targetCurrency: string) => {
+            const sourceCurrencyRate = exchangeRateSnapshot.exchangeRates[sourceCurrency];
+            const targetCurrencyRate = exchangeRateSnapshot.exchangeRates[targetCurrency];
+
+            return (amount * targetCurrencyRate) / sourceCurrencyRate;
+        };
+
+        const toBaseAmount = convertAmount(amount, fromCurrency, this.BASE_CURRENCY);
+        const toTargetAmount = convertAmount(toBaseAmount, this.BASE_CURRENCY, toCurrency);
+
+        return {
+            base: {
+                currency: this.BASE_CURRENCY,
+                amount: exchangeRateSnapshot.exchangeRates[this.BASE_CURRENCY],
+            },
+            source: {
+                currency: fromCurrency,
+                amount,
+            },
+            target: {
+                currency: toCurrency,
+                amount: toTargetAmount,
+            },
+        };
+    }
+
+    // HELPER FUNCTIONS
     private async fetchFromDatabase(defaultCurrency: string): Promise<ExchangeRateDto | null> {
         const latestDBSnapshot = await this.exchangeRateRepository.getLatestExchangeRateSnapshot(defaultCurrency);
 
