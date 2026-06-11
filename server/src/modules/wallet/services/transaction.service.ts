@@ -39,6 +39,12 @@ export class TransactionService {
         return this.transactionRepository.getUserPlainTransactionsByAccountId(accountId);
     }
 
+    async getAllTransactionsRelatedToAccountId(accountId: string): Promise<CompleteTransactionDto[]> {
+        const transactions = await this.transactionRepository.getAllTransactionsRelatedToAccountId(accountId);
+
+        return plainToInstance(CompleteTransactionDto, transactions);
+    }
+
     async createTransactionByAccountId(
         userId: string,
         accountId: string,

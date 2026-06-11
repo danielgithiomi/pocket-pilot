@@ -20,6 +20,16 @@ export class TransactionRepository {
         });
     }
 
+    async getAllTransactionsRelatedToAccountId(accountId: string) {
+        return this.db.transaction.findMany({
+            where: { OR: [{ sourceAccountId: accountId }, { targetAccountId: accountId }] },
+            include: {
+                sourceAccount: { select: { id: true, name: true, currency: true } },
+                targetAccount: { select: { id: true, name: true, currency: true } },
+            },
+        });
+    }
+
     async getUserPlainTransactionsByAccountId(accountId: string) {
         return this.db.transaction.findMany({
             where: { OR: [{ sourceAccountId: accountId }, { targetAccountId: accountId }] },
