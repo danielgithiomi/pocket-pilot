@@ -1,6 +1,6 @@
-import { formatCurrency } from '@libs/utils';
 import { Table, TableColumn } from '@organisms/table';
 import { TransactionWithAccount } from '@global/types';
+import { formatCurrency, formatDate } from '@libs/utils';
 import { AccountTransactionRow } from './transactions.types';
 import { ExchangeRateService } from '@api/exchange-rate.service';
 import { Component, computed, inject, input } from '@angular/core';
@@ -110,15 +110,17 @@ export class TransactionsComponent {
                     sourceAccount: { id: sourceAccountId, currency: sourceCurrency },
                 } = transaction;
 
+                const formattedDate = formatDate(date);
+
                 if (!targetAccount) {
                     return {
                         id,
                         type,
-                        date,
                         category,
                         description,
                         sourceAccountId,
                         rawAmount: amount,
+                        date: formattedDate,
                         targetAccountId: null,
                         currency: sourceCurrency,
                         showConvertedAmount: false,
@@ -143,7 +145,6 @@ export class TransactionsComponent {
 
                 return {
                     id,
-                    date,
                     type,
                     category,
                     description,
@@ -151,6 +152,7 @@ export class TransactionsComponent {
                     sourceAccountId,
                     targetAccountId,
                     rawAmount: amount,
+                    date: formattedDate,
                     currency: sourceCurrency,
                     showConvertedAmount: !isSameCurrency && convertedAmount !== '',
                     amount: formatCurrency(amount, sourceCurrency, 2, true, false),
