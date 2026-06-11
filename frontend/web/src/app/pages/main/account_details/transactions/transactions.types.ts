@@ -8,7 +8,7 @@ export interface AccountTransactionRow {
     rawAmount: number;
     description: string;
     sourceAccountId: string;
-    convertedAmount: string;
-    targetAccountId: string | null;
+    convertedAmount?: string;
     showConvertedAmount: boolean;
+    targetAccountId?: string | null;
 }
