@@ -5,7 +5,11 @@
     (closeForm)="handleCloseFeatureForm($event)"
     description="Suggest a new feature for Pocket Pilot."
 >
-    <form id="suggest-feature-form" slot="content" (submit)="handleSuggestFeatureFormSubmit($event)">
+    <form
+        id="suggest-feature-form"
+        slot="content"
+        (submit)="handleSuggestFeatureFormSubmit($event)"
+    >
         <atom-input
             type="text"
             id="feature-name"

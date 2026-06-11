@@ -101,10 +101,7 @@ export class PhoneNumber {
 
     private readonly syncFromFormValue = effect(() => {
         const value = this.fieldState().value() ?? '';
-        const currentValue = buildFullPhoneNumber(
-            this.selectedCountry(),
-            this.nationalNumber(),
-        );
+        const currentValue = buildFullPhoneNumber(this.selectedCountry(), this.nationalNumber());
 
         if (value === currentValue) return;
 

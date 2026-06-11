@@ -121,7 +121,12 @@ export class AccountDetailsForm {
     constructor() {
         effect(() => {
             const { name, type, currency, isBalanceVisible } = this.account();
-            this.editAccountFormModel.set({ name: formatToReadable(name), type, currency, isBalanceVisible });
+            this.editAccountFormModel.set({
+                name: formatToReadable(name),
+                type,
+                currency,
+                isBalanceVisible,
+            });
         });
     }
 

@@ -84,7 +84,7 @@ export class Account implements OnInit {
     protected formattedBalance = computed<string>(() => {
         const { balance, currency } = this.account();
         const visibleBalance = formatCurrency(balance, currency);
-        
+
         const balanceLength = Math.floor(balance).toString().length;
         const hiddenBalance = '●'.repeat(balanceLength + 2);
 

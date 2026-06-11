@@ -49,7 +49,11 @@ export class ExchangeRateService {
 
         if (!snapshot) return null;
 
-        const convertAmount = (value: number, sourceCurrency: string, targetCurrency: string): number | null => {
+        const convertAmount = (
+            value: number,
+            sourceCurrency: string,
+            targetCurrency: string,
+        ): number | null => {
             const sourceCurrencyRate = snapshot.exchangeRates[sourceCurrency];
             const targetCurrencyRate = snapshot.exchangeRates[targetCurrency];
 
