@@ -450,12 +450,12 @@ model ExchangeRateSnapshot {
 
     baseCurrency String
 
-    nextUpdateTime  DateTime
-    lastUpdatedTime DateTime
+    nextUpdateTime  DateTime @db.Timestamptz(3)
+    lastUpdatedTime DateTime @db.Timestamptz(3)
 
     exchangeRates ExchangeRate[]
 
-    fetchedAt DateTime @default(now())
+    fetchedAt DateTime @default(now()) @db.Timestamptz(3)
 
     @@unique([baseCurrency, lastUpdatedTime])
     @@map("Exchange Rate Snapshots")

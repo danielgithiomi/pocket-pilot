@@ -22,11 +22,12 @@ export class StartupService implements OnApplicationBootstrap {
         this.logger.warn({
             name: 'EXCHANGE_RATE_FETCH_SUCCESS_STARTUP',
             title: '(STARTUP) Exchange Rate Data Fetch Success',
-            message: `(STARTUP) Successfully fetched exchange rate data from third party API at ${fetchedAt}.`,
+            message: `(STARTUP) Successfully persisted exchange rate snapshot at ${fetchedAt.toISOString()}.`,
             exchangeRate: {
                 baseCurrency,
-                nextUpdateTime,
-                lastUpdatedTime,
+                fetchedAt: fetchedAt.toISOString(),
+                nextUpdateTime: nextUpdateTime.toISOString(),
+                lastUpdatedTime: lastUpdatedTime.toISOString(),
             },
         });
     }
@@ -45,11 +46,12 @@ export class StartupService implements OnApplicationBootstrap {
         this.logger.warn({
             name: 'EXCHANGE_RATE_FETCH_SUCCESS_CRON_JOB',
             title: '(CRON_JOB) Exchange Rate Data Fetch Success',
-            message: `(CRON_JOB) Successfully fetched exchange rate data from third party API at ${fetchedAt}.`,
+            message: `(CRON_JOB) Successfully persisted exchange rate snapshot at ${fetchedAt.toISOString()}.`,
             exchangeRate: {
                 baseCurrency,
-                nextUpdateTime,
-                lastUpdatedTime,
+                fetchedAt: fetchedAt.toISOString(),
+                nextUpdateTime: nextUpdateTime.toISOString(),
+                lastUpdatedTime: lastUpdatedTime.toISOString(),
             },
         });
     }
