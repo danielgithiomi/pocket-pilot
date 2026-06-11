@@ -4,21 +4,21 @@ import { WEB_ROUTES } from '@global/constants';
 import { AuthMutation } from '@methods/mutations';
 import { HttpClient } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
-import { catchError, EMPTY, firstValueFrom, tap, of, throwError, Observable } from 'rxjs';
+import { catchError, EMPTY, firstValueFrom, Observable, of, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import {
-    STORED_AUTH_USER_KEY,
-    INVALID_EMAIL_IDENTIFIER,
-    STORED_ONBOARDING_USER_KEY,
-    INVALID_PASSWORD_IDENTIFIER,
     AuthError,
+    INVALID_EMAIL_IDENTIFIER,
+    INVALID_PASSWORD_IDENTIFIER,
+    STORED_AUTH_USER_KEY,
+    STORED_ONBOARDING_USER_KEY,
 } from '@libs/constants';
 import {
-    User,
-    LoginPayload,
     IStandardError,
-    UserPreferences,
     IStandardResponse,
+    LoginPayload,
+    User,
+    UserPreferences,
 } from '@global/types';
 
 @Injectable({
@@ -131,11 +131,10 @@ export class AuthService {
             }),
             catchError(
                 (error: IStandardError): Observable<{ type: AuthError; message: string }> => {
-
                     const toastError = {
                         ...error,
-                        title: error.title.split('!')[0]
-                    }
+                        title: error.title.split('!')[0],
+                    };
                     this.renderToast(toastError);
 
                     const { name } = error;
@@ -145,12 +144,15 @@ export class AuthService {
                         case INVALID_EMAIL_IDENTIFIER:
                             return of({
                                 type: 'email' as const,
-                                message: error.title ?? 'This email address is invalid! Please confirm.',
+                                message:
+                                    error.title ?? 'This email address is invalid! Please confirm.',
                             });
                         case INVALID_PASSWORD_IDENTIFIER:
                             return of({
                                 type: 'password' as const,
-                                message: error.title ?? 'The password you entered is incorrect! Please try again.',
+                                message:
+                                    error.title ??
+                                    'The password you entered is incorrect! Please try again.',
                             });
                         default:
                             return EMPTY;
