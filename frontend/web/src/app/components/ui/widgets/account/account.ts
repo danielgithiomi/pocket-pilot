@@ -82,10 +82,11 @@ export class Account implements OnInit {
     // COMPUTED
     protected accountId = computed(() => `account-${this.id()}`);
     protected formattedBalance = computed<string>(() => {
-        const balanceLength = this.account().balance.toString().length;
-
+        const { balance, currency } = this.account();
+        const visibleBalance = formatCurrency(balance, currency);
+        
+        const balanceLength = Math.floor(balance).toString().length;
         const hiddenBalance = '●'.repeat(balanceLength + 2);
-        const visibleBalance = formatCurrency(this.account().balance, this.account().currency);
 
         return this.account().isBalanceVisible ? visibleBalance : hiddenBalance;
     });

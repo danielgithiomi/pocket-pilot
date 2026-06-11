@@ -87,6 +87,8 @@ export interface Endpoints {
   user_transactions: string;
   transaction_types: string;
 
+  exchange_rates: string;
+
   presigned_url: string;
 
   splitr: string;

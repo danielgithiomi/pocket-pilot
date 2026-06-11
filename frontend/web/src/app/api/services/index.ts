@@ -9,3 +9,4 @@ export * from './categories.service';
 export * from './onboarding.service';
 export * from './preferences.service';
 export * from './transactions.service';
+export * from './exchange-rate.service';

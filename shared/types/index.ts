@@ -13,3 +13,4 @@ export * from "./categories.types";
 export * from "./onboarding.types";
 export * from "./preferences.types";
 export * from "./transactions.types";
+export * from "./exchange-rate.type";

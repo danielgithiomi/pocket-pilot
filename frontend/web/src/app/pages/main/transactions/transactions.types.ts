@@ -12,8 +12,11 @@ export interface TransactionRow {
     currency: string;
     category: string;
     accountId: string;
+    rawAmount: number;
     description: string;
     accountName: string;
+    convertedAmount: string;
+    showConvertedAmount: boolean;
 }
 
 // FORM

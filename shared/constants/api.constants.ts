@@ -25,6 +25,9 @@ export const API_ENDPOINTS = {
   // aws
   presigned_url: "aws/presigned-url",
 
+  // exchange rates
+  exchange_rates: "exchange-rate",
+
   // bills
   user_bills: "bills",
   all_bills: "bills/all",
