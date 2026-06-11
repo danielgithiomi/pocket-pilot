@@ -33,6 +33,12 @@ export class ExchangeRateRepository {
         });
     }
 
+    deleteAllExchangeRateSnapshots(baseCurrency: string) {
+        return this.db.exchangeRateSnapshot.deleteMany({
+            where: { baseCurrency },
+        });
+    }
+
     deleteOutdatedExchangeRateSnapshots(baseCurrency: string) {
         const hoursToRetain = 24 * EXCHANGE_RATE_SNAPSHOT_RETENTION_DAYS;
         const cutoffDate = new Date(Date.now() - hoursToMilliseconds(hoursToRetain));

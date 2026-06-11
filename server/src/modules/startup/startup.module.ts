@@ -4,7 +4,7 @@ import { ExchangeRateModule } from '@modules/exchange-rate/exchange-rate.module'
 
 @Global()
 @Module({
-    imports: [ExchangeRateModule],
     providers: [StartupService],
+    imports: [ExchangeRateModule],
 })
 export class StartupModule {}

@@ -9,16 +9,20 @@ export class StartupService implements OnApplicationBootstrap {
 
     constructor(private readonly exchangeRateService: ExchangeRateService) {}
 
-    // RUN ON APP STARTUP
-    async onApplicationBootstrap() {
-        this.logger.log('Application is started up and ready to serve requests!');
-        const { baseCurrency, nextUpdateTime, lastUpdatedTime }: ExchangeRateDto =
-            await this.exchangeRateService.getThirdPartyExchangeRates();
+    /**
+     * Fetches the latest exchange rate data from a specified provider.
+     * This method is run automatically on application startup.
+     *
+     * @returns {Promise<void>} A promise that resolves when the exchange rate data has been successfully fetched and processed.
+     */
+    async onApplicationBootstrap(): Promise<void> {
+        const { baseCurrency, nextUpdateTime, lastUpdatedTime, fetchedAt }: ExchangeRateDto =
+            await this.exchangeRateService.fetchAndPersistExchangeRates();
 
         this.logger.warn({
-            name: 'EXCHANGE_RATE_FETCH_SUCCESS',
-            title: 'Exchange Rate Data Fetch Success',
-            message: 'Successfully fetched exchange rate data from third party API',
+            name: 'EXCHANGE_RATE_FETCH_SUCCESS_STARTUP',
+            title: '(STARTUP) Exchange Rate Data Fetch Success',
+            message: `(STARTUP) Successfully fetched exchange rate data from third party API at ${fetchedAt}.`,
             exchangeRate: {
                 baseCurrency,
                 nextUpdateTime,
@@ -27,7 +31,6 @@ export class StartupService implements OnApplicationBootstrap {
         });
     }
 
-    // SETUP CRON JOBS
     /**
      * Fetches the latest exchange rate data from a specified provider.
      * This method is scheduled to run automatically every day at midnight.
@@ -36,6 +39,18 @@ export class StartupService implements OnApplicationBootstrap {
      */
     @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async fetchExchangeRateData(): Promise<void> {
-        await this.exchangeRateService.getThirdPartyExchangeRates();
+        const { baseCurrency, nextUpdateTime, lastUpdatedTime, fetchedAt }: ExchangeRateDto =
+            await this.exchangeRateService.fetchAndPersistExchangeRates();
+
+        this.logger.warn({
+            name: 'EXCHANGE_RATE_FETCH_SUCCESS_CRON_JOB',
+            title: '(CRON_JOB) Exchange Rate Data Fetch Success',
+            message: `(CRON_JOB) Successfully fetched exchange rate data from third party API at ${fetchedAt}.`,
+            exchangeRate: {
+                baseCurrency,
+                nextUpdateTime,
+                lastUpdatedTime,
+            },
+        });
     }
 }
