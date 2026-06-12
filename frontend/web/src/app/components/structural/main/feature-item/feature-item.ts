@@ -13,7 +13,7 @@ import { FeatureStatusEnum } from '@global/enums';
 @Component({
     selector: 'feature-item',
     templateUrl: 'feature-item.html',
-    imports: [NgClass, LucideAngularModule, Badge],
+    imports: [NgClass, LucideAngularModule, Badge]
 })
 export class FeatureItem {
     // ICONS
@@ -59,7 +59,7 @@ export class FeatureItem {
             SHIPPED: 'success',
             PLANNED: 'success',
             IN_PROGRESS: 'info',
-            UNDER_REVIEW: 'warning',
+            UNDER_REVIEW: 'warning'
         };
 
         return VARIANT_MAP[this.feature().featureStatus];
@@ -92,12 +92,12 @@ export class FeatureItem {
                 this.toastService.show({
                     details,
                     variant: 'success',
-                    title: 'Feature deleted successfully',
+                    title: 'Feature deleted successfully'
                 });
 
                 this.featuresService.refreshAll();
             },
-            complete: () => this.isDeleting.set(false),
+            complete: () => this.isDeleting.set(false)
         });
     }
 }

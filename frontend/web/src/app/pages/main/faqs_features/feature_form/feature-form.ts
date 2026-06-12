@@ -15,7 +15,7 @@ import { FeatureSchema, INITAL_FEATURE_STATE, suggestFeatureSchema } from './fea
 @Component({
     selector: 'suggest-feature-form',
     templateUrl: 'feature-form.html',
-    imports: [LucideAngularModule, Form, Input, Select, TextArea, Button],
+    imports: [LucideAngularModule, Form, Input, Select, TextArea, Button]
 })
 export class SuggestFeatureForm {
     // INPUTS
@@ -38,18 +38,18 @@ export class SuggestFeatureForm {
             this.toastService.show({
                 variant: 'warning',
                 title: 'Error Fetching Feature Categories!',
-                details: 'There was an error fetching feature categories. Please try again later.',
+                details: 'There was an error fetching feature categories. Please try again later.'
             });
             return [];
         }
 
         const categories = this.featuresService.getFeatureCategories();
-        return categories().map((category) => {
+        return categories().map(category => {
             const { value, label } = category;
 
             return {
                 value: value,
-                label: label === 'Ui Ux' ? 'UI/UX' : label,
+                label: label === 'Ui Ux' ? 'UI/UX' : label
             };
         });
     });
@@ -77,7 +77,7 @@ export class SuggestFeatureForm {
         const payload: FeaturePayload = {
             featureTitle: this.featureForm.featureTitle().value(),
             featureContent: this.featureForm.featureContent().value(),
-            featureCategory: this.featureForm.featureCategory().value() as FeatureCategoryEnum,
+            featureCategory: this.featureForm.featureCategory().value() as FeatureCategoryEnum
         };
 
         this.featuresService.createNewFeature(payload).subscribe({
@@ -85,13 +85,13 @@ export class SuggestFeatureForm {
                 this.toastService.show({
                     variant: 'success',
                     title: 'Feature Suggested Logged!',
-                    details: `Your [${feature.featureCategory}] feature has been logged successfully.`,
+                    details: `Your [${feature.featureCategory}] feature has been logged successfully.`
                 });
 
                 this.resetFeatureForm();
                 this.featureFormClosedEvent.emit(true);
             },
-            complete: () => this.isSubmittingFeatureForm.set(false),
+            complete: () => this.isSubmittingFeatureForm.set(false)
         });
     }
 }

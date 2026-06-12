@@ -17,8 +17,8 @@ const JWTModule: DynamicModule = JwtModule.register({
     global: true,
     secret: process.env.JWT_SECRET_ENCODING_KEY,
     signOptions: {
-        expiresIn: '1h',
-    },
+        expiresIn: '1h'
+    }
 });
 
 @Module({
@@ -36,7 +36,7 @@ const JWTModule: DynamicModule = JwtModule.register({
         DatabaseModule,
         ScheduleConfig,
         PreferencesModule,
-        ExchangeRateModule,
-    ],
+        ExchangeRateModule
+    ]
 })
 export class AppModules {}

@@ -18,7 +18,7 @@ import {
     ParseFilePipe,
     UseInterceptors,
     FileTypeValidator,
-    MaxFileSizeValidator,
+    MaxFileSizeValidator
 } from '@nestjs/common';
 
 @Controller('aws')
@@ -38,7 +38,7 @@ export class AwsController {
         status: 201,
         isArray: false,
         type: PreSignedUrlResponseDto,
-        description: 'Presigned URL generated successfully',
+        description: 'Presigned URL generated successfully'
     })
     initiateProfilePictureUpload(
         @UserInRequest() user: User,
@@ -47,16 +47,16 @@ export class AwsController {
                 validators: [
                     new MaxFileSizeValidator({
                         maxSize: mbToBytes(AWS_FILE_CONSTANTS.MAX_FILE_SIZE),
-                        errorMessage: `File size exceeds the maximum allowed size of ${AWS_FILE_CONSTANTS.MAX_FILE_SIZE} MBs.`,
+                        errorMessage: `File size exceeds the maximum allowed size of ${AWS_FILE_CONSTANTS.MAX_FILE_SIZE} MBs.`
                     }),
                     new FileTypeValidator({
                         fileType: new RegExp(AWS_FILE_CONSTANTS.ALLOWED_FILE_TYPES.join('|')),
-                        errorMessage: `File type not allowed. Allowed types: ${AWS_FILE_CONSTANTS.ALLOWED_FILE_TYPES.join(', ')}`,
-                    }),
-                ],
-            }),
+                        errorMessage: `File type not allowed. Allowed types: ${AWS_FILE_CONSTANTS.ALLOWED_FILE_TYPES.join(', ')}`
+                    })
+                ]
+            })
         )
-        file: Express.Multer.File,
+        file: Express.Multer.File
     ) {
         return this.awsService.generateProfilePicturePresignedUrl(user, file.mimetype, file.size);
     }

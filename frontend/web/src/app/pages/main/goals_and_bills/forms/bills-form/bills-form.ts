@@ -18,7 +18,7 @@ import { Component, computed, inject, input, output, signal } from '@angular/cor
 @Component({
     selector: 'bills-form',
     templateUrl: './bills-form.html',
-    imports: [LucideAngularModule, Form, Button, Radio, DatePicker, Input, Select],
+    imports: [LucideAngularModule, Form, Button, Radio, DatePicker, Input, Select]
 })
 export class BillsForm {
     // Inputs
@@ -46,7 +46,7 @@ export class BillsForm {
         amount: null,
         dueDate: new Date(),
         type: BillTypeEnum.MONTHLY,
-        currency: this.accountsService.getDefaultCurrency(),
+        currency: this.accountsService.getDefaultCurrency()
     };
     protected readonly minStartDate = signal<Date>(new Date());
     protected readonly newBillFormModel = signal<NewBillSchema>(this.INITIAL_FORM_STATE);
@@ -55,10 +55,8 @@ export class BillsForm {
     // Computed
     protected readonly currencies = computed<SelectOption[]>(() => {
         const currenciesToInclude = ['USD', 'EUR', 'GBP', 'AED', 'MUR', 'KES', 'ZAR'];
-        const currencies = CURRENCIES.filter((currency) =>
-            currenciesToInclude.includes(currency.value),
-        );
-        return currencies.map((currency) => ({ value: currency.value, label: currency.label }));
+        const currencies = CURRENCIES.filter(currency => currenciesToInclude.includes(currency.value));
+        return currencies.map(currency => ({ value: currency.value, label: currency.label }));
     });
 
     protected readonly formattedBillTypes = computed<RadioOption[]>(() => {
@@ -78,7 +76,7 @@ export class BillsForm {
     }
 
     protected onBillingTypeChange(type: string) {
-        const billType = Object.values(BillTypeEnum).find((billType) => billType === type);
+        const billType = Object.values(BillTypeEnum).find(billType => billType === type);
         this.newBillForm.type().controlValue.set(billType!);
     }
 
@@ -96,7 +94,7 @@ export class BillsForm {
         const payload = {
             ...rest,
             amount: amount || 0,
-            type: Object.values(BillTypeEnum).find((billType) => billType === type)!,
+            type: Object.values(BillTypeEnum).find(billType => billType === type)!
         };
 
         this.billService.createNewBill(payload).subscribe({
@@ -104,7 +102,7 @@ export class BillsForm {
                 this.toastService.show({
                     variant: 'success',
                     title: 'Bill added!',
-                    details: 'Your bill has been added successfully. Now you can track it.',
+                    details: 'Your bill has been added successfully. Now you can track it.'
                 });
 
                 this.bills$.reload();
@@ -113,7 +111,7 @@ export class BillsForm {
             },
             complete: () => {
                 this.isSubmittingForm.set(false);
-            },
+            }
         });
     }
 }

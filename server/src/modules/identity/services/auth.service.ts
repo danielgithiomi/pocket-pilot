@@ -17,7 +17,7 @@ export class AuthService {
         private readonly awsService: AwsService,
         private readonly cookiesService: CookiesService,
         private readonly userRepository: UserRepository,
-        private readonly authRepository: AuthRepository,
+        private readonly authRepository: AuthRepository
     ) {}
 
     async me(userId: string): Promise<UserWithPreferencesDto> {
@@ -27,7 +27,7 @@ export class AuthService {
             throw new UnauthorizedException({
                 name: 'USER_NOT_FOUND',
                 title: 'User not found!',
-                details: `No user found in the request with the ID: {${userId}}.`,
+                details: `No user found in the request with the ID: {${userId}}.`
             });
 
         return this.toUserWithPreferenceAndPictureUrl(user);
@@ -50,7 +50,7 @@ export class AuthService {
                     title: 'YOUR ACCOUNT IS LOCKED',
                     message: 'Your account has been locked due to too many failed login attempts.',
                     details:
-                        'Your account has been locked due to too many failed login attempts. Please contact support at support@pocket-pilot.com.',
+                        'Your account has been locked due to too many failed login attempts. Please contact support at support@pocket-pilot.com.'
                 });
             }
 
@@ -59,7 +59,7 @@ export class AuthService {
             throw new UnauthorizedException({
                 name: 'INVALID_CREDENTIALS',
                 details: `Incorrect password. Please confirm and try again.`,
-                title: `Incorrect password! ${remainingAttempts === 0 ? 'No' : remainingAttempts} ${remainingAttempts === 1 ? 'attempt' : 'attempts'} remaining.`,
+                title: `Incorrect password! ${remainingAttempts === 0 ? 'No' : remainingAttempts} ${remainingAttempts === 1 ? 'attempt' : 'attempts'} remaining.`
             });
         }
 
@@ -72,7 +72,7 @@ export class AuthService {
         return {
             access_token,
             refresh_token,
-            user: await this.toUserWithPreferenceAndPictureUrl(user),
+            user: await this.toUserWithPreferenceAndPictureUrl(user)
         } satisfies LoginOutputDto;
     }
 
@@ -84,12 +84,12 @@ export class AuthService {
             throw new NotFoundException({
                 name: 'USER_NOT_FOUND',
                 title: 'Invalid email address! Please confirm.',
-                details: `No user in our records has the email: [${email}].`,
+                details: `No user in our records has the email: [${email}].`
             });
 
         return {
             isValid: await this.validatePassword(password, user.password),
-            user,
+            user
         };
     }
 
@@ -100,7 +100,7 @@ export class AuthService {
     private async toUserWithPreferenceAndPictureUrl(user: UserWithPreferences) {
         const userWithProfilePictureUrl = {
             ...user,
-            profilePictureUrl: await this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey),
+            profilePictureUrl: await this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey)
         };
 
         return plainToInstance(UserWithPreferencesDto, userWithProfilePictureUrl, { excludeExtraneousValues: true });

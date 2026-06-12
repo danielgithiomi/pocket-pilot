@@ -4,5 +4,5 @@ export const ROTATION_MAP: Record<IconDirection, number> = {
     up: 180,
     right: 270,
     down: 0,
-    left: 90,
+    left: 90
 };

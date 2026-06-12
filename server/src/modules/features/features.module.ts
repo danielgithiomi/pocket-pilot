@@ -8,6 +8,6 @@ import { FeaturesRepository } from './repositories/features.repository';
 @Module({
     imports: [IdentityModule],
     controllers: [FeaturesController],
-    providers: [FeaturesService, FeaturesRepository, FeaturesCache],
+    providers: [FeaturesService, FeaturesRepository, FeaturesCache]
 })
 export class FeaturesModule {}

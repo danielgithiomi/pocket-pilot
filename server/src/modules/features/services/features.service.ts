@@ -9,7 +9,7 @@ import {
     FeaturePayload,
     FeatureWithUser,
     FeaturesWithCountDto,
-    UpdateFeatureStatusPayload,
+    UpdateFeatureStatusPayload
 } from '../dto/features.dto';
 import { flattenFeature } from './features.mappers';
 
@@ -17,7 +17,7 @@ import { flattenFeature } from './features.mappers';
 export class FeaturesService {
     constructor(
         private readonly featureCache: FeaturesCache,
-        private readonly featuresRepository: FeaturesRepository,
+        private readonly featuresRepository: FeaturesRepository
     ) {}
 
     async getFeatureCategories(): Promise<ExposeEnumDto[]> {
@@ -61,24 +61,17 @@ export class FeaturesService {
             throw new NotFoundException({
                 name: 'FEATURE_NOT_FOUND',
                 title: 'Feature Not Found!',
-                message: 'The feature you are trying to access does not exist in the database.',
+                message: 'The feature you are trying to access does not exist in the database.'
             });
 
         return foundFeature;
     }
 
-    async updateFeatureStatusById(
-        userId: string,
-        featureId: string,
-        payload: UpdateFeatureStatusPayload,
-    ): Promise<FeatureDto> {
+    async updateFeatureStatusById(userId: string, featureId: string, payload: UpdateFeatureStatusPayload): Promise<FeatureDto> {
         await this.assertainFeatureExists(featureId);
         await this.assertainFeatureBelongsToUser(featureId, userId);
 
-        const updatedFeature: FeatureWithUser = await this.featuresRepository.updateFeatureStatusById(
-            featureId,
-            payload,
-        );
+        const updatedFeature: FeatureWithUser = await this.featuresRepository.updateFeatureStatusById(featureId, payload);
 
         const { authorId } = updatedFeature;
         await this.invalidateCache(authorId);
@@ -113,7 +106,7 @@ export class FeaturesService {
             throw new NotFoundException({
                 name: 'FEATURE_NOT_FOUND',
                 title: 'Feature Not Found!',
-                message: 'The feature you are trying to access does not exist in the database.',
+                message: 'The feature you are trying to access does not exist in the database.'
             });
 
         return !!foundFeature;
@@ -129,7 +122,7 @@ export class FeaturesService {
             throw new ForbiddenException({
                 name: 'FORBIDDEN_OPERATION',
                 title: 'Feature Access Forbidden!',
-                message: 'You are not authorized to access this feature or modify it.',
+                message: 'You are not authorized to access this feature or modify it.'
             });
 
         return !!isOwnedByUser;

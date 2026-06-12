@@ -23,8 +23,8 @@ import { UpdateSplitrSquad } from './squard-form/update-squad/update-squad';
         SplitrSplitForm,
         UpdateSplitrSquad,
         LucideAngularModule,
-        SplitwiseSquardForm,
-    ],
+        SplitwiseSquardForm
+    ]
 })
 export class Splitr {
     // ICONS
@@ -52,17 +52,15 @@ export class Splitr {
         if (this.hasSquadsError()) return [];
         return this.userSquads.value()?.data ?? [];
     });
-    protected allSquadMembers = computed<string[]>(() =>
-        Array.from(new Set(this.squads().flatMap((squad) => squad.squadMembers))),
-    );
+    protected allSquadMembers = computed<string[]>(() => Array.from(new Set(this.squads().flatMap(squad => squad.squadMembers))));
 
     // METHODS
     protected handleOnUpdateSquadItemEvent(squadId: string) {
         this.splitrService.getSquadById(squadId).subscribe({
-            next: (squad) => {
+            next: squad => {
                 this.squadToUpdate.set(squad);
                 this.isUpdateSquadFormOpen.set(true);
-            },
+            }
         });
     }
 

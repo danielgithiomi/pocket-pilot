@@ -8,21 +8,21 @@ describe('App', () => {
             getItem: vi.fn(),
             setItem: vi.fn(),
             removeItem: vi.fn(),
-            clear: vi.fn(),
+            clear: vi.fn()
         };
         Object.defineProperty(window, 'localStorage', {
             value: localStorageMock,
-            writable: true,
+            writable: true
         });
 
         // Mock window.addEventListener for storage events
         Object.defineProperty(window, 'addEventListener', {
             value: vi.fn(),
-            writable: true,
+            writable: true
         });
 
         await TestBed.configureTestingModule({
-            imports: [App],
+            imports: [App]
         }).compileComponents();
     });
 

@@ -34,16 +34,14 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
             (click)="drawerService.toggleDropdown()"
             [ngClass]="{
                 'bg-body-background group': drawerService.isDropdownOpen(),
-                'hover:bg-transparent! cursor-default!': !drawerService.isDropdownOpen(),
-            }"
-        >
+                'hover:bg-transparent! cursor-default!': !drawerService.isDropdownOpen()
+            }">
             <!-- ABS: Dropdown Chevron Start  -->
             @if (withDrawerLayout()) {
                 <div
                     id="profile-chevron"
                     [ngClass]="{ 'rotate-180': drawerService.isDropdownOpen() }"
-                    class="absolute top-1/2 -translate-y-1/2 right-2 transition-transform duration-300"
-                >
+                    class="absolute top-1/2 -translate-y-1/2 right-2 transition-transform duration-300">
                     <lucide-angular [size]="12" [img]="ChevronDown" name="profile-chevron" />
                 </div>
             }
@@ -55,8 +53,7 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
                         [alt]="initial()"
                         [src]="profilePictureUrl()"
                         class="w-full h-full object-cover"
-                        (error)="onProfilePictureError()"
-                    />
+                        (error)="onProfilePictureError()" />
                 } @else {
                     <p class="text-white">{{ initial() }}</p>
                 }
@@ -71,7 +68,7 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
                 <header-dropdown />
             }
         </div>
-    `,
+    `
 })
 export class UserSummary {
     // Inputs
@@ -85,9 +82,7 @@ export class UserSummary {
 
     protected readonly email = computed(() => this.user()?.email ?? '');
     protected readonly username = computed(() => this.user()?.name ?? '');
-    protected readonly profilePictureUrl = computed(
-        () => this.authService.user()?.profilePictureUrl ?? null,
-    );
+    protected readonly profilePictureUrl = computed(() => this.authService.user()?.profilePictureUrl ?? null);
 
     protected readonly initial = computed(() => {
         const name = this.username();

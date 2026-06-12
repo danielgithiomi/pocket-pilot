@@ -12,21 +12,13 @@
 
     <div
         class="page-container flex-1 flex flex-col md:flex-row gap-6 md:gap-8"
-        [ngClass]="{ 'md:flex-col! lg:flex-row! md:gap-8!': !drawerService.isDrawerCollapsed() }"
-    >
+        [ngClass]="{ 'md:flex-col! lg:flex-row! md:gap-8!': !drawerService.isDrawerCollapsed() }">
         <settings class="flex-1" />
 
-        <categories
-            (onAddCategoryClick)="handleOpenForm()"
-            (onCategoryDelete)="deleteCategory($event)"
-            class="flex-1"
-        />
+        <categories (onAddCategoryClick)="handleOpenForm()" (onCategoryDelete)="deleteCategory($event)" class="flex-1" />
     </div>
 </section>
 
 @if (isCategoriesFormOpen()) {
-    <categories-form
-        (categoriesFormClosed)="handleCloseForm()"
-        [isCategoriesFormOpen]="isCategoriesFormOpen()"
-    />
+    <categories-form (categoriesFormClosed)="handleCloseForm()" [isCategoriesFormOpen]="isCategoriesFormOpen()" />
 }

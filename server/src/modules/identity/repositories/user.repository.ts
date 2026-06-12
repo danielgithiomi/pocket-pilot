@@ -12,7 +12,7 @@ export class UserRepository {
         const newUser = {
             ...data,
             lastLoginAt: now,
-            password: hashedPassword,
+            password: hashedPassword
         };
         return this.db.user.create({ data: newUser });
     }
@@ -41,7 +41,7 @@ export class UserRepository {
         return this.db.user.update({
             where: { id: userId },
             data: { profilePictureKey: profilePictureAwsKey },
-            include: { userPreferences: true },
+            include: { userPreferences: true }
         });
     }
 

@@ -1,0 +1,19 @@
+{
+    "singleQuote": true,
+    "trailingComma": "none",
+    "tabWidth": 4,
+    "printWidth": 130,
+    "semi": true,
+    "bracketSpacing": true,
+    "arrowParens": "avoid",
+    "endOfLine": "auto",
+    "bracketSameLine": true,
+    "overrides": [
+        {
+            "files": "*.html",
+            "options": {
+                "parser": "angular"
+            }
+        }
+    ]
+}

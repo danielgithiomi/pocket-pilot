@@ -13,16 +13,12 @@ import { Component, inject, signal } from '@angular/core';
 import { OnboardingService } from '@api/onboarding.service';
 import { LucideAngularModule, ChevronsRight } from 'lucide-angular';
 import { LANGUAGES, CURRENCIES, WEB_ROUTES } from '@global/constants';
-import {
-    OnboardingFormSchema,
-    INITIAL_ONBOARDING_FORM_STATE,
-    ONBOARDING_FORM_VALIDATION_SCHEMA,
-} from './onboarding.types';
+import { OnboardingFormSchema, INITIAL_ONBOARDING_FORM_STATE, ONBOARDING_FORM_VALIDATION_SCHEMA } from './onboarding.types';
 
 @Component({
     selector: 'onboarding',
     templateUrl: './onboarding.html',
-    imports: [Form, Input, Select, Button, PhoneNumber, LucideAngularModule],
+    imports: [Form, Input, Select, Button, PhoneNumber, LucideAngularModule]
 })
 export class Onboarding {
     // ICONS
@@ -44,13 +40,8 @@ export class Onboarding {
     private readonly onboardingService = inject(OnboardingService);
 
     // FORM
-    protected readonly onboardingFormModel = signal<OnboardingFormSchema>(
-        this.initialOnboardingFormState,
-    );
-    protected readonly onboardingForm = form(
-        this.onboardingFormModel,
-        ONBOARDING_FORM_VALIDATION_SCHEMA,
-    );
+    protected readonly onboardingFormModel = signal<OnboardingFormSchema>(this.initialOnboardingFormState);
+    protected readonly onboardingForm = form(this.onboardingFormModel, ONBOARDING_FORM_VALIDATION_SCHEMA);
 
     // METHODS
     protected resetOnboardingForm() {
@@ -68,7 +59,7 @@ export class Onboarding {
         const payload: OnboardingPayload = {
             ...rest,
             phoneNumber: phoneNumber!,
-            monthlySpendingLimit: monthlySpendingLimit!,
+            monthlySpendingLimit: monthlySpendingLimit!
         };
 
         console.log(payload);
@@ -79,13 +70,13 @@ export class Onboarding {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Onboarding completed!',
-                        details: `You have completed the onboarding process [${response.name}]. You can now enjoy Pocket Pilot!`,
+                        details: `You have completed the onboarding process [${response.name}]. You can now enjoy Pocket Pilot!`
                     });
 
                     this.resetOnboardingForm();
                     this.router.navigate([WEB_ROUTES.dashboard], { replaceUrl: true });
                 },
-                complete: () => this.isSubmitting.set(false),
+                complete: () => this.isSubmitting.set(false)
             });
         }, 2000);
     }

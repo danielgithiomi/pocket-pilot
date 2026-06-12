@@ -16,14 +16,14 @@ export class SplitrRepository {
                 eventSplittables: {
                     create: eventSplittables.map(({ quantitySplits, ...splittable }) => ({
                         ...splittable,
-                        quantitySplits: { create: quantitySplits },
-                    })),
-                },
+                        quantitySplits: { create: quantitySplits }
+                    }))
+                }
             },
             include: {
                 billPayers: true,
-                eventSplittables: { include: { quantitySplits: true } },
-            },
+                eventSplittables: { include: { quantitySplits: true } }
+            }
         });
     }
 
@@ -31,14 +31,14 @@ export class SplitrRepository {
         return this.db.splitrEvent.findMany({
             where: { creatorId: userId },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { createdAt: 'desc' }
         });
     }
 
     getSplitrEventById(eventId: string) {
         return this.db.splitrEvent.findUnique({
             where: { id: eventId },
-            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } }
         });
     }
 
@@ -47,14 +47,14 @@ export class SplitrRepository {
         return this.db.splitrEvent.update({
             where: { id: eventId, creatorId: userId },
             data: { isSettled },
-            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } }
         });
     }
 
     deleteSplitrEvent(userId: string, eventId: string) {
         return this.db.splitrEvent.delete({
             where: { id: eventId, creatorId: userId },
-            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } }
         });
     }
 }

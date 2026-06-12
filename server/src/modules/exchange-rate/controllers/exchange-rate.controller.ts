@@ -8,7 +8,7 @@ import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import {
     EXCHANGE_RATE_CACHE_KEY,
     EXCHANGE_RATE_CACHE_PREFIX,
-    EXCHANGE_RATE_CACHE_TTL_HOURS,
+    EXCHANGE_RATE_CACHE_TTL_HOURS
 } from '@common/constants/api.constants';
 
 @Controller('exchange-rate')

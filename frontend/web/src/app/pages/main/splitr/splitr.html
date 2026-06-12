@@ -2,12 +2,7 @@
     <div class="page-header">
         <h1 class="page-title">Splitr</h1>
 
-        <atom-button
-            id="add-split"
-            variant="primary"
-            [disabled]="isLoadingResources()"
-            (clicked)="isAddSplitFormOpen.set(true)"
-        >
+        <atom-button id="add-split" variant="primary" [disabled]="isLoadingResources()" (clicked)="isAddSplitFormOpen.set(true)">
             <div class="w-full flex flex-row items-center justify-between gap-4">
                 <lucide-icon name="create-split" [img]="Plus" [size]="iconSize"></lucide-icon>
                 <span class="hidden sm:block">Add Split</span>
@@ -16,16 +11,13 @@
     </div>
 
     <div class="page-container flex-1 space-y-4">
-        <p class="page-subtitle mb-6">
-            Keep track of <span class="font-semibold text-primary">shared</span> bills and expenses.
-        </p>
+        <p class="page-subtitle mb-6">Keep track of <span class="font-semibold text-primary">shared</span> bills and expenses.</p>
 
         <div
             class="h-full flex flex-col-reverse md:flex-row gap-6 md:gap-8 pb-4"
             [ngClass]="{
-                'md:flex-col-reverse! lg:flex-row!': !drawerService.isDrawerCollapsed(),
-            }"
-        >
+                'md:flex-col-reverse! lg:flex-row!': !drawerService.isDrawerCollapsed()
+            }">
             <!-- Left Side -->
             <div class="flex-3 page-card">
                 <splitr-events />
@@ -37,8 +29,7 @@
                     [isLoadingResources]="isLoadingResources()"
                     [isCreateSquadFormOpen]="isCreateSquadFormOpen()"
                     (onUpdateSquadItemEvent)="handleOnUpdateSquadItemEvent($event)"
-                    (createSquadButtonClickEvent)="isCreateSquadFormOpen.set(true)"
-                />
+                    (createSquadButtonClickEvent)="isCreateSquadFormOpen.set(true)" />
             </div>
         </div>
     </div>
@@ -48,22 +39,19 @@
     <splitr-squard-form
         [existingSquadMembers]="allSquadMembers()"
         [isSquadFormOpen]="isCreateSquadFormOpen()"
-        (closeCreateFormSquadEvent)="handleSquadFormClose($event)"
-    />
+        (closeCreateFormSquadEvent)="handleSquadFormClose($event)" />
 }
 
 @if (isUpdateSquadFormOpen() && squadToUpdate()) {
     <update-squad-form
         [squad]="squadToUpdate()!"
         [allSquadMembers]="allSquadMembers()"
-        (closeUpdateSquadFormEvent)="handleSquadFormClose($event)"
-    />
+        (closeUpdateSquadFormEvent)="handleSquadFormClose($event)" />
 }
 
 @if (isAddSplitFormOpen()) {
     <splitr-split-form
         [squads]="squads()"
         [isSplitFormOpen]="isAddSplitFormOpen()"
-        (closeSplitFormEvent)="handleSplitFormClose($event)"
-    />
+        (closeSplitFormEvent)="handleSplitFormClose($event)" />
 }

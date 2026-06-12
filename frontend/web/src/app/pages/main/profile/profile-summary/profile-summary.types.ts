@@ -8,7 +8,7 @@ export interface EditProfileSchema {
     phoneNumber: string;
 }
 
-export const editProfileFormValidationSchema = schema<EditProfileSchema>((root) => {
+export const editProfileFormValidationSchema = schema<EditProfileSchema>(root => {
     // Email
     email(root.email, { message: 'The email address format is invalid!' });
     required(root.email, { message: 'The email address is required field!' });
@@ -19,14 +19,14 @@ export const editProfileFormValidationSchema = schema<EditProfileSchema>((root) 
 
     // Phone Number (international format: +{countryCode}{nationalNumber})
     required(root.phoneNumber, { message: 'The phone number is required field!' });
-    validate(root.phoneNumber, (control) => {
+    validate(root.phoneNumber, control => {
         const number = control.value();
         if (!number) return null;
 
         if (!/^\+\d+$/.test(number)) {
             return {
                 kind: 'phone-number-invalid',
-                message: 'Please enter a valid phone number!',
+                message: 'Please enter a valid phone number!'
             };
         }
 
@@ -34,14 +34,14 @@ export const editProfileFormValidationSchema = schema<EditProfileSchema>((root) 
         if (nationalDigits.length < 7) {
             return {
                 kind: 'phone-number-too-short',
-                message: 'The phone number must be at least 7 digits long!',
+                message: 'The phone number must be at least 7 digits long!'
             };
         }
 
         if (nationalDigits.length > 14) {
             return {
                 kind: 'phone-number-too-long',
-                message: 'The phone number must not exceed 14 digits!',
+                message: 'The phone number must not exceed 14 digits!'
             };
         }
 

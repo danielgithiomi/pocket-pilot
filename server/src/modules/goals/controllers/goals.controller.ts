@@ -27,7 +27,7 @@ export class GoalsController {
         status: 200,
         isArray: true,
         type: ExposeEnumDto,
-        description: 'Goal categories retrieved successfully',
+        description: 'Goal categories retrieved successfully'
     })
     getGoalCategories() {
         return this.goalsService.getGoalCategories();
@@ -64,7 +64,7 @@ export class GoalsController {
 
         return {
             message: 'Finance goal deleted!',
-            details: `Your [${deletedGoal.name}] goal has been deleted successfuly.`,
+            details: `Your [${deletedGoal.name}] goal has been deleted successfuly.`
         };
     }
 }

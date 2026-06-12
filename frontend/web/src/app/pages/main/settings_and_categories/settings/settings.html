@@ -6,11 +6,7 @@
 
     <div class="settings-card">
         <div class="settings-form">
-            <form
-                (submit)="submitSettingsForm($event)"
-                class="px-4 flex flex-col"
-                id="settings-form"
-            >
+            <form (submit)="submitSettingsForm($event)" class="px-4 flex flex-col" id="settings-form">
                 <atom-input
                     type="number"
                     autocomplete="off"
@@ -21,8 +17,7 @@
                     [label]="monthlySpendingLimitLabel()"
                     [formField]="settingsForm.monthlySpendingLimit"
                     inputClassName="bg-inverted-background text-inverted-text"
-                    (clearOutput)="settingsForm.monthlySpendingLimit().controlValue.set(null)"
-                />
+                    (clearOutput)="settingsForm.monthlySpendingLimit().controlValue.set(null)" />
 
                 <atom-select
                     [invertedIcon]="true"
@@ -31,8 +26,7 @@
                     placeholder="Select a language"
                     id="settings-preferred-language"
                     [formField]="settingsForm.preferredLanguage"
-                    selectClassName="bg-inverted-background text-inverted-text"
-                />
+                    selectClassName="bg-inverted-background text-inverted-text" />
 
                 <atom-select
                     [invertedIcon]="true"
@@ -41,8 +35,7 @@
                     id="settings-default-currency"
                     placeholder="Select a currency"
                     [formField]="settingsForm.defaultCurrency"
-                    selectClassName="bg-inverted-background text-inverted-text"
-                />
+                    selectClassName="bg-inverted-background text-inverted-text" />
 
                 <atom-radio
                     [required]="true"
@@ -52,8 +45,7 @@
                     label="Preferred Application Theme"
                     (selectionChange)="onThemeChange($event)"
                     [formField]="settingsForm.preferredTheme"
-                    [selectedValue]="settingsForm.preferredTheme().controlValue()"
-                />
+                    [selectedValue]="settingsForm.preferredTheme().controlValue()" />
             </form>
         </div>
 
@@ -66,8 +58,7 @@
                 id="reset-settings"
                 form="settings-form"
                 (click)="resetSettingsForm()"
-                [disabled]="!form.dirty() || isSubmittingSettingsForm()"
-            />
+                [disabled]="!form.dirty() || isSubmittingSettingsForm()" />
 
             <atom-button
                 type="submit"
@@ -76,8 +67,7 @@
                 form="settings-form"
                 label="Update Preferences"
                 [isLoading]="isSubmittingSettingsForm()"
-                [disabled]="form.invalid() || !form.dirty() || isSubmittingSettingsForm()"
-            />
+                [disabled]="form.invalid() || !form.dirty() || isSubmittingSettingsForm()" />
         </div>
     </div>
 </section>

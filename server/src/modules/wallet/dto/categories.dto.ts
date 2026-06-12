@@ -35,14 +35,14 @@ export class UserMetaData {
     @Expose()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The unique ID of the user',
+        description: 'The unique ID of the user'
     })
     id!: string;
 
     @Expose()
     @ApiProperty({
         example: 'John Doe',
-        description: 'The name of the user',
+        description: 'The name of the user'
     })
     name!: string;
 }
@@ -52,7 +52,7 @@ export class CategoriesDto {
     @Expose()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The unique ID of the category created',
+        description: 'The unique ID of the category created'
     })
     id!: string;
 
@@ -61,7 +61,7 @@ export class CategoriesDto {
         isArray: true,
         type: [String],
         example: ['Salary', 'Refunds', 'Investments'],
-        description: 'The income categories of the transactions',
+        description: 'The income categories of the transactions'
     })
     incomes!: string[];
 
@@ -70,28 +70,28 @@ export class CategoriesDto {
         isArray: true,
         type: [String],
         example: ['Food', 'Transportation', 'Entertainment'],
-        description: 'The expense categories of the transactions',
+        description: 'The expense categories of the transactions'
     })
     expenses!: string[];
 
     @Expose()
     @ApiProperty({
         example: '2022-01-01T00:00:00.000Z',
-        description: 'The date the user created the category list',
+        description: 'The date the user created the category list'
     })
     createdAt!: Date;
 
     @Expose()
     @ApiProperty({
         example: '2022-01-01T00:00:00.000Z',
-        description: 'The last updated date the category list was modified',
+        description: 'The last updated date the category list was modified'
     })
     lastUpdated!: Date | null;
 
     @Expose()
     @ApiProperty({
         type: UserMetaData,
-        description: 'The user metadata attached to each of the categories',
+        description: 'The user metadata attached to each of the categories'
     })
     user!: UserMetaData;
 }

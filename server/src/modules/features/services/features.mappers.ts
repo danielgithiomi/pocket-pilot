@@ -8,6 +8,6 @@ export function flattenFeature(feature: FeatureWithUser): FeatureDto {
 
     return {
         ...rest,
-        authorName,
+        authorName
     };
 }

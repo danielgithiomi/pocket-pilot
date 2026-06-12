@@ -5,18 +5,18 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { Bill, IEnumResponse, IStandardResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class BillsResource {
     getBillTypes = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.bill_types),
+        url: concatUrl(endpoints.bill_types)
     }));
 
     getUserBills = httpResource<IStandardResponse<Bill[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.user_bills),
+        url: concatUrl(endpoints.user_bills)
     }));
 }

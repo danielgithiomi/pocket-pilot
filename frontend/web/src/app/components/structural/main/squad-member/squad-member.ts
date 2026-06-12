@@ -16,10 +16,9 @@ import { MemberQuantifier, QuantityChangeVariant } from './member-quantifier';
                 'cursor-pointer!': isCheckable(),
                 'bg-primary!': inverted() && isActive(),
                 'bg-loader-primary! border border-primary': isActive(),
-                'opacity-50 cursor-not-allowed!': !isActive() && isDisabled(),
+                'opacity-50 cursor-not-allowed!': !isActive() && isDisabled()
             }"
-            class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-1.5 cursor-default"
-        >
+            class="px-2 py-1 rounded-xl bg-muted-text flex flex-row items-center gap-1.5 cursor-default">
             <div class="size-5 bg-body-background grid place-items-center rounded-full">
                 <p class="text-[0.725rem] font-semibold">{{ initial() }}</p>
             </div>
@@ -34,14 +33,13 @@ import { MemberQuantifier, QuantityChangeVariant } from './member-quantifier';
                         [inverted]="inverted()"
                         [quantity]="member().quantity ?? 1"
                         [isMaximumQuantityReached]="isMaximumQuantityReached()"
-                        (onQuantityChangeEvent)="handleOnQuantityChange($event)"
-                    />
+                        (onQuantityChangeEvent)="handleOnQuantityChange($event)" />
                 } @else {
                     <lucide-icon name="member-checked-icon" [img]="UserCheck" [size]="iconSize" />
                 }
             }
         </div>
-    `,
+    `
 })
 export class SquadMember {
     // ICONS
@@ -67,12 +65,8 @@ export class SquadMember {
     protected readonly isChecked = computed<boolean>(() => this.member().isChecked);
     protected readonly memberId = computed<string>(() => `member-${this.member().memberName}`);
     protected readonly isActive = computed<boolean>(() => this.isCheckable() && this.isChecked());
-    protected readonly formattedName = computed<string>(() =>
-        formatToReadable(this.member().memberName),
-    );
-    protected readonly initial = computed<string>(() =>
-        this.member().memberName.charAt(0).toUpperCase(),
-    );
+    protected readonly formattedName = computed<string>(() => formatToReadable(this.member().memberName));
+    protected readonly initial = computed<string>(() => this.member().memberName.charAt(0).toUpperCase());
 
     // METHODS
     protected handleOnQuantityChange(event: QuantityChangeVariant): void {
@@ -80,14 +74,14 @@ export class SquadMember {
             this.toastService.show({
                 variant: 'warning',
                 title: 'Minimum quantity reached!',
-                details: 'You cannot decrease the quantity below 1.',
+                details: 'You cannot decrease the quantity below 1.'
             });
             return;
         }
 
         this.onMemberQuantityChange.emit({
             quantityChangeVariant: event,
-            memberName: this.member().memberName,
+            memberName: this.member().memberName
         });
     }
 }

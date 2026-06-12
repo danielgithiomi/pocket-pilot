@@ -33,8 +33,7 @@
                         <p>No income categories found.</p>
                     } @else {
                         <p>
-                            <span class="category-card-span">{{ incomesCount }}</span> Income
-                            Categories.
+                            <span class="category-card-span">{{ incomesCount }}</span> Income Categories.
                         </p>
                     }
                 }
@@ -49,21 +48,18 @@
                     <div
                         class="categories-container"
                         [ngClass]="{
-                            'grid! place-items-center!': hasError || incomesCount === 0,
-                        }"
-                    >
+                            'grid! place-items-center!': hasError || incomesCount === 0
+                        }">
                         @if (hasError) {
                             <fetch-error
                                 messageClass="text-xs mb-2"
                                 [animationDimensions]="animationDimension"
-                                message="Error fetching your income categories."
-                            />
+                                message="Error fetching your income categories." />
                         } @else if (incomesCount === 0) {
                             <no-data
                                 messageClass="text-xs"
                                 [animationDimensions]="animationDimension"
-                                message="No income categories found."
-                            />
+                                message="No income categories found." />
                         } @else {
                             @for (income of incomes; track income) {
                                 <div class="category-item group/item income">
@@ -73,16 +69,11 @@
                                         (click)="
                                             onCategoryDelete.emit({
                                                 category: income,
-                                                type: CategoryTypeEnum.INCOME,
+                                                type: CategoryTypeEnum.INCOME
                                             })
                                         "
-                                        class="category-icon atom-icon"
-                                    >
-                                        <lucide-icon
-                                            [img]="X"
-                                            [size]="13"
-                                            name="delete-category"
-                                        ></lucide-icon>
+                                        class="category-icon atom-icon">
+                                        <lucide-icon [img]="X" [size]="13" name="delete-category"></lucide-icon>
                                     </button>
                                 </div>
                             }
@@ -105,8 +96,7 @@
                         <p>No expense categories found.</p>
                     } @else {
                         <p>
-                            <span class="category-card-span">{{ expenseCount }}</span> Expense
-                            Categories.
+                            <span class="category-card-span">{{ expenseCount }}</span> Expense Categories.
                         </p>
                     }
                 }
@@ -121,21 +111,18 @@
                     <div
                         class="categories-container"
                         [ngClass]="{
-                            'grid! place-items-center!': hasError || expenseCount === 0,
-                        }"
-                    >
+                            'grid! place-items-center!': hasError || expenseCount === 0
+                        }">
                         @if (hasError) {
                             <fetch-error
                                 [animationDimensions]="animationDimension"
                                 message="Error fetching your expense categories."
-                                messageClass="text-xs mb-2"
-                            />
+                                messageClass="text-xs mb-2" />
                         } @else if (expenseCount === 0) {
                             <no-data
                                 [animationDimensions]="animationDimension"
                                 message="No expense categories found."
-                                messageClass="text-xs"
-                            />
+                                messageClass="text-xs" />
                         } @else {
                             @for (expense of expenses; track expense) {
                                 <div class="category-item group/item expense">
@@ -145,16 +132,11 @@
                                         (click)="
                                             onCategoryDelete.emit({
                                                 category: expense,
-                                                type: CategoryTypeEnum.EXPENSE,
+                                                type: CategoryTypeEnum.EXPENSE
                                             })
                                         "
-                                        class="category-icon atom-icon"
-                                    >
-                                        <lucide-icon
-                                            [img]="X"
-                                            [size]="13"
-                                            name="delete-category"
-                                        ></lucide-icon>
+                                        class="category-icon atom-icon">
+                                        <lucide-icon [img]="X" [size]="13" name="delete-category"></lucide-icon>
                                     </button>
                                 </div>
                             }

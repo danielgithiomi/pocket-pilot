@@ -1,9 +1,6 @@
 <div class="select-field" [ngClass]="wrapperClassName()">
     @if (includeLabel()) {
-        <label
-            [for]="selectId()"
-            [ngClass]="{ 'text-inverted-text': inverted(), 'text-muted-text!': disabled() }"
-        >
+        <label [for]="selectId()" [ngClass]="{ 'text-inverted-text': inverted(), 'text-muted-text!': disabled() }">
             @if (required()) {
                 <span class="required">*</span>
             }
@@ -20,11 +17,7 @@
                     </option>
                 }
                 @for (option of formattedOptions(); track option.value) {
-                    <option
-                        [value]="option.value"
-                        [disabled]="option.disabled"
-                        [selected]="isOptionSelected(option)"
-                    >
+                    <option [value]="option.value" [disabled]="option.disabled" [selected]="isOptionSelected(option)">
                         {{ option.label }}
                         @if (option.descriptor) {
                             <span class="text-primary text-sm"> - {{ option.descriptor }}</span>
@@ -40,8 +33,7 @@
                 [img]="ChevronDown"
                 name="select-chevron"
                 [ngClass]="{ 'text-inverted-text': invertedIcon() }"
-                [class]="disabled() ? 'select-icon-disabled' : 'select-icon input-end-icon'"
-            />
+                [class]="disabled() ? 'select-icon-disabled' : 'select-icon input-end-icon'" />
         </div>
     </div>
 

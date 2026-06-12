@@ -22,8 +22,8 @@ import { ConfigModule as NestConfigModule } from '@nestjs/config';
                 }
 
                 return parsedResult.data;
-            },
-        }),
-    ],
+            }
+        })
+    ]
 })
 export class PPConfigModule {}

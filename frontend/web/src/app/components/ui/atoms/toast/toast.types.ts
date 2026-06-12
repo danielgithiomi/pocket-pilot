@@ -21,18 +21,18 @@ export interface ToastTheme {
 export const TOAST_THEMES: Record<ToastVariant, ToastTheme> = {
     success: {
         icon: 'success',
-        color: 'var(--success)',
+        color: 'var(--success)'
     },
     error: {
         icon: 'error',
-        color: 'var(--error)',
+        color: 'var(--error)'
     },
     warning: {
         icon: 'warning',
-        color: 'var(--warning)',
+        color: 'var(--warning)'
     },
     info: {
         icon: 'info',
-        color: 'var(--info)',
-    },
+        color: 'var(--info)'
+    }
 };

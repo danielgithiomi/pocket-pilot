@@ -17,16 +17,11 @@
                 <div
                     class="table-row"
                     [ngClass]="{
-                        'hover:bg-alternate-background! hover:scale-x-100! cursor-default!':
-                            isLoading(),
+                        'hover:bg-alternate-background! hover:scale-x-100! cursor-default!': isLoading()
                     }"
-                    [ngStyle]="{ 'grid-template-columns': gridTemplateColumns() }"
-                >
+                    [ngStyle]="{ 'grid-template-columns': gridTemplateColumns() }">
                     @for (column of columns(); track column.key) {
-                        <div
-                            class="table-cell"
-                            [ngClass]="'text-' + getCellAlignment(column.align)"
-                        >
+                        <div class="table-cell" [ngClass]="'text-' + getCellAlignment(column.align)">
                             @if (isActionsColumn(column)) {
                                 <div class="actions-container">
                                     @if (isLoading()) {
@@ -37,8 +32,7 @@
                                             [img]="Trash2"
                                             [size]="iconSize"
                                             class="action-icon delete-icon"
-                                            (click)="handleDelete(item)"
-                                        />
+                                            (click)="handleDelete(item)" />
                                     }
                                 </div>
                             } @else {

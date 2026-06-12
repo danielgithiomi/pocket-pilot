@@ -50,7 +50,7 @@ export class FeatureVotesDto {
     @Expose()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The ID of the feature that was voted on',
+        description: 'The ID of the feature that was voted on'
     })
     featureId!: string;
 
@@ -72,7 +72,7 @@ export class FeatureDto {
     @Expose()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The ID of the user who created the feature',
+        description: 'The ID of the user who created the feature'
     })
     authorId!: string;
 

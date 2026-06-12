@@ -7,13 +7,12 @@ import { TransactionService } from '../services/transaction.service';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
-    TransactionDto,
     CreateTransactionDto,
     CompleteTransactionDto,
     TransactionWithAccount,
     TransactionsResponseDto,
     CreateTransferTransactionPayload,
-    TransactionsWithAccountResponseDto,
+    TransactionsWithAccountResponseDto
 } from '../dto/transaction.dto';
 
 @Controller('accounts')
@@ -22,7 +21,7 @@ import {
 export class TransactionController {
     constructor(
         private readonly transferService: TransferService,
-        private readonly transactionService: TransactionService,
+        private readonly transactionService: TransactionService
     ) {}
 
     @Get('transactions/types')
@@ -31,7 +30,7 @@ export class TransactionController {
         status: 200,
         isArray: true,
         type: ExposeEnumDto,
-        description: 'Returns all transaction types.',
+        description: 'Returns all transaction types.'
     })
     async getTransactionTypes(): Promise<ExposeEnumDto[]> {
         return this.transactionService.getTransactionTypes();
@@ -43,14 +42,14 @@ export class TransactionController {
     @ApiResponse({
         status: 200,
         type: TransactionsWithAccountResponseDto,
-        description: 'Returns all database transactions.',
+        description: 'Returns all database transactions.'
     })
     async getUserTransactions(@UserInRequest() user: UserResponseDto): Promise<TransactionsWithAccountResponseDto> {
         const userTransactions: CompleteTransactionDto[] = await this.transactionService.getUserTransactions(user.id);
 
         return {
             count: userTransactions.length,
-            data: userTransactions,
+            data: userTransactions
         };
     }
 
@@ -60,39 +59,42 @@ export class TransactionController {
     @ApiResponse({
         status: 200,
         type: TransactionsWithAccountResponseDto,
-        description: 'Returns all database transactions.',
+        description: 'Returns all database transactions.'
     })
     async getAllTransactions(): Promise<TransactionsWithAccountResponseDto> {
         const allTransactions: CompleteTransactionDto[] = await this.transactionService.getAllTransactions();
 
         return {
             count: allTransactions.length,
-            data: allTransactions,
+            data: allTransactions
         };
     }
 
     @Get(':accountId/transactions')
     @ApiCookieAuth('access_token')
-    @ApiOperation({ summary: 'Get account transactions', description: 'Get all transactions for the specific account' })
+    @ApiOperation({
+        summary: 'Get account transactions',
+        description: 'Get all transactions for the specific account by the Account ID'
+    })
     @ApiParam({
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to be fetched with its transactions.',
+        description: 'The id of the account to be fetched with its transactions.'
     })
     @ApiResponse({
         status: 200,
         isArray: true,
-        type: TransactionDto,
-        description: 'Returns all transactions for the specific account.',
+        type: CompleteTransactionDto,
+        description: 'Returns all transactions for the specific account.'
     })
-    async getTransactionsByAccountId(@Param('accountId') accountId: string): Promise<TransactionsResponseDto> {
+    async getAllTransactionsRelatedToAccountId(@Param('accountId') accountId: string): Promise<TransactionsResponseDto> {
         const accountTransactions: CompleteTransactionDto[] =
             await this.transactionService.getAllTransactionsRelatedToAccountId(accountId);
 
         return {
             count: accountTransactions.length,
-            data: accountTransactions,
+            data: accountTransactions
         };
     }
 
@@ -100,23 +102,23 @@ export class TransactionController {
     @ApiCookieAuth('access_token')
     @ApiOperation({
         summary: 'Create account transaction',
-        description: 'Create a new transaction for the specific account',
+        description: 'Create a new transaction for the specific account'
     })
     @ApiParam({
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to be updated with the new transaction.',
+        description: 'The id of the account to be updated with the new transaction.'
     })
     @ApiResponse({
         status: 201,
         type: TransactionWithAccount,
-        description: 'Returns the created transaction with minimal account data.',
+        description: 'Returns the created transaction with minimal account data.'
     })
     createTransactionByAccountId(
         @Param('accountId') accountId: string,
         @UserInRequest() currentUser: UserResponseDto,
-        @Body() createTransactionDto: CreateTransactionDto,
+        @Body() createTransactionDto: CreateTransactionDto
     ): Promise<TransactionWithAccount> {
         const { id: userId } = currentUser;
         return this.transactionService.createTransactionByAccountId(userId, accountId, createTransactionDto);
@@ -126,29 +128,29 @@ export class TransactionController {
     @ApiCookieAuth('access_token')
     @ApiOperation({
         summary: 'Transfer money between accounts',
-        description: 'Transfer money between two accounts',
+        description: 'Transfer money between two accounts'
     })
     @ApiParam({
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to be updated with the new transaction.',
+        description: 'The id of the account to be updated with the new transaction.'
     })
     @ApiResponse({
         status: 201,
         type: TransactionWithAccount,
-        description: 'Returns the created transaction with minimal account data.',
+        description: 'Returns the created transaction with minimal account data.'
     })
     async transferMoneyBetweenAccounts(
         @Param('accountId') accountId: string,
         @UserInRequest() currentUser: UserResponseDto,
-        @Body() transferTransactionPayload: CreateTransferTransactionPayload,
+        @Body() transferTransactionPayload: CreateTransferTransactionPayload
     ): Promise<CompleteTransactionDto> {
         const { id: userId } = currentUser;
         return this.transferService.createTransactionAndTransferAmountBetweenAccounts(
             userId,
             accountId,
-            transferTransactionPayload,
+            transferTransactionPayload
         );
     }
 
@@ -156,28 +158,28 @@ export class TransactionController {
     @ApiCookieAuth('access_token')
     @ApiOperation({
         summary: 'Delete account transaction',
-        description: 'Delete a transaction for the specific account',
+        description: 'Delete a transaction for the specific account'
     })
     @ApiParam({
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to be updated with the new transaction.',
+        description: 'The id of the account to be updated with the new transaction.'
     })
     @ApiParam({
         required: true,
         name: 'transactionId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the transaction to be deleted.',
+        description: 'The id of the transaction to be deleted.'
     })
     @ApiResponse({
         status: 200,
-        description: 'Returns the deleted transaction.',
+        description: 'Returns the deleted transaction.'
     })
     async deleteTransactionByAccountId(
         @Param('accountId') accountId: string,
         @Param('transactionId') transactionId: string,
-        @UserInRequest() currentUser: UserResponseDto,
+        @UserInRequest() currentUser: UserResponseDto
     ): Promise<VoidResourceResponse> {
         const { id: userId } = currentUser;
 
@@ -185,7 +187,7 @@ export class TransactionController {
 
         return {
             message: 'Transaction Deleted!',
-            details: `The transaction with id: {${transactionId}} has been deleted successfully.`,
+            details: `The transaction with id: {${transactionId}} has been deleted successfully.`
         };
     }
 }

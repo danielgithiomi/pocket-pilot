@@ -8,7 +8,7 @@ import { Component, computed, inject, input } from '@angular/core';
 @Component({
     imports: [Table],
     selector: 'account-transactions',
-    templateUrl: './transactions.html',
+    templateUrl: './transactions.html'
 })
 export class TransactionsComponent {
     // INPUT
@@ -26,10 +26,9 @@ export class TransactionsComponent {
             label: 'Category',
             width: '1fr',
             cellTemplate: (transaction: AccountTransactionRow) => {
-                const classes =
-                    'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis bg-(--body-background)';
+                const classes = 'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis bg-(--body-background)';
                 return `<span class="${classes}">${transaction.category}</span>`;
-            },
+            }
         },
         {
             key: 'amount',
@@ -45,15 +44,14 @@ export class TransactionsComponent {
                         <span class="${transaction.showConvertedAmount ? currencyClasses : 'hidden'}">≈ ${transaction.convertedAmount}</span>
                     </div>
                 `;
-            },
+            }
         },
         {
             key: 'type',
             label: 'Type',
             width: '1fr',
             cellTemplate: (transaction: AccountTransactionRow) => {
-                let classes =
-                    'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis dark:text-(--inverted-text)';
+                let classes = 'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis dark:text-(--inverted-text)';
 
                 switch (transaction.type) {
                     case 'INCOME':
@@ -75,7 +73,7 @@ export class TransactionsComponent {
                             ${transaction.type} ${transaction.type === 'TRANSFER' ? (this.accountId() !== transaction.sourceAccountId ? '&#8690;' : '&#8689;') : ''}
                         </span>
                     `;
-            },
+            }
         },
         {
             key: 'description',
@@ -85,20 +83,20 @@ export class TransactionsComponent {
                 const classes = 'font-semibold';
                 const description = !transaction.description ? '-' : transaction.description;
                 return `<span class="${classes}">${description}</span>`;
-            },
+            }
         },
         {
             key: 'date',
             label: 'Date',
-            width: '1fr',
-        },
+            width: '1fr'
+        }
     ];
 
     protected formattedTransactions = computed<AccountTransactionRow[]>(() => {
         const transactionsToFormat = this.transactions();
 
         return transactionsToFormat
-            .map((transaction) => {
+            .map(transaction => {
                 const {
                     id,
                     type,
@@ -107,7 +105,7 @@ export class TransactionsComponent {
                     category,
                     description,
                     targetAccount,
-                    sourceAccount: { id: sourceAccountId, currency: sourceCurrency },
+                    sourceAccount: { id: sourceAccountId, currency: sourceCurrency }
                 } = transaction;
 
                 const formattedDate = formatDate(date);
@@ -124,7 +122,7 @@ export class TransactionsComponent {
                         targetAccountId: null,
                         currency: sourceCurrency,
                         showConvertedAmount: false,
-                        amount: formatCurrency(amount, sourceCurrency, 2, true, false),
+                        amount: formatCurrency(amount, sourceCurrency, 2, true, false)
                     };
                 }
 
@@ -134,7 +132,7 @@ export class TransactionsComponent {
                 const conversionResult = this.exchangeRateService.performCurrencyConversion(
                     amount,
                     sourceCurrency,
-                    targetCurrency,
+                    targetCurrency
                 );
 
                 let convertedAmount = '';
@@ -155,7 +153,7 @@ export class TransactionsComponent {
                     date: formattedDate,
                     currency: sourceCurrency,
                     showConvertedAmount: !isSameCurrency && convertedAmount !== '',
-                    amount: formatCurrency(amount, sourceCurrency, 2, true, false),
+                    amount: formatCurrency(amount, sourceCurrency, 2, true, false)
                 };
             })
             .reverse();

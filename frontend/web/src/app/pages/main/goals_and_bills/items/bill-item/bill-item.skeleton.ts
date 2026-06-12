@@ -13,6 +13,6 @@ import { Component } from '@angular/core';
 
             <div class="skeleton w-1/8 h-5"></div>
         </div>
-    `,
+    `
 })
 export class BillItemSkeleton {}

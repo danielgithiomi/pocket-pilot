@@ -13,10 +13,10 @@ export interface LoginSchema {
 
 export const initialLoginFormState: LoginSchema = {
     email: '',
-    password: '',
+    password: ''
 };
 
-export const loginFormValidationSchema = schema<LoginSchema>((root) => {
+export const loginFormValidationSchema = schema<LoginSchema>(root => {
     // Email
     required(root.email, { message: 'The email address is required field!' });
     email(root.email, { message: 'The email address format is invalid!' });
@@ -38,10 +38,10 @@ export const initialRegisterFormState: RegisterSchema = {
     name: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    confirmPassword: ''
 };
 
-export const registerFormValidationSchema = schema<RegisterSchema>((root) => {
+export const registerFormValidationSchema = schema<RegisterSchema>(root => {
     // Email
     email(root.email, { message: 'The email address format is invalid!' });
     required(root.email, { message: 'The email address is required field!' });
@@ -57,15 +57,15 @@ export const registerFormValidationSchema = schema<RegisterSchema>((root) => {
     // Confirm Password
     required(root.confirmPassword, { message: 'The confirm password is required field!' });
     minLength(root.confirmPassword, 8, {
-        message: 'The confirm password cannot be less than 8 characters!',
+        message: 'The confirm password cannot be less than 8 characters!'
     });
-    validate(root.confirmPassword, (context) => {
+    validate(root.confirmPassword, context => {
         const confirmPassword = context.value();
         const password = context.valueOf(root.password);
         if (confirmPassword === password) return null;
         return {
             kind: 'password-mismatch',
-            message: 'The passwords entered do not match!',
+            message: 'The passwords entered do not match!'
         };
     });
 });

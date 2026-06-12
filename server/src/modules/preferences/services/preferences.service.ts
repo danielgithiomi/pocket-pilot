@@ -17,7 +17,7 @@ export class PreferencesService {
         const modifiedPayload: UpdatePreferencesPayload = {
             ...payload,
             defaultCurrency: payload.defaultCurrency.toUpperCase(),
-            preferredLanguage: payload.preferredLanguage.toLowerCase(),
+            preferredLanguage: payload.preferredLanguage.toLowerCase()
         };
 
         try {
@@ -27,7 +27,7 @@ export class PreferencesService {
                 name: 'USER_PREFERENCES_UPDATE_ERROR',
                 title: 'Failed to update user preferences!',
                 message: `Failed to update user preferences with error: ${error}`,
-                details: 'There was an error updating your preferences. Please try again later.',
+                details: 'There was an error updating your preferences. Please try again later.'
             });
         }
     }

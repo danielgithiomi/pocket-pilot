@@ -7,7 +7,7 @@ import { Component, inject, input, output } from '@angular/core';
     selector: 'organism-form',
     styleUrl: './form.css',
     templateUrl: './form.html',
-    imports: [LucideAngularModule, NgClass],
+    imports: [LucideAngularModule, NgClass]
 })
 export class Form {
     // ICONS

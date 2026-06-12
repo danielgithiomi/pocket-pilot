@@ -9,20 +9,19 @@ export class TransferService {
         // private readonly transactionsCache: TransactionCache,
         private readonly accountsCache: AccountsCache,
         private readonly accountDetailsCache: AccountDetailsCache,
-        private readonly transactionRepository: TransactionRepository,
+        private readonly transactionRepository: TransactionRepository
     ) {}
 
     async createTransactionAndTransferAmountBetweenAccounts(
         userId: string,
         accountId: string,
-        payload: CreateTransferTransactionPayload,
+        payload: CreateTransferTransactionPayload
     ): Promise<CompleteTransactionDto> {
         const { sourceAccountId, targetAccountId } = payload;
         // Safety Checks
         this.checkSourceAccountMatches(accountId, sourceAccountId);
 
-        const createdTranferTransaction =
-            this.transactionRepository.createTransferTransactionAndUpdateBalances(payload);
+        const createdTranferTransaction = this.transactionRepository.createTransferTransactionAndUpdateBalances(payload);
 
         await this.invalidateCaches(userId, sourceAccountId, targetAccountId);
         return createdTranferTransaction;
@@ -36,7 +35,7 @@ export class TransferService {
             name: 'SOURCE_ACCOUNT_MISMATCH',
             title: 'Missmatch between Source-ID and Param-ID',
             message: "The source account Id doesn't match the param Id",
-            details: { sourceAccountId, paramAccountId },
+            details: { sourceAccountId, paramAccountId }
         });
     }
 

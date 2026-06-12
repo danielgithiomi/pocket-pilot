@@ -21,12 +21,10 @@ interface OverlapperItem {
             }
 
             @if (overflowCount() > 0) {
-                <span [class]="overflowClasses()" [title]="overflowTitle()">
-                    +{{ overflowCount() }}
-                </span>
+                <span [class]="overflowClasses()" [title]="overflowTitle()"> +{{ overflowCount() }} </span>
             }
         </div>
-    `,
+    `
 })
 export class Overlapper {
     // INPUTS
@@ -39,29 +37,24 @@ export class Overlapper {
     protected readonly visibleItems = computed<OverlapperItem[]>(() => {
         return this.items()
             .slice(0, this.maxVisible())
-            .map((name) => ({
+            .map(name => ({
                 name,
                 initials: this.getInitials(name),
-                palette: COLOR_PALETTE[Math.abs(hashFromName(name)) % COLOR_PALETTE.length],
+                palette: COLOR_PALETTE[Math.abs(hashFromName(name)) % COLOR_PALETTE.length]
             }));
     });
 
-    protected readonly overflowCount = computed<number>(() =>
-        Math.max(0, this.items().length - this.maxVisible()),
-    );
+    protected readonly overflowCount = computed<number>(() => Math.max(0, this.items().length - this.maxVisible()));
 
-    protected readonly overflowTitle = computed<string>(() =>
-        this.items().slice(this.maxVisible()).join(', '),
-    );
+    protected readonly overflowTitle = computed<string>(() => this.items().slice(this.maxVisible()).join(', '));
 
     protected readonly containerClasses = computed<string>(() =>
-        ['flex items-center', this.className()].filter(Boolean).join(' '),
+        ['flex items-center', this.className()].filter(Boolean).join(' ')
     );
 
     private readonly sizeClasses = computed<string>(() => OVERLAPPER_SIZE_STYLES[this.size()]);
 
-    private readonly baseItemClasses =
-        'inline-flex items-center justify-center rounded-full font-semibold ring-1 first:ml-0';
+    private readonly baseItemClasses = 'inline-flex items-center justify-center rounded-full font-semibold ring-1 first:ml-0';
 
     protected itemClasses(palette: ColorPalette): string {
         return [this.baseItemClasses, this.sizeClasses(), palette.bg, palette.fg].join(' ');
@@ -77,7 +70,7 @@ export class Overlapper {
 
         const parts = trimmed.split(/\s+/);
         if (parts.length === 1) {
-            return trimmed.slice(0, 2).replace(/^./, (c) => c.toUpperCase());
+            return trimmed.slice(0, 2).replace(/^./, c => c.toUpperCase());
         }
         return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     }

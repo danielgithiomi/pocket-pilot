@@ -11,14 +11,14 @@ const CORS_CONFIG: CorsOptions = {
     preflightContinue: false,
     optionsSuccessStatus: 204,
     origin: [process.env.CLIENT_URL!],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
 };
 
 const LOGGER_CONFIG = new ConsoleLogger({
     json: false,
     colors: true,
     timestamp: true,
-    prefix: 'Pocket-Pilot',
+    prefix: 'Pocket-Pilot'
 });
 
 const SWAGGER_CONFIG = new DocumentBuilder()
@@ -39,8 +39,8 @@ async function bootstrap() {
         new ValidationPipe({
             whitelist: true,
             transform: true,
-            forbidNonWhitelisted: true,
-        }),
+            forbidNonWhitelisted: true
+        })
     );
 
     // Swagger Documentation

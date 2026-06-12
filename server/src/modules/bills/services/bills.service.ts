@@ -28,7 +28,7 @@ export class BillsService {
             throw new ConflictException({
                 type: 'BILL_NAME_ALREADY_EXISTS',
                 title: 'Bill already exists!',
-                details: `A bill with the name [${payload.name}] already exists.`,
+                details: `A bill with the name [${payload.name}] already exists.`
             });
 
         const createdBill = await this.billsRepository.createNewBill(userId, payload);

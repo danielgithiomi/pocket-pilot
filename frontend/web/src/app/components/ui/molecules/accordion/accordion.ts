@@ -9,7 +9,7 @@ import { Component, computed, effect, input, signal } from '@angular/core';
     selector: 'molecule-accordion',
     templateUrl: './accordion.html',
     animations: [accordionContentAnimation],
-    imports: [NgClass, LucideAngularModule],
+    imports: [NgClass, LucideAngularModule]
 })
 export class Accordion {
     /* INPUTS */
@@ -52,7 +52,7 @@ export class Accordion {
     }
 
     toggleItem(index: number): void {
-        this.expandedIndexes.update((current) => {
+        this.expandedIndexes.update(current => {
             const isOpen = current.has(index);
 
             if (isOpen) {

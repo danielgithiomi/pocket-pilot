@@ -14,7 +14,7 @@ export class OnboardingRepository {
                 throw new NotFoundException({
                     name: 'USER_NOT_FOUND',
                     title: 'Registered user not found!',
-                    details: 'No user found for this ID in the database.',
+                    details: 'No user found for this ID in the database.'
                 });
 
             const { id } = user;
@@ -29,13 +29,13 @@ export class OnboardingRepository {
                         create: {
                             defaultCurrency,
                             preferredLanguage,
-                            monthlySpendingLimit,
-                        },
-                    },
+                            monthlySpendingLimit
+                        }
+                    }
                 },
                 include: {
-                    userPreferences: true,
-                },
+                    userPreferences: true
+                }
             });
         });
     }

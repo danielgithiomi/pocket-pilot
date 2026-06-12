@@ -11,7 +11,7 @@ import { SplitrEventItem } from '@structural/main/splitr-event-item/splitr-event
 @Component({
     selector: 'splitr-events',
     templateUrl: './events.html',
-    imports: [NgClass, FetchError, NoData, SplitrEventItem],
+    imports: [NgClass, FetchError, NoData, SplitrEventItem]
 })
 export class SplitrEvents {
     // ANIMATIONS
@@ -28,9 +28,7 @@ export class SplitrEvents {
 
     // COMPUTED
     protected readonly hasError = computed<boolean>(() => !!this.splitrEventsResource.error());
-    protected readonly isFetchingEvents = computed<boolean>(() =>
-        this.splitrEventsResource.isLoading(),
-    );
+    protected readonly isFetchingEvents = computed<boolean>(() => this.splitrEventsResource.isLoading());
     protected readonly selfName = computed(() => {
         const username = this.authService.user()?.name.split(' ')[0];
         return `${username}(Self)`;
@@ -42,9 +40,9 @@ export class SplitrEvents {
 
         if (!rawEvents) return [];
 
-        return rawEvents.data.map((event) => ({
+        return rawEvents.data.map(event => ({
             ...event,
-            eventMembers: [...event.eventMembers, this.selfName()],
+            eventMembers: [...event.eventMembers, this.selfName()]
         }));
     });
 

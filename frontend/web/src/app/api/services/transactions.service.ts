@@ -3,15 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import { TransactionsResource } from '@methods/resources';
 import { ToastService } from '@components/ui/atoms/toast';
 import { TransactionsMutation } from '@methods/mutations';
-import {
-    IStandardError,
-    IStandardResponse,
-    IVoidResourceResponse,
-    CreateTransactionRequest,
-} from '@global/types';
+import { IStandardError, IStandardResponse, IVoidResourceResponse, CreateTransactionRequest } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class TransactionsService {
     private readonly toastService = inject(ToastService);
@@ -41,7 +36,7 @@ export class TransactionsService {
                 catchError((error: IStandardError) => {
                     this.renderToast(error);
                     return EMPTY;
-                }),
+                })
             );
         }
 
@@ -49,7 +44,7 @@ export class TransactionsService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -59,7 +54,7 @@ export class TransactionsService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -69,15 +64,11 @@ export class TransactionsService {
         this.toastService.show({
             title,
             details: details as string,
-            variant: 'error',
+            variant: 'error'
         });
     };
 
     isNegativeBalance(availableBalance: number, payload: CreateTransactionRequest) {
-        return (
-            availableBalance >= 0 &&
-            payload.amount! > availableBalance &&
-            payload.type === 'EXPENSE'
-        );
+        return availableBalance >= 0 && payload.amount! > availableBalance && payload.type === 'EXPENSE';
     }
 }

@@ -1,10 +1,7 @@
 <div [id]="id()" class="hover-form">
     <div class="overlay" (click)="closeForm.emit('overlay')"></div>
 
-    <div
-        class="form"
-        [ngClass]="{ 'w-full! lg:w-3/4! xl:w-1/2!': !drawerService.isDrawerCollapsed() }"
-    >
+    <div class="form" [ngClass]="{ 'w-full! lg:w-3/4! xl:w-1/2!': !drawerService.isDrawerCollapsed() }">
         <!-- HEADER -->
         <div class="form-header">
             <div class="space-y-1">
@@ -18,8 +15,7 @@
                     [img]="X"
                     [size]="24"
                     (click)="closeForm.emit('icon')"
-                    class="atom-icon text-inverted-text hover:text-primary"
-                />
+                    class="atom-icon text-inverted-text hover:text-primary" />
             }
         </div>
 

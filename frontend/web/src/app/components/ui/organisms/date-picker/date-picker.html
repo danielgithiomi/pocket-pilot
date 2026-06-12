@@ -1,8 +1,5 @@
 <div class="date-picker-field" [ngClass]="wrapperClassName()">
-    <label
-        [for]="inputId()"
-        [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
-    >
+    <label [for]="inputId()" [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }">
         @if (required()) {
             <span class="required">*</span>
         }
@@ -17,8 +14,7 @@
             (click)="onInputClick()"
             [value]="formattedDate()"
             [ngClass]="inputClassName()"
-            [placeholder]="placeholder()"
-        />
+            [placeholder]="placeholder()" />
 
         <div class="date-picker-icons">
             @if (fieldState().value() && showClearOutputIcon()) {
@@ -27,16 +23,14 @@
                     name="clear-date"
                     [size]="iconSize + 3"
                     (click)="onClear($event)"
-                    class="date-picker-icon clear-icon"
-                />
+                    class="date-picker-icon clear-icon" />
             }
             <lucide-icon
                 [size]="iconSize"
                 name="calendar-toggle"
                 (click)="toggleCalendar()"
                 [img]="isCalendarOpen() ? X : CalendarIcon"
-                class="date-picker-icon calendar-icon cursor-pointer!"
-            />
+                class="date-picker-icon calendar-icon cursor-pointer!" />
         </div>
 
         @if (isCalendarOpen()) {
@@ -46,8 +40,7 @@
                     [max]="max()"
                     (blur)="closeCalendar()"
                     [value]="selectedDateValue()"
-                    (change)="onDateSelect($event)"
-                />
+                    (change)="onDateSelect($event)" />
             </div>
         }
     </div>

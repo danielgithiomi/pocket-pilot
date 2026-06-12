@@ -7,7 +7,7 @@ import { catchError, EMPTY, map, retry, switchMap, tap } from 'rxjs';
 import { AwsPresignedUrlResponse, IStandardError, IStandardResponse, User } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class AwsService {
     private readonly http = inject(HttpClient);
@@ -30,16 +30,14 @@ export class AwsService {
                     .put(presignedUrl, file, {
                         headers: { 'Content-Type': file.type },
                         reportProgress: true,
-                        observe: 'events' as const,
+                        observe: 'events' as const
                     })
                     .pipe(
-                        map((event) => {
+                        map(event => {
                             switch (event.type) {
                                 case HttpEventType.UploadProgress: {
                                     if (event.total) {
-                                        const progress = Math.round(
-                                            (event.loaded / event.total) * 100,
-                                        );
+                                        const progress = Math.round((event.loaded / event.total) * 100);
                                         this.uploadProgress.set(progress);
                                         return progress;
                                     }
@@ -53,32 +51,29 @@ export class AwsService {
                                     return 0;
                             }
                         }),
-                        switchMap((progress) => {
+                        switchMap(progress => {
                             if (progress === 100)
-                                return this.updateUserProfilePictureKey(
-                                    this.authService.user()!.id,
-                                    key,
-                                ).pipe(
+                                return this.updateUserProfilePictureKey(this.authService.user()!.id, key).pipe(
                                     map((reponse: IStandardResponse<User>) => reponse.data),
                                     tap((user: User) => this.authService.refreshSession(user)),
-                                    map(() => 100),
+                                    map(() => 100)
                                 );
                             return [progress];
-                        }),
+                        })
                     );
             }),
             retry(2),
-            catchError((error) => {
+            catchError(error => {
                 console.error('ERROR from AWS Service', error);
                 if (error.status !== 401)
                     this.renderToast({
                         type: 'error',
                         details: error.message,
                         statusCode: error.status,
-                        title: 'Failed to update user profile picture',
+                        title: 'Failed to update user profile picture'
                     });
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -92,7 +87,7 @@ export class AwsService {
         this.toastService.show({
             title,
             variant: 'error',
-            details: details as string,
+            details: details as string
         });
     };
 }

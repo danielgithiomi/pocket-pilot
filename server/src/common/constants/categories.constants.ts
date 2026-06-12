@@ -6,7 +6,7 @@ export const DEFAULT_INCOME_CATEGORIES = [
     'Business',
     'Freelance',
     'Investments',
-    'Rental Income',
+    'Rental Income'
 ];
 export const DEFAULT_EXPENSE_CATEGORIES = [
     'Health',
@@ -24,5 +24,5 @@ export const DEFAULT_EXPENSE_CATEGORIES = [
     'Entertainment',
     'Personal Care',
     'Transportation',
-    'Gifts Donations',
+    'Gifts Donations'
 ];

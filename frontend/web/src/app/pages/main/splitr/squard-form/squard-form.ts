@@ -14,7 +14,7 @@ import { squadSchema, initialCreateSquadData, squadValidationSchema } from './sq
 @Component({
     selector: 'splitr-squard-form',
     templateUrl: './squard-form.html',
-    imports: [LucideAngularModule, Form, Button, Input, SquadMember, NgClass],
+    imports: [LucideAngularModule, Form, Button, Input, SquadMember, NgClass]
 })
 export class SplitwiseSquardForm {
     // ICONS
@@ -43,24 +43,22 @@ export class SplitwiseSquardForm {
 
     // COMPUTED
     protected readonly formattedExistingMembers = computed<ISquadMember[]>(() =>
-        this.existingSquadMembers().map((member) => ({
+        this.existingSquadMembers().map(member => ({
             memberName: member,
-            isChecked: this.selectedSquadMembers().includes(member),
-        })),
+            isChecked: this.selectedSquadMembers().includes(member)
+        }))
     );
 
     protected readonly squadMembersPool = computed<ISquadMember[]>(() => {
         const selectedMembers = this.selectedSquadMembers();
         const selectedExisitingMembers = this.formattedExistingMembers();
 
-        const existingMemberNames = new Set(
-            this.existingSquadMembers().map((m) => m.toLowerCase()),
-        );
+        const existingMemberNames = new Set(this.existingSquadMembers().map(m => m.toLowerCase()));
         const localMembers = selectedMembers
-            .filter((member) => !existingMemberNames.has(member.toLowerCase()))
-            .map((member) => ({
+            .filter(member => !existingMemberNames.has(member.toLowerCase()))
+            .map(member => ({
                 memberName: member,
-                isChecked: true,
+                isChecked: true
             }));
 
         return [...selectedExisitingMembers, ...localMembers].reverse();
@@ -69,14 +67,11 @@ export class SplitwiseSquardForm {
     // METHODS
     protected validateMemberName(memberName: string) {
         const allMemberNames = this.squadMembersPool()
-            .flatMap((member) => member.memberName)
-            .map((name) => name.toLowerCase());
+            .flatMap(member => member.memberName)
+            .map(name => name.toLowerCase());
 
         const trimmedName = memberName.trim();
-        const isValid =
-            trimmedName.length > 1 &&
-            trimmedName.length <= 20 &&
-            !allMemberNames.includes(trimmedName.toLowerCase());
+        const isValid = trimmedName.length > 1 && trimmedName.length <= 20 && !allMemberNames.includes(trimmedName.toLowerCase());
 
         this.isMemberNameValid.set(isValid);
     }
@@ -85,24 +80,23 @@ export class SplitwiseSquardForm {
         const trimmedName = memberName.trim();
         const normalizedInput = trimmedName.toLowerCase();
 
-        const existingMemberNames = this.existingSquadMembers().map((m) => m.toLowerCase());
+        const existingMemberNames = this.existingSquadMembers().map(m => m.toLowerCase());
 
         const isExistingMember = existingMemberNames.includes(normalizedInput);
 
-        this.selectedSquadMembers.update((selectedMembers) => {
-            const normalizedSelected = selectedMembers.map((m) => m.toLowerCase());
+        this.selectedSquadMembers.update(selectedMembers => {
+            const normalizedSelected = selectedMembers.map(m => m.toLowerCase());
             const isAlreadySelected = normalizedSelected.includes(normalizedInput);
 
-            if (isAlreadySelected)
-                return selectedMembers.filter((m) => m.toLowerCase() !== normalizedInput);
+            if (isAlreadySelected) return selectedMembers.filter(m => m.toLowerCase() !== normalizedInput);
 
             if (!isExistingMember) {
-                const allPoolNames = this.squadMembersPool().map((m) => m.memberName.toLowerCase());
+                const allPoolNames = this.squadMembersPool().map(m => m.memberName.toLowerCase());
                 if (allPoolNames.includes(normalizedInput)) {
                     this.toastService.show({
                         variant: 'warning',
                         title: 'Member already exists!',
-                        details: 'This member already belongs to this squad.',
+                        details: 'This member already belongs to this squad.'
                     });
                     return selectedMembers;
                 }
@@ -134,7 +128,7 @@ export class SplitwiseSquardForm {
             this.toastService.show({
                 variant: 'warning',
                 title: 'Very few members!',
-                details: 'A squad must have at least two members.',
+                details: 'A squad must have at least two members.'
             });
             return;
         }
@@ -150,7 +144,7 @@ export class SplitwiseSquardForm {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Squad created successfully!',
-                        details: `Your [${response.squadName}] squad has been created successfully.`,
+                        details: `Your [${response.squadName}] squad has been created successfully.`
                     });
 
                     this.resetCreateSquadForm();
@@ -158,7 +152,7 @@ export class SplitwiseSquardForm {
                 },
                 complete: () => {
                     this.isSubmittingCreateSquadForm.set(false);
-                },
+                }
             });
         }, 2000);
     }

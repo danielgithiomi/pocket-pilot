@@ -7,26 +7,14 @@ import { ThemeService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
-import {
-    Account as IAccount,
-    IVoidResourceResponse,
-    UpdateAccountBalanceVisibilityPayload,
-} from '@global/types';
-import {
-    Nfc,
-    Trash,
-    EyeOff,
-    ScanEye,
-    EllipsisVertical,
-    FingerprintPattern,
-    LucideAngularModule,
-} from 'lucide-angular';
+import { Account as IAccount, IVoidResourceResponse, UpdateAccountBalanceVisibilityPayload } from '@global/types';
+import { Nfc, Trash, EyeOff, ScanEye, EllipsisVertical, FingerprintPattern, LucideAngularModule } from 'lucide-angular';
 
 @Component({
     selector: 'account-card',
     styleUrl: './account.css',
     templateUrl: './account.html',
-    imports: [NgOptimizedImage, LucideAngularModule, NgClass, RouterLink],
+    imports: [NgOptimizedImage, LucideAngularModule, NgClass, RouterLink]
 })
 export class Account implements OnInit {
     // INPUTS
@@ -46,7 +34,7 @@ export class Account implements OnInit {
                 scale: 1.025,
                 reverse: true,
                 'max-glare': 0.25,
-                perspective: 1000,
+                perspective: 1000
             });
         }
     }
@@ -66,7 +54,7 @@ export class Account implements OnInit {
     protected logoUrl = '/images/branding/logo.png';
     protected imageDimensions: ImageDimensions = {
         width: 30,
-        height: 30,
+        height: 30
     };
 
     // SIGNALS
@@ -103,7 +91,7 @@ export class Account implements OnInit {
         this.isTogglingBalanceVisibility.set(true);
 
         const payload: UpdateAccountBalanceVisibilityPayload = {
-            isBalanceVisible: !this.account().isBalanceVisible,
+            isBalanceVisible: !this.account().isBalanceVisible
         };
 
         this.accountsService.updateAccountBalanceVisibilityById(this.id(), payload).subscribe({
@@ -111,12 +99,12 @@ export class Account implements OnInit {
                 this.toastService.show({
                     variant: 'success',
                     title: 'Balance visibility toggled!',
-                    details: `Your [${account.name}] balance has been ${account.isBalanceVisible ? 'made visible' : 'hidden'}.`,
+                    details: `Your [${account.name}] balance has been ${account.isBalanceVisible ? 'made visible' : 'hidden'}.`
                 });
 
                 this.onAccountBalanceVisibilityToggle.emit();
             },
-            complete: () => this.isTogglingBalanceVisibility.set(false),
+            complete: () => this.isTogglingBalanceVisibility.set(false)
         });
     }
 
@@ -130,13 +118,13 @@ export class Account implements OnInit {
                     this.toastService.show({
                         variant: 'success',
                         details: response.details,
-                        title: 'Account deleted successfully!',
+                        title: 'Account deleted successfully!'
                     });
                 },
                 complete: () => {
                     this.onAccountDelete.emit();
                     this.isDeleting.set(false);
-                },
+                }
             });
         }, 2000);
     }

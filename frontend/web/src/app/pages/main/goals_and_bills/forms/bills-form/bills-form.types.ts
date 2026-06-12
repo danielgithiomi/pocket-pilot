@@ -9,7 +9,7 @@ export interface NewBillSchema {
     amount: number | null;
 }
 
-export const NewBillFormValidationSchema = schema<NewBillSchema>((root) => {
+export const NewBillFormValidationSchema = schema<NewBillSchema>(root => {
     // Name
     required(root.name, { message: 'The bill name is required field!' });
 
@@ -24,15 +24,13 @@ export const NewBillFormValidationSchema = schema<NewBillSchema>((root) => {
 
     // Amount
     required(root.amount, { message: 'The bill amount is required field!' });
-    validate(root.amount, (context) => {
+    validate(root.amount, context => {
         const value = context.value();
         if (value === null) return undefined;
 
         const asString = value.toString();
         const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
 
-        return isValid
-            ? undefined
-            : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
+        return isValid ? undefined : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
     });
 });

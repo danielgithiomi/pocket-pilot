@@ -4,17 +4,17 @@ import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class UserResource {
     readonly rootResource = httpResource(() => ({
         method: 'GET',
-        url: concatUrl(),
+        url: concatUrl()
     }));
 
     readonly me = httpResource<User>(() => ({
         method: 'GET',
         credentials: 'include',
-        url: concatUrl('auth/me'),
+        url: concatUrl('auth/me')
     }));
 }

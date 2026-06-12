@@ -5,7 +5,7 @@ import { environment } from '@environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class ApiClient {
     private readonly http = inject(HttpClient);
@@ -14,7 +14,7 @@ export class ApiClient {
     get<T>(endpoint: string, params?: Record<string, any>): Observable<T> {
         const url = `${this.baseUrl}${endpoint}`;
         return this.http.get<T>(url, {
-            params: new HttpParams({ fromObject: params || {} }),
+            params: new HttpParams({ fromObject: params || {} })
         });
     }
 
@@ -23,18 +23,14 @@ export class ApiClient {
         return this.http.post<IStandardResponse<T>>(url, body);
     }
 
-    uploadFile<T>(
-        endpoint: string,
-        file: File,
-        fieldName: string = 'file',
-    ): Observable<IStandardResponse<T>> {
+    uploadFile<T>(endpoint: string, file: File, fieldName: string = 'file'): Observable<IStandardResponse<T>> {
         const url = `${this.baseUrl}${endpoint}`;
         const formData = new FormData();
         formData.append(fieldName, file);
         return this.http.post<IStandardResponse<T>>(url, formData, {
             cache: 'no-cache',
             reportProgress: true,
-            credentials: 'include',
+            credentials: 'include'
         });
     }
 

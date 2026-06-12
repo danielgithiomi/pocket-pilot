@@ -6,12 +6,12 @@ import { httpResource } from '@angular/common/http';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class CategoriesResource {
     readonly getUserCategories = httpResource<IStandardResponse<Categories>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.categories),
+        url: concatUrl(endpoints.categories)
     }));
 }

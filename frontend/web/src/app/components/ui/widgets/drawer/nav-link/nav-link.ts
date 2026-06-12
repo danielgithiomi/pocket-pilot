@@ -15,7 +15,7 @@ import {
     ArrowLeftRight,
     LayoutDashboard,
     LucideAngularModule,
-    MessageCircleQuestionMark,
+    MessageCircleQuestionMark
 } from 'lucide-angular';
 
 @Component({
@@ -28,17 +28,15 @@ import {
             class="navigation-link group"
             [ngClass]="{
                 active: linkActive(),
-                'justify-center!': !isDrawerExpanded(),
-            }"
-        >
+                'justify-center!': !isDrawerExpanded()
+            }">
             <div class="navigation-content">
                 <div class="icon-wrapper">
                     <lucide-angular
                         [size]="iconSize"
                         [name]="link().name"
                         [img]="iconMap[link().icon]"
-                        [ngClass]="{ 'active-icon': linkActive() }"
-                    />
+                        [ngClass]="{ 'active-icon': linkActive() }" />
                 </div>
                 @if (isDrawerExpanded()) {
                     <p class="link-text" [ngClass]="{ 'text-white!': linkActive() }">
@@ -48,16 +46,11 @@ import {
             </div>
             @if (isDrawerExpanded()) {
                 <div class="navigation-arrow">
-                    <lucide-angular
-                        [size]="12"
-                        color="white"
-                        name="chevron-right"
-                        [img]="chevronRight"
-                    />
+                    <lucide-angular [size]="12" color="white" name="chevron-right" [img]="chevronRight" />
                 </div>
             }
         </div>
-    `,
+    `
 })
 export class NavLink {
     navLinkClicked = output<void>();
@@ -77,7 +70,7 @@ export class NavLink {
         profile: UserRoundCog,
         dashboard: LayoutDashboard,
         transactions: ArrowLeftRight,
-        faqs_features: MessageCircleQuestionMark,
+        faqs_features: MessageCircleQuestionMark
     };
 
     protected navigate() {

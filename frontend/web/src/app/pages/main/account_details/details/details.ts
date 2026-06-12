@@ -8,7 +8,7 @@ import { formatToReadable, formatCurrency, formatDate } from '@libs/utils';
 @Component({
     selector: 'account-details',
     templateUrl: './details.html',
-    imports: [Account, SummaryItem],
+    imports: [Account, SummaryItem]
 })
 export class DetailsComponent {
     // INPUTS

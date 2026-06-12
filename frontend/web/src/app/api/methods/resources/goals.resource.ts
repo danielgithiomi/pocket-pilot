@@ -5,18 +5,18 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { Goal, IEnumResponse, IStandardResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class GoalsResource {
     getGoalCategories = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.goal_categories),
+        url: concatUrl(endpoints.goal_categories)
     }));
 
     getUserGoals = httpResource<IStandardResponse<Goal[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.goals),
+        url: concatUrl(endpoints.goals)
     }));
 }

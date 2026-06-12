@@ -26,17 +26,7 @@ import { CURRENCIES, DummyAccountData as DummyAccount } from '@global/constants'
             @apply grid py-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6;
         }
     `,
-    imports: [
-        Form,
-        Input,
-        NoData,
-        Select,
-        Button,
-        NgClass,
-        Account,
-        FetchError,
-        LucideAngularModule,
-    ],
+    imports: [Form, Input, NoData, Select, Button, NgClass, Account, FetchError, LucideAngularModule]
 })
 export class Accounts {
     // Icons
@@ -54,9 +44,7 @@ export class Accounts {
 
     // Computed
     protected isLoadingAccounts = computed<boolean>(() => this.accountsWithCount.isLoading());
-    protected accountsHasError = computed(
-        () => !!this.accountsWithCount.error() || !this.accountsWithCount.hasValue(),
-    );
+    protected accountsHasError = computed(() => !!this.accountsWithCount.error() || !this.accountsWithCount.hasValue());
     protected accountsResource = computed(() => {
         if (this.accountsWithCount.error()) return null;
         return this.accountsWithCount.value()?.data ?? null;
@@ -83,7 +71,7 @@ export class Accounts {
         name: '',
         type: '',
         isBalanceVisible: true,
-        currency: this.currency,
+        currency: this.currency
     };
     protected accountsFormModel = signal<AccountsSchema>(this.INITIAL_FORM_STATE);
     protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
@@ -112,14 +100,14 @@ export class Accounts {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Account created!',
-                        details: `Your [${payload.name}] account has been created successfully.`,
+                        details: `Your [${payload.name}] account has been created successfully.`
                     });
                     this.accountsWithCount.reload();
                     this.resetAccountsForm();
                     this.isFormOpen.set(false);
                 },
-                error: (error) => console.error('Account creation failed:', error),
-                complete: () => this.isSubmitting.set(false),
+                error: error => console.error('Account creation failed:', error),
+                complete: () => this.isSubmitting.set(false)
             });
         }, 1000);
     };

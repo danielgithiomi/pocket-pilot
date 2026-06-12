@@ -5,22 +5,19 @@
 
     <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': false }">
         <p class="mb-6 cursor-default">
-            Keep track of your financial <span class="primary-span">goals</span> and
-            <span class="primary-span">bills</span>!
+            Keep track of your financial <span class="primary-span">goals</span> and <span class="primary-span">bills</span>!
         </p>
 
         <div
             class="w-full flex flex-col md:flex-row min-h-full gap-6 md:gap-8 pb-4"
             [ngClass]="{
-                'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
-            }"
-        >
+                'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed()
+            }">
             <div
                 class="goals-card no-shadow-card no-scrollbar"
                 [ngClass]="{
-                    'md:w-full!': !drawerService.isDrawerCollapsed(),
-                }"
-            >
+                    'md:w-full!': !drawerService.isDrawerCollapsed()
+                }">
                 <div class="card-header">
                     <p class="card-title">Goal Tracker</p>
 
@@ -29,14 +26,9 @@
                         id="add-goal"
                         variant="primary"
                         [disabled]="isFetchingGoals()"
-                        (click)="isGoalsFormOpen.set(true)"
-                    >
+                        (click)="isGoalsFormOpen.set(true)">
                         <div class="w-full flex flex-row items-center justify-between gap-4">
-                            <lucide-icon
-                                [img]="PlusIcon"
-                                [size]="iconSize"
-                                name="create-new-goal"
-                            ></lucide-icon>
+                            <lucide-icon [img]="PlusIcon" [size]="iconSize" name="create-new-goal"></lucide-icon>
                             <span class="hidden lg:block">Add Goal</span>
                         </div>
                     </atom-button>
@@ -55,9 +47,8 @@
                     <div
                         class="card-content no-scrollbar"
                         [ngClass]="{
-                            'grid! place-items-center! p-0!': goalCount == 0,
-                        }"
-                    >
+                            'grid! place-items-center! p-0!': goalCount == 0
+                        }">
                         @if (hasError) {
                             <fetch-error message="Failed to load goals" />
                         } @else {
@@ -66,8 +57,7 @@
                                     class="mb-10"
                                     messageClass="text-xs"
                                     animationDimensions="200px"
-                                    message="Create a goal today! Your future self will thank you."
-                                />
+                                    message="Create a goal today! Your future self will thank you." />
                             } @else {
                                 @for (goal of goals; track goal.id) {
                                     <goal-item [goalItem]="goal" />
@@ -80,9 +70,8 @@
             <div
                 class="bills-card no-shadow-card no-scrollbar"
                 [ngClass]="{
-                    'md:w-full!': !drawerService.isDrawerCollapsed(),
-                }"
-            >
+                    'md:w-full!': !drawerService.isDrawerCollapsed()
+                }">
                 <div class="card-header">
                     <p class="card-title">Your Bills</p>
 
@@ -91,14 +80,9 @@
                         id="add-bill"
                         variant="primary"
                         [disabled]="isFetchingBills()"
-                        (click)="isBillsFormOpen.set(true)"
-                    >
+                        (click)="isBillsFormOpen.set(true)">
                         <div class="w-full flex flex-row items-center justify-between gap-4">
-                            <lucide-icon
-                                [img]="PlusIcon"
-                                [size]="iconSize"
-                                name="create-new-bill"
-                            ></lucide-icon>
+                            <lucide-icon [img]="PlusIcon" [size]="iconSize" name="create-new-bill"></lucide-icon>
                             <span class="hidden lg:block">Add Bill</span>
                         </div>
                     </atom-button>
@@ -117,9 +101,8 @@
                     <div
                         class="card-content no-scrollbar"
                         [ngClass]="{
-                            'grid! place-items-center! p-0!': billCount == 0,
-                        }"
-                    >
+                            'grid! place-items-center! p-0!': billCount == 0
+                        }">
                         @if (hasError) {
                             <fetch-error message="Failed to load bills" />
                         } @else {
@@ -128,8 +111,7 @@
                                     class="mb-10"
                                     messageClass="text-xs"
                                     animationDimensions="200px"
-                                    message="You have no bills! Add one to keep things on track."
-                                />
+                                    message="You have no bills! Add one to keep things on track." />
                             } @else {
                                 @for (bill of bills; track bill.id) {
                                     <bill-item [billItem]="bill" />
@@ -148,9 +130,5 @@
 }
 
 @if (isBillsFormOpen()) {
-    <bills-form
-        [currency]="currency"
-        [isBillsFormOpen]="isBillsFormOpen()"
-        (onBillsFormClose)="onFormClose('bills')"
-    />
+    <bills-form [currency]="currency" [isBillsFormOpen]="isBillsFormOpen()" (onBillsFormClose)="onFormClose('bills')" />
 }

@@ -9,30 +9,30 @@ export class FeaturesResource {
     getFeatureStatus = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.feature_status),
+        url: concatUrl(endpoints.feature_status)
     }));
 
     getFeatureVoteVariants = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.feature_vote_variants),
+        url: concatUrl(endpoints.feature_vote_variants)
     }));
 
     getFeatureCategories = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.feature_categories),
+        url: concatUrl(endpoints.feature_categories)
     }));
 
     getFeatureRequests = httpResource<IStandardResponse<FeaturesWithCount>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.features),
+        url: concatUrl(endpoints.features)
     }));
 
     getUserFeatureRequests = httpResource<IStandardResponse<Feature[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.user_features),
+        url: concatUrl(endpoints.user_features)
     }));
 }

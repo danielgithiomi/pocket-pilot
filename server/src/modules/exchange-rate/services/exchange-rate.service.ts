@@ -8,7 +8,7 @@ import {
     ExchangeRatePayload,
     ExchangeRateResponse,
     CurrencyConversionResult,
-    PrismaExchangeRateSnapshotWithRates,
+    PrismaExchangeRateSnapshotWithRates
 } from '../dtos/exchange-rate.dto';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class ExchangeRateService {
     constructor(
         private readonly configService: PPConfigService,
         private readonly exchangeRateCache: ExchangeRateCache,
-        private readonly exchangeRateRepository: ExchangeRateRepository,
+        private readonly exchangeRateRepository: ExchangeRateRepository
     ) {}
 
     /**
@@ -48,11 +48,7 @@ export class ExchangeRateService {
         }
     }
 
-    async performCurrencyConversion(
-        amount: number,
-        fromCurrency: string,
-        toCurrency: string,
-    ): Promise<CurrencyConversionResult> {
+    async performCurrencyConversion(amount: number, fromCurrency: string, toCurrency: string): Promise<CurrencyConversionResult> {
         const { defaultCurrency: BASE_CURRENCY } = this.configService.exchangeRate;
         const exchangeRateSnapshot = await this.getThirdPartyExchangeRates();
 
@@ -69,16 +65,16 @@ export class ExchangeRateService {
         return {
             base: {
                 currency: BASE_CURRENCY,
-                amount: exchangeRateSnapshot.exchangeRates[BASE_CURRENCY],
+                amount: exchangeRateSnapshot.exchangeRates[BASE_CURRENCY]
             },
             source: {
                 currency: fromCurrency,
-                amount,
+                amount
             },
             target: {
                 currency: toCurrency,
-                amount: toTargetAmount,
-            },
+                amount: toTargetAmount
+            }
         };
     }
 
@@ -134,7 +130,7 @@ export class ExchangeRateService {
 
         const rawResponse = await fetch(finalUrl, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' }
         });
 
         if (!rawResponse.ok) {
@@ -151,7 +147,7 @@ export class ExchangeRateService {
             baseCurrency: base_code,
             exchangeRates: conversion_rates,
             nextUpdateTime: time_next_update_utc,
-            lastUpdatedTime: time_last_update_utc,
+            lastUpdatedTime: time_last_update_utc
         } satisfies ExchangeRatePayload;
 
         const savedSnapshot = await this.exchangeRateRepository.createExchangeRateSnapshot(payload);
@@ -166,9 +162,7 @@ export class ExchangeRateService {
     private toExchangeRateDto(snapshot: PrismaExchangeRateSnapshotWithRates): ExchangeRateDto {
         const { id, baseCurrency, exchangeRates, nextUpdateTime, lastUpdatedTime, fetchedAt } = snapshot;
 
-        const mappedExchangeRates = Object.fromEntries(
-            exchangeRates.map(({ currency, rate }) => [currency, Number(rate)]),
-        );
+        const mappedExchangeRates = Object.fromEntries(exchangeRates.map(({ currency, rate }) => [currency, Number(rate)]));
 
         return {
             id,
@@ -176,7 +170,7 @@ export class ExchangeRateService {
             nextUpdateTime,
             lastUpdatedTime,
             fetchedAt: new Date(fetchedAt),
-            exchangeRates: mappedExchangeRates,
+            exchangeRates: mappedExchangeRates
         } satisfies ExchangeRateDto;
     }
 
@@ -187,7 +181,7 @@ export class ExchangeRateService {
             title: 'Error fetching exchange rates',
             message: 'Error fetching exchange rates',
             statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-            details: 'There was an error fetching the exchange rates. Please try again later.',
+            details: 'There was an error fetching the exchange rates. Please try again later.'
         });
     }
 }

@@ -12,7 +12,7 @@ import { SquadItem } from '@components/structural/main/squad-item/squad-item';
 @Component({
     selector: 'splitr-squads',
     templateUrl: './squads.html',
-    imports: [LucideAngularModule, NgClass, Button, NoData, FetchError, SquadItem],
+    imports: [LucideAngularModule, NgClass, Button, NoData, FetchError, SquadItem]
 })
 export class SplitrSquads {
     // ICONS

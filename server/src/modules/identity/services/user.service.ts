@@ -6,13 +6,7 @@ import { UserRepository } from '../repositories/user.repository';
 import { CategoriesService } from '@modules/wallet/services/categories.service';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import {
-    UpdateUserDto,
-    UserResponseDto,
-    ChangePasswordDto,
-    UserWithPreferences,
-    UserWithPreferencesDto,
-} from '../dto/user.dto';
+import { UpdateUserDto, UserResponseDto, ChangePasswordDto, UserWithPreferences, UserWithPreferencesDto } from '../dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -20,7 +14,7 @@ export class UserService {
         private readonly awsService: AwsService,
         private readonly cookiesService: CookiesService,
         private readonly userRepository: UserRepository,
-        private readonly categoriesService: CategoriesService,
+        private readonly categoriesService: CategoriesService
     ) {}
 
     async registerUser(data: RegisterInputDto): Promise<RegisterOutputDto> {
@@ -30,7 +24,7 @@ export class UserService {
             throw new ConflictException({
                 name: 'User Already Exists.',
                 title: 'User Already Exists.',
-                details: `A user with the same email address already exists!`,
+                details: `A user with the same email address already exists!`
             });
 
         const hashedPassword = await argon.hash(data.password);
@@ -46,7 +40,7 @@ export class UserService {
         return {
             user: plainToInstance(UserResponseDto, createdUser),
             access_token,
-            refresh_token,
+            refresh_token
         } satisfies RegisterOutputDto;
     }
 
@@ -62,7 +56,7 @@ export class UserService {
             throw new NotFoundException({
                 name: 'USER_NOT_FOUND!',
                 title: 'User Not Found!',
-                details: `No user found with the ID: [${userId}].`,
+                details: `No user found with the ID: [${userId}].`
             });
 
         return this.toUserPreferenceDto(user);
@@ -80,7 +74,7 @@ export class UserService {
             throw new NotFoundException({
                 name: 'USER_NOT_FOUND!',
                 title: 'User Not Found!',
-                details: `No user found with the ID: [${userId}].`,
+                details: `No user found with the ID: [${userId}].`
             });
         }
 
@@ -90,7 +84,7 @@ export class UserService {
             throw new ConflictException({
                 name: 'PASSWORD_MISMATCH',
                 title: 'Password mismatch!',
-                details: `Your old password does not match our records. Please try again.`,
+                details: `Your old password does not match our records. Please try again.`
             });
         }
 
@@ -102,10 +96,7 @@ export class UserService {
     }
 
     async updateUserProfileWithPictureKey(userId: string, profilePictureAwsKey: string) {
-        const userWithProfilePictureKey = await this.userRepository.updateUserProfilePictureKey(
-            userId,
-            profilePictureAwsKey,
-        );
+        const userWithProfilePictureKey = await this.userRepository.updateUserProfilePictureKey(userId, profilePictureAwsKey);
 
         return this.toUserPreferenceDto(userWithProfilePictureKey);
     }
@@ -127,7 +118,7 @@ export class UserService {
     private async toUserPreferenceDto(user: UserWithPreferences): Promise<UserWithPreferencesDto> {
         const userWithProfilePicture = {
             ...user,
-            profilePictureUrl: await this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey),
+            profilePictureUrl: await this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey)
         };
 
         return plainToInstance(UserWithPreferencesDto, userWithProfilePicture);

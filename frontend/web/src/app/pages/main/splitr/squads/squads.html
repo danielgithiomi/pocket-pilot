@@ -9,8 +9,7 @@
             id="add-split"
             variant="primary"
             (clicked)="createSquadButtonClickEvent.emit()"
-            [disabled]="isFetchingSquads() || isCreateSquadFormOpen()"
-        >
+            [disabled]="isFetchingSquads() || isCreateSquadFormOpen()">
             <div class="w-full flex flex-row items-center justify-between gap-4">
                 <lucide-icon name="create-squad" [img]="Users" [size]="iconSize" />
             </div>
@@ -23,8 +22,7 @@
     @let centerContent = isLoadingResources() || isFetchingSquads() || hasError || hasNoData;
     <div
         class="card-content h-full overflow-y-scroll no-scrollbar mt-4 pb-2"
-        [ngClass]="{ 'flex-1 grid place-items-center': centerContent, 'mt-0!': !isCollapsed }"
-    >
+        [ngClass]="{ 'flex-1 grid place-items-center': centerContent, 'mt-0!': !isCollapsed }">
         @if (isFetchingSquads()) {
             <div class="dashboard-card-loader"></div>
         } @else {
@@ -32,21 +30,16 @@
                 <fetch-error
                     [messageClass]="animationMessageSize"
                     [animationDimensions]="animationDimensions"
-                    message="Error loading squads. Please refresh."
-                />
+                    message="Error loading squads. Please refresh." />
             } @else if (hasNoData) {
                 <no-data
                     [messageClass]="animationMessageSize"
                     [animationDimensions]="animationDimensions"
-                    message="You have no squads yet. Create one today!"
-                />
+                    message="You have no squads yet. Create one today!" />
             } @else {
                 <div class="flex flex-col gap-6">
                     @for (squad of userSquads(); track squad.id) {
-                        <squad-item
-                            [squad]="squad"
-                            (onUpdateSquadItemEvent)="onUpdateSquadItemEvent.emit($event)"
-                        />
+                        <squad-item [squad]="squad" (onUpdateSquadItemEvent)="onUpdateSquadItemEvent.emit($event)" />
                     }
                 </div>
             }

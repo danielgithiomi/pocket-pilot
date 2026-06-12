@@ -9,7 +9,7 @@ import { Circle, CircleCheckBig, CircleMinus, LucideAngularModule } from 'lucide
     selector: 'atom-radio',
     styleUrl: './radio.css',
     templateUrl: './radio.html',
-    imports: [LucideAngularModule, NgClass, CheckedCircle],
+    imports: [LucideAngularModule, NgClass, CheckedCircle]
 })
 export class Radio {
     /* INPUTS */

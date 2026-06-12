@@ -1,12 +1,6 @@
 import { TOAST_THEMES, ToastInternal, ToastTheme } from './toast.types';
 import { input, output, OnInit, OnDestroy, Component, computed } from '@angular/core';
-import {
-    CrossIcon,
-    InfoCircle,
-    CrossedCircle,
-    CheckedCircle,
-    CorneredWarningIcon,
-} from '@atoms/icons';
+import { CrossIcon, InfoCircle, CrossedCircle, CheckedCircle, CorneredWarningIcon } from '@atoms/icons';
 
 @Component({
     selector: 'atom-toast',
@@ -20,10 +14,7 @@ import {
                         <div class="flex flex-row gap-2 items-center">
                             @switch (theme().icon) {
                                 @case ('success') {
-                                    <icon-checked-circle
-                                        [color]="theme().color"
-                                        [checkColor]="theme().color"
-                                    />
+                                    <icon-checked-circle [color]="theme().color" [checkColor]="theme().color" />
                                 }
                                 @case ('error') {
                                     <icon-crossed-circle [color]="theme().color" />
@@ -51,10 +42,9 @@ import {
                 class="progress"
                 [class.paused]="isPaused"
                 [style.backgroundColor]="theme().color"
-                [style.animationDuration.ms]="remaining"
-            ></div>
+                [style.animationDuration.ms]="remaining"></div>
         </div>
-    `,
+    `
 })
 export class Toast implements OnInit, OnDestroy {
     closed = output<void>();

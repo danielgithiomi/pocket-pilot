@@ -9,8 +9,7 @@
                         class="atom-icon"
                         name="reset-month"
                         aria-label="reset-month"
-                        (click)="resetMonthEvent.emit()"
-                    />
+                        (click)="resetMonthEvent.emit()" />
                 }
 
                 <div class="dropdown-wrapper">
@@ -18,31 +17,20 @@
                         class="month-dropdown"
                         [value]="currentMonth()"
                         (change)="onMonthChange($event)"
-                        id="cost-analysis-month-selector"
-                    >
+                        id="cost-analysis-month-selector">
                         @for (month of months; track month.value) {
-                            <option
-                                [selected]="currentMonth() === month.value"
-                                [value]="month.value"
-                            >
+                            <option [selected]="currentMonth() === month.value" [value]="month.value">
                                 {{ month.label }}
                             </option>
                         }
                     </select>
-                    <svg
-                        class="dropdown-icon"
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                    >
+                    <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <path
                             d="M3 4.5L6 7.5L9 4.5"
                             stroke="currentColor"
                             stroke-width="1.5"
                             stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
+                            stroke-linejoin="round" />
                     </svg>
                 </div>
             </div>
@@ -63,8 +51,7 @@
                     [class.first]="i === 0"
                     [style.--segment-color]="segment.color"
                     [style.width.%]="segment.animatedPercentage"
-                    [class.last]="i === animatedSegments().length - 1"
-                >
+                    [class.last]="i === animatedSegments().length - 1">
                     <div class="stripe-pattern"></div>
                 </div>
             }

@@ -1,22 +1,13 @@
 <section id="not-found">
     <div>
         <div class="lottie-animation">
-            <ng-lottie
-                [options]="options"
-                [width]="animationDimensions"
-                [height]="animationDimensions"
-            />
+            <ng-lottie [options]="options" [width]="animationDimensions" [height]="animationDimensions" />
         </div>
 
         <div class="flex flex-col items-center gap-4 uppercase">
             <h1 class="text-xl text-center">No Resource Found Here!</h1>
 
-            <atom-button
-                id="back-to-safety"
-                className="uppercase"
-                label="Back To Safety"
-                (click)="navigateToSafety()"
-            />
+            <atom-button id="back-to-safety" className="uppercase" label="Back To Safety" (click)="navigateToSafety()" />
         </div>
     </div>
 </section>

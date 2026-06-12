@@ -5,5 +5,5 @@ export const BADGE_STYLES: Record<BadgeVariant, string> = {
     neutral: 'bg-(--dark)/50 ring-(--dark)/75',
     error: 'bg-(--error)/50 ring-(--error)/75',
     warning: 'bg-(--warning)/50 ring-(--warning)/75',
-    success: 'bg-(--success)/50 ring-(--success)/75',
+    success: 'bg-(--success)/50 ring-(--success)/75'
 };

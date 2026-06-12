@@ -21,13 +21,13 @@ export class PreferencesController {
     @Summary('Get application themes.', 'Get the application theme options.')
     @ApiOperation({
         summary: 'Get application themes',
-        description: 'Get the application theme options.',
+        description: 'Get the application theme options.'
     })
     @ApiResponse({
         status: 200,
         isArray: true,
         type: ExposeEnumDto,
-        description: 'Application themes retrieved successfully.',
+        description: 'Application themes retrieved successfully.'
     })
     getApplicationThemes() {
         return this.preferencesService.getApplicationThemes();
@@ -40,21 +40,21 @@ export class PreferencesController {
     @Summary('Update application preferences.', 'Update the application preferences.')
     @ApiOperation({
         summary: 'Update application preferences',
-        description: 'Update the application preferences.',
+        description: 'Update the application preferences.'
     })
     @ApiResponse({
         status: 200,
-        description: 'Application preferences updated successfully.',
+        description: 'Application preferences updated successfully.'
     })
     async updateUserPreferences(
         @UserInRequest() user: User,
-        @Body() payload: UpdatePreferencesPayload,
+        @Body() payload: UpdatePreferencesPayload
     ): Promise<VoidResourceResponse> {
         await this.preferencesService.updateUserPreferences(user.id, payload);
 
         return {
             message: 'Preferences updated successfully!',
-            details: 'Your user preferences have been updated successfully.',
+            details: 'Your user preferences have been updated successfully.'
         } satisfies VoidResourceResponse;
     }
 }

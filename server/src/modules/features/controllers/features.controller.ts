@@ -24,7 +24,7 @@ export class FeaturesController {
         status: 200,
         isArray: true,
         type: ExposeEnumDto,
-        description: 'Feature categories fetched successfully',
+        description: 'Feature categories fetched successfully'
     })
     async getFeatureCategories(): Promise<ExposeEnumDto[]> {
         return this.featuresService.getFeatureCategories();
@@ -41,7 +41,7 @@ export class FeaturesController {
         status: 200,
         isArray: true,
         type: ExposeEnumDto,
-        description: 'Feature status fetched successfully',
+        description: 'Feature status fetched successfully'
     })
     async getFeatureStatusOptions(): Promise<ExposeEnumDto[]> {
         return this.featuresService.getFeatureStatuses();
@@ -58,7 +58,7 @@ export class FeaturesController {
         status: 200,
         isArray: true,
         type: ExposeEnumDto,
-        description: 'Feature vote variants fetched successfully',
+        description: 'Feature vote variants fetched successfully'
     })
     async getFeatureVoteVariants(): Promise<ExposeEnumDto[]> {
         return this.featuresService.getFeatureVoteVariants();
@@ -72,7 +72,7 @@ export class FeaturesController {
     @ApiResponse({
         status: 201,
         type: FeatureDto,
-        description: 'Feature created successfully',
+        description: 'Feature created successfully'
     })
     async createFeatureRequest(@UserInRequest() user: User, @Body() payload: FeaturePayload): Promise<FeatureDto> {
         return this.featuresService.createFeatureRequest(user.id, payload);
@@ -89,7 +89,7 @@ export class FeaturesController {
     @ApiResponse({
         status: 200,
         type: FeaturesWithCountDto,
-        description: 'Feature requests with count fetched successfully',
+        description: 'Feature requests with count fetched successfully'
     })
     getFeatureRequests(): Promise<FeaturesWithCountDto> {
         return this.featuresService.getFeatureRequests();
@@ -102,13 +102,13 @@ export class FeaturesController {
     @Summary('User feature requests retrieved', 'The application retrieved all feature requests for a user')
     @ApiOperation({
         summary: 'Get all feature requests for a user',
-        description: 'Get all feature requests for a user',
+        description: 'Get all feature requests for a user'
     })
     @ApiResponse({
         status: 200,
         isArray: true,
         type: FeatureDto,
-        description: 'User feature requests fetched successfully',
+        description: 'User feature requests fetched successfully'
     })
     async getUserFeatureRequests(@UserInRequest() user: User): Promise<FeatureDto[]> {
         return this.featuresService.getUserFeatureRequests(user.id);
@@ -121,23 +121,23 @@ export class FeaturesController {
     @ApiParam({ name: 'featureId', description: 'The ID of the feature to update the status of' })
     @ApiOperation({
         summary: 'Update the feature status',
-        description: 'Modify the status of a feature by its ID',
+        description: 'Modify the status of a feature by its ID'
     })
     @ApiResponse({
         status: 200,
         type: FeatureDto,
-        description: 'Feature status updated successfully',
+        description: 'Feature status updated successfully'
     })
     async updateFeatureStatusById(
         @UserInRequest() user: User,
         @Param('featureId') featureId: string,
-        @Body() payload: UpdateFeatureStatusPayload,
+        @Body() payload: UpdateFeatureStatusPayload
     ): Promise<VoidResourceResponse> {
         const updatedFeature = await this.featuresService.updateFeatureStatusById(user.id, featureId, payload);
 
         return {
             message: 'Feature status updated!',
-            details: `Your [${updatedFeature.featureTitle}] feature status has been updated to [${updatedFeature.featureStatus}] successfuly.`,
+            details: `Your [${updatedFeature.featureTitle}] feature status has been updated to [${updatedFeature.featureStatus}] successfuly.`
         };
     }
 
@@ -150,17 +150,17 @@ export class FeaturesController {
     @ApiResponse({
         status: 200,
         type: VoidResourceResponse,
-        description: 'Feature request deleted successfully',
+        description: 'Feature request deleted successfully'
     })
     async deleteFeatureRequestById(
         @UserInRequest() user: User,
-        @Param('featureId') featureId: string,
+        @Param('featureId') featureId: string
     ): Promise<VoidResourceResponse> {
         const deletedFeature = await this.featuresService.deleteFeatureRequestById(user.id, featureId);
 
         return {
             message: 'Feature request deleted!',
-            details: `Your [${deletedFeature.featureTitle}] feature request has been deleted successfuly.`,
+            details: `Your [${deletedFeature.featureTitle}] feature request has been deleted successfuly.`
         };
     }
 }

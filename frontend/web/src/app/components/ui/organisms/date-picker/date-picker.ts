@@ -9,7 +9,7 @@ import { Component, input, signal, computed, output } from '@angular/core';
     selector: 'organism-date-picker',
     styleUrl: './date-picker.css',
     templateUrl: './date-picker.html',
-    imports: [CalendarModule, LucideAngularModule, NgClass],
+    imports: [CalendarModule, LucideAngularModule, NgClass]
 })
 export class DatePicker {
     /* INPUTS */
@@ -74,7 +74,7 @@ export class DatePicker {
 
     /* METHODS */
     toggleCalendar(): void {
-        this.isCalendarOpen.update((curr) => !curr);
+        this.isCalendarOpen.update(curr => !curr);
     }
 
     closeCalendar(): void {

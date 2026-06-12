@@ -7,6 +7,6 @@ import { BillsRepository } from './repositories/bills.repositories';
 @Module({
     imports: [IdentityModule],
     controllers: [BillsController],
-    providers: [BillsService, BillsRepository],
+    providers: [BillsService, BillsRepository]
 })
 export class BillsModule {}

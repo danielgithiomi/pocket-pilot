@@ -12,16 +12,12 @@ import { LottieComponent, AnimationOptions } from 'ngx-lottie';
     `,
     template: `
         <div class="no-data flex flex-col items-center justify-center">
-            <ng-lottie
-                [options]="options"
-                [width]="animationDimensions()"
-                [height]="animationDimensions()"
-            />
+            <ng-lottie [options]="options" [width]="animationDimensions()" [height]="animationDimensions()" />
             <p class="text-center font-medium uppercase text-muted" [ngClass]="messageClass()">
                 {{ message() }}
             </p>
         </div>
-    `,
+    `
 })
 export class NoData {
     readonly messageClass = input<string>('');
@@ -31,6 +27,6 @@ export class NoData {
     protected readonly options: AnimationOptions = {
         loop: true,
         autoplay: true,
-        path: '/animations/no_data.json',
+        path: '/animations/no_data.json'
     };
 }

@@ -14,7 +14,7 @@ export class CookiesService {
             sub: user.id!,
             username: user.name,
             email: user.email,
-            iat: Date.now(),
+            iat: Date.now()
         } satisfies JWTPayload;
     }
 
@@ -29,7 +29,7 @@ export class CookiesService {
             throw new InternalServerErrorException({
                 name: 'JWT Token Generation Error',
                 title: 'Failed to generate tokens',
-                details: `An error occurred while generating the access and refresh tokens: ${error}`,
+                details: `An error occurred while generating the access and refresh tokens: ${error}`
             });
         }
 
@@ -44,14 +44,14 @@ export class CookiesService {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            maxAge: access_token_max_age,
+            maxAge: access_token_max_age
         });
 
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            maxAge: refresh_token_max_age,
+            maxAge: refresh_token_max_age
         });
     }
 }

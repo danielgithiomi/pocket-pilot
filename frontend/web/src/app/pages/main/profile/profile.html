@@ -6,22 +6,19 @@
     <div
         class="page-container flex flex-col md:flex-row gap-6 md:gap-8"
         [ngClass]="{
-            'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
-        }"
-    >
+            'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed()
+        }">
         <!-- Left Column - Profile Picture -->
         <div
             class="w-full md:w-1/2 flex-1 flex flex-col gap-5"
             [ngClass]="{
-                'md:w-full': !drawerService.isDrawerCollapsed(),
-            }"
-        >
+                'md:w-full': !drawerService.isDrawerCollapsed()
+            }">
             <div class="page-card flex-1">
                 <profile-summary
                     [isFetching]="isFetchingProfileData()"
                     (editProfileClicked)="isEditFormOpen.set(true)"
-                    (updateProfilePictureClicked)="isProfilePictureFormOpen.set(true)"
-                />
+                    (updateProfilePictureClicked)="isProfilePictureFormOpen.set(true)" />
             </div>
 
             <div class="page-card flex-4">
@@ -30,47 +27,26 @@
         </div>
 
         <!-- Right Column - Profile Details -->
-        <div
-            class="page-card flex-1 w-full md:w-1/2"
-            [ngClass]="{ 'md:w-full lg:w-1/2': !drawerService.isDrawerCollapsed() }"
-        >
+        <div class="page-card flex-1 w-full md:w-1/2" [ngClass]="{ 'md:w-full lg:w-1/2': !drawerService.isDrawerCollapsed() }">
             <div class="card-header">
                 <p class="title">Personal Information.</p>
                 <p class="subtitle">Your account details and information.</p>
             </div>
 
             <div class="card-content">
-                <profile-detail
-                    detailVariant="name"
-                    [detailValue]="user()?.name"
-                    [isLoading]="isFetchingProfileData()"
-                />
-                <profile-detail
-                    detailVariant="email"
-                    [detailValue]="user()?.email"
-                    [isLoading]="isFetchingProfileData()"
-                />
-                <profile-detail
-                    detailVariant="phone"
-                    [detailValue]="user()?.phoneNumber"
-                    [isLoading]="isFetchingProfileData()"
-                />
-                <profile-detail
-                    detailValue="USER"
-                    detailVariant="role"
-                    [isLoading]="isFetchingProfileData()"
-                />
+                <profile-detail detailVariant="name" [detailValue]="user()?.name" [isLoading]="isFetchingProfileData()" />
+                <profile-detail detailVariant="email" [detailValue]="user()?.email" [isLoading]="isFetchingProfileData()" />
+                <profile-detail detailVariant="phone" [detailValue]="user()?.phoneNumber" [isLoading]="isFetchingProfileData()" />
+                <profile-detail detailValue="USER" detailVariant="role" [isLoading]="isFetchingProfileData()" />
                 <profile-detail
                     detailVariant="status"
                     [isLoading]="isFetchingProfileData()"
-                    [detailValue]="user()?.isAccountLocked ? 'Locked' : 'Active'"
-                />
+                    [detailValue]="user()?.isAccountLocked ? 'Locked' : 'Active'" />
                 <profile-detail
                     [isLast]="true"
                     detailVariant="last-login"
                     [detailValue]="formattedDate()"
-                    [isLoading]="isFetchingProfileData()"
-                />
+                    [isLoading]="isFetchingProfileData()" />
             </div>
         </div>
     </div>
@@ -83,8 +59,7 @@
         title="Edit Profile"
         [class.hidden]="!isEditFormOpen()"
         (closeForm)="isEditFormOpen.set(false)"
-        description="Update your personal information."
-    >
+        description="Update your personal information.">
         <form slot="content" id="edit-user-profile" (submit)="submitEditProfileForm($event)">
             <atom-input
                 type="text"
@@ -94,8 +69,7 @@
                 autocomplete="name"
                 placeholder="John Doe"
                 [formField]="editProfileForm.name"
-                (clearOutput)="editProfileForm.name().controlValue.set('')"
-            />
+                (clearOutput)="editProfileForm.name().controlValue.set('')" />
 
             <atom-input
                 type="email"
@@ -105,8 +79,7 @@
                 label="Email Address"
                 placeholder="john.doe@example.com"
                 [formField]="editProfileForm.email"
-                (clearOutput)="editProfileForm.email().controlValue.set('')"
-            />
+                (clearOutput)="editProfileForm.email().controlValue.set('')" />
 
             <atom-phone-number
                 [inverted]="true"
@@ -115,8 +88,7 @@
                 id="update-phone-number"
                 [formField]="editProfileForm.phoneNumber"
                 [defaultCountryIso]="defaultPhoneCountryIso()"
-                (clearOutput)="editProfileForm.phoneNumber().controlValue.set('')"
-            />
+                (clearOutput)="editProfileForm.phoneNumber().controlValue.set('')" />
         </form>
 
         <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
@@ -128,8 +100,7 @@
                 form="edit-user-profile"
                 id="reset-edit-profile-form"
                 (clicked)="resetEditProfileForm()"
-                [disabled]="!editProfileForm().dirty() || isSubmittingEditProfileForm()"
-            />
+                [disabled]="!editProfileForm().dirty() || isSubmittingEditProfileForm()" />
 
             <atom-button
                 type="submit"
@@ -137,12 +108,7 @@
                 form="edit-user-profile"
                 id="submit-edit-profile-form"
                 [isLoading]="isSubmittingEditProfileForm()"
-                [disabled]="
-                    editProfileForm().invalid() ||
-                    isSubmittingEditProfileForm() ||
-                    !isUpdatedDataChanged()
-                "
-            />
+                [disabled]="editProfileForm().invalid() || isSubmittingEditProfileForm() || !isUpdatedDataChanged()" />
         </div>
     </organism-form>
 }
@@ -153,31 +119,27 @@
         id="profile-picture-form-wrapper"
         description="Update your profile picture."
         [class.hidden]="!isProfilePictureFormOpen()"
-        (closeForm)="isProfilePictureFormOpen.set(false)"
-    >
+        (closeForm)="isProfilePictureFormOpen.set(false)">
         <form
             slot="content"
             class="h-full py-4"
             [formGroup]="formGroup"
             id="edit-profile-picture-form"
-            (submit)="submitEditProfilePictureForm($event)"
-        >
+            (submit)="submitEditProfilePictureForm($event)">
             <div
                 class="file-dropzone"
                 [class.drag-over]="isDragOver()"
                 [class.has-file]="selectedImage()"
                 (dragover)="onDragOver($event)"
                 (dragleave)="onDragLeave($event)"
-                (drop)="onDrop($event)"
-            >
+                (drop)="onDrop($event)">
                 <input
                     type="file"
                     accept="image/*"
                     id="profile-picture-input"
                     formControlName="profilePicture"
                     (change)="handleOnFileSelected($event)"
-                    class="file-input-hidden"
-                />
+                    class="file-input-hidden" />
 
                 <label for="profile-picture-input" class="dropzone-content">
                     @if (selectedImage()) {
@@ -192,22 +154,15 @@
                                     stroke="currentColor"
                                     stroke-width="2"
                                     stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <path
-                                        d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
-                                    />
+                                    stroke-linejoin="round">
+                                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
                                     <polyline points="14 2 14 8 20 8" />
                                     <circle cx="10" cy="13" r="2" />
-                                    <path
-                                        d="m20 17-1.09-2.45a2 2 0 0 0-2.2-1.14H12l-1.45-2.9a2 2 0 0 0-2.2-1.14H5"
-                                    />
+                                    <path d="m20 17-1.09-2.45a2 2 0 0 0-2.2-1.14H12l-1.45-2.9a2 2 0 0 0-2.2-1.14H5" />
                                 </svg>
                             </div>
                             <span class="file-name">{{ selectedImage()?.name }}</span>
-                            <span class="file-size">{{
-                                formatFileSize(selectedImage()?.size || 0)
-                            }}</span>
+                            <span class="file-size">{{ formatFileSize(selectedImage()?.size || 0) }}</span>
                         </div>
                     } @else {
                         <div class="upload-prompt">
@@ -221,8 +176,7 @@
                                     stroke="currentColor"
                                     stroke-width="2"
                                     stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
+                                    stroke-linejoin="round">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                     <polyline points="17 8 12 3 7 8" />
                                     <line x1="12" x2="12" y1="3" y2="15" />
@@ -246,8 +200,7 @@
                 [disabled]="!selectedImage()"
                 form="edit-profile-picture-form"
                 (clicked)="selectedImage.set(null)"
-                id="reset-update-profile-picture-form"
-            />
+                id="reset-update-profile-picture-form" />
 
             <atom-button
                 type="submit"
@@ -255,8 +208,7 @@
                 form="edit-profile-picture-form"
                 id="submit-update-profile-picture-form"
                 [isLoading]="isSubmittingProfilePictureForm()"
-                [disabled]="!selectedImage() || isSubmittingProfilePictureForm()"
-            />
+                [disabled]="!selectedImage() || isSubmittingProfilePictureForm()" />
         </div>
     </organism-form>
 }

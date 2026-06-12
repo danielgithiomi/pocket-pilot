@@ -12,12 +12,12 @@ export class FeaturesRepository {
         return this.db.feature.create({
             data: {
                 ...payload,
-                authorId: userId,
+                authorId: userId
             },
             include: {
                 featureVotes: true,
-                user: { select: { name: true } },
-            },
+                user: { select: { name: true } }
+            }
         });
     }
 
@@ -25,7 +25,7 @@ export class FeaturesRepository {
         return this.db.feature.findMany({
             include: { featureVotes: true, user: { select: { name: true } } },
             orderBy: { createdAt: 'desc' },
-            take: this.FEATURE_REQUESTS_LIMIT,
+            take: this.FEATURE_REQUESTS_LIMIT
         });
     }
 
@@ -34,7 +34,7 @@ export class FeaturesRepository {
             where: { authorId: userId },
             include: { featureVotes: true, user: { select: { name: true } } },
             orderBy: { createdAt: 'desc' },
-            take: this.FEATURE_REQUESTS_LIMIT,
+            take: this.FEATURE_REQUESTS_LIMIT
         });
     }
 
@@ -44,14 +44,14 @@ export class FeaturesRepository {
         return this.db.feature.update({
             where: { id: featureId },
             data: { featureStatus },
-            include: { featureVotes: true, user: { select: { name: true } } },
+            include: { featureVotes: true, user: { select: { name: true } } }
         });
     }
 
     deleteFeatureRequestById(featureId: string): Promise<FeatureWithUser> {
         return this.db.feature.delete({
             where: { id: featureId },
-            include: { featureVotes: true, user: { select: { name: true } } },
+            include: { featureVotes: true, user: { select: { name: true } } }
         });
     }
 }

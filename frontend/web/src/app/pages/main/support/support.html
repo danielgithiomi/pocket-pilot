@@ -2,13 +2,10 @@
     <section
         id="contact-us"
         class="page-section flex flex-col md:flex-row gap-4"
-        [ngClass]="{ 'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed() }"
-    >
+        [ngClass]="{ 'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed() }">
         <div class="flex-1 lg:flex-1 min-h-full flex flex-col justify-around p-0 md:p-4">
             <div class="flex flex-col space-y-3 cursor-default!">
-                <div
-                    class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary"
-                >
+                <div class="w-fit rounded-xl px-2 py-1 bg-alternate-background border border-primary">
                     <p class="text-xs text-primary font-semibold shadow-xl">Contact Us</p>
                 </div>
 
@@ -16,9 +13,8 @@
 
                 <div class="overflow-hidden w-3/5 mt-4">
                     <p class="overflow-hidden text-sm text-tertiary-dark text-ellipsis">
-                        Need support or have a question? Our Pocket Pilot Support Team is here to
-                        assist you with any questions or issues you may have. Please use the form to
-                        contact us.
+                        Need support or have a question? Our Pocket Pilot Support Team is here to assist you with any questions or
+                        issues you may have. Please use the form to contact us.
                     </p>
                 </div>
             </div>
@@ -26,18 +22,14 @@
             <div class="flex flex-col space-y-4">
                 @for (item of contactItems; track item.value) {
                     <div
-                        class="w-fit flex flex-row items-center gap-2 group cursor-pointer hover:scale-[1.0025] transition-custom"
-                    >
+                        class="w-fit flex flex-row items-center gap-2 group cursor-pointer hover:scale-[1.0025] transition-custom">
                         <div
-                            class="size-8 grid place-items-center border group-hover:border-loader-primary bg-alternate-background rounded-lg transition-custom"
-                        >
+                            class="size-8 grid place-items-center border group-hover:border-loader-primary bg-alternate-background rounded-lg transition-custom">
                             <lucide-icon [img]="item.icon" [size]="iconSize" [name]="item.id" />
                         </div>
-                        <a
-                            [href]="item.link"
-                            class="text-sm group-hover:underline group-hover:text-primary transition-custom"
-                            >{{ item.value }}</a
-                        >
+                        <a [href]="item.link" class="text-sm group-hover:underline group-hover:text-primary transition-custom">{{
+                            item.value
+                        }}</a>
                     </div>
                 }
             </div>
@@ -59,8 +51,7 @@
                                 autocomplete="name"
                                 wrapperClassName="flex-1 my-1!"
                                 [formField]="supportForm.firstName"
-                                (clearOutput)="supportForm.firstName().controlValue.set('')"
-                            />
+                                (clearOutput)="supportForm.firstName().controlValue.set('')" />
 
                             <atom-input
                                 type="text"
@@ -71,8 +62,7 @@
                                 autocomplete="name"
                                 wrapperClassName="flex-1 my-1!"
                                 [formField]="supportForm.lastName"
-                                (clearOutput)="supportForm.lastName().controlValue.set('')"
-                            />
+                                (clearOutput)="supportForm.lastName().controlValue.set('')" />
                         </div>
 
                         <atom-input
@@ -82,16 +72,14 @@
                             autocomplete="email"
                             [formField]="supportForm.email"
                             placeholder="john.doe@example.com"
-                            (clearOutput)="supportForm.email().controlValue.set('')"
-                        />
+                            (clearOutput)="supportForm.email().controlValue.set('')" />
 
                         <atom-phone-number
                             id="phone"
                             label="Phone"
                             placeholder="1234567890"
                             [formField]="supportForm.phone"
-                            [defaultCountryIso]="defaultPhoneCountryIso()"
-                        />
+                            [defaultCountryIso]="defaultPhoneCountryIso()" />
 
                         <atom-text-area
                             [rows]="3"
@@ -101,16 +89,14 @@
                             autocomplete="off"
                             placeholder="How can we help you?"
                             [formField]="supportForm.message"
-                            (clearOutput)="supportForm.message().controlValue.set('')"
-                        />
+                            (clearOutput)="supportForm.message().controlValue.set('')" />
 
                         <div class="w-full flex justify-end mt-4">
                             <atom-button
                                 variant="primary"
                                 id="submit-contact-form"
                                 [isLoading]="isSubmittingForm()"
-                                [disabled]="supportForm().invalid() || isSubmittingForm()"
-                            >
+                                [disabled]="supportForm().invalid() || isSubmittingForm()">
                                 <div class="flex flex-row items-center justify-between gap-3">
                                     <lucide-icon name="send" [img]="SendIcon" [size]="iconSize" />
                                     <span>Submit</span>

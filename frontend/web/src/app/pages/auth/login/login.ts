@@ -18,7 +18,7 @@ import { initialLoginFormState, loginFormValidationSchema, LoginSchema } from '@
     selector: 'app-login',
     styleUrl: './login.css',
     templateUrl: './login.html',
-    imports: [FormRoot, FormField, AuthBranding, CheckedShield, Button, LucideAngularModule, Input],
+    imports: [FormRoot, FormField, AuthBranding, CheckedShield, Button, LucideAngularModule, Input]
 })
 export class Login {
     // ICONS
@@ -31,8 +31,8 @@ export class Login {
     protected loginForm = form(this.loginFormModel, loginFormValidationSchema, {
         submission: {
             ignoreValidators: 'none',
-            action: (field: FieldTree<LoginSchema>) => this.handleLoginFormSubmission(field),
-        },
+            action: (field: FieldTree<LoginSchema>) => this.handleLoginFormSubmission(field)
+        }
     });
 
     // INJECTS
@@ -55,7 +55,7 @@ export class Login {
         const { email, password } = field;
         const payload: LoginPayload = {
             email: email().value(),
-            password: password().value(),
+            password: password().value()
         };
 
         const response = await firstValueFrom(this.authService.login(payload));
@@ -65,7 +65,7 @@ export class Login {
                 this.toastService.show({
                     variant: 'success',
                     title: response.summary.title,
-                    details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`,
+                    details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`
                 });
             });
             return;
@@ -77,13 +77,13 @@ export class Login {
                     return {
                         message,
                         kind: 'email',
-                        fieldTree: field.email,
+                        fieldTree: field.email
                     };
                 case 'password':
                     return {
                         message,
                         kind: 'password',
-                        fieldTree: field.password,
+                        fieldTree: field.password
                     };
                 default:
                     return;

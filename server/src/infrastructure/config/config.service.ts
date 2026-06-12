@@ -11,13 +11,13 @@ export class PPConfigService {
         return {
             port: this.service.getOrThrow<number>('REDIS_PORT'),
             host: this.service.getOrThrow<string>('REDIS_HOST'),
-            defaultTTL: this.service.getOrThrow<number>('REDIS_DEFAULT_TTL_SECONDS'),
+            defaultTTL: this.service.getOrThrow<number>('REDIS_DEFAULT_TTL_SECONDS')
         };
     }
 
     get database(): IDatabaseConfig {
         return {
-            url: this.service.getOrThrow<string>('DATABASE_URL'),
+            url: this.service.getOrThrow<string>('DATABASE_URL')
         };
     }
 
@@ -25,7 +25,7 @@ export class PPConfigService {
         return {
             apiKey: this.service.getOrThrow<string>('EXCHANGE_RATE_API_KEY'),
             apiUrl: this.service.getOrThrow<string>('EXCHANGE_RATE_BASE_URL'),
-            defaultCurrency: this.service.getOrThrow<string>('EXCHANGE_RATE_DEFAULT_CURRENCY'),
+            defaultCurrency: this.service.getOrThrow<string>('EXCHANGE_RATE_DEFAULT_CURRENCY')
         };
     }
 
@@ -39,7 +39,7 @@ export class PPConfigService {
             secretAccessKey: this.service.getOrThrow<string>('AWS_SECRET_ACCESS_KEY'),
             connectionTimeout: this.service.getOrThrow<number>('AWS_MAX_CONNECTION_TIMEOUT'),
             presignedUrlExpiration: this.service.getOrThrow<number>('AWS_PRESIGNED_URL_EXPIRATION_IN_SECONDS'),
-            presignedReadUrlExpiration: this.service.getOrThrow<number>('AWS_PRESIGNED_READ_URL_EXPIRATION_IN_SECONDS'),
+            presignedReadUrlExpiration: this.service.getOrThrow<number>('AWS_PRESIGNED_READ_URL_EXPIRATION_IN_SECONDS')
         };
     }
 }

@@ -12,10 +12,10 @@ export const APP_MODULE_IMPORTS: ModuleImports[] = [AppModules, InfrastructureMo
 export const APP_MODULE_PROVIDERS: Provider[] = [
     {
         provide: APP_INTERCEPTOR,
-        useClass: GlobalResponseInterceptor,
+        useClass: GlobalResponseInterceptor
     },
     {
         provide: APP_FILTER,
-        useClass: GlobalExceptionFilter,
-    },
+        useClass: GlobalExceptionFilter
+    }
 ];

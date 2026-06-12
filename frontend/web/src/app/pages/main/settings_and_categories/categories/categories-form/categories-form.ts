@@ -10,14 +10,14 @@ import {
     categoryFormValidationSchema,
     CategorySchema,
     categoryTabItems,
-    initialCategoryFormState,
+    initialCategoryFormState
 } from './categories-form.types';
 import { CategoryVariant } from '@global/types';
 
 @Component({
     selector: 'categories-form',
     templateUrl: './categories-form.html',
-    imports: [Form, Input, Button, TabList],
+    imports: [Form, Input, Button, TabList]
 })
 export class CategoriesForm {
     // INPUTS
@@ -67,14 +67,14 @@ export class CategoriesForm {
                 this.toastService.show({
                     variant: 'success',
                     title: 'Category created!',
-                    details: `Your [${categoryType}] category has been created successfully.`,
+                    details: `Your [${categoryType}] category has been created successfully.`
                 });
 
                 this.resetCategoryForm();
                 this.categories$.reload();
                 this.categoriesFormClosed.emit('icon');
             },
-            complete: () => this.isSubmittingCategoriesForm.set(false),
+            complete: () => this.isSubmittingCategoriesForm.set(false)
         });
     }
 }

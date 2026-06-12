@@ -15,8 +15,7 @@
                     label="Email Address"
                     placeholder="johndoe@gmail.com"
                     [formField]="registerForm.email"
-                    (clearOutput)="registerForm.email().controlValue.set('')"
-                />
+                    (clearOutput)="registerForm.email().controlValue.set('')" />
 
                 <atom-input
                     type="text"
@@ -25,8 +24,7 @@
                     placeholder="John Doe"
                     autocomplete="username"
                     [formField]="registerForm.name"
-                    (clearOutput)="registerForm.name().controlValue.set('')"
-                />
+                    (clearOutput)="registerForm.name().controlValue.set('')" />
 
                 <atom-input
                     id="password"
@@ -34,8 +32,7 @@
                     label="Password"
                     placeholder="••••••••"
                     autocomplete="new-password"
-                    [formField]="registerForm.password"
-                />
+                    [formField]="registerForm.password" />
 
                 <atom-input
                     type="password"
@@ -43,8 +40,7 @@
                     placeholder="••••••••"
                     label="Confirm Password"
                     autocomplete="new-password"
-                    [formField]="registerForm.confirmPassword"
-                />
+                    [formField]="registerForm.confirmPassword" />
 
                 <atom-button
                     id="register"
@@ -52,14 +48,11 @@
                     label="Register"
                     form="register-form"
                     [isLoading]="isSubmitting()"
-                    [disabled]="registerForm().invalid() || isSubmitting()"
-                />
+                    [disabled]="registerForm().invalid() || isSubmitting()" />
             </form>
             <!--   FORM END   -->
 
-            <p (click)="routeToLogin()" class="form-redirect-text">
-                Already have an account? Log in
-            </p>
+            <p (click)="routeToLogin()" class="form-redirect-text">Already have an account? Log in</p>
 
             <div class="secure-auth">
                 <hr />

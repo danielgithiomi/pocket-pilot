@@ -18,10 +18,10 @@ export class ExchangeRateRepository {
                 nextUpdateTime: new Date(nextUpdateTime),
                 lastUpdatedTime: new Date(lastUpdatedTime),
                 exchangeRates: {
-                    create: Object.entries(exchangeRates).map(([currency, rate]) => ({ currency, rate })),
-                },
+                    create: Object.entries(exchangeRates).map(([currency, rate]) => ({ currency, rate }))
+                }
             },
-            include: { exchangeRates: true },
+            include: { exchangeRates: true }
         });
     }
 
@@ -30,13 +30,13 @@ export class ExchangeRateRepository {
             where: { baseCurrency },
             orderBy: { lastUpdatedTime: 'desc' },
             include: { exchangeRates: true },
-            take: 1,
+            take: 1
         });
     }
 
     deleteAllExchangeRateSnapshots(baseCurrency: string) {
         return this.db.exchangeRateSnapshot.deleteMany({
-            where: { baseCurrency },
+            where: { baseCurrency }
         });
     }
 
@@ -45,7 +45,7 @@ export class ExchangeRateRepository {
         const cutoffDate = new Date(Date.now() - hoursToMilliseconds(hoursToRetain));
 
         return this.db.exchangeRateSnapshot.deleteMany({
-            where: { baseCurrency, lastUpdatedTime: { lt: cutoffDate } },
+            where: { baseCurrency, lastUpdatedTime: { lt: cutoffDate } }
         });
     }
 }

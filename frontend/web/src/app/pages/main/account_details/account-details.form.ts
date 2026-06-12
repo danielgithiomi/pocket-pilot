@@ -20,8 +20,7 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
             title="Update Account"
             [class.hidden]="!isEditFormOpen()"
             description="Modify account details"
-            (closeForm)="closeEditFormEvent.emit($event)"
-        >
+            (closeForm)="closeEditFormEvent.emit($event)">
             @let types = accountTypes.value()?.data;
             <form slot="content" id="edit-account-form" (submit)="submitEditAccountForm($event)">
                 <atom-input
@@ -32,8 +31,7 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
                     label="Account Name"
                     placeholder="Eg: Expenditure"
                     [formField]="editAccountForm.name"
-                    (clearOutput)="editAccountForm.name().controlValue.set('')"
-                />
+                    (clearOutput)="editAccountForm.name().controlValue.set('')" />
 
                 <div class="flex flex-col sm:flex-row gap-4">
                     <atom-select
@@ -44,8 +42,7 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
                         wrapperClassName="my-0"
                         placeholder="Select a type"
                         [formField]="editAccountForm.type"
-                        [options]="types || [{ value: '', label: 'No account types found' }]"
-                    />
+                        [options]="types || [{ value: '', label: 'No account types found' }]" />
 
                     <atom-select
                         class="flex-1"
@@ -55,8 +52,7 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
                         wrapperClassName="my-0"
                         label="Account Currency"
                         placeholder="Select a currency"
-                        [formField]="editAccountForm.currency"
-                    />
+                        [formField]="editAccountForm.currency" />
                 </div>
             </form>
 
@@ -69,8 +65,7 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
                     form="edit-account-form"
                     id="reset-edit-account-form"
                     (clicked)="resetEditAccountsForm()"
-                    [disabled]="!editAccountForm().dirty() || isSubmitting()"
-                />
+                    [disabled]="!editAccountForm().dirty() || isSubmitting()" />
 
                 <atom-button
                     type="submit"
@@ -78,13 +73,10 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
                     form="edit-account-form"
                     [isLoading]="isSubmitting()"
                     id="submit-edit-account-form"
-                    [disabled]="
-                        editAccountForm().invalid() || !editAccountForm().dirty() || isSubmitting()
-                    "
-                />
+                    [disabled]="editAccountForm().invalid() || !editAccountForm().dirty() || isSubmitting()" />
             </div>
         </organism-form>
-    `,
+    `
 })
 export class AccountDetailsForm {
     // INPUTS
@@ -110,12 +102,12 @@ export class AccountDetailsForm {
         name: '',
         type: '',
         currency: '',
-        isBalanceVisible: true,
+        isBalanceVisible: true
     });
 
     protected readonly editAccountForm = form<UpdateAccountDetailsSchema>(
         this.editAccountFormModel,
-        UpdateAccountValidationSchema,
+        UpdateAccountValidationSchema
     );
 
     constructor() {
@@ -125,7 +117,7 @@ export class AccountDetailsForm {
                 name: formatToReadable(name),
                 type,
                 currency,
-                isBalanceVisible,
+                isBalanceVisible
             });
         });
     }
@@ -138,7 +130,7 @@ export class AccountDetailsForm {
             name: acc.name,
             type: acc.type,
             currency: acc.currency,
-            isBalanceVisible: acc.isBalanceVisible,
+            isBalanceVisible: acc.isBalanceVisible
         });
     }
 
@@ -156,12 +148,12 @@ export class AccountDetailsForm {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Account updated successfully!',
-                        details: `Your [${account.name}] account information has been updated successfully.`,
+                        details: `Your [${account.name}] account information has been updated successfully.`
                     });
 
                     this.closeEditFormEvent.emit('submit');
                 },
-                complete: () => this.isSubmitting.set(false),
+                complete: () => this.isSubmitting.set(false)
             });
         }, 2500);
     }

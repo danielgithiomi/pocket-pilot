@@ -4,7 +4,7 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { Feature, FeaturePayload, IVoidResourceResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class FeaturesMutation {
     private readonly client = inject(ApiClient);

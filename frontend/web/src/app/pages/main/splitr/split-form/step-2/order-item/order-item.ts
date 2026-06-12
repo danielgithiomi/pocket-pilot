@@ -10,28 +10,21 @@ import { AccountsService } from '@api/accounts.service';
 import { PlaceholderSplittableFormState as placeholder } from './order-item.types';
 import { LucideAngularModule, Trash2, ChevronDown, ChevronUp } from 'lucide-angular';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
-import {
-    SquadMember,
-    ISquadMember,
-    QuantityChangeEmmision,
-} from '@structural/main/squad-member/squad-member';
-import {
-    NewSplittableSchema,
-    NewSplittableFormValidation as FormValidation,
-} from '../split-form-step-2.types';
+import { SquadMember, ISquadMember, QuantityChangeEmmision } from '@structural/main/squad-member/squad-member';
+import { NewSplittableSchema, NewSplittableFormValidation as FormValidation } from '../split-form-step-2.types';
 import {
     SplittableOrder,
     LocalQuantitySplit,
     SPLIT_STRATEGY_MAP,
     SplitStrategyVariant,
-    SPLIT_STRATEGY_OPTIONS,
+    SPLIT_STRATEGY_OPTIONS
 } from '@global/types';
 
 @Component({
     selector: 'order-item',
     styleUrl: 'order-item.css',
     templateUrl: 'order-item.html',
-    imports: [Button, LucideAngularModule, Input, Select, SquadMember],
+    imports: [Button, LucideAngularModule, Input, Select, SquadMember]
 })
 export class OrderItem {
     // ICON
@@ -62,10 +55,10 @@ export class OrderItem {
 
     // REACTIVE
     protected readonly formattedUnitPrice = computed<string>(() =>
-        formatCurrency(this.order().unitPrice, this.currency, 2, false),
+        formatCurrency(this.order().unitPrice, this.currency, 2, false)
     );
     protected readonly formattedTotal = computed<string>(() =>
-        formatCurrency(this.order().unitPrice * this.order().quantity, this.currency, 2, true),
+        formatCurrency(this.order().unitPrice * this.order().quantity, this.currency, 2, true)
     );
 
     // COMPUTED
@@ -79,35 +72,30 @@ export class OrderItem {
         return SPLIT_STRATEGY_OPTIONS.map((strategy: SplitStrategyVariant) => ({
             value: strategy,
             label: SPLIT_STRATEGY_MAP[strategy],
-            disabled: strategy === 'QUANTITY' && quantity <= 1,
+            disabled: strategy === 'QUANTITY' && quantity <= 1
         }));
     });
     protected readonly orderQuantities = computed<SelectOption[]>(() =>
-        QUANTITIES.map((quantity) => ({
+        QUANTITIES.map(quantity => ({
             value: quantity.toString(),
-            label: quantity.toString(),
-        })),
+            label: quantity.toString()
+        }))
     );
     protected readonly formattedConsumers = computed<ISquadMember[]>(() => {
         const currentSplits = this.updateSplittableForm().value().quantitySplits;
-        const currentConsumers = currentSplits.map((split) => split.consumerName);
+        const currentConsumers = currentSplits.map(split => split.consumerName);
 
-        return this.presentMembers().map((consumer) => ({
+        return this.presentMembers().map(consumer => ({
             memberName: consumer,
             isChecked: currentConsumers.includes(consumer),
-            quantity:
-                currentSplits.find((split) => split.consumerName === consumer)?.consumerQuantity ||
-                1,
+            quantity: currentSplits.find(split => split.consumerName === consumer)?.consumerQuantity || 1
         }));
     });
     protected readonly quantityAssisgnableRemaining = computed<number>(() => {
         const orderSplits = this.updateSplittableForm().value().quantitySplits;
         const orderQuantity = Number(this.updateSplittableForm().value().quantity);
 
-        const totalAssignedQuantity = orderSplits.reduce(
-            (acc, split) => acc + split.consumerQuantity,
-            0,
-        );
+        const totalAssignedQuantity = orderSplits.reduce((acc, split) => acc + split.consumerQuantity, 0);
 
         return orderQuantity - totalAssignedQuantity;
     });
@@ -128,34 +116,26 @@ export class OrderItem {
     protected updateSplittable(event: Event): void {
         event.preventDefault();
 
-        const {
-            name,
-            quantity: quantityStr,
-            unitPrice,
-            quantitySplits,
-        } = this.updateSplittableForm().value();
+        const { name, quantity: quantityStr, unitPrice, quantitySplits } = this.updateSplittableForm().value();
 
         if (!unitPrice) {
             this.toastService.show({
                 variant: 'error',
                 title: 'Unit price is invalid!',
-                details: 'Please enter a valid unit price for this item.',
+                details: 'Please enter a valid unit price for this item.'
             });
             return;
         }
 
         const quantity = Number(quantityStr);
 
-        const totalSplitsQuantity = quantitySplits.reduce(
-            (acc, split) => acc + split.consumerQuantity,
-            0,
-        );
+        const totalSplitsQuantity = quantitySplits.reduce((acc, split) => acc + split.consumerQuantity, 0);
 
         if (totalSplitsQuantity !== quantity) {
             this.toastService.show({
                 variant: 'error',
                 title: 'Consumer Quantity Mismatch!',
-                details: "The quantity and the number of consumers don't match up",
+                details: "The quantity and the number of consumers don't match up"
             });
             return;
         }
@@ -168,7 +148,7 @@ export class OrderItem {
             total,
             quantity,
             unitPrice,
-            quantitySplits,
+            quantitySplits
         };
 
         this.onUpdateSplittableEvent.emit({ ...updatedOrder });
@@ -181,14 +161,12 @@ export class OrderItem {
 
         const currentSplits = this.updateSplittableForm().value().quantitySplits;
 
-        const updatedSplits = currentSplits.map((split) => {
+        const updatedSplits = currentSplits.map(split => {
             if (split.consumerName === memberName)
                 return {
                     ...split,
                     consumerQuantity:
-                        quantityChangeVariant === 'increase'
-                            ? split.consumerQuantity + 1
-                            : split.consumerQuantity - 1,
+                        quantityChangeVariant === 'increase' ? split.consumerQuantity + 1 : split.consumerQuantity - 1
                 };
 
             return split;
@@ -200,22 +178,18 @@ export class OrderItem {
     protected updateOrderConsumers(memberName: string): void {
         const orderSplits = this.updateSplittableForm().value().quantitySplits;
         const orderQuantity = Number(this.updateSplittableForm().value().quantity);
-        const totalSplitsQuantity = orderSplits.reduce(
-            (acc, split) => acc + split.consumerQuantity,
-            0,
-        );
+        const totalSplitsQuantity = orderSplits.reduce((acc, split) => acc + split.consumerQuantity, 0);
 
         let updatedSplits: LocalQuantitySplit[];
-        const memberExists = orderSplits.map((split) => split.consumerName).includes(memberName);
+        const memberExists = orderSplits.map(split => split.consumerName).includes(memberName);
 
-        if (memberExists)
-            updatedSplits = orderSplits.filter((split) => split.consumerName !== memberName);
+        if (memberExists) updatedSplits = orderSplits.filter(split => split.consumerName !== memberName);
         else {
             if (totalSplitsQuantity >= orderQuantity) {
                 this.toastService.show({
                     variant: 'error',
                     title: 'Quantity mismatch!',
-                    details: 'You want to add more consumers than the quantity of the item.',
+                    details: 'You want to add more consumers than the quantity of the item.'
                 });
                 return;
             }
@@ -223,7 +197,7 @@ export class OrderItem {
             const newSplit: LocalQuantitySplit = {
                 consumerQuantity: 1,
                 id: crypto.randomUUID(),
-                consumerName: memberName,
+                consumerName: memberName
             };
 
             updatedSplits = [...orderSplits, newSplit];
@@ -239,7 +213,7 @@ export class OrderItem {
             if (orderData)
                 this.updateSplittableFormModel.set({
                     ...orderData,
-                    quantity: orderData.quantity.toString(),
+                    quantity: orderData.quantity.toString()
                 });
         });
     }

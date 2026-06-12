@@ -28,8 +28,8 @@ import { GoalItem, BillItem, BillItemSkeleton, GoalItemSkeleton } from './items'
         CalendarModule,
         GoalItemSkeleton,
         BillItemSkeleton,
-        LucideAngularModule,
-    ],
+        LucideAngularModule
+    ]
 })
 export class Goals {
     // Icons

@@ -5,8 +5,7 @@
                 [size]="10"
                 color="var(--body-background)"
                 fillColor="var(--body-background)"
-                [direction]="drawerOpen() ? 'left' : 'right'"
-            />
+                [direction]="drawerOpen() ? 'left' : 'right'" />
         </div>
     }
 
@@ -21,18 +20,12 @@
             class="drawer-logo dark:invert-100"
             [ngClass]="{
                 'invert-0!': themeService.activeTheme() === 'light',
-                'invert-100!': themeService.activeTheme() === 'dark',
-            }"
-        />
+                'invert-100!': themeService.activeTheme() === 'dark'
+            }" />
 
         @if (isMobile()) {
             <div class="close-icon-wrapper group" (click)="mobileDrawerCloseOutput.emit()">
-                <lucide-angular
-                    [img]="X"
-                    class="close-icon"
-                    name="close-mobile-drawer"
-                    color="var(--inverted-text)"
-                />
+                <lucide-angular [img]="X" class="close-icon" name="close-mobile-drawer" color="var(--inverted-text)" />
             </div>
         }
     </div>
@@ -40,11 +33,7 @@
     <div class="drawer-content">
         <div class="links">
             @for (link of links; track link.name) {
-                <nav-link
-                    [link]="link"
-                    [isDrawerExpanded]="drawerOpen()"
-                    (navLinkClicked)="linkClicked.emit()"
-                />
+                <nav-link [link]="link" [isDrawerExpanded]="drawerOpen()" (navLinkClicked)="linkClicked.emit()" />
             }
         </div>
 
@@ -52,20 +41,13 @@
 
         <div class="links">
             @for (link of additionalLinks; track link.name) {
-                <nav-link
-                    [link]="link"
-                    [isDrawerExpanded]="drawerOpen()"
-                    (navLinkClicked)="linkClicked.emit()"
-                />
+                <nav-link [link]="link" [isDrawerExpanded]="drawerOpen()" (navLinkClicked)="linkClicked.emit()" />
             }
         </div>
     </div>
 
     <div class="drawer-footer">
-        <div
-            class="bordered-card p-3! items-center!"
-            [ngClass]="{ 'justify-center!': !drawerOpen() }"
-        >
+        <div class="bordered-card p-3! items-center!" [ngClass]="{ 'justify-center!': !drawerOpen() }">
             <div class="relative">
                 <span class="h-2 w-2 rounded-full bg-success block"></span>
                 <span class="absolute inset-0 h-2 w-2 rounded-full bg-success animate-ping"></span>

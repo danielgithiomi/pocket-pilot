@@ -8,11 +8,11 @@ import {
     UpdateAccountPayload,
     CreateAccountPayload,
     IVoidResourceResponse,
-    UpdateAccountBalanceVisibilityPayload,
+    UpdateAccountBalanceVisibilityPayload
 } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class AccountsMutation {
     private readonly client = inject(ApiClient);
@@ -21,23 +21,17 @@ export class AccountsMutation {
         return this.client.post<Account, CreateAccountPayload>(endpoints.accounts, payload);
     }
 
-    updateAccountById(
-        accountId: string,
-        payload: UpdateAccountPayload,
-    ): Observable<IStandardResponse<Account>> {
-        return this.client.put<Account, UpdateAccountPayload>(
-            `${endpoints.accounts}/${accountId}`,
-            payload,
-        );
+    updateAccountById(accountId: string, payload: UpdateAccountPayload): Observable<IStandardResponse<Account>> {
+        return this.client.put<Account, UpdateAccountPayload>(`${endpoints.accounts}/${accountId}`, payload);
     }
 
     updateAccountBalanceVisibilityById(
         accountId: string,
-        payload: UpdateAccountBalanceVisibilityPayload,
+        payload: UpdateAccountBalanceVisibilityPayload
     ): Observable<IStandardResponse<Account>> {
         return this.client.patch<Account, UpdateAccountBalanceVisibilityPayload>(
             `${endpoints.accounts}/${accountId}/visibility`,
-            payload,
+            payload
         );
     }
 

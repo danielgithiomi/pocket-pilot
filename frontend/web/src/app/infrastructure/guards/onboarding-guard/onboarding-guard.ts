@@ -18,7 +18,7 @@ export const OnboardingGuard: CanMatchFn = async () => {
             toastService.show({
                 variant: 'info',
                 title: 'Login required!',
-                details: 'Please login to complete the onboarding process.',
+                details: 'Please login to complete the onboarding process.'
             });
             return router.navigate([WEB_ROUTES.login], { replaceUrl: true });
         }

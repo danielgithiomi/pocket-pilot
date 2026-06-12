@@ -13,7 +13,7 @@ export class AccountRepository {
 
     getAllApplicationAccounts() {
         return this.db.account.findMany({
-            include: { holder: { select: { name: true, email: true } } },
+            include: { holder: { select: { name: true, email: true } } }
         });
     }
 
@@ -30,8 +30,8 @@ export class AccountRepository {
             where: { id: accountId },
             include: {
                 incomingTransactions: true,
-                outgoingTransactions: true,
-            },
+                outgoingTransactions: true
+            }
         });
     }
 
@@ -42,7 +42,7 @@ export class AccountRepository {
     toggleAccountBalanceVisibilityById(accountId: string, payload: ToggleAccountBalanceVisibilityPayload) {
         return this.db.account.update({
             where: { id: accountId },
-            data: { isBalanceVisible: payload.isBalanceVisible },
+            data: { isBalanceVisible: payload.isBalanceVisible }
         });
     }
 

@@ -24,7 +24,7 @@ export class DatabaseService extends PrismaClient implements OnModuleInit, OnMod
 
     constructor() {
         const adapter = new PrismaPg({
-            connectionString: withUtcDatabaseTimezone(process.env.DATABASE_URL ?? ''),
+            connectionString: withUtcDatabaseTimezone(process.env.DATABASE_URL ?? '')
         });
 
         super({ adapter });

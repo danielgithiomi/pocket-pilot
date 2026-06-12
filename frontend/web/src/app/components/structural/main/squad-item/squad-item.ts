@@ -11,7 +11,7 @@ import { LucideAngularModule, EllipsisVertical, Trash2, Pencil } from 'lucide-an
     selector: 'squad-item',
     styleUrl: './squad-item.css',
     templateUrl: './squad-item.html',
-    imports: [NgOptimizedImage, NgClass, LucideAngularModule, SquadMember],
+    imports: [NgOptimizedImage, NgClass, LucideAngularModule, SquadMember]
 })
 export class SquadItem {
     // ICONS
@@ -40,16 +40,14 @@ export class SquadItem {
         const { squadName } = this.squad();
         return squadName.charAt(0).toUpperCase();
     });
-    protected readonly squadImage = computed<string>(
-        () => this.squad().squadImageKey ?? this.squadInitial(),
-    );
+    protected readonly squadImage = computed<string>(() => this.squad().squadImageKey ?? this.squadInitial());
 
     protected readonly squadMembers = computed<ISquadMember[]>(() => {
         const members = this.squad().squadMembers;
 
         return members.map((member: string) => ({
             isChecked: false,
-            memberName: member,
+            memberName: member
         }));
     });
 
@@ -68,13 +66,13 @@ export class SquadItem {
                     this.toastService.show({
                         details,
                         title: message,
-                        variant: 'success',
+                        variant: 'success'
                     });
 
                     this.isDropdownOpen.set(false);
                     this.splitrService.getUserSquads().reload();
                 },
-                complete: () => this.isDeletingSquad.set(false),
+                complete: () => this.isDeletingSquad.set(false)
             });
         }, 2500);
     }

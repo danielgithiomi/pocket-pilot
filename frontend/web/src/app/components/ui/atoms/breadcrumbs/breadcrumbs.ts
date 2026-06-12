@@ -14,21 +14,11 @@ import { LucideAngularModule, ChevronRight, LucideIconData } from 'lucide-angula
                 <div class="skeleton size-5 rounded-full"></div>
                 <div class="skeleton ml-2 w:1/5 md:w-25 h-4"></div>
 
-                <lucide-angular
-                    [size]="iconSide"
-                    class="text-muted-text"
-                    [img]="breadcrumbArrow"
-                    name="breadcrumb-arrow-next"
-                />
+                <lucide-angular [size]="iconSide" class="text-muted-text" [img]="breadcrumbArrow" name="breadcrumb-arrow-next" />
 
                 <div class="skeleton w:1/5 md:w-30 h-4"></div>
             } @else {
-                <lucide-angular
-                    [img]="icon()"
-                    [size]="iconSide"
-                    name="breadcrumb-icon"
-                    class="text-muted-text mr-1"
-                />
+                <lucide-angular [img]="icon()" [size]="iconSide" name="breadcrumb-icon" class="text-muted-text mr-1" />
 
                 @for (breadcrumb of breadcrumbsItems(); track breadcrumb.label) {
                     @let isLast = breadcrumb.isLast;
@@ -36,8 +26,7 @@ import { LucideAngularModule, ChevronRight, LucideIconData } from 'lucide-angula
                         <a
                             [routerLink]="breadcrumb.route"
                             [ngClass]="{ 'text-primary': isLast }"
-                            class="text-sm italic text-muted-text hover:underline underline-offset-1"
-                        >
+                            class="text-sm italic text-muted-text hover:underline underline-offset-1">
                             {{ breadcrumb.label }}
                         </a>
                     </div>
@@ -47,13 +36,12 @@ import { LucideAngularModule, ChevronRight, LucideIconData } from 'lucide-angula
                             [size]="iconSide"
                             class="text-muted-text"
                             [img]="breadcrumbArrow"
-                            name="breadcrumb-arrow-next"
-                        />
+                            name="breadcrumb-arrow-next" />
                     }
                 }
             }
         </div>
-    `,
+    `
 })
 export class Breadcrumbs {
     // ICONS
@@ -72,7 +60,7 @@ export class Breadcrumbs {
             ...item,
             id: index,
             isLast: index === items.length - 1,
-            label: formatToReadable(item.label),
+            label: formatToReadable(item.label)
         }));
     });
 }

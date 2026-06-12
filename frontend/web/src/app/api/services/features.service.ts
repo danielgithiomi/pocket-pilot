@@ -10,11 +10,11 @@ import {
     IStandardError,
     FeaturesWithCount,
     IStandardResponse,
-    IVoidResourceResponse,
+    IVoidResourceResponse
 } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class FeaturesService {
     private readonly mutation = inject(FeaturesMutation);
@@ -28,7 +28,7 @@ export class FeaturesService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -38,7 +38,7 @@ export class FeaturesService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -55,7 +55,7 @@ export class FeaturesService {
             this.resource.getFeatureRequests.isLoading() ||
             this.resource.getFeatureCategories.isLoading() ||
             this.resource.getFeatureVoteVariants.isLoading() ||
-            this.resource.getUserFeatureRequests.isLoading(),
+            this.resource.getUserFeatureRequests.isLoading()
     );
 
     private readonly _hasError = computed(
@@ -64,7 +64,7 @@ export class FeaturesService {
             !!this.resource.getFeatureRequests.error() ||
             !!this.resource.getFeatureCategories.error() ||
             !!this.resource.getFeatureVoteVariants.error() ||
-            !!this.resource.getUserFeatureRequests.error(),
+            !!this.resource.getUserFeatureRequests.error()
     );
 
     constructor() {

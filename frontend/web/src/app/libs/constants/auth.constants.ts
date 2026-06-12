@@ -10,18 +10,18 @@ export const INVALID_PASSWORD_IDENTIFIER: string = 'INVALID_CREDENTIALS';
 export const APP_FEATURES: Auth_Feature[] = [
     {
         id: 1,
-        name: 'Expense & Revenue Tracking',
+        name: 'Expense & Revenue Tracking'
     },
     {
         id: 2,
-        name: 'Real-time Account Balances',
+        name: 'Real-time Account Balances'
     },
     {
         id: 3,
-        name: 'Smart Insights & Analytics',
+        name: 'Smart Insights & Analytics'
     },
     {
         id: 4,
-        name: 'Secure Authentication',
-    },
+        name: 'Secure Authentication'
+    }
 ];

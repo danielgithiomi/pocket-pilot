@@ -9,33 +9,14 @@ import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
 import { SplitFormStep3 } from './step-3/split-form-step-3';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
-import {
-    SplitrSquad,
-    ISplitrEvent,
-    SplittableOrder,
-    BillPayerPayload,
-    SplitrEventPayload,
-} from '@global/types';
-import {
-    input,
-    effect,
-    inject,
-    output,
-    signal,
-    computed,
-    untracked,
-    Component,
-} from '@angular/core';
-import {
-    SplitFormSchema,
-    InitialSplitFormState,
-    SplitFormValidationSchema,
-} from './split-form.types';
+import { SplitrSquad, ISplitrEvent, SplittableOrder, BillPayerPayload, SplitrEventPayload } from '@global/types';
+import { input, effect, inject, output, signal, computed, untracked, Component } from '@angular/core';
+import { SplitFormSchema, InitialSplitFormState, SplitFormValidationSchema } from './split-form.types';
 
 @Component({
     selector: 'splitr-split-form',
     templateUrl: './split-form.html',
-    imports: [LucideAngularModule, Form, Button, SplitFormStep1, SplitFormStep2, SplitFormStep3],
+    imports: [LucideAngularModule, Form, Button, SplitFormStep1, SplitFormStep2, SplitFormStep3]
 })
 export class SplitrSplitForm {
     // ICONS
@@ -68,7 +49,7 @@ export class SplitrSplitForm {
     protected readonly initalMemberPool = computed<string[]>(() => {
         const squadName = this.splitForm.squadName().value();
 
-        const squad = this.squads().find((squad) => squad.squadName === squadName);
+        const squad = this.squads().find(squad => squad.squadName === squadName);
 
         if (!squad) return this.customMembers();
         return squad.squadMembers;
@@ -77,7 +58,7 @@ export class SplitrSplitForm {
     // FORM
     private initialFormState: SplitFormSchema = {
         ...InitialSplitFormState,
-        billingCurrency: this.defaultCurrency,
+        billingCurrency: this.defaultCurrency
     };
     protected readonly splitFormModel = signal<SplitFormSchema>(this.initialFormState);
     protected readonly splitForm = form(this.splitFormModel, SplitFormValidationSchema);
@@ -122,18 +103,16 @@ export class SplitrSplitForm {
     private formatPayload(formData: SplitFormSchema): SplitrEventPayload {
         const { eventSplittables, eventDate, verificationTotal, ...rest } = formData;
 
-        const cleanedSplittables = eventSplittables.map(
-            ({ id: _splittableId, quantitySplits, ...splittable }) => ({
-                ...splittable,
-                quantitySplits: quantitySplits.map(({ id: _quantitySplitId, ...split }) => split),
-            }),
-        );
+        const cleanedSplittables = eventSplittables.map(({ id: _splittableId, quantitySplits, ...splittable }) => ({
+            ...splittable,
+            quantitySplits: quantitySplits.map(({ id: _quantitySplitId, ...split }) => split)
+        }));
 
         return {
             ...rest,
             eventDate: eventDate.toISOString(),
             eventSplittables: cleanedSplittables,
-            verificationTotal: verificationTotal === null ? null : Number(verificationTotal),
+            verificationTotal: verificationTotal === null ? null : Number(verificationTotal)
         } satisfies SplitrEventPayload;
     }
 
@@ -153,13 +132,13 @@ export class SplitrSplitForm {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Splitr event created!',
-                        details: `Your [${response.eventName}] event has been created successfully.`,
+                        details: `Your [${response.eventName}] event has been created successfully.`
                     });
 
                     this.resetSplitForm();
                     this.closeSplitFormEvent.emit(true);
                 },
-                complete: () => this.isSubmittingSplitForm.set(false),
+                complete: () => this.isSubmittingSplitForm.set(false)
             });
         }, 2000);
     }
@@ -170,14 +149,12 @@ export class SplitrSplitForm {
                 const squadName = this.splitForm.squadName().value();
 
                 untracked(() => {
-                    const squadMembers =
-                        this.squads().find((squad) => squad.squadName === squadName)
-                            ?.squadMembers || [];
+                    const squadMembers = this.squads().find(squad => squad.squadName === squadName)?.squadMembers || [];
 
                     this.splitForm.eventMembers().controlValue.set(squadMembers);
                 });
             },
-            { allowSignalWrites: false },
+            { allowSignalWrites: false }
         );
     }
 }

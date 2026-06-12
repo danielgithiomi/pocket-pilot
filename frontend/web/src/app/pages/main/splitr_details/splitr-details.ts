@@ -17,16 +17,7 @@ import { LucideAngularModule, CheckCheck, ReceiptText, Trash2, Hourglass } from 
 @Component({
     selector: 'splitr-details',
     templateUrl: './splitr-details.html',
-    imports: [
-        Button,
-        NoData,
-        NgClass,
-        FetchError,
-        Breadcrumbs,
-        SplitrSummary,
-        SplitrBreakdown,
-        LucideAngularModule,
-    ],
+    imports: [Button, NoData, NgClass, FetchError, Breadcrumbs, SplitrSummary, SplitrBreakdown, LucideAngularModule]
 })
 export class SplitrDetails {
     // ICONS
@@ -54,15 +45,11 @@ export class SplitrDetails {
 
     // DATA
     protected readonly eventId = this.route.snapshot.paramMap.get('eventId') ?? '';
-    protected readonly splitrEventResource = this.splitrService.getUserSplitrEventById(
-        this.eventId,
-    );
+    protected readonly splitrEventResource = this.splitrService.getUserSplitrEventById(this.eventId);
 
     // COMPUTED
     protected readonly hasError = computed<boolean>(() => !!this.splitrEventResource.error());
-    protected readonly isFetchingDetails = computed<boolean>(() =>
-        this.splitrEventResource.isLoading(),
-    );
+    protected readonly isFetchingDetails = computed<boolean>(() => this.splitrEventResource.isLoading());
     protected readonly selfName = computed(() => {
         const username = this.authService.user()?.name.split(' ')[0];
         return `${username}(Self)`;
@@ -73,15 +60,15 @@ export class SplitrDetails {
         if (!event) return undefined;
         return {
             ...event,
-            eventMembers: [...event.eventMembers, this.selfName()],
+            eventMembers: [...event.eventMembers, this.selfName()]
         };
     });
     protected readonly breadcrumbItems = computed(() => [
         { label: 'Events', route: '/splitr' },
         {
             label: this.splitrEvent()?.eventName ?? '',
-            route: `/splitr/${this.splitrEvent()?.id}`,
-        },
+            route: `/splitr/${this.splitrEvent()?.id}`
+        }
     ]);
 
     // UTILITIES
@@ -95,21 +82,19 @@ export class SplitrDetails {
         this.isSettlingSplittable.set(true);
 
         setTimeout(() => {
-            this.splitrService
-                .markSplitrEventAsSettledOrPending(this.eventId, { isSettled: !isSettled })
-                .subscribe({
-                    next: (response: IVoidResourceResponse) => {
-                        const { message, details } = response;
-                        this.toastService.show({
-                            details,
-                            title: message,
-                            variant: 'success',
-                        });
+            this.splitrService.markSplitrEventAsSettledOrPending(this.eventId, { isSettled: !isSettled }).subscribe({
+                next: (response: IVoidResourceResponse) => {
+                    const { message, details } = response;
+                    this.toastService.show({
+                        details,
+                        title: message,
+                        variant: 'success'
+                    });
 
-                        this.reloadResources();
-                    },
-                    complete: () => this.isSettlingSplittable.set(false),
-                });
+                    this.reloadResources();
+                },
+                complete: () => this.isSettlingSplittable.set(false)
+            });
         }, 2000);
     }
 
@@ -123,13 +108,13 @@ export class SplitrDetails {
                     this.toastService.show({
                         details,
                         title: message,
-                        variant: 'success',
+                        variant: 'success'
                     });
 
                     this.reloadResources();
                     this.router.navigate(['/splitr'], { replaceUrl: true });
                 },
-                complete: () => this.isDeletingSplittable.set(false),
+                complete: () => this.isDeletingSplittable.set(false)
             });
         }, 2000);
     }

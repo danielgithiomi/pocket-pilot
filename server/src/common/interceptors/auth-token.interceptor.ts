@@ -11,7 +11,7 @@ import { type CallHandler, type ExecutionContext, type NestInterceptor, Unauthor
 export class AuthTokenInterceptor implements NestInterceptor {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly userService: UserService,
+        private readonly userService: UserService
     ) {}
 
     async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
@@ -25,7 +25,7 @@ export class AuthTokenInterceptor implements NestInterceptor {
             throw new UnauthorizedException({
                 name: 'Unauthorized',
                 message: `Missing authentication cookies`,
-                details: `Both the access and refresh tokens are required in the cookies to access ${endpoint}`,
+                details: `Both the access and refresh tokens are required in the cookies to access ${endpoint}`
             });
         }
 
@@ -46,7 +46,7 @@ export class AuthTokenInterceptor implements NestInterceptor {
             throw new UnauthorizedException({
                 name: 'JWT Decode Error',
                 message: `Invalid authentication cookies`,
-                details: `Could not decode the access token to get the payload. ${error}`,
+                details: `Could not decode the access token to get the payload. ${error}`
             });
         }
     }

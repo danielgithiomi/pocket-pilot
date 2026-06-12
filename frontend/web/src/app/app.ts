@@ -7,7 +7,7 @@ import { AuthService } from '@api/auth.service';
     selector: 'app-root',
     styleUrl: './app.css',
     templateUrl: './app.html',
-    imports: [RouterOutlet, ToastContainer],
+    imports: [RouterOutlet, ToastContainer]
 })
 export class App {
     protected readonly authService: AuthService = inject(AuthService);

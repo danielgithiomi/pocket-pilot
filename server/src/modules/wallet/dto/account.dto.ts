@@ -46,35 +46,35 @@ export class Account {
     @Expose()
     @ApiProperty({
         description: 'The ID of the account',
-        example: '123e4567-e89b-12d3-a456-426614174000',
+        example: '123e4567-e89b-12d3-a456-426614174000'
     })
     id!: string;
 
     @Expose()
     @ApiProperty({
         example: 'Expenditure Account',
-        description: 'The name of the account',
+        description: 'The name of the account'
     })
     name!: string;
 
     @Expose()
     @ApiProperty({
         enum: AccountType,
-        description: 'The type of the account',
+        description: 'The type of the account'
     })
     type!: AccountType;
 
     @Expose()
     @ApiProperty({
         example: 'USD',
-        description: 'The currency of the account',
+        description: 'The currency of the account'
     })
     currency!: string;
 
     @Expose()
     @ApiProperty({
         example: 1000,
-        description: 'The balance of the account',
+        description: 'The balance of the account'
     })
     @Type(() => Number)
     balance!: number;
@@ -82,7 +82,7 @@ export class Account {
     @Expose()
     @ApiProperty({
         example: 1000,
-        description: 'The balance of the account in the base currency',
+        description: 'The balance of the account in the base currency'
     })
     @Type(() => Number)
     baseBalance?: number;
@@ -90,7 +90,7 @@ export class Account {
     @Expose()
     @ApiProperty({
         example: '2022-01-01T00:00:00.000Z',
-        description: 'The creation date of the account',
+        description: 'The creation date of the account'
     })
     @Type(() => Date)
     createdAt!: Date;
@@ -98,14 +98,14 @@ export class Account {
     @Expose()
     @ApiProperty({
         example: true,
-        description: 'Whether the balance is visible',
+        description: 'Whether the balance is visible'
     })
     isBalanceVisible!: boolean;
 
     @Expose()
     @ApiProperty({
         example: '2022-01-01T00:00:00.000Z',
-        description: 'The update date of the account',
+        description: 'The update date of the account'
     })
     @Type(() => Date)
     updatedAt!: Date;
@@ -162,7 +162,7 @@ export class AccountsResponseDto {
 
     @ApiProperty({
         type: 'array',
-        items: { $ref: getSchemaPath(AccountWithHolderDto) },
+        items: { $ref: getSchemaPath(AccountWithHolderDto) }
     })
     data!: AccountWithHolderDto[];
 }
@@ -174,7 +174,7 @@ export class UserAccountsResponseDto {
 
     @ApiProperty({
         type: 'array',
-        items: { $ref: getSchemaPath(Account) },
+        items: { $ref: getSchemaPath(Account) }
     })
     data!: Account[];
 }
@@ -185,7 +185,7 @@ export class AccountWithTransactionsResponseDto {
     count!: number;
 
     @ApiProperty({
-        type: AccountWithTransactionsDto,
+        type: AccountWithTransactionsDto
     })
     data!: AccountWithTransactionsDto;
 }

@@ -13,20 +13,15 @@ import { input, output, computed, Component } from '@angular/core';
             [attr.form]="form()"
             (click)="handleClick()"
             [class]="buttonClasses()"
-            [disabled]="disabled() || isLoading()"
-        >
+            [disabled]="disabled() || isLoading()">
             <!-- Loader Overlay -->
             @if (isLoading()) {
-                <div
-                    class="absolute inset-0 grid place-items-center z-1"
-                    [class]="loaderOverlayClasses()"
-                >
+                <div class="absolute inset-0 grid place-items-center z-1" [class]="loaderOverlayClasses()">
                     <div
                         class="loader"
                         [ngClass]="{
-                            'border-primary! border-t-transparent!': variant() === 'secondary',
-                        }"
-                    ></div>
+                            'border-primary! border-t-transparent!': variant() === 'secondary'
+                        }"></div>
                 </div>
             }
 
@@ -39,7 +34,7 @@ import { input, output, computed, Component } from '@angular/core';
                 }
             </span>
         </button>
-    `,
+    `
 })
 export class Button {
     // =========================
@@ -74,13 +69,9 @@ export class Button {
                 : this.inverted()
                   ? 'bg-body-background text-primary-text'
                   : 'bg-inverted-background text-inverted-text';
-        const disabledClasses = this.disabled()
-            ? 'opacity-50 !cursor-not-allowed'
-            : 'hover:scale-101';
+        const disabledClasses = this.disabled() ? 'opacity-50 !cursor-not-allowed' : 'hover:scale-101';
 
-        return [base, variantClasses, loadingClasses, disabledClasses, this.className()]
-            .filter(Boolean)
-            .join(' ');
+        return [base, variantClasses, loadingClasses, disabledClasses, this.className()].filter(Boolean).join(' ');
     });
 
     loaderOverlayClasses = computed(() => {

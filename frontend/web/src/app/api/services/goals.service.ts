@@ -3,16 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import { GoalsResource } from '@methods/resources';
 import { GoalsMutation } from '@methods/mutations';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
-import {
-    Goal,
-    IStandardError,
-    IStandardResponse,
-    CreateGoalRequest,
-    IVoidResourceResponse,
-} from '@global/types';
+import { Goal, IStandardError, IStandardResponse, CreateGoalRequest, IVoidResourceResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class GoalsService {
     private readonly resource = inject(GoalsResource);
@@ -29,7 +23,7 @@ export class GoalsService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -39,7 +33,7 @@ export class GoalsService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -49,7 +43,7 @@ export class GoalsService {
         this.toastService.show({
             title,
             details: details as string,
-            variant: 'error',
+            variant: 'error'
         });
     };
 }

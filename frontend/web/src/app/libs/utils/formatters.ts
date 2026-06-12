@@ -21,7 +21,7 @@ export function formatDate(date: string): string {
     return new Date(date).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
-        day: 'numeric',
+        day: 'numeric'
     });
 }
 
@@ -37,7 +37,7 @@ export function formatFullDate(date: string): string {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-        weekday: 'short',
+        weekday: 'short'
     });
 }
 
@@ -90,7 +90,7 @@ export function formatInputFieldDate(date: string): string {
     return new Date(date).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
-        day: 'numeric',
+        day: 'numeric'
     });
 }
 
@@ -110,14 +110,14 @@ export function formatCurrency(
     currency: Intl.NumberFormatOptions['currency'],
     fractionDigits: number = 2,
     showSymbol: boolean = false,
-    narrow: boolean = true,
+    narrow: boolean = true
 ): string {
     return new Intl.NumberFormat('en-US', {
         currency: currency,
         minimumFractionDigits: fractionDigits,
         maximumFractionDigits: fractionDigits,
         style: showSymbol ? 'currency' : 'decimal',
-        currencyDisplay: narrow ? 'narrowSymbol' : 'code',
+        currencyDisplay: narrow ? 'narrowSymbol' : 'code'
     }).format(amount);
 }
 
@@ -146,6 +146,6 @@ export function formatToReadable(normalizedName: string): string {
         .replace(/[_-]/g, ' ') // underscores & hyphens → spaces
         .split(' ')
         .filter(Boolean) // remove empty strings (safety)
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 }

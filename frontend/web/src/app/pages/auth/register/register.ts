@@ -8,17 +8,13 @@ import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
-import {
-    RegisterSchema,
-    initialRegisterFormState,
-    registerFormValidationSchema,
-} from '@libs/types';
+import { RegisterSchema, initialRegisterFormState, registerFormValidationSchema } from '@libs/types';
 
 @Component({
     selector: 'app-register',
     styleUrl: './register.css',
     templateUrl: './register.html',
-    imports: [AuthBranding, FormField, Button, Input],
+    imports: [AuthBranding, FormField, Button, Input]
 })
 export class Register {
     // SIGNALS
@@ -49,12 +45,12 @@ export class Register {
                 this.toastService.show({
                     variant: 'success',
                     title: 'Registration Successful!',
-                    details: `Welcome ${name}! You are now part of the Pocket Pilot family!`,
+                    details: `Welcome ${name}! You are now part of the Pocket Pilot family!`
                 });
 
                 this.router.navigate([WEB_ROUTES.onboarding], { replaceUrl: true });
             },
-            complete: () => this.isSubmitting.set(false),
+            complete: () => this.isSubmitting.set(false)
         });
     };
 }

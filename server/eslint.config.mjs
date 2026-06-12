@@ -6,7 +6,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default tseslint.config(
     {
-        ignores: ['eslint.config.mjs'],
+        ignores: ['eslint.config.mjs']
     },
     eslint.configs.recommended,
     ...tseslint.configs.recommendedTypeChecked,
@@ -15,14 +15,14 @@ export default tseslint.config(
         languageOptions: {
             globals: {
                 ...globals.node,
-                ...globals.jest,
+                ...globals.jest
             },
             sourceType: 'commonjs',
             parserOptions: {
                 projectService: true,
-                tsconfigRootDir: import.meta.dirname,
-            },
-        },
+                tsconfigRootDir: import.meta.dirname
+            }
+        }
     },
     {
         rules: {
@@ -34,7 +34,7 @@ export default tseslint.config(
             '@typescript-eslint/no-unsafe-return': 'warn',
             '@typescript-eslint/no-unsafe-assignment': 'warn',
             '@typescript-eslint/restrict-template-expressions': 'off',
-            'prettier/prettier': ['error', { endOfLine: 'auto' }],
-        },
-    },
+            'prettier/prettier': ['error', { endOfLine: 'auto' }]
+        }
+    }
 );

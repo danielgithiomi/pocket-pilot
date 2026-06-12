@@ -9,7 +9,7 @@ export class GoalsRepository {
 
     getUserGoals(userId: string): Promise<GoalDto[]> {
         return this.db.goals.findMany({
-            where: { userId },
+            where: { userId }
         });
     }
 
@@ -18,8 +18,8 @@ export class GoalsRepository {
             data: {
                 userId,
                 ...payload,
-                status: 'ACTIVE',
-            },
+                status: 'ACTIVE'
+            }
         });
     }
 
@@ -29,7 +29,7 @@ export class GoalsRepository {
                 throw new NotFoundException({
                     name: 'GOAL_DELETE_FAILED',
                     title: 'Goal Delete Failed!',
-                    details: 'The goal you are trying to delete does not exist in the database.',
+                    details: 'The goal you are trying to delete does not exist in the database.'
                 });
 
             throw error;

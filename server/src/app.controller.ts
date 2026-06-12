@@ -18,7 +18,7 @@ export class AppController {
         const { url } = this.config.database;
         return {
             url,
-            message: 'You have successfully called the Pocket Pilot API!',
+            message: 'You have successfully called the Pocket Pilot API!'
         };
     }
 
@@ -35,7 +35,7 @@ export class AppController {
             host,
             defaultTTL: `${defaultTTL} seconds`,
             connectionString: `redis://${host}:${port}`,
-            message: 'You have successfully called the Pocket Pilot Redis Configuration!',
+            message: 'You have successfully called the Pocket Pilot Redis Configuration!'
         };
     }
 }

@@ -3,7 +3,7 @@ import { IStandardError } from '@global/types';
 import { inject, Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class ApiServiceError {
     private readonly toastService = inject(ToastService);
@@ -13,7 +13,7 @@ export class ApiServiceError {
         this.toastService.show({
             title,
             details: details as string,
-            variant: 'error',
+            variant: 'error'
         });
     }
 }

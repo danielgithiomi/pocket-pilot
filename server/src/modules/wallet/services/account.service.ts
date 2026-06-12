@@ -13,14 +13,14 @@ import {
     AccountWithHolder,
     UpdateAccountPayload,
     AccountWithTransactionsDto,
-    ToggleAccountBalanceVisibilityPayload,
+    ToggleAccountBalanceVisibilityPayload
 } from '../dto/account.dto';
 import {
     Injectable,
     ConflictException,
     NotFoundException,
     ForbiddenException,
-    InternalServerErrorException,
+    InternalServerErrorException
 } from '@nestjs/common';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class AccountService {
         private readonly accountRepository: AccountRepository,
         private readonly accountDetailsCache: AccountDetailsCache,
         private readonly exchangeRateService: ExchangeRateService,
-        private readonly transactionRepository: TransactionRepository,
+        private readonly transactionRepository: TransactionRepository
     ) {}
 
     async getAccountTypes(): Promise<ExposeEnumDto[]> {
@@ -40,7 +40,7 @@ export class AccountService {
 
     async getAllAccounts(): Promise<AccountWithHolder[]> {
         return this.accountsCache.getOrSetCache<AccountWithHolder[]>('all', () =>
-            this.accountRepository.getAllApplicationAccounts(),
+            this.accountRepository.getAllApplicationAccounts()
         );
     }
 
@@ -68,7 +68,7 @@ export class AccountService {
                 throw new NotFoundException({
                     name: 'ACCOUNT_NOT_FOUND',
                     title: 'Account Not Found',
-                    details: `The account with id: {${accountId}} was not found.`,
+                    details: `The account with id: {${accountId}} was not found.`
                 });
             }
 
@@ -76,16 +76,13 @@ export class AccountService {
 
             const accountWithTransactions = {
                 ...baseBalancedAccount,
-                transactions: [...account.incomingTransactions, ...account.outgoingTransactions],
+                transactions: [...account.incomingTransactions, ...account.outgoingTransactions]
             };
 
             return plainToInstance(AccountWithTransactionsDto, accountWithTransactions);
         };
 
-        return this.accountDetailsCache.getOrSetCache<AccountWithTransactionsDto>(
-            accountId,
-            getAccountAndItsTransactions,
-        );
+        return this.accountDetailsCache.getOrSetCache<AccountWithTransactionsDto>(accountId, getAccountAndItsTransactions);
     }
 
     async createAccount(userId: string, payload: CreateAccountDto): Promise<IAccount> {
@@ -100,14 +97,14 @@ export class AccountService {
                 throw new ConflictException({
                     name: 'ACCOUNT_NAME_CONFLICT',
                     title: 'Account Already Exists!',
-                    details: `You already have an account with the name: [${payload.name}].`,
+                    details: `You already have an account with the name: [${payload.name}].`
                 });
             }
 
             throw new InternalServerErrorException({
                 name: 'ACCOUNT_CREATION_FAILED',
                 title: 'Failed to create account!',
-                details: 'An unexpected error occurred while creating the account.',
+                details: 'An unexpected error occurred while creating the account.'
             });
         }
     }
@@ -127,14 +124,14 @@ export class AccountService {
                 throw new ConflictException({
                     name: 'ACCOUNT_NAME_CONFLICT',
                     title: 'Account Already Exists!',
-                    details: `You already have an account with the name: [${payload.name}].`,
+                    details: `You already have an account with the name: [${payload.name}].`
                 });
             }
 
             throw new InternalServerErrorException({
                 name: 'ACCOUNT_UPDATE_FAILED',
                 title: 'Failed to update account!',
-                details: 'An unexpected error occurred while updating the account.',
+                details: 'An unexpected error occurred while updating the account.'
             });
         }
     }
@@ -142,7 +139,7 @@ export class AccountService {
     async toggleAccountBalanceVisibility(
         userId: string,
         accountId: string,
-        payload: ToggleAccountBalanceVisibilityPayload,
+        payload: ToggleAccountBalanceVisibilityPayload
     ): Promise<IAccount> {
         const accounts: IAccount[] = await this.getUserAccounts(userId);
         this.verifyAccountAndOwnership(accounts, userId, accountId);
@@ -161,7 +158,7 @@ export class AccountService {
             throw new ConflictException({
                 name: 'ACCOUNT_DELETE_FAILED',
                 title: 'Account Delete Failed!',
-                details: 'This account has transactions and cannot be deleted.',
+                details: 'This account has transactions and cannot be deleted.'
             });
         }
 
@@ -177,7 +174,7 @@ export class AccountService {
             throw new NotFoundException({
                 name: 'ACCOUNT_NOT_FOUND',
                 title: 'Account Not Found!',
-                details: `The account you are trying to access with id: {${accountId}} does not exist.`,
+                details: `The account you are trying to access with id: {${accountId}} does not exist.`
             });
 
         const isAccountOwner = accountExists.holderId === userId;
@@ -186,7 +183,7 @@ export class AccountService {
             throw new ForbiddenException({
                 name: 'ACCOUNT_ACCESS_FORBIDDEN',
                 title: 'Account Access Forbidden',
-                details: `You do not have permission to access the account with id: {${accountId}}`,
+                details: `You do not have permission to access the account with id: {${accountId}}`
             });
 
         return accountExists;
@@ -207,11 +204,7 @@ export class AccountService {
         return 'non-prisma';
     }
 
-    private async checkIfAccountNameAlreadyExists(
-        userId: string,
-        payloadName: string,
-        convert: boolean,
-    ): Promise<void> {
+    private async checkIfAccountNameAlreadyExists(userId: string, payloadName: string, convert: boolean): Promise<void> {
         const accounts = await this.getUserAccounts(userId);
 
         const newAccountName = convert ? payloadName.toLowerCase() : payloadName;
@@ -225,7 +218,7 @@ export class AccountService {
             throw new ConflictException({
                 name: 'ACCOUNT_NAME_CONFLICT',
                 title: 'Account Already Exists!',
-                details: `You already have an account with the name: [${newAccountName}].`,
+                details: `You already have an account with the name: [${newAccountName}].`
             });
         }
 
@@ -235,20 +228,16 @@ export class AccountService {
     private async mapAccountToBaseBalanced(account: IAccount): Promise<IAccount> {
         const { currency: accountCurrency, balance, holderId } = account;
         const {
-            userPreferences: { defaultCurrency },
+            userPreferences: { defaultCurrency }
         } = await this.userService.findUserById(holderId);
 
         if (accountCurrency === defaultCurrency) return account;
 
-        const result = await this.exchangeRateService.performCurrencyConversion(
-            balance,
-            accountCurrency,
-            defaultCurrency,
-        );
+        const result = await this.exchangeRateService.performCurrencyConversion(balance, accountCurrency, defaultCurrency);
 
         return {
             ...account,
-            baseBalance: result.target.amount,
+            baseBalance: result.target.amount
         };
     }
 

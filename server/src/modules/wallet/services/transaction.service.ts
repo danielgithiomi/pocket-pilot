@@ -14,7 +14,7 @@ export class TransactionService {
         private readonly accountsCache: AccountsCache,
         private readonly accountRepository: AccountRepository,
         private readonly accountDetailsCache: AccountDetailsCache,
-        private readonly transactionRepository: TransactionRepository,
+        private readonly transactionRepository: TransactionRepository
     ) {}
 
     async getTransactionTypes(): Promise<ExposeEnumDto[]> {
@@ -48,19 +48,19 @@ export class TransactionService {
     async createTransactionByAccountId(
         userId: string,
         accountId: string,
-        createTransactionDto: CreateTransactionDto,
+        createTransactionDto: CreateTransactionDto
     ): Promise<CompleteTransactionDto> {
         const transformedDto: CreateTransactionDto = {
             ...createTransactionDto,
             type: createTransactionDto.type,
-            category: denormalizeCategoryName(createTransactionDto.category),
+            category: denormalizeCategoryName(createTransactionDto.category)
         };
 
         if (!this.isTransactionTypeValid(transformedDto.type)) {
             throw new BadRequestException({
                 name: 'INVALID_TRANSACTION_TYPE',
                 title: 'Invalid transaction type!',
-                message: `The transaction type ${transformedDto.type} is not valid.`,
+                message: `The transaction type ${transformedDto.type} is not valid.`
             });
         }
 
@@ -70,13 +70,13 @@ export class TransactionService {
             throw new ForbiddenException({
                 name: 'CREATION_FORBIDDEN',
                 title: 'Failed to create the transaction!',
-                message: 'You are not allowed to create a transaction for this account.',
+                message: 'You are not allowed to create a transaction for this account.'
             });
         }
 
         const createdTransaction = await this.transactionRepository.createNewTransactionAndUpdateBalance(
             accountId,
-            transformedDto,
+            transformedDto
         );
         await this.invalidateAccountCache(userId, accountId);
         return createdTransaction;
@@ -89,7 +89,7 @@ export class TransactionService {
             throw new ForbiddenException({
                 name: 'DELETION_FORBIDDEN',
                 title: 'Failed to delete the transaction!',
-                message: 'You are not allowed to delete a transaction for this account.',
+                message: 'You are not allowed to delete a transaction for this account.'
             });
         }
 
@@ -118,7 +118,7 @@ export class TransactionService {
             throw new NotFoundException({
                 name: 'ACCOUNT_NOT_FOUND',
                 title: 'Account not found!',
-                message: `Couldn't create a transaction because the account with ID: {${accountId}} does not exist.`,
+                message: `Couldn't create a transaction because the account with ID: {${accountId}} does not exist.`
             });
 
         return account;

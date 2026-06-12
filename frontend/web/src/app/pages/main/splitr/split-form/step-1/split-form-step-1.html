@@ -6,8 +6,7 @@
     label="Event Name"
     placeholder="Eg: Drinks at Divino"
     [formField]="formModel().eventName"
-    (clearOutput)="formModel().eventName().controlValue.set('')"
-/>
+    (clearOutput)="formModel().eventName().controlValue.set('')" />
 
 <div class="w-full flex flex-col md:flex-row items-start gap-2 md:gap-4 mb-4 md:mb-0">
     <organism-date-picker
@@ -20,8 +19,7 @@
         wrapperClassName="pt-0!"
         placeholder="Select a date"
         [showClearOutputIcon]="false"
-        [formField]="formModel().eventDate"
-    />
+        [formField]="formModel().eventDate" />
 
     <atom-select
         label="Currency"
@@ -31,8 +29,7 @@
         [options]="currencies"
         wrapperClassName="my-0"
         placeholder="Select a currency"
-        [formField]="formModel().billingCurrency"
-    />
+        [formField]="formModel().billingCurrency" />
 </div>
 
 <!-- Member Selection -->
@@ -47,8 +44,7 @@
         wrapperClassName="my-0!"
         [options]="squadDropdownOptions()"
         [formField]="formModel().squadName"
-        placeholder="Pick from an existing squad"
-    />
+        placeholder="Pick from an existing squad" />
 </div>
 
 @if (isSquadCustom()) {
@@ -60,16 +56,14 @@
             autocomplete="off"
             id="add-member-name"
             placeholder="Eg: John"
-            (input)="validateMemberName(customMemberInput.value)"
-        />
+            (input)="validateMemberName(customMemberInput.value)" />
 
         <atom-button
             id="add-member"
             variant="primary"
             class="shadow-none rounded-lg!"
             [disabled]="!isMemberNameValid() || isSubmittingForm()"
-            (clicked)="addCustomMemberToPool(customMemberInput.value); customMemberInput.value = ''"
-        >
+            (clicked)="addCustomMemberToPool(customMemberInput.value); customMemberInput.value = ''">
             <div class="w-full h-full grid place-items-center py-[1.5px]">
                 <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize()" />
             </div>
@@ -81,15 +75,10 @@
 @let splitMembersCount = formattedSplitMembers().length;
 <div
     class="h-20 border-2 border-dashed border-primary rounded-lg mt-4 flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
-    [ngClass]="{ 'grid! place-items-center!': splitMembersCount === 0 }"
->
+    [ngClass]="{ 'grid! place-items-center!': splitMembersCount === 0 }">
     @if (splitMembersCount === 0) {
         <p class="text-xs text-inverted-text">
-            {{
-                isSquadCustom()
-                    ? 'Add members to split the bill with.'
-                    : 'Select a squad to split the bill with.'
-            }}
+            {{ isSquadCustom() ? 'Add members to split the bill with.' : 'Select a squad to split the bill with.' }}
         </p>
     } @else {
         @for (member of formattedSplitMembers(); track member.memberName) {
@@ -97,8 +86,7 @@
                 [inverted]="true"
                 [member]="member"
                 [isCheckable]="true"
-                (onMemberEventClick)="toggleMemberChecked($event)"
-            />
+                (onMemberEventClick)="toggleMemberChecked($event)" />
         }
     }
 </div>

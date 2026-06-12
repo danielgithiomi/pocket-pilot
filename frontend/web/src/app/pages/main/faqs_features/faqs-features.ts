@@ -29,8 +29,8 @@ import { FeatureItem } from '@structural/main/feature-item/feature-item';
         FetchError,
         FeatureItem,
         SuggestFeatureForm,
-        LucideAngularModule,
-    ],
+        LucideAngularModule
+    ]
 })
 export class FaqsFeatures {
     // ICONS
@@ -50,9 +50,7 @@ export class FaqsFeatures {
 
     // DATA
     protected readonly faqItems = FAQ_ITEMS;
-    protected readonly contactItems = computed<ContactItem[]>(() =>
-        CONTACT_ITEMS.filter((item) => item.id === 'email'),
-    );
+    protected readonly contactItems = computed<ContactItem[]>(() => CONTACT_ITEMS.filter(item => item.id === 'email'));
 
     // STORE
     private readonly featureStatuses = this.featuresService.getFeatureStatuses();
@@ -67,15 +65,15 @@ export class FaqsFeatures {
     protected readonly tabItems = computed<TabListItem[]>(() => [
         {
             value: 'all',
-            label: `All Suggestions [${this.featureRequests().count}]`,
+            label: `All Suggestions [${this.featureRequests().count}]`
         },
         {
             value: 'personal',
-            label: 'My Suggestions',
-        },
+            label: 'My Suggestions'
+        }
     ]);
     protected readonly displayFeatures = computed<Feature[]>(() =>
-        this.activeTabIndex() === 0 ? this.featureRequests().features : this.userFeatureRequests(),
+        this.activeTabIndex() === 0 ? this.featureRequests().features : this.userFeatureRequests()
     );
     protected readonly featuresSubtitle = computed<string>(() => {
         const allsubtitle = 'Most Popular Feature Requests';

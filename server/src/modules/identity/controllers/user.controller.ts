@@ -13,7 +13,7 @@ import {
     ChangePasswordDto,
     UserWithPreferencesDto,
     UsersWithCountResponseDto,
-    UpdateUserProfilePicturePayload,
+    UpdateUserProfilePicturePayload
 } from '../dto/user.dto';
 
 @Controller('users')
@@ -21,7 +21,7 @@ import {
 export class UserController {
     constructor(
         private readonly userService: UserService,
-        private readonly cookiesService: CookiesService,
+        private readonly cookiesService: CookiesService
     ) {}
 
     @Post()
@@ -30,7 +30,7 @@ export class UserController {
     @ApiResponse({ status: 201, description: 'User registered successfully', type: UserResponseDto })
     @ApiOperation({
         summary: 'Register a new user',
-        description: 'Creates a new user account with the provided credentials.',
+        description: 'Creates a new user account with the provided credentials.'
     })
     async registerUser(@Body() user: CreateUserDto, @Res({ passthrough: true }) res: Response) {
         const { user: createdUser, access_token, refresh_token } = await this.userService.registerUser(user);
@@ -50,7 +50,7 @@ export class UserController {
 
         return {
             data: userDtos,
-            count: userDtos.length,
+            count: userDtos.length
         };
     }
 
@@ -70,10 +70,7 @@ export class UserController {
     @ApiResponse({ status: 404, description: 'User not found with the provided ID' })
     @ApiResponse({ status: 200, description: 'User updated successfully', type: UserWithPreferencesDto })
     @ApiOperation({ summary: 'Update user by ID', description: 'Updates a user by their unique identifier.' })
-    updateUserById(
-        @Param('userId') userId: string,
-        @Body() updatePayload: UpdateUserDto,
-    ): Promise<UserWithPreferencesDto> {
+    updateUserById(@Param('userId') userId: string, @Body() updatePayload: UpdateUserDto): Promise<UserWithPreferencesDto> {
         return this.userService.updateUserById(userId, updatePayload);
     }
 
@@ -84,17 +81,14 @@ export class UserController {
     @ApiResponse({ status: 200, description: 'User updated successfully', type: VoidResourceResponse })
     @ApiOperation({
         summary: 'Change the user password',
-        description: 'Changes the password for a user by their unique identifier.',
+        description: 'Changes the password for a user by their unique identifier.'
     })
-    async changePassword(
-        @Param('userId') userId: string,
-        @Body() payload: ChangePasswordDto,
-    ): Promise<VoidResourceResponse> {
+    async changePassword(@Param('userId') userId: string, @Body() payload: ChangePasswordDto): Promise<VoidResourceResponse> {
         await this.userService.changePassword(userId, payload);
 
         return {
             message: 'Password changed!',
-            details: 'Your password has been changed successfully.',
+            details: 'Your password has been changed successfully.'
         };
     }
 
@@ -105,11 +99,11 @@ export class UserController {
     @ApiResponse({ status: 200, description: 'User updated successfully', type: UserWithPreferencesDto })
     @ApiOperation({
         summary: 'Update user profile picture',
-        description: 'Updates the profile picture for a user by their unique identifier.',
+        description: 'Updates the profile picture for a user by their unique identifier.'
     })
     updateUserProfilePicture(
         @Param('userId') userId: string,
-        @Body() payload: UpdateUserProfilePicturePayload,
+        @Body() payload: UpdateUserProfilePicturePayload
     ): Promise<UserWithPreferencesDto> {
         return this.userService.updateUserProfileWithPictureKey(userId, payload.profilePictureAwsKey);
     }
@@ -125,7 +119,7 @@ export class UserController {
 
         return {
             message: 'User deleted!',
-            details: `Your user with ID: [${userId}] has been deleted successfully.`,
+            details: `Your user with ID: [${userId}] has been deleted successfully.`
         };
     }
 }

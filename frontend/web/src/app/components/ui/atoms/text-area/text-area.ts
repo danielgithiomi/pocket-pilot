@@ -3,27 +3,23 @@ import { LucideAngularModule, X } from 'lucide-angular';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { Component, computed, input, output } from '@angular/core';
 import { TextAreaAutoComplete, TextAreaResize } from './text-area.types';
-import {
-    FORM_FIELD_ERROR_BORDER_CLASSES,
-    isFormFieldInError,
-    resolveFormFieldVisualState,
-} from '../form-field-visual-state';
+import { FORM_FIELD_ERROR_BORDER_CLASSES, isFormFieldInError, resolveFormFieldVisualState } from '../form-field-visual-state';
 
 @Component({
     selector: 'atom-text-area',
     templateUrl: './text-area.html',
-    imports: [LucideAngularModule, FormField, NgClass],
+    imports: [LucideAngularModule, FormField, NgClass]
 })
 export class TextArea {
     /* INPUTS */
     id = input.required<string>();
     rows = input<number>(4);
     resize = input<TextAreaResize, boolean | TextAreaResize>('vertical', {
-        transform: (value) => {
+        transform: value => {
             if (value === true) return 'vertical';
             if (value === false) return 'none';
             return value;
-        },
+        }
     });
     required = input<boolean>(true);
     label = input.required<string>();
@@ -55,9 +51,7 @@ export class TextArea {
     textAreaId = computed<string>(() => `text-area-field-${this.id()}`);
     fieldState = computed(() => this.formField()());
     showFieldErrors = computed(() => isFormFieldInError(this.fieldState()));
-    fieldVisualState = computed(() =>
-        resolveFormFieldVisualState(this.showStatus(), this.fieldState()),
-    );
+    fieldVisualState = computed(() => resolveFormFieldVisualState(this.showStatus(), this.fieldState()));
 
     resizeClass = computed<string>(() => {
         switch (this.resize()) {

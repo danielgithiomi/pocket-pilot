@@ -6,27 +6,27 @@ import { IStandardResponse, SplitrSquad } from '@global/types';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class SplitrResource {
     // SQUADS
     getUserSplitrSquads = httpResource<IStandardResponse<SplitrSquad[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.squads),
+        url: concatUrl(endpoints.squads)
     }));
 
     // EVENTS
     getUserSplitrEvents = httpResource<IStandardResponse<ISplitrEvent[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.splitr),
+        url: concatUrl(endpoints.splitr)
     }));
 
     getSplitrEventById = (eventId: string) =>
         httpResource<IStandardResponse<ISplitrEvent>>(() => ({
             method: 'GET',
             cache: 'no-cache',
-            url: concatUrl(`${endpoints.splitr}/${eventId}`),
+            url: concatUrl(`${endpoints.splitr}/${eventId}`)
         }));
 }

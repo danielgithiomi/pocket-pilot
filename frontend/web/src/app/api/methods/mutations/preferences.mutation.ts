@@ -4,15 +4,12 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { IVoidResourceResponse, UpdateUserPreferencesPayload } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class PreferencesMutation {
     private readonly client = inject(ApiClient);
 
     updateUserPreferences(payload: UpdateUserPreferencesPayload) {
-        return this.client.put<IVoidResourceResponse, UpdateUserPreferencesPayload>(
-            endpoints.preferences,
-            payload,
-        );
+        return this.client.put<IVoidResourceResponse, UpdateUserPreferencesPayload>(endpoints.preferences, payload);
     }
 }

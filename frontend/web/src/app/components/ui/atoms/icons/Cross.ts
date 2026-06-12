@@ -14,11 +14,10 @@ import { Component, input } from '@angular/core';
             stroke-linecap="round"
             stroke-linejoin="round"
             [attr.stroke-width]="strokeWidth()"
-            xmlns="http://www.w3.org/2000/svg"
-        >
+            xmlns="http://www.w3.org/2000/svg">
             <path d="m11.25 4.75-6.5 6.5m0-6.5 6.5 6.5" />
         </svg>
-    `,
+    `
 })
 export class CrossIcon {
     size = input<number>(24);

@@ -14,14 +14,11 @@ export class CookiesAuthGuard implements CanActivate {
     constructor(
         private readonly reflector: Reflector,
         private readonly jwtService: JwtService,
-        private readonly userService: UserService,
+        private readonly userService: UserService
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-            context.getHandler(),
-            context.getClass(),
-        ]);
+        const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [context.getHandler(), context.getClass()]);
 
         if (isPublic) return true;
 
@@ -35,7 +32,7 @@ export class CookiesAuthGuard implements CanActivate {
                 name: 'MISSING_ACCESS_TOKEN',
                 title: 'Missing access token',
                 message: `Missing authentication cookies`,
-                details: `The access token is required in the cookies to access ${endpoint}`,
+                details: `The access token is required in the cookies to access ${endpoint}`
             });
         }
 
@@ -60,7 +57,7 @@ export class CookiesAuthGuard implements CanActivate {
                 name: 'JWT Decode Error',
                 title: 'Invalid authentication cookies',
                 message: `Invalid authentication cookies`,
-                details: `Could not decode the access token to get the payload. ${error}`,
+                details: `Could not decode the access token to get the payload. ${error}`
             });
         }
     }

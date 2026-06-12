@@ -11,21 +11,12 @@ import { COMMON_CURRENCIES } from '@global/constants';
 import { SplitFormSchema } from '../split-form.types';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
-import {
-    input,
-    effect,
-    inject,
-    output,
-    signal,
-    computed,
-    Component,
-    untracked,
-} from '@angular/core';
+import { input, effect, inject, output, signal, computed, Component, untracked } from '@angular/core';
 
 @Component({
     selector: 'split-form-step-1',
     templateUrl: './split-form-step-1.html',
-    imports: [LucideAngularModule, NgClass, Button, Select, Input, DatePicker, SquadMember],
+    imports: [LucideAngularModule, NgClass, Button, Select, Input, DatePicker, SquadMember]
 })
 export class SplitFormStep1 {
     // ICONS
@@ -55,16 +46,16 @@ export class SplitFormStep1 {
 
     // COMPUTED
     protected readonly squadDropdownOptions = computed<SelectOption[]>(() => {
-        const squadNames = this.existingSquads().map((squad) => squad.squadName);
-        return [...squadNames, 'CUSTOM'].map((squadName) => ({
+        const squadNames = this.existingSquads().map(squad => squad.squadName);
+        return [...squadNames, 'CUSTOM'].map(squadName => ({
             value: squadName,
-            label: squadName === 'CUSTOM' ? 'Custom' : squadName,
+            label: squadName === 'CUSTOM' ? 'Custom' : squadName
         }));
     });
     protected readonly formattedSplitMembers = computed<ISquadMember[]>(() => {
-        return this.memberPool().map((member) => ({
+        return this.memberPool().map(member => ({
             memberName: member,
-            isChecked: this.presentMembers().includes(member),
+            isChecked: this.presentMembers().includes(member)
         }));
     });
 
@@ -72,7 +63,7 @@ export class SplitFormStep1 {
     protected validateMemberName(memberName: string) {
         const trimmedName = memberName.trim();
         const alreadyExists = this.presentMembers()
-            .map((member) => member.toLowerCase())
+            .map(member => member.toLowerCase())
             .includes(trimmedName.toLowerCase());
 
         const isNameValid = trimmedName.length > 1 && trimmedName.length <= 20 && !alreadyExists;
@@ -83,7 +74,7 @@ export class SplitFormStep1 {
     protected addCustomMemberToPool(memberName: string) {
         const trimmedName = memberName.trim();
         const normalizedInput = trimmedName.toLowerCase();
-        const normalizedMemberNames = this.presentMembers().map((m) => m.toLowerCase());
+        const normalizedMemberNames = this.presentMembers().map(m => m.toLowerCase());
 
         const userAlreadyExists = normalizedMemberNames.includes(normalizedInput);
 
@@ -91,7 +82,7 @@ export class SplitFormStep1 {
             this.toastService.show({
                 variant: 'warning',
                 title: 'Member already exists!',
-                details: 'This member is already in the pool.',
+                details: 'This member is already in the pool.'
             });
             return;
         }
@@ -105,8 +96,7 @@ export class SplitFormStep1 {
 
         let updatedMembers: string[];
 
-        if (isSelected)
-            updatedMembers = this.presentMembers().filter((member) => member !== memberName);
+        if (isSelected) updatedMembers = this.presentMembers().filter(member => member !== memberName);
         else updatedMembers = [...this.presentMembers(), memberName];
 
         this.onPresentMembersChangeEvent.emit(updatedMembers);

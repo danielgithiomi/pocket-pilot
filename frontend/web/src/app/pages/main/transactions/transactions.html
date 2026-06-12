@@ -2,12 +2,7 @@
     <div class="page-header">
         <h1 class="page-title">Transactions</h1>
 
-        <atom-button
-            variant="primary"
-            id="add-transaction"
-            [disabled]="isFetching()"
-            (clicked)="handleOpenForm()"
-        >
+        <atom-button variant="primary" id="add-transaction" [disabled]="isFetching()" (clicked)="handleOpenForm()">
             <div class="w-full flex flex-row items-center justify-between gap-4">
                 <lucide-icon name="create-transaction" [img]="Plus" [size]="iconSize"></lucide-icon>
                 <span class="hidden sm:block">Log Transaction</span>
@@ -23,24 +18,17 @@
                 [isLoading]="true"
                 [data]="skeletonData"
                 [columns]="transactionColumns"
-                id="transactions-table-skeleton"
-            />
+                id="transactions-table-skeleton" />
         </div>
     } @else {
         @let hasError = !!transactions.error();
         @let response = transactions.value()?.data;
         @let count = response?.count;
-        <div
-            class="page-container flex-1"
-            [ngClass]="{ 'grid place-items-center': count === 0 || hasError }"
-        >
+        <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': count === 0 || hasError }">
             @if (hasError) {
                 <fetch-error message="Failed to retrieve your transactions" />
             } @else if (count === 0) {
-                <no-data
-                    message="You have no transactions yet! Log one today."
-                    messageClass="text-sm"
-                />
+                <no-data message="You have no transactions yet! Log one today." messageClass="text-sm" />
             } @else {
                 <div>
                     <p class="mb-6 page-subtitle cursor-default">
@@ -53,8 +41,7 @@
                         <atom-tab-list
                             [items]="tabListItems"
                             [activeItem]="activeTabIndex()"
-                            (selectedIndex)="onTabSelected($event)"
-                        />
+                            (selectedIndex)="onTabSelected($event)" />
                     </div>
 
                     <organism-table
@@ -63,8 +50,7 @@
                         [columns]="transactionColumns"
                         [emptyMessage]="editStateText()"
                         [data]="formattedTransactions()"
-                        (deleteRow)="deleteDataRow($event)"
-                    />
+                        (deleteRow)="deleteDataRow($event)" />
                 </div>
             }
         </div>
@@ -77,8 +63,7 @@
         title="Log Transaction"
         [class.hidden]="!isFormOpen()"
         (closeForm)="handleCloseForm($event)"
-        description="Record a new transaction"
-    >
+        description="Record a new transaction">
         @let categories = transactionCategories();
         @let types = transactionTypes.value()?.data;
         <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
@@ -91,8 +76,7 @@
                 [numberStep]="0.01"
                 placeholder="Eg: 100"
                 [formField]="transactionForm.amount"
-                (clearOutput)="transactionForm.amount().controlValue.set(null)"
-            />
+                (clearOutput)="transactionForm.amount().controlValue.set(null)" />
 
             <atom-input
                 type="text"
@@ -103,8 +87,7 @@
                 label="Description"
                 placeholder="Eg: Dinner with friends"
                 [formField]="transactionForm.description"
-                (clearOutput)="transactionForm.description().controlValue.set('')"
-            />
+                (clearOutput)="transactionForm.description().controlValue.set('')" />
 
             <div class="flex flex-col sm:flex-row gap-4">
                 <atom-select
@@ -115,8 +98,7 @@
                     label="Transaction Type"
                     placeholder="Select a type"
                     [formField]="transactionForm.type"
-                    [options]="types || [{ value: '', label: 'No transaction types found' }]"
-                />
+                    [options]="types || [{ value: '', label: 'No transaction types found' }]" />
 
                 <atom-select
                     class="flex-1"
@@ -127,10 +109,7 @@
                     placeholder="Select a category"
                     [disabled]="isTransferTransaction()"
                     [formField]="transactionForm.category"
-                    [options]="
-                        categories || [{ value: '', label: 'No transaction categories found' }]
-                    "
-                />
+                    [options]="categories || [{ value: '', label: 'No transaction categories found' }]" />
             </div>
 
             <atom-select
@@ -139,10 +118,7 @@
                 placeholder="Select source account"
                 [formField]="transactionForm.sourceAccountId"
                 [label]="isTransferTransaction() ? 'Source Account' : 'Associated Account'"
-                [options]="
-                    sourceAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]
-                "
-            />
+                [options]="sourceAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]" />
 
             @if (isTransferTransaction()) {
                 <atom-select
@@ -151,12 +127,7 @@
                     label="Target Account"
                     placeholder="Select target account"
                     [formField]="transactionForm.targetAccountId"
-                    [options]="
-                        targetAccountDropdown() || [
-                            { value: '', label: 'You have no accounts yet' },
-                        ]
-                    "
-                />
+                    [options]="targetAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]" />
             }
         </form>
 
@@ -169,8 +140,7 @@
                 form="transactions-form"
                 id="reset-transaction-form"
                 (clicked)="resetTransactionForm()"
-                [disabled]="!transactionForm().dirty() || isSubmitting()"
-            />
+                [disabled]="!transactionForm().dirty() || isSubmitting()" />
 
             <atom-button
                 type="submit"
@@ -178,8 +148,7 @@
                 form="transactions-form"
                 id="submit-transaction-form"
                 [isLoading]="isSubmitting()"
-                [disabled]="transactionForm().invalid() || isSubmitting()"
-            />
+                [disabled]="transactionForm().invalid() || isSubmitting()" />
         </div>
     </organism-form>
 }

@@ -11,7 +11,7 @@ import { Component, computed, inject, input, output } from '@angular/core';
     selector: 'splitr-event',
     styleUrl: './splitr-event-item.css',
     templateUrl: './splitr-event-item.html',
-    imports: [LucideAngularModule, Badge, Overlapper],
+    imports: [LucideAngularModule, Badge, Overlapper]
 })
 export class SplitrEventItem {
     // ICONS

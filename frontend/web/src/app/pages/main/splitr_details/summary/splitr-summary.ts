@@ -6,7 +6,7 @@ import { ConsumerSummary, IConsumerSummary } from './consumer_summary/consumer-s
 @Component({
     selector: 'splitr-summary',
     imports: [ConsumerSummary],
-    templateUrl: './splitr-summary.html',
+    templateUrl: './splitr-summary.html'
 })
 export class SplitrSummary {
     // INPUTS
@@ -26,13 +26,9 @@ export class SplitrSummary {
                 (acc, splittable) =>
                     acc +
                     splittable.quantitySplits
-                        .filter((quantitySplit) => quantitySplit.consumerName === member)
-                        .reduce(
-                            (acc, quantitySplit) =>
-                                acc + splittable.unitPrice * quantitySplit.consumerQuantity,
-                            0,
-                        ),
-                0,
+                        .filter(quantitySplit => quantitySplit.consumerName === member)
+                        .reduce((acc, quantitySplit) => acc + splittable.unitPrice * quantitySplit.consumerQuantity, 0),
+                0
             );
 
         const totalItemsConsumed = (payer: string) =>
@@ -40,16 +36,16 @@ export class SplitrSummary {
                 (acc, splittable) =>
                     acc +
                     splittable.quantitySplits
-                        .filter((quantitySplit) => quantitySplit.consumerName === payer)
+                        .filter(quantitySplit => quantitySplit.consumerName === payer)
                         .reduce((acc, quantitySplit) => acc + quantitySplit.consumerQuantity, 0),
-                0,
+                0
             );
 
-        return eventMembers.map((member) => ({
+        return eventMembers.map(member => ({
             isSettled: false,
             consumerName: member,
             amountPayable: memberTotalAmount(member),
-            itemsConsumed: totalItemsConsumed(member),
+            itemsConsumed: totalItemsConsumed(member)
         }));
     });
 }

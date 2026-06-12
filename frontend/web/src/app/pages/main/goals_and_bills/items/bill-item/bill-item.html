@@ -1,19 +1,10 @@
 <div [id]="billItemId()" class="bill-item">
     <div class="group/bill-item bill-item-logo">
-        <div
-            class="delete-wrapper"
-            [ngClass]="{ 'grid!': isDeleting() }"
-            (click)="deleteBillItem(billItem().id)"
-        >
+        <div class="delete-wrapper" [ngClass]="{ 'grid!': isDeleting() }" (click)="deleteBillItem(billItem().id)">
             @if (isDeleting()) {
                 <div class="loader"></div>
             } @else {
-                <lucide-angular
-                    [size]="17"
-                    [img]="trash"
-                    class="text-white"
-                    name="delete-bill-item"
-                ></lucide-angular>
+                <lucide-angular [size]="17" [img]="trash" class="text-white" name="delete-bill-item"></lucide-angular>
             }
         </div>
 

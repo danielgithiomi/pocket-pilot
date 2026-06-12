@@ -14,7 +14,7 @@ export class CategoriesService {
 
     constructor(
         private readonly cache: CategoriesCache,
-        private readonly categoriesRepository: CategoriesRepository,
+        private readonly categoriesRepository: CategoriesRepository
     ) {}
 
     async addDefaultCategoriesOnRegistration(userId: string): Promise<boolean> {
@@ -37,17 +37,13 @@ export class CategoriesService {
                 message: 'Invalid category type',
                 details: {
                     field: 'categoryType',
-                    value: payload.categoryType,
-                },
+                    value: payload.categoryType
+                }
             });
 
         const normalisedName: string = normalizeCategoryName(payload.categoryName);
 
-        const categoryDto = await this.categoriesRepository.createCategory(
-            userId,
-            normalisedName,
-            payload.categoryType,
-        );
+        const categoryDto = await this.categoriesRepository.createCategory(userId, normalisedName, payload.categoryType);
 
         const createdCategories = plainToInstance(CategoriesDto, categoryDto);
         await this.cache.invalidateCache(userId);
@@ -71,8 +67,8 @@ export class CategoriesService {
                 lastUpdated: null,
                 user: {
                     id: userId,
-                    name,
-                },
+                    name
+                }
             };
 
         const categories: CategoriesDto = plainToInstance(CategoriesDto, fetchedCategories);
@@ -94,8 +90,8 @@ export class CategoriesService {
                 message: `Error deleting your ${categoryName} category. Please try again later.`,
                 details: {
                     field: 'categoryName',
-                    value: categoryName,
-                },
+                    value: categoryName
+                }
             });
         }
     }
