@@ -4,10 +4,10 @@ import { ExchangeRateRepository } from '../repositories/exchange-rate.respositor
 import { ExchangeRateCache } from '@modules/exchange-rate/cache/exchange-rate.cache';
 import { HttpStatus, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import {
+    CurrencyConversionResult,
     ExchangeRateDto,
     ExchangeRatePayload,
     ExchangeRateResponse,
-    CurrencyConversionResult,
     PrismaExchangeRateSnapshotWithRates
 } from '../dtos/exchange-rate.dto';
 
@@ -137,7 +137,7 @@ export class ExchangeRateService {
             throw new Error(`Third-party exchange rate API responded with status ${rawResponse.status}`);
         }
 
-        return rawResponse.json() as Promise<ExchangeRateResponse>;
+        return (await rawResponse.json()) as Promise<ExchangeRateResponse>;
     }
 
     private async saveThirdPartyDataToDB(thirdPartyData: ExchangeRateResponse): Promise<ExchangeRateDto> {

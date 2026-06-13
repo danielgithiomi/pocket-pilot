@@ -2,9 +2,10 @@
     id="squad-form-modal"
     title="Create A New Squad"
     [class.hidden]="!isSquadFormOpen()"
-    (closeForm)="handleCreateSquadFormClose($event)"
+    (onFormCloseEvent)="handleCreateSquadFormClose($event)"
     description="People you regularly share expenses with.">
-    <form id="create-squad-form" slot="content" (submit)="handleCreateSquadFormSubmit($event)">
+
+<form (submit)="handleCreateSquadFormSubmit($event)" id="create-squad-form" slot="content">
         <atom-input
             type="text"
             id="squad-name"

@@ -1,7 +1,10 @@
-<div [id]="id()" class="hover-form">
-    <div class="overlay" (click)="closeForm.emit('overlay')"></div>
+<atom-modal
+    (onModalBackdropClickEvent)="onFormCloseEvent.emit('backdrop')"
+    [closeModalOnBackdropClick]="onBackdropClickClose()"
+    [id]="modalId()"
+    class="form-modal-wrapper">
 
-    <div class="form" [ngClass]="{ 'w-full! lg:w-3/4! xl:w-1/2!': !drawerService.isDrawerCollapsed() }">
+    <div [id]="formId()" class="form" slot="modal-content">
         <!-- HEADER -->
         <div class="form-header">
             <div class="space-y-1">
@@ -14,8 +17,8 @@
                     name="x"
                     [img]="X"
                     [size]="24"
-                    (click)="closeForm.emit('icon')"
-                    class="atom-icon text-inverted-text hover:text-primary" />
+                    (click)="onFormCloseEvent.emit('icon')"
+                    class="atom-icon text-inverted-text hover:text-primary"/>
             }
         </div>
 
@@ -30,4 +33,4 @@
             <ng-content select="[slot=footer]"></ng-content>
         </div>
     </div>
-</div>
+</atom-modal>

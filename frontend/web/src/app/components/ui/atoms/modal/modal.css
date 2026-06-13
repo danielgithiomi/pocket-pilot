@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.modal {
+    @apply absolute inset-0 overflow-hidden grid place-items-center px-6 lg:px-0 z-9997;
+    animation: slideDown 250ms ease-in-out;
+
+    .backdrop {
+        @apply absolute inset-0 w-full h-full cursor-default;
+        background: var(--overlay-background);
+        backdrop-filter: blur(var(--filter-blur));
+        -webkit-backdrop-filter: blur(var(--filter-blur));
+    }
+
+    .modal-content {
+        @apply w-full h-3/4 md:w-3/4 lg:w-2/3 xl:w-1/2 z-9998 rounded-xl border overflow-y-scroll overflow-x-hidden;
+    }
+}

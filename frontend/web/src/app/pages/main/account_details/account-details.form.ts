@@ -20,7 +20,7 @@ import { UpdateAccountDetailsSchema, UpdateAccountValidationSchema } from './acc
             title="Update Account"
             [class.hidden]="!isEditFormOpen()"
             description="Modify account details"
-            (closeForm)="closeEditFormEvent.emit($event)">
+            (onFormCloseEvent)="closeEditFormEvent.emit($event)">
             @let types = accountTypes.value()?.data;
             <form slot="content" id="edit-account-form" (submit)="submitEditAccountForm($event)">
                 <atom-input
@@ -84,7 +84,7 @@ export class AccountDetailsForm {
     readonly isEditFormOpen = input.required<boolean>();
 
     // OUTPUTS
-    readonly closeEditFormEvent = output<'submit' | 'icon' | 'overlay'>();
+    readonly closeEditFormEvent = output<'submit' | 'icon' | 'backdrop'>();
 
     // SIGNALS
     protected readonly isSubmitting = signal<boolean>(false);

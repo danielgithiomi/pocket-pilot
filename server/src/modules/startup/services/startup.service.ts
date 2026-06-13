@@ -27,8 +27,8 @@ export class StartupService implements OnApplicationBootstrap {
         //         baseCurrency,
         //         fetchedAt: fetchedAt.toISOString(),
         //         nextUpdateTime: nextUpdateTime.toISOString(),
-        //         lastUpdatedTime: lastUpdatedTime.toISOString(),
-        //     },
+        //         lastUpdatedTime: lastUpdatedTime.toISOString()
+        //     }
         // });
     }
 

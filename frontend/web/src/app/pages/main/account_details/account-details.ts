@@ -13,8 +13,8 @@ import { TransactionsService } from '@api/transactions.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionsComponent } from './transactions/transactions';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { LucideAngularModule, Wallet, SquarePen, Trash2, ScanEye, EyeOff } from 'lucide-angular';
-import { UpdateAccountBalanceVisibilityPayload, Account as IAccount, TransactionWithAccount } from '@global/types';
+import { EyeOff, LucideAngularModule, ScanEye, SquarePen, Trash2, Wallet } from 'lucide-angular';
+import { Account as IAccount, TransactionWithAccount, UpdateAccountBalanceVisibilityPayload } from '@global/types';
 
 @Component({
     templateUrl: './account-details.html',
@@ -108,7 +108,7 @@ export class AccountDetails {
         this.isEditFormOpen.set(true);
     }
 
-    protected handleEditFormClose(cause: 'submit' | 'icon' | 'overlay') {
+    protected handleEditFormClose(cause: 'submit' | 'icon' | 'backdrop') {
         if (cause === 'submit') this.reloadResources();
         this.isEditFormOpen.set(false);
     }

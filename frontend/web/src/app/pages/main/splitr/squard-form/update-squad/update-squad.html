@@ -1,8 +1,9 @@
 <organism-form
     id="squad-update"
     title="Modify a squad"
-    (closeForm)="handleUpdateSquadFormClose($event)"
+    (onFormCloseEvent)="handleUpdateSquadFormClose($event)"
     description="Modify the name and members of an existing squad.">
+
     <form id="update-squad-form" slot="content" (submit)="handleUpdateSquadFormSubmit($event)">
         <atom-input
             type="text"
@@ -12,7 +13,7 @@
             label="Squad Name"
             placeholder="Eg: Foodies"
             [formField]="updateSquadForm.squadName"
-            (clearOutput)="updateSquadForm.squadName().controlValue.set('')" />
+            (clearOutput)="updateSquadForm.squadName().controlValue.set('')"/>
 
         <!-- Member Selection -->
         <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
@@ -27,7 +28,7 @@
                 autocomplete="off"
                 id="add-member-name"
                 placeholder="Eg: John"
-                (input)="validateMemberName(newMemberInput.value)" />
+                (input)="validateMemberName(newMemberInput.value)"/>
 
             <atom-button
                 id="add-member"
@@ -36,7 +37,7 @@
                 [disabled]="!isMemberNameValid() || isSubmittingUpdateSquadForm()"
                 (clicked)="addNewMemberToPool(newMemberInput.value, true); newMemberInput.value = ''">
                 <div class="w-full h-full grid place-items-center py-[2px]">
-                    <lucide-icon name="add-member-icon" [img]="AddUserIcon" [size]="iconSize" />
+                    <lucide-icon [img]="AddUserIcon" [size]="iconSize" name="add-member-icon"/>
                 </div>
             </atom-button>
         </div>
@@ -54,7 +55,7 @@
                         [inverted]="true"
                         [member]="member"
                         [isCheckable]="true"
-                        (onMemberEventClick)="addNewMemberToPool($event, false)" />
+                        (onMemberEventClick)="addNewMemberToPool($event, false)"/>
                 }
             }
         </div>
@@ -69,7 +70,7 @@
             form="update-squad-form"
             id="reset-update-squad-form"
             (clicked)="resetUpdateSquadForm()"
-            [disabled]="!updateSquadForm().dirty() || isSubmittingUpdateSquadForm()" />
+            [disabled]="!updateSquadForm().dirty() || isSubmittingUpdateSquadForm()"/>
 
         <atom-button
             type="submit"
@@ -82,6 +83,6 @@
                 updateSquadForm().invalid() ||
                 isSubmittingUpdateSquadForm() ||
                 updateSquadFormModel().squadMembers.length === 0
-            " />
+            "/>
     </div>
 </organism-form>

@@ -24,7 +24,7 @@ export class CategoriesForm {
     isCategoriesFormOpen = input.required<boolean>();
 
     // OUTPUTS
-    categoriesFormClosed = output<'icon' | 'overlay'>();
+    categoriesFormClosed = output<'icon' | 'backdrop'>();
 
     // SIGNALS
     protected isSubmittingCategoriesForm = signal<boolean>(false);
@@ -39,7 +39,7 @@ export class CategoriesForm {
     private readonly categories$ = this.categoriesService.getUserCategories();
 
     // METHODS
-    handleCloseForm(source: 'icon' | 'overlay') {
+    handleCloseForm(source: 'icon' | 'backdrop') {
         if (source === 'icon') this.resetCategoryForm();
         this.categoriesFormClosed.emit(source);
     }

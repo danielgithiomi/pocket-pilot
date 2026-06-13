@@ -14,7 +14,7 @@ export class ExchangeRateRepository {
         return this.db.exchangeRateSnapshot.create({
             data: {
                 baseCurrency,
-                fetchedAt: new Date(),
+                fetchedAt: new Date(Date.now()),
                 nextUpdateTime: new Date(nextUpdateTime),
                 lastUpdatedTime: new Date(lastUpdatedTime),
                 exchangeRates: {

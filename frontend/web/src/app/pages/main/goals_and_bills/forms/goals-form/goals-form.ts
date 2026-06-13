@@ -10,15 +10,15 @@ import { GoalsService } from '@api/goals.service';
 import { Radio, RadioOption } from '@atoms/radio';
 import { DatePicker } from '@organisms/date-picker';
 import { AccountsService } from '@api/accounts.service';
-import { LucideAngularModule, ChevronsRight, ChevronsLeft } from 'lucide-angular';
+import { ChevronsLeft, ChevronsRight, LucideAngularModule } from 'lucide-angular';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
-import { addOneMonthFromDate, getMonthDifference, addMonths, formatCurrency } from '@libs/utils';
+import { addMonths, addOneMonthFromDate, formatCurrency, getMonthDifference } from '@libs/utils';
 import {
-    NewGoalSchema,
     EffectResponse,
-    TargetCompletionStrategy,
+    newGoalFormValidationSchema,
+    NewGoalSchema,
     TargetCompletionStrategies,
-    newGoalFormValidationSchema
+    TargetCompletionStrategy
 } from './goals-form.types';
 import { CURRENCIES } from '@global/constants';
 
@@ -243,7 +243,7 @@ export class GoalsForm {
         this.resetCalculatedFields();
     }
 
-    protected handleCloseForm(source: 'icon' | 'overlay') {
+    protected handleCloseForm(source: 'icon' | 'backdrop') {
         if (source === 'icon') this.resetGoalForm();
         this.onGoalsFormClose.emit();
     }

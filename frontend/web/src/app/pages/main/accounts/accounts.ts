@@ -11,9 +11,9 @@ import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NoData } from '@structural/main/no-data/no-data';
 import { Component, computed, inject, signal } from '@angular/core';
-import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
+import { ListFilterPlus, LucideAngularModule } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { AccountsSchema, accountsFormValidationSchema } from './accounts.types';
+import { accountsFormValidationSchema, AccountsSchema } from './accounts.types';
 import { CURRENCIES, DummyAccountData as DummyAccount } from '@global/constants';
 
 @Component({
@@ -82,7 +82,7 @@ export class Accounts {
         this.accountsFormModel.set(this.INITIAL_FORM_STATE);
     }
 
-    protected handleCloseForm(source: 'icon' | 'overlay') {
+    protected handleCloseForm(source: 'icon' | 'backdrop') {
         if (source === 'icon') this.resetAccountsForm();
         this.isFormOpen.set(false);
     }

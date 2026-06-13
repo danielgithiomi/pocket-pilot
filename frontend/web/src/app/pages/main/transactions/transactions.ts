@@ -14,17 +14,17 @@ import { TableColumn } from '@organisms/table/table.types';
 import { CategoriesService } from '@api/categories.service';
 import { TransactionsService } from '@api/transactions.service';
 import { ExchangeRateService } from '@api/exchange-rate.service';
-import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
+import { ListFilterPlus, LucideAngularModule } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
-import { formatDate, formatCurrency, formatToReadable, splitTransactionId } from '@libs/utils/formatters';
+import { formatCurrency, formatDate, formatToReadable, splitTransactionId } from '@libs/utils/formatters';
 import {
+    initialTransactionFormState,
     skeletonData,
     tabListItems,
+    transactionFormValidationSchema,
     TransactionRow,
-    TransactionSchema,
-    initialTransactionFormState,
-    transactionFormValidationSchema
+    TransactionSchema
 } from './transactions.types';
 
 @Component({
@@ -310,7 +310,7 @@ export class Transactions {
         this.isFormOpen.set(true);
     }
 
-    protected handleCloseForm(source: 'icon' | 'overlay') {
+    protected handleCloseForm(source: 'icon' | 'backdrop') {
         if (source === 'icon') this.resetTransactionForm();
         this.isFormOpen.set(false);
     }

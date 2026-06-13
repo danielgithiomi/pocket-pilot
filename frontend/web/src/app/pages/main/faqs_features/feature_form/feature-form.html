@@ -2,7 +2,7 @@
     id="feature-form-modal"
     title="Suggest A New Feature"
     [class.hidden]="!isFeatureFormOpen()"
-    (closeForm)="handleCloseFeatureForm($event)"
+    (onFormCloseEvent)="handleCloseFeatureForm($event)"
     description="Suggest a new feature for Pocket Pilot.">
     <form id="suggest-feature-form" slot="content" (submit)="handleSuggestFeatureFormSubmit($event)">
         <atom-input

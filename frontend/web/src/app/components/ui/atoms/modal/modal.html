@@ -1,0 +1,11 @@
+<section [id]="modalId()" class="modal">
+    <div (click)="handleCloseModal()" class="backdrop"></div>
+
+    <div
+        [ngClass]="{ 'no-scrollbar': !showScrollBar(),'w-full! lg:w-3/4! xl:w-1/2!': !drawerService.isDrawerCollapsed()}"
+        class="modal-content bg-inverted-background border-primary">
+        <!--    MODAL CONTENT HERE    -->
+        <ng-content select="[slot=modal-content]"></ng-content>
+    </div>
+
+</section>

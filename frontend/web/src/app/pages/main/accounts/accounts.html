@@ -2,11 +2,16 @@
     <div class="page-header">
         <h1 class="page-title">Accounts</h1>
 
-        <atom-button id="add-account" variant="primary" (clicked)="isFormOpen.set(true)" [disabled]="isLoadingAccounts()">
+        <atom-button
+            (clicked)="isFormOpen.set(true)" [disabled]="isLoadingAccounts()"
+            id="add-account"
+            variant="primary">
+
             <div class="w-full flex flex-row items-center justify-between gap-4">
-                <lucide-icon name="create-wallet" [img]="Plus" [size]="iconSize" />
+                <lucide-icon [img]="Plus" [size]="iconSize" name="create-wallet"/>
                 <span class="hidden sm:block">Add Account</span>
             </div>
+
         </atom-button>
     </div>
 
@@ -24,7 +29,7 @@
                         [id]="i.toString()"
                         [account]="dummyAccount"
                         [isLoading]="isLoadingAccounts()"
-                        (onAccountDelete)="accountsWithCount.reload()" />
+                        (onAccountDelete)="accountsWithCount.reload()"/>
                 }
             </div>
         </div>
@@ -34,10 +39,10 @@
         @let count = accountsCount();
         <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': count === 0 || hasError }">
             @if (hasError) {
-                <fetch-error messageClass="text-sm" message="Failed to load your accounts! Please refresh the page." />
+                <fetch-error message="Failed to load your accounts! Please refresh the page." messageClass="text-sm"/>
             } @else {
                 @if (count === 0) {
-                    <no-data message="You have no accounts yet! Create one today." messageClass="text-sm" />
+                    <no-data message="You have no accounts yet! Create one today." messageClass="text-sm"/>
                 } @else {
                     <div>
                         <p class="page-subtitle cursor-default">
@@ -57,7 +62,7 @@
                                     [account]="account"
                                     [isLoading]="isLoadingAccounts()"
                                     (onAccountDelete)="accountsWithCount.reload()"
-                                    (onAccountBalanceVisibilityToggle)="accountsWithCount.reload()" />
+                                    (onAccountBalanceVisibilityToggle)="accountsWithCount.reload()"/>
                             }
                         </div>
                     </div>
@@ -74,7 +79,8 @@
         title="Add Account"
         [class.hidden]="!isFormOpen()"
         description="Create a new account"
-        (closeForm)="handleCloseForm($event)">
+        (onFormCloseEvent)="handleCloseForm($event)">
+
         @let types = accountTypesValue();
         <form slot="content" id="accounts-form" (submit)="submitAccountsForm($event)">
             <atom-input
@@ -85,7 +91,7 @@
                 label="Account Name"
                 placeholder="Eg: Expenditure"
                 [formField]="accountsForm.name"
-                (clearOutput)="accountsForm.name().controlValue.set('')" />
+                (clearOutput)="accountsForm.name().controlValue.set('')"/>
 
             <div class="flex flex-col sm:flex-row gap-4">
                 <atom-select
@@ -96,7 +102,7 @@
                     wrapperClassName="my-0"
                     placeholder="Select a type"
                     [formField]="accountsForm.type"
-                    [options]="types || [{ value: '', label: 'No account types found' }]" />
+                    [options]="types || [{ value: '', label: 'No account types found' }]"/>
 
                 <atom-select
                     class="flex-1"
@@ -106,7 +112,7 @@
                     wrapperClassName="my-0"
                     label="Account Currency"
                     placeholder="Select a currency"
-                    [formField]="accountsForm.currency" />
+                    [formField]="accountsForm.currency"/>
             </div>
         </form>
 
@@ -119,7 +125,7 @@
                 form="accounts-form"
                 id="reset-account-form"
                 (clicked)="resetAccountsForm()"
-                [disabled]="!accountsForm().dirty() || isSubmitting()" />
+                [disabled]="!accountsForm().dirty() || isSubmitting()"/>
 
             <atom-button
                 type="submit"
@@ -127,7 +133,7 @@
                 label="Create Account"
                 id="submit-account-form"
                 [isLoading]="isSubmitting()"
-                [disabled]="accountsForm().invalid() || isSubmitting()" />
+                [disabled]="accountsForm().invalid() || isSubmitting()"/>
         </div>
     </organism-form>
 }
