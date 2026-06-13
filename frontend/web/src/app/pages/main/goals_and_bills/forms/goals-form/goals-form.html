@@ -4,7 +4,8 @@
     [class.hidden]="!isGoalsFormOpen()"
     (onFormCloseEvent)="handleCloseForm($event)"
     description="Start a new financial goal">
-    <form slot="content" id="goals-form" (submit)="submitGoalForm($event)" class="my-4">
+
+<form (submit)="submitGoalForm($event)" class="my-4" id="goals-form" slot="content">
         @if (goalFormStep() === 1) {
             <organism-date-picker
                 [required]="true"

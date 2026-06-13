@@ -1,9 +1,10 @@
 <organism-form
     id="bills"
     title="New Bill"
-    (closeForm)="handleCloseForm()"
     [class.hidden]="!isBillsFormOpen()"
+    (onFormCloseEvent)="handleCloseForm()"
     description="Add a new bill to track">
+
     <form slot="content" id="bills-form" (submit)="submitNewBillForm($event)">
         <atom-input
             type="text"
@@ -13,7 +14,7 @@
             autocomplete="off"
             placeholder="Eg: Netflix"
             [formField]="newBillForm.name"
-            (clearOutput)="newBillForm.name().controlValue.set('')" />
+            (clearOutput)="newBillForm.name().controlValue.set('')"/>
 
         <organism-date-picker
             [required]="true"
@@ -25,7 +26,7 @@
             wrapperClassName="py-0!"
             placeholder="Select a date"
             [showClearOutputIcon]="false"
-            [formField]="newBillForm.dueDate" />
+            [formField]="newBillForm.dueDate"/>
 
         <div class="flex flex-col md:flex-row gap-4 md:gap-6 mt-4">
             <atom-input
@@ -39,7 +40,7 @@
                 placeholder="Eg: 100000"
                 wrapperClassName="my-0!"
                 [formField]="newBillForm.amount"
-                (clearOutput)="newBillForm.amount().controlValue.set(null)" />
+                (clearOutput)="newBillForm.amount().controlValue.set(null)"/>
 
             <atom-select
                 [inverted]="true"
@@ -50,7 +51,7 @@
                 wrapperClassName="my-0!"
                 [formField]="newBillForm.currency"
                 placeholder="Select billing currency"
-                [selectedValue]="newBillFormModel().currency" />
+                [selectedValue]="newBillFormModel().currency"/>
         </div>
 
         <atom-radio
@@ -62,7 +63,7 @@
             [formField]="newBillForm.type"
             [options]="formattedBillTypes()"
             [selectedValue]="newBillFormModel().type"
-            (selectionChange)="onBillingTypeChange($event)" />
+            (selectionChange)="onBillingTypeChange($event)"/>
     </form>
 
     <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
@@ -74,7 +75,7 @@
             variant="secondary"
             id="reset-bills-form"
             (clicked)="resetNewBillForm()"
-            [disabled]="!newBillForm().dirty() || isSubmittingForm()" />
+            [disabled]="!newBillForm().dirty() || isSubmittingForm()"/>
 
         <atom-button
             type="submit"
@@ -82,6 +83,6 @@
             label="Create Bill"
             id="submit-bill-form"
             [isLoading]="isSubmittingForm()"
-            [disabled]="newBillForm().invalid() || isSubmittingForm()" />
+            [disabled]="newBillForm().invalid() || isSubmittingForm()"/>
     </div>
 </organism-form>

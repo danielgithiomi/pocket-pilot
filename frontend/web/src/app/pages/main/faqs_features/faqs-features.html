@@ -81,7 +81,12 @@
                             [animationDimensions]="animationDimensions" />
                     } @else {
                         @for (feature of displayFeatures(); track feature.id) {
-                            <feature-item [id]="feature.id" [feature]="feature" [showDeleteIcon]="activeTabIndex() == 1" />
+                            <feature-item
+                                (onFeatureItemClick)="handleOnFeatureItemClick($event)"
+                                [feature]="feature"
+                                [id]="feature.id"
+                                [showDeleteIcon]="activeTabIndex() == 1"
+                            />
                         }
                     }
                 }
@@ -128,5 +133,9 @@
 }
 
 @if (isFeatureModalOpen() && selectedFeature()) {
-    <feature-details [feature]="selectedFeature()!"/>
+    <feature-details
+        (onFeatureModalCloseEvent)="handleOnFeatureModalClose()"
+        [feature]="selectedFeature()!"
+        [onBackdropClickClose]="true"
+    />
 }

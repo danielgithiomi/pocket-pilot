@@ -6,8 +6,8 @@ import { AuthService } from '@api/auth.service';
 import { denormalizeCategoryName } from '@global/utils';
 import { FeaturesService } from '@api/features.service';
 import { Feature, IVoidResourceResponse } from '@global/types';
-import { Component, computed, inject, input, signal } from '@angular/core';
-import { LucideAngularModule, ChevronsUp, MessageSquareReply, Trash2 } from 'lucide-angular';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChevronsUp, LucideAngularModule, MessageSquareReply, Trash2 } from 'lucide-angular';
 import { FeatureStatusEnum } from '@global/enums';
 
 @Component({
@@ -35,6 +35,9 @@ export class FeatureItem {
     readonly id = input.required<string>();
     readonly feature = input.required<Feature>();
     readonly showDeleteIcon = input.required<boolean>();
+
+    // OUTPUTS
+    onFeatureItemClick = output<string>();
 
     // COMPUTED
     protected readonly hasUserUpvoted = computed<boolean>(() => true);
@@ -75,7 +78,7 @@ export class FeatureItem {
 
     // METHODS
     handleFeatureClick() {
-        console.log('feature clicked', this.feature());
+        this.onFeatureItemClick.emit(this.feature().id);
     }
 
     handleUpvoteClick(event: Event) {

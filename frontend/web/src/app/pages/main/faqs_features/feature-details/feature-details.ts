@@ -1,6 +1,6 @@
 import { Modal } from '@atoms/modal';
 import { Feature } from '@global/types';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 
 @Component({
     imports: [Modal],
@@ -11,6 +11,10 @@ import { Component, computed, input } from '@angular/core';
 export class FeatureDetails {
     // INPUT
     feature = input.required<Feature>();
+    onBackdropClickClose = input.required<boolean>();
+
+    // OUTPUTS
+    onFeatureModalCloseEvent = output<void>();
 
     // COMPUTED
     featureId = computed<string>(() => `feature-${this.feature().id}`);

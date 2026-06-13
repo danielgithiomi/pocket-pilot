@@ -1,9 +1,18 @@
 <section [id]="modalId()" class="modal">
-    <div (click)="handleCloseModal()" class="backdrop"></div>
+    <div (click)="handleCloseModal('backdrop')" class="backdrop"></div>
 
     <div
         [ngClass]="{ 'no-scrollbar': !showScrollBar(),'w-full! lg:w-3/4! xl:w-1/2!': !drawerService.isDrawerCollapsed()}"
         class="modal-content bg-inverted-background border-primary">
+
+        @if (showCloseIcon()) {
+            <lucide-icon
+                (click)="handleCloseModal('icon')"
+                [img]="X"
+                [size]="24"
+                class="atom-icon close-icon text-inverted-text hover:text-primary"
+                name="x"/>
+        }
         <!--    MODAL CONTENT HERE    -->
         <ng-content select="[slot=modal-content]"></ng-content>
     </div>

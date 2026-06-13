@@ -1,5 +1,6 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
+import { ToastService } from '@atoms/toast';
 import { RouterLink } from '@angular/router';
 import { Accordion } from '@molecules/accordion';
 import { ContactItem, Feature } from '@global/types';
@@ -48,6 +49,7 @@ export class FaqsFeatures {
     protected readonly selectedFeature = signal<Feature | null>(null);
 
     // SERVICES
+    protected readonly toastService = inject(ToastService);
     protected readonly drawerService = inject(DrawerService);
     protected readonly featuresService = inject(FeaturesService);
 
@@ -79,13 +81,17 @@ export class FaqsFeatures {
         this.activeTabIndex() === 0 ? this.featureRequests().features : this.userFeatureRequests()
     );
     protected readonly featuresSubtitle = computed<string>(() => {
-        const allsubtitle = 'Most Popular Feature Requests';
-        const personalsubtitle = 'My Suggested Feature Requests';
+        const allSubtitle = 'Most Popular Feature Requests';
+        const personalSubtitle = 'My Suggested Feature Requests';
 
-        return this.activeTabIndex() === 0 ? allsubtitle : personalsubtitle;
+        return this.activeTabIndex() === 0 ? allSubtitle : personalSubtitle;
     });
 
     // UTILITIES
+    protected onTabSelected(index: number) {
+        this.activeTabIndex.set(index as 0 | 1);
+    }
+
     protected handleOpenFeatureForm() {
         this.isFeatureFormOpen.set(true);
     }
@@ -95,7 +101,24 @@ export class FaqsFeatures {
         this.isFeatureFormOpen.set(false);
     }
 
-    protected onTabSelected(index: number) {
-        this.activeTabIndex.set(index as 0 | 1);
+    protected handleOnFeatureItemClick(featureId: string) {
+        const feature = this.featureRequests().features.find(f => f.id === featureId);
+
+        if (!feature) {
+            this.toastService.show({
+                variant: 'error',
+                title: 'Error Fetching Feature!',
+                details: 'There was an unexpected error fetching the selected feature details.'
+            });
+            return;
+        }
+
+        this.selectedFeature.set(feature);
+        this.isFeatureModalOpen.set(true);
+    }
+
+    protected handleOnFeatureModalClose() {
+        this.selectedFeature.set(null);
+        this.isFeatureModalOpen.set(false);
     }
 }

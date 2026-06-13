@@ -1,7 +1,7 @@
 <atom-modal
-    (onModalBackdropClickEvent)="onFormCloseEvent.emit('backdrop')"
-    [closeModalOnBackdropClick]="onBackdropClickClose()"
     [id]="modalId()"
+    (onModalCloseEvent)="onFormCloseEvent.emit($event)"
+    [closeModalOnBackdropClick]="onBackdropClickClose()"
     class="form-modal-wrapper">
 
     <div [id]="formId()" class="form" slot="modal-content">
@@ -11,15 +11,6 @@
                 <p class="form-title">{{ title() }}</p>
                 <p class="form-description">{{ description() }}</p>
             </div>
-
-            @if (showCloseIcon()) {
-                <lucide-icon
-                    name="x"
-                    [img]="X"
-                    [size]="24"
-                    (click)="onFormCloseEvent.emit('icon')"
-                    class="atom-icon text-inverted-text hover:text-primary"/>
-            }
         </div>
 
         <!-- CONTENT -->
