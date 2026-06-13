@@ -1,8 +1,8 @@
 <atom-modal
     [id]="modalId()"
+    class="form-modal-wrapper"
     (onModalCloseEvent)="onFormCloseEvent.emit($event)"
-    [closeModalOnBackdropClick]="onBackdropClickClose()"
-    class="form-modal-wrapper">
+    [closeModalOnBackdropClick]="onBackdropClickClose()">
 
     <div [id]="formId()" class="form" slot="modal-content">
         <!-- HEADER -->

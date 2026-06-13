@@ -2,8 +2,8 @@
     id="goals"
     title="New Goal"
     [class.hidden]="!isGoalsFormOpen()"
-    (onFormCloseEvent)="handleCloseForm($event)"
-    description="Start a new financial goal">
+    description="Start a new financial goal"
+    (onFormCloseEvent)="handleCloseForm($event)">
 
 <form (submit)="submitGoalForm($event)" class="my-4" id="goals-form" slot="content">
         @if (goalFormStep() === 1) {
