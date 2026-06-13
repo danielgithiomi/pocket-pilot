@@ -13,10 +13,13 @@ export class Modal {
     id = input.required<string>();
     showScrollBar = input<boolean>(false);
     closeModalOnBackdropClick = input.required<boolean>();
+
     // OUTPUTS
     onModalBackdropClickEvent = output<void>();
+
     // SERVICES
     protected readonly drawerService = inject(DrawerService);
+
     // COMPUTED
     protected readonly modalId = computed<string>(() => `modal-${this.id()}`);
 

@@ -1,7 +1,6 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { FormCloseEvent } from '@organisms/form';
 import { Accordion } from '@molecules/accordion';
 import { ContactItem, Feature } from '@global/types';
 import { LucideAngularModule } from 'lucide-angular';
@@ -14,6 +13,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { DrawerService } from '@infrastructure/services/drawer.service';
 import { FeatureItem } from '@structural/main/feature-item/feature-item';
+import { FeatureDetails } from '@pages/main/faqs_features/feature-details';
 
 @Component({
     selector: 'faqs-features',
@@ -28,6 +28,7 @@ import { FeatureItem } from '@structural/main/feature-item/feature-item';
         RouterLink,
         FetchError,
         FeatureItem,
+        FeatureDetails,
         SuggestFeatureForm,
         LucideAngularModule
     ]
@@ -43,6 +44,8 @@ export class FaqsFeatures {
     // SIGNAL STATES
     protected readonly activeTabIndex = signal<0 | 1>(0);
     protected readonly isFeatureFormOpen = signal<boolean>(false);
+    protected readonly isFeatureModalOpen = signal<boolean>(false);
+    protected readonly selectedFeature = signal<Feature | null>(null);
 
     // SERVICES
     protected readonly drawerService = inject(DrawerService);

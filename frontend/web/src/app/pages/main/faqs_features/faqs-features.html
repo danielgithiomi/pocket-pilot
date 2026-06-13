@@ -126,3 +126,7 @@
 @if (isFeatureFormOpen()) {
     <suggest-feature-form [isFeatureFormOpen]="isFeatureFormOpen()" (featureFormClosedEvent)="handleCloseFeatureForm($event)" />
 }
+
+@if (isFeatureModalOpen() && selectedFeature()) {
+    <feature-details [feature]="selectedFeature()!"/>
+}
