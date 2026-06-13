@@ -1,0 +1,8 @@
+<atom-modal [closeModalOnBackdropClick]="true" [id]="feature().id">
+
+    <div [id]="featureId()" class="feature" slot="modal-content">
+        <h1 class="feature-title">{{ feature().featureTitle }}</h1>
+        <p class="feature-description">{{ feature().featureContent }}</p>
+    </div>
+
+</atom-modal>
