@@ -9,12 +9,12 @@ import { TabList, TabListItem } from '@atoms/tab-list';
 import { FeaturesService } from '@api/features.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { CONTACT_ITEMS, FAQ_ITEMS } from '@global/constants';
-import { SuggestFeatureForm } from './feature_form/feature-form';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { DrawerService } from '@infrastructure/services/drawer.service';
 import { FeatureItem } from '@structural/main/feature-item/feature-item';
 import { FeatureDetails } from '@pages/main/faqs_features/feature-details';
+import { SuggestFeatureForm } from '@pages/main/faqs_features/feature-form';
 
 @Component({
     selector: 'faqs-features',
