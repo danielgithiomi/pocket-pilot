@@ -22,7 +22,8 @@ import {
     Scale,
     Settings,
     Share2,
-    Shield
+    Shield,
+    TriangleAlert
 } from 'lucide-angular';
 
 const SECTION_ICONS: Record<string, LucideIconData> = {
@@ -56,9 +57,10 @@ export class PrivacyPolicy {
     protected readonly heroIconSize = 22;
     protected readonly ShieldIcon = Shield;
     protected readonly LockIcon = Lock;
+    protected readonly ImportantIcon = TriangleAlert;
 
-    protected readonly drawerService = inject(DrawerService);
     private readonly destroyRef = inject(DestroyRef);
+    protected readonly drawerService = inject(DrawerService);
 
     protected readonly content = PRIVACY_POLICY_CONTENT;
     protected readonly activeSectionId = signal(this.content.tableOfContents[0]?.id ?? 'summary');

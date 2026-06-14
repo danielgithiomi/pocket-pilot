@@ -52,7 +52,7 @@ export const AdditionalDrawerNavigationLinks: DrawerNavigationLink[] = [
     {
         icon: 'faqs_features',
         name: 'FAQs_Features',
-        path: '/faqs_features'
+        path: '/faqs-features'
     }
 ];
 

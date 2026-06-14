@@ -27,6 +27,7 @@ export interface PrivacyPolicySection {
 export interface PrivacyPolicyTocItem {
     id: string;
     title: string;
+    shortTitle: string;
     number: number;
 }
 

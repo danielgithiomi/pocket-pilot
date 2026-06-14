@@ -1,40 +1,54 @@
 @reference 'tailwindcss';
 
-.privacy-policy-hero::before {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    top: -4rem;
-    right: -2.5rem;
-    width: 12rem;
-    height: 12rem;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--primary) 15%, transparent);
-    filter: blur(64px);
+/* Override global `.page { h-full }` which squashes flex children and causes header/body overlap */
+.privacy-policy-page.page {
+    display: flex;
+    height: auto;
+    min-height: 0;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 0 !important;
 }
 
-.privacy-policy-hero::after {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    bottom: -5rem;
-    left: -2.5rem;
-    width: 14rem;
-    height: 14rem;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--transfer) 10%, transparent);
-    filter: blur(64px);
+.privacy-policy-header {
+    flex: none;
 }
 
-.privacy-policy-toc-link.is-active,
-.privacy-policy-mobile-chip.is-active {
+.privacy-policy-body {
+    flex: none;
+    align-items: flex-start;
+}
+
+.privacy-policy-aside {
+    top: 0;
+    flex: none;
+    position: sticky;
+    align-self: flex-start;
+}
+
+.privacy-policy-aside-panel {
+    display: flex;
+    max-height: calc(100dvh - 8vh - 2.5rem);
+    flex-direction: column;
+}
+
+.privacy-policy-toc-nav {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.privacy-policy-toc-link.is-active {
     border-color: var(--primary);
     background: color-mix(in srgb, var(--primary) 10%, transparent);
-    box-shadow: 0 0 2px var(--primary);
+    box-shadow: 0 0 1px var(--primary);
 }
 
-.privacy-policy-mobile-chip.is-active {
-    color: var(--primary);
+.privacy-policy-sections {
+    min-width: 0;
+    flex: 1 1 auto;
 }
 
 .privacy-policy-bullets li {
@@ -44,11 +58,11 @@
 
 .privacy-policy-bullets li::before {
     content: '';
-    position: absolute;
-    top: 0.55rem;
     left: 0;
-    width: 0.375rem;
-    height: 0.375rem;
-    border-radius: 9999px;
+    top: 0.55rem;
+    width: 0.35rem;
+    height: 0.35rem;
+    position: absolute;
+    border-radius: 50%;
     background: var(--primary);
 }
