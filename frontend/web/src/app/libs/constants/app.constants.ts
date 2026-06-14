@@ -47,7 +47,7 @@ export const AdditionalDrawerNavigationLinks: DrawerNavigationLink[] = [
     {
         icon: 'privacy',
         name: 'Privacy-Policy',
-        path: '/privacy'
+        path: '/privacy-policy'
     },
     {
         icon: 'faqs_features',

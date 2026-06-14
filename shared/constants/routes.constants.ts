@@ -12,7 +12,8 @@ export const WEB_ROUTES = {
   onboarding: "onboarding",
   register: "auth/register",
   transactions: "transactions",
-  faqsFeatures: "faqs_features",
+    faqsFeatures: "faqs-features",
+    privacyPolicy: "privacy-policy",
 
   // dynamic routes
   accountDetails: "accounts/:id",
@@ -33,6 +34,7 @@ export interface WebRoutes {
   onboarding: string;
   transactions: string;
   faqsFeatures: string;
+    privacyPolicy: string;
 
   // dynamic routes
   splitrDetails: string;

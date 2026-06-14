@@ -99,6 +99,11 @@ export const routes: Routes = [
                 loadComponent: () => import('@pages/main/faqs_features/faqs-features').then(m => m.FaqsFeatures)
             },
             {
+                title: 'Privacy Policy | Pocket Pilot',
+                path: WEB_ROUTES.privacyPolicy,
+                loadComponent: () => import('@pages/main/privacy_policy/privacy-policy').then(m => m.PrivacyPolicy)
+            },
+            {
                 path: '**',
                 component: NotFound,
                 title: '404 | Page Not Found'
