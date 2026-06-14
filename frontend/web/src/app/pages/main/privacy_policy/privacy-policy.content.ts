@@ -10,7 +10,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
     ],
     importantNotice:
         'Pocket Pilot does not currently connect to your bank, does not collect your online banking username or password, and does not collect bank account numbers, routing numbers, payment card numbers, Social Security numbers, tax identification numbers, credit reports, or brokerage credentials.',
-    disagreementNotice: 'If you do not agree with this Privacy Policy, please do not use the Services.',
+    disagreementNotice: 'If you do not agree with this Privacy Policy, please do not use the services.',
     summaryBullets: [
         'We collect account registration information such as your name, email address, password hash, optional phone number, and optional profile picture.',
         'We collect the financial tracking data you choose to enter, such as account names, account types, currencies, balances, transactions, categories, bills, goals, and Splitr shared expense records.',
@@ -27,11 +27,21 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
         { number: 1, id: 'summary', title: 'Summary', shortTitle: 'Summary' },
         { number: 2, id: 'scope', title: 'Scope of This Policy', shortTitle: 'Scope' },
         { number: 3, id: 'information-we-collect', title: 'Information We Collect', shortTitle: 'Data We Collect' },
-        { number: 4, id: 'information-we-do-not-collect', title: 'Information We Do Not Collect', shortTitle: "Data We Don't Collect" },
+        {
+            number: 4,
+            id: 'information-we-do-not-collect',
+            title: 'Information We Do Not Collect',
+            shortTitle: "Data We Don't Collect"
+        },
         { number: 5, id: 'how-we-use-information', title: 'How We Use Information', shortTitle: 'How We Use Data' },
         { number: 6, id: 'ai-voice-receipt', title: 'AI, Voice Input, and Receipt Scanning', shortTitle: 'AI & Voice Input' },
         { number: 7, id: 'how-we-share-information', title: 'How We Share Information', shortTitle: 'How We Share' },
-        { number: 8, id: 'cookies-storage', title: 'Cookies, Local Storage, and Similar Technologies', shortTitle: 'Cookies & Storage' },
+        {
+            number: 8,
+            id: 'cookies-storage',
+            title: 'Cookies, Local Storage, and Similar Technologies',
+            shortTitle: 'Cookies & Storage'
+        },
         { number: 9, id: 'data-retention', title: 'Data Retention', shortTitle: 'Data Retention' },
         { number: 10, id: 'security', title: 'Security', shortTitle: 'Security' },
         { number: 11, id: 'your-choices', title: 'Your Choices and Privacy Rights', shortTitle: 'Your Rights' },

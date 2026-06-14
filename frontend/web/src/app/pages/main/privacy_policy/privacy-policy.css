@@ -7,11 +7,13 @@
     min-height: 0;
     flex-direction: column;
     gap: 2rem;
-    padding-bottom: 0 !important;
+    padding-bottom: 0;
+    cursor: default !important;
 }
 
 .privacy-policy-header {
     flex: none;
+    height: auto;
 }
 
 .privacy-policy-body {
