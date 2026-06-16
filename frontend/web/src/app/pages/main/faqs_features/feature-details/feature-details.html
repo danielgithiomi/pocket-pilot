@@ -1,11 +1,84 @@
 <atom-modal
     [id]="feature().id"
+    [showScrollBar]="true"
     (onModalCloseEvent)="onFeatureModalCloseEvent.emit()"
     [closeModalOnBackdropClick]="onBackdropClickClose()">
 
-    <div [id]="featureId()" class="feature" slot="modal-content">
-        <h1 class="feature-title">{{ feature().featureTitle }}</h1>
-        <p class="feature-description">{{ feature().featureContent }}</p>
-    </div>
+    <div [id]="featureId()" class="feature-details" slot="modal-content">
+        <section class="feature-details-card feature-details-overview">
+            <div class="feature-vote" aria-label="Feature votes">
+                <lucide-icon [img]="UpVoteIcon" [size]="iconSize" name="feature-upvote"/>
+                <p class="feature-vote-count">{{ feature().featureScore }}</p>
+                <p class="feature-vote-label">votes</p>
+            </div>
 
+            <div class="feature-overview-content">
+                <h2 class="feature-title">{{ feature().featureTitle }}</h2>
+                <p class="feature-description">{{ feature().featureContent }}</p>
+
+                <div class="feature-meta">
+                    <atom-badge [label]="formattedStatus()" [variant]="statusBadgeVariant()"/>
+                    <atom-badge [label]="formattedCategory()" variant="neutral" [uppercase]="false"/>
+                    <p class="feature-meta-submitted">
+                        submitted by <span class="text-inverted-text font-semibold">{{ formattedAuthorName() }}</span>
+                        <span aria-hidden="true"> • </span>{{ formattedSubmittedDate() }}
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-details-status">
+            <molecule-status
+                [id]="feature().id"
+                label="Status"
+                [steps]="statusSteps"
+                [activeIndex]="statusActiveIndex()"/>
+        </section>
+
+        <section class="feature-details-card feature-comments">
+            <div class="feature-comments-header">
+                <lucide-icon [img]="CommentIcon" [size]="iconSize" name="feature-comments"/>
+                <span>{{ commentCount() }} {{ commentCount() === 1 ? 'comment' : 'comments' }}</span>
+            </div>
+
+            @if (commentCount() === 0) {
+                <p class="feature-comments-empty">No comments yet. Be the first to share your thoughts.</p>
+            } @else {
+                <ul class="feature-comments-list">
+                    @for (comment of featureComments(); track comment.id; let index = $index) {
+                        <li class="feature-comment">
+                            <div class="feature-comment-avatar" [ngClass]="commentAvatarClass(index)">
+                                {{ commentInitials(index) }}
+                            </div>
+
+                            <div class="feature-comment-body">
+                                <div class="feature-comment-meta">
+                                    <span class="feature-comment-author">{{ commentAuthorLabel(index) }}</span>
+                                    <span class="feature-comment-date">{{ formatCommentDate(comment.createdAt) }}</span>
+                                </div>
+                                <p class="feature-comment-text">{{ comment.comment }}</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+
+            <div class="feature-comment-form">
+                <textarea
+                    class="feature-comment-input"
+                    rows="2"
+                    placeholder="Add a comment..."
+                    [value]="commentDraft()"
+                    (input)="handleCommentInput($event)"
+                    [attr.aria-label]="'Add a comment to ' + feature().featureTitle"></textarea>
+                <button
+                    type="button"
+                    class="feature-comment-post"
+                    [disabled]="!canPostComment()"
+                    (click)="handlePostComment()">
+                    Post
+                </button>
+            </div>
+        </section>
+    </div>
 </atom-modal>

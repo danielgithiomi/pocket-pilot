@@ -1,9 +1,9 @@
 import { PrivacyPolicyContent } from './privacy-policy.types';
 
 export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
-    title: 'Pocket Pilot Privacy Policy',
-    effectiveDate: 'June 14, 2026',
-    lastUpdated: 'June 14, 2026',
+    title: 'Privacy Policy',
+    lastUpdated: 'June 1st, 2026',
+    effectiveDate: 'June 1st, 2026',
     intro: [
         'This Privacy Policy explains how Pocket Pilot, operated by Daniel Githiomi ("Pocket Pilot," "we," "us," or "our"), collects, uses, stores, shares, and protects information when you use the Pocket Pilot website, web application, mobile application when released, backend services, support channels, and any related services that link to this Privacy Policy (collectively, the "Services").',
         'Pocket Pilot is a personal finance tracking application. It helps users manually track accounts, balances, transactions, categories, bills, goals, preferences, shared expenses, and related financial records. Pocket Pilot is not a bank, broker, lender, payment processor, credit bureau, or financial adviser.'

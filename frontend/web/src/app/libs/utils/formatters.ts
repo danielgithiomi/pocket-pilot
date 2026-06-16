@@ -80,6 +80,26 @@ export function getMonthDifference(start: Date, end: Date): number {
 }
 
 /**
+ * Formats a date string into a relative time format, such as "1 day ago".
+ * @param date The date string to format (e.g. "2024-05-10T09:00Z")
+ * @returns The formatted date as a relative string (e.g. "1 day ago")
+ */
+export function formatRelativeDate(date: Date | string): string {
+    const then = new Date(date).getTime();
+    const diffMs = Date.now() - then;
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMinutes < 1) return 'just now';
+    if (diffMinutes < 60) return `${diffMinutes} ${diffMinutes === 1 ? 'minute' : 'minutes'} ago`;
+    if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'} ago`;
+    if (diffDays === 1) return '1 day ago';
+
+    return `${diffDays} days ago`;
+}
+
+/**
  * Formats a date string for input field display using a short, consistent style.
  * Example output: "May 10, 2024".
  *
