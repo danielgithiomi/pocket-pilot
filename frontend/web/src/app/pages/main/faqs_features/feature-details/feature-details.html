@@ -1,15 +1,20 @@
 <atom-modal
+    [inverted]="true"
     [id]="feature().id"
-    [showScrollBar]="true"
+    wrapperClasses="bg-body-background!"
     (onModalCloseEvent)="onFeatureModalCloseEvent.emit()"
     [closeModalOnBackdropClick]="onBackdropClickClose()">
 
     <div [id]="featureId()" class="feature-details" slot="modal-content">
         <section class="feature-details-card feature-details-overview">
-            <div class="feature-vote" aria-label="Feature votes">
-                <lucide-icon [img]="UpVoteIcon" [size]="iconSize" name="feature-upvote"/>
-                <p class="feature-vote-count">{{ feature().featureScore }}</p>
-                <p class="feature-vote-label">votes</p>
+            <div class="flex flex-col items-center justify-center">
+                <div class="feature-vote" aria-label="Feature votes">
+                    <lucide-icon [img]="UpVoteIcon" [size]="iconSize" name="feature-upvote"/>
+                </div>
+                <div class="">
+                    <p class="feature-vote-count">{{ feature().featureScore }}</p>
+                    <p class="feature-vote-label">votes</p>
+                </div>
             </div>
 
             <div class="feature-overview-content">

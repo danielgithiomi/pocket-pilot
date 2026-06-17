@@ -11,22 +11,34 @@ import { Component, computed, inject, input, output } from '@angular/core';
 })
 export class Modal {
     showCloseIcon = input<boolean>(true);
-    // OUTPUTS
-    onModalCloseEvent = output<ModalCloseEvent>();
 
     // INPUTS
     id = input.required<string>();
+    inverted = input<boolean>(false);
+    wrapperClasses = input<string>('');
+
+    // OUTPUTS
+    onModalCloseEvent = output<ModalCloseEvent>();
+
     // ICONS
     protected readonly X = X;
+    protected readonly iconSize = 18;
     showScrollBar = input<boolean>(false);
     closeModalOnBackdropClick = input.required<boolean>();
-    protected readonly iconSize = 18;
 
     // SERVICES
     protected readonly drawerService = inject(DrawerService);
 
     // COMPUTED
     protected readonly modalId = computed<string>(() => `modal-${this.id()}`);
+    protected readonly modalContentClasses = computed<string>(() => {
+        const classes: string[] = [this.wrapperClasses()];
+
+        if (!this.showScrollBar()) classes.push('no-scrollbar');
+        if (!this.drawerService.isDrawerCollapsed()) classes.push('w-full! lg:w-3/4! xl:w-1/2!');
+
+        return classes.filter(Boolean).join(' ');
+    });
 
     // METHODS
     protected handleCloseModal(source: ModalCloseEvent) {

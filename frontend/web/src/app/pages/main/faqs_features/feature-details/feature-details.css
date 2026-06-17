@@ -1,34 +1,39 @@
 .feature-details {
+    gap: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem 1.25rem 1.75rem;
+    padding: 1.5rem;
 }
 
 .feature-details-card {
     border-radius: 0.75rem;
-    border: 1px solid color-mix(in srgb, var(--loader-primary) 65%, transparent);
     background: var(--alternate-background);
+    border: 1px solid color-mix(in srgb, var(--loader-primary) 65%, transparent);
 }
 
 .feature-details-overview {
-    display: flex;
-    align-items: flex-start;
     gap: 1.25rem;
+    display: flex;
     padding: 1.25rem;
+    flex-direction: row;
+    align-items: flex-start;
 }
 
 .feature-vote {
-    display: flex;
-    width: 4.25rem;
-    flex-shrink: 0;
-    flex-direction: column;
-    align-items: center;
     gap: 0.25rem;
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
     border-radius: 0.75rem;
-    border: 1px solid color-mix(in srgb, var(--secondary) 55%, transparent);
-    background: color-mix(in srgb, var(--secondary) 28%, var(--body-background));
     padding: 0.75rem 0.5rem;
+    border: 1px solid var(--loader-primary);
+}
+
+.feature-vote.active {
+    border-color: color-mix(in srgb, var(--primary) 55%, transparent);
+    background: color-mix(in srgb, var(--primary) 22%, var(--body-background));
 }
 
 .feature-vote-count {

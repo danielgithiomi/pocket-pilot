@@ -15,7 +15,7 @@
         @apply relative w-full h-3/4 md:w-3/4 lg:w-2/3 xl:w-1/2 z-9998 rounded-xl border overflow-y-scroll overflow-x-hidden;
 
         .close-icon {
-            @apply absolute top-4 right-4 cursor-pointer;
+            @apply absolute top-3 right-3 cursor-pointer;
         }
     }
 }
