@@ -1,55 +1,64 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
 .status {
     width: 100%;
+    min-width: 0;
+    padding: clamp(0.75rem, 2cqi, 1rem);
     border-radius: 0.75rem;
-    border: 1px solid color-mix(in srgb, var(--loader-primary) 65%, transparent);
     background: var(--alternate-background);
-    padding: 1rem 1.25rem 1.25rem;
+    border: 1px solid color-mix(in srgb, var(--loader-primary) 65%, transparent);
+    container-type: inline-size;
 }
 
 .status-label {
-    margin-bottom: 1rem;
-    font-size: 0.6875rem;
     font-weight: 600;
+    margin-bottom: clamp(0.75rem, 2.5cqi, 1rem);
+    font-size: clamp(0.625rem, 2.5cqi, 0.6875rem);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--tertiary-dark);
+    color: var(--inverted-text);
 }
 
 .status-track {
-    display: flex;
-    align-items: flex-start;
     width: 100%;
+    min-width: 0;
+    display: flex;
     margin: 0;
     padding: 0;
     list-style: none;
+    align-items: flex-start;
+}
+
+.status-step,
+.status-connector {
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 .status-step {
     display: flex;
-    min-width: 0;
-    flex: 1 1 0;
-    align-items: flex-start;
-}
-
-.status-node {
-    display: flex;
-    width: 4.5rem;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: clamp(0.25rem, 1.5cqi, 0.5rem);
     text-align: center;
 }
 
 .status-icon-wrap {
     display: grid;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: clamp(1.75rem, 16cqi, 2.5rem);
+    height: clamp(1.75rem, 16cqi, 2.5rem);
+    border-radius: 50%;
     place-items: center;
-    border-radius: 9999px;
+    aspect-ratio: 1;
     border: 1px solid transparent;
-    transition: background-color 180ms ease,
-    border-color 180ms ease,
-    color 180ms ease;
+    transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease;
 }
 
 .status-icon-wrap--completed {
@@ -73,38 +82,25 @@
 .status-name {
     width: 100%;
     overflow: hidden;
-    font-size: 0.75rem;
-    line-height: 1.25rem;
-    text-overflow: ellipsis;
+    font-weight: 600;
+    font-size: clamp(0.625rem, 2.75cqi, 0.75rem);
+    line-height: 1.25;
     white-space: nowrap;
-    color: var(--tertiary-dark);
+    text-overflow: ellipsis;
+    color: var(--reactive-text);
 }
 
 .status-name--active {
-    font-weight: 700;
-    color: var(--inverted-text);
+    color: var(--primary-text);
 }
 
 .status-connector {
+    align-self: flex-start;
     height: 2px;
-    min-width: 0.5rem;
-    flex: 1 1 auto;
-    margin-top: 1.25rem;
+    margin-top: calc(clamp(1.75rem, 16cqi, 2.5rem) / 2 - 1px);
     background: color-mix(in srgb, var(--gray2) 55%, transparent);
 }
 
 .status-connector--completed {
     background: var(--success);
-}
-
-@media (max-width: 767px) {
-    .status-track {
-        overflow-x: auto;
-        padding-bottom: 0.25rem;
-    }
-
-    .status-step {
-        flex: 0 0 auto;
-        min-width: 5.5rem;
-    }
 }

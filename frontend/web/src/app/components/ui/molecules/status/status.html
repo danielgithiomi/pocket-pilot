@@ -9,25 +9,24 @@
                 class="status-step"
                 role="listitem"
                 [attr.aria-current]="resolveStepState(index, step) === 'active' ? 'step' : null">
-                <div class="status-node">
-                    <div class="status-icon-wrap" [ngClass]="iconWrapClass(index, step)">
-                        <lucide-icon
-                            [size]="iconSize()"
-                            [img]="resolveStepIcon(index, step)"
-                            [name]="step.id"/>
-                    </div>
-                    <span class="status-name" [class.status-name--active]="resolveStepState(index, step) === 'active'">
-                        {{ step.name }}
-                    </span>
+                <div class="status-icon-wrap" [ngClass]="iconWrapClass(index, step)">
+                    <lucide-icon
+                        [size]="iconSize()"
+                        [img]="resolveStepIcon(index, step)"
+                        [name]="step.id" />
                 </div>
-
-                @if (!last) {
-                    <div
-                        class="status-connector"
-                        [class.status-connector--completed]="isConnectorCompleted(index, step)"
-                        aria-hidden="true"></div>
-                }
+                <span class="status-name" [class.status-name--active]="resolveStepState(index, step) === 'active'">
+                    {{ step.name }}
+                </span>
             </li>
+
+            @if (!last) {
+                <li
+                    class="status-connector"
+                    role="presentation"
+                    aria-hidden="true"
+                    [class.status-connector--completed]="isConnectorCompleted(index, step)"></li>
+            }
         }
     </ol>
 </div>

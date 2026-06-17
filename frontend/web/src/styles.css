@@ -74,7 +74,7 @@
     --alternate-white: #f0f2f6;
 
     /* Alternative Colors */
-    --muted: #d9d9d9;
+    /*--muted: #d9d9d9;*/
     --jet-black: #272d2d;
     --jungle-teal: #5b9279;
     --torch-red: #fb2b37;
@@ -90,7 +90,7 @@
     --inverted-background: var(--dark);
     --alternate-background: var(--gray3);
 
-    --muted: var(--muted);
+    --muted: var(--gray4);
     --muted-text: var(--gray2);
     --primary-text: var(--dark);
     --inverted-text: var(--white);
@@ -173,7 +173,6 @@
     --color-tertiary: var(--tertiary);
     --color-quaternary: var(--quaternary);
 
-    --color-muted: var(--muted);
     --color-loader-primary: var(--loader-primary);
     --color-scrollbar-track: var(--scrollbar-track);
     --color-loader-secondary: var(--loader-secondary);

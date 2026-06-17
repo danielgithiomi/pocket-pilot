@@ -1,5 +1,4 @@
 <atom-modal
-    [inverted]="true"
     [id]="feature().id"
     wrapperClasses="bg-body-background!"
     (onModalCloseEvent)="onFeatureModalCloseEvent.emit()"
@@ -7,11 +6,11 @@
 
     <div [id]="featureId()" class="feature-details" slot="modal-content">
         <section class="feature-details-card feature-details-overview">
-            <div class="flex flex-col items-center justify-center">
+            <div class="flex flex-col items-center justify-center gap-2">
                 <div class="feature-vote" aria-label="Feature votes">
                     <lucide-icon [img]="UpVoteIcon" [size]="iconSize" name="feature-upvote"/>
                 </div>
-                <div class="">
+                <div class="flex flex-col items-center">
                     <p class="feature-vote-count">{{ feature().featureScore }}</p>
                     <p class="feature-vote-label">votes</p>
                 </div>
@@ -19,23 +18,31 @@
 
             <div class="feature-overview-content">
                 <h2 class="feature-title">{{ feature().featureTitle }}</h2>
-                <p class="feature-description">{{ feature().featureContent }}</p>
+                <p class="feature-content">{{ feature().featureContent }}</p>
 
                 <div class="feature-meta">
-                    <atom-badge [label]="formattedStatus()" [variant]="statusBadgeVariant()"/>
-                    <atom-badge [label]="formattedCategory()" variant="neutral" [uppercase]="false"/>
-                    <p class="feature-meta-submitted">
-                        submitted by <span class="text-inverted-text font-semibold">{{ formattedAuthorName() }}</span>
-                        <span aria-hidden="true"> • </span>{{ formattedSubmittedDate() }}
-                    </p>
+                    <div class="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                        <div class="flex flex-row items-center gap-1">
+                            <atom-badge [label]="formattedStatus()" [variant]="statusBadgeVariant()"/>
+                            <atom-badge [label]="formattedCategory()" variant="neutral" [uppercase]="false"/>
+                        </div>
+
+                        <div class="feature-meta-submitted flex flex-row items-center gap-2 self-end">
+                            <p>Submitted by <span class="text-primary-text font-semibold">{{ formattedAuthorName() }}</span></p>
+                            <p aria-hidden="true">• {{ formattedSubmittedDate() }}</p>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </section>
 
         <section class="feature-details-status">
             <molecule-status
-                [id]="feature().id"
                 label="Status"
+                [showLabel]="false"
+                [id]="feature().id"
                 [steps]="statusSteps"
                 [activeIndex]="statusActiveIndex()"/>
         </section>
@@ -70,10 +77,10 @@
 
             <div class="feature-comment-form">
                 <textarea
-                    class="feature-comment-input"
-                    rows="2"
-                    placeholder="Add a comment..."
+                    rows="1"
                     [value]="commentDraft()"
+                    class="feature-comment-input"
+                    placeholder="Add a comment..."
                     (input)="handleCommentInput($event)"
                     [attr.aria-label]="'Add a comment to ' + feature().featureTitle"></textarea>
                 <button

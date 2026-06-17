@@ -7,7 +7,7 @@ import { FeatureStatusEnum } from '@global/enums';
 import { Badge, BadgeVariant } from '@atoms/badge';
 import { denormalizeCategoryName } from '@global/utils';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
-import { ChevronsUp, LucideAngularModule, MessageSquare } from 'lucide-angular';
+import { ChevronsUp, LucideAngularModule, MessageSquareText } from 'lucide-angular';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { COMMENT_AVATAR_COLORS, FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
 
@@ -28,7 +28,7 @@ export class FeatureDetails {
     // ICONS
     protected readonly iconSize = 16;
     protected readonly UpVoteIcon = ChevronsUp;
-    protected readonly CommentIcon = MessageSquare;
+    protected readonly CommentIcon = MessageSquareText;
     protected readonly statusSteps = FEATURE_STATUS_STEPS;
 
     // STATE

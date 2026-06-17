@@ -14,7 +14,6 @@ export class Modal {
 
     // INPUTS
     id = input.required<string>();
-    inverted = input<boolean>(false);
     wrapperClasses = input<string>('');
 
     // OUTPUTS
