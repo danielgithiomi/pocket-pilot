@@ -21,7 +21,7 @@ export class Modal {
 
     // ICONS
     protected readonly X = X;
-    protected readonly iconSize = 16;
+    protected readonly iconSize = 18;
     showScrollBar = input<boolean>(false);
     closeModalOnBackdropClick = input.required<boolean>();
 

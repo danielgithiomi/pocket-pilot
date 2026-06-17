@@ -134,8 +134,8 @@
 
 @if (isFeatureModalOpen() && selectedFeature()) {
     <feature-details
-        (onFeatureModalCloseEvent)="handleOnFeatureModalClose()"
         [feature]="selectedFeature()!"
-        [onBackdropClickClose]="true"
+        [onBackdropClickClose]="false"
+        (onFeatureModalCloseEvent)="handleOnFeatureModalClose()"
     />
 }
