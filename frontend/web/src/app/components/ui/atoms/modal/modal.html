@@ -6,13 +6,14 @@
         [ngClass]="modalContentClasses()">
 
         @if (showCloseIcon()) {
-            <lucide-icon
-                name="x"
-                [img]="X"
-                [size]="24"
-                (click)="handleCloseModal('icon')"
-                class="atom-icon close-icon hover:text-primary"
-                [ngClass]="{ 'text-primary-text!': inverted(), 'text-inverted-text!': !inverted() }"/>
+            <div class="close-icon-wrapper group">
+                <lucide-icon
+                    name="x"
+                    [img]="X"
+                    [size]="iconSize"
+                    class="close-icon"
+                    (click)="handleCloseModal('icon')"/>
+            </div>
         }
 
         <!--    MODAL CONTENT HERE    -->

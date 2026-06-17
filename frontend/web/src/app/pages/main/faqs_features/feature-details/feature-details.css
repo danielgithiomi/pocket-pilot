@@ -1,8 +1,8 @@
 .feature-details {
     gap: 1rem;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
 }
 
 .feature-details-card {
