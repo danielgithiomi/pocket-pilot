@@ -4,9 +4,9 @@ import { Clock, Code, FileCheck, Rocket, Search } from 'lucide-angular';
 
 export const FEATURE_STATUS_STEPS: StatusStep[] = [
     { id: 'submitted', name: 'Submitted', icon: FileCheck },
-    { id: 'under-review', name: 'Under review', icon: Search },
+    { id: 'under_review', name: 'Reviewing', icon: Search },
     { id: 'planned', name: 'Planned', icon: Clock },
-    { id: 'in-progress', name: 'In progress', icon: Code },
+    { id: 'in_progress', name: 'Implementing', icon: Code },
     { id: 'shipped', name: 'Shipped', icon: Rocket }
 ];
 

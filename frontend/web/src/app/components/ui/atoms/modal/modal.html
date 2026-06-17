@@ -12,7 +12,8 @@
                     [img]="X"
                     [size]="iconSize"
                     class="close-icon"
-                    (click)="handleCloseModal('icon')"/>
+                    (click)="handleCloseModal('icon')"
+                    [ngClass]="{ 'text-primary-text!': inverted() }"/>
             </div>
         }
 

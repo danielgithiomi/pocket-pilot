@@ -7,8 +7,8 @@ import { FeatureStatusEnum } from '@global/enums';
 import { Badge, BadgeVariant } from '@atoms/badge';
 import { denormalizeCategoryName } from '@global/utils';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
-import { ChevronsUp, LucideAngularModule, MessageSquareText } from 'lucide-angular';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChevronsUp, LucideAngularModule, MessageSquareText } from 'lucide-angular';
 import { COMMENT_AVATAR_COLORS, FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
 
 @Component({
@@ -29,15 +29,6 @@ export class FeatureDetails {
     protected readonly iconSize = 16;
     protected readonly UpVoteIcon = ChevronsUp;
     protected readonly CommentIcon = MessageSquareText;
-    protected readonly statusSteps = computed(() => {
-        if (this.feature().featureStatus !== FeatureStatusEnum.REJECTED) {
-            return FEATURE_STATUS_STEPS;
-        }
-
-        return FEATURE_STATUS_STEPS.map((step, index) =>
-            index === 1 ? { ...step, state: 'error' as const } : step
-        );
-    });
 
     // STATE
     protected readonly commentDraft = signal('');
@@ -77,10 +68,19 @@ export class FeatureDetails {
             UNDER_REVIEW: 'warning'
         };
 
+        console.log(this.feature().featureStatus);
         return VARIANT_MAP[this.feature().featureStatus];
+    });
+    protected readonly statusSteps = computed(() => {
+        if (this.feature().featureStatus !== FeatureStatusEnum.REJECTED) {
+            return FEATURE_STATUS_STEPS;
+        }
+
+        return FEATURE_STATUS_STEPS.map((step, index) => (index === 1 ? { ...step, state: 'error' as const } : step));
     });
     protected readonly canPostComment = computed<boolean>(() => this.commentDraft().trim().length > 0);
 
+    // METHODS
     protected commentAvatarClass(index: number): string {
         return COMMENT_AVATAR_COLORS[index % COMMENT_AVATAR_COLORS.length];
     }
