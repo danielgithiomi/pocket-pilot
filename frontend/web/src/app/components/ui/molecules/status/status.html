@@ -8,14 +8,17 @@
             <li
                 class="status-step"
                 role="listitem"
-                [attr.aria-current]="resolveStepState(index, step) === 'active' ? 'step' : null">
+                [attr.aria-current]="isStepCurrent(index, step) ? 'step' : null">
                 <div class="status-icon-wrap" [ngClass]="iconWrapClass(index, step)">
                     <lucide-icon
                         [size]="iconSize()"
                         [img]="resolveStepIcon(index, step)"
                         [name]="step.id" />
                 </div>
-                <span class="status-name" [class.status-name--active]="resolveStepState(index, step) === 'active'">
+                <span
+                    class="status-name"
+                    [class.status-name--active]="isStepNameActive(index, step)"
+                    [class.status-name--error]="isStepNameError(index, step)">
                     {{ step.name }}
                 </span>
             </li>

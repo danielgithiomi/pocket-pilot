@@ -1,6 +1,6 @@
 import { LucideIconData } from 'lucide-angular';
 
-export type StatusStepState = 'completed' | 'active' | 'pending';
+export type StatusStepState = 'completed' | 'active' | 'pending' | 'error';
 
 export interface StatusStep {
     /** Unique token for the icon name (no spaces). */

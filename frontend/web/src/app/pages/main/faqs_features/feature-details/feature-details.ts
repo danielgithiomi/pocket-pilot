@@ -29,7 +29,15 @@ export class FeatureDetails {
     protected readonly iconSize = 16;
     protected readonly UpVoteIcon = ChevronsUp;
     protected readonly CommentIcon = MessageSquareText;
-    protected readonly statusSteps = FEATURE_STATUS_STEPS;
+    protected readonly statusSteps = computed(() => {
+        if (this.feature().featureStatus !== FeatureStatusEnum.REJECTED) {
+            return FEATURE_STATUS_STEPS;
+        }
+
+        return FEATURE_STATUS_STEPS.map((step, index) =>
+            index === 1 ? { ...step, state: 'error' as const } : step
+        );
+    });
 
     // STATE
     protected readonly commentDraft = signal('');
