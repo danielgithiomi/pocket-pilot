@@ -43,17 +43,20 @@ model User {
     // Link to bills - one-to-many
     bills Bills[]
 
-    // Link to splitr events - one-to-many
-    splitrEvents SplitrEvent[]
-
     // Link to features - one-to-many
     features Feature[]
+
+    // Link to splitr events - one-to-many
+    splitrEvents SplitrEvent[]
 
     // Link to feature votes - one-to-many
     featureVotes FeatureVotes[]
 
     // Link to preferences - one-to-one
     userPreferences UserPreferences?
+
+    // Link to feature comments - one-to-many
+    comments FeatureComments[] @relation("UserFeatureComments")
 
     @@unique([email])
     @@map("Users")
@@ -162,9 +165,10 @@ model Categories {
     lastUpdated DateTime @updatedAt()
 
     // Link to user - one-to-many
+    userId String
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId String @unique
 
+    @@unique([userId])
     @@map("User Transaction Categories")
 }
 
@@ -211,8 +215,8 @@ model Goals {
     createdAt DateTime @default(now())
 
     // Link to user - one-to-many
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("Financial Goals")
 }
@@ -236,8 +240,8 @@ model Bills {
     createdAt DateTime @default(now())
 
     // Link to user - one-to-many
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("User Bills")
 }
@@ -345,8 +349,8 @@ model SplitrEvent {
     createdAt DateTime  @default(now())
 
     // Link to user - one-to-many
-    creatorId String
-    user      User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+    userId  String
+    creator User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("Splitr Events")
 }
@@ -406,6 +410,24 @@ model Feature {
     @@map("Features")
 }
 
+model FeatureComments {
+    id String @id @default(uuid())
+
+    comment String
+
+    createdAt DateTime @default(now())
+
+    // Link to the user - one-to-one
+    userId String
+    author User   @relation("UserFeatureComments", fields: [userId], references: [id], onDelete: Cascade)
+
+    // Link to feature - one-to-many
+    featureId String
+    feature   Feature @relation("FeatureComments", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@map("Feature Comments")
+}
+
 enum VoteVariant {
     UPVOTE
     DOWNVOTE
@@ -420,29 +442,15 @@ model FeatureVotes {
     createdAt DateTime @default(now())
 
     // Link to user - many-to-one
-    voterId String
-    voter   User   @relation(fields: [voterId], references: [id], onDelete: Cascade)
+    userId String
+    voter  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     // Link to feature - one-to-one
     featureId String
     feature   Feature @relation("FeatureVotes", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-    @@unique([featureId, voterId])
+    @@unique([featureId, userId])
     @@map("Feature Votes")
-}
-
-model FeatureComments {
-    id String @id @default(uuid())
-
-    comment String
-
-    createdAt DateTime @default(now())
-
-    // Link to feature - one-to-many
-    featureId String
-    feature   Feature @relation("FeatureComments", fields: [featureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-    @@map("Feature Comments")
 }
 
 model ExchangeRateSnapshot {
@@ -450,10 +458,10 @@ model ExchangeRateSnapshot {
 
     baseCurrency String
 
+    exchangeRates ExchangeRate[]
+
     nextUpdateTime  DateTime @db.Timestamptz(3)
     lastUpdatedTime DateTime @db.Timestamptz(3)
-
-    exchangeRates ExchangeRate[]
 
     fetchedAt DateTime @default(now()) @db.Timestamptz(3)
 
@@ -464,11 +472,11 @@ model ExchangeRateSnapshot {
 model ExchangeRate {
     id String @id @default(uuid())
 
-    snapshotId String
-    snapshot   ExchangeRateSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
-
     currency String // USD, EUR, GBP
     rate     Decimal @db.Decimal(18, 8)
+
+    snapshotId String
+    snapshot   ExchangeRateSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
 
     @@unique([snapshotId, currency])
     @@map("Exchange Rates")

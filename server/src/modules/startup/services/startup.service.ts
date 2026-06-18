@@ -15,7 +15,7 @@ export class StartupService implements OnApplicationBootstrap {
      *
      * @returns {Promise<void>} A promise that resolves when the exchange rate data has been successfully fetched and processed.
      */
-    async onApplicationBootstrap(): Promise<void> {
+    onApplicationBootstrap(): void {
         // const { baseCurrency, nextUpdateTime, lastUpdatedTime, fetchedAt }: ExchangeRateDto =
         //     await this.exchangeRateService.fetchAndPersistExchangeRates();
         //
