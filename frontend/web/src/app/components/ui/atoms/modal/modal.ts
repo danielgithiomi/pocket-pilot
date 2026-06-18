@@ -10,12 +10,13 @@ import { Component, computed, inject, input, output } from '@angular/core';
     imports: [NgClass, LucideAngularModule]
 })
 export class Modal {
-    showCloseIcon = input<boolean>(true);
-
     // INPUTS
     id = input.required<string>();
     inverted = input<boolean>(false);
     wrapperClasses = input<string>('');
+    showCloseIcon = input<boolean>(true);
+    showScrollBar = input<boolean>(false);
+    closeModalOnBackdropClick = input.required<boolean>();
 
     // OUTPUTS
     onModalCloseEvent = output<ModalCloseEvent>();
@@ -23,8 +24,6 @@ export class Modal {
     // ICONS
     protected readonly X = X;
     protected readonly iconSize = 18;
-    showScrollBar = input<boolean>(false);
-    closeModalOnBackdropClick = input.required<boolean>();
 
     // SERVICES
     protected readonly drawerService = inject(DrawerService);

@@ -1,6 +1,7 @@
 <atom-modal
     [inverted]="true"
     [id]="feature().id"
+    [showCloseIcon]="false"
     wrapperClasses="bg-body-background!"
     (onModalCloseEvent)="onFeatureModalCloseEvent.emit()"
     [closeModalOnBackdropClick]="onBackdropClickClose()">
