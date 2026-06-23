@@ -82,10 +82,10 @@
                     } @else {
                         @for (feature of displayFeatures(); track feature.id) {
                             <feature-item
-                                (onFeatureItemClick)="handleOnFeatureItemClick($event)"
-                                [feature]="feature"
                                 [id]="feature.id"
+                                [feature]="feature"
                                 [showDeleteIcon]="activeTabIndex() == 1"
+                                (onFeatureItemClick)="handleOnFeatureItemClick($event)"
                             />
                         }
                     }

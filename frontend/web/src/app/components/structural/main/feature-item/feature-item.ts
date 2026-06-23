@@ -40,7 +40,6 @@ export class FeatureItem {
     onFeatureItemClick = output<string>();
 
     // COMPUTED
-    protected readonly hasUserUpvoted = computed<boolean>(() => true);
     protected readonly isOwnedByCurrentUser = computed<boolean>(() => {
         const userId = this.authService.user()?.id;
         return this.feature().authorId === userId;
@@ -83,6 +82,12 @@ export class FeatureItem {
 
     handleUpvoteClick(event: Event) {
         event.stopPropagation();
+
+        const previousState = this.isUserUpvoted();
+
+        // Temporary State
+        this.isUserUpvoted.set(!previousState);
+
         this.isUserUpvoted.set(!this.isUserUpvoted());
     }
 
