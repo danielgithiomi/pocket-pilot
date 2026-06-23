@@ -6,12 +6,12 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 export class SplitrRepository {
     constructor(private readonly db: DatabaseService) {}
 
-    async createSplitrEvent(userId: string, payload: SplitrEventPayload) {
+    createSplitrEvent(userId: string, payload: SplitrEventPayload) {
         const { billPayers, eventSplittables, ...rest } = payload;
-        return await this.db.splitrEvent.create({
+        return this.db.splitrEvent.create({
             data: {
                 ...rest,
-                creatorId: userId,
+                userId,
                 billPayers: { create: billPayers },
                 eventSplittables: {
                     create: eventSplittables.map(({ quantitySplits, ...splittable }) => ({
@@ -29,7 +29,7 @@ export class SplitrRepository {
 
     getUserSplitrEvents(userId: string) {
         return this.db.splitrEvent.findMany({
-            where: { creatorId: userId },
+            where: { userId },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
             orderBy: { createdAt: 'desc' }
         });
@@ -45,7 +45,7 @@ export class SplitrRepository {
     markSplitrEventAsSettledOrPending(userId: string, eventId: string, payload: SettleSplitrPayload) {
         const { isSettled } = payload;
         return this.db.splitrEvent.update({
-            where: { id: eventId, creatorId: userId },
+            where: { id: eventId, userId },
             data: { isSettled },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } }
         });
@@ -53,7 +53,7 @@ export class SplitrRepository {
 
     deleteSplitrEvent(userId: string, eventId: string) {
         return this.db.splitrEvent.delete({
-            where: { id: eventId, creatorId: userId },
+            where: { id: eventId, userId },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } }
         });
     }

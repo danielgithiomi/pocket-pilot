@@ -315,7 +315,7 @@ export class SplitrEventDto extends SplitrEventPayload {
         example: '123e4567-e89b-12d3-a456-426614174000',
         description: 'The ID of the creator of the splitr event'
     })
-    creatorId!: string;
+    userId!: string;
 
     @Expose()
     @ApiProperty({
