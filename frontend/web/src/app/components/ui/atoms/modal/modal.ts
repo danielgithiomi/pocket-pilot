@@ -23,7 +23,7 @@ export class Modal {
 
     // ICONS
     protected readonly X = X;
-    protected readonly iconSize = 18;
+    protected readonly iconSize = 16;
 
     // SERVICES
     protected readonly drawerService = inject(DrawerService);
