@@ -68,3 +68,16 @@
     border-radius: 50%;
     background: var(--primary);
 }
+
+.privacy-policy-table-wrap {
+    scrollbar-gutter: stable;
+}
+
+.privacy-policy-table {
+    table-layout: fixed;
+}
+
+.privacy-policy-table th,
+.privacy-policy-table td {
+    vertical-align: top;
+}

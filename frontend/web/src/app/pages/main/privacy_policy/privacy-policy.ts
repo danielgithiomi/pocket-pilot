@@ -32,11 +32,13 @@ const SECTION_ICONS: Record<string, LucideIconData> = {
     'information-we-collect': Database,
     'information-we-do-not-collect': Ban,
     'how-we-use-information': Settings,
+    'legal-basis': Scale,
     'ai-voice-receipt': Bot,
     'how-we-share-information': Share2,
     'cookies-storage': Cookie,
     'data-retention': Clock,
     security: Lock,
+    'breach-notification': TriangleAlert,
     'your-choices': Scale,
     'regional-disclosures': Globe,
     'childrens-privacy': Baby,
@@ -82,7 +84,7 @@ export class PrivacyPolicy {
             id: 'ai-by-choice',
             icon: Bot,
             title: 'AI by choice',
-            description: 'Future voice and receipt features process data only when you choose to use them.'
+            description: 'Future voice and receipt features are disabled by default and require explicit consent.'
         }
     ];
 

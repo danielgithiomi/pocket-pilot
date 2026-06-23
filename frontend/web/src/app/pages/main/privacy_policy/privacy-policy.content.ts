@@ -2,24 +2,25 @@ import { PrivacyPolicyContent } from './privacy-policy.types';
 
 export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
     title: 'Privacy Policy',
-    lastUpdated: 'June 1st, 2026',
-    effectiveDate: 'June 1st, 2026',
+    lastUpdated: 'June 23rd, 2026',
+    effectiveDate: 'June 23rd, 2026',
     intro: [
         'This Privacy Policy explains how Pocket Pilot, operated by Daniel Githiomi ("Pocket Pilot," "we," "us," or "our"), collects, uses, stores, shares, and protects information when you use the Pocket Pilot website, web application, mobile application when released, backend services, support channels, and any related services that link to this Privacy Policy (collectively, the "Services").',
-        'Pocket Pilot is a personal finance tracking application. It helps users manually track accounts, balances, transactions, categories, bills, goals, preferences, shared expenses, and related financial records. Pocket Pilot is not a bank, broker, lender, payment processor, credit bureau, or financial adviser.'
+        'Pocket Pilot is a personal finance tracking application. It helps users manually track accounts, balances, transactions, categories, bills, goals, preferences, shared expenses, and related financial records. Pocket Pilot is not a bank, broker, lender, payment processor, credit bureau, or financial adviser. AI-generated outputs, once introduced, are informational data-entry assistance only and do not constitute financial advice.'
     ],
     importantNotice:
-        'Pocket Pilot does not currently connect to your bank, does not collect your online banking username or password, and does not collect bank account numbers, routing numbers, payment card numbers, Social Security numbers, tax identification numbers, credit reports, or brokerage credentials.',
+        'Pocket Pilot does not currently connect to your bank, does not collect your online banking username or password, and does not collect bank account numbers, routing numbers, payment card numbers, Social Security numbers, tax identification numbers, credit reports, or brokerage credentials. User-entered financial tracking data is still sensitive and is treated with enhanced safeguards.',
     disagreementNotice: 'If you do not agree with this Privacy Policy, please do not use the services.',
     summaryBullets: [
         'We collect account registration information such as your name, email address, password hash, optional phone number, and optional profile picture.',
         'We collect the financial tracking data you choose to enter, such as account names, account types, currencies, balances, transactions, categories, bills, goals, and Splitr shared expense records.',
         'We do not collect personal banking login credentials, bank account numbers, routing numbers, payment card numbers, credit reports, or Social Security numbers.',
         'We use cookies and similar storage for authentication, session management, security, and application functionality.',
-        'We use Redis caching to improve application performance and PostgreSQL to store application data.',
+        'We currently use essential cookies only. If non-essential cookies or analytics are introduced, we will request consent where required by law.',
+        'We use Redis caching to improve application performance and PostgreSQL to store application data. Redis-cached data is temporary and automatically expires after a short duration.',
         'We use AWS S3 features for user-uploaded profile pictures and may use AWS or similar cloud services for future receipt-scanning features.',
-        'We may introduce AI features that process user-approved voice input, transcripts, receipt images, OCR text, and transaction details to help log transactions and calculate financial entries. These AI features are designed to assist the user, not to collect unnecessary personal information.',
-        'We do not sell your personal information or financial tracking data.',
+        'AI features are planned, disabled by default, and will require explicit opt-in consent before voice input, receipt images, OCR text, or AI prompts are processed.',
+        'We do not sell or share your personal information or financial tracking data for cross-context behavioral advertising.',
         'We do not use financial tracking data for third-party advertising.',
         'You may request access, correction, deletion, export, or other rights available under applicable law by contacting us.'
     ],
@@ -34,23 +35,25 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
             shortTitle: "Data We Don't Collect"
         },
         { number: 5, id: 'how-we-use-information', title: 'How We Use Information', shortTitle: 'How We Use Data' },
-        { number: 6, id: 'ai-voice-receipt', title: 'AI, Voice Input, and Receipt Scanning', shortTitle: 'AI & Voice Input' },
-        { number: 7, id: 'how-we-share-information', title: 'How We Share Information', shortTitle: 'How We Share' },
+        { number: 6, id: 'legal-basis', title: 'Legal Basis for Processing', shortTitle: 'Legal Basis' },
+        { number: 7, id: 'ai-voice-receipt', title: 'AI, Voice Input, and Receipt Scanning', shortTitle: 'AI & Voice Input' },
+        { number: 8, id: 'how-we-share-information', title: 'How We Share Information', shortTitle: 'How We Share' },
         {
-            number: 8,
+            number: 9,
             id: 'cookies-storage',
             title: 'Cookies, Local Storage, and Similar Technologies',
             shortTitle: 'Cookies & Storage'
         },
-        { number: 9, id: 'data-retention', title: 'Data Retention', shortTitle: 'Data Retention' },
-        { number: 10, id: 'security', title: 'Security', shortTitle: 'Security' },
-        { number: 11, id: 'your-choices', title: 'Your Choices and Privacy Rights', shortTitle: 'Your Rights' },
-        { number: 12, id: 'regional-disclosures', title: 'Regional Privacy Disclosures', shortTitle: 'Regional Disclosures' },
-        { number: 13, id: 'childrens-privacy', title: "Children's Privacy", shortTitle: "Children's Privacy" },
-        { number: 14, id: 'international-transfers', title: 'International Data Transfers', shortTitle: 'Intl. Transfers' },
-        { number: 15, id: 'third-party-links', title: 'Third-Party Links and Services', shortTitle: 'Third-Party Links' },
-        { number: 16, id: 'changes', title: 'Changes to This Policy', shortTitle: 'Policy Changes' },
-        { number: 17, id: 'contact-us', title: 'Contact Us', shortTitle: 'Contact Us' }
+        { number: 10, id: 'data-retention', title: 'Data Retention', shortTitle: 'Data Retention' },
+        { number: 11, id: 'security', title: 'Security', shortTitle: 'Security' },
+        { number: 12, id: 'breach-notification', title: 'Data Breach Notification', shortTitle: 'Breach Notice' },
+        { number: 13, id: 'your-choices', title: 'Your Choices and Privacy Rights', shortTitle: 'Your Rights' },
+        { number: 14, id: 'regional-disclosures', title: 'Regional Privacy Disclosures', shortTitle: 'Regional Disclosures' },
+        { number: 15, id: 'childrens-privacy', title: "Children's Privacy", shortTitle: "Children's Privacy" },
+        { number: 16, id: 'international-transfers', title: 'International Data Transfers', shortTitle: 'Intl. Transfers' },
+        { number: 17, id: 'third-party-links', title: 'Third-Party Links and Services', shortTitle: 'Third-Party Links' },
+        { number: 18, id: 'changes', title: 'Changes to This Policy', shortTitle: 'Policy Changes' },
+        { number: 19, id: 'contact-us', title: 'Contact Us', shortTitle: 'Contact Us' }
     ],
     sections: [
         {
@@ -66,10 +69,11 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                 'We collect the financial tracking data you choose to enter, such as account names, account types, currencies, balances, transactions, categories, bills, goals, and Splitr shared expense records.',
                 'We do not collect personal banking login credentials, bank account numbers, routing numbers, payment card numbers, credit reports, or Social Security numbers.',
                 'We use cookies and similar storage for authentication, session management, security, and application functionality.',
-                'We use Redis caching to improve application performance and PostgreSQL to store application data.',
+                'We currently use essential cookies only. If non-essential cookies or analytics are introduced, we will request consent where required by law.',
+                'We use Redis caching to improve application performance and PostgreSQL to store application data. Redis-cached data is temporary and automatically expires after a short duration.',
                 'We use AWS S3 features for user-uploaded profile pictures and may use AWS or similar cloud services for future receipt-scanning features.',
-                'We may introduce AI features that process user-approved voice input, transcripts, receipt images, OCR text, and transaction details to help log transactions and calculate financial entries. These AI features are designed to assist the user, not to collect unnecessary personal information.',
-                'We do not sell your personal information or financial tracking data.',
+                'AI features are planned, disabled by default, and will require explicit opt-in consent before voice input, receipt images, OCR text, or AI prompts are processed.',
+                'We do not sell or share your personal information or financial tracking data for cross-context behavioral advertising.',
                 'We do not use financial tracking data for third-party advertising.',
                 'You may request access, correction, deletion, export, or other rights available under applicable law by contacting us.'
             ]
@@ -133,7 +137,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                         'User preferences, including default currency, preferred language, monthly spending limit, and application theme.'
                     ],
                     closingParagraphs: [
-                        'This information may reveal sensitive details about your personal finances because it describes your spending, income, goals, and financial habits. We use it only as described in this Privacy Policy.'
+                        'This information may reveal sensitive details about your personal finances because it describes your spending, income, goals, and financial habits. While Pocket Pilot does not connect to financial institutions, user-entered financial data is still sensitive and is treated with enhanced safeguards. We use it only as described in this Privacy Policy.'
                     ]
                 },
                 {
@@ -150,7 +154,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                         'Quantity split records, including consumer names and quantities.'
                     ],
                     closingParagraphs: [
-                        'Splitr data may include names or labels of other people that you enter. You are responsible for ensuring that you have the right to enter information about other people into the Services.'
+                        'Splitr data may include names or labels of other people that you enter. Where shared Splitr functionality is available, shared expense information is intended to be visible only to the account owner and explicitly authorized participants or recipients. You are responsible for ensuring that you have the right to enter information about other people into the Services.'
                     ]
                 },
                 {
@@ -217,7 +221,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                         'AI prompts, AI outputs, parsing results, confidence scores, and processing metadata needed to create transaction suggestions or entries.'
                     ],
                     closingParagraphs: [
-                        'Receipt images may contain personal information depending on what appears on the receipt. You should review receipts before uploading and avoid uploading receipts containing information you do not want processed.'
+                        'Receipt images may contain personal information depending on what appears on the receipt, including merchant details, store addresses, loyalty identifiers, or partial payment card numbers. You should review receipts before uploading and avoid uploading receipts containing information you do not want processed. Where practical, Pocket Pilot will use filtering, extraction limits, or minimization techniques to avoid retaining receipt details that are not needed for transaction logging.'
                     ]
                 },
                 {
@@ -340,24 +344,74 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
             ]
         },
         {
+            id: 'legal-basis',
+            title: 'Legal Basis for Processing',
+            paragraphs: [
+                'Where privacy laws such as the GDPR or UK GDPR apply, we rely on one or more lawful bases depending on the processing purpose. We identify and document these bases before processing personal data for a covered purpose.'
+            ],
+            table: {
+                headers: ['Processing purpose', 'Legal basis', 'Examples'],
+                rows: [
+                    [
+                        'Providing the Services',
+                        'Contract',
+                        'Creating accounts, authenticating users, saving finance records, calculating balances, and displaying dashboard data.'
+                    ],
+                    [
+                        'Security, fraud prevention, reliability, and debugging',
+                        'Legitimate interests',
+                        'Protecting accounts, detecting abuse, maintaining logs, monitoring errors, and improving service performance.'
+                    ],
+                    [
+                        'Optional uploads and future AI features',
+                        'Consent',
+                        'Profile picture uploads, future voice input, future receipt scanning, OCR processing, and AI-assisted transaction creation.'
+                    ],
+                    [
+                        'Legal compliance and rights enforcement',
+                        'Legal obligation or legitimate interests',
+                        'Responding to lawful requests, enforcing policies, preserving records where required, and handling disputes.'
+                    ],
+                    [
+                        'Account-related communications',
+                        'Contract or legitimate interests',
+                        'Sending security notices, policy updates, support responses, and important service messages.'
+                    ]
+                ]
+            },
+            closingParagraphs: [
+                'AI-powered voice and receipt features are strictly opt-in. They will be disabled by default and activated only after explicit user consent for the relevant feature. You may withdraw consent where required by law, although withdrawal will not affect processing already completed before withdrawal.'
+            ]
+        },
+        {
             id: 'ai-voice-receipt',
             title: 'AI, Voice Input, and Receipt Scanning',
             paragraphs: [
-                'Pocket Pilot may introduce AI-powered features to make transaction entry faster and easier. These features are intended to assist users with data entry, calculation, categorization, and receipt parsing. They are not intended to make credit, lending, insurance, employment, housing, legal, or similarly significant decisions about users.'
+                'Pocket Pilot may introduce AI-powered features to make transaction entry faster and easier. These features are intended to assist users with data entry, calculation, categorization, and receipt parsing. They are not intended to make credit, lending, insurance, employment, housing, legal, or similarly significant decisions about users. AI-generated outputs are informational only and do not constitute financial advice.'
             ],
             subsections: [
                 {
                     id: 'ai-current-status',
                     title: 'Current AI Status',
                     paragraphs: [
-                        'AI voice input and receipt scanning are planned features and may not yet be available in the Services. This section explains how we expect to handle those features once introduced.'
+                        'AI voice input and receipt scanning are planned features and may not yet be available in the Services. This section explains how we expect to handle those features once introduced.',
+                        'AI features will be disabled by default. Each AI feature will require explicit, granular opt-in consent before Pocket Pilot processes voice input, receipt images, OCR text, transcripts, prompts, or AI outputs for that feature.'
+                    ]
+                },
+                {
+                    id: 'ai-processing-details',
+                    title: 'AI Processing Details',
+                    paragraphs: [
+                        'AI processing may occur in Pocket Pilot systems, through cloud infrastructure, or through trusted third-party AI, OCR, speech-to-text, or receipt-processing providers. The exact provider and processing location may depend on the feature, deployment environment, and production configuration.',
+                        'Where a third-party provider is used, we will send only the content reasonably needed to perform the user-requested task, such as a voice transcript, receipt image, OCR text, transaction amount, merchant, date, category, and related parsing context.',
+                        'AI input and output data will not be used to train external general-purpose models unless you opt in or unless we update this Privacy Policy and obtain any consent required by law.'
                     ]
                 },
                 {
                     id: 'ai-voice-logging',
                     title: 'AI Voice Transaction Logging',
                     paragraphs: [
-                        'When you choose to use voice input, AI may process your voice input or a transcript of it to identify transaction details such as:'
+                        'When you choose to use voice input and provide consent, AI may process your voice input or a transcript of it to identify transaction details such as:'
                     ],
                     bullets: [
                         'Transaction amount.',
@@ -370,14 +424,14 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                         'Description.'
                     ],
                     closingParagraphs: [
-                        'The AI may then create a transaction suggestion or transaction entry in Pocket Pilot. Where practical, the feature will be designed so you can review, edit, or confirm AI-generated transaction details.'
+                        'The AI may then create a transaction suggestion or transaction entry in Pocket Pilot. Where practical, the feature will be designed so you can review, edit, or confirm AI-generated transaction details before they are saved.'
                     ]
                 },
                 {
                     id: 'ai-receipt-scanning',
                     title: 'AI Receipt Scanning',
                     paragraphs: [
-                        'When you choose to scan or upload a receipt, AI, OCR, or cloud processing services may process the receipt image to identify:'
+                        'When you choose to scan or upload a receipt and provide consent, AI, OCR, or cloud processing services may process the receipt image to identify:'
                     ],
                     bullets: [
                         'Merchant name.',
@@ -392,7 +446,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                         'Category suggestions.'
                     ],
                     closingParagraphs: [
-                        'The AI may then create a transaction suggestion or transaction entry in Pocket Pilot. Where practical, the feature will be designed so you can review, edit, or confirm AI-generated transaction details.'
+                        'The AI may then create a transaction suggestion or transaction entry in Pocket Pilot. Where practical, the feature will be designed so you can review, edit, or confirm AI-generated transaction details before they are saved.'
                     ]
                 },
                 {
@@ -407,7 +461,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                     id: 'ai-model-training',
                     title: 'AI Model Training',
                     paragraphs: [
-                        'We will not intentionally use your personal financial tracking data, voice input, receipt images, OCR text, or transaction history to train our own general-purpose AI models.',
+                        'We do not use your personal or financial data to train machine learning models. We will not intentionally use your personal financial tracking data, voice input, receipt images, OCR text, or transaction history to train our own general-purpose AI models.',
                         'When we use third-party AI, speech-to-text, OCR, or cloud processing providers, we will select and configure provider settings, contracts, or API terms designed to restrict those providers from using your content to train their general models unless you opt in or unless we update this Privacy Policy and obtain any consent required by law.'
                     ]
                 },
@@ -422,7 +476,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                     id: 'ai-no-automated-decisions',
                     title: 'No Significant Automated Decisions',
                     paragraphs: [
-                        'Pocket Pilot does not use AI to make automated decisions that produce legal or similarly significant effects about you. AI output may be imperfect. You remain responsible for reviewing the accuracy of AI-generated transaction entries, categories, calculations, and receipt results.'
+                        'Pocket Pilot does not use AI to make automated decisions that produce legal or similarly significant effects about you. AI output may be imperfect. You remain responsible for reviewing the accuracy of AI-generated transaction entries, categories, calculations, and receipt results. AI-generated summaries, calculations, or categorizations are provided for convenience and are not financial, investment, tax, legal, or accounting advice.'
                     ]
                 }
             ]
@@ -432,6 +486,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
             title: 'How We Share Information',
             paragraphs: [
                 'We do not sell your personal information or financial tracking data.',
+                'We do not share personal information or financial tracking data for cross-context behavioral advertising.',
                 'We may share information in the following limited circumstances.'
             ],
             subsections: [
@@ -439,7 +494,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                     id: 'share-service-providers',
                     title: '1. Service Providers',
                     paragraphs: [
-                        'We may share information with vendors, contractors, and service providers who help us operate the Services, such as:'
+                        'We may share information with trusted vendors, contractors, service providers, processors, and subprocessors who help us operate the Services, such as:'
                     ],
                     bullets: [
                         'Hosting and infrastructure providers.',
@@ -451,7 +506,8 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                         'Analytics providers, if introduced.'
                     ],
                     closingParagraphs: [
-                        'Service providers are authorized to process information only as needed to provide services to Pocket Pilot, subject to applicable contractual and legal requirements.'
+                        'Service providers are authorized to process information only as needed to provide services to Pocket Pilot, subject to applicable contractual and legal requirements. Where required, we use data processing agreements or equivalent contractual protections with processors and subprocessors.',
+                        'Production data may be stored or processed in cloud regions selected for the deployed environment, including AWS regions or equivalent hosting regions. We will maintain or publish a subprocessor list when production operations require one or when applicable law requires it.'
                     ]
                 },
                 {
@@ -500,7 +556,42 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                     id: 'auth-cookies',
                     title: 'Authentication Cookies',
                     paragraphs: [
-                        'The backend uses authentication cookies to store access and refresh tokens. The application is designed to set these cookies as HTTP-only and secure cookies where supported.'
+                        'The backend uses authentication cookies to store access and refresh tokens. Authentication cookies are secured using HttpOnly, Secure, and SameSite attributes where supported by the production environment.'
+                    ]
+                },
+                {
+                    id: 'cookie-classification',
+                    title: 'Cookie and Storage Classification',
+                    paragraphs: [
+                        'Pocket Pilot currently uses essential cookies and storage needed to operate authentication, session management, security, preferences, and application state. We do not currently use non-essential advertising cookies.'
+                    ],
+                    table: {
+                        headers: ['Type', 'Purpose', 'Consent approach'],
+                        rows: [
+                            [
+                                'Essential',
+                                'Authentication, session management, CSRF/security protections, routing, and account access.',
+                                'Required to provide the Services and generally not optional.'
+                            ],
+                            [
+                                'Functional',
+                                'Remembering user preferences, onboarding state, display settings, and local app state.',
+                                'Used to provide requested app functionality.'
+                            ],
+                            [
+                                'Analytics',
+                                'Usage insights, diagnostics, and product improvement if introduced later.',
+                                'Not currently used for financial tracking data. Consent will be requested where required before non-essential analytics are enabled.'
+                            ],
+                            [
+                                'Advertising or tracking',
+                                'Cross-context behavioral advertising or third-party ad tracking.',
+                                'Not currently used. Pocket Pilot does not use financial tracking data for third-party advertising.'
+                            ]
+                        ]
+                    },
+                    closingParagraphs: [
+                        'If we introduce non-essential cookies, analytics, or similar tracking technologies in the future, we will request user consent where required by law and provide appropriate controls.'
                     ]
                 },
                 {
@@ -508,6 +599,14 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                     title: 'Local Storage',
                     paragraphs: [
                         'The web application may use local storage to store session-related user data and onboarding state so the app can restore your session and route you correctly.'
+                    ]
+                },
+                {
+                    id: 'redis-cache',
+                    title: 'Redis Caching',
+                    paragraphs: [
+                        'Pocket Pilot uses Redis caching to improve performance for frequently requested application data. Redis-cached data may include temporary copies of account, category, Splitr, or similar application records.',
+                        'Redis-cached data is temporary, automatically expires after a short configured duration, and is invalidated when relevant records change. Redis is not intended to be a long-term storage system for user data.'
                     ]
                 },
                 {
@@ -540,42 +639,95 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                 'We retain information for as long as reasonably necessary to provide the Services, comply with legal obligations, resolve disputes, enforce agreements, maintain security, and support legitimate business purposes.',
                 'Retention periods vary depending on the type of information:'
             ],
-            bullets: [
-                'Account information is generally retained while your account is active.',
-                'Financial tracking records are generally retained until you delete them, close your account, or request deletion, subject to legal, backup, security, or operational requirements.',
-                'Authentication cookies and tokens are retained for their configured lifespan.',
-                'Redis cache entries are temporary and used to improve performance.',
-                'Profile pictures are retained while associated with your account unless deleted or replaced.',
-                'Support communications may be retained as needed to respond to requests, maintain records, and improve support.',
-                'AI voice recordings, transcripts, receipt images, OCR text, prompts, and outputs, once those features are introduced, will be retained only as long as reasonably necessary to provide the requested feature unless you choose to save the related receipt, transaction, or attachment in your account.',
-                'Backup copies may remain for a limited period after deletion before they are overwritten or securely deleted.'
-            ],
+            table: {
+                headers: ['Data type', 'Retention period', 'Deletion notes'],
+                rows: [
+                    [
+                        'Account and identity data',
+                        'While your account is active.',
+                        'Deleted or de-identified after account deletion unless retention is required for security, legal, dispute, or backup purposes.'
+                    ],
+                    [
+                        'Financial tracking records',
+                        'Until you delete the record, close your account, or request deletion.',
+                        'Includes accounts, balances, transactions, categories, bills, goals, preferences, and Splitr records.'
+                    ],
+                    [
+                        'Authentication cookies and tokens',
+                        'For their configured lifespan or until logout/session clearing.',
+                        'Access and refresh tokens expire according to the authentication configuration.'
+                    ],
+                    [
+                        'Redis cache entries',
+                        'Short-lived temporary cache duration.',
+                        'Automatically expires and is invalidated when relevant records change.'
+                    ],
+                    [
+                        'Profile pictures and uploaded images',
+                        'While associated with your account or relevant feature.',
+                        'Deleted or replaced when you remove or update the image, subject to backup retention.'
+                    ],
+                    [
+                        'Security, diagnostic, and application logs',
+                        'Typically 30 to 90 days.',
+                        'May be retained longer when needed to investigate abuse, security incidents, legal claims, or service reliability issues.'
+                    ],
+                    [
+                        'Support communications',
+                        'As long as needed to respond, maintain support records, and improve support.',
+                        'May be retained longer where necessary for legal, security, or dispute purposes.'
+                    ],
+                    [
+                        'Future AI voice and receipt processing data',
+                        'Transient processing by default, generally deleted within 24 hours after processing unless saved by you as part of a transaction or receipt record.',
+                        'Saved transaction records remain until deleted by you or your account is deleted.'
+                    ],
+                    [
+                        'Backups',
+                        'Disaster recovery backups are retained for a limited period, generally up to 90 days.',
+                        'Deleted records may remain in backups until the backup naturally expires or is securely overwritten.'
+                    ]
+                ]
+            },
             closingParagraphs: [
-                'When information is no longer needed, we will delete, de-identify, aggregate, or securely retain it as required or permitted by applicable law.'
+                'When information is no longer needed, we will delete, de-identify, aggregate, or securely retain it as required or permitted by applicable law.',
+                'When you request deletion, we will take reasonable steps to delete applicable active account data within 30 days after verifying the request, unless a different period is required or permitted by law. Backup deletion follows the backup lifecycle described above.'
             ]
         },
         {
             id: 'security',
             title: 'Security',
             paragraphs: [
-                'We use reasonable technical, administrative, and organizational safeguards designed to protect personal information. These safeguards may include:'
+                'Financial tracking data is treated as sensitive, even though Pocket Pilot does not connect directly to financial institutions. We use reasonable technical, administrative, and organizational safeguards designed to protect personal information and user-entered financial tracking data. These safeguards may include:'
             ],
             bullets: [
-                'Password hashing.',
-                'Secure authentication cookies.',
+                'Encryption in transit using TLS/HTTPS in production environments.',
+                'Encryption at rest through production database, storage, and cloud infrastructure controls where supported by the deployed provider.',
+                'Password hashing using a modern password hashing algorithm such as Argon2.',
+                'Secure authentication cookies using HttpOnly, Secure, and SameSite attributes where supported.',
                 'Access controls.',
+                'Least-privilege operational access where practical.',
                 'Server-side validation.',
                 'Database access restrictions.',
-                'Redis cache controls.',
+                'Redis cache expiry and cache invalidation controls.',
                 'Secure cloud storage practices.',
                 'File type and size validation for supported uploads.',
-                'Logging and monitoring for reliability and security.'
+                'Audit, diagnostic, and security logging for reliability and incident investigation.'
             ],
             callout: {
                 variant: 'warning',
                 title: 'Your responsibility',
                 text: 'No method of transmission over the internet or electronic storage is completely secure. We cannot guarantee absolute security, but we work to protect your information using safeguards appropriate to the nature of the information we process. You are responsible for maintaining the confidentiality of your account credentials and for using a strong, unique password.'
             }
+        },
+        {
+            id: 'breach-notification',
+            title: 'Data Breach Notification',
+            paragraphs: [
+                'If we become aware of a data breach affecting personal information, we will investigate promptly and take steps to contain, remediate, and assess the incident.',
+                'Where required by applicable law, we will notify affected users and relevant authorities within the required timeframe. For example, certain GDPR-style frameworks may require notice to a supervisory authority within 72 hours after becoming aware of a qualifying personal data breach.',
+                'Our notice may include, as appropriate, the nature of the incident, the categories of information involved, steps we have taken, steps users can take to protect themselves, and contact information for follow-up questions.'
+            ]
         },
         {
             id: 'your-choices',
@@ -609,7 +761,7 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                     title: 'United States State Privacy Rights',
                     paragraphs: [
                         'Some U.S. state privacy laws provide residents with rights to know, access, correct, delete, obtain a copy of, and opt out of certain processing of personal information.',
-                        'Pocket Pilot does not sell personal information and does not use personal financial tracking data for cross-context behavioral advertising.',
+                        'Pocket Pilot does not sell personal information and does not share personal information for cross-context behavioral advertising. Pocket Pilot does not use personal financial tracking data for third-party advertising.',
                         'For purposes of applicable U.S. state privacy laws, the categories of personal information we may collect include:'
                     ],
                     bullets: [
@@ -643,11 +795,11 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                     id: 'eea-uk',
                     title: 'European Economic Area, United Kingdom, and Similar Regions',
                     paragraphs: [
-                        'If you are located in a region with data protection laws such as the GDPR or UK GDPR, our legal bases for processing personal information may include:'
+                        'If you are located in a region with data protection laws such as the GDPR or UK GDPR, our legal bases for processing personal information may include the bases described in Legal Basis for Processing and summarized below:'
                     ],
                     bullets: [
                         'Contract: to provide the Services you request.',
-                        'Consent: for optional features such as uploads, future voice input, future receipt scanning, or certain communications where consent is required.',
+                        'Consent: for optional features such as uploads, future voice input, future receipt scanning, AI-assisted processing, or certain communications where consent is required.',
                         'Legitimate interests: to secure, maintain, improve, and support the Services.',
                         'Legal obligation: to comply with applicable laws and legal requests.'
                     ],

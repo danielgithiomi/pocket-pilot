@@ -6,12 +6,18 @@ export interface PrivacyPolicyCallout {
     variant: PrivacyCalloutVariant;
 }
 
+export interface PrivacyPolicyTable {
+    headers: string[];
+    rows: string[][];
+}
+
 export interface PrivacyPolicySubsection {
     id: string;
     title: string;
     paragraphs?: string[];
     closingParagraphs?: string[];
     bullets?: string[];
+    table?: PrivacyPolicyTable;
 }
 
 export interface PrivacyPolicySection {
@@ -22,6 +28,7 @@ export interface PrivacyPolicySection {
     bullets?: string[];
     subsections?: PrivacyPolicySubsection[];
     callout?: PrivacyPolicyCallout;
+    table?: PrivacyPolicyTable;
 }
 
 export interface PrivacyPolicyTocItem {
