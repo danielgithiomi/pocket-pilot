@@ -1,14 +1,14 @@
-import { Badge, BadgeVariant } from '@atoms/badge';
 import { formatDate } from '@libs/utils';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { AuthService } from '@api/auth.service';
+import { Badge, BadgeVariant } from '@atoms/badge';
 import { denormalizeCategoryName } from '@global/utils';
 import { FeaturesService } from '@api/features.service';
 import { Feature, IVoidResourceResponse } from '@global/types';
+import { FeatureStatusEnum, VoteVariantEnum } from '@global/enums';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareReply, Trash2 } from 'lucide-angular';
-import { FeatureStatusEnum } from '@global/enums';
 
 @Component({
     selector: 'feature-item',
@@ -25,6 +25,7 @@ export class FeatureItem {
     // SIGNAL STATES
     protected readonly isDeleting = signal<boolean>(false);
     protected readonly isUserUpvoted = signal<boolean>(false);
+    protected readonly isVotingOnFeature = signal<boolean>(false);
 
     // SERVICES
     protected readonly authService = inject(AuthService);
@@ -83,12 +84,41 @@ export class FeatureItem {
     handleUpvoteClick(event: Event) {
         event.stopPropagation();
 
+        // Prevent multiple calls
+        if (this.isVotingOnFeature()) return;
+
+        this.isVotingOnFeature.set(true);
         const previousState = this.isUserUpvoted();
 
         // Temporary State
         this.isUserUpvoted.set(!previousState);
 
-        this.isUserUpvoted.set(!this.isUserUpvoted());
+        // Api Call
+        const newState = this.isUserUpvoted() ? VoteVariantEnum.DOWNVOTE : VoteVariantEnum.UPVOTE;
+        setTimeout(() => {
+            this.featuresService.voteOnFeatureById(this.feature().id, newState).subscribe({
+                next: (response: Feature) => {
+                    this.toastService.show({
+                        variant: 'success',
+                        title: `Your [${newState}] has been recorded!`,
+                        details: `We have marked the [${response.featureTitle}] feature request as [${newState}].`
+                    });
+                    this.isVotingOnFeature.set(false);
+                },
+                error: () => {
+                    // Revert state to previous
+                    this.toastService.show({
+                        variant: 'error',
+                        title: 'Something went wrong!',
+                        details: `There was an unexpected error while trying to [${newState}] the feature request.`
+                    });
+
+                    this.isUserUpvoted.set(previousState);
+                    this.isVotingOnFeature.set(false);
+                },
+                complete: () => this.isVotingOnFeature.set(false)
+            });
+        }, 2000);
     }
 
     handleOnFeatureDelete() {

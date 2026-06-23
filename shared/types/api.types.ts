@@ -101,6 +101,7 @@ export interface Endpoints {
 
   features: string;
   user_features: string;
+  feature_votes: string;
   feature_status: string;
   feature_categories: string;
   feature_vote_variants: string;

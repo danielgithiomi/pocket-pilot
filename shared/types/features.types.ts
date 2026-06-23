@@ -1,10 +1,17 @@
-import { VoteVariantEnum, FeatureCategoryEnum, FeatureStatusEnum } from "../enums/features.enums";
+import {FeatureCategoryEnum, FeatureStatusEnum, VoteVariantEnum} from "../enums";
+
+// TYPES
+export type VoteVariant = keyof typeof VoteVariantEnum;
 
 // PAYLOADS
 export interface FeaturePayload {
     featureTitle: string;
     featureContent: string;
     featureCategory: FeatureCategoryEnum;
+}
+
+export interface FeatureVotePayload {
+    voteVariant: VoteVariantEnum;
 }
 
 // RESPONSES

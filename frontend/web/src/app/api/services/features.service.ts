@@ -1,3 +1,4 @@
+import { VoteVariantEnum } from '@global/enums';
 import { FeaturesResource } from '@methods/resources';
 import { FeaturesMutation } from '@methods/mutations';
 import { ApiServiceError } from './api-error.service';
@@ -5,12 +6,13 @@ import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { computed, effect, inject, Injectable, Signal, signal } from '@angular/core';
 import {
     Feature,
-    IEnumResponse,
     FeaturePayload,
-    IStandardError,
     FeaturesWithCount,
+    IEnumResponse,
+    IStandardError,
     IStandardResponse,
-    IVoidResourceResponse
+    IVoidResourceResponse,
+    VoteVariant
 } from '@global/types';
 
 @Injectable({
@@ -30,6 +32,12 @@ export class FeaturesService {
                 return EMPTY;
             })
         );
+    }
+
+    voteOnFeatureById(featureId: string, voteVariant: VoteVariant): Observable<Feature> {
+        return this.mutation
+            .voteOnFeatureById(featureId, VoteVariantEnum[voteVariant])
+            .pipe(map((response: IStandardResponse<Feature>) => response.data));
     }
 
     deleteFeatureRequestById(featureId: string): Observable<IVoidResourceResponse> {
