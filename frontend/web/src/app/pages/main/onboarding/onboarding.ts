@@ -1,4 +1,4 @@
-import { User } from '@global/types';
+import { OnboardingPayload, User } from '@global/types';
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { Form } from '@organisms/form';
@@ -7,13 +7,11 @@ import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { PhoneNumber } from '@atoms/phone-number';
-import { OnboardingPayload } from '@global/types';
-import { DEFAULT_COUNTRY_ISO } from '@global/constants';
+import { CURRENCIES, DEFAULT_COUNTRY_ISO, LANGUAGES, WEB_ROUTES } from '@global/constants';
 import { Component, inject, signal } from '@angular/core';
 import { OnboardingService } from '@api/onboarding.service';
-import { LucideAngularModule, ChevronsRight } from 'lucide-angular';
-import { LANGUAGES, CURRENCIES, WEB_ROUTES } from '@global/constants';
-import { OnboardingFormSchema, INITIAL_ONBOARDING_FORM_STATE, ONBOARDING_FORM_VALIDATION_SCHEMA } from './onboarding.types';
+import { ChevronsRight, LucideAngularModule } from 'lucide-angular';
+import { INITIAL_ONBOARDING_FORM_STATE, ONBOARDING_FORM_VALIDATION_SCHEMA, OnboardingFormSchema } from './onboarding.types';
 
 @Component({
     selector: 'onboarding',
@@ -61,8 +59,6 @@ export class Onboarding {
             phoneNumber: phoneNumber!,
             monthlySpendingLimit: monthlySpendingLimit!
         };
-
-        console.log(payload);
 
         setTimeout(() => {
             this.onboardingService.onboardUser(payload).subscribe({
