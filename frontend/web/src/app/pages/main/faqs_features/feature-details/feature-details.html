@@ -83,7 +83,7 @@
                     rows="1"
                     [value]="commentDraft()"
                     class="feature-comment-input"
-                    placeholder="Add a comment..."
+                    placeholder="Add your comment..."
                     (input)="handleCommentInput($event)"
                     [attr.aria-label]="'Add a comment to ' + feature().featureTitle">
                 </textarea>
@@ -94,7 +94,7 @@
                     [disabled]="!canPostComment()"
                     (clicked)="handlePostComment()">
 
-                    <div class="w-full h-full grid place-items-center">
+                    <div class="w-full py-1 grid place-items-center">
                         <lucide-icon [img]="SendIcon" [size]="iconSize" name="post-comment"/>
                     </div>
                 </atom-button>
