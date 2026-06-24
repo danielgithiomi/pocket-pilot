@@ -1,17 +1,16 @@
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
-import { Select } from '@atoms/select';
+import { Select, SelectOption } from '@atoms/select';
 import { NgClass } from '@angular/common';
 import { SplitrSquad } from '@global/types';
 import { ToastService } from '@atoms/toast';
-import { SelectOption } from '@atoms/select';
 import { FieldTree } from '@angular/forms/signals';
 import { DatePicker } from '@organisms/date-picker';
 import { COMMON_CURRENCIES } from '@global/constants';
 import { SplitFormSchema } from '../split-form.types';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
-import { input, effect, inject, output, signal, computed, Component, untracked } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal, untracked } from '@angular/core';
 
 @Component({
     selector: 'split-form-step-1',
@@ -68,7 +67,7 @@ export class SplitFormStep1 {
 
         const isNameValid = trimmedName.length > 1 && trimmedName.length <= 20 && !alreadyExists;
 
-        this.isMemberNameValid.set(!!isNameValid);
+        this.isMemberNameValid.set(isNameValid);
     }
 
     protected addCustomMemberToPool(memberName: string) {
@@ -89,6 +88,9 @@ export class SplitFormStep1 {
 
         const updatedMembers = [...this.presentMembers(), trimmedName];
         this.onPresentMembersChangeEvent.emit(updatedMembers);
+
+        // Mark the 'Add' button as invalid again
+        this.isMemberNameValid.set(false);
     }
 
     protected toggleMemberChecked(memberName: string) {
