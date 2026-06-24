@@ -6,6 +6,12 @@ import { FeaturePayload, FeatureWithUser, UpdateFeatureStatusPayload } from '../
 export class FeaturesRepository {
     private readonly FEATURE_REQUESTS_LIMIT = 5;
 
+    private readonly includedFields = {
+        featureVotes: true,
+        user: { select: { name: true } },
+        _count: { select: { featureVotes: true, featureComments: true } }
+    };
+
     constructor(private readonly db: DatabaseService) {}
 
     createFeatureRequest(userId: string, payload: FeaturePayload): Promise<FeatureWithUser> {
@@ -14,16 +20,13 @@ export class FeaturesRepository {
                 ...payload,
                 authorId: userId
             },
-            include: {
-                featureVotes: true,
-                user: { select: { name: true } }
-            }
+            include: this.includedFields
         });
     }
 
     getFeatureRequests(): Promise<FeatureWithUser[]> {
         return this.db.feature.findMany({
-            include: { featureVotes: true, user: { select: { name: true } } },
+            include: this.includedFields,
             orderBy: { createdAt: 'desc' },
             take: this.FEATURE_REQUESTS_LIMIT
         });
@@ -32,7 +35,7 @@ export class FeaturesRepository {
     getUserFeatureRequests(userId: string): Promise<FeatureWithUser[]> {
         return this.db.feature.findMany({
             where: { authorId: userId },
-            include: { featureVotes: true, user: { select: { name: true } } },
+            include: this.includedFields,
             orderBy: { createdAt: 'desc' },
             take: this.FEATURE_REQUESTS_LIMIT
         });
@@ -41,7 +44,7 @@ export class FeaturesRepository {
     getFeatureRequestById(featureId: string): Promise<FeatureWithUser | null> {
         return this.db.feature.findUnique({
             where: { id: featureId },
-            include: { featureVotes: true, user: { select: { name: true } } }
+            include: this.includedFields
         });
     }
 
@@ -67,7 +70,7 @@ export class FeaturesRepository {
                         featureScore: { increment: 1 },
                         upvoteCount: { increment: 1 }
                     },
-                    include: { featureVotes: true, user: { select: { name: true } } }
+                    include: this.includedFields
                 });
             }
 
@@ -83,7 +86,7 @@ export class FeaturesRepository {
                     featureScore: { decrement: 1 },
                     upvoteCount: { decrement: 1 }
                 },
-                include: { featureVotes: true, user: { select: { name: true } } }
+                include: this.includedFields
             });
         });
     }
@@ -94,14 +97,14 @@ export class FeaturesRepository {
         return this.db.feature.update({
             where: { id: featureId },
             data: { featureStatus },
-            include: { featureVotes: true, user: { select: { name: true } } }
+            include: this.includedFields
         });
     }
 
     deleteFeatureRequestById(featureId: string): Promise<FeatureWithUser> {
         return this.db.feature.delete({
             where: { id: featureId },
-            include: { featureVotes: true, user: { select: { name: true } } }
+            include: this.includedFields
         });
     }
 }

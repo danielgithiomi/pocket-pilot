@@ -31,11 +31,15 @@ export interface Feature {
     upvoteCount: number;
     featureTitle: string;
     featureScore: number;
+    commentsCount: number;
     featureContent: string;
     featureStatus: FeatureStatusEnum;
     featureCategory: FeatureCategoryEnum;
 
     featureVotes: FeatureVote[];
+}
+
+export interface FeatureWithComments extends Feature {
     featureComments: FeatureComment[];
 }
 

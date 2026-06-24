@@ -5,7 +5,11 @@ import { FeatureCategory, FeatureStatus, Prisma } from '@prisma/client';
 
 // PRISMA TYPES
 export type FeatureWithUser = Prisma.FeatureGetPayload<{
-    include: { featureVotes: true; user: { select: { name: true } } };
+    include: {
+        featureVotes: true;
+        user: { select: { name: true } };
+        _count: { select: { featureComments: true; featureVotes: true } };
+    };
 }>;
 
 // SERVER PAYLOADS
@@ -92,6 +96,10 @@ export class FeatureDto {
     @Expose()
     @ApiProperty({ example: 8, description: 'The upvote count of the feature' })
     upvoteCount!: number;
+
+    @Expose()
+    @ApiProperty({ example: 12, description: 'The number of comments associated with this feature' })
+    commentsCount!: number;
 
     @Expose()
     @ApiProperty({ enum: FeatureStatus, example: FeatureStatus.NEW, description: 'The status of the feature' })

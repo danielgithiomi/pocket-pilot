@@ -1,10 +1,10 @@
 import { Modal } from '@atoms/modal';
-import { Feature } from '@global/types';
 import { NgClass } from '@angular/common';
 import { Status } from '@molecules/status';
 import { ToastService } from '@atoms/toast';
 import { FeatureStatusEnum } from '@global/enums';
 import { Badge, BadgeVariant } from '@atoms/badge';
+import { FeatureWithComments } from '@global/types';
 import { denormalizeCategoryName } from '@global/utils';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
@@ -19,8 +19,8 @@ import { COMMENT_AVATAR_COLORS, FEATURE_STATUS_STEPS, resolveFeatureStatusActive
 })
 export class FeatureDetails {
     // INPUT
-    feature = input.required<Feature>();
     onBackdropClickClose = input.required<boolean>();
+    feature = input.required<FeatureWithComments>();
 
     // OUTPUTS
     onFeatureModalCloseEvent = output<void>();

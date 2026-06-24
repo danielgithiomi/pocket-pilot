@@ -3,7 +3,6 @@ import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { RouterLink } from '@angular/router';
 import { Accordion } from '@molecules/accordion';
-import { ContactItem, Feature } from '@global/types';
 import { LucideAngularModule } from 'lucide-angular';
 import { TabList, TabListItem } from '@atoms/tab-list';
 import { FeaturesService } from '@api/features.service';
@@ -13,6 +12,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { DrawerService } from '@infrastructure/services/drawer.service';
 import { FeatureItem } from '@structural/main/feature-item/feature-item';
+import { ContactItem, Feature, FeatureWithComments } from '@global/types';
 import { FeatureDetails } from '@pages/main/faqs_features/feature-details';
 import { SuggestFeatureForm } from '@pages/main/faqs_features/feature-form';
 
@@ -46,7 +46,7 @@ export class FaqsFeatures {
     protected readonly activeTabIndex = signal<0 | 1>(0);
     protected readonly isFeatureFormOpen = signal<boolean>(false);
     protected readonly isFeatureModalOpen = signal<boolean>(false);
-    protected readonly selectedFeature = signal<Feature | null>(null);
+    protected readonly selectedFeature = signal<FeatureWithComments | null>(null);
 
     // SERVICES
     protected readonly toastService = inject(ToastService);
@@ -112,7 +112,10 @@ export class FaqsFeatures {
             return;
         }
 
-        this.selectedFeature.set(feature);
+        this.selectedFeature.set({
+            ...feature,
+            featureComments: []
+        });
         this.isFeatureModalOpen.set(true);
     }
 
