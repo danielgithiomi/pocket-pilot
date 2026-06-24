@@ -1,4 +1,5 @@
 import { Modal } from '@atoms/modal';
+import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { Status } from '@molecules/status';
 import { ToastService } from '@atoms/toast';
@@ -8,14 +9,14 @@ import { FeatureWithComments } from '@global/types';
 import { denormalizeCategoryName } from '@global/utils';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { ChevronsUp, LucideAngularModule, MessageSquareText } from 'lucide-angular';
+import { ChevronsUp, LucideAngularModule, MessageSquareText, Send } from 'lucide-angular';
 import { COMMENT_AVATAR_COLORS, FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
 
 @Component({
     selector: 'feature-details',
     styleUrl: './feature-details.css',
     templateUrl: './feature-details.html',
-    imports: [Modal, Status, Badge, NgClass, LucideAngularModule]
+    imports: [Modal, Status, Badge, NgClass, LucideAngularModule, Button]
 })
 export class FeatureDetails {
     // INPUT
@@ -27,6 +28,7 @@ export class FeatureDetails {
 
     // ICONS
     protected readonly iconSize = 16;
+    protected readonly SendIcon = Send;
     protected readonly UpVoteIcon = ChevronsUp;
     protected readonly CommentIcon = MessageSquareText;
 

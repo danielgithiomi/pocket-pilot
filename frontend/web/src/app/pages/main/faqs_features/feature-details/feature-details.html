@@ -5,16 +5,17 @@
     wrapperClasses="bg-body-background!"
     (onModalCloseEvent)="onFeatureModalCloseEvent.emit()"
     [closeModalOnBackdropClick]="onBackdropClickClose()">
-
     <div [id]="featureId()" class="feature-details" slot="modal-content">
         <section class="feature-details-card feature-details-overview">
             <div class="flex flex-col items-center justify-center gap-2">
                 <div class="feature-vote" aria-label="Feature votes">
                     <lucide-icon [img]="UpVoteIcon" [size]="iconSize" name="feature-upvote"/>
                 </div>
+
+                @let voteCount = feature().upvoteCount;
                 <div class="flex flex-col items-center">
-                    <p class="feature-vote-count">{{ feature().featureScore }}</p>
-                    <p class="feature-vote-label">votes</p>
+                    <p class="feature-vote-count">{{ voteCount }}</p>
+                    <p class="feature-vote-label">{{ voteCount == 1 ? 'upvote' : 'upvotes' }}</p>
                 </div>
             </div>
 
@@ -30,7 +31,9 @@
                         </div>
 
                         <div class="feature-meta-submitted flex flex-row items-center gap-2 self-end">
-                            <p>Submitted by <span class="text-primary font-bold">{{ formattedAuthorName() }}</span></p>
+                            <p>
+                                Submitted by <span class="text-primary font-bold">{{ formattedAuthorName() }}</span>
+                            </p>
                             <p aria-hidden="true">• {{ formattedSubmittedDate() }}</p>
                         </div>
                     </div>
@@ -82,14 +85,19 @@
                     class="feature-comment-input"
                     placeholder="Add a comment..."
                     (input)="handleCommentInput($event)"
-                    [attr.aria-label]="'Add a comment to ' + feature().featureTitle"></textarea>
-                <button
+                    [attr.aria-label]="'Add a comment to ' + feature().featureTitle">
+                </textarea>
+
+                <atom-button
                     type="button"
-                    class="feature-comment-post"
+                    id="submit-comment"
                     [disabled]="!canPostComment()"
-                    (click)="handlePostComment()">
-                    Post
-                </button>
+                    (clicked)="handlePostComment()">
+
+                    <div class="w-full h-full grid place-items-center">
+                        <lucide-icon [img]="SendIcon" [size]="iconSize" name="post-comment"/>
+                    </div>
+                </atom-button>
             </div>
         </section>
     </div>
