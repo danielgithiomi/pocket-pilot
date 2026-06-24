@@ -30,7 +30,6 @@ export interface Feature {
     authorName: string;
     upvoteCount: number;
     featureTitle: string;
-    featureScore: number;
     commentsCount: number;
     featureContent: string;
     featureStatus: FeatureStatusEnum;

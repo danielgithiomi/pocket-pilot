@@ -56,7 +56,7 @@ export class FeatureItem {
         return this.feature().featureVotes.some(vote => vote.userId === userId);
     });
     protected readonly displayedFeatureScore = computed<number>(
-        () => this.optimisticFeatureScore() ?? this.feature().featureScore
+        () => this.optimisticFeatureScore() ?? this.feature().upvoteCount
     );
     protected readonly featureId = computed<string>(() => `feature-item-${this.id()}`);
     protected readonly formattedDate = computed<string>(() => {
@@ -114,7 +114,7 @@ export class FeatureItem {
                 const isUserUpvoted = !!userId && response.featureVotes.some(vote => vote.userId === userId);
 
                 this.optimisticIsUserUpvoted.set(isUserUpvoted);
-                this.optimisticFeatureScore.set(response.featureScore);
+                this.optimisticFeatureScore.set(response.upvoteCount);
 
                 this.toastService.show({
                     variant: 'success',

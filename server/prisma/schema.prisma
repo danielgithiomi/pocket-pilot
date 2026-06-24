@@ -386,8 +386,7 @@ model Feature {
     featureTitle   String
     featureContent String
 
-    featureScore  Int @default(0)
-    upvoteCount   Int @default(0)
+    upvoteCount Int @default(0)
 
     featureCategory FeatureCategory
     featureStatus   FeatureStatus   @default(NEW)

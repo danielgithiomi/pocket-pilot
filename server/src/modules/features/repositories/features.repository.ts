@@ -66,10 +66,7 @@ export class FeaturesRepository {
 
                 return trx.feature.update({
                     where: { id: featureId },
-                    data: {
-                        featureScore: { increment: 1 },
-                        upvoteCount: { increment: 1 }
-                    },
+                    data: { upvoteCount: { increment: 1 } },
                     include: this.includedFields
                 });
             }
@@ -82,10 +79,7 @@ export class FeaturesRepository {
 
             return trx.feature.update({
                 where: { id: featureId },
-                data: {
-                    featureScore: { decrement: 1 },
-                    upvoteCount: { decrement: 1 }
-                },
+                data: { upvoteCount: { decrement: 1 } },
                 include: this.includedFields
             });
         });

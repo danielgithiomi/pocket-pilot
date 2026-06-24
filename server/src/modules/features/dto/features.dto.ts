@@ -90,10 +90,6 @@ export class FeatureDto {
     featureContent!: string;
 
     @Expose()
-    @ApiProperty({ example: 5, description: 'The score of the feature' })
-    featureScore!: number;
-
-    @Expose()
     @ApiProperty({ example: 8, description: 'The upvote count of the feature' })
     upvoteCount!: number;
 

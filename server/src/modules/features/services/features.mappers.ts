@@ -9,10 +9,14 @@ export function flattenFeature(feature: FeatureWithUser): FeatureDto {
         ...rest
     } = feature;
 
-    return {
+    const revised = {
         ...rest,
         authorName,
         commentsCount,
         upvoteCount: votesCount
     };
+
+    console.log('Logging revised feature from mapper: ', revised);
+
+    return revised;
 }
