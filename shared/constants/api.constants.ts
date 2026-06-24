@@ -55,7 +55,6 @@ export const API_ENDPOINTS = {
   feature_votes: "features/votes",
   feature_status: "features/status",
   feature_categories: "features/categories",
-  feature_vote_variants: "features/vote-variants",
 
   // transactions
   all_transactions: "accounts/transactions/all",

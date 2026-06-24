@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { FeatureWithUser, FeaturePayload, UpdateFeatureStatusPayload } from '../dto/features.dto';
+import { FeaturePayload, FeatureWithUser, UpdateFeatureStatusPayload } from '../dto/features.dto';
 
 @Injectable()
 export class FeaturesRepository {
@@ -35,6 +35,56 @@ export class FeaturesRepository {
             include: { featureVotes: true, user: { select: { name: true } } },
             orderBy: { createdAt: 'desc' },
             take: this.FEATURE_REQUESTS_LIMIT
+        });
+    }
+
+    getFeatureRequestById(featureId: string): Promise<FeatureWithUser | null> {
+        return this.db.feature.findUnique({
+            where: { id: featureId },
+            include: { featureVotes: true, user: { select: { name: true } } }
+        });
+    }
+
+    toggleFeatureUpvoteById(userId: string, featureId: string): Promise<FeatureWithUser> {
+        return this.db.$transaction(async trx => {
+            const existingFeatureVote = await trx.featureVotes.findUnique({
+                where: {
+                    featureId_userId: { featureId, userId }
+                }
+            });
+
+            if (!existingFeatureVote) {
+                await trx.featureVotes.create({
+                    data: {
+                        userId,
+                        featureId
+                    }
+                });
+
+                return trx.feature.update({
+                    where: { id: featureId },
+                    data: {
+                        featureScore: { increment: 1 },
+                        upvoteCount: { increment: 1 }
+                    },
+                    include: { featureVotes: true, user: { select: { name: true } } }
+                });
+            }
+
+            await trx.featureVotes.delete({
+                where: {
+                    featureId_userId: { featureId, userId }
+                }
+            });
+
+            return trx.feature.update({
+                where: { id: featureId },
+                data: {
+                    featureScore: { decrement: 1 },
+                    upvoteCount: { decrement: 1 }
+                },
+                include: { featureVotes: true, user: { select: { name: true } } }
+            });
         });
     }
 

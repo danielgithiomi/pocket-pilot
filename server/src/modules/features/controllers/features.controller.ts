@@ -26,7 +26,7 @@ export class FeaturesController {
         type: ExposeEnumDto,
         description: 'Feature categories fetched successfully'
     })
-    async getFeatureCategories(): Promise<ExposeEnumDto[]> {
+    getFeatureCategories(): ExposeEnumDto[] {
         return this.featuresService.getFeatureCategories();
     }
 
@@ -43,25 +43,8 @@ export class FeaturesController {
         type: ExposeEnumDto,
         description: 'Feature status fetched successfully'
     })
-    async getFeatureStatusOptions(): Promise<ExposeEnumDto[]> {
+    getFeatureStatusOptions(): ExposeEnumDto[] {
         return this.featuresService.getFeatureStatuses();
-    }
-
-    @Get('vote-variants')
-    @ApiCookieAuth('access_token')
-    @CacheTTL(hoursToMilliseconds(24))
-    @UseInterceptors(CacheInterceptor)
-    @CacheKey('features:vote-variants')
-    @Summary('Feature vote variants retrieved', 'The application retrieved all feature vote variants')
-    @ApiOperation({ summary: 'Get all feature vote variants', description: 'Get all feature vote variants' })
-    @ApiResponse({
-        status: 200,
-        isArray: true,
-        type: ExposeEnumDto,
-        description: 'Feature vote variants fetched successfully'
-    })
-    async getFeatureVoteVariants(): Promise<ExposeEnumDto[]> {
-        return this.featuresService.getFeatureVoteVariants();
     }
 
     @Post()
@@ -114,6 +97,24 @@ export class FeaturesController {
         return this.featuresService.getUserFeatureRequests(user.id);
     }
 
+    @Patch('votes/:featureId')
+    @UseGuards(CookiesAuthGuard)
+    @ApiCookieAuth('access_token')
+    @ApiParam({ name: 'featureId', description: 'The ID of the feature that the user is upvoting' })
+    @Summary('Feature upvote toggled', 'The user toggled their upvote on the feature request')
+    @ApiOperation({
+        summary: 'Toggle a feature upvote',
+        description: 'Add the current user upvote to a feature request, or remove it if it already exists'
+    })
+    @ApiResponse({
+        status: 200,
+        type: FeatureDto,
+        description: 'The updated feature'
+    })
+    toggleFeatureUpvoteById(@UserInRequest() user: User, @Param('featureId') featureId: string): Promise<FeatureDto> {
+        return this.featuresService.toggleFeatureUpvoteById(user.id, featureId);
+    }
+
     @Patch(':featureId/status')
     @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
@@ -125,7 +126,7 @@ export class FeaturesController {
     })
     @ApiResponse({
         status: 200,
-        type: FeatureDto,
+        type: VoidResourceResponse,
         description: 'Feature status updated successfully'
     })
     async updateFeatureStatusById(

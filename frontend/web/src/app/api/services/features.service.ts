@@ -1,4 +1,3 @@
-import { VoteVariantEnum } from '@global/enums';
 import { FeaturesResource } from '@methods/resources';
 import { FeaturesMutation } from '@methods/mutations';
 import { ApiServiceError } from './api-error.service';
@@ -11,8 +10,7 @@ import {
     IEnumResponse,
     IStandardError,
     IStandardResponse,
-    IVoidResourceResponse,
-    VoteVariant
+    IVoidResourceResponse
 } from '@global/types';
 
 @Injectable({
@@ -34,9 +32,9 @@ export class FeaturesService {
         );
     }
 
-    voteOnFeatureById(featureId: string, voteVariant: VoteVariant): Observable<Feature> {
+    toggleFeatureUpvoteById(featureId: string): Observable<Feature> {
         return this.mutation
-            .voteOnFeatureById(featureId, VoteVariantEnum[voteVariant])
+            .toggleFeatureUpvoteById(featureId)
             .pipe(map((response: IStandardResponse<Feature>) => response.data));
     }
 
@@ -54,7 +52,6 @@ export class FeaturesService {
     private readonly _userFeatureRequests = signal<Feature[]>([]);
     private readonly _featureStatuses = signal<IEnumResponse[]>([]);
     private readonly _featureCategories = signal<IEnumResponse[]>([]);
-    private readonly _featureVoteVariants = signal<IEnumResponse[]>([]);
     private readonly _featureRequests = signal<FeaturesWithCount>({ count: 0, features: [] });
 
     private readonly _isLoading = computed(
@@ -62,7 +59,6 @@ export class FeaturesService {
             this.resource.getFeatureStatus.isLoading() ||
             this.resource.getFeatureRequests.isLoading() ||
             this.resource.getFeatureCategories.isLoading() ||
-            this.resource.getFeatureVoteVariants.isLoading() ||
             this.resource.getUserFeatureRequests.isLoading()
     );
 
@@ -71,7 +67,6 @@ export class FeaturesService {
             !!this.resource.getFeatureStatus.error() ||
             !!this.resource.getFeatureRequests.error() ||
             !!this.resource.getFeatureCategories.error() ||
-            !!this.resource.getFeatureVoteVariants.error() ||
             !!this.resource.getUserFeatureRequests.error()
     );
 
@@ -84,11 +79,6 @@ export class FeaturesService {
         effect(() => {
             const response = this.resource.getFeatureCategories.value();
             if (response?.data) this._featureCategories.set(response.data);
-        });
-
-        effect(() => {
-            const response = this.resource.getFeatureVoteVariants.value();
-            if (response?.data) this._featureVoteVariants.set(response.data);
         });
 
         effect(() => {
@@ -108,10 +98,6 @@ export class FeaturesService {
 
     getFeatureCategories(): Signal<IEnumResponse[]> {
         return this._featureCategories.asReadonly();
-    }
-
-    getFeatureVoteVariants(): Signal<IEnumResponse[]> {
-        return this._featureVoteVariants.asReadonly();
     }
 
     getFeatureRequests(): Signal<FeaturesWithCount> {
@@ -143,6 +129,5 @@ export class FeaturesService {
         this.resource.getFeatureRequests.reload();
         this.resource.getFeatureCategories.reload();
         this.resource.getUserFeatureRequests.reload();
-        this.resource.getFeatureVoteVariants.reload();
     }
 }

@@ -2,13 +2,13 @@ import { ExposeEnumDto } from '@common/types/api.types';
 import { FeaturesCache } from '../cache/features.cache';
 import { formatEnumForFrontend } from '@libs/utils/formatters';
 import { FeaturesRepository } from '../repositories/features.repository';
-import { FeatureCategory, FeatureStatus, VoteVariant } from '@prisma/client';
+import { FeatureCategory, FeatureStatus } from '@prisma/client';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import {
     FeatureDto,
     FeaturePayload,
-    FeatureWithUser,
     FeaturesWithCountDto,
+    FeatureWithUser,
     UpdateFeatureStatusPayload
 } from '../dto/features.dto';
 import { flattenFeature } from './features.mappers';
@@ -20,17 +20,9 @@ export class FeaturesService {
         private readonly featuresRepository: FeaturesRepository
     ) {}
 
-    async getFeatureCategories(): Promise<ExposeEnumDto[]> {
-        return await Promise.resolve(Object.values(FeatureCategory).map(formatEnumForFrontend));
-    }
+    getFeatureCategories = (): ExposeEnumDto[] => Object.values(FeatureCategory).map(formatEnumForFrontend);
 
-    async getFeatureStatuses(): Promise<ExposeEnumDto[]> {
-        return await Promise.resolve(Object.values(FeatureStatus).map(formatEnumForFrontend));
-    }
-
-    async getFeatureVoteVariants(): Promise<ExposeEnumDto[]> {
-        return await Promise.resolve(Object.values(VoteVariant).map(formatEnumForFrontend));
-    }
+    getFeatureStatuses = (): ExposeEnumDto[] => Object.values(FeatureStatus).map(formatEnumForFrontend);
 
     async createFeatureRequest(userId: string, payload: FeaturePayload): Promise<FeatureDto> {
         const createdFeature: FeatureWithUser = await this.featuresRepository.createFeatureRequest(userId, payload);
@@ -53,9 +45,7 @@ export class FeaturesService {
     }
 
     async getFeatureById(featureId: string): Promise<FeatureDto> {
-        const { features }: FeaturesWithCountDto = await this.getFeatureRequests();
-
-        const foundFeature = features.find(feature => feature.id === featureId);
+        const foundFeature = await this.featuresRepository.getFeatureRequestById(featureId);
 
         if (!foundFeature)
             throw new NotFoundException({
@@ -64,12 +54,11 @@ export class FeaturesService {
                 message: 'The feature you are trying to access does not exist in the database.'
             });
 
-        return foundFeature;
+        return flattenFeature(foundFeature);
     }
 
     async updateFeatureStatusById(userId: string, featureId: string, payload: UpdateFeatureStatusPayload): Promise<FeatureDto> {
-        await this.assertainFeatureExists(featureId);
-        await this.assertainFeatureBelongsToUser(featureId, userId);
+        await this.performAssertions(userId, featureId);
 
         const updatedFeature: FeatureWithUser = await this.featuresRepository.updateFeatureStatusById(featureId, payload);
 
@@ -79,9 +68,17 @@ export class FeaturesService {
         return flattenFeature(updatedFeature);
     }
 
+    async toggleFeatureUpvoteById(userId: string, featureId: string): Promise<FeatureDto> {
+        await this.ascertainFeatureExists(featureId);
+
+        const updatedFeature = await this.featuresRepository.toggleFeatureUpvoteById(userId, featureId);
+        await this.invalidateCache(updatedFeature.authorId);
+
+        return flattenFeature(updatedFeature);
+    }
+
     async deleteFeatureRequestById(userId: string, featureId: string): Promise<FeatureDto> {
-        await this.assertainFeatureExists(featureId);
-        await this.assertainFeatureBelongsToUser(featureId, userId);
+        await this.performAssertions(userId, featureId);
 
         const deletedFeature: FeatureWithUser = await this.featuresRepository.deleteFeatureRequestById(featureId);
 
@@ -92,28 +89,23 @@ export class FeaturesService {
     }
 
     // HELPER METHODS
-    private async invalidateCache(userId: string): Promise<void> {
-        await this.featureCache.invalidateCache(userId);
+    private async invalidateCache(userId?: string): Promise<void> {
+        if (userId) await this.featureCache.invalidateCache(userId);
         await this.featureCache.invalidateCache('all-features');
     }
 
-    private async assertainFeatureExists(featureId: string): Promise<boolean> {
-        const { features }: FeaturesWithCountDto = await this.getFeatureRequests();
-
-        const foundFeature = features.find(feature => feature.id === featureId);
-
-        if (!foundFeature)
-            throw new NotFoundException({
-                name: 'FEATURE_NOT_FOUND',
-                title: 'Feature Not Found!',
-                message: 'The feature you are trying to access does not exist in the database.'
-            });
-
-        return !!foundFeature;
+    private async performAssertions(userId: string, featureId: string) {
+        await this.ascertainFeatureExists(featureId);
+        await this.ascertainFeatureBelongsToUser(featureId, userId);
     }
 
-    private async assertainFeatureBelongsToUser(featureId: string, userId: string): Promise<boolean> {
-        await this.assertainFeatureExists(featureId);
+    private async ascertainFeatureExists(featureId: string): Promise<boolean> {
+        await this.getFeatureById(featureId);
+        return true;
+    }
+
+    private async ascertainFeatureBelongsToUser(featureId: string, userId: string): Promise<boolean> {
+        await this.ascertainFeatureExists(featureId);
 
         const feature = await this.getFeatureById(featureId);
         const isOwnedByUser = feature.authorId === userId;

@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { FeatureCategory, FeatureStatus, Prisma, VoteVariant } from '@prisma/client';
+import { FeatureCategory, FeatureStatus, Prisma } from '@prisma/client';
 
 // PRISMA TYPES
 export type FeatureWithUser = Prisma.FeatureGetPayload<{
     include: { featureVotes: true; user: { select: { name: true } } };
 }>;
 
-// SERVER DTOs
+// SERVER PAYLOADS
 export class FeaturePayload {
     @IsString()
     @IsNotEmpty()
@@ -33,15 +33,12 @@ export class UpdateFeatureStatusPayload {
     featureStatus!: FeatureStatus;
 }
 
+// SERVER DTOs
 @Exclude()
 export class FeatureVotesDto {
     @Expose()
     @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the vote in the table' })
     id!: string;
-
-    @Expose()
-    @ApiProperty({ enum: VoteVariant, example: VoteVariant.UPVOTE, description: 'The type of the vote' })
-    voteVariant!: VoteVariant;
 
     @Expose()
     @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the user who voted' })
@@ -95,10 +92,6 @@ export class FeatureDto {
     @Expose()
     @ApiProperty({ example: 8, description: 'The upvote count of the feature' })
     upvoteCount!: number;
-
-    @Expose()
-    @ApiProperty({ example: 3, description: 'The downvote count of the feature' })
-    downvoteCount!: number;
 
     @Expose()
     @ApiProperty({ enum: FeatureStatus, example: FeatureStatus.NEW, description: 'The status of the feature' })

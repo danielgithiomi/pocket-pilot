@@ -85,8 +85,7 @@
                                 [id]="feature.id"
                                 [feature]="feature"
                                 [showDeleteIcon]="activeTabIndex() == 1"
-                                (onFeatureItemClick)="handleOnFeatureItemClick($event)"
-                            />
+                                (onFeatureItemClick)="handleOnFeatureItemClick($event)"/>
                         }
                     }
                 }
@@ -112,7 +111,7 @@
             <div class="flex flex-col space-y-6 w-full lg:w-3/4 overflow-hidden">
                 <div class="flex flex-col space-y-4">
                     <p class="text-sm text-tertiary-dark text-ellipsis">
-                        You can suggest a feature by upvoting, downvoting or commenting on a feature. Can't see the feature you're
+                        You can support a feature by upvoting it or commenting on it. Can't see the feature you're
                         looking for?
                     </p>
 
@@ -136,6 +135,5 @@
     <feature-details
         [feature]="selectedFeature()!"
         [onBackdropClickClose]="true"
-        (onFeatureModalCloseEvent)="handleOnFeatureModalClose()"
-    />
+        (onFeatureModalCloseEvent)="handleOnFeatureModalClose()"/>
 }

@@ -6,7 +6,7 @@ import { Badge, BadgeVariant } from '@atoms/badge';
 import { denormalizeCategoryName } from '@global/utils';
 import { FeaturesService } from '@api/features.service';
 import { Feature, IVoidResourceResponse } from '@global/types';
-import { FeatureStatusEnum, VoteVariantEnum } from '@global/enums';
+import { FeatureStatusEnum } from '@global/enums';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareReply, Trash2 } from 'lucide-angular';
 
@@ -24,8 +24,9 @@ export class FeatureItem {
 
     // SIGNAL STATES
     protected readonly isDeleting = signal<boolean>(false);
-    protected readonly isUserUpvoted = signal<boolean>(false);
     protected readonly isVotingOnFeature = signal<boolean>(false);
+    private readonly optimisticFeatureScore = signal<number | null>(null);
+    private readonly optimisticIsUserUpvoted = signal<boolean | null>(null);
 
     // SERVICES
     protected readonly authService = inject(AuthService);
@@ -45,6 +46,18 @@ export class FeatureItem {
         const userId = this.authService.user()?.id;
         return this.feature().authorId === userId;
     });
+    protected readonly isUserUpvoted = computed<boolean>(() => {
+        const optimisticState = this.optimisticIsUserUpvoted();
+        if (optimisticState !== null) return optimisticState;
+
+        const userId = this.authService.user()?.id;
+        if (!userId) return false;
+
+        return this.feature().featureVotes.some(vote => vote.userId === userId);
+    });
+    protected readonly displayedFeatureScore = computed<number>(
+        () => this.optimisticFeatureScore() ?? this.feature().featureScore
+    );
     protected readonly featureId = computed<string>(() => `feature-item-${this.id()}`);
     protected readonly formattedDate = computed<string>(() => {
         const date = this.feature().createdAt.toString();
@@ -89,36 +102,43 @@ export class FeatureItem {
 
         this.isVotingOnFeature.set(true);
         const previousState = this.isUserUpvoted();
+        const previousScore = this.displayedFeatureScore();
+        const nextState = !previousState;
 
-        // Temporary State
-        this.isUserUpvoted.set(!previousState);
+        this.optimisticIsUserUpvoted.set(nextState);
+        this.optimisticFeatureScore.set(previousScore + (nextState ? 1 : -1));
 
-        // Api Call
-        const newState = this.isUserUpvoted() ? VoteVariantEnum.DOWNVOTE : VoteVariantEnum.UPVOTE;
-        setTimeout(() => {
-            this.featuresService.voteOnFeatureById(this.feature().id, newState).subscribe({
-                next: (response: Feature) => {
-                    this.toastService.show({
-                        variant: 'success',
-                        title: `Your [${newState}] has been recorded!`,
-                        details: `We have marked the [${response.featureTitle}] feature request as [${newState}].`
-                    });
-                    this.isVotingOnFeature.set(false);
-                },
-                error: () => {
-                    // Revert state to previous
-                    this.toastService.show({
-                        variant: 'error',
-                        title: 'Something went wrong!',
-                        details: `There was an unexpected error while trying to [${newState}] the feature request.`
-                    });
+        this.featuresService.toggleFeatureUpvoteById(this.feature().id).subscribe({
+            next: (response: Feature) => {
+                const userId = this.authService.user()?.id;
+                const isUserUpvoted = !!userId && response.featureVotes.some(vote => vote.userId === userId);
 
-                    this.isUserUpvoted.set(previousState);
-                    this.isVotingOnFeature.set(false);
-                },
-                complete: () => this.isVotingOnFeature.set(false)
-            });
-        }, 2000);
+                this.optimisticIsUserUpvoted.set(isUserUpvoted);
+                this.optimisticFeatureScore.set(response.featureScore);
+
+                this.toastService.show({
+                    variant: 'success',
+                    title: nextState ? 'Feature upvoted!' : 'Feature upvote removed!',
+                    details: nextState
+                        ? `You now support [${response.featureTitle}].`
+                        : `You no longer support [${response.featureTitle}].`
+                });
+
+                this.featuresService.refreshFeatureRequests();
+                this.featuresService.refreshUserFeatureRequests();
+            },
+            error: () => {
+                this.toastService.show({
+                    variant: 'error',
+                    title: 'Something went wrong!',
+                    details: 'There was an unexpected error while updating your feature upvote.'
+                });
+
+                this.optimisticIsUserUpvoted.set(previousState);
+                this.optimisticFeatureScore.set(previousScore);
+            },
+            complete: () => this.isVotingOnFeature.set(false)
+        });
     }
 
     handleOnFeatureDelete() {

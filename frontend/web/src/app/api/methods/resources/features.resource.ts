@@ -12,12 +12,6 @@ export class FeaturesResource {
         url: concatUrl(endpoints.feature_status)
     }));
 
-    getFeatureVoteVariants = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
-        method: 'GET',
-        cache: 'no-cache',
-        url: concatUrl(endpoints.feature_vote_variants)
-    }));
-
     getFeatureCategories = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',

@@ -62,7 +62,6 @@ export class FaqsFeatures {
     protected readonly featureRequests = this.featuresService.getFeatureRequests();
     private readonly featureCategories = this.featuresService.getFeatureCategories();
     private readonly userFeatureRequests = this.featuresService.getUserFeatureRequests();
-    private readonly featureVoteVariants = this.featuresService.getFeatureVoteVariants();
 
     // COMPUTED
     protected readonly hasFeaturesError = this.featuresService.hasError();

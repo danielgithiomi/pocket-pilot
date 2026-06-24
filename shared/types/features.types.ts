@@ -1,7 +1,4 @@
-import {FeatureCategoryEnum, FeatureStatusEnum, VoteVariantEnum} from "../enums";
-
-// TYPES
-export type VoteVariant = keyof typeof VoteVariantEnum;
+import {FeatureCategoryEnum, FeatureStatusEnum} from "../enums";
 
 // PAYLOADS
 export interface FeaturePayload {
@@ -10,16 +7,13 @@ export interface FeaturePayload {
     featureCategory: FeatureCategoryEnum;
 }
 
-export interface FeatureVotePayload {
-    voteVariant: VoteVariantEnum;
-}
-
 // RESPONSES
 export interface FeatureVote {
     id: string;
+    userId: string;
+    featureId: string;
     createdAt: Date;
     updatedAt: Date;
-    voteVariant: VoteVariantEnum;
 }
 
 export interface FeatureComment {
@@ -37,7 +31,6 @@ export interface Feature {
     upvoteCount: number;
     featureTitle: string;
     featureScore: number;
-    downvoteCount: number;
     featureContent: string;
     featureStatus: FeatureStatusEnum;
     featureCategory: FeatureCategoryEnum;
@@ -53,6 +46,5 @@ export interface FeaturesWithCount {
 
 export interface FeatureServiceConstants {
     featureStatuses: FeatureStatusEnum[];
-    featureVoteVariants: VoteVariantEnum[];
     featureCategories: FeatureCategoryEnum[];
 }
