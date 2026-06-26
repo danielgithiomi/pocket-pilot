@@ -3,17 +3,26 @@ import { ColorPalette } from '@libs/types';
 export type AvatarSize = 'xs' |'sm' | 'md' | 'lg' | 'xl';
 
 export const AVATAR_SIZE_MAP: Record<AvatarSize, string> = {
-    xs: 'size-4',
-    sm: 'size-6',
-    md: 'size-8',
-    lg: 'size-10',
-    xl: 'size-12'
+    xs: 'size-6',
+    sm: 'size-8',
+    md: 'size-10',
+    lg: 'size-12',
+    xl: 'size-14'
+};
+
+export const INITIALS_TEXT_MAP: Record<AvatarSize, string> = {
+    xs: 'text-xs',
+    sm: 'text-xs',
+    md: 'text-sm',
+    lg: 'text-base',
+    xl: 'text-md'
 };
 
 export interface AvatarClasses {
     avatarSize: string;
     background: string;
     foreground: string;
+    initialsSize: string;
 }
 
 // AVATAR CONSTANTS

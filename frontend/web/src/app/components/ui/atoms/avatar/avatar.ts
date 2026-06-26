@@ -1,14 +1,14 @@
 import { NgClass } from '@angular/common';
 import { hashFromName } from '@libs/utils';
 import { Component, computed, input } from '@angular/core';
-import { AvatarClasses, AvatarSize, COLOR_PALETTE, AVATAR_SIZE_MAP } from './avatar.types';
+import { AvatarClasses, AvatarSize, COLOR_PALETTE, AVATAR_SIZE_MAP, INITIALS_TEXT_MAP } from './avatar.types';
 
 @Component({
     selector: 'atom-avatar',
     imports: [NgClass],
     template: `
         <div class="rounded-full grid place-items-center shrink-0" [ngClass]="[avatarClasses().background, avatarClasses().avatarSize]">
-            <p class="text-sm font-semibold" [ngClass]="avatarClasses().foreground">
+            <p class="font-semibold" [ngClass]="[avatarClasses().foreground, avatarClasses().initialsSize]">
                 {{ displayInitials() }}
             </p>
         </div>
@@ -17,8 +17,8 @@ import { AvatarClasses, AvatarSize, COLOR_PALETTE, AVATAR_SIZE_MAP } from './ava
 export class Avatar {
     // INPUTS
     readonly displayName = input.required<string>();
-    readonly avatarSize = input.required<AvatarSize>();
     readonly numberOfInitials = input.required<1 | 2>();
+    readonly avatarSize = input<AvatarSize>('md',  { alias: 'size'});
 
     // COMPUTED
     protected readonly avatarClasses = computed<AvatarClasses>(() => {
@@ -28,6 +28,7 @@ export class Avatar {
             background: bg,
             foreground: fg,
             avatarSize: AVATAR_SIZE_MAP[this.avatarSize()],
+            initialsSize: INITIALS_TEXT_MAP[this.avatarSize()]
         };
     });
 
