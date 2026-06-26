@@ -10,8 +10,9 @@ import { FeaturesService } from '@api/features.service';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareText, Send } from 'lucide-angular';
-import { FeatureCommentPayload, FeatureWithComments, IVoidResourceResponse } from '@global/types';
+import { FeatureComment, FeatureCommentPayload, FeatureWithComments, IVoidResourceResponse } from '@global/types';
 import { COMMENT_AVATAR_COLORS, FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
+import { AuthService } from '@api/auth.service';
 
 @Component({
     selector: 'feature-details',
@@ -36,15 +37,17 @@ export class FeatureDetails {
     // STATE
     protected readonly commentDraft = signal('');
     protected readonly isPostingComment = signal<boolean>(false);
+    protected readonly optimisticComments = signal<FeatureComment[]>([]);
 
     // SERVICES
+    private readonly authService = inject(AuthService);
     private readonly toastService = inject(ToastService);
     private readonly featuresService = inject(FeaturesService);
 
     // COMPUTED
     protected readonly featureId = computed<string>(() => `feature-${this.feature().id}`);
     protected readonly statusActiveIndex = computed<number>(() => resolveFeatureStatusActiveIndex(this.feature().featureStatus));
-    protected readonly featureComments = computed(() => this.feature().featureComments ?? []);
+    protected readonly featureComments = computed<FeatureComment[]>(() => [...this.optimisticComments(), ...this.feature().featureComments]);
     protected readonly commentCount = computed<number>(() => this.featureComments().length);
     protected readonly formattedAuthorName = computed<string>(() => {
         const author = this.feature().authorName;
@@ -110,6 +113,14 @@ export class FeatureDetails {
         if (!this.canPostComment()) return;
 
         console.log('Optimistic Updates');
+        const optimisticComment: FeatureComment = {
+            id: crypto.randomUUID(),
+            comment: this.commentDraft(),
+            createdAt: new Date(Date.now()),
+            authorName: this.authService.user()!.name,
+        }
+
+        this.optimisticComments.update(comments => [optimisticComment, ...comments]);
 
         console.log('Posting comment:', this.commentDraft());
 

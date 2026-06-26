@@ -16,15 +16,16 @@ export interface FeatureCommentPayload {
 export interface FeatureVote {
     id: string;
     userId: string;
-    featureId: string;
     createdAt: Date;
     updatedAt: Date;
+    featureId: string;
 }
 
 export interface FeatureComment {
     id: string;
     createdAt: Date;
     comment: string;
+    authorName: string;
 }
 
 export interface Feature {
