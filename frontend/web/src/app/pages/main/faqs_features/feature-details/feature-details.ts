@@ -12,7 +12,12 @@ import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareText, Send } from 'lucide-angular';
 import { COMMENT_AVATAR_COLORS, FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
-import { FeatureComment as IFeatureComment, FeatureCommentPayload, FeatureWithComments, IVoidResourceResponse } from '@global/types';
+import {
+    FeatureWithComments,
+    IVoidResourceResponse,
+    FeatureCommentPayload,
+    FeatureComment as IFeatureComment
+} from '@global/types';
 
 @Component({
     selector: 'feature-details',
@@ -47,7 +52,10 @@ export class FeatureDetails {
     // COMPUTED
     protected readonly featureId = computed<string>(() => `feature-${this.feature().id}`);
     protected readonly statusActiveIndex = computed<number>(() => resolveFeatureStatusActiveIndex(this.feature().featureStatus));
-    protected readonly featureComments = computed<IFeatureComment[]>(() => [...this.optimisticComments(), ...this.feature().featureComments]);
+    protected readonly featureComments = computed<IFeatureComment[]>(() => [
+        ...this.optimisticComments(),
+        ...this.feature().featureComments
+    ]);
     protected readonly commentCount = computed<number>(() => this.featureComments().length);
     protected readonly formattedAuthorName = computed<string>(() => {
         const author = this.feature().authorName;
@@ -119,8 +127,8 @@ export class FeatureDetails {
             comment: this.commentDraft(),
             createdAt: new Date(Date.now()),
             authorName: this.authService.user()!.name,
-            authorProfilePictureUrl: this.authService.user()?.profilePictureUrl,
-        }
+            authorProfilePictureUrl: this.authService.user()?.profilePictureUrl
+        };
 
         this.optimisticComments.update(comments => [optimisticComment, ...comments]);
 
@@ -144,6 +152,18 @@ export class FeatureDetails {
             },
             error: (error: Error) => {
                 console.error('Error posting comment:', error);
+
+                this.toastService.show({
+                    variant: 'error',
+                    details: error.message,
+                    title: 'Error posting your comment!'
+                });
+
+                // Remove comment from optimistic comments
+                setTimeout(() => {
+                    const updatedList = this.optimisticComments().filter(comment => comment.id !== optimisticComment.id);
+                    this.optimisticComments.set(updatedList);
+                }, 2000);
             },
             complete: () => {
                 this.commentDraft.set('');

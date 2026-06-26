@@ -1,7 +1,7 @@
 import { FeaturesResource } from '@methods/resources';
 import { FeaturesMutation } from '@methods/mutations';
 import { ApiServiceError } from './api-error.service';
-import { catchError, EMPTY, map, Observable } from 'rxjs';
+import { catchError, EMPTY, map, Observable, of } from 'rxjs';
 import { computed, effect, inject, Injectable, Signal, signal } from '@angular/core';
 import {
     Feature,
@@ -51,11 +51,7 @@ export class FeaturesService {
 
     addCommentToFeature(payload: FeatureCommentPayload): Observable<IVoidResourceResponse> {
         return this.mutation.addCommentToFeature(payload).pipe(
-            map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
-            catchError((error: IStandardError) => {
-                this.errorService.renderToast(error);
-                return EMPTY;
-            })
+            map((response: IStandardResponse<IVoidResourceResponse>) => response.data)
         );
     }
 
