@@ -5,6 +5,7 @@ import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { computed, effect, inject, Injectable, Signal, signal } from '@angular/core';
 import {
     Feature,
+    FeatureCommentPayload,
     FeaturePayload,
     FeaturesWithCount,
     IEnumResponse,
@@ -40,6 +41,16 @@ export class FeaturesService {
 
     deleteFeatureRequestById(featureId: string): Observable<IVoidResourceResponse> {
         return this.mutation.deleteFeatureRequestById(featureId).pipe(
+            map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
+            catchError((error: IStandardError) => {
+                this.errorService.renderToast(error);
+                return EMPTY;
+            })
+        );
+    }
+
+    addCommentToFeature(payload: FeatureCommentPayload): Observable<IVoidResourceResponse> {
+        return this.mutation.addCommentToFeature(payload).pipe(
             map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);

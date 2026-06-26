@@ -7,6 +7,11 @@ export interface FeaturePayload {
     featureCategory: FeatureCategoryEnum;
 }
 
+export interface FeatureCommentPayload {
+    comment: string;
+    featureId: string;
+}
+
 // RESPONSES
 export interface FeatureVote {
     id: string;

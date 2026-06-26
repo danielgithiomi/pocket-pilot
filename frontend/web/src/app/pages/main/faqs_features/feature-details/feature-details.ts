@@ -5,11 +5,12 @@ import { Status } from '@molecules/status';
 import { ToastService } from '@atoms/toast';
 import { FeatureStatusEnum } from '@global/enums';
 import { Badge, BadgeVariant } from '@atoms/badge';
-import { FeatureWithComments } from '@global/types';
 import { denormalizeCategoryName } from '@global/utils';
+import { FeaturesService } from '@api/features.service';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareText, Send } from 'lucide-angular';
+import { FeatureCommentPayload, FeatureWithComments, IVoidResourceResponse } from '@global/types';
 import { COMMENT_AVATAR_COLORS, FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
 
 @Component({
@@ -34,9 +35,11 @@ export class FeatureDetails {
 
     // STATE
     protected readonly commentDraft = signal('');
+    protected readonly isPostingComment = signal<boolean>(false);
 
     // SERVICES
     private readonly toastService = inject(ToastService);
+    private readonly featuresService = inject(FeaturesService);
 
     // COMPUTED
     protected readonly featureId = computed<string>(() => `feature-${this.feature().id}`);
@@ -70,7 +73,6 @@ export class FeatureDetails {
             UNDER_REVIEW: 'warning'
         };
 
-        console.log(this.feature().featureStatus);
         return VARIANT_MAP[this.feature().featureStatus];
     });
     protected readonly statusSteps = computed(() => {
@@ -107,12 +109,33 @@ export class FeatureDetails {
     protected handlePostComment() {
         if (!this.canPostComment()) return;
 
-        this.toastService.show({
-            variant: 'info',
-            title: 'Comments coming soon',
-            details: 'Posting comments will be available in a future update.'
-        });
+        console.log('Optimistic Updates');
 
-        this.commentDraft.set('');
+        console.log('Posting comment:', this.commentDraft());
+
+        this.isPostingComment.set(true);
+
+        const payload: FeatureCommentPayload = {
+            comment: this.commentDraft(),
+            featureId: this.feature().id
+        };
+
+        this.featuresService.addCommentToFeature(payload).subscribe({
+            next: (response: IVoidResourceResponse) => {
+                const { message, details } = response;
+                this.toastService.show({
+                    details,
+                    title: message,
+                    variant: 'success'
+                });
+            },
+            error: (error: Error) => {
+                console.error('Error posting comment:', error);
+            },
+            complete: () => {
+                this.commentDraft.set('');
+                this.isPostingComment.set(false);
+            }
+        });
     }
 }
