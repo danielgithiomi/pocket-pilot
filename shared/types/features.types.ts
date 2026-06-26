@@ -25,7 +25,9 @@ export interface FeatureComment {
     id: string;
     createdAt: Date;
     comment: string;
+    featureId: string;
     authorName: string;
+    authorProfilePictureUrl?: string;
 }
 
 export interface Feature {

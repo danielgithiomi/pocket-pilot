@@ -59,23 +59,28 @@
             @if (commentCount() === 0) {
                 <p class="feature-comments-empty">No comments yet. Be the first to share your thoughts.</p>
             } @else {
-                <ul class="feature-comments-list">
+                <div class="feature-comments-wrapper flex flex-col divide-y divide-reactive-text">
                     @for (comment of featureComments(); track comment.id; let index = $index) {
-                        <li class="feature-comment">
-                            <div class="feature-comment-avatar" [ngClass]="commentAvatarClass(index)">
-                                {{ commentInitials(index) }}
-                            </div>
-
-                            <div class="feature-comment-body">
-                                <div class="feature-comment-meta">
-                                    <span class="feature-comment-author">{{ commentAuthorLabel(index) }}</span>
-                                    <span class="feature-comment-date">{{ formatCommentDate(comment.createdAt) }}</span>
-                                </div>
-                                <p class="feature-comment-text">{{ comment.comment }}</p>
-                            </div>
-                        </li>
+                        <feature-comment [featureComment]="comment" />
                     }
-                </ul>
+                </div>
+<!--                <ul class="feature-comments-list">-->
+<!--                    @for (comment of featureComments(); track comment.id; let index = $index) {-->
+<!--                        <li class="feature-comment">-->
+<!--                            <div class="feature-comment-avatar" [ngClass]="commentAvatarClass(index)">-->
+<!--                                {{ commentInitials(index) }}-->
+<!--                            </div>-->
+
+<!--                            <div class="feature-comment-body">-->
+<!--                                <div class="feature-comment-meta">-->
+<!--                                    <span class="feature-comment-author">{{ commentAuthorLabel(index) }}</span>-->
+<!--                                    <span class="feature-comment-date">{{ formatCommentDate(comment.createdAt) }}</span>-->
+<!--                                </div>-->
+<!--                                <p class="feature-comment-text">{{ comment.comment }}</p>-->
+<!--                            </div>-->
+<!--                        </li>-->
+<!--                    }-->
+<!--                </ul>-->
             }
 
             <div class="feature-comment-form">

@@ -1,24 +1,24 @@
 import { Modal } from '@atoms/modal';
 import { Button } from '@atoms/button';
-import { NgClass } from '@angular/common';
 import { Status } from '@molecules/status';
 import { ToastService } from '@atoms/toast';
+import { AuthService } from '@api/auth.service';
 import { FeatureStatusEnum } from '@global/enums';
 import { Badge, BadgeVariant } from '@atoms/badge';
+import { FeatureComment } from '../feature-comment';
 import { denormalizeCategoryName } from '@global/utils';
 import { FeaturesService } from '@api/features.service';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareText, Send } from 'lucide-angular';
-import { FeatureComment, FeatureCommentPayload, FeatureWithComments, IVoidResourceResponse } from '@global/types';
 import { COMMENT_AVATAR_COLORS, FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
-import { AuthService } from '@api/auth.service';
+import { FeatureComment as IFeatureComment, FeatureCommentPayload, FeatureWithComments, IVoidResourceResponse } from '@global/types';
 
 @Component({
     selector: 'feature-details',
     styleUrl: './feature-details.css',
     templateUrl: './feature-details.html',
-    imports: [Modal, Status, Badge, NgClass, LucideAngularModule, Button]
+    imports: [Modal, Status, Badge, LucideAngularModule, Button, FeatureComment]
 })
 export class FeatureDetails {
     // INPUT
@@ -37,7 +37,7 @@ export class FeatureDetails {
     // STATE
     protected readonly commentDraft = signal('');
     protected readonly isPostingComment = signal<boolean>(false);
-    protected readonly optimisticComments = signal<FeatureComment[]>([]);
+    protected readonly optimisticComments = signal<IFeatureComment[]>([]);
 
     // SERVICES
     private readonly authService = inject(AuthService);
@@ -47,7 +47,7 @@ export class FeatureDetails {
     // COMPUTED
     protected readonly featureId = computed<string>(() => `feature-${this.feature().id}`);
     protected readonly statusActiveIndex = computed<number>(() => resolveFeatureStatusActiveIndex(this.feature().featureStatus));
-    protected readonly featureComments = computed<FeatureComment[]>(() => [...this.optimisticComments(), ...this.feature().featureComments]);
+    protected readonly featureComments = computed<IFeatureComment[]>(() => [...this.optimisticComments(), ...this.feature().featureComments]);
     protected readonly commentCount = computed<number>(() => this.featureComments().length);
     protected readonly formattedAuthorName = computed<string>(() => {
         const author = this.feature().authorName;
@@ -113,11 +113,13 @@ export class FeatureDetails {
         if (!this.canPostComment()) return;
 
         console.log('Optimistic Updates');
-        const optimisticComment: FeatureComment = {
+        const optimisticComment: IFeatureComment = {
             id: crypto.randomUUID(),
+            featureId: this.feature().id,
             comment: this.commentDraft(),
             createdAt: new Date(Date.now()),
             authorName: this.authService.user()!.name,
+            authorProfilePictureUrl: this.authService.user()?.profilePictureUrl,
         }
 
         this.optimisticComments.update(comments => [optimisticComment, ...comments]);
