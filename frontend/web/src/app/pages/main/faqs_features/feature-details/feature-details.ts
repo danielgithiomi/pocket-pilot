@@ -137,8 +137,7 @@ export class FeatureDetails {
         this.isPostingComment.set(true);
 
         const payload: FeatureCommentPayload = {
-            comment: this.commentDraft(),
-            featureId: this.feature().id
+            comment: this.commentDraft()
         };
 
         this.featuresService.addCommentToFeature(payload).subscribe({

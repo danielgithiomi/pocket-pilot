@@ -100,8 +100,7 @@ export class FeaturesService {
     }
 
     private async ascertainFeatureExists(featureId: string): Promise<boolean> {
-        await this.getFeatureById(featureId);
-        return true;
+        return !!(await this.getFeatureById(featureId));
     }
 
     private async ascertainFeatureBelongsToUser(featureId: string, userId: string): Promise<boolean> {
@@ -117,6 +116,6 @@ export class FeaturesService {
                 message: 'You are not authorized to access this feature or modify it.'
             });
 
-        return !!isOwnedByUser;
+        return isOwnedByUser;
     }
 }

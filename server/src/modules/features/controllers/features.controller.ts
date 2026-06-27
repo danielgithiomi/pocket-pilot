@@ -1,7 +1,7 @@
 import { hoursToMilliseconds } from '@libs/utils';
 import { CookiesAuthGuard } from '@common/guards';
-import { Summary, UserInRequest } from '@common/decorators';
 import { FeaturesService } from '../services/features.service';
+import { Public, Summary, UserInRequest } from '@common/decorators';
 import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
@@ -9,10 +9,12 @@ import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swag
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FeatureDto, FeaturePayload, FeaturesWithCountDto, UpdateFeatureStatusPayload } from '../dto/features.dto';
 
+@UseGuards(CookiesAuthGuard)
 @Controller('features')
 export class FeaturesController {
     constructor(private readonly featuresService: FeaturesService) {}
 
+    @Public()
     @Get('categories')
     @ApiCookieAuth('access_token')
     @CacheKey('features:categories')
@@ -30,6 +32,7 @@ export class FeaturesController {
         return this.featuresService.getFeatureCategories();
     }
 
+    @Public()
     @Get('status')
     @CacheKey('features:status')
     @ApiCookieAuth('access_token')
@@ -48,7 +51,6 @@ export class FeaturesController {
     }
 
     @Post()
-    @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
     @Summary('Feature created', 'The user created a new feature and was saved to the database')
     @ApiOperation({ summary: 'Add a new feature request', description: 'Create a new feature request' })
@@ -62,7 +64,6 @@ export class FeaturesController {
     }
 
     @Get()
-    @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
     @CacheKey('features:all-features')
     @UseInterceptors(CacheInterceptor)
@@ -79,7 +80,6 @@ export class FeaturesController {
     }
 
     @Get('user')
-    @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
     @ApiParam({ name: 'userId', description: 'The ID of the user to retrieve feature requests for' })
     @Summary('User feature requests retrieved', 'The application retrieved all feature requests for a user')
@@ -98,7 +98,6 @@ export class FeaturesController {
     }
 
     @Patch('votes/:featureId')
-    @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
     @ApiParam({ name: 'featureId', description: 'The ID of the feature that the user is upvoting' })
     @Summary('Feature upvote toggled', 'The user toggled their upvote on the feature request')
@@ -116,7 +115,6 @@ export class FeaturesController {
     }
 
     @Patch(':featureId/status')
-    @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
     @Summary('Feature status updated', 'The user updated the status of a feature request')
     @ApiParam({ name: 'featureId', description: 'The ID of the feature to update the status of' })
@@ -143,7 +141,6 @@ export class FeaturesController {
     }
 
     @Delete(':featureId')
-    @UseGuards(CookiesAuthGuard)
     @ApiCookieAuth('access_token')
     @Summary('Feature deleted', 'The user deleted a feature request')
     @ApiParam({ name: 'featureId', description: 'The ID of the feature to delete' })

@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { FeatureCategory, FeatureStatus, Prisma } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 // PRISMA TYPES
 export type FeatureWithUser = Prisma.FeatureGetPayload<{
@@ -11,6 +12,18 @@ export type FeatureWithUser = Prisma.FeatureGetPayload<{
         _count: { select: { featureComments: true; featureVotes: true } };
     };
 }>;
+
+export type FeatureWithComments = FeatureWithUser &
+    Prisma.FeatureGetPayload<{
+        include: {
+            featureComments: {
+                include: {
+                    feature: { select: { id: true } };
+                    author: { select: { name: true; profilePictureUrl: true } };
+                };
+            };
+        };
+    }>;
 
 // SERVER PAYLOADS
 export class FeaturePayload {
@@ -35,6 +48,13 @@ export class UpdateFeatureStatusPayload {
     @IsEnum(FeatureStatus)
     @ApiProperty({ enum: FeatureStatus, example: FeatureStatus.NEW, description: 'The status of the feature' })
     featureStatus!: FeatureStatus;
+}
+
+export class FeatureCommentPayload {
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ example: 'My Comment', description: 'The content of the comment' })
+    comment!: string;
 }
 
 // SERVER DTOs
@@ -122,7 +142,7 @@ export class FeatureDto {
 @Exclude()
 export class FeatureCommentsDto {
     @Expose()
-    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the comment in the table' })
+    @ApiProperty({ example: randomUUID(), description: 'The ID of the comment in the table' })
     id!: string;
 
     @Expose()
@@ -130,6 +150,22 @@ export class FeatureCommentsDto {
     comment!: string;
 
     @Expose()
+    @ApiProperty({ example: randomUUID(), description: 'The ID of the feature that this comment is associated with.' })
+    featureId!: string;
+
+    @Expose()
+    @ApiProperty({ example: 'John Doe', description: 'The name of the user who created the comment' })
+    authorName!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: 'https://pocket-pilot/profile-picture',
+        description: 'The URL of the profile picture of the user who created the comment'
+    })
+    authorProfilePictureUrl!: string | null;
+
+    @Expose()
+    @Type(() => Date)
     @ApiProperty({ example: '2025-01-01', description: 'The created date of the comment' })
     createdAt!: Date;
 }

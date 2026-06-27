@@ -17,7 +17,7 @@ export class FeaturesMutation {
 
     toggleFeatureUpvoteById(featureId: string): Observable<IStandardResponse<Feature>> {
         const url = `${endpoints.feature_votes}/${featureId}`;
-        return this.client.patch<Feature, Record<string, never>>(url, {});
+        return this.client.patch<Feature, {}>(url, {});
     }
 
     deleteFeatureRequestById(featureId: string) {

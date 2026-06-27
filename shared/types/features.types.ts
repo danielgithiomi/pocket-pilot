@@ -9,7 +9,6 @@ export interface FeaturePayload {
 
 export interface FeatureCommentPayload {
     comment: string;
-    featureId: string;
 }
 
 // RESPONSES
