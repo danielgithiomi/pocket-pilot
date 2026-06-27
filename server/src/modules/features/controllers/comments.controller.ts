@@ -1,10 +1,11 @@
 import { CookiesAuthGuard } from '@common/guards';
+import { FeatureCommentPayload } from '../dto/comments.dto';
 import { Summary, UserInRequest } from '@common/decorators';
+import { FeatureWithCommentsDto } from '../dto/features.dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { CommentsService } from '@modules/features/services/comments.service';
-import { FeatureCommentPayload, FeatureWithCommentsDto } from '../dto/features.dto';
 
 @UseGuards(CookiesAuthGuard)
 @Controller('features/:featureId/comments')

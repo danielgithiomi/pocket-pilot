@@ -140,7 +140,7 @@ export class FeatureDetails {
             comment: this.commentDraft()
         };
 
-        this.featuresService.addCommentToFeature(payload).subscribe({
+        this.featuresService.addCommentToFeature(this.feature().id, payload).subscribe({
             next: (response: IVoidResourceResponse) => {
                 const { message, details } = response;
                 this.toastService.show({

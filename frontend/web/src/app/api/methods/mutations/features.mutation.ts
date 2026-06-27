@@ -16,18 +16,21 @@ export class FeaturesMutation {
     }
 
     toggleFeatureUpvoteById(featureId: string): Observable<IStandardResponse<Feature>> {
+        // feature_votes/{featureId}
         const url = `${endpoints.feature_votes}/${featureId}`;
         return this.client.patch<Feature, {}>(url, {});
     }
 
     deleteFeatureRequestById(featureId: string) {
+        // features/{featureId}
         const url = `${endpoints.features}/${featureId}`;
         return this.client.delete<IVoidResourceResponse>(url);
     }
 
     // COMMENTS
-    addCommentToFeature(payload: FeatureCommentPayload): Observable<IStandardResponse<IVoidResourceResponse>> {
-        const url = `${endpoints.feature_comments}`;
+    addCommentToFeature(featureId: string, payload: FeatureCommentPayload): Observable<IStandardResponse<IVoidResourceResponse>> {
+        // features/{featureId}/comments
+        const url = `${endpoints.features}/${featureId}/comments`;
         return this.client.post<IVoidResourceResponse, FeatureCommentPayload>(url, payload);
     }
 }

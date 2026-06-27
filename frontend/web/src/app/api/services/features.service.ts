@@ -49,10 +49,10 @@ export class FeaturesService {
         );
     }
 
-    addCommentToFeature(payload: FeatureCommentPayload): Observable<IVoidResourceResponse> {
-        return this.mutation.addCommentToFeature(payload).pipe(
-            map((response: IStandardResponse<IVoidResourceResponse>) => response.data)
-        );
+    addCommentToFeature(featureId: string, payload: FeatureCommentPayload): Observable<IVoidResourceResponse> {
+        return this.mutation
+            .addCommentToFeature(featureId, payload)
+            .pipe(map((response: IStandardResponse<IVoidResourceResponse>) => response.data));
     }
 
     // RESOURCES

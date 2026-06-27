@@ -1,17 +1,17 @@
 import { ExposeEnumDto } from '@common/types/api.types';
 import { FeaturesCache } from '../cache/features.cache';
+import { flattenFeature } from '../mappers/features.mappers';
 import { formatEnumForFrontend } from '@libs/utils/formatters';
-import { FeaturesRepository } from '../repositories/features.repository';
 import { FeatureCategory, FeatureStatus } from '@prisma/client';
+import { FeaturesRepository } from '../repositories/features.repository';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import {
     FeatureDto,
     FeaturePayload,
-    FeaturesWithCountDto,
     FeatureWithUser,
+    FeaturesWithCountDto,
     UpdateFeatureStatusPayload
 } from '../dto/features.dto';
-import { flattenFeature } from './features.mappers';
 
 @Injectable()
 export class FeaturesService {
