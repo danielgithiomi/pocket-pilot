@@ -46,5 +46,4 @@ export class CommentsController {
     ): Promise<FeatureCommentDto[]> {
         return this.commentsService.getAllFeatureComments(userId, featureId);
     }
-
 }
