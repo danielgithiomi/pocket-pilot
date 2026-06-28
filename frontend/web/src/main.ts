@@ -4,7 +4,7 @@ import { registerLicense } from '@syncfusion/ej2-base';
 import { AppConfig as config } from './app/app.config';
 import { environment } from '@environments/environment';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { applyThemeToDocument, readStoredThemePreference } from './app/infrastructure/services/theme.utils';
+import { applyThemeToDocument, readStoredThemePreference } from '@infrastructure/services/theme.utils';
 
 applyThemeToDocument(readStoredThemePreference());
 
