@@ -13,7 +13,7 @@ import {
     FeaturesWithCount,
     FeatureWithComments,
     IVoidResourceResponse,
-    FeatureCommentPayload,
+    FeatureCommentPayload
 } from '@global/types';
 
 @Injectable({

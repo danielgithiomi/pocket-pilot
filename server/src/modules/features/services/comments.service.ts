@@ -14,11 +14,20 @@ export class CommentsService {
     async addCommentToFeature(userId: string, featureId: string, payload: FeatureCommentPayload) {
         const comment: PrismaComment = await this.commentsRepository.addCommentToFeature(userId, featureId, payload);
 
-        const formatProfilePictureUrl = async (profilePictureKey: string | null) => {
-            if (!profilePictureKey) return null;
-            return await this.awsService.checkAndGenerateProfilePictureUrl(profilePictureKey);
-        };
-
-        return await mapPrismaCommentToDto(comment, formatProfilePictureUrl);
+        return await mapPrismaCommentToDto(comment, this.formatProfilePictureUrl);
     }
+
+    async getAllFeatureComments(userId: string, featureId: string) {
+        const prismaComments: PrismaComment[] = await this.commentsRepository.getAllFeatureComments(userId, featureId);
+
+        return await Promise.all(
+            prismaComments.map(async comment => await mapPrismaCommentToDto(comment, this.formatProfilePictureUrl))
+        );
+    }
+
+    // HELPER FUNCTIONS
+    private formatProfilePictureUrl = async (profilePictureKey: string | null) => {
+        if (!profilePictureKey) return null;
+        return await this.awsService.checkAndGenerateProfilePictureUrl(profilePictureKey);
+    };
 }

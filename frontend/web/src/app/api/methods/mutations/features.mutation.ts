@@ -19,6 +19,7 @@ export class FeaturesMutation {
 
     // FEATURES
     createNewFeature(payload: FeaturePayload) {
+        // features/
         return this.client.post<Feature, FeaturePayload>(endpoints.features, payload);
     }
 

@@ -18,4 +18,11 @@ export class CommentsRepository {
             include: this.includedFields
         });
     }
+
+    getAllFeatureComments(userId: string, featureId: string) {
+        return this.db.featureComments.findMany({
+            where: { featureId, userId },
+            include: this.includedFields
+        });
+    }
 }
