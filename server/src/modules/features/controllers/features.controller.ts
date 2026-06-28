@@ -64,9 +64,9 @@ export class FeaturesController {
     }
 
     @Get()
+    @UseInterceptors(CacheInterceptor)
     @ApiCookieAuth('access_token')
     @CacheKey('features:all-features')
-    @UseInterceptors(CacheInterceptor)
     @CacheTTL(hoursToMilliseconds(12))
     @Summary('Feature requests retrieved', 'The application retrieved all feature requests')
     @ApiOperation({ summary: 'Get all feature requests', description: 'Get all feature requests' })

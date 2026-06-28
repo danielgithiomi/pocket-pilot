@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
-import { Feature, FeaturesWithCount, IEnumResponse, IStandardResponse } from '@global/types';
+import { Feature, FeaturesWithCount, IEnumResponse, IStandardResponse, FeatureWithComments } from '@global/types';
 
 @Injectable({ providedIn: 'root' })
 export class FeaturesResource {
@@ -29,4 +29,15 @@ export class FeaturesResource {
         cache: 'no-cache',
         url: concatUrl(endpoints.user_features)
     }));
+
+    getFeatureRequestWithComments = (featureId: string) => {
+        // /features/:featureId/comments
+        const endpoint = `${endpoints.features}/${featureId}/comments`;
+
+        return httpResource<IStandardResponse<FeatureWithComments>>(() => ({
+            method: 'GET',
+            cache: 'no-cache',
+            url: concatUrl(endpoint)
+        }))
+    }
 }

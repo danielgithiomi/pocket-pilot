@@ -13,10 +13,10 @@ export const FEATURE_STATUS_STEPS: StatusStep[] = [
 const FEATURE_STATUS_ACTIVE_INDEX: Record<FeatureStatusEnum, number> = {
     [FeatureStatusEnum.NEW]: 0,
     [FeatureStatusEnum.UNDER_REVIEW]: 1,
+    [FeatureStatusEnum.REJECTED]: 1,
     [FeatureStatusEnum.PLANNED]: 2,
     [FeatureStatusEnum.IN_PROGRESS]: 3,
     [FeatureStatusEnum.SHIPPED]: FEATURE_STATUS_STEPS.length,
-    [FeatureStatusEnum.REJECTED]: 1
 };
 
 export function resolveFeatureStatusActiveIndex(status: FeatureStatusEnum): number {

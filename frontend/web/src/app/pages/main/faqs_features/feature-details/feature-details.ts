@@ -1,5 +1,6 @@
 import { Modal } from '@atoms/modal';
 import { Button } from '@atoms/button';
+import { NgClass } from '@angular/common';
 import { Status } from '@molecules/status';
 import { ToastService } from '@atoms/toast';
 import { AuthService } from '@api/auth.service';
@@ -11,10 +12,9 @@ import { FeaturesService } from '@api/features.service';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareText, Send } from 'lucide-angular';
-import { COMMENT_AVATAR_COLORS, FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
+import { FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
 import {
     FeatureWithComments,
-    IVoidResourceResponse,
     FeatureCommentPayload,
     FeatureComment as IFeatureComment
 } from '@global/types';
@@ -23,12 +23,13 @@ import {
     selector: 'feature-details',
     styleUrl: './feature-details.css',
     templateUrl: './feature-details.html',
-    imports: [Modal, Status, Badge, LucideAngularModule, Button, FeatureComment]
+    imports: [NgClass, Modal, Status, Badge, LucideAngularModule, Button, FeatureComment]
 })
 export class FeatureDetails {
     // INPUT
     onBackdropClickClose = input.required<boolean>();
     feature = input.required<FeatureWithComments>();
+    featureId = input<string>('0044d414-9af5-42ef-8f72-e99a83245f6e');
 
     // OUTPUTS
     onFeatureModalCloseEvent = output<void>();
@@ -50,15 +51,22 @@ export class FeatureDetails {
     private readonly featuresService = inject(FeaturesService);
 
     // COMPUTED
-    protected readonly featureId = computed<string>(() => `feature-${this.feature().id}`);
+    protected readonly isLoadingComments = computed<boolean>(() =>
+        this.featuresService.getFeatureRequestWithComments(this.feature().id).isLoading()
+    );
+    protected readonly compositeFeatureId = computed<string>(() => `feature-${this.feature().id}`);
     protected readonly statusActiveIndex = computed<number>(() => resolveFeatureStatusActiveIndex(this.feature().featureStatus));
-    protected readonly featureComments = computed<IFeatureComment[]>(() => [
-        ...this.optimisticComments(),
-        ...this.feature().featureComments
-    ]);
+    protected readonly featureComments = computed<IFeatureComment[]>(() => {
+        const featureWithComments: FeatureWithComments | undefined = this.featuresService
+            .getFeatureRequestWithComments(this.feature().id)
+            .value()?.data;
+        const apiComments = featureWithComments?.featureComments ?? [];
+
+        return [...this.optimisticComments(), ...apiComments];
+    });
     protected readonly commentCount = computed<number>(() => this.featureComments().length);
     protected readonly formattedAuthorName = computed<string>(() => {
-        const author = this.feature().authorName;
+        const author: string = this.feature().authorName;
         const [firstName, lastName] = author.split(' ');
 
         if (!lastName) return firstName;
@@ -96,22 +104,6 @@ export class FeatureDetails {
     protected readonly canPostComment = computed<boolean>(() => this.commentDraft().trim().length > 0);
 
     // METHODS
-    protected commentAvatarClass(index: number): string {
-        return COMMENT_AVATAR_COLORS[index % COMMENT_AVATAR_COLORS.length];
-    }
-
-    protected commentInitials(index: number): string {
-        return `C${index + 1}`;
-    }
-
-    protected commentAuthorLabel(index: number): string {
-        return index === 0 ? this.formattedAuthorName() : `Community member ${index + 1}`;
-    }
-
-    protected formatCommentDate(date: Date | string): string {
-        return formatRelativeDate(date);
-    }
-
     protected handleCommentInput(event: Event) {
         const value = (event.target as HTMLTextAreaElement).value;
         this.commentDraft.set(value);
@@ -141,13 +133,24 @@ export class FeatureDetails {
         };
 
         this.featuresService.addCommentToFeature(this.feature().id, payload).subscribe({
-            next: (response: IVoidResourceResponse) => {
-                const { message, details } = response;
+            next: (response: IFeatureComment) => {
+                console.log('response', response);
+
                 this.toastService.show({
-                    details,
-                    title: message,
-                    variant: 'success'
+                    variant: 'success',
+                    title: 'Comment was added!',
+                    details: 'Your comment has been added to the feature request successfully.'
                 });
+
+                console.log('Before removal', this.optimisticComments());
+
+                // Find the optimistic updates
+                const filteredComments = this.optimisticComments().filter(comment => comment.id !== optimisticComment.id);
+
+                console.log('After removal', this.optimisticComments());
+
+                console.log('Reloading details');
+                this.featuresService.refreshFeatureRequestWithComments(response.featureId);
             },
             error: (error: Error) => {
                 console.error('Error posting comment:', error);

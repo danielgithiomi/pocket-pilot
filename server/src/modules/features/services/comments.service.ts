@@ -12,11 +12,7 @@ export class CommentsService {
     ) {}
 
     async addCommentToFeature(userId: string, featureId: string, payload: FeatureCommentPayload) {
-        console.log(userId, featureId, payload);
-
         const comment: PrismaComment = await this.commentsRepository.addCommentToFeature(userId, featureId, payload);
-
-        console.log(comment);
 
         const formatProfilePictureUrl = async (profilePictureKey: string | null) => {
             if (!profilePictureKey) return null;

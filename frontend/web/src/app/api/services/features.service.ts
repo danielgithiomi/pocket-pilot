@@ -1,17 +1,19 @@
 import { FeaturesResource } from '@methods/resources';
 import { FeaturesMutation } from '@methods/mutations';
 import { ApiServiceError } from './api-error.service';
-import { catchError, EMPTY, map, Observable, of } from 'rxjs';
+import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { computed, effect, inject, Injectable, Signal, signal } from '@angular/core';
 import {
     Feature,
-    FeatureCommentPayload,
-    FeaturePayload,
-    FeaturesWithCount,
     IEnumResponse,
+    FeatureComment,
+    FeaturePayload,
     IStandardError,
     IStandardResponse,
-    IVoidResourceResponse
+    FeaturesWithCount,
+    FeatureWithComments,
+    IVoidResourceResponse,
+    FeatureCommentPayload,
 } from '@global/types';
 
 @Injectable({
@@ -49,10 +51,10 @@ export class FeaturesService {
         );
     }
 
-    addCommentToFeature(featureId: string, payload: FeatureCommentPayload): Observable<IVoidResourceResponse> {
+    addCommentToFeature(featureId: string, payload: FeatureCommentPayload): Observable<FeatureComment> {
         return this.mutation
             .addCommentToFeature(featureId, payload)
-            .pipe(map((response: IStandardResponse<IVoidResourceResponse>) => response.data));
+            .pipe(map((response: IStandardResponse<FeatureComment>) => response.data));
     }
 
     // RESOURCES
@@ -60,6 +62,7 @@ export class FeaturesService {
     private readonly _featureStatuses = signal<IEnumResponse[]>([]);
     private readonly _featureCategories = signal<IEnumResponse[]>([]);
     private readonly _featureRequests = signal<FeaturesWithCount>({ count: 0, features: [] });
+    private readonly _featureWithComments = signal<FeatureWithComments | null>(null);
 
     private readonly _isLoading = computed(
         () =>
@@ -115,6 +118,8 @@ export class FeaturesService {
         return this._userFeatureRequests.asReadonly();
     }
 
+    getFeatureRequestWithComments = (featureId: string) => this.resource.getFeatureRequestWithComments(featureId);
+
     isLoading(): Signal<boolean> {
         return this._isLoading;
     }
@@ -129,6 +134,10 @@ export class FeaturesService {
 
     refreshUserFeatureRequests(): void {
         this.resource.getUserFeatureRequests.reload();
+    }
+
+    refreshFeatureRequestWithComments(featureId: string): void {
+        this.resource.getFeatureRequestWithComments(featureId).reload();
     }
 
     refreshAll(): void {

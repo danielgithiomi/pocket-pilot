@@ -1,11 +1,11 @@
 import { CookiesAuthGuard } from '@common/guards';
-import { FeatureCommentPayload } from '../dto/comments.dto';
 import { Summary, UserInRequest } from '@common/decorators';
 import { FeatureWithCommentsDto } from '../dto/features.dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { CommentsService } from '@modules/features/services/comments.service';
+import { FeatureCommentDto, FeatureCommentPayload } from '../dto/comments.dto';
 
 @UseGuards(CookiesAuthGuard)
 @Controller('features/:featureId/comments')
@@ -26,7 +26,7 @@ export class CommentsController {
         @UserInRequest() { id: userId }: User,
         @Body() payload: FeatureCommentPayload,
         @Param('featureId') featureId: string
-    ) {
+    ): Promise<FeatureCommentDto> {
         return this.commentsService.addCommentToFeature(userId, featureId, payload);
     }
 }
