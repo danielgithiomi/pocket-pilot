@@ -26,7 +26,7 @@ export class CommentsService {
     }
 
     async getAllFeatureComments(userId: string, featureId: string) {
-        const cacheKey: string = `${this.COMMENTS_CACHE_KEY}:${featureId}`;
+        const cacheKey: string = this.generateFeatureCommentsCacheKey(featureId);
 
         return await this.featureCommentsCache.getOrSetCache(cacheKey, async () => {
             const prismaComments: PrismaComment[] = await this.commentsRepository.getAllFeatureComments(userId, featureId);
@@ -44,7 +44,13 @@ export class CommentsService {
     };
 
     private async invalidateCommentsCache(featureId: string) {
+        const commentsCacheKey: string = this.generateFeatureCommentsCacheKey(featureId);
+
         await this.featuresService.invalidateCache();
-        await this.featureCommentsCache.invalidateCache(featureId);
+        await this.featureCommentsCache.invalidateCache(commentsCacheKey);
+    }
+
+    private generateFeatureCommentsCacheKey(featureId: string) {
+        return `${this.COMMENTS_CACHE_KEY}:${featureId}`;
     }
 }

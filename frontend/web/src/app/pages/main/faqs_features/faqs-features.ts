@@ -121,10 +121,6 @@ export class FaqsFeatures {
 
     protected handleOnFeatureModalClose() {
         this.selectedFeature.set(null);
-
-        console.log('close');
-        console.log(this.selectedFeature());
-
         this.isFeatureModalOpen.set(false);
     }
 }

@@ -131,15 +131,11 @@ export class FeatureDetails {
 
         this.featuresService.addCommentToFeature(this.feature().id, payload).subscribe({
             next: (response: IFeatureComment) => {
-                console.log('response', response);
-
                 this.toastService.show({
                     variant: 'success',
                     title: 'Comment was added!',
                     details: 'Your comment has been added to the feature request successfully.'
                 });
-
-                console.log('Before removal', this.optimisticComments());
 
                 // Find the optimistic updates
                 const filteredComments = this.optimisticComments().filter(
@@ -148,14 +144,11 @@ export class FeatureDetails {
 
                 this.optimisticComments.set(filteredComments);
 
-                console.log('After removal', this.optimisticComments());
-
-                console.log('Reloading details');
                 this.featuresService.refreshAll();
                 this.commentsResource.reload();
             },
             error: (error: Error) => {
-                console.error('Error posting comment:', error);
+                this.isPostingComment.set(false);
 
                 this.toastService.show({
                     variant: 'error',
