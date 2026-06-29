@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal } from '@angular/core';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
@@ -48,14 +48,15 @@ export class FeaturesResource {
         }));
     };
 
-    getAllCommentsAssociatedWithFeature = (featureId: string) => {
-        // /features/:featureId/comments
-        const endpoint = `${endpoints.features}/${featureId}/comments`;
+    getAllCommentsAssociatedWithFeature = (featureId: Signal<string>) =>
+        httpResource<IStandardResponse<FeatureComment[]>>(() => {
+            // /features/:featureId/comments
+            const endpoint = `${endpoints.features}/${featureId()}/comments`;
 
-        return httpResource<IStandardResponse<FeatureComment[]>>(() => ({
-            method: 'GET',
-            cache: 'no-cache',
-            url: concatUrl(endpoint)
-        }));
-    };
+            return {
+                method: 'GET',
+                cache: 'no-cache',
+                url: concatUrl(endpoint)
+            };
+        });
 }

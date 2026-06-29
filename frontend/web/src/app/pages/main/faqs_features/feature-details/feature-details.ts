@@ -47,7 +47,7 @@ export class FeatureDetails {
     private readonly featuresService = inject(FeaturesService);
 
     // DATA
-    protected readonly commentsResource = this.featuresService.getCommentsAssociatedWithFeature(this.featureId());
+    protected readonly commentsResource = this.featuresService.getCommentsAssociatedWithFeature(this.featureId);
 
     // COMPUTED
     protected readonly isLoadingComments = computed<boolean>(() => this.commentsResource.isLoading());
@@ -146,10 +146,13 @@ export class FeatureDetails {
                     comment => comment.id !== optimisticComment.id
                 );
 
+                this.optimisticComments.set(filteredComments);
+
                 console.log('After removal', this.optimisticComments());
 
                 console.log('Reloading details');
-                this.featuresService.refreshFeatureRequestWithComments(response.featureId);
+                this.featuresService.refreshAll();
+                this.commentsResource.reload();
             },
             error: (error: Error) => {
                 console.error('Error posting comment:', error);

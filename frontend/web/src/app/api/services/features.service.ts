@@ -118,9 +118,7 @@ export class FeaturesService {
         return this._userFeatureRequests.asReadonly();
     }
 
-    getFeatureRequestWithComments = (featureId: string) => this.resource.getFeatureRequestWithComments(featureId);
-
-    getCommentsAssociatedWithFeature = (featureId: string) =>
+    getCommentsAssociatedWithFeature = (featureId: Signal<string>) =>
         this.resource.getAllCommentsAssociatedWithFeature(featureId);
 
     isLoading(): Signal<boolean> {
@@ -137,10 +135,6 @@ export class FeaturesService {
 
     refreshUserFeatureRequests(): void {
         this.resource.getUserFeatureRequests.reload();
-    }
-
-    refreshFeatureRequestWithComments(featureId: string): void {
-        this.resource.getFeatureRequestWithComments(featureId).reload();
     }
 
     refreshAll(): void {
