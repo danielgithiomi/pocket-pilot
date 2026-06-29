@@ -1,15 +1,28 @@
 <section [id]="modalId()" class="modal">
     <div (click)="handleCloseModal('backdrop')" class="backdrop"></div>
 
+    @if (showCloseIcon() && showExternalCloseButton()) {
+        <div
+            (click)="handleCloseModal('icon')"
+            class="close-icon-wrapper group transition-custom absolute top-4 right-4">
+            <lucide-icon
+                name="x"
+                [img]="X"
+                [size]="iconSize"
+                class="close-icon transition-custom"
+                [ngClass]="{ 'text-primary-text!': inverted() }" />
+        </div>
+    }
+
     <div class="modal-content bg-inverted-background border-primary" [ngClass]="modalContentClasses()">
-        @if (showCloseIcon()) {
+        @if (!showCloseIcon() && !showExternalCloseButton()) {
             <div (click)="handleCloseModal('icon')" class="close-icon-wrapper group transition-custom">
                 <lucide-icon
                     name="x"
                     [img]="X"
                     [size]="iconSize"
                     class="close-icon transition-custom"
-                    [ngClass]="{ 'text-primary-text!': inverted() }"/>
+                    [ngClass]="{ 'text-primary-text!': inverted() }" />
             </div>
         }
 

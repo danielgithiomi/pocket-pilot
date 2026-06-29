@@ -1,7 +1,7 @@
 <atom-modal
     [inverted]="true"
-    [showCloseIcon]="false"
     [id]="compositeFeatureId()"
+    [showExternalCloseButton]="true"
     wrapperClasses="bg-body-background!"
     [closeModalOnBackdropClick]="onBackdropClickClose()"
     (onModalCloseEvent)="onFeatureModalCloseEvent.emit()">

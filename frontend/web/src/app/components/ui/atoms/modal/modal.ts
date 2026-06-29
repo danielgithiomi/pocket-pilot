@@ -17,6 +17,7 @@ export class Modal {
     showCloseIcon = input<boolean>(true);
     showScrollBar = input<boolean>(false);
     closeModalOnBackdropClick = input.required<boolean>();
+    showExternalCloseButton = input<boolean>(false);
 
     // OUTPUTS
     onModalCloseEvent = output<ModalCloseEvent>();

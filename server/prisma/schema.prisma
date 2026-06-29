@@ -405,7 +405,7 @@ model Feature {
     user     User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
     @@unique([id, authorId])
-    @@map("Features")
+    @@map("Feature Requests")
 }
 
 model FeatureComments {

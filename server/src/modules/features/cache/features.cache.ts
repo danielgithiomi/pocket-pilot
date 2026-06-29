@@ -13,6 +13,6 @@ export class FeaturesCache extends EntityCache<FeatureDto[]> {
 
 export class FeatureCommentsCache extends EntityCache<FeatureWithCommentsDto[]> {
     constructor(@Inject(CACHE_MANAGER) protected readonly cache: Cache) {
-        super(cache, 'features', minutesToSeconds(5));
+        super(cache, 'features-comments', minutesToSeconds(5));
     }
 }
