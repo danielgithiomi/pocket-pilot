@@ -22,6 +22,7 @@ export class CommentsRepository {
     getAllFeatureComments(userId: string, featureId: string) {
         return this.db.featureComments.findMany({
             where: { featureId, userId },
+            orderBy: { createdAt: 'desc' },
             include: this.includedFields
         });
     }

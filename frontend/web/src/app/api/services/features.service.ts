@@ -120,6 +120,9 @@ export class FeaturesService {
 
     getFeatureRequestWithComments = (featureId: string) => this.resource.getFeatureRequestWithComments(featureId);
 
+    getCommentsAssociatedWithFeature = (featureId: string) =>
+        this.resource.getAllCommentsAssociatedWithFeature(featureId);
+
     isLoading(): Signal<boolean> {
         return this._isLoading;
     }

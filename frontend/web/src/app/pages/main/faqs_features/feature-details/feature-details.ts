@@ -13,11 +13,7 @@ import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareText, Send } from 'lucide-angular';
 import { FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
-import {
-    FeatureWithComments,
-    FeatureCommentPayload,
-    FeatureComment as IFeatureComment
-} from '@global/types';
+import { FeatureWithComments, FeatureCommentPayload, FeatureComment as IFeatureComment } from '@global/types';
 
 @Component({
     selector: 'feature-details',
@@ -50,17 +46,18 @@ export class FeatureDetails {
     private readonly toastService = inject(ToastService);
     private readonly featuresService = inject(FeaturesService);
 
+    // DATA
+    protected readonly commentsResource = this.featuresService.getCommentsAssociatedWithFeature(this.featureId());
+
     // COMPUTED
-    protected readonly isLoadingComments = computed<boolean>(() =>
-        this.featuresService.getFeatureRequestWithComments(this.feature().id).isLoading()
-    );
+    protected readonly isLoadingComments = computed<boolean>(() => this.commentsResource.isLoading());
     protected readonly compositeFeatureId = computed<string>(() => `feature-${this.feature().id}`);
-    protected readonly statusActiveIndex = computed<number>(() => resolveFeatureStatusActiveIndex(this.feature().featureStatus));
+    protected readonly statusActiveIndex = computed<number>(() =>
+        resolveFeatureStatusActiveIndex(this.feature().featureStatus)
+    );
     protected readonly featureComments = computed<IFeatureComment[]>(() => {
-        const featureWithComments: FeatureWithComments | undefined = this.featuresService
-            .getFeatureRequestWithComments(this.feature().id)
-            .value()?.data;
-        const apiComments = featureWithComments?.featureComments ?? [];
+        const featureComments: IFeatureComment[] | undefined = this.commentsResource.value()?.data;
+        const apiComments = featureComments ?? [];
 
         return [...this.optimisticComments(), ...apiComments];
     });
@@ -145,7 +142,9 @@ export class FeatureDetails {
                 console.log('Before removal', this.optimisticComments());
 
                 // Find the optimistic updates
-                const filteredComments = this.optimisticComments().filter(comment => comment.id !== optimisticComment.id);
+                const filteredComments = this.optimisticComments().filter(
+                    comment => comment.id !== optimisticComment.id
+                );
 
                 console.log('After removal', this.optimisticComments());
 
@@ -163,7 +162,9 @@ export class FeatureDetails {
 
                 // Remove comment from optimistic comments
                 setTimeout(() => {
-                    const updatedList = this.optimisticComments().filter(comment => comment.id !== optimisticComment.id);
+                    const updatedList = this.optimisticComments().filter(
+                        comment => comment.id !== optimisticComment.id
+                    );
                     this.optimisticComments.set(updatedList);
                 }, 2000);
             },

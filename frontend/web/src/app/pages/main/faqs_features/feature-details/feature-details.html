@@ -4,7 +4,7 @@
     [id]="compositeFeatureId()"
     wrapperClasses="bg-body-background!"
     [closeModalOnBackdropClick]="onBackdropClickClose()"
-    (onModalCloseEvent)="onFeatureModalCloseEvent.emit()" >
+    (onModalCloseEvent)="onFeatureModalCloseEvent.emit()">
 
     <div [id]="featureId()" class="feature-details" slot="modal-content">
         <section class="feature-details-card feature-details-overview">
@@ -55,7 +55,6 @@
         <section
             class="feature-details-card feature-comments"
             [ngClass]="{ 'h-full w-full bg-red-600 grid place-items-center': isLoading }">
-
             @if (isLoading) {
                 <div class="layered-loader"></div>
             } @else {
