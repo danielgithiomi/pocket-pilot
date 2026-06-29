@@ -135,5 +135,6 @@
     <feature-details
         [feature]="selectedFeature()!"
         [onBackdropClickClose]="true"
+        [featureId]="selectedFeature()!.id"
         (onFeatureModalCloseEvent)="handleOnFeatureModalClose()"/>
 }

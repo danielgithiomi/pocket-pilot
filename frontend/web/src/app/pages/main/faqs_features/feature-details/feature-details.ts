@@ -23,9 +23,9 @@ import { FeatureWithComments, FeatureCommentPayload, FeatureComment as IFeatureC
 })
 export class FeatureDetails {
     // INPUT
+    featureId = input.required<string>();
     onBackdropClickClose = input.required<boolean>();
     feature = input.required<FeatureWithComments>();
-    featureId = input<string>('0044d414-9af5-42ef-8f72-e99a83245f6e');
 
     // OUTPUTS
     onFeatureModalCloseEvent = output<void>();

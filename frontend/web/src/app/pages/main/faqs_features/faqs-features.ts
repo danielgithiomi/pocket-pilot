@@ -8,13 +8,13 @@ import { TabList, TabListItem } from '@atoms/tab-list';
 import { FeaturesService } from '@api/features.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { CONTACT_ITEMS, FAQ_ITEMS } from '@global/constants';
-import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { DrawerService } from '@infrastructure/services/drawer.service';
 import { FeatureItem } from '@structural/main/feature-item/feature-item';
 import { ContactItem, Feature, FeatureWithComments } from '@global/types';
 import { FeatureDetails } from '@pages/main/faqs_features/feature-details';
 import { SuggestFeatureForm } from '@pages/main/faqs_features/feature-form';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 
 @Component({
     selector: 'faqs-features',
@@ -121,6 +121,17 @@ export class FaqsFeatures {
 
     protected handleOnFeatureModalClose() {
         this.selectedFeature.set(null);
+
+        console.log('close');
+        console.log(this.selectedFeature());
+
         this.isFeatureModalOpen.set(false);
+    }
+
+    constructor() {
+        effect(() => {
+            const selectedFeature = this.selectedFeature();
+            console.log(selectedFeature);
+        });
     }
 }

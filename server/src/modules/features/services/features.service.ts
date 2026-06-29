@@ -15,6 +15,8 @@ import {
 
 @Injectable()
 export class FeaturesService {
+    protected ALL_FEATURES_CACHE_KEY: string = 'all-features';
+
     constructor(
         private readonly featureCache: FeaturesCache,
         private readonly featuresRepository: FeaturesRepository
@@ -31,17 +33,21 @@ export class FeaturesService {
     }
 
     getFeatureRequests(): Promise<FeaturesWithCountDto> {
-        return this.featureCache.getOrSetCache<FeaturesWithCountDto>('all-features', async () => {
+        return this.featureCache.getOrSetCache<FeaturesWithCountDto>(this.ALL_FEATURES_CACHE_KEY, async () => {
             const features = await this.featuresRepository.getFeatureRequests();
             return { count: features.length, features: features.map(flattenFeature) };
         });
     }
 
-    getUserFeatureRequests(userId: string): Promise<FeatureDto[]> {
-        return this.featureCache.getOrSetCache<FeatureDto[]>(userId, async () => {
-            const userFeatures: FeatureWithUser[] = await this.featuresRepository.getUserFeatureRequests(userId);
-            return userFeatures.map(flattenFeature);
-        });
+    async getUserFeatureRequests(userId: string): Promise<FeatureDto[]> {
+        const cachedUserRequests = await this.featureCache.getCache(userId);
+        if (cachedUserRequests) return cachedUserRequests;
+
+        const userFeatures: FeatureWithUser[] = await this.featuresRepository.getUserFeatureRequests(userId);
+        const features: FeatureDto[] = userFeatures.map(flattenFeature);
+
+        if (features.length > 0) await this.featureCache.setCache(userId, features);
+        return features;
     }
 
     async getFeatureById(featureId: string): Promise<FeatureDto> {
@@ -89,9 +95,9 @@ export class FeaturesService {
     }
 
     // HELPER METHODS
-    private async invalidateCache(userId?: string): Promise<void> {
+    async invalidateCache(userId?: string): Promise<void> {
         if (userId) await this.featureCache.invalidateCache(userId);
-        await this.featureCache.invalidateCache('all-features');
+        await this.featureCache.invalidateCache(this.ALL_FEATURES_CACHE_KEY);
     }
 
     private async performAssertions(userId: string, featureId: string) {
