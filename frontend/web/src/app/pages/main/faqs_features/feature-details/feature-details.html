@@ -6,7 +6,8 @@
     [closeModalOnBackdropClick]="onBackdropClickClose()"
     (onModalCloseEvent)="onFeatureModalCloseEvent.emit()">
 
-    <div [id]="featureId()" class="feature-details" slot="modal-content">
+    @let isLoading = isLoadingComments();
+    <div slot="modal-content" [id]="featureId()" class="feature-details p-4 lg:p-6" [ngClass]="{ 'h-full': isLoading }">
         <section class="feature-details-card feature-details-overview">
             <div class="flex flex-col items-center justify-center gap-2">
                 <div class="feature-vote" aria-label="Feature votes">
@@ -51,10 +52,9 @@
                 [activeIndex]="statusActiveIndex()" />
         </section>
 
-        @let isLoading = isLoadingComments();
         <section
             class="feature-details-card feature-comments"
-            [ngClass]="{ 'h-full w-full bg-red-600 grid place-items-center': isLoading }">
+            [ngClass]="{ 'grid place-items-center bg-transparent! border-none!': isLoading }">
             @if (isLoading) {
                 <div class="layered-loader"></div>
             } @else {
@@ -71,23 +71,6 @@
                             <feature-comment [featureComment]="comment" />
                         }
                     </div>
-                    <!--                <ul class="feature-comments-list">-->
-                    <!--                    @for (comment of featureComments(); track comment.id; let index = $index) {-->
-                    <!--                        <li class="feature-comment">-->
-                    <!--                            <div class="feature-comment-avatar" [ngClass]="commentAvatarClass(index)">-->
-                    <!--                                {{ commentInitials(index) }}-->
-                    <!--                            </div>-->
-
-                    <!--                            <div class="feature-comment-body">-->
-                    <!--                                <div class="feature-comment-meta">-->
-                    <!--                                    <span class="feature-comment-author">{{ commentAuthorLabel(index) }}</span>-->
-                    <!--                                    <span class="feature-comment-date">{{ formatCommentDate(comment.createdAt) }}</span>-->
-                    <!--                                </div>-->
-                    <!--                                <p class="feature-comment-text">{{ comment.comment }}</p>-->
-                    <!--                            </div>-->
-                    <!--                        </li>-->
-                    <!--                    }-->
-                    <!--                </ul>-->
                 }
 
                 <div class="feature-comment-form">
@@ -100,7 +83,11 @@
                         [attr.aria-label]="'Add a comment to ' + feature().featureTitle">
                     </textarea>
 
-                    <atom-button type="button" id="submit-comment" [disabled]="!canPostComment()" (clicked)="handlePostComment()">
+                    <atom-button
+                        type="button"
+                        id="submit-comment"
+                        [disabled]="!canPostComment()"
+                        (clicked)="handlePostComment()">
                         <div class="w-full py-1 grid place-items-center">
                             <lucide-icon [img]="SendIcon" [size]="iconSize" name="post-comment" />
                         </div>
