@@ -1,9 +1,13 @@
 import { NgClass } from '@angular/common';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { FieldTree, FormField } from '@angular/forms/signals';
-import { Component, computed, input, output } from '@angular/core';
+import { booleanAttribute, Component, computed, input, output } from '@angular/core';
 import { TextAreaAutoComplete, TextAreaResize } from './text-area.types';
-import { FORM_FIELD_ERROR_BORDER_CLASSES, isFormFieldInError, resolveFormFieldVisualState } from '../form-field-visual-state';
+import {
+    FORM_FIELD_ERROR_BORDER_CLASSES,
+    isFormFieldInError,
+    resolveFormFieldVisualState
+} from '../form-field-visual-state';
 
 @Component({
     selector: 'atom-text-area',
@@ -25,14 +29,21 @@ export class TextArea {
     label = input.required<string>();
     disabled = input<boolean>(false);
     allowEndIcon = input<boolean>(true);
+    showCharacterCount = input(false, { transform: booleanAttribute });
+    maxCharacterCount = input<number, number | string | null | undefined>(100, {
+        transform: value => {
+            const parsedValue = Number(value);
+            return Number.isFinite(parsedValue) ? Math.max(0, Math.trunc(parsedValue)) : 100;
+        }
+    });
 
     // Inversions
     inverted = input<boolean>(false);
     invertLabel = input<boolean>(false);
     invertedIcon = input<boolean>(false);
 
-    textAreaClassName = input<string>('');
     wrapperClassName = input<string>('');
+    textAreaClassName = input<string>('');
 
     placeholder = input.required<string>();
     autocomplete = input<TextAreaAutoComplete>('off');
@@ -52,6 +63,8 @@ export class TextArea {
     fieldState = computed(() => this.formField()());
     showFieldErrors = computed(() => isFormFieldInError(this.fieldState()));
     fieldVisualState = computed(() => resolveFormFieldVisualState(this.showStatus(), this.fieldState()));
+    characterCount = computed<number>(() => String(this.fieldState().value() ?? '').length);
+    characterCountLabel = computed<string>(() => `${this.characterCount()}/${this.maxCharacterCount()}`);
 
     resizeClass = computed<string>(() => {
         switch (this.resize()) {
@@ -69,10 +82,22 @@ export class TextArea {
     customTextAreaClasses = computed<string>(() => {
         const classes = [this.resizeClass(), this.textAreaClassName()];
 
-        if (this.fieldVisualState() === 'error') {
-            classes.push(FORM_FIELD_ERROR_BORDER_CLASSES);
-        }
+        if (this.showCharacterCount()) classes.push('pb-8 pr-16');
+
+        if (this.fieldVisualState() === 'error') classes.push(FORM_FIELD_ERROR_BORDER_CLASSES);
 
         return classes.filter(Boolean).join(' ');
     });
+
+    handleTextAreaInput(event: Event): void {
+        if (!this.showCharacterCount()) return;
+
+        const textArea = event.target as HTMLTextAreaElement;
+        const truncatedValue = textArea.value.slice(0, this.maxCharacterCount());
+
+        if (textArea.value === truncatedValue) return;
+
+        textArea.value = truncatedValue;
+        this.formField()().controlValue.set(truncatedValue);
+    }
 }

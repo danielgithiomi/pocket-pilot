@@ -14,6 +14,7 @@
                 [formField]="formField()"
                 [placeholder]="placeholder()"
                 [autocomplete]="autocomplete()"
+                (input)="handleTextAreaInput($event)"
                 [ngClass]="customTextAreaClasses()"></textarea>
         </fieldset>
 
@@ -31,6 +32,12 @@
                     (click)="clearOutput.emit()"
                     class="text-area-icon input-end-icon" />
             </div>
+        }
+
+        @if (showCharacterCount()) {
+            <p class="text-area-character-count">
+                {{ characterCountLabel() }}
+            </p>
         }
     </div>
 

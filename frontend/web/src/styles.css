@@ -321,6 +321,10 @@ main {
                 .text-area-icon-wrapper {
                     @apply top-2;
                 }
+
+                .text-area-character-count {
+                    @apply absolute bottom-2 right-2 pointer-events-none text-reactive-text p-0.5 text-[10px] font-semibold leading-none;
+                }
             }
 
             .input-field-errors-wrapper {
