@@ -67,7 +67,7 @@
                     <p class="feature-comments-empty">No comments yet. Be the first to share your thoughts.</p>
                 } @else {
                     <div class="feature-comments-wrapper flex flex-col divide-y divide-reactive-text">
-                        @for (comment of featureComments(); track comment.id; let index = $index) {
+                        @for (comment of featureComments(); track comment.id) {
                             <feature-comment [featureComment]="comment" />
                         }
                     </div>

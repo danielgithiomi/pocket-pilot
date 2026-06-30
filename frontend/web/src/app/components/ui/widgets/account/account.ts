@@ -96,10 +96,12 @@ export class Account implements OnInit {
 
         this.accountsService.updateAccountBalanceVisibilityById(this.id(), payload).subscribe({
             next: (account: IAccount) => {
+                const {name, isBalanceVisible} = account
+
                 this.toastService.show({
                     variant: 'success',
                     title: 'Balance visibility toggled!',
-                    details: `Your [${account.name}] balance has been ${account.isBalanceVisible ? 'made visible' : 'hidden'}.`
+                    details: `Your [${name}] balance has been ${isBalanceVisible ? 'made visible' : 'hidden'}.`
                 });
 
                 this.onAccountBalanceVisibilityToggle.emit();

@@ -3,6 +3,13 @@ import { minLength, required, schema, validate } from '@angular/forms/signals';
 
 export type AccountsSchema = CreateAccountPayload;
 
+export const INITIAL_FORM_STATE: AccountsSchema = {
+    name: '',
+    type: '',
+    currency: '',
+    isBalanceVisible: true,
+}
+
 export const accountsFormValidationSchema = schema<AccountsSchema>(root => {
     // Account name
     required(root.name, { message: 'The account name is required field!' });

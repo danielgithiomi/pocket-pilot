@@ -13,8 +13,8 @@ import { TransactionsService } from '@api/transactions.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionsComponent } from './transactions/transactions';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
+import { Account as IAccount, UpdateAccountBalanceVisibilityPayload } from '@global/types';
 import { EyeOff, LucideAngularModule, ScanEye, SquarePen, Trash2, Wallet } from 'lucide-angular';
-import { Account as IAccount, TransactionWithAccount, UpdateAccountBalanceVisibilityPayload } from '@global/types';
 
 @Component({
     templateUrl: './account-details.html',
@@ -59,7 +59,6 @@ export class AccountDetails {
     protected readonly transactionsResource = this.transactionsService.getAllTransactionsRelatedToAccountId(this.accountId!);
 
     // COMPUTED
-    protected readonly balanceVisibility = computed(() => this.resourceData()?.account?.isBalanceVisible ?? false);
     protected readonly hasError = computed(() => !!this.accountResource.error() || !!this.transactionsResource.error());
     protected readonly isLoadingResources = computed(
         () => this.accountResource.isLoading() || this.transactionsResource.isLoading()
@@ -79,9 +78,6 @@ export class AccountDetails {
         } = accountResource;
         const { data: transactionsData } = transactionsResource;
         return { count, account, transactions: transactionsData };
-    });
-    protected readonly transactionsData = computed<TransactionWithAccount[]>(() => {
-        return this.transactionsResource.value()?.data.data ?? [];
     });
 
     protected readonly breadcrumbItems = computed(() => {
@@ -129,10 +125,12 @@ export class AccountDetails {
 
         this.accountsService.updateAccountBalanceVisibilityById(accountId, payload).subscribe({
             next: (account: IAccount) => {
+                const {name, isBalanceVisible} = account;
+
                 this.toastService.show({
                     variant: 'success',
                     title: 'Balance visibility toggled!',
-                    details: `Your [${account.name}] balance has been ${account.isBalanceVisible ? 'made visible' : 'hidden'}.`
+                    details: `Your [${name}] balance has been ${isBalanceVisible ? 'made visible' : 'hidden'}.`
                 });
 
                 this.reloadResources();
@@ -158,7 +156,7 @@ export class AccountDetails {
 
         setTimeout(() => {
             this.accountsService.deleteAccountById(accountId).subscribe({
-                next: () => {
+                next: async () => {
                     const accountName = this.resourceData()?.account?.name ?? 'account';
 
                     this.toastService.show({
@@ -169,7 +167,7 @@ export class AccountDetails {
 
                     this.reloadResources();
                     this.deleteClickCount.set(1);
-                    this.router.navigate(['/accounts'], { replaceUrl: true });
+                    await this.router.navigate(['/accounts'], { replaceUrl: true });
                 },
                 complete: () => this.isDeletingAccount.set(false)
             });

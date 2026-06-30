@@ -13,8 +13,8 @@ import { NoData } from '@structural/main/no-data/no-data';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ListFilterPlus, LucideAngularModule } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { accountsFormValidationSchema, AccountsSchema } from './accounts.types';
 import { CURRENCIES, DummyAccountData as DummyAccount } from '@global/constants';
+import { accountsFormValidationSchema, AccountsSchema, INITIAL_FORM_STATE } from './accounts.types';
 
 @Component({
     selector: 'accounts',
@@ -67,19 +67,17 @@ export class Accounts {
     });
 
     // Form
-    private readonly INITIAL_FORM_STATE: AccountsSchema = {
-        name: '',
-        type: '',
-        isBalanceVisible: true,
+    protected INITIAL_ACCOUNTS_FORM_STATE: AccountsSchema = {
+        ...INITIAL_FORM_STATE,
         currency: this.currency
-    };
-    protected accountsFormModel = signal<AccountsSchema>(this.INITIAL_FORM_STATE);
+    }
+    protected accountsFormModel = signal<AccountsSchema>(this.INITIAL_ACCOUNTS_FORM_STATE);
     protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
 
     // Methods
     protected resetAccountsForm() {
         this.accountsForm().reset();
-        this.accountsFormModel.set(this.INITIAL_FORM_STATE);
+        this.accountsFormModel.set(this.INITIAL_ACCOUNTS_FORM_STATE);
     }
 
     protected handleCloseForm(source: 'icon' | 'backdrop') {

@@ -130,7 +130,7 @@ export class FeatureDetails {
         };
 
         this.featuresService.addCommentToFeature(this.feature().id, payload).subscribe({
-            next: (response: IFeatureComment) => {
+            next: (_: IFeatureComment) => {
                 this.toastService.show({
                     variant: 'success',
                     title: 'Comment was added!',
