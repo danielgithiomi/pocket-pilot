@@ -1,24 +1,24 @@
 <organism-form
     id="feature-form-modal"
-    title="Suggest A New Feature"
+    title="Suggest A Feature Request"
     [class.hidden]="!isFeatureFormOpen()"
     (onFormCloseEvent)="handleCloseFeatureForm($event)"
-    description="Suggest a new feature for Pocket Pilot.">
+    description="Suggest a new feature request for Pocket Pilot.">
     <form id="suggest-feature-form" slot="content" (submit)="handleSuggestFeatureFormSubmit($event)">
         <atom-input
             type="text"
+            label="Title"
             id="feature-name"
             [inverted]="true"
             autocomplete="off"
-            label="Feature Title"
             placeholder="Suggested Feature Title"
             [formField]="featureForm.featureTitle"
             (clearOutput)="featureForm.featureTitle().controlValue.set('')" />
 
         <atom-select
+            label="Category"
             [inverted]="true"
             id="feature-category"
-            label="Feature Category"
             placeholder="Select a category"
             [options]="formattedFeatureCategories()"
             [formField]="featureForm.featureCategory"
@@ -28,7 +28,7 @@
             [rows]="4"
             [inverted]="true"
             id="feature-content"
-            label="Feature Content"
+            label="Feature Request Details"
             [formField]="featureForm.featureContent"
             placeholder="Give us a detailed description of the feature"
             (clearOutput)="featureForm.featureContent().controlValue.set('')" />

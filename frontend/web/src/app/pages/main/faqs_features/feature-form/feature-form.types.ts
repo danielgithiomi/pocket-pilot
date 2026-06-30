@@ -6,7 +6,7 @@ export type FeatureSchema = Omit<FeaturePayload, 'featureCategory'> & {
     featureCategory: FeatureCategoryEnum | '';
 };
 
-export const INITAL_FEATURE_STATE: FeatureSchema = {
+export const INITIAL_FEATURE_FORM_STATE: FeatureSchema = {
     featureTitle: '',
     featureContent: '',
     featureCategory: ''

@@ -10,7 +10,7 @@ import { Feature, FeaturePayload } from '@global/types';
 import { FeaturesService } from '@api/features.service';
 import { TextArea } from '@components/ui/atoms/text-area';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { FeatureSchema, INITAL_FEATURE_STATE, suggestFeatureSchema } from './feature-form.types';
+import { FeatureSchema, INITIAL_FEATURE_FORM_STATE, suggestFeatureSchema } from './feature-form.types';
 
 @Component({
     selector: 'suggest-feature-form',
@@ -55,7 +55,7 @@ export class SuggestFeatureForm {
     });
 
     // FORM
-    protected readonly featureFormModel = signal<FeatureSchema>(INITAL_FEATURE_STATE);
+    protected readonly featureFormModel = signal<FeatureSchema>(INITIAL_FEATURE_FORM_STATE);
     protected readonly featureForm = form(this.featureFormModel, suggestFeatureSchema);
 
     // METHODS
@@ -65,7 +65,7 @@ export class SuggestFeatureForm {
     }
 
     resetFeatureForm() {
-        this.featureForm().reset(INITAL_FEATURE_STATE);
+        this.featureForm().reset(INITIAL_FEATURE_FORM_STATE);
     }
 
     // SUBMISSIONS
