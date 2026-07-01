@@ -2,10 +2,10 @@
     id="split"
     title="Log A New Split"
     [class.hidden]="!isSplitFormOpen()"
-    (closeForm)="handleSplitFormClose($event)"
-    description="Split shared expenses with your squad."
->
-    <form id="split-form" slot="content" (submit)="handleSplitFormSubmit($event)">
+    (onFormCloseEvent)="handleSplitFormClose($event)"
+    description="Split shared expenses with your squad.">
+
+<form (submit)="handleSplitFormSubmit($event)" id="split-form" slot="content">
         @switch (splitFormStep()) {
             @case (1) {
                 <split-form-step-1
@@ -15,8 +15,7 @@
                     [memberPool]="initalMemberPool()"
                     [isSubmittingForm]="isSubmittingSplitForm()"
                     [presentMembers]="splitForm.eventMembers().value()"
-                    (onPresentMembersChangeEvent)="updateEventMembers($event)"
-                />
+                    (onPresentMembersChangeEvent)="updateEventMembers($event)" />
             }
             @case (2) {
                 <split-form-step-2
@@ -25,8 +24,7 @@
                     (onBackIconClick)="goToPreviousStep(1)"
                     [presentMembers]="splitForm.eventMembers().value()"
                     [splittables]="splitForm.eventSplittables().value()"
-                    (onSplittablesChangeEvent)="handleOnSplittablesChange($event)"
-                />
+                    (onSplittablesChangeEvent)="handleOnSplittablesChange($event)" />
             }
             @case (3) {
                 <split-form-step-3
@@ -35,8 +33,7 @@
                     [billPayerList]="splitForm.billPayers().value()"
                     [presentMembers]="splitForm.eventMembers().value()"
                     (onBillPayersChangeEvent)="handleOnBillPayersChange($event)"
-                    (onValidationChangeEvent)="handleOnStep3ValidationChange($event)"
-                />
+                    (onValidationChangeEvent)="handleOnStep3ValidationChange($event)" />
             }
         }
     </form>
@@ -61,14 +58,9 @@
                 variant="secondary"
                 id="previous-split-step"
                 (clicked)="goToPreviousStep(splitFormStep() === 2 ? 1 : 2)"
-                [disabled]="isSubmittingSplitForm() || splitFormStep() === 1"
-            >
+                [disabled]="isSubmittingSplitForm() || splitFormStep() === 1">
                 <div class="w-full flex flex-row items-center justify-between gap-4 py-1 lg:py-0">
-                    <lucide-icon
-                        [img]="PreviousIcon"
-                        [size]="iconSize"
-                        name="previous-split-step"
-                    />
+                    <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="previous-split-step" />
                     <span class="hidden lg:block">Back</span>
                 </div>
             </atom-button>
@@ -82,8 +74,7 @@
             variant="secondary"
             id="reset-split-form"
             (clicked)="resetSplitForm()"
-            [disabled]="!splitForm().dirty() || isSubmittingSplitForm()"
-        />
+            [disabled]="!splitForm().dirty() || isSubmittingSplitForm()" />
 
         @switch (splitFormStep()) {
             @case (1) {
@@ -93,8 +84,7 @@
                     variant="primary"
                     id="to-splt-step-2"
                     (clicked)="goToNextStep(2)"
-                    [disabled]="splitForm().invalid() || !isStep1Valid"
-                >
+                    [disabled]="splitForm().invalid() || !isStep1Valid">
                     <div class="w-full flex flex-row items-center justify-between gap-4">
                         <span>Next</span>
                         <lucide-icon [img]="NextIcon" [size]="iconSize" name="next-goal-step" />
@@ -108,8 +98,7 @@
                     variant="primary"
                     id="to-splt-step-3"
                     (clicked)="goToNextStep(3)"
-                    [disabled]="splitForm().invalid() || !isStep2Valid"
-                >
+                    [disabled]="splitForm().invalid() || !isStep2Valid">
                     <div class="w-full flex flex-row items-center justify-between gap-4">
                         <span>Next</span>
                         <lucide-icon [img]="NextIcon" [size]="iconSize" name="next-goal-step" />
@@ -123,8 +112,7 @@
                     form="split-form"
                     id="submit-split-form"
                     [isLoading]="isSubmittingSplitForm()"
-                    [disabled]="splitForm().invalid() || isSubmittingSplitForm() || !isStep3Valid()"
-                />
+                    [disabled]="splitForm().invalid() || isSubmittingSplitForm() || !isStep3Valid()" />
             }
         }
     </div>

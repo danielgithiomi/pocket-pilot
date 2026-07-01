@@ -32,9 +32,9 @@ module.exports = {
                 'primary-text': 'var(--primary-text)',
                 'alternate-text': 'var(--alternate-text)',
                 'inverted-text': 'var(--inverted-text)',
-                'muted-text': 'var(--muted-text)',
-            },
-        },
+                'muted-text': 'var(--muted-text)'
+            }
+        }
     },
-    plugins: [],
+    plugins: []
 };

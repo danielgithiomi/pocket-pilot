@@ -5,14 +5,12 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { ExchangeRatesSnapshot, IStandardResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class ExchangeRatesResource {
-    readonly getExchangeRatesSnapshot = httpResource<IStandardResponse<ExchangeRatesSnapshot>>(
-        () => ({
-            method: 'GET',
-            cache: 'no-cache',
-            url: concatUrl(endpoints.exchange_rates),
-        }),
-    );
+    readonly getExchangeRatesSnapshot = httpResource<IStandardResponse<ExchangeRatesSnapshot>>(() => ({
+        method: 'GET',
+        cache: 'no-cache',
+        url: concatUrl(endpoints.exchange_rates)
+    }));
 }

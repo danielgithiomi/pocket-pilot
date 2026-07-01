@@ -4,7 +4,7 @@ import { Component, input, output, signal, computed, effect } from '@angular/cor
 @Component({
     selector: 'atom-tab-list',
     styleUrl: './tab-list.css',
-    templateUrl: './tab-list.html',
+    templateUrl: './tab-list.html'
 })
 export class TabList {
     /* INPUTS */

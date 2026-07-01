@@ -7,17 +7,13 @@ import { LucideAngularModule, RotateCcw } from 'lucide-angular';
 import { TransactionsService } from '@api/transactions.service';
 import { COLOR_MAP, CostAnalysisCategory } from './cost-analysis.types';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
-import {
-    easeOutCubic,
-    deferAnimationFrame,
-    COMPONENT_ANIMATION_DURATION_MS,
-} from '@libs/constants';
+import { easeOutCubic, deferAnimationFrame, COMPONENT_ANIMATION_DURATION_MS } from '@libs/constants';
 
 @Component({
     imports: [LucideAngularModule],
     styleUrl: './cost-analysis.css',
     selector: 'widget-cost-analysis',
-    templateUrl: './cost-analysis.html',
+    templateUrl: './cost-analysis.html'
 })
 export class CostAnalysis {
     // ICONS
@@ -54,9 +50,7 @@ export class CostAnalysis {
     // COMPUTED
     protected readonly loading = computed(() => this.categoriesFromService.isLoading());
 
-    protected readonly formattedTotalSpending = computed(() =>
-        this.formatCurrency(this.totalMonthlySpending().toString()),
-    );
+    protected readonly formattedTotalSpending = computed(() => this.formatCurrency(this.totalMonthlySpending().toString()));
 
     protected readonly categories = computed(() => {
         const response = this.categoriesFromService.value()?.data;
@@ -67,7 +61,7 @@ export class CostAnalysis {
 
     protected readonly hasExpenseTransactions = computed<boolean>(() => {
         const transactions = this.transactions();
-        return transactions.some((transaction) => transaction.type === 'EXPENSE');
+        return transactions.some(transaction => transaction.type === 'EXPENSE');
     });
 
     protected readonly transactions = computed(() => {
@@ -85,7 +79,7 @@ export class CostAnalysis {
 
         const categoryTotals = new Map<string, number>();
 
-        transactions.forEach((transaction) => {
+        transactions.forEach(transaction => {
             if (transaction.type === 'EXPENSE') {
                 const normalizedCategoryName = normalizeCategoryName(transaction.category);
                 const currentTotal = categoryTotals.get(normalizedCategoryName) || 0;
@@ -94,17 +88,17 @@ export class CostAnalysis {
         });
 
         const categoryAnalysis: CostAnalysisCategory[] = categories
-            .filter((categoryName) => categoryTotals.has(categoryName))
+            .filter(categoryName => categoryTotals.has(categoryName))
             .slice(0, 6)
             .map((categoryName, index) => {
                 const categoryTotal = categoryTotals.get(categoryName) || 0;
                 return {
                     color: COLOR_MAP[index],
                     categoryName: formatToReadable(categoryName),
-                    percentage: Math.round((categoryTotal / total) * 100),
+                    percentage: Math.round((categoryTotal / total) * 100)
                 };
             })
-            .filter((category) => category.percentage > 0)
+            .filter(category => category.percentage > 0)
             .sort((a, b) => b.percentage - a.percentage); // sort in descending order
 
         return categoryAnalysis;
@@ -112,36 +106,31 @@ export class CostAnalysis {
 
     readonly categoriesWithPercentage = computed(() => {
         const categoriesLength = this.costAnalysisCategories().length;
-        const categoriesTotalPercentage = this.costAnalysisCategories().reduce(
-            (sum, category) => sum + category.percentage,
-            0,
-        );
+        const categoriesTotalPercentage = this.costAnalysisCategories().reduce((sum, category) => sum + category.percentage, 0);
         const remainingPercentage = 100 - categoriesTotalPercentage;
 
         const other: CostAnalysisCategory = {
             categoryName: 'Other',
             percentage: remainingPercentage,
-            color: COLOR_MAP[COLOR_MAP.length - 1],
+            color: COLOR_MAP[COLOR_MAP.length - 1]
         };
 
         const compositeCategories =
-            categoriesLength > 6
-                ? [...this.costAnalysisCategories(), other]
-                : this.costAnalysisCategories();
+            categoriesLength > 6 ? [...this.costAnalysisCategories(), other] : this.costAnalysisCategories();
 
         return compositeCategories.map((category, _index) => ({
             color: category.color,
             id: category.categoryName,
             label: category.categoryName,
-            percentage: category.percentage,
+            percentage: category.percentage
         }));
     });
 
     readonly animatedSegments = computed(() => {
         const percentages = this._animatedPercentages();
-        return this.categoriesWithPercentage().map((cat) => ({
+        return this.categoriesWithPercentage().map(cat => ({
             ...cat,
-            animatedPercentage: percentages.get(cat.id) ?? 0,
+            animatedPercentage: percentages.get(cat.id) ?? 0
         }));
     });
 
@@ -162,7 +151,7 @@ export class CostAnalysis {
 
             if (!animate) {
                 const percentages = new Map<string, number>();
-                categories.forEach((cat) => {
+                categories.forEach(cat => {
                     percentages.set(cat.id, cat.percentage);
                 });
                 this._animatedPercentages.set(percentages);
@@ -172,7 +161,7 @@ export class CostAnalysis {
             if (!this._hasInitialized) {
                 this._hasInitialized = true;
                 const initialPercentages = new Map<string, number>();
-                categories.forEach((cat) => {
+                categories.forEach(cat => {
                     initialPercentages.set(cat.id, 0);
                 });
                 this._animatedPercentages.set(initialPercentages);
@@ -186,10 +175,7 @@ export class CostAnalysis {
         });
     }
 
-    private animateSegments(
-        categories: Array<{ id: string; percentage: number }>,
-        duration: number,
-    ): void {
+    private animateSegments(categories: Array<{ id: string; percentage: number }>, duration: number): void {
         const startPercentages = new Map(this._animatedPercentages());
         const startTime = performance.now();
 
@@ -200,7 +186,7 @@ export class CostAnalysis {
             const eased = easeOutCubic(progress);
 
             const newPercentages = new Map<string, number>();
-            categories.forEach((cat) => {
+            categories.forEach(cat => {
                 const start = startPercentages.get(cat.id) ?? 0;
                 const current = start + (cat.percentage - start) * eased;
                 newPercentages.set(cat.id, Math.round(current * 10) / 10);
@@ -212,7 +198,7 @@ export class CostAnalysis {
                 requestAnimationFrame(animate);
             } else {
                 const finalPercentages = new Map<string, number>();
-                categories.forEach((cat) => {
+                categories.forEach(cat => {
                     finalPercentages.set(cat.id, cat.percentage);
                 });
                 this._animatedPercentages.set(finalPercentages);

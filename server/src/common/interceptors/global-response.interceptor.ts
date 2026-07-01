@@ -15,10 +15,7 @@ import { map } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
 import { IGlobalResponse, IResponseSummary } from '@common/types';
 import { CallHandler, ExecutionContext, Global, Injectable, NestInterceptor } from '@nestjs/common';
-import {
-    RAW_RESPONSE_REFLECTOR_KEY as raw_key,
-    RESPONSE_SUMMARY_REFLECTOR_KEY as summary_key,
-} from '@common/constants';
+import { RAW_RESPONSE_REFLECTOR_KEY as raw_key, RESPONSE_SUMMARY_REFLECTOR_KEY as summary_key } from '@common/constants';
 
 @Global()
 @Injectable()
@@ -37,7 +34,7 @@ export class GlobalResponseInterceptor<T> implements NestInterceptor<T, IGlobalR
         const response = cxt.getResponse();
 
         const summary = this.reflector.get<IResponseSummary>(summary_key, context.getHandler()) ?? {
-            message: 'Operation Successful',
+            message: 'Operation Successful'
         };
 
         return next.handle().pipe(
@@ -47,14 +44,14 @@ export class GlobalResponseInterceptor<T> implements NestInterceptor<T, IGlobalR
                 body: body ?? {},
                 summary: {
                     title: summary.title,
-                    details: summary.details,
+                    details: summary.details
                 },
                 metadata: {
                     endpoint: request.url,
                     requestId: randomUUID(),
-                    timestamp: new Date().toISOString(),
-                },
-            })),
+                    timestamp: new Date().toISOString()
+                }
+            }))
         );
     }
 }

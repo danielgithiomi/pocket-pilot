@@ -25,7 +25,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                             type: 'unexpected',
                             statusCode: apiError.statusCode,
                             title: 'An unexpected error occurred',
-                            details: message || 'No error object found in the response!',
+                            details: message || 'No error object found in the response!'
                         } satisfies IStandardError;
                     }
 
@@ -38,8 +38,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                         toastService.show({
                             variant: 'warning',
                             title: 'Session Timed Out!',
-                            details:
-                                'Your session expired and you were logged out. Please login again.',
+                            details: 'Your session expired and you were logged out. Please login again.'
                         });
 
                         return {
@@ -47,8 +46,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                             type,
                             statusCode: 401,
                             title: 'Session Expired!',
-                            details:
-                                'Your session timed out and you were logged out. Please login again.',
+                            details: 'Your session timed out and you were logged out. Please login again.'
                         } satisfies IStandardError;
                     }
 
@@ -58,7 +56,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                         message,
                         type: type,
                         statusCode: apiError.statusCode,
-                        title: title ?? 'An unexpected error occurred',
+                        title: title ?? 'An unexpected error occurred'
                     } satisfies IStandardError;
                 });
             }
@@ -68,7 +66,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
                 return throwError(() => ({
                     title: 'SERVER_ERROR',
                     statusCode: error.status || 500,
-                    details: 'A server error occurred. Please contact support for assistance!',
+                    details: 'A server error occurred. Please contact support for assistance!'
                 }));
             }
 
@@ -76,9 +74,8 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
             return throwError(() => ({
                 title: 'CONNECTION_ERROR',
                 statusCode: error.status,
-                details:
-                    'Unable to connect. The server may be unavailable or you may be offline. Please try again.',
+                details: 'Unable to connect. The server may be unavailable or you may be offline. Please try again.'
             }));
-        }),
+        })
     );
 };

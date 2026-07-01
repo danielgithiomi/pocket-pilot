@@ -29,7 +29,7 @@ export const PPConfigSchema = z.object({
     AWS_S3_BUCKET_NAME: z.string().default('AWS_S3_BUCKET_NAME'),
     AWS_SECRET_ACCESS_KEY: z.string().default('AWS_SECRET_ACCESS_KEY'),
     AWS_PRESIGNED_URL_EXPIRATION_IN_SECONDS: z.coerce.number().default(300),
-    AWS_PRESIGNED_READ_URL_EXPIRATION_IN_SECONDS: z.coerce.number().default(86400),
+    AWS_PRESIGNED_READ_URL_EXPIRATION_IN_SECONDS: z.coerce.number().default(86400)
 });
 
 export type PPCustomConfig = z.infer<typeof PPConfigSchema>;

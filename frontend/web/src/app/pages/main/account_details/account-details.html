@@ -9,25 +9,17 @@
                 variant="primary"
                 id="account-balance-toggle"
                 (clicked)="handleOnBalanceVisibilityToggle()"
-                [isLoading]="isTogglingBalanceVisibility() || isLoadingResources()"
-            >
+                [isLoading]="isTogglingBalanceVisibility() || isLoadingResources()">
                 <div class="w-full grid place-items-center">
                     <lucide-icon
                         name="toggle-balance-visibility"
-                        [img]="
-                            resource?.account?.isBalanceVisible ? HideBalanceIcon : ShowBalanceIcon
-                        "
-                        [size]="iconSize"
-                    />
+                        [img]="resource?.account?.isBalanceVisible ? HideBalanceIcon : ShowBalanceIcon"
+                        [size]="iconSize" />
                 </div>
             </atom-button>
 
             <!-- Edit Button -->
-            <atom-button
-                id="account-details-edit"
-                variant="secondary"
-                (clicked)="handleOnEditClick()"
-            >
+            <atom-button id="account-details-edit" variant="secondary" (clicked)="handleOnEditClick()">
                 <div class="w-full grid place-items-center">
                     <lucide-icon name="edit-account" [img]="EditIcon" [size]="iconSize" />
                 </div>
@@ -39,8 +31,7 @@
                 id="account-details-delete"
                 [isLoading]="isDeletingAccount()"
                 [className]="deleteClickCount() === 2 ? 'bg-error!' : ''"
-                (clicked)="handleOnDeleteAccountClick(resource?.account?.id || '')"
-            >
+                (clicked)="handleOnDeleteAccountClick(resource?.account?.id || '')">
                 <div class="w-full grid place-items-center">
                     <lucide-icon [size]="iconSize" [img]="DeleteIcon" name="delete-account" />
                 </div>
@@ -48,16 +39,9 @@
         </div>
     </div>
 
-    <div
-        class="page-container flex-1 flex flex-col space-y-6"
-        [ngClass]="{ 'grid! place-items-center!': hasError() }"
-    >
+    <div class="page-container flex-1 flex flex-col space-y-6" [ngClass]="{ 'grid! place-items-center!': hasError() }">
         @if (!hasError()) {
-            <breadcrumbs
-                [icon]="BreadcrumbIcon"
-                [isLoading]="isLoadingResources()"
-                [breadcrumbItems]="breadcrumbItems()"
-            />
+            <breadcrumbs [icon]="BreadcrumbIcon" [isLoading]="isLoadingResources()" [breadcrumbItems]="breadcrumbItems()" />
         }
 
         @if (isLoadingResources()) {
@@ -74,17 +58,15 @@
                     <div
                         class="h-full flex flex-col md:flex-row gap-6"
                         [ngClass]="{
-                            'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed(),
-                        }"
-                    >
+                            'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed()
+                        }">
                         <account-details
                             [account]="resource.account"
                             [transactionCount]="resource.count"
                             class="w-full md:flex-2 lg:flex-2 xl:flex-1 overflow-hidden"
                             [ngClass]="{
-                                'md:flex-2! xl:flex-1!': !drawerService.isDrawerCollapsed(),
-                            }"
-                        />
+                                'md:flex-2! xl:flex-1!': !drawerService.isDrawerCollapsed()
+                            }" />
 
                         <account-transactions
                             class="w-full md:flex-4 lg:flex-3"
@@ -92,9 +74,8 @@
                             [transactions]="resource.transactions"
                             [accountCurrency]="resource.account.currency"
                             [ngClass]="{
-                                'md:flex-3! xl:flex-3!': !drawerService.isDrawerCollapsed(),
-                            }"
-                        />
+                                'md:flex-3! xl:flex-3!': !drawerService.isDrawerCollapsed()
+                            }" />
                     </div>
                 }
             }
@@ -106,6 +87,5 @@
     <edit-account-details-form
         [account]="resource.account"
         [isEditFormOpen]="isEditFormOpen()"
-        (closeEditFormEvent)="handleEditFormClose($event)"
-    />
+        (closeEditFormEvent)="handleEditFormClose($event)" />
 }

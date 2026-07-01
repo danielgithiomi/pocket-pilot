@@ -12,11 +12,11 @@ export class CategoriesRepository {
                 userId,
                 incomes,
                 expenses,
-                createdAt: new Date(),
+                createdAt: new Date()
             },
             include: {
-                user: { select: { id: true, name: true } },
-            },
+                user: { select: { id: true, name: true } }
+            }
         });
     }
 
@@ -24,22 +24,22 @@ export class CategoriesRepository {
         return this.db.categories.findUnique({
             where: { userId },
             include: {
-                user: { select: { id: true, name: true } },
-            },
+                user: { select: { id: true, name: true } }
+            }
         });
     }
 
     createCategory(userId: string, name: string, type: CategoryType) {
         return this.db.$transaction(async prisma => {
             const userCategories = await prisma.categories.findUnique({
-                where: { userId },
+                where: { userId }
             });
 
             if (!userCategories) {
                 throw new NotFoundException({
                     name: 'CATEGORIES_NOT_FOUND',
                     title: 'Categories not found!',
-                    details: 'No categories found for this user in the database.',
+                    details: 'No categories found for this user in the database.'
                 });
             }
 
@@ -66,11 +66,11 @@ export class CategoriesRepository {
                 data: {
                     incomes: mergedIncomes,
                     expenses: mergedExpenses,
-                    lastUpdated: new Date(),
+                    lastUpdated: new Date()
                 },
                 include: {
-                    user: { select: { id: true, name: true } },
-                },
+                    user: { select: { id: true, name: true } }
+                }
             });
         });
     }
@@ -78,14 +78,14 @@ export class CategoriesRepository {
     async deleteCategory(userId: string, name: string, type: CategoryType) {
         await this.db.$transaction(async prisma => {
             const userCategories = await prisma.categories.findUnique({
-                where: { userId },
+                where: { userId }
             });
 
             if (!userCategories)
                 throw new NotFoundException({
                     name: 'CATEGORIES_NOT_FOUND',
                     title: 'Categories not found!',
-                    details: 'No categories found for this user in the database.',
+                    details: 'No categories found for this user in the database.'
                 });
 
             let filteredIncomes: string[];
@@ -111,11 +111,11 @@ export class CategoriesRepository {
                 data: {
                     incomes: filteredIncomes,
                     expenses: filteredExpenses,
-                    lastUpdated: new Date(),
+                    lastUpdated: new Date()
                 },
                 include: {
-                    user: { select: { id: true, name: true } },
-                },
+                    user: { select: { id: true, name: true } }
+                }
             });
         });
     }

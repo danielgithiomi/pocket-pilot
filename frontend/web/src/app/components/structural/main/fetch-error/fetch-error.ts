@@ -15,16 +15,12 @@ import { AnimationOptions, LottieComponent } from 'ngx-lottie';
     `,
     template: `
         <div class="fetch-error">
-            <ng-lottie
-                [options]="options"
-                [width]="animationDimensions()"
-                [height]="animationDimensions()"
-            />
+            <ng-lottie [options]="options" [width]="animationDimensions()" [height]="animationDimensions()" />
             <p class="text-center font-medium uppercase text-muted" [ngClass]="messageClass()">
                 {{ message() }}
             </p>
         </div>
-    `,
+    `
 })
 export class FetchError {
     readonly messageClass = input<string>('');
@@ -34,6 +30,6 @@ export class FetchError {
     protected readonly options: AnimationOptions = {
         loop: true,
         autoplay: true,
-        path: '/animations/error_404.json',
+        path: '/animations/error_404.json'
     };
 }

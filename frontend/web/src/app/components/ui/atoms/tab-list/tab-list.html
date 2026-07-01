@@ -5,8 +5,7 @@
             (click)="selectTab(item, index)"
             role="tab"
             [attr.aria-selected]="isActive(item)"
-            [attr.aria-disabled]="disabled()"
-        >
+            [attr.aria-disabled]="disabled()">
             {{ item.label }}
         </div>
     }

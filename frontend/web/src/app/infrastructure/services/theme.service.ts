@@ -7,7 +7,7 @@ import {
     type ThemePreference,
     applyThemeToDocument,
     normalizeThemePreference,
-    readStoredThemePreference,
+    readStoredThemePreference
 } from './theme.utils';
 
 /** @deprecated Use ThemePreference instead */
@@ -16,7 +16,7 @@ export type Theme = ThemePreference;
 export type { ThemePreference, ResolvedTheme };
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class ThemeService {
     private readonly destroyRef = inject(DestroyRef);
@@ -24,9 +24,7 @@ export class ThemeService {
 
     private systemMediaQuery: MediaQueryList | null = null;
     private readonly preference = signal<ThemePreference>(readStoredThemePreference());
-    private readonly resolvedTheme = signal<ResolvedTheme>(
-        applyThemeToDocument(readStoredThemePreference()),
-    );
+    private readonly resolvedTheme = signal<ResolvedTheme>(applyThemeToDocument(readStoredThemePreference()));
 
     /** User preference: SYSTEM, LIGHT, or DARK */
     readonly theme = computed(() => this.preference());
@@ -110,7 +108,7 @@ export class ThemeService {
             const user = JSON.parse(storedUser) as User;
             user.userPreferences = {
                 ...user.userPreferences,
-                preferredTheme: theme,
+                preferredTheme: theme
             };
             localStorage.setItem(STORED_AUTH_USER_KEY, JSON.stringify(user));
         } catch {

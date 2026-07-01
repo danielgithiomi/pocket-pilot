@@ -6,55 +6,55 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 export class SplitrRepository {
     constructor(private readonly db: DatabaseService) {}
 
-    async createSplitrEvent(userId: string, payload: SplitrEventPayload) {
+    createSplitrEvent(userId: string, payload: SplitrEventPayload) {
         const { billPayers, eventSplittables, ...rest } = payload;
-        return await this.db.splitrEvent.create({
+        return this.db.splitrEvent.create({
             data: {
                 ...rest,
-                creatorId: userId,
+                userId,
                 billPayers: { create: billPayers },
                 eventSplittables: {
                     create: eventSplittables.map(({ quantitySplits, ...splittable }) => ({
                         ...splittable,
-                        quantitySplits: { create: quantitySplits },
-                    })),
-                },
+                        quantitySplits: { create: quantitySplits }
+                    }))
+                }
             },
             include: {
                 billPayers: true,
-                eventSplittables: { include: { quantitySplits: true } },
-            },
+                eventSplittables: { include: { quantitySplits: true } }
+            }
         });
     }
 
     getUserSplitrEvents(userId: string) {
         return this.db.splitrEvent.findMany({
-            where: { creatorId: userId },
+            where: { userId },
             include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { createdAt: 'desc' }
         });
     }
 
     getSplitrEventById(eventId: string) {
         return this.db.splitrEvent.findUnique({
             where: { id: eventId },
-            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } }
         });
     }
 
     markSplitrEventAsSettledOrPending(userId: string, eventId: string, payload: SettleSplitrPayload) {
         const { isSettled } = payload;
         return this.db.splitrEvent.update({
-            where: { id: eventId, creatorId: userId },
+            where: { id: eventId, userId },
             data: { isSettled },
-            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } }
         });
     }
 
     deleteSplitrEvent(userId: string, eventId: string) {
         return this.db.splitrEvent.delete({
-            where: { id: eventId, creatorId: userId },
-            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } },
+            where: { id: eventId, userId },
+            include: { billPayers: true, eventSplittables: { include: { quantitySplits: true } } }
         });
     }
 }

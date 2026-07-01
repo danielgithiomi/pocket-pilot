@@ -9,7 +9,7 @@ export class SplitrSquadPayload {
     @MaxLength(25, { message: 'Squad name must be at most 25 characters long' })
     @ApiProperty({
         example: 'My Squad',
-        description: 'The name of the squad',
+        description: 'The name of the squad'
     })
     squadName!: string;
 
@@ -18,7 +18,7 @@ export class SplitrSquadPayload {
     @ArrayMinSize(1, { message: 'Squad must have at least one member' })
     @ApiProperty({
         description: 'The members of the squad',
-        example: ['Daniel', 'Joshua', 'Michelle'],
+        example: ['Daniel', 'Joshua', 'Michelle']
     })
     squadMembers!: string[];
 
@@ -26,7 +26,7 @@ export class SplitrSquadPayload {
     @IsOptional()
     @ApiProperty({
         example: 'squad-image-key',
-        description: 'The image key of the squad',
+        description: 'The image key of the squad'
     })
     squadImageKey!: string | null;
 }
@@ -36,49 +36,49 @@ export class SplitrSquadDto {
     @Expose()
     @ApiProperty({
         description: 'The ID of the squad',
-        example: '123e4567-e89b-12d3-a456-426614174000',
+        example: '123e4567-e89b-12d3-a456-426614174000'
     })
     id!: string;
 
     @Expose()
     @ApiProperty({
         description: 'The ID of the creator',
-        example: '123e4567-e89b-12d3-a456-426614174000',
+        example: '123e4567-e89b-12d3-a456-426614174000'
     })
     creatorId!: string;
 
     @Expose()
     @ApiProperty({
         description: 'The name of the squad',
-        example: 'My Squad',
+        example: 'My Squad'
     })
     squadName!: string;
 
     @Expose()
     @ApiProperty({
         description: 'The image key of the squad',
-        example: 'squad-image-key',
+        example: 'squad-image-key'
     })
     squadImageKey!: string | null;
 
     @Expose()
     @ApiProperty({
         description: 'The members of the squad',
-        example: ['joshua', 'michelle', 'julie'],
+        example: ['joshua', 'michelle', 'julie']
     })
     squadMembers!: string[];
 
     @Expose()
     @ApiProperty({
         description: 'The creation date of the squad',
-        example: '2025-10-15T10:30:00.000Z',
+        example: '2025-10-15T10:30:00.000Z'
     })
     createdAt!: Date;
 
     @Expose()
     @ApiProperty({
         description: 'The last update date of the squad',
-        example: '2025-10-15T10:30:00.000Z',
+        example: '2025-10-15T10:30:00.000Z'
     })
     updatedAt!: Date;
 }

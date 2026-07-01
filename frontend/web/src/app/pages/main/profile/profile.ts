@@ -18,25 +18,12 @@ import { ChangePassword } from './change-password/change-password';
 import { ProfileSummary } from './profile-summary/profile-summary';
 import { Component, computed, inject, signal } from '@angular/core';
 import { buildFullPhoneNumber, parsePhoneNumber, PhoneNumber } from '@atoms/phone-number';
-import {
-    EditProfileSchema,
-    editProfileFormValidationSchema,
-} from './profile-summary/profile-summary.types';
+import { EditProfileSchema, editProfileFormValidationSchema } from './profile-summary/profile-summary.types';
 
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.html',
-    imports: [
-        Form,
-        Input,
-        Button,
-        NgClass,
-        PhoneNumber,
-        ProfileDetail,
-        ProfileSummary,
-        ChangePassword,
-        ReactiveFormsModule,
-    ],
+    imports: [Form, Input, Button, NgClass, PhoneNumber, ProfileDetail, ProfileSummary, ChangePassword, ReactiveFormsModule]
 })
 export class Profile {
     // SERVICES
@@ -66,7 +53,7 @@ export class Profile {
         return {
             name,
             email,
-            phoneNumber: buildFullPhoneNumber(country, nationalNumber),
+            phoneNumber: buildFullPhoneNumber(country, nationalNumber)
         };
     });
     protected readonly defaultPhoneCountryIso = computed(() => {
@@ -83,17 +70,12 @@ export class Profile {
     protected readonly isFetchingProfileData = computed(() => this.authService.isLoading());
 
     // FORM
-    protected readonly editProfileFormModel = signal<EditProfileSchema>(
-        this.initialEditProfileFormData(),
-    );
-    protected readonly editProfileForm = form(
-        this.editProfileFormModel,
-        editProfileFormValidationSchema,
-    );
+    protected readonly editProfileFormModel = signal<EditProfileSchema>(this.initialEditProfileFormData());
+    protected readonly editProfileForm = form(this.editProfileFormModel, editProfileFormValidationSchema);
 
     // PROFILE PICTURE FORM
     protected readonly formGroup = new FormGroup({
-        profilePicture: new FormControl<File | null>(null),
+        profilePicture: new FormControl<File | null>(null)
     });
 
     // METHODS
@@ -126,7 +108,7 @@ export class Profile {
             this.toastService.show({
                 variant: 'error',
                 title: 'File Upload Error',
-                details: 'Please select an image to upload.',
+                details: 'Please select an image to upload.'
             });
             return;
         }
@@ -158,7 +140,7 @@ export class Profile {
                 this.toastService.show({
                     variant: 'error',
                     title: 'Invalid File Type',
-                    details: 'Please drop an image file.',
+                    details: 'Please drop an image file.'
                 });
                 return;
             }
@@ -189,14 +171,14 @@ export class Profile {
                 this.toastService.show({
                     variant: 'success',
                     title: 'Update Successful!',
-                    details: 'Your profile has been updated successfully.',
+                    details: 'Your profile has been updated successfully.'
                 });
 
                 this.authService.refreshSession(user);
                 this.isEditFormOpen.set(false);
                 this.resetEditProfileForm();
             },
-            complete: () => this.isSubmittingEditProfileForm.set(false),
+            complete: () => this.isSubmittingEditProfileForm.set(false)
         });
     }
 
@@ -208,7 +190,7 @@ export class Profile {
             this.toastService.show({
                 variant: 'error',
                 title: 'File Upload Error',
-                details: 'Please select an image to upload.',
+                details: 'Please select an image to upload.'
             });
             return;
         }
@@ -222,7 +204,7 @@ export class Profile {
                         this.toastService.show({
                             variant: 'success',
                             title: 'Profile Picture Updated!',
-                            details: 'Your profile picture has been updated successfully.',
+                            details: 'Your profile picture has been updated successfully.'
                         });
 
                         this.resetProfilePictureForm();
@@ -230,7 +212,7 @@ export class Profile {
                         window.location.reload();
                     }
                 },
-                complete: () => this.isSubmittingProfilePictureForm.set(false),
+                complete: () => this.isSubmittingProfilePictureForm.set(false)
             });
         }, 2000);
     }

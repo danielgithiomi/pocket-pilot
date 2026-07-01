@@ -4,56 +4,56 @@ export const DrawerNavigationLinks: DrawerNavigationLink[] = [
     {
         icon: 'dashboard',
         name: 'Dashboard',
-        path: '/dashboard',
+        path: '/dashboard'
     },
     {
         icon: 'accounts',
         name: 'Accounts',
-        path: '/accounts',
+        path: '/accounts'
     },
     {
         icon: 'transactions',
         name: 'Transactions',
-        path: '/transactions',
+        path: '/transactions'
     },
     {
         icon: 'splitr',
         name: 'Splitr',
-        path: '/splitr',
+        path: '/splitr'
     },
     {
         icon: 'goals',
         name: 'Goals_Bills',
-        path: '/goals',
+        path: '/goals'
     },
     {
         icon: 'settings',
         name: 'Settings',
-        path: '/settings',
+        path: '/settings'
     },
     {
         icon: 'profile',
         name: 'Profile',
-        path: '/profile',
-    },
+        path: '/profile'
+    }
 ];
 
 export const AdditionalDrawerNavigationLinks: DrawerNavigationLink[] = [
     {
         icon: 'support',
         name: 'Support',
-        path: '/support',
+        path: '/support'
     },
     {
         icon: 'privacy',
         name: 'Privacy-Policy',
-        path: '/privacy',
+        path: '/privacy-policy'
     },
     {
         icon: 'faqs_features',
         name: 'FAQs_Features',
-        path: '/faqs_features',
-    },
+        path: '/faqs-features'
+    }
 ];
 
 export const QUANTITIES: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -66,7 +66,7 @@ export const COLOR_PALETTE: ColorPalette[] = [
     { bg: 'bg-violet-300', fg: 'text-violet-900' },
     { bg: 'bg-teal-300', fg: 'text-teal-900' },
     { bg: 'bg-rose-300', fg: 'text-rose-900' },
-    { bg: 'bg-indigo-300', fg: 'text-indigo-900' },
+    { bg: 'bg-indigo-300', fg: 'text-indigo-900' }
     // { bg: 'bg-red-400', fg: 'text-red-950' },
     // { bg: 'bg-orange-400', fg: 'text-orange-950' },
     // { bg: 'bg-amber-400', fg: 'text-amber-950' },

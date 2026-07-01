@@ -1,8 +1,5 @@
 <div class="text-area-field" [ngClass]="wrapperClassName()">
-    <label
-        [for]="textAreaId()"
-        [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }"
-    >
+    <label [for]="textAreaId()" [ngClass]="{ 'text-inverted-text': inverted(), 'text-primary-text': invertLabel() }">
         @if (required()) {
             <span class="required">*</span>
         }
@@ -17,8 +14,8 @@
                 [formField]="formField()"
                 [placeholder]="placeholder()"
                 [autocomplete]="autocomplete()"
-                [ngClass]="customTextAreaClasses()"
-            ></textarea>
+                (input)="handleTextAreaInput($event)"
+                [ngClass]="customTextAreaClasses()"></textarea>
         </fieldset>
 
         @if (allowEndIcon()) {
@@ -26,17 +23,21 @@
                 class="text-area-icon-wrapper"
                 [ngClass]="{
                     hidden: !fieldState().value(),
-                    'text-inverted-text': invertedIcon(),
-                }"
-            >
+                    'text-inverted-text': invertedIcon()
+                }">
                 <lucide-icon
                     [img]="X"
                     [size]="iconSize"
                     name="field-clear"
                     (click)="clearOutput.emit()"
-                    class="text-area-icon input-end-icon"
-                />
+                    class="text-area-icon input-end-icon" />
             </div>
+        }
+
+        @if (showCharacterCount()) {
+            <p class="text-area-character-count">
+                {{ characterCountLabel() }}
+            </p>
         }
     </div>
 

@@ -19,8 +19,7 @@
         "
         label="Grand Total (Verification)"
         [formField]="formModel().verificationTotal"
-        (clearOutput)="formModel().verificationTotal().controlValue.set(null)"
-    />
+        (clearOutput)="formModel().verificationTotal().controlValue.set(null)" />
 
     <div class="flex flex-row items-center justify-between px-2 w-full mb-2 text-[0.7rem] italic">
         @if (showVerificationStatus) {
@@ -29,20 +28,14 @@
                 class="flex flex-row items-center gap-1.5 italic"
                 [ngClass]="{
                     'text-error': !totalsMatch,
-                    'text-primary': totalsMatch,
-                }"
-            >
-                <lucide-icon
-                    [size]="15"
-                    name="totals-verification"
-                    [img]="totalsMatch ? CheckIcon : CrossIcon"
-                />
+                    'text-primary': totalsMatch
+                }">
+                <lucide-icon [size]="15" name="totals-verification" [img]="totalsMatch ? CheckIcon : CrossIcon" />
                 <p
                     [ngClass]="{
                         'text-error': !totalsMatch,
-                        'text-primary': totalsMatch,
-                    }"
-                >
+                        'text-primary': totalsMatch
+                    }">
                     Totals {{ totalsMatch ? 'match' : 'mismatch' }}!
                 </p>
             </div>
@@ -62,20 +55,17 @@
     wrapperClassName="my-0"
     placeholder="Select a payment strategy"
     [options]="billPaymentStrategyOptions()"
-    [formField]="formModel().billPaymentStrategy"
-/>
+    [formField]="formModel().billPaymentStrategy" />
 
 <div class="my-2">
     <div
-        class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
-    >
+        class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar">
         @for (member of billPayerOptions(); track member.memberName) {
             <squad-member
                 [inverted]="true"
                 [member]="member"
                 [isCheckable]="true"
-                (onMemberEventClick)="handleAddMemberToPayerList($event)"
-            />
+                (onMemberEventClick)="handleAddMemberToPayerList($event)" />
         }
     </div>
 </div>
@@ -94,8 +84,7 @@
                 [payer]="payer"
                 (onRemovePayerEvent)="handleRemovePayer($event)"
                 [billingCurrency]="formModel().billingCurrency().value()"
-                (onPayerAmountChangeEvent)="handlePayerAmountChange($event)"
-            />
+                (onPayerAmountChangeEvent)="handlePayerAmountChange($event)" />
         }
     </div>
 }

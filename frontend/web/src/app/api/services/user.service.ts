@@ -11,11 +11,11 @@ import {
     IStandardResponse,
     IUpdateUserRequest,
     IVoidResourceResponse,
-    IChangePasswordRequest,
+    IChangePasswordRequest
 } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class UserService {
     private readonly mutation = inject(UserMutation);
@@ -30,7 +30,7 @@ export class UserService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -40,20 +40,17 @@ export class UserService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
-    changePassword(
-        userId: string,
-        payload: IChangePasswordRequest,
-    ): Observable<IVoidResourceResponse> {
+    changePassword(userId: string, payload: IChangePasswordRequest): Observable<IVoidResourceResponse> {
         return this.mutation.changePassword(userId, payload).pipe(
             map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -63,7 +60,7 @@ export class UserService {
         this.toastService.show({
             title,
             details: details as string,
-            variant: 'error',
+            variant: 'error'
         });
     };
 }

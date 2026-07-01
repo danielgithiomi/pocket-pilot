@@ -21,14 +21,14 @@ import {
     ScanBarcode,
     GraduationCap,
     LucideIconData,
-    LucideAngularModule,
+    LucideAngularModule
 } from 'lucide-angular';
 
 @Component({
     selector: 'goal-item',
     styleUrl: './goal-item.css',
     templateUrl: './goal-item.html',
-    imports: [LucideAngularModule, ProgressBar, NgClass],
+    imports: [LucideAngularModule, ProgressBar, NgClass]
 })
 export class GoalItem {
     // Icons
@@ -50,7 +50,7 @@ export class GoalItem {
         PURCHASE: ScanBarcode,
         DEBT_PAYMENT: HandCoins,
         EDUCATION: GraduationCap,
-        EMERGENCY_FUND: Ambulance,
+        EMERGENCY_FUND: Ambulance
     };
 
     // Color maps
@@ -58,7 +58,7 @@ export class GoalItem {
         FAILED: 'bg-(--danger)',
         ACTIVE: 'bg-(--primary)',
         PAUSED: 'bg-(--warning)',
-        COMPLETED: 'bg-(--success)',
+        COMPLETED: 'bg-(--success)'
     };
 
     // Signal States
@@ -91,14 +91,14 @@ export class GoalItem {
                     this.toastService.show({
                         details,
                         title: message,
-                        variant: 'success',
+                        variant: 'success'
                     });
 
                     this.goalsService.getUserGoals().reload();
                 },
                 complete: () => {
                     this.isDeleting.set(false);
-                },
+                }
             });
         }, 2500);
     }

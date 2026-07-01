@@ -21,7 +21,7 @@ export function formatDate(date: string): string {
     return new Date(date).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
-        day: 'numeric',
+        day: 'numeric'
     });
 }
 
@@ -37,7 +37,7 @@ export function formatFullDate(date: string): string {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-        weekday: 'short',
+        weekday: 'short'
     });
 }
 
@@ -80,6 +80,26 @@ export function getMonthDifference(start: Date, end: Date): number {
 }
 
 /**
+ * Formats a date string into a relative time format, such as "1 day ago".
+ * @param date The date string to format (e.g. "2024-05-10T09:00Z")
+ * @returns The formatted date as a relative string (e.g. "1 day ago")
+ */
+export function formatRelativeDate(date: Date | string): string {
+    const then = new Date(date).getTime();
+    const diffMs = Date.now() - then;
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMinutes < 1) return 'just now';
+    if (diffMinutes < 60) return `${diffMinutes} ${diffMinutes === 1 ? 'minute' : 'minutes'} ago`;
+    if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'} ago`;
+    if (diffDays === 1) return '1 day ago';
+
+    return `${diffDays} days ago`;
+}
+
+/**
  * Formats a date string for input field display using a short, consistent style.
  * Example output: "May 10, 2024".
  *
@@ -90,7 +110,7 @@ export function formatInputFieldDate(date: string): string {
     return new Date(date).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
-        day: 'numeric',
+        day: 'numeric'
     });
 }
 
@@ -110,14 +130,14 @@ export function formatCurrency(
     currency: Intl.NumberFormatOptions['currency'],
     fractionDigits: number = 2,
     showSymbol: boolean = false,
-    narrow: boolean = true,
+    narrow: boolean = true
 ): string {
     return new Intl.NumberFormat('en-US', {
         currency: currency,
         minimumFractionDigits: fractionDigits,
         maximumFractionDigits: fractionDigits,
         style: showSymbol ? 'currency' : 'decimal',
-        currencyDisplay: narrow ? 'narrowSymbol' : 'code',
+        currencyDisplay: narrow ? 'narrowSymbol' : 'code'
     }).format(amount);
 }
 
@@ -146,6 +166,6 @@ export function formatToReadable(normalizedName: string): string {
         .replace(/[_-]/g, ' ') // underscores & hyphens → spaces
         .split(' ')
         .filter(Boolean) // remove empty strings (safety)
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 }

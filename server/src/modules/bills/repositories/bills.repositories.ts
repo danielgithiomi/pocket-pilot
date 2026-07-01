@@ -12,7 +12,7 @@ export class BillsRepository {
 
     getUserBills(userId: string) {
         return this.db.bills.findMany({
-            where: { userId },
+            where: { userId }
         });
     }
 

@@ -14,7 +14,7 @@ import { Body, Controller, Get, HttpCode, Post, Res, UseGuards } from '@nestjs/c
 export class AuthController {
     constructor(
         private readonly authService: AuthService,
-        private readonly cookiesService: CookiesService,
+        private readonly cookiesService: CookiesService
     ) {}
 
     @Get('me')
@@ -37,11 +37,11 @@ export class AuthController {
         status: 200,
         isArray: false,
         type: UserWithPreferencesDto,
-        description: 'User logged in successfully.',
+        description: 'User logged in successfully.'
     })
     @ApiOperation({
         summary: 'Log in a registered user',
-        description: 'Log in as a registered user and store the access and refresh tokens in the cookies.',
+        description: 'Log in as a registered user and store the access and refresh tokens in the cookies.'
     })
     async login(@Body() loginDto: LoginInputDto, @Res({ passthrough: true }) res: Response) {
         const { user, access_token, refresh_token } = await this.authService.login(loginDto);
@@ -59,14 +59,14 @@ export class AuthController {
     @Summary('User Logout Successful.', 'The user is logged out and token is cleared from the cookies.')
     @ApiOperation({
         summary: 'Log out current user',
-        description: 'Log out the current user and clear the access and refresh tokens from the cookies.',
+        description: 'Log out the current user and clear the access and refresh tokens from the cookies.'
     })
     logout(@Res({ passthrough: true }) res: Response) {
         res.clearCookie('access_token');
         res.clearCookie('refresh_token');
 
         return {
-            message: 'User logged out successfully',
+            message: 'User logged out successfully'
         };
     }
 }

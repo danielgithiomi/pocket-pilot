@@ -113,3 +113,13 @@
         transform: rotate(1turn);
     }
 }
+
+/*
+ * This is to breakpoint for md devices and lower. IE; <=768px
+ */
+@media (max-width: 768px) {
+    .layered-loader {
+        width: 60px;
+        border-width: 4px;
+    }
+}

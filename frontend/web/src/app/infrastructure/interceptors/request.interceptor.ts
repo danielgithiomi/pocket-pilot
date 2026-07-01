@@ -7,8 +7,8 @@ export const RequestInterceptor: HttpInterceptorFn = (req, next) => {
         credentials: 'include',
         setHeaders: {
             'X-App-Version': '1.0.0',
-            Accept: 'application/json',
-        },
+            Accept: 'application/json'
+        }
     });
 
     return next(cloned);

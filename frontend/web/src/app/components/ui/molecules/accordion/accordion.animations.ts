@@ -6,17 +6,17 @@ export const accordionContentAnimation = trigger('accordionContent', [
         style({
             height: '0px',
             opacity: 0,
-            overflow: 'hidden',
-        }),
+            overflow: 'hidden'
+        })
     ),
     state(
         'expanded',
         style({
             height: '*',
             opacity: 1,
-            overflow: 'hidden',
-        }),
+            overflow: 'hidden'
+        })
     ),
     transition('collapsed => expanded', animate('220ms cubic-bezier(0.22, 1, 0.36, 1)')),
-    transition('expanded => collapsed', animate('200ms ease-in')),
+    transition('expanded => collapsed', animate('200ms ease-in'))
 ]);

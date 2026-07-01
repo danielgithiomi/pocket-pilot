@@ -1,22 +1,22 @@
+import { NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
-import { NgClass } from '@angular/common';
 import { TextArea } from '@atoms/text-area';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { AuthService } from '@api/auth.service';
-import { PhoneNumber } from '@atoms/phone-number';
+import { buildFullPhoneNumber, parsePhoneNumber, PhoneNumber } from '@atoms/phone-number';
 import { DrawerService } from '@infrastructure/services';
-import { Send, LucideAngularModule } from 'lucide-angular';
+import { LucideAngularModule, Send } from 'lucide-angular';
 import { Component, computed, inject, signal } from '@angular/core';
 import { CONTACT_ITEMS, DEFAULT_COUNTRY_ISO } from '@global/constants';
-import { buildFullPhoneNumber, parsePhoneNumber } from '@atoms/phone-number';
 import { SupportFormSchema, SupportFormValidationSchema } from './support.form';
 
 @Component({
     selector: 'support',
     templateUrl: './support.html',
-    imports: [NgClass, LucideAngularModule, Input, TextArea, PhoneNumber, Button],
+    imports: [NgClass, RouterLink, LucideAngularModule, Input, TextArea, PhoneNumber, Button]
 })
 export class Support {
     // ICONS
@@ -42,7 +42,7 @@ export class Support {
                 phone: '',
                 lastName: '',
                 firstName: '',
-                phoneCountryIso: DEFAULT_COUNTRY_ISO,
+                phoneCountryIso: DEFAULT_COUNTRY_ISO
             };
         }
 
@@ -57,7 +57,7 @@ export class Support {
             firstName,
             lastName,
             phoneCountryIso: country.iso,
-            phone: buildFullPhoneNumber(country, nationalNumber),
+            phone: buildFullPhoneNumber(country, nationalNumber)
         };
     });
 
@@ -72,7 +72,7 @@ export class Support {
             email,
             phone,
             lastName,
-            firstName,
+            firstName
         };
     }
 
@@ -89,8 +89,7 @@ export class Support {
             this.toastService.show({
                 variant: 'success',
                 title: 'Message sent!',
-                details:
-                    'Your message has been sent successfully. We will get back to you as soon as possible.',
+                details: 'Your message has been sent successfully. We will get back to you as soon as possible.'
             });
 
             this.isSubmittingForm.set(false);

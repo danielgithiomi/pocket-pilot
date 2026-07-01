@@ -16,8 +16,7 @@
                     label="Email Address"
                     placeholder="johndoe@gmail.com"
                     [formField]="loginForm.email"
-                    (clearOutput)="loginForm.email().controlValue.set('')"
-                />
+                    (clearOutput)="loginForm.email().controlValue.set('')" />
 
                 <atom-input
                     id="password"
@@ -25,8 +24,7 @@
                     label="Password"
                     placeholder="••••••••"
                     autocomplete="current-password"
-                    [formField]="loginForm.password"
-                />
+                    [formField]="loginForm.password" />
 
                 <atom-button
                     id="login"
@@ -34,13 +32,10 @@
                     label="Log In"
                     form="login-form"
                     [isLoading]="loginForm().submitting()"
-                    [disabled]="loginForm().invalid() || loginForm().submitting()"
-                />
+                    [disabled]="loginForm().invalid() || loginForm().submitting()" />
             </form>
 
-            <p (click)="routeTo('/auth/register')" class="form-redirect-text">
-                Don't have an account? Sign Up
-            </p>
+            <p (click)="routeTo('/auth/register')" class="form-redirect-text">Don't have an account? Sign Up</p>
 
             <div class="secure-auth">
                 <hr />
@@ -54,8 +49,7 @@
                 <div class="space-y-2">
                     <p>Protected by two-factor authentication!</p>
                     <p class="text-muted-text">
-                        Your account security is our priority. You may be asked to verify your
-                        identity.
+                        Your account security is our priority. You may be asked to verify your identity.
                     </p>
                 </div>
             </div>

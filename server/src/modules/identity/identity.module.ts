@@ -15,6 +15,6 @@ import { DatabaseModule } from '@infrastructure/database/database.module';
     controllers: [UserController, AuthController],
     imports: [DatabaseModule, forwardRef(() => AwsModule), forwardRef(() => WalletModule)],
     exports: [UserService, UserRepository, CookiesService, CookiesAuthGuard, AuthService],
-    providers: [UserService, AuthService, CookiesService, CookiesAuthGuard, UserRepository, AuthRepository],
+    providers: [UserService, AuthService, CookiesService, CookiesAuthGuard, UserRepository, AuthRepository]
 })
 export class IdentityModule {}

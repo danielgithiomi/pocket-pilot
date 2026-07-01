@@ -7,12 +7,12 @@ import { minLength, required, schema } from '@angular/forms/signals';
 export const categoryTabItems: TabListItem[] = [
     {
         value: CategoryTypeEnum.INCOME,
-        label: 'Income',
+        label: 'Income'
     },
     {
         value: CategoryTypeEnum.EXPENSE,
-        label: 'Expense',
-    },
+        label: 'Expense'
+    }
 ];
 
 // FORM
@@ -20,10 +20,10 @@ export type CategorySchema = CreateCategoryRequest;
 
 export const initialCategoryFormState: CategorySchema = {
     categoryName: '',
-    categoryType: CategoryTypeEnum.INCOME,
+    categoryType: CategoryTypeEnum.INCOME
 };
 
-export const categoryFormValidationSchema = schema<CategorySchema>((root) => {
+export const categoryFormValidationSchema = schema<CategorySchema>(root => {
     required(root.categoryName, { message: 'The name is required field!' });
     minLength(root.categoryName, 3, { message: 'The name must be at least 3 characters long!' });
 });

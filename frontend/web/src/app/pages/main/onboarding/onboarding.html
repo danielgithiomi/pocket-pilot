@@ -3,8 +3,7 @@
         title="Onboarding"
         [showCloseIcon]="false"
         id="onboarding-form-wrapper"
-        description="Complete your onboarding to get started!"
-    >
+        description="Complete your onboarding to get started!">
         <form slot="content" id="onboarding-form" (submit)="submitOnboardingForm($event)">
             <!-- Phone number field -->
             <atom-phone-number
@@ -14,8 +13,7 @@
                 placeholder="1234 5678"
                 defaultCountryIso="MU"
                 [formField]="onboardingForm.phoneNumber"
-                (clearOutput)="onboardingForm.phoneNumber().controlValue.set('')"
-            />
+                (clearOutput)="onboardingForm.phoneNumber().controlValue.set('')" />
 
             <div class="flex flex-col sm:flex-row gap-6 py-2">
                 <!-- Default Currency -->
@@ -27,8 +25,7 @@
                     [options]="currencies"
                     label="Default Currency"
                     placeholder="Select a currency"
-                    [formField]="onboardingForm.defaultCurrency"
-                />
+                    [formField]="onboardingForm.defaultCurrency" />
 
                 <!-- Preferred Language -->
                 <atom-select
@@ -39,8 +36,7 @@
                     wrapperClassName="my-0"
                     label="Preferred Language"
                     placeholder="Select a language"
-                    [formField]="onboardingForm.preferredLanguage"
-                />
+                    [formField]="onboardingForm.preferredLanguage" />
             </div>
 
             <!-- Monthly Spending Limit -->
@@ -53,8 +49,7 @@
                 id="monthly-spending-limit"
                 label="Monthly Spending Limit"
                 [formField]="onboardingForm.monthlySpendingLimit"
-                (clearOutput)="onboardingForm.monthlySpendingLimit().controlValue.set(null)"
-            />
+                (clearOutput)="onboardingForm.monthlySpendingLimit().controlValue.set(null)" />
         </form>
 
         <div class="form-footer-buttons" slot="footer">
@@ -66,8 +61,7 @@
                 form="onboarding-form"
                 id="reset-onboarding-form"
                 (clicked)="resetOnboardingForm()"
-                [disabled]="!onboardingForm().dirty() || isSubmitting()"
-            />
+                [disabled]="!onboardingForm().dirty() || isSubmitting()" />
 
             <atom-button
                 type="submit"
@@ -75,8 +69,7 @@
                 form="onboarding-form"
                 id="submit-onboarding-form"
                 [isLoading]="isSubmitting()"
-                [disabled]="onboardingForm().invalid() || isSubmitting()"
-            >
+                [disabled]="onboardingForm().invalid() || isSubmitting()">
                 <div class="w-full flex flex-row items-center justify-between gap-2">
                     <span>Complete Onboarding</span>
                     <lucide-icon [img]="chevrons" [size]="iconSize" name="next-goal-step" />

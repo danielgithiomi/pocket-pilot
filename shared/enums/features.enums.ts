@@ -1,8 +1,3 @@
-export enum VoteVariantEnum {
-  UPVOTE = "UPVOTE",
-  DOWNVOTE = "DOWNVOTE",
-}
-
 export enum FeatureStatusEnum {
   NEW = "NEW",
   SHIPPED = "SHIPPED",

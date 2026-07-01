@@ -54,7 +54,7 @@ export class VoidResourceResponse {
 
     @ApiProperty({
         description: 'Details',
-        example: 'The [xxxxx-xxxxx] resource has been deleted successfully.',
+        example: 'The [xxxxx-xxxxx] resource has been deleted successfully.'
     })
     details?: string;
 }

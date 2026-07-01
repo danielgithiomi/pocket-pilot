@@ -10,15 +10,10 @@ import { Component, input } from '@angular/core';
             [attr.height]="size()"
             viewBox="0 0 20 20"
             [attr.stroke-width]="strokeWidth()"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                [attr.fill]="color()"
-                d="M8 0a8 8 0 100 16A8 8 0 008 0z"
-                [attr.stroke-width]="strokeWidth()"
-            />
+            xmlns="http://www.w3.org/2000/svg">
+            <path [attr.fill]="color()" d="M8 0a8 8 0 100 16A8 8 0 008 0z" [attr.stroke-width]="strokeWidth()" />
         </svg>
-    `,
+    `
 })
 export class FilledCircle {
     size = input<number>(20);

@@ -15,8 +15,8 @@ export class PreferencesRepository {
                 preferredTheme,
                 defaultCurrency,
                 preferredLanguage,
-                monthlySpendingLimit,
-            },
+                monthlySpendingLimit
+            }
         });
     }
 }

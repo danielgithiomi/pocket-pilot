@@ -13,12 +13,8 @@ import { TransactionsService } from '@api/transactions.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionsComponent } from './transactions/transactions';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { LucideAngularModule, Wallet, SquarePen, Trash2, ScanEye, EyeOff } from 'lucide-angular';
-import {
-    UpdateAccountBalanceVisibilityPayload,
-    Account as IAccount,
-    TransactionWithAccount,
-} from '@global/types';
+import { Account as IAccount, UpdateAccountBalanceVisibilityPayload } from '@global/types';
+import { EyeOff, LucideAngularModule, ScanEye, SquarePen, Trash2, Wallet } from 'lucide-angular';
 
 @Component({
     templateUrl: './account-details.html',
@@ -31,8 +27,8 @@ import {
         DetailsComponent,
         AccountDetailsForm,
         LucideAngularModule,
-        TransactionsComponent,
-    ],
+        TransactionsComponent
+    ]
 })
 export class AccountDetails {
     // ICONS
@@ -59,21 +55,13 @@ export class AccountDetails {
 
     // DATA
     protected readonly accountId = this.route.snapshot.paramMap.get('id');
-    protected readonly accountResource = this.accountsService.getAccountWithItsTransactionsById(
-        this.accountId!,
-    );
-    protected readonly transactionsResource =
-        this.transactionsService.getAllTransactionsRelatedToAccountId(this.accountId!);
+    protected readonly accountResource = this.accountsService.getAccountWithItsTransactionsById(this.accountId!);
+    protected readonly transactionsResource = this.transactionsService.getAllTransactionsRelatedToAccountId(this.accountId!);
 
     // COMPUTED
-    protected readonly balanceVisibility = computed(
-        () => this.resourceData()?.account?.isBalanceVisible ?? false,
-    );
-    protected readonly hasError = computed(
-        () => !!this.accountResource.error() || !!this.transactionsResource.error(),
-    );
+    protected readonly hasError = computed(() => !!this.accountResource.error() || !!this.transactionsResource.error());
     protected readonly isLoadingResources = computed(
-        () => this.accountResource.isLoading() || this.transactionsResource.isLoading(),
+        () => this.accountResource.isLoading() || this.transactionsResource.isLoading()
     );
     protected readonly resourceData = computed(() => {
         if (this.accountResource.error()) return undefined;
@@ -86,13 +74,10 @@ export class AccountDetails {
 
         const {
             count,
-            data: { transactions, ...account },
+            data: { transactions, ...account }
         } = accountResource;
         const { data: transactionsData } = transactionsResource;
         return { count, account, transactions: transactionsData };
-    });
-    protected readonly transactionsData = computed<TransactionWithAccount[]>(() => {
-        return this.transactionsResource.value()?.data.data ?? [];
     });
 
     protected readonly breadcrumbItems = computed(() => {
@@ -103,8 +88,8 @@ export class AccountDetails {
             { label: 'Accounts', route: '/accounts' },
             {
                 label: `${capitalize(name)}`,
-                route: `/accounts/${this.accountId}`,
-            },
+                route: `/accounts/${this.accountId}`
+            }
         ];
     });
 
@@ -119,7 +104,7 @@ export class AccountDetails {
         this.isEditFormOpen.set(true);
     }
 
-    protected handleEditFormClose(cause: 'submit' | 'icon' | 'overlay') {
+    protected handleEditFormClose(cause: 'submit' | 'icon' | 'backdrop') {
         if (cause === 'submit') this.reloadResources();
         this.isEditFormOpen.set(false);
     }
@@ -129,26 +114,28 @@ export class AccountDetails {
         if (!data) return;
 
         const {
-            account: { id: accountId, name, isBalanceVisible },
+            account: { id: accountId, name, isBalanceVisible }
         } = data;
 
         this.isTogglingBalanceVisibility.set(true);
 
         const payload: UpdateAccountBalanceVisibilityPayload = {
-            isBalanceVisible: !isBalanceVisible,
+            isBalanceVisible: !isBalanceVisible
         };
 
         this.accountsService.updateAccountBalanceVisibilityById(accountId, payload).subscribe({
             next: (account: IAccount) => {
+                const {name, isBalanceVisible} = account;
+
                 this.toastService.show({
                     variant: 'success',
                     title: 'Balance visibility toggled!',
-                    details: `Your [${account.name}] balance has been ${account.isBalanceVisible ? 'made visible' : 'hidden'}.`,
+                    details: `Your [${name}] balance has been ${isBalanceVisible ? 'made visible' : 'hidden'}.`
                 });
 
                 this.reloadResources();
             },
-            complete: () => this.isTogglingBalanceVisibility.set(false),
+            complete: () => this.isTogglingBalanceVisibility.set(false)
         });
     }
 
@@ -160,8 +147,7 @@ export class AccountDetails {
             this.toastService.show({
                 variant: 'warning',
                 title: 'Are you sure?',
-                details:
-                    'Deleting an account will also delete all transactions associated with it.',
+                details: 'Deleting an account will also delete all transactions associated with it.'
             });
             return;
         }
@@ -170,20 +156,20 @@ export class AccountDetails {
 
         setTimeout(() => {
             this.accountsService.deleteAccountById(accountId).subscribe({
-                next: () => {
+                next: async () => {
                     const accountName = this.resourceData()?.account?.name ?? 'account';
 
                     this.toastService.show({
                         variant: 'success',
                         title: 'Account deleted!',
-                        details: `Your [${accountName}] and all its transactions have been successfully deleted.`,
+                        details: `Your [${accountName}] and all its transactions have been successfully deleted.`
                     });
 
                     this.reloadResources();
                     this.deleteClickCount.set(1);
-                    this.router.navigate(['/accounts'], { replaceUrl: true });
+                    await this.router.navigate(['/accounts'], { replaceUrl: true });
                 },
-                complete: () => this.isDeletingAccount.set(false),
+                complete: () => this.isDeletingAccount.set(false)
             });
         }, 2000);
     }

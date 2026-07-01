@@ -25,7 +25,7 @@ export class BillsController {
         status: 200,
         isArray: true,
         type: ExposeEnumDto,
-        description: 'All bill types retrieved successfully',
+        description: 'All bill types retrieved successfully'
     })
     getBillsTypes() {
         return this.billsService.getBillsTypes();
@@ -41,7 +41,7 @@ export class BillsController {
         status: 200,
         type: BillDTO,
         isArray: true,
-        description: 'All application bills retrieved successfully',
+        description: 'All application bills retrieved successfully'
     })
     getAllBills() {
         return this.billsService.getAllBills();
@@ -57,7 +57,7 @@ export class BillsController {
         status: 200,
         type: BillDTO,
         isArray: true,
-        description: 'All user bills retrieved successfully',
+        description: 'All user bills retrieved successfully'
     })
     getUserBills(@UserInRequest() user: User) {
         return this.billsService.getUserBills(user.id);
@@ -72,7 +72,7 @@ export class BillsController {
     @ApiResponse({
         status: 201,
         type: BillDTO,
-        description: 'New bill created successfully',
+        description: 'New bill created successfully'
     })
     createNewBill(@Body() payload: CreateBillPayload, @UserInRequest() user: User) {
         return this.billsService.createNewBill(user.id, payload);
@@ -87,14 +87,14 @@ export class BillsController {
     @ApiResponse({
         status: 200,
         type: VoidResourceResponse,
-        description: 'Bill deleted successfully',
+        description: 'Bill deleted successfully'
     })
     async deleteBillById(@UserInRequest() user: User, @Param('billId') billId: string): Promise<VoidResourceResponse> {
         const deletedBill = await this.billsService.deleteBillById(user.id, billId);
 
         return {
             message: 'The bill was deleted!',
-            details: `Your [${deletedBill.name}] bill was been deleted successfully.`,
+            details: `Your [${deletedBill.name}] bill was been deleted successfully.`
         };
     }
 }

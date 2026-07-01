@@ -10,21 +10,21 @@ import {
     categoryFormValidationSchema,
     CategorySchema,
     categoryTabItems,
-    initialCategoryFormState,
+    initialCategoryFormState
 } from './categories-form.types';
 import { CategoryVariant } from '@global/types';
 
 @Component({
     selector: 'categories-form',
     templateUrl: './categories-form.html',
-    imports: [Form, Input, Button, TabList],
+    imports: [Form, Input, Button, TabList]
 })
 export class CategoriesForm {
     // INPUTS
     isCategoriesFormOpen = input.required<boolean>();
 
     // OUTPUTS
-    categoriesFormClosed = output<'icon' | 'overlay'>();
+    categoriesFormClosed = output<'icon' | 'backdrop'>();
 
     // SIGNALS
     protected isSubmittingCategoriesForm = signal<boolean>(false);
@@ -39,7 +39,7 @@ export class CategoriesForm {
     private readonly categories$ = this.categoriesService.getUserCategories();
 
     // METHODS
-    handleCloseForm(source: 'icon' | 'overlay') {
+    handleCloseForm(source: 'icon' | 'backdrop') {
         if (source === 'icon') this.resetCategoryForm();
         this.categoriesFormClosed.emit(source);
     }
@@ -67,14 +67,14 @@ export class CategoriesForm {
                 this.toastService.show({
                     variant: 'success',
                     title: 'Category created!',
-                    details: `Your [${categoryType}] category has been created successfully.`,
+                    details: `Your [${categoryType}] category has been created successfully.`
                 });
 
                 this.resetCategoryForm();
                 this.categories$.reload();
                 this.categoriesFormClosed.emit('icon');
             },
-            complete: () => this.isSubmittingCategoriesForm.set(false),
+            complete: () => this.isSubmittingCategoriesForm.set(false)
         });
     }
 }

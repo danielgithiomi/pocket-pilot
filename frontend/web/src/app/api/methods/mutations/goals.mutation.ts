@@ -5,7 +5,7 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { CreateGoalRequest, Goal, IStandardResponse, IVoidResourceResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class GoalsMutation {
     private readonly client = inject(ApiClient);

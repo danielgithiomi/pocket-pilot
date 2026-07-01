@@ -14,6 +14,6 @@ import { AppHeader } from '@structural/headers/app-header/app-header';
                 <router-outlet class="w-full flex-1" />
             </div>
         </section>
-    `,
+    `
 })
 export class DrawerlessLayout {}

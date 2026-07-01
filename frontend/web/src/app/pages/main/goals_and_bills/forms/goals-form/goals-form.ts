@@ -10,22 +10,22 @@ import { GoalsService } from '@api/goals.service';
 import { Radio, RadioOption } from '@atoms/radio';
 import { DatePicker } from '@organisms/date-picker';
 import { AccountsService } from '@api/accounts.service';
-import { LucideAngularModule, ChevronsRight, ChevronsLeft } from 'lucide-angular';
+import { ChevronsLeft, ChevronsRight, LucideAngularModule } from 'lucide-angular';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
-import { addOneMonthFromDate, getMonthDifference, addMonths, formatCurrency } from '@libs/utils';
+import { addMonths, addOneMonthFromDate, formatCurrency, getMonthDifference } from '@libs/utils';
 import {
-    NewGoalSchema,
     EffectResponse,
-    TargetCompletionStrategy,
-    TargetCompletionStrategies,
     newGoalFormValidationSchema,
+    NewGoalSchema,
+    TargetCompletionStrategies,
+    TargetCompletionStrategy
 } from './goals-form.types';
 import { CURRENCIES } from '@global/constants';
 
 @Component({
     selector: 'goals-form',
     templateUrl: './goals-form.html',
-    imports: [DatePicker, Input, Radio, Form, Select, Button, LucideAngularModule],
+    imports: [DatePicker, Input, Radio, Form, Select, Button, LucideAngularModule]
 })
 export class GoalsForm {
     // Icons
@@ -74,7 +74,7 @@ export class GoalsForm {
         targetAmount: null,
         monthlyContribution: null,
         currency: this.defaultCurrency,
-        endDate: addOneMonthFromDate(new Date()),
+        endDate: addOneMonthFromDate(new Date())
     };
     protected readonly newGoalFormModel = signal<NewGoalSchema>(this.INITIAL_FORM_STATE);
     protected readonly newGoalForm = form(this.newGoalFormModel, newGoalFormValidationSchema);
@@ -112,7 +112,7 @@ export class GoalsForm {
 
                     this.summary.set({
                         ceiledValue,
-                        rawValue: calculatedMonthlyContribution,
+                        rawValue: calculatedMonthlyContribution
                     });
 
                     return;
@@ -131,7 +131,7 @@ export class GoalsForm {
 
                     this.summary.set({
                         rawValue: monthsToSave,
-                        ceiledValue,
+                        ceiledValue
                     });
 
                     return;
@@ -152,15 +152,9 @@ export class GoalsForm {
         switch (strategy) {
             case 'date': {
                 const formattedRawValue = formatCurrency(rawValue, this.goalCurrency(), 2, false);
-                const formattedCeiledValue = formatCurrency(
-                    ceiledValue,
-                    this.goalCurrency(),
-                    0,
-                    true,
-                );
+                const formattedCeiledValue = formatCurrency(ceiledValue, this.goalCurrency(), 0, true);
 
-                if (rawValue !== ceiledValue)
-                    return `≈${formattedCeiledValue} (${formattedRawValue})`;
+                if (rawValue !== ceiledValue) return `≈${formattedCeiledValue} (${formattedRawValue})`;
                 return formattedCeiledValue;
             }
             case 'amount': {
@@ -172,7 +166,7 @@ export class GoalsForm {
     });
 
     protected readonly goalCreationStrategies = computed<RadioOption[]>(() =>
-        TargetCompletionStrategies.map((strategy) => {
+        TargetCompletionStrategies.map(strategy => {
             let label: string = '';
             switch (strategy) {
                 case 'date':
@@ -185,9 +179,9 @@ export class GoalsForm {
 
             return {
                 label,
-                value: strategy,
+                value: strategy
             };
-        }),
+        })
     );
 
     protected readonly formattedGoalCategories = computed<RadioOption[]>(() => {
@@ -195,7 +189,7 @@ export class GoalsForm {
             this.toastService.show({
                 variant: 'warning',
                 title: 'Error Fetching Goal Categories!',
-                details: 'There was an error fetching goal categories. Please try again later.',
+                details: 'There was an error fetching goal categories. Please try again later.'
             });
             return [];
         }
@@ -203,13 +197,13 @@ export class GoalsForm {
         const categories = this.goalCategories$.value()?.data;
         if (!categories) return [];
 
-        return categories.map((category) => {
+        return categories.map(category => {
             const { value, label } = category;
 
             return {
                 value,
                 label,
-                disabled: false,
+                disabled: false
             };
         });
     });
@@ -249,7 +243,7 @@ export class GoalsForm {
         this.resetCalculatedFields();
     }
 
-    protected handleCloseForm(source: 'icon' | 'overlay') {
+    protected handleCloseForm(source: 'icon' | 'backdrop') {
         if (source === 'icon') this.resetGoalForm();
         this.onGoalsFormClose.emit();
     }
@@ -272,7 +266,7 @@ export class GoalsForm {
             ...formData,
             targetAmount: formData.targetAmount!,
             category: formData.category as GoalCategoryEnum,
-            monthlyContribution: formData.monthlyContribution!,
+            monthlyContribution: formData.monthlyContribution!
         };
 
         setTimeout(() => {
@@ -281,7 +275,7 @@ export class GoalsForm {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Goal created!',
-                        details: 'Your financial goal has been created successfully.',
+                        details: 'Your financial goal has been created successfully.'
                     });
 
                     this.goals$.reload();
@@ -291,7 +285,7 @@ export class GoalsForm {
                 complete: () => {
                     this.resetGoalForm();
                     this.isSubmittingGoalsForm.set(false);
-                },
+                }
             });
         }, 1000);
     }

@@ -11,7 +11,7 @@ import { Component, computed, inject, input, signal } from '@angular/core';
     selector: 'bill-item',
     styleUrl: './bill-item.css',
     templateUrl: './bill-item.html',
-    imports: [LucideAngularModule, NgClass],
+    imports: [LucideAngularModule, NgClass]
 })
 export class BillItem {
     // Icons
@@ -63,14 +63,14 @@ export class BillItem {
                     this.toastService.show({
                         details,
                         title: message,
-                        variant: 'success',
+                        variant: 'success'
                     });
 
                     this.billsService.getUserBills().reload();
                 },
                 complete: () => {
                     this.isDeleting.set(false);
-                },
+                }
             });
         }, 2500);
     }

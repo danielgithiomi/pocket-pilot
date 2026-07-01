@@ -19,7 +19,7 @@
             @apply flex flex-row items-center gap-2;
 
             p {
-                @apply bg-(--gray4) rounded-lg p-2 text-xs py-2.5;
+                @apply bg-(--reactive-text) rounded-lg p-2 text-xs py-2.5;
             }
         }
     }

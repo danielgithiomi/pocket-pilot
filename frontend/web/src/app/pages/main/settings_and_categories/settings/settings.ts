@@ -13,18 +13,13 @@ import { UpdateUserPreferencesPayload } from '@global/types';
 import { PreferencesService } from '@api/preferences.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { normalizeThemePreference } from '@infrastructure/services/theme.utils';
-import {
-    ThemeVariant,
-    SettingsFormSchema,
-    ApplicationThemeOptions,
-    SettingsFormValidationSchema,
-} from './settings.types';
+import { ThemeVariant, SettingsFormSchema, ApplicationThemeOptions, SettingsFormValidationSchema } from './settings.types';
 
 @Component({
     selector: 'settings',
     styleUrl: './settings.css',
     templateUrl: './settings.html',
-    imports: [LucideAngularModule, Input, Radio, Select, Button],
+    imports: [LucideAngularModule, Input, Radio, Select, Button]
 })
 export class Settings {
     // SIGNALS
@@ -49,7 +44,7 @@ export class Settings {
         return `Monthly Spending Limit (${this.defaultCurrency})`;
     });
     protected readonly applicationThemes = computed<RadioOption[]>(() =>
-        ApplicationThemeOptions.map((theme) => {
+        ApplicationThemeOptions.map(theme => {
             let label: string;
 
             switch (theme) {
@@ -65,17 +60,15 @@ export class Settings {
             }
 
             return { label, value: theme };
-        }),
+        })
     );
 
     // FORM
     private initialSettingsFormState: SettingsFormSchema = {
         defaultCurrency: this.defaultCurrency,
-        preferredTheme:
-            normalizeThemePreference(this.user()?.userPreferences.preferredTheme) ??
-            this.themeService.theme(),
+        preferredTheme: normalizeThemePreference(this.user()?.userPreferences.preferredTheme) ?? this.themeService.theme(),
         monthlySpendingLimit: this.monthlySpendingLimit,
-        preferredLanguage: this.user()?.userPreferences.preferredLanguage ?? 'en',
+        preferredLanguage: this.user()?.userPreferences.preferredLanguage ?? 'en'
     };
     private readonly settingsFormModel = signal<SettingsFormSchema>(this.initialSettingsFormState);
     protected readonly settingsForm = form(this.settingsFormModel, SettingsFormValidationSchema);
@@ -103,7 +96,7 @@ export class Settings {
 
         const payload: UpdateUserPreferencesPayload = {
             ...this.settingsFormModel(),
-            monthlySpendingLimit: this.settingsFormModel().monthlySpendingLimit!,
+            monthlySpendingLimit: this.settingsFormModel().monthlySpendingLimit!
         };
 
         this.preferencesService.updateUserPreferences(payload).subscribe({
@@ -113,11 +106,11 @@ export class Settings {
                 this.toastService.show({
                     variant: 'success',
                     title: 'Settings updated',
-                    details: 'Your preferences have been saved.',
+                    details: 'Your preferences have been saved.'
                 });
                 this.isSubmittingSettingsForm.set(false);
             },
-            error: () => this.isSubmittingSettingsForm.set(false),
+            error: () => this.isSubmittingSettingsForm.set(false)
         });
     }
 }

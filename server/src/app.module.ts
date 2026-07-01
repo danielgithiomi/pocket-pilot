@@ -6,6 +6,6 @@ import { APP_MODULE_IMPORTS, APP_MODULE_PROVIDERS } from './app.constants';
 @Module({
     controllers: [AppController],
     imports: [...APP_MODULE_IMPORTS],
-    providers: [...APP_MODULE_PROVIDERS],
+    providers: [...APP_MODULE_PROVIDERS]
 })
 export class AppModule {}

@@ -3,16 +3,10 @@ import { BillsMutation } from '@methods/mutations';
 import { BillsResource } from '@methods/resources';
 import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
-import {
-    Bill,
-    IStandardError,
-    IStandardResponse,
-    CreateBillPayload,
-    IVoidResourceResponse,
-} from '@global/types';
+import { Bill, IStandardError, IStandardResponse, CreateBillPayload, IVoidResourceResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class BillsService {
     private readonly resource = inject(BillsResource);
@@ -29,7 +23,7 @@ export class BillsService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     };
 
@@ -39,7 +33,7 @@ export class BillsService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     };
 
@@ -49,7 +43,7 @@ export class BillsService {
         this.toastService.show({
             title,
             variant: 'error',
-            details: details as string,
+            details: details as string
         });
     };
 }

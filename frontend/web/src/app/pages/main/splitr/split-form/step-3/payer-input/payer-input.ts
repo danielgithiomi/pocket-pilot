@@ -5,7 +5,7 @@ import { Component, computed, input, output } from '@angular/core';
 @Component({
     imports: [LucideAngularModule],
     selector: 'payer-input',
-    templateUrl: './payer-input.html',
+    templateUrl: './payer-input.html'
 })
 export class PayerInput {
     // ICONS
@@ -21,9 +21,7 @@ export class PayerInput {
     readonly onPayerAmountChangeEvent = output<BillPayerPayload>();
 
     // COMPUTED
-    protected readonly initial = computed(() =>
-        this.payer().payerName.substring(0, 1).toUpperCase(),
-    );
+    protected readonly initial = computed(() => this.payer().payerName.substring(0, 1).toUpperCase());
 
     // METHODS
     protected handlePayerAmountChange(value: string) {
@@ -34,7 +32,7 @@ export class PayerInput {
 
         const payer: BillPayerPayload = {
             payerAmount: formattedAmount,
-            payerName: this.payer().payerName,
+            payerName: this.payer().payerName
         };
         this.onPayerAmountChangeEvent.emit(payer);
     }

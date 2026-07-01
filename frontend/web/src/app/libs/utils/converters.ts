@@ -3,9 +3,9 @@
  * representing years and months.
  *
  * Examples:
- *   convertDaysToYearsAndMonths(15)    => "15 days"
- *   convertDaysToYearsAndMonths(60)    => "2 months"
- *   convertDaysToYearsAndMonths(400)   => "1 yrs 1 months"
+ *   convertDaysToYearsAndMonths(15) => "15 days"
+ *   convertDaysToYearsAndMonths(60) => "2 months"
+ *   convertDaysToYearsAndMonths(400) => "1 yrs 1 months"
  *
  * - For inputs less than 30 days, returns the number of days.
  * - For inputs between 30 and 364, returns the number of months (approx.).

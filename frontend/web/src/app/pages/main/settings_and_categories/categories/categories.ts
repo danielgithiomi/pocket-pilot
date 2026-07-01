@@ -13,7 +13,7 @@ import { FetchError } from '@components/structural/main/fetch-error/fetch-error'
     selector: 'categories',
     styleUrl: './categories.css',
     templateUrl: './categories.html',
-    imports: [FetchError, NoData, NgClass, LucideAngularModule],
+    imports: [FetchError, NoData, NgClass, LucideAngularModule]
 })
 export class Categories {
     // OUTPUTS

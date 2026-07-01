@@ -1,0 +1,83 @@
+@reference 'tailwindcss';
+
+/* Override global `.page { h-full }` which squashes flex children and causes header/body overlap */
+.privacy-policy-page.page {
+    display: flex;
+    height: auto;
+    min-height: 0;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 0;
+    cursor: default !important;
+}
+
+.privacy-policy-header {
+    flex: none;
+    height: auto;
+}
+
+.privacy-policy-body {
+    flex: none;
+    align-items: flex-start;
+}
+
+.privacy-policy-aside {
+    top: 0;
+    flex: none;
+    position: sticky;
+    align-self: flex-start;
+}
+
+.privacy-policy-aside-panel {
+    display: flex;
+    max-height: calc(100dvh - 8vh - 2.5rem);
+    flex-direction: column;
+}
+
+.privacy-policy-toc-nav {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.privacy-policy-toc-link.is-active {
+    border-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 10%, transparent);
+    box-shadow: 0 0 1px var(--primary);
+}
+
+.privacy-policy-sections {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.privacy-policy-bullets li {
+    position: relative;
+    padding-left: 1.25rem;
+}
+
+.privacy-policy-bullets li::before {
+    content: '';
+    left: 0;
+    top: 0.55rem;
+    width: 0.35rem;
+    height: 0.35rem;
+    position: absolute;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+.privacy-policy-table-wrap {
+    scrollbar-gutter: stable;
+}
+
+.privacy-policy-table {
+    table-layout: fixed;
+}
+
+.privacy-policy-table th,
+.privacy-policy-table td {
+    vertical-align: top;
+}

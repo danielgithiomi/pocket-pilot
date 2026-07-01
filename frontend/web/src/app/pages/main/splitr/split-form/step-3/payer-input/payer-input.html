@@ -1,6 +1,4 @@
-<div
-    class="w-full flex flex-row items-center justify-between gap-4 p-4 shadow-lg rounded-lg cursor-default!"
->
+<div class="w-full flex flex-row items-center justify-between gap-4 p-4 shadow-lg rounded-lg cursor-default!">
     <div class="flex flex-row items-center gap-4">
         <!-- Avatar -->
         <div class="size-8 bg-primary rounded-full grid place-items-center">
@@ -23,21 +21,18 @@
                 autocomplete="off"
                 placeholder="0.00"
                 #payerAmountInput
-                (input)="handlePayerAmountChange(payerAmountInput.value)"
-            />
+                (input)="handlePayerAmountChange(payerAmountInput.value)" />
         </div>
 
         <!-- Remove Payer -->
         <div
             (click)="onRemovePayerEvent.emit(payer().payerName)"
-            class="ml-auto size-6 rounded grid place-items-center cursor-pointer"
-        >
+            class="ml-auto size-6 rounded grid place-items-center cursor-pointer">
             <lucide-icon
                 [size]="iconSize"
                 name="delete-payer"
                 [img]="DeleteIcon"
-                class="text-inverted-text hover:text-error transition-all duration-300 cursor-pointer"
-            />
+                class="text-inverted-text hover:text-error transition-all duration-300 cursor-pointer" />
         </div>
     </div>
 </div>

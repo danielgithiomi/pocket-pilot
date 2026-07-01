@@ -2,16 +2,10 @@ import { inject } from '@angular/core';
 import { ApiClient } from '../api-client';
 import { Injectable } from '@angular/core';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
-import {
-    User,
-    IRegisterRequest,
-    IUpdateUserRequest,
-    IVoidResourceResponse,
-    IChangePasswordRequest,
-} from '@global/types';
+import { User, IRegisterRequest, IUpdateUserRequest, IVoidResourceResponse, IChangePasswordRequest } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class UserMutation {
     private readonly client = inject(ApiClient);
@@ -25,9 +19,6 @@ export class UserMutation {
     }
 
     changePassword(userId: string, payload: IChangePasswordRequest) {
-        return this.client.put<IVoidResourceResponse, IChangePasswordRequest>(
-            `users/${userId}/change-password`,
-            payload,
-        );
+        return this.client.put<IVoidResourceResponse, IChangePasswordRequest>(`users/${userId}/change-password`, payload);
     }
 }

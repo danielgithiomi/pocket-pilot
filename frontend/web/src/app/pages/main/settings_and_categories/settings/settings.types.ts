@@ -10,7 +10,7 @@ export interface SettingsFormSchema {
     monthlySpendingLimit: number | null;
 }
 
-export const SettingsFormValidationSchema = schema<SettingsFormSchema>((root) => {
+export const SettingsFormValidationSchema = schema<SettingsFormSchema>(root => {
     // Preferred Theme
     required(root.preferredTheme, { message: 'The preferred theme is required field!' });
 
@@ -22,17 +22,15 @@ export const SettingsFormValidationSchema = schema<SettingsFormSchema>((root) =>
 
     // Monthly Spending Limit
     required(root.monthlySpendingLimit, {
-        message: 'The monthly spending limit is required field!',
+        message: 'The monthly spending limit is required field!'
     });
-    validate(root.monthlySpendingLimit, (context) => {
+    validate(root.monthlySpendingLimit, context => {
         const value = context.value();
         if (value === null) return undefined;
 
         const asString = value.toString();
         const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
 
-        return isValid
-            ? undefined
-            : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
+        return isValid ? undefined : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
     });
 });

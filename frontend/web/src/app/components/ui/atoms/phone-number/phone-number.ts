@@ -3,30 +3,14 @@ import { NgClass } from '@angular/common';
 import { FieldTree } from '@angular/forms/signals';
 import { COUNTRIES, DEFAULT_COUNTRY_ISO } from '@global/constants';
 import { Check, ChevronDown, ChevronUp, LucideAngularModule, Search, X } from 'lucide-angular';
-import {
-    input,
-    output,
-    signal,
-    effect,
-    computed,
-    viewChild,
-    Component,
-    ElementRef,
-    HostListener,
-} from '@angular/core';
-import {
-    isoToFlag,
-    filterCountries,
-    findCountryByIso,
-    parsePhoneNumber,
-    buildFullPhoneNumber,
-} from './phone-number.utils';
+import { input, output, signal, effect, computed, viewChild, Component, ElementRef, HostListener } from '@angular/core';
+import { isoToFlag, filterCountries, findCountryByIso, parsePhoneNumber, buildFullPhoneNumber } from './phone-number.utils';
 
 @Component({
     selector: 'atom-phone-number',
     styleUrl: './phone-number.css',
     templateUrl: './phone-number.html',
-    imports: [NgClass, LucideAngularModule],
+    imports: [NgClass, LucideAngularModule]
 })
 export class PhoneNumber {
     /* INPUTS */
@@ -68,8 +52,7 @@ export class PhoneNumber {
     protected readonly countrySearchQuery = signal('');
     protected readonly selectedCountry = signal<Country>(findCountryByIso(DEFAULT_COUNTRY_ISO));
 
-    private readonly countrySearchInput =
-        viewChild<ElementRef<HTMLInputElement>>('countrySearchInput');
+    private readonly countrySearchInput = viewChild<ElementRef<HTMLInputElement>>('countrySearchInput');
 
     /* COMPUTED */
     fieldState = computed(() => this.formField()());
@@ -80,9 +63,7 @@ export class PhoneNumber {
 
     showClearIcon = computed(() => this.nationalNumber().length > 0);
 
-    showFieldErrors = computed(
-        () => this.fieldState().invalid() && (this.fieldState().touched() || this.hasBlurred()),
-    );
+    showFieldErrors = computed(() => this.fieldState().invalid() && (this.fieldState().touched() || this.hasBlurred()));
 
     fieldVisualState = computed(() => {
         if (!this.showStatus()) return 'neutral' as const;

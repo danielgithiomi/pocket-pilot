@@ -6,7 +6,7 @@ import { OnboardingMutation } from '@methods/mutations';
 import { IStandardError, IStandardResponse, OnboardingPayload, User } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class OnboardingService {
     private readonly authService = inject(AuthService);
@@ -23,7 +23,7 @@ export class OnboardingService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -33,7 +33,7 @@ export class OnboardingService {
         this.toastService.show({
             title,
             details: details as string,
-            variant: 'error',
+            variant: 'error'
         });
     };
 }

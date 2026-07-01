@@ -4,8 +4,7 @@
         [id]="account().id"
         [isLoading]="false"
         [account]="account()"
-        class="flex-0 sm:flex-1 md:flex-0 p-5 sm:p-2 xl:p-5"
-    />
+        class="flex-0 sm:flex-1 md:flex-0 p-5 sm:p-2 xl:p-5" />
 
     <div class="flex-0 sm:flex-1 md:flex-0 cursor-default md:ms-2">
         <h5 class="underline text-lg underline-offset-2 font-semibold mb-2">Summary</h5>
@@ -14,32 +13,16 @@
             <summary-item label="Name" id="account-name" [value]="account().name" />
             <summary-item label="Type" id="account-type" [value]="account().type" />
             <summary-item label="Currency" id="account-currency" [value]="account().currency" />
-            <summary-item
-                id="transaction-count"
-                label="Transaction count"
-                [value]="transactionCount().toString()"
-            />
+            <summary-item id="transaction-count" label="Transaction count" [value]="transactionCount().toString()" />
 
             <summary-item label="Balance" id="account-balance" [value]="formatBalance()" />
 
             @if (isDifferentCurrency()) {
-                <summary-item
-                    label="Conversion"
-                    id="account-conversion"
-                    [value]="formatConversion(account().baseBalance!)"
-                />
+                <summary-item label="Conversion" id="account-conversion" [value]="formatConversion(account().baseBalance!)" />
             }
 
-            <summary-item
-                id="date-created"
-                label="Date Created"
-                [value]="formatDate(account().createdAt)"
-            />
-            <summary-item
-                id="last-activity"
-                label="Last Activity"
-                [value]="formatDate(account().updatedAt)"
-            />
+            <summary-item id="date-created" label="Date Created" [value]="formatDate(account().createdAt)" />
+            <summary-item id="last-activity" label="Last Activity" [value]="formatDate(account().updatedAt)" />
         </div>
     </div>
 </section>

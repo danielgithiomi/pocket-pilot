@@ -7,13 +7,11 @@ import { SettleSplitrPayload, SplitrEventDto, SplitrEventPayload } from '../dto/
 export class SplitrService {
     constructor(
         private readonly splitrCache: SplitrCache,
-        private readonly splitrRepository: SplitrRepository,
+        private readonly splitrRepository: SplitrRepository
     ) {}
 
     getUserSplitrEvents(userId: string): Promise<SplitrEventDto[]> {
-        return this.splitrCache.getOrSetCache<SplitrEventDto[]>(userId, () =>
-            this.splitrRepository.getUserSplitrEvents(userId),
-        );
+        return this.splitrCache.getOrSetCache<SplitrEventDto[]>(userId, () => this.splitrRepository.getUserSplitrEvents(userId));
     }
 
     async getSplitrEventById(userId: string, eventId: string): Promise<SplitrEventDto> {
@@ -23,7 +21,7 @@ export class SplitrService {
             throw new NotFoundException({
                 name: 'SPLITR_EVENT_NOT_FOUND!',
                 title: 'Splitr Event Not Found!',
-                details: `No splitr event found with the ID provided.`,
+                details: `No splitr event found with the ID provided.`
             });
 
         return eventById;

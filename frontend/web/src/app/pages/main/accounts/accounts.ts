@@ -11,10 +11,10 @@ import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NoData } from '@structural/main/no-data/no-data';
 import { Component, computed, inject, signal } from '@angular/core';
-import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
+import { ListFilterPlus, LucideAngularModule } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { AccountsSchema, accountsFormValidationSchema } from './accounts.types';
 import { CURRENCIES, DummyAccountData as DummyAccount } from '@global/constants';
+import { accountsFormValidationSchema, AccountsSchema, INITIAL_FORM_STATE } from './accounts.types';
 
 @Component({
     selector: 'accounts',
@@ -26,17 +26,7 @@ import { CURRENCIES, DummyAccountData as DummyAccount } from '@global/constants'
             @apply grid py-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6;
         }
     `,
-    imports: [
-        Form,
-        Input,
-        NoData,
-        Select,
-        Button,
-        NgClass,
-        Account,
-        FetchError,
-        LucideAngularModule,
-    ],
+    imports: [Form, Input, NoData, Select, Button, NgClass, Account, FetchError, LucideAngularModule]
 })
 export class Accounts {
     // Icons
@@ -54,9 +44,7 @@ export class Accounts {
 
     // Computed
     protected isLoadingAccounts = computed<boolean>(() => this.accountsWithCount.isLoading());
-    protected accountsHasError = computed(
-        () => !!this.accountsWithCount.error() || !this.accountsWithCount.hasValue(),
-    );
+    protected accountsHasError = computed(() => !!this.accountsWithCount.error() || !this.accountsWithCount.hasValue());
     protected accountsResource = computed(() => {
         if (this.accountsWithCount.error()) return null;
         return this.accountsWithCount.value()?.data ?? null;
@@ -79,22 +67,20 @@ export class Accounts {
     });
 
     // Form
-    private readonly INITIAL_FORM_STATE: AccountsSchema = {
-        name: '',
-        type: '',
-        isBalanceVisible: true,
-        currency: this.currency,
-    };
-    protected accountsFormModel = signal<AccountsSchema>(this.INITIAL_FORM_STATE);
+    protected INITIAL_ACCOUNTS_FORM_STATE: AccountsSchema = {
+        ...INITIAL_FORM_STATE,
+        currency: this.currency
+    }
+    protected accountsFormModel = signal<AccountsSchema>(this.INITIAL_ACCOUNTS_FORM_STATE);
     protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
 
     // Methods
     protected resetAccountsForm() {
         this.accountsForm().reset();
-        this.accountsFormModel.set(this.INITIAL_FORM_STATE);
+        this.accountsFormModel.set(this.INITIAL_ACCOUNTS_FORM_STATE);
     }
 
-    protected handleCloseForm(source: 'icon' | 'overlay') {
+    protected handleCloseForm(source: 'icon' | 'backdrop') {
         if (source === 'icon') this.resetAccountsForm();
         this.isFormOpen.set(false);
     }
@@ -112,14 +98,14 @@ export class Accounts {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Account created!',
-                        details: `Your [${payload.name}] account has been created successfully.`,
+                        details: `Your [${payload.name}] account has been created successfully.`
                     });
                     this.accountsWithCount.reload();
                     this.resetAccountsForm();
                     this.isFormOpen.set(false);
                 },
-                error: (error) => console.error('Account creation failed:', error),
-                complete: () => this.isSubmitting.set(false),
+                error: error => console.error('Account creation failed:', error),
+                complete: () => this.isSubmitting.set(false)
             });
         }, 1000);
     };

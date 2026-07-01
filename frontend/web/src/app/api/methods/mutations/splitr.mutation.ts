@@ -7,11 +7,11 @@ import {
     SplitrSquadPayload,
     SettleSplitrPayload,
     IVoidResourceResponse,
-    ISplitrEvent,
+    ISplitrEvent
 } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class SplitrMutation {
     private readonly client = inject(ApiClient);

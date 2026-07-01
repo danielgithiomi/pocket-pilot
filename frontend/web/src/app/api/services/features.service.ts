@@ -6,15 +6,18 @@ import { computed, effect, inject, Injectable, Signal, signal } from '@angular/c
 import {
     Feature,
     IEnumResponse,
+    FeatureComment,
     FeaturePayload,
     IStandardError,
-    FeaturesWithCount,
     IStandardResponse,
+    FeaturesWithCount,
+    FeatureWithComments,
     IVoidResourceResponse,
+    FeatureCommentPayload
 } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class FeaturesService {
     private readonly mutation = inject(FeaturesMutation);
@@ -28,8 +31,14 @@ export class FeaturesService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
+    }
+
+    toggleFeatureUpvoteById(featureId: string): Observable<Feature> {
+        return this.mutation
+            .toggleFeatureUpvoteById(featureId)
+            .pipe(map((response: IStandardResponse<Feature>) => response.data));
     }
 
     deleteFeatureRequestById(featureId: string): Observable<IVoidResourceResponse> {
@@ -38,24 +47,29 @@ export class FeaturesService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
+    }
+
+    addCommentToFeature(featureId: string, payload: FeatureCommentPayload): Observable<FeatureComment> {
+        return this.mutation
+            .addCommentToFeature(featureId, payload)
+            .pipe(map((response: IStandardResponse<FeatureComment>) => response.data));
     }
 
     // RESOURCES
     private readonly _userFeatureRequests = signal<Feature[]>([]);
     private readonly _featureStatuses = signal<IEnumResponse[]>([]);
     private readonly _featureCategories = signal<IEnumResponse[]>([]);
-    private readonly _featureVoteVariants = signal<IEnumResponse[]>([]);
     private readonly _featureRequests = signal<FeaturesWithCount>({ count: 0, features: [] });
+    private readonly _featureWithComments = signal<FeatureWithComments | null>(null);
 
     private readonly _isLoading = computed(
         () =>
             this.resource.getFeatureStatus.isLoading() ||
             this.resource.getFeatureRequests.isLoading() ||
             this.resource.getFeatureCategories.isLoading() ||
-            this.resource.getFeatureVoteVariants.isLoading() ||
-            this.resource.getUserFeatureRequests.isLoading(),
+            this.resource.getUserFeatureRequests.isLoading()
     );
 
     private readonly _hasError = computed(
@@ -63,8 +77,7 @@ export class FeaturesService {
             !!this.resource.getFeatureStatus.error() ||
             !!this.resource.getFeatureRequests.error() ||
             !!this.resource.getFeatureCategories.error() ||
-            !!this.resource.getFeatureVoteVariants.error() ||
-            !!this.resource.getUserFeatureRequests.error(),
+            !!this.resource.getUserFeatureRequests.error()
     );
 
     constructor() {
@@ -76,11 +89,6 @@ export class FeaturesService {
         effect(() => {
             const response = this.resource.getFeatureCategories.value();
             if (response?.data) this._featureCategories.set(response.data);
-        });
-
-        effect(() => {
-            const response = this.resource.getFeatureVoteVariants.value();
-            if (response?.data) this._featureVoteVariants.set(response.data);
         });
 
         effect(() => {
@@ -102,10 +110,6 @@ export class FeaturesService {
         return this._featureCategories.asReadonly();
     }
 
-    getFeatureVoteVariants(): Signal<IEnumResponse[]> {
-        return this._featureVoteVariants.asReadonly();
-    }
-
     getFeatureRequests(): Signal<FeaturesWithCount> {
         return this._featureRequests.asReadonly();
     }
@@ -113,6 +117,9 @@ export class FeaturesService {
     getUserFeatureRequests(): Signal<Feature[]> {
         return this._userFeatureRequests.asReadonly();
     }
+
+    getCommentsAssociatedWithFeature = (featureId: Signal<string>) =>
+        this.resource.getAllCommentsAssociatedWithFeature(featureId);
 
     isLoading(): Signal<boolean> {
         return this._isLoading;
@@ -135,6 +142,5 @@ export class FeaturesService {
         this.resource.getFeatureRequests.reload();
         this.resource.getFeatureCategories.reload();
         this.resource.getUserFeatureRequests.reload();
-        this.resource.getFeatureVoteVariants.reload();
     }
 }

@@ -13,7 +13,7 @@ import { LucideAngularModule, Menu, Settings2, Bell, LogOut } from 'lucide-angul
     selector: 'app-header',
     styleUrl: './app-header.css',
     templateUrl: './app-header.html',
-    imports: [LucideAngularModule, UserSummary, Button, NgClass],
+    imports: [LucideAngularModule, UserSummary, Button, NgClass]
 })
 export class AppHeader {
     protected readonly Menu = Menu;
@@ -45,7 +45,7 @@ export class AppHeader {
             .logout()
             .pipe(tap(() => this.router.navigateByUrl(WEB_ROUTES.login)))
             .subscribe({
-                complete: () => localStorage.removeItem(STORED_ONBOARDING_USER_KEY),
+                complete: () => localStorage.removeItem(STORED_ONBOARDING_USER_KEY)
             });
     }
 }

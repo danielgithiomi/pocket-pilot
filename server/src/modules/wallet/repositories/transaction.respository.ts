@@ -8,15 +8,15 @@ import { CompleteTransactionDto, CreateTransactionDto, CreateTransferTransaction
 export class TransactionRepository {
     constructor(
         private readonly db: DatabaseService,
-        private readonly exchangeRateService: ExchangeRateService,
+        private readonly exchangeRateService: ExchangeRateService
     ) {}
 
     async getAllTransactionsAndAccountData() {
         return this.db.transaction.findMany({
             include: {
                 sourceAccount: { select: { id: true, name: true, currency: true } },
-                targetAccount: { select: { id: true, name: true, currency: true } },
-            },
+                targetAccount: { select: { id: true, name: true, currency: true } }
+            }
         });
     }
 
@@ -25,38 +25,38 @@ export class TransactionRepository {
             where: { OR: [{ sourceAccountId: accountId }, { targetAccountId: accountId }] },
             include: {
                 sourceAccount: { select: { id: true, name: true, currency: true } },
-                targetAccount: { select: { id: true, name: true, currency: true } },
-            },
+                targetAccount: { select: { id: true, name: true, currency: true } }
+            }
         });
     }
 
     async getUserPlainTransactionsByAccountId(accountId: string) {
         return this.db.transaction.findMany({
-            where: { OR: [{ sourceAccountId: accountId }, { targetAccountId: accountId }] },
+            where: { OR: [{ sourceAccountId: accountId }, { targetAccountId: accountId }] }
         });
     }
 
     async getUserTransactionsAndAccountData(userId: string) {
         return this.db.transaction.findMany({
             where: {
-                OR: [{ sourceAccount: { holderId: userId } }, { targetAccount: { holderId: userId } }],
+                OR: [{ sourceAccount: { holderId: userId } }, { targetAccount: { holderId: userId } }]
             },
             include: {
                 sourceAccount: { select: { id: true, name: true, currency: true } },
-                targetAccount: { select: { id: true, name: true, currency: true } },
-            },
+                targetAccount: { select: { id: true, name: true, currency: true } }
+            }
         });
     }
 
     async getTransactionCountByAccountId(accountId: string): Promise<number> {
         return this.db.transaction.count({
-            where: { sourceAccountId: accountId },
+            where: { sourceAccountId: accountId }
         });
     }
 
     async createNewTransactionAndUpdateBalance(
         accountId: string,
-        transaction: CreateTransactionDto,
+        transaction: CreateTransactionDto
     ): Promise<CompleteTransactionDto> {
         return this.db.$transaction(async prisma => {
             let createdTransaction: CompleteTransactionDto;
@@ -65,19 +65,19 @@ export class TransactionRepository {
                 createdTransaction = await prisma.transaction.create({
                     data: {
                         sourceAccountId: accountId,
-                        ...transaction,
+                        ...transaction
                     },
                     include: {
                         sourceAccount: { select: { id: true, name: true, currency: true } },
-                        targetAccount: { select: { id: true, name: true, currency: true } },
-                    },
+                        targetAccount: { select: { id: true, name: true, currency: true } }
+                    }
                 });
             } catch (error) {
                 throw new InternalServerErrorException({
                     details: error,
                     name: 'TRANSFER_TRANSACTION_CREATION_ERROR',
                     title: 'Error in creating a transfer transaction',
-                    message: 'There was an error creating the new transfer transaction',
+                    message: 'There was an error creating the new transfer transaction'
                 });
             }
 
@@ -86,18 +86,18 @@ export class TransactionRepository {
                     where: { id: accountId },
                     data: {
                         balance: {
-                            increment: transaction.amount,
-                        },
-                    },
+                            increment: transaction.amount
+                        }
+                    }
                 });
             } else if (transaction.type === TransactionType.EXPENSE) {
                 await prisma.account.update({
                     where: { id: accountId },
                     data: {
                         balance: {
-                            decrement: transaction.amount,
-                        },
-                    },
+                            decrement: transaction.amount
+                        }
+                    }
                 });
             } else {
                 throw new InternalServerErrorException({
@@ -105,8 +105,8 @@ export class TransactionRepository {
                     title: 'Invalid transaction type!',
                     message: 'Could not create transaction with invalid type',
                     details: {
-                        type: transaction.type,
-                    },
+                        type: transaction.type
+                    }
                 });
             }
 
@@ -114,9 +114,7 @@ export class TransactionRepository {
         });
     }
 
-    async createTransferTransactionAndUpdateBalances(
-        payload: CreateTransferTransactionPayload,
-    ): Promise<CompleteTransactionDto> {
+    async createTransferTransactionAndUpdateBalances(payload: CreateTransferTransactionPayload): Promise<CompleteTransactionDto> {
         return this.db.$transaction(async prisma => {
             let createdTransferTransaction: CompleteTransactionDto;
             const { sourceAccountId, targetAccountId } = payload;
@@ -126,15 +124,15 @@ export class TransactionRepository {
                     data: { ...payload },
                     include: {
                         sourceAccount: { select: { id: true, name: true, currency: true } },
-                        targetAccount: { select: { id: true, name: true, currency: true } },
-                    },
+                        targetAccount: { select: { id: true, name: true, currency: true } }
+                    }
                 });
             } catch (error) {
                 throw new InternalServerErrorException({
                     details: error,
                     name: 'TRANSFER_TRANSACTION_CREATION_ERROR',
                     title: 'Error in creating a transfer transaction',
-                    message: 'There was an error creating the new transfer transaction',
+                    message: 'There was an error creating the new transfer transaction'
                 });
             }
 
@@ -143,13 +141,13 @@ export class TransactionRepository {
             // Decrement from source account
             await prisma.account.update({
                 where: { id: sourceAccountId },
-                data: { balance: { decrement: sourceAmount } },
+                data: { balance: { decrement: sourceAmount } }
             });
 
             // Increment the target account
             await prisma.account.update({
                 where: { id: targetAccountId },
-                data: { balance: { increment: targetAmount } },
+                data: { balance: { increment: targetAmount } }
             });
 
             return createdTransferTransaction;
@@ -158,13 +156,13 @@ export class TransactionRepository {
 
     async deleteTransactionById(transactionId: string): Promise<void> {
         await this.db.transaction.delete({
-            where: { id: transactionId },
+            where: { id: transactionId }
         });
     }
 
     // HELPER FUNCTIONS
     private async getTransferAmounts(
-        createdTransaction: CompleteTransactionDto,
+        createdTransaction: CompleteTransactionDto
     ): Promise<{ sourceAmount: number; targetAmount: number }> {
         if (!createdTransaction.targetAccount)
             throw new InternalServerErrorException({
@@ -174,21 +172,21 @@ export class TransactionRepository {
                 details: {
                     transaction: createdTransaction,
                     transactionId: createdTransaction.id,
-                    sourceAccount: createdTransaction.sourceAccount,
-                },
+                    sourceAccount: createdTransaction.sourceAccount
+                }
             });
 
         const {
             amount,
             sourceAccount: { currency: sourceAccountCurrency },
-            targetAccount: { currency: targetAccountCurrency },
+            targetAccount: { currency: targetAccountCurrency }
         } = createdTransaction;
 
         if (targetAccountCurrency !== sourceAccountCurrency) {
             const conversion = await this.exchangeRateService.performCurrencyConversion(
                 amount,
                 sourceAccountCurrency,
-                targetAccountCurrency,
+                targetAccountCurrency
             );
 
             return { sourceAmount: conversion.source.amount, targetAmount: conversion.target.amount };

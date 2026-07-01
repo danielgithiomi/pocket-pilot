@@ -31,7 +31,7 @@ export class CreateTransferTransactionPayload extends CreateTransactionDto {
     @IsNotEmpty()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The ID of the account to transfer from',
+        description: 'The ID of the account to transfer from'
     })
     sourceAccountId!: string;
 
@@ -39,7 +39,7 @@ export class CreateTransferTransactionPayload extends CreateTransactionDto {
     @IsNotEmpty()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174001',
-        description: 'The ID of the account to transfer to',
+        description: 'The ID of the account to transfer to'
     })
     targetAccountId!: string;
 }
@@ -113,7 +113,7 @@ export class TransactionInAccountDto extends TransactionDto {
     @ApiProperty({
         nullable: true,
         example: '123e4567-e89b-12d3-a456-426614174001',
-        description: 'The ID of the target account (if transfer)',
+        description: 'The ID of the target account (if transfer)'
     })
     targetAccountId!: string | null;
 }
@@ -125,7 +125,7 @@ export class TransactionsResponseDto {
 
     @ApiProperty({
         type: 'array',
-        items: { $ref: getSchemaPath(CompleteTransactionDto) },
+        items: { $ref: getSchemaPath(CompleteTransactionDto) }
     })
     data!: CompleteTransactionDto[];
 }
@@ -137,7 +137,7 @@ export class TransactionsWithAccountResponseDto {
 
     @ApiProperty({
         type: 'array',
-        items: { $ref: getSchemaPath(CompleteTransactionDto) },
+        items: { $ref: getSchemaPath(CompleteTransactionDto) }
     })
     data!: CompleteTransactionDto[];
 }

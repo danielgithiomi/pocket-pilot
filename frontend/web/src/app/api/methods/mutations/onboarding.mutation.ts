@@ -4,7 +4,7 @@ import { User, OnboardingPayload } from '@global/types';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class OnboardingMutation {
     private readonly client = inject(ApiClient);

@@ -2,27 +2,22 @@ import { Injectable } from '@angular/core';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
-import {
-    IEnumResponse,
-    IStandardResponse,
-    UserAccountsWithCount,
-    AccountWithTransactions,
-} from '@global/types';
+import { IEnumResponse, IStandardResponse, UserAccountsWithCount, AccountWithTransactions } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class AccountsResource {
     accountTypes = httpResource<IStandardResponse<IEnumResponse[]>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.account_types),
+        url: concatUrl(endpoints.account_types)
     }));
 
     userAccounts = httpResource<IStandardResponse<UserAccountsWithCount>>(() => ({
         method: 'GET',
         cache: 'no-cache',
-        url: concatUrl(endpoints.accounts),
+        url: concatUrl(endpoints.accounts)
     }));
 
     accountById = (accountId: string) =>
@@ -31,7 +26,7 @@ export class AccountsResource {
             return {
                 method: 'GET',
                 cache: 'no-cache',
-                url: concatUrl(url),
+                url: concatUrl(url)
             };
         });
 
@@ -41,7 +36,7 @@ export class AccountsResource {
             return {
                 method: 'GET',
                 cache: 'no-cache',
-                url: concatUrl(url),
+                url: concatUrl(url)
             };
         });
 }

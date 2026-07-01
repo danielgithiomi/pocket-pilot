@@ -11,6 +11,6 @@ import { SplitrRepository } from './repositories/splitr.repository';
 @Module({
     imports: [IdentityModule],
     controllers: [SquadsController, SplitrController],
-    providers: [SplitrService, SquadsService, SquadsCache, SplitrCache, SplitrRepository, SquadsRepository],
+    providers: [SplitrService, SquadsService, SquadsCache, SplitrCache, SplitrRepository, SquadsRepository]
 })
 export class SplitrModule {}

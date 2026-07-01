@@ -8,6 +8,6 @@ import { IdentityModule } from '@modules/identity/identity.module';
     exports: [AwsService],
     controllers: [AwsController],
     providers: [AwsService, S3ClientService],
-    imports: [forwardRef(() => IdentityModule)],
+    imports: [forwardRef(() => IdentityModule)]
 })
 export class AwsModule {}

@@ -9,12 +9,8 @@ import { Component, computed, input } from '@angular/core';
     selector: 'consumer-summary',
     template: `
         <div
-            class="shadow-lg flex flex-row items-center justify-between px-3 py-4 gap-3 cursor-default! hover:cursor-pointer! card-item-border"
-        >
-            <div
-                class="rounded-full size-8 grid place-items-center shrink-0"
-                [ngClass]="avatarClasses().bg"
-            >
+            class="shadow-lg flex flex-row items-center justify-between px-3 py-4 gap-3 cursor-default! hover:cursor-pointer! card-item-border">
+            <div class="rounded-full size-8 grid place-items-center shrink-0" [ngClass]="avatarClasses().bg">
                 <p class="text-sm font-semibold" [ngClass]="avatarClasses().fg">
                     {{ consumerData().consumerName.charAt(0).toUpperCase() }}
                 </p>
@@ -29,7 +25,7 @@ import { Component, computed, input } from '@angular/core';
                 <p class="text-sm font-bold">{{ formattedAmountPayable() }}</p>
             </div>
         </div>
-    `,
+    `
 })
 export class ConsumerSummary {
     // INPUTS
@@ -38,13 +34,7 @@ export class ConsumerSummary {
 
     // COMPUTED
     protected readonly formattedAmountPayable = computed(() => {
-        return formatCurrency(
-            this.consumerData().amountPayable,
-            this.billingCurrency(),
-            2,
-            true,
-            true,
-        );
+        return formatCurrency(this.consumerData().amountPayable, this.billingCurrency(), 2, true, true);
     });
     protected readonly formattedItemsConsumed = computed(() => {
         const itemsConsumed = Math.ceil(this.consumerData().itemsConsumed);
@@ -53,10 +43,7 @@ export class ConsumerSummary {
     });
 
     protected readonly avatarClasses = computed<{ bg: string; fg: string }>(
-        () =>
-            COLOR_PALETTE[
-                Math.abs(hashFromName(this.consumerData().consumerName)) % COLOR_PALETTE.length
-            ],
+        () => COLOR_PALETTE[Math.abs(hashFromName(this.consumerData().consumerName)) % COLOR_PALETTE.length]
     );
 }
 

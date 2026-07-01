@@ -24,23 +24,14 @@ import {
     TrendingDown,
     ArrowLeftRight,
     BrickWallShield,
-    LucideAngularModule,
+    LucideAngularModule
 } from 'lucide-angular';
 
 @Component({
     selector: 'app-dashboard',
     styleUrl: './dashboard.css',
     templateUrl: './dashboard.html',
-    imports: [
-        NgClass,
-        RatioSlider,
-        ProgressBar,
-        CostAnalysis,
-        UpcomingBills,
-        DashboardCard,
-        CalendarModule,
-        LucideAngularModule,
-    ],
+    imports: [NgClass, RatioSlider, ProgressBar, CostAnalysis, UpcomingBills, DashboardCard, CalendarModule, LucideAngularModule]
 })
 export class Dashboard {
     // Icons
@@ -76,9 +67,7 @@ export class Dashboard {
     protected readonly currentMonth = signal<string>(this.actualMonth);
 
     // Computed
-    protected readonly isDataLoading = computed(
-        () => this.accounts.isLoading() || this.transactions.isLoading(),
-    );
+    protected readonly isDataLoading = computed(() => this.accounts.isLoading() || this.transactions.isLoading());
 
     protected readonly accountsCount = computed(() => {
         if (this.accounts.error()) return '0';
@@ -95,7 +84,7 @@ export class Dashboard {
         const transactions = this.transactions.value()?.data.data;
         if (!transactions) return 0;
         return transactions
-            .filter((transaction) => transaction.type === 'INCOME')
+            .filter(transaction => transaction.type === 'INCOME')
             .reduce((total, transaction) => total + transaction.amount, 0);
     });
 
@@ -104,7 +93,7 @@ export class Dashboard {
         const transactions = this.transactions.value()?.data.data;
         if (!transactions) return 0;
         return transactions
-            .filter((transaction) => transaction.type === 'EXPENSE')
+            .filter(transaction => transaction.type === 'EXPENSE')
             .reduce((total, transaction) => total + transaction.amount, 0);
     });
 
@@ -138,7 +127,7 @@ export class Dashboard {
         this.toastService.show({
             variant: 'info',
             title: 'Edit In Settings!',
-            details: 'Please visit the settings page to edit your monthly spending limit.',
+            details: 'Please visit the settings page to edit your monthly spending limit.'
         });
     }
 

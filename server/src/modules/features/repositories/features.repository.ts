@@ -1,10 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '@infrastructure/database/database.service';
-import { FeatureWithUser, FeaturePayload, UpdateFeatureStatusPayload } from '../dto/features.dto';
+import { FeaturePayload, FeatureWithUser, UpdateFeatureStatusPayload } from '../dto/features.dto';
 
 @Injectable()
 export class FeaturesRepository {
     private readonly FEATURE_REQUESTS_LIMIT = 5;
+
+    private readonly includedFields = {
+        featureVotes: true,
+        user: { select: { name: true } },
+        _count: { select: { featureVotes: true, featureComments: true } }
+    };
 
     constructor(private readonly db: DatabaseService) {}
 
@@ -12,29 +18,70 @@ export class FeaturesRepository {
         return this.db.feature.create({
             data: {
                 ...payload,
-                authorId: userId,
+                authorId: userId
             },
-            include: {
-                featureVotes: true,
-                user: { select: { name: true } },
-            },
+            include: this.includedFields
         });
     }
 
     getFeatureRequests(): Promise<FeatureWithUser[]> {
         return this.db.feature.findMany({
-            include: { featureVotes: true, user: { select: { name: true } } },
+            include: this.includedFields,
             orderBy: { createdAt: 'desc' },
-            take: this.FEATURE_REQUESTS_LIMIT,
+            take: this.FEATURE_REQUESTS_LIMIT
         });
     }
 
     getUserFeatureRequests(userId: string): Promise<FeatureWithUser[]> {
         return this.db.feature.findMany({
             where: { authorId: userId },
-            include: { featureVotes: true, user: { select: { name: true } } },
+            include: this.includedFields,
             orderBy: { createdAt: 'desc' },
-            take: this.FEATURE_REQUESTS_LIMIT,
+            take: this.FEATURE_REQUESTS_LIMIT
+        });
+    }
+
+    getFeatureRequestById(featureId: string): Promise<FeatureWithUser | null> {
+        return this.db.feature.findUnique({
+            where: { id: featureId },
+            include: this.includedFields
+        });
+    }
+
+    toggleFeatureUpvoteById(userId: string, featureId: string): Promise<FeatureWithUser> {
+        return this.db.$transaction(async trx => {
+            const existingFeatureVote = await trx.featureVotes.findUnique({
+                where: {
+                    featureId_userId: { featureId, userId }
+                }
+            });
+
+            if (!existingFeatureVote) {
+                await trx.featureVotes.create({
+                    data: {
+                        userId,
+                        featureId
+                    }
+                });
+
+                return trx.feature.update({
+                    where: { id: featureId },
+                    data: { upvoteCount: { increment: 1 } },
+                    include: this.includedFields
+                });
+            }
+
+            await trx.featureVotes.delete({
+                where: {
+                    featureId_userId: { featureId, userId }
+                }
+            });
+
+            return trx.feature.update({
+                where: { id: featureId },
+                data: { upvoteCount: { decrement: 1 } },
+                include: this.includedFields
+            });
         });
     }
 
@@ -44,14 +91,14 @@ export class FeaturesRepository {
         return this.db.feature.update({
             where: { id: featureId },
             data: { featureStatus },
-            include: { featureVotes: true, user: { select: { name: true } } },
+            include: this.includedFields
         });
     }
 
     deleteFeatureRequestById(featureId: string): Promise<FeatureWithUser> {
         return this.db.feature.delete({
             where: { id: featureId },
-            include: { featureVotes: true, user: { select: { name: true } } },
+            include: this.includedFields
         });
     }
 }

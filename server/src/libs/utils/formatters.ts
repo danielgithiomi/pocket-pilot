@@ -13,7 +13,7 @@ export function formatEnumForFrontend(enumValue: string): ExposeEnumDto {
 
     return {
         value: enumValue,
-        label: formattedLabel,
+        label: formattedLabel
     };
 }
 
@@ -38,10 +38,10 @@ export function normalizeCategories(categories: string[]): string[] {
                         .trim()
                         .toLowerCase()
                         .replace(/[^a-z\s-_]/g, '') // ✅ allow underscore
-                        .replace(/\s+/g, '_'),
+                        .replace(/\s+/g, '_')
                 )
-                .filter(c => c.length > 0),
-        ),
+                .filter(c => c.length > 0)
+        )
     );
 }
 

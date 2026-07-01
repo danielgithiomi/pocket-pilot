@@ -4,11 +4,7 @@ import { AccountsService } from '@api/accounts.service';
 import { LucideAngularModule, Pencil } from 'lucide-angular';
 import { SpendingProgressBarColors, DEFAULT_COLORS, Variant } from './progress-bar.types';
 import { Component, computed, effect, input, signal, inject, output } from '@angular/core';
-import {
-    easeOutCubic,
-    deferAnimationFrame,
-    COMPONENT_ANIMATION_DURATION_MS,
-} from '@libs/constants';
+import { easeOutCubic, deferAnimationFrame, COMPONENT_ANIMATION_DURATION_MS } from '@libs/constants';
 
 @Component({
     selector: 'atom-progress-bar',
@@ -21,18 +17,12 @@ import {
                     class="progress-track"
                     [style.--stripe-color]="resolvedColors().stripeColor"
                     [style.background-color]="resolvedColors().trackColor"
-                    [style.--fill-color]="
-                        isExceeded() ? resolvedColors().exceededColor : resolvedColors().fillColor
-                    "
-                    [style.--border-color]="
-                        isExceeded() ? resolvedColors().exceededColor : resolvedColors().fillColor
-                    "
-                >
+                    [style.--fill-color]="isExceeded() ? resolvedColors().exceededColor : resolvedColors().fillColor"
+                    [style.--border-color]="isExceeded() ? resolvedColors().exceededColor : resolvedColors().fillColor">
                     <div
                         class="progress-fill"
                         [class.vertical]="variant() === 'vertical'"
-                        [style.--progress]="animatedPercentage() + '%'"
-                    >
+                        [style.--progress]="animatedPercentage() + '%'">
                         <div class="stripe-pattern"></div>
                     </div>
 
@@ -64,12 +54,11 @@ import {
                         [img]="editIcon"
                         name="edit-limit"
                         class="edit-icon"
-                        [ngClass]="{ 'hover:text-error!': isExceeded() }"
-                    />
+                        [ngClass]="{ 'hover:text-error!': isExceeded() }" />
                 </button>
             }
         </div>
-    `,
+    `
 })
 export class ProgressBar {
     // Input
@@ -102,7 +91,7 @@ export class ProgressBar {
     protected readonly isExceeded = computed(() => this.currentValue() > this.maxValue());
     readonly resolvedColors = computed<SpendingProgressBarColors>(() => ({
         ...DEFAULT_COLORS,
-        ...this.colors(),
+        ...this.colors()
     }));
 
     readonly percentage = computed(() => {
@@ -114,13 +103,9 @@ export class ProgressBar {
 
     readonly animatedPercentage = computed(() => this._animatedPercentage());
 
-    readonly formattedCurrentValue = computed(() =>
-        formatCurrency(this.currentValue(), this.currency, 0, true),
-    );
+    readonly formattedCurrentValue = computed(() => formatCurrency(this.currentValue(), this.currency, 0, true));
 
-    readonly formattedMaxValue = computed(() =>
-        formatCurrency(this.maxValue(), this.currency, 0, true),
-    );
+    readonly formattedMaxValue = computed(() => formatCurrency(this.maxValue(), this.currency, 0, true));
 
     constructor() {
         effect(() => {

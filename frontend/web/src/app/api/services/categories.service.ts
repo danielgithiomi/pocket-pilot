@@ -12,11 +12,11 @@ import {
     IStandardResponse,
     CreateCategoryRequest,
     DeleteCategoryRequest,
-    IVoidResourceResponse,
+    IVoidResourceResponse
 } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class CategoriesService {
     private readonly toastService = inject(ToastService);
@@ -31,7 +31,7 @@ export class CategoriesService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -41,37 +41,27 @@ export class CategoriesService {
         if (!data) return [];
 
         const { incomes, expenses } = data;
-        const allCategories = [
-            '---Incomes---',
-            ...incomes,
-            '---Expenses---',
-            ...expenses,
-            '---Internal---',
-            'Transfer',
-        ];
+        const allCategories = ['---Incomes---', ...incomes, '---Expenses---', ...expenses, '---Internal---', 'Transfer'];
 
-        return allCategories.map((category) => ({
+        return allCategories.map(category => ({
             value: category,
             disabled: category.startsWith('---') || category === 'Transfer',
             label: category.startsWith('---')
                 ? category
                 : category === 'Transfer'
                   ? 'Account Transfer'
-                  : formatToReadable(category),
+                  : formatToReadable(category)
         }));
     });
 
-    deleteCategoryByName(
-        categoryName: string,
-        categoryType: CategoryVariant,
-    ): Observable<IVoidResourceResponse> {
+    deleteCategoryByName(categoryName: string, categoryType: CategoryVariant): Observable<IVoidResourceResponse> {
         const payload: DeleteCategoryRequest = { categoryName, categoryType };
         return this.mutation.deleteCategory(payload).pipe(
             map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -81,7 +71,7 @@ export class CategoriesService {
         this.toastService.show({
             title,
             variant: 'error',
-            details: details as string,
+            details: details as string
         });
     };
 }

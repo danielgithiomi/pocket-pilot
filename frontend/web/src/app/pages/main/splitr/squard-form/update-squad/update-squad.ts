@@ -15,7 +15,7 @@ import { Component, computed, effect, inject, input, output, signal } from '@ang
 @Component({
     selector: 'update-squad-form',
     templateUrl: './update-squad.html',
-    imports: [LucideAngularModule, NgClass, Form, Button, Input, SquadMember],
+    imports: [LucideAngularModule, NgClass, Form, Button, Input, SquadMember]
 })
 export class UpdateSplitrSquad {
     // ICONS
@@ -42,26 +42,23 @@ export class UpdateSplitrSquad {
     protected readonly initialUpdateSquadData = {
         squadName: '',
         squadMembers: [],
-        squadImageKey: '',
+        squadImageKey: ''
     };
     protected readonly updateSquadFormModel = signal<squadSchema>(this.initialUpdateSquadData);
-    protected readonly updateSquadForm = form<squadSchema>(
-        this.updateSquadFormModel,
-        squadValidationSchema,
-    );
+    protected readonly updateSquadForm = form<squadSchema>(this.updateSquadFormModel, squadValidationSchema);
 
     // COMPUTED
     protected readonly squadMembersPool = computed<ISquadMember[]>(() => {
         const squadMembers = this.updateSquadForm.squadMembers().value();
 
-        const inputMembers = this.allSquadMembers().map((member) => ({
+        const inputMembers = this.allSquadMembers().map(member => ({
             memberName: member,
-            isChecked: squadMembers.includes(member),
+            isChecked: squadMembers.includes(member)
         }));
 
-        const customMembers = this.customMembers().map((member) => ({
+        const customMembers = this.customMembers().map(member => ({
             memberName: member,
-            isChecked: squadMembers.includes(member),
+            isChecked: squadMembers.includes(member)
         }));
 
         return [...customMembers, ...inputMembers];
@@ -70,14 +67,11 @@ export class UpdateSplitrSquad {
     // METHODS
     protected validateMemberName(memberName: string) {
         const allMemberNames = this.squadMembersPool()
-            .flatMap((member) => member.memberName)
-            .map((name) => name.toLowerCase());
+            .flatMap(member => member.memberName)
+            .map(name => name.toLowerCase());
 
         const normalizedName = memberName.trim().toLowerCase();
-        const isValid =
-            normalizedName.length > 1 &&
-            normalizedName.length <= 20 &&
-            !allMemberNames.includes(normalizedName);
+        const isValid = normalizedName.length > 1 && normalizedName.length <= 20 && !allMemberNames.includes(normalizedName);
 
         this.isMemberNameValid.set(isValid);
     }
@@ -87,17 +81,15 @@ export class UpdateSplitrSquad {
 
         if (custom) {
             const normalizedInput = memberName.trim();
-            this.customMembers.update((members) => [normalizedInput, ...members]);
-            this.updateSquadForm
-                .squadMembers()
-                .controlValue.set([normalizedInput, ...squadMembers]);
+            this.customMembers.update(members => [normalizedInput, ...members]);
+            this.updateSquadForm.squadMembers().controlValue.set([normalizedInput, ...squadMembers]);
             return;
         }
 
         const isExistingMember = squadMembers.includes(memberName);
 
         let updatedList: string[] = [];
-        if (isExistingMember) updatedList = squadMembers.filter((member) => member !== memberName);
+        if (isExistingMember) updatedList = squadMembers.filter(member => member !== memberName);
         else updatedList = [...squadMembers, memberName];
 
         this.updateSquadForm.squadMembers().controlValue.set(updatedList.map(formatToReadable));
@@ -116,7 +108,7 @@ export class UpdateSplitrSquad {
         this.updateSquadFormModel.set({
             squadName,
             squadMembers,
-            squadImageKey,
+            squadImageKey
         });
     }
 
@@ -134,13 +126,13 @@ export class UpdateSplitrSquad {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Squad updated successfully!',
-                        details: `Your [${response.squadName}] squad has been updated successfully.`,
+                        details: `Your [${response.squadName}] squad has been updated successfully.`
                     });
 
                     this.resetUpdateSquadForm();
                     this.closeUpdateSquadFormEvent.emit(true);
                 },
-                complete: () => this.isSubmittingUpdateSquadForm.set(false),
+                complete: () => this.isSubmittingUpdateSquadForm.set(false)
             });
         }, 1000);
     }
@@ -151,7 +143,7 @@ export class UpdateSplitrSquad {
             this.updateSquadFormModel.set({
                 squadName,
                 squadMembers,
-                squadImageKey,
+                squadImageKey
             });
         });
     }

@@ -18,7 +18,7 @@ export class OnboardingController {
     @Summary('Onboarding Successful.', 'The user is onboarded successfully.')
     @ApiOperation({
         summary: 'Onboard a new user',
-        description: 'Onboard a new user with the provided payload.',
+        description: 'Onboard a new user with the provided payload.'
     })
     @ApiResponse({ status: 200, type: UserWithPreferencesDto, description: 'User onboarded successfully.' })
     onboardUser(@UserInRequest() user: User, @Body() payload: OnboardingPayload) {

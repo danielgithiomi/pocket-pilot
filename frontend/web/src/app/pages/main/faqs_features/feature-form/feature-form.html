@@ -1,45 +1,38 @@
 <organism-form
     id="feature-form-modal"
-    title="Suggest A New Feature"
+    title="Suggest A Feature Request"
     [class.hidden]="!isFeatureFormOpen()"
-    (closeForm)="handleCloseFeatureForm($event)"
-    description="Suggest a new feature for Pocket Pilot."
->
-    <form
-        id="suggest-feature-form"
-        slot="content"
-        (submit)="handleSuggestFeatureFormSubmit($event)"
-    >
+    (onFormCloseEvent)="handleCloseFeatureForm($event)"
+    description="Suggest a new feature request for Pocket Pilot.">
+    <form id="suggest-feature-form" slot="content" (submit)="handleSuggestFeatureFormSubmit($event)">
         <atom-input
             type="text"
+            label="Title"
             id="feature-name"
             [inverted]="true"
             autocomplete="off"
-            label="Feature Title"
             placeholder="Suggested Feature Title"
             [formField]="featureForm.featureTitle"
-            (clearOutput)="featureForm.featureTitle().controlValue.set('')"
-        />
+            (clearOutput)="featureForm.featureTitle().controlValue.set('')" />
 
         <atom-select
+            label="Category"
             [inverted]="true"
             id="feature-category"
-            label="Feature Category"
             placeholder="Select a category"
             [options]="formattedFeatureCategories()"
             [formField]="featureForm.featureCategory"
-            [selectedValue]="featureForm.featureCategory().value()"
-        />
+            [selectedValue]="featureForm.featureCategory().value()" />
 
         <atom-text-area
             [rows]="4"
             [inverted]="true"
             id="feature-content"
-            label="Feature Content"
+            [showCharacterCount]="true"
+            label="Feature Request Details"
             [formField]="featureForm.featureContent"
             placeholder="Give us a detailed description of the feature"
-            (clearOutput)="featureForm.featureContent().controlValue.set('')"
-        />
+            (clearOutput)="featureForm.featureContent().controlValue.set('')" />
     </form>
 
     <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
@@ -51,8 +44,7 @@
             id="reset-feature-form"
             form="suggest-feature-form"
             (clicked)="resetFeatureForm()"
-            [disabled]="!featureForm().dirty() || isSubmittingFeatureForm()"
-        />
+            [disabled]="!featureForm().dirty() || isSubmittingFeatureForm()" />
 
         <atom-button
             type="submit"
@@ -62,7 +54,6 @@
             id="submit-feature-form"
             form="suggest-feature-form"
             [isLoading]="isSubmittingFeatureForm()"
-            [disabled]="featureForm().invalid() || isSubmittingFeatureForm()"
-        />
+            [disabled]="featureForm().invalid() || isSubmittingFeatureForm()" />
     </div>
 </organism-form>

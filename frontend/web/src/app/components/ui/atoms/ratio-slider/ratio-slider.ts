@@ -1,18 +1,5 @@
-import {
-    easeOutCubic,
-    deferAnimationFrame,
-    COMPONENT_ANIMATION_DURATION_MS,
-} from '@libs/constants';
-import {
-    input,
-    signal,
-    effect,
-    computed,
-    viewChild,
-    Component,
-    ElementRef,
-    afterNextRender,
-} from '@angular/core';
+import { easeOutCubic, deferAnimationFrame, COMPONENT_ANIMATION_DURATION_MS } from '@libs/constants';
+import { input, signal, effect, computed, viewChild, Component, ElementRef, afterNextRender } from '@angular/core';
 
 export interface RatioSliderColors {
     /** Start color of the progress/income gradient (default: cyan) */
@@ -40,7 +27,7 @@ const DEFAULT_COLORS: RatioSliderColors = {
     trackStartColor: 'var(--primary)',
     trackEndColor: 'var(--loader-primary)',
     progressEndColor: 'var(--red-emerald)',
-    secondaryTextColor: 'var(--muted-text)',
+    secondaryTextColor: 'var(--muted-text)'
 };
 
 @Component({
@@ -49,39 +36,17 @@ const DEFAULT_COLORS: RatioSliderColors = {
         <div class="ratio-slider-card">
             <!-- SVG Circular Progress -->
             <div class="ratio-slider-container">
-                <svg
-                    #svgElement
-                    [attr.viewBox]="'0 0 ' + svgSize() + ' ' + svgSize()"
-                    class="ratio-slider-svg"
-                >
+                <svg #svgElement [attr.viewBox]="'0 0 ' + svgSize() + ' ' + svgSize()" class="ratio-slider-svg">
                     <defs>
                         <!-- Gradient for background track (Expenses) -->
-                        <linearGradient
-                            [id]="trackGradientId()"
-                            x1="0%"
-                            y1="0%"
-                            x2="100%"
-                            y2="100%"
-                        >
-                            <stop
-                                offset="0%"
-                                [attr.stop-color]="resolvedColors().trackStartColor"
-                            />
-                            <stop
-                                offset="100%"
-                                [attr.stop-color]="resolvedColors().trackEndColor"
-                            />
+                        <linearGradient [id]="trackGradientId()" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" [attr.stop-color]="resolvedColors().trackStartColor" />
+                            <stop offset="100%" [attr.stop-color]="resolvedColors().trackEndColor" />
                         </linearGradient>
                         <!-- Gradient for progress arc (Income) -->
                         <linearGradient [id]="gradientId()" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop
-                                offset="0%"
-                                [attr.stop-color]="resolvedColors().progressStartColor"
-                            />
-                            <stop
-                                offset="100%"
-                                [attr.stop-color]="resolvedColors().progressEndColor"
-                            />
+                            <stop offset="0%" [attr.stop-color]="resolvedColors().progressStartColor" />
+                            <stop offset="100%" [attr.stop-color]="resolvedColors().progressEndColor" />
                         </linearGradient>
                     </defs>
 
@@ -93,8 +58,7 @@ const DEFAULT_COLORS: RatioSliderColors = {
                         fill="none"
                         [attr.stroke]="'url(#' + trackGradientId() + ')'"
                         [attr.stroke-width]="strokeWidth()"
-                        stroke-linecap="round"
-                    />
+                        stroke-linecap="round" />
 
                     <!-- Progress arc -->
                     <circle
@@ -109,8 +73,7 @@ const DEFAULT_COLORS: RatioSliderColors = {
                         [attr.stroke-dasharray]="circumference()"
                         [attr.stroke-dashoffset]="strokeDashoffset()"
                         class="progress-circle"
-                        [style.transform-origin]="center() + 'px ' + center() + 'px'"
-                    />
+                        [style.transform-origin]="center() + 'px ' + center() + 'px'" />
 
                     <!-- Ball indicator at the end of progress -->
                     <circle
@@ -120,8 +83,7 @@ const DEFAULT_COLORS: RatioSliderColors = {
                         class="ball-indicator"
                         [attr.cx]="ballPosition().x"
                         [attr.cy]="ballPosition().y"
-                        [class.visible]="animatedValue() > 0"
-                    />
+                        [class.visible]="animatedValue() > 0" />
                 </svg>
 
                 <!-- Center content -->
@@ -220,8 +182,8 @@ const DEFAULT_COLORS: RatioSliderColors = {
             .legend-label {
                 font-size: 0.75rem;
             }
-        `,
-    ],
+        `
+    ]
 })
 export class RatioSlider {
     // Input signals
@@ -246,7 +208,7 @@ export class RatioSlider {
     // Computed values
     readonly resolvedColors = computed<RatioSliderColors>(() => ({
         ...DEFAULT_COLORS,
-        ...this.colors(),
+        ...this.colors()
     }));
 
     readonly svgSize = computed(() => this.size());

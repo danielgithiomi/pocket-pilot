@@ -16,19 +16,6 @@
         "prebuild": "ts-node scripts/set-env.production.ts",
         "watch": "ng build --watch --configuration development"
     },
-    "prettier": {
-        "printWidth": 100,
-        "tabWidth": 4,
-        "singleQuote": true,
-        "overrides": [
-            {
-                "files": "*.html",
-                "options": {
-                    "parser": "angular"
-                }
-            }
-        ]
-    },
     "dependencies": {
         "@angular/animations": "^21.1.5",
         "@angular/common": "^21.1.0",

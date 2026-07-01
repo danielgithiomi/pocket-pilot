@@ -11,9 +11,9 @@ export class AuthRepository {
             where: { email },
             data: {
                 failedLoginAttempts: {
-                    increment: 1,
-                },
-            },
+                    increment: 1
+                }
+            }
         });
     }
 
@@ -21,8 +21,8 @@ export class AuthRepository {
         return await this.db.user.update({
             where: { email },
             data: {
-                isAccountLocked: true,
-            },
+                isAccountLocked: true
+            }
         });
     }
 
@@ -32,8 +32,8 @@ export class AuthRepository {
             where: { email },
             data: {
                 lastLoginAt: now,
-                failedLoginAttempts: 0,
-            },
+                failedLoginAttempts: 0
+            }
         });
     }
 }

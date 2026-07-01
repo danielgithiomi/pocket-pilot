@@ -50,7 +50,7 @@ export class ExchangeRatePayload {
     @ApiProperty({
         example: { USD: 1.0, EUR: 0.85, GBP: 0.75 },
         type: Object as () => Record<string, number>,
-        description: 'The exchange rates for the currencies',
+        description: 'The exchange rates for the currencies'
     })
     exchangeRates!: Record<string, number>;
 }
@@ -73,7 +73,7 @@ export class ExchangeRateDto {
     @ApiProperty({
         example: { USD: 1.0, EUR: 0.85, GBP: 0.75 },
         type: Object as () => Record<string, number>,
-        description: 'The exchange rates for the currencies',
+        description: 'The exchange rates for the currencies'
     })
     exchangeRates!: Record<string, number>;
 

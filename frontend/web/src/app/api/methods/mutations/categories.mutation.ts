@@ -1,15 +1,10 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
 import { API_ENDPOINTS as endpoints } from '@global/constants';
-import {
-    Categories,
-    CreateCategoryRequest,
-    DeleteCategoryRequest,
-    IVoidResourceResponse,
-} from '@global/types';
+import { Categories, CreateCategoryRequest, DeleteCategoryRequest, IVoidResourceResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class CategoriesMutation {
     private readonly client = inject(ApiClient);
@@ -19,9 +14,6 @@ export class CategoriesMutation {
     }
 
     deleteCategory(payload: DeleteCategoryRequest) {
-        return this.client.deleteWithBody<IVoidResourceResponse, DeleteCategoryRequest>(
-            endpoints.categories,
-            payload,
-        );
+        return this.client.deleteWithBody<IVoidResourceResponse, DeleteCategoryRequest>(endpoints.categories, payload);
     }
 }

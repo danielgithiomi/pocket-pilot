@@ -1,15 +1,10 @@
 import { ApiServiceError } from './api-error.service';
 import { ExchangeRatesResource } from '@methods/resources';
 import { effect, inject, Injectable, signal } from '@angular/core';
-import {
-    IStandardError,
-    ExchangeRatesSnapshot,
-    CurrencyConversionResult,
-    EXCHANGE_RATE_BASE_CURRENCY,
-} from '@global/types';
+import { IStandardError, ExchangeRatesSnapshot, CurrencyConversionResult, EXCHANGE_RATE_BASE_CURRENCY } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class ExchangeRateService {
     private readonly errorService = inject(ApiServiceError);
@@ -29,9 +24,7 @@ export class ExchangeRateService {
         });
 
         effect(() => {
-            const error = this.exchangeRatesResource.getExchangeRatesSnapshot.error() as
-                | IStandardError
-                | undefined;
+            const error = this.exchangeRatesResource.getExchangeRatesSnapshot.error() as IStandardError | undefined;
 
             if (!error) return;
 
@@ -40,20 +33,12 @@ export class ExchangeRateService {
         });
     }
 
-    performCurrencyConversion(
-        amount: number,
-        fromCurrency: string,
-        toCurrency: string,
-    ): CurrencyConversionResult | null {
+    performCurrencyConversion(amount: number, fromCurrency: string, toCurrency: string): CurrencyConversionResult | null {
         const snapshot = this._exchangeRateSnapshot();
 
         if (!snapshot) return null;
 
-        const convertAmount = (
-            value: number,
-            sourceCurrency: string,
-            targetCurrency: string,
-        ): number | null => {
+        const convertAmount = (value: number, sourceCurrency: string, targetCurrency: string): number | null => {
             const sourceCurrencyRate = snapshot.exchangeRates[sourceCurrency];
             const targetCurrencyRate = snapshot.exchangeRates[targetCurrency];
 
@@ -74,16 +59,16 @@ export class ExchangeRateService {
         return {
             base: {
                 currency: EXCHANGE_RATE_BASE_CURRENCY,
-                amount: baseCurrencyRate,
+                amount: baseCurrencyRate
             },
             source: {
                 currency: fromCurrency,
-                amount,
+                amount
             },
             target: {
                 currency: toCurrency,
-                amount: toTargetAmount,
-            },
+                amount: toTargetAmount
+            }
         };
     }
 }

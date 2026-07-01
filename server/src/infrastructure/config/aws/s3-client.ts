@@ -8,20 +8,19 @@ export class S3ClientService {
     private readonly s3BucketName: string;
 
     constructor(private readonly configServie: PPConfigService) {
-        const { maxAttempts, socketTimeout, connectionTimeout, region, accessKeyId, secretAccessKey } =
-            this.configServie.aws;
+        const { maxAttempts, socketTimeout, connectionTimeout, region, accessKeyId, secretAccessKey } = this.configServie.aws;
 
         this.s3Client = new S3Client({
             maxAttempts,
             requestHandler: {
                 socketTimeout,
-                connectionTimeout,
+                connectionTimeout
             },
             region,
             credentials: {
                 accessKeyId,
-                secretAccessKey,
-            },
+                secretAccessKey
+            }
         });
         this.s3BucketName = region;
     }

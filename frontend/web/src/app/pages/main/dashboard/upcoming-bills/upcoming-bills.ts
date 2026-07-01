@@ -11,7 +11,7 @@ import { FetchError } from '@components/structural/main/fetch-error/fetch-error'
 @Component({
     selector: 'upcoming-bills',
     templateUrl: './upcoming-bills.html',
-    imports: [DashboardCard, BillItemSkeleton, FetchError, NoData, BillItem, NgClass],
+    imports: [DashboardCard, BillItemSkeleton, FetchError, NoData, BillItem, NgClass]
 })
 export class UpcomingBills {
     // ICONS
@@ -40,7 +40,7 @@ export class UpcomingBills {
 
         if (!allBills) return [];
 
-        return allBills.filter((bill) => {
+        return allBills.filter(bill => {
             const billDueDate = new Date(bill.dueDate);
             return billDueDate >= now && billDueDate <= oneWeekFromNow;
         });

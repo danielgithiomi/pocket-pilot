@@ -22,7 +22,7 @@ export class SquadsController {
         status: 200,
         isArray: true,
         type: SplitrSquadDto,
-        description: 'Splitr squads retrieved successfully',
+        description: 'Splitr squads retrieved successfully'
     })
     getUserSplitrSquads(@UserInRequest() user: User): Promise<SplitrSquadDto[]> {
         return this.squadsService.getUserSplitrSquads(user.id);
@@ -48,12 +48,12 @@ export class SquadsController {
     @ApiBody({ type: SplitrSquadPayload, description: 'The payload to update a splitr squad' })
     @ApiResponse({
         status: 200,
-        description: 'Splitr user squad updated successfully',
+        description: 'Splitr user squad updated successfully'
     })
     updateExistingUserSplitrSquad(
         @UserInRequest() user: User,
         @Param('squadId') squadId: string,
-        @Body() payload: SplitrSquadPayload,
+        @Body() payload: SplitrSquadPayload
     ): Promise<SplitrSquadDto> {
         return this.squadsService.updateExistingUserSplitrSquad(user.id, squadId, payload);
     }
@@ -66,17 +66,14 @@ export class SquadsController {
     @ApiParam({ name: 'squadId', description: 'The ID of the squad to delete' })
     @ApiResponse({
         status: 200,
-        description: 'Splitr user squad deleted successfully',
+        description: 'Splitr user squad deleted successfully'
     })
-    async deleteSplitrSquad(
-        @UserInRequest() user: User,
-        @Param('squadId') squadId: string,
-    ): Promise<VoidResourceResponse> {
+    async deleteSplitrSquad(@UserInRequest() user: User, @Param('squadId') squadId: string): Promise<VoidResourceResponse> {
         const deleteSquad = await this.squadsService.deleteUserSplitrSquad(user.id, squadId);
 
         return {
             message: 'Squad deleted successfully!',
-            details: `Your ${deleteSquad.squadName} squad has been deleted successfully.`,
+            details: `Your ${deleteSquad.squadName} squad has been deleted successfully.`
         };
     }
 }

@@ -14,39 +14,23 @@ import { TableColumn } from '@organisms/table/table.types';
 import { CategoriesService } from '@api/categories.service';
 import { TransactionsService } from '@api/transactions.service';
 import { ExchangeRateService } from '@api/exchange-rate.service';
-import { LucideAngularModule, ListFilterPlus } from 'lucide-angular';
+import { ListFilterPlus, LucideAngularModule } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { formatCurrency, formatDate, formatToReadable, splitTransactionId } from '@libs/utils/formatters';
 import {
-    formatDate,
-    formatCurrency,
-    formatToReadable,
-    splitTransactionId,
-} from '@libs/utils/formatters';
-import {
+    initialTransactionFormState,
     skeletonData,
     tabListItems,
-    TransactionRow,
-    TransactionSchema,
-    initialTransactionFormState,
     transactionFormValidationSchema,
+    TransactionRow,
+    TransactionSchema
 } from './transactions.types';
 
 @Component({
     selector: 'app-transactions',
     templateUrl: './transactions.html',
-    imports: [
-        Form,
-        Input,
-        Table,
-        NoData,
-        Select,
-        Button,
-        NgClass,
-        TabList,
-        FetchError,
-        LucideAngularModule,
-    ],
+    imports: [Form, Input, Table, NoData, Select, Button, NgClass, TabList, FetchError, LucideAngularModule]
 })
 export class Transactions {
     // Icons
@@ -86,16 +70,16 @@ export class Transactions {
         const targetAccountId = this.transactionFormModel().targetAccountId;
 
         if (!targetAccountId || targetAccountId === '')
-            return accounts?.map((account) => ({
+            return accounts?.map(account => ({
                 value: account.id,
-                label: account.name,
+                label: account.name
             }));
 
         const sourceAccounts = accounts
-            ?.filter((account) => account.id !== targetAccountId)
-            .map((account) => ({
+            ?.filter(account => account.id !== targetAccountId)
+            .map(account => ({
                 value: account.id,
-                label: account.name,
+                label: account.name
             }));
 
         if (!sourceAccounts || sourceAccounts.length === 0) {
@@ -110,10 +94,10 @@ export class Transactions {
         const sourceAccountId = this.transactionFormModel().sourceAccountId;
 
         const targetAccounts = accounts
-            ?.filter((account) => account.id !== sourceAccountId)
-            .map((account) => ({
+            ?.filter(account => account.id !== sourceAccountId)
+            .map(account => ({
                 value: account.id,
-                label: account.name,
+                label: account.name
             }));
 
         if (!targetAccounts || targetAccounts.length === 0) {
@@ -143,7 +127,7 @@ export class Transactions {
 
         if (!transactions) return [];
 
-        return transactions.filter((transaction) => {
+        return transactions.filter(transaction => {
             if (activeTabIndex === 0) return true;
             return transaction.type.toLowerCase() === activeTabValue;
         });
@@ -176,11 +160,10 @@ export class Transactions {
             label: 'Category',
             width: '1fr',
             cellTemplate: (transaction: TransactionRow) => {
-                let classes =
-                    'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis bg-(--body-background)';
+                let classes = 'px-2 py-1 rounded-xl text-xs overflow-hidden text-ellipsis bg-(--body-background)';
 
                 return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.category}</span>`;
-            },
+            }
         },
         {
             key: 'amount',
@@ -196,7 +179,7 @@ export class Transactions {
             <span class="${transaction.showConvertedAmount ? currencyClasses : 'hidden'}">≈ ${transaction.convertedAmount}</span>
           </div>
         `;
-            },
+            }
         },
         {
             key: 'type',
@@ -222,7 +205,7 @@ export class Transactions {
                 }
 
                 return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${transaction.type}</span>`;
-            },
+            }
         },
         {
             key: 'description',
@@ -236,24 +219,24 @@ export class Transactions {
                       ? '-'
                       : transaction.description;
                 return `<span class="${this.isFetching() ? 'table-skeleton' : classes}">${description}</span>`;
-            },
+            }
         },
         {
             key: 'accountName',
             label: 'Account',
-            width: '2fr',
+            width: '2fr'
         },
         {
             key: 'date',
             label: 'Date',
-            width: '1fr',
+            width: '1fr'
         },
         {
             key: 'actions',
             label: 'Actions',
             align: 'right',
-            width: '1fr',
-        },
+            width: '1fr'
+        }
     ];
 
     protected formattedTransactions = computed<TransactionRow[]>(() => {
@@ -262,25 +245,14 @@ export class Transactions {
         const defaultCurrency = this.defaultCurrency;
 
         return (
-            transactionsToFormat?.map((transaction) => {
+            transactionsToFormat?.map(transaction => {
                 const currency = transaction.sourceAccount?.currency ?? defaultCurrency;
                 const conversionResult =
-                    snapshot &&
-                    this.exchangeRateService.performCurrencyConversion(
-                        transaction.amount,
-                        currency,
-                        defaultCurrency,
-                    );
+                    snapshot && this.exchangeRateService.performCurrencyConversion(transaction.amount, currency, defaultCurrency);
 
                 const isSameCurrency = currency === defaultCurrency;
                 const convertedAmount = conversionResult
-                    ? formatCurrency(
-                          conversionResult.target.amount,
-                          conversionResult.target.currency,
-                          2,
-                          true,
-                          false,
-                      )
+                    ? formatCurrency(conversionResult.target.amount, conversionResult.target.currency, 2, true, false)
                     : '';
 
                 return {
@@ -300,7 +272,7 @@ export class Transactions {
                         : 'Unknown Account',
                     amount: formatCurrency(transaction.amount, currency, 2, true, false),
                     convertedAmount,
-                    showConvertedAmount: !isSameCurrency && convertedAmount !== '',
+                    showConvertedAmount: !isSameCurrency && convertedAmount !== ''
                 };
             }) || skeletonData
         ).reverse();
@@ -316,12 +288,12 @@ export class Transactions {
                 this.toastService.show({
                     details,
                     title: message,
-                    variant: 'success',
+                    variant: 'success'
                 });
                 this.reloadResources();
             },
-            error: (error) => console.error(error),
-            complete: () => this.isDeleting.set(false),
+            error: error => console.error(error),
+            complete: () => this.isDeleting.set(false)
         });
     }
 
@@ -331,14 +303,14 @@ export class Transactions {
             this.toastService.show({
                 variant: 'warning',
                 title: 'No accounts found!',
-                details: 'Please create an account first to log your transactions.',
+                details: 'Please create an account first to log your transactions.'
             });
             return;
         }
         this.isFormOpen.set(true);
     }
 
-    protected handleCloseForm(source: 'icon' | 'overlay') {
+    protected handleCloseForm(source: 'icon' | 'backdrop') {
         if (source === 'icon') this.resetTransactionForm();
         this.isFormOpen.set(false);
     }
@@ -350,16 +322,13 @@ export class Transactions {
 
         const payload = this.transactionFormModel();
         const availableBalance: number =
-            this.accounts
-                .value()
-                ?.data?.data?.find((account) => account.id === payload.sourceAccountId)?.balance ??
-            0;
+            this.accounts.value()?.data?.data?.find(account => account.id === payload.sourceAccountId)?.balance ?? 0;
 
         if (this.transactionsService.isNegativeBalance(availableBalance, payload))
             this.toastService.show({
                 variant: 'warning',
                 title: 'Exceeded available balance!',
-                details: 'This transaction will result in a negative balance in your account.',
+                details: 'This transaction will result in a negative balance in your account.'
             });
 
         setTimeout(() => {
@@ -368,15 +337,15 @@ export class Transactions {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Transaction created!',
-                        details: `Your [${payload.type.toUpperCase()}] transaction has been logged successfully.`,
+                        details: `Your [${payload.type.toUpperCase()}] transaction has been logged successfully.`
                     });
 
                     this.reloadResources();
                     this.resetTransactionForm();
                     this.isFormOpen.set(false);
                 },
-                error: (error) => console.error('Transaction creation failed:', error),
-                complete: () => this.isSubmitting.set(false),
+                error: error => console.error('Transaction creation failed:', error),
+                complete: () => this.isSubmitting.set(false)
             });
         }, 3500);
     }

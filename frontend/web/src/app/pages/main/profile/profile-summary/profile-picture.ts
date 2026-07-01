@@ -26,17 +26,11 @@ import { Component, computed, inject, output, signal } from '@angular/core';
             class="profile-picture group"
             (mouseenter)="isHovered.set(true)"
             (mouseleave)="isHovered.set(false)"
-            (click)="profilePictureClicked.emit()"
-        >
+            (click)="profilePictureClicked.emit()">
             @if (isHovered()) {
                 <div class="overlay animate-fade-in">
                     <div class="flex flex-col items-center gap-1">
-                        <lucide-angular
-                            [size]="20"
-                            color="white"
-                            [img]="camera"
-                            name="change-profile-picture"
-                        />
+                        <lucide-angular [size]="20" color="white" [img]="camera" name="change-profile-picture" />
                         <p class="text-xs text-white">
                             {{ profilePictureUrl() ? 'Change' : 'Add' }}
                         </p>
@@ -49,15 +43,14 @@ import { Component, computed, inject, output, signal } from '@angular/core';
                     [src]="profilePictureUrl()"
                     alt="Profile Picture"
                     class="h-full w-full object-cover"
-                    (error)="onProfilePictureError()"
-                />
+                    (error)="onProfilePictureError()" />
             } @else {
                 <div class="flex items-center justify-center h-full">
                     <p class="text-white text-5xl">{{ initial() }}</p>
                 </div>
             }
         </div>
-    `,
+    `
 })
 export class ProfilePicture {
     // ICONS
@@ -73,9 +66,7 @@ export class ProfilePicture {
     protected readonly authService = inject(AuthService);
 
     // DATA
-    protected readonly profilePictureUrl = computed(
-        () => this.authService.user()?.profilePictureUrl ?? null,
-    );
+    protected readonly profilePictureUrl = computed(() => this.authService.user()?.profilePictureUrl ?? null);
 
     // METHODS
     protected readonly initial = computed(() => {

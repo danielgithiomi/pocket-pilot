@@ -4,16 +4,12 @@ import { SelectOption, SelectSize } from './select.types';
 import { Component, computed, input } from '@angular/core';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { ChevronDown, LucideAngularModule } from 'lucide-angular';
-import {
-    FORM_FIELD_ERROR_BORDER_CLASSES,
-    isFormFieldInError,
-    resolveFormFieldVisualState,
-} from '../form-field-visual-state';
+import { FORM_FIELD_ERROR_BORDER_CLASSES, isFormFieldInError, resolveFormFieldVisualState } from '../form-field-visual-state';
 
 @Component({
     selector: 'atom-select',
     templateUrl: './select.html',
-    imports: [FormField, NgClass, LucideAngularModule],
+    imports: [FormField, NgClass, LucideAngularModule]
 })
 export class Select {
     /* INPUTS */
@@ -49,16 +45,14 @@ export class Select {
     selectId = computed<string>(() => `select-field-${this.id()}`);
     currentValue = computed(() => this.selectedValue() || this.fieldState().value());
     showFieldErrors = computed(() => isFormFieldInError(this.fieldState()));
-    fieldVisualState = computed(() =>
-        resolveFormFieldVisualState(this.showStatus(), this.fieldState()),
-    );
+    fieldVisualState = computed(() => resolveFormFieldVisualState(this.showStatus(), this.fieldState()));
 
     formattedOptions = computed(() => {
         const options = this.options();
         if (!options) return [];
-        return options.map((option) => ({
+        return options.map(option => ({
             ...option,
-            label: capitalize(option.label),
+            label: capitalize(option.label)
         }));
     });
 

@@ -15,6 +15,14 @@ export function hoursToSeconds(hours: number) {
 }
 
 /**
+ * Converts minutes to seconds
+ * @param minutes - The number of minutes to convert
+ */
+export function minutesToSeconds(minutes: number) {
+    return minutes * 60;
+}
+
+/**
  * Converts hours to milliseconds
  * @param hours - The number of hours to convert
  * @returns The number of milliseconds

@@ -10,6 +10,6 @@ import { PreferencesRepository } from './repositories/preferences.repository';
 @Module({
     imports: [IdentityModule],
     controllers: [PreferencesController, OnboardingController],
-    providers: [PreferencesService, OnboardingService, OnboardingRepository, PreferencesRepository],
+    providers: [PreferencesService, OnboardingService, OnboardingRepository, PreferencesRepository]
 })
 export class PreferencesModule {}

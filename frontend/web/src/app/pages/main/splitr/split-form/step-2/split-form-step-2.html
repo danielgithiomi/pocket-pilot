@@ -1,16 +1,12 @@
 <div id="split-form-step-2">
     <div class="header">
         <div class="header-summary">
-            <div
-                (click)="onBackIconClick.emit()"
-                class="group/back-icon hover:bg-muted-text p-1 rounded-lg cursor-pointer"
-            >
+            <div (click)="onBackIconClick.emit()" class="group/back-icon hover:bg-muted-text p-1 rounded-lg cursor-pointer">
                 <lucide-angular
                     name="back-arrow"
                     [img]="leftArrow"
                     [size]="iconSize()"
-                    class="group-hover/back-icon:text-white text-inverted-text"
-                />
+                    class="group-hover/back-icon:text-white text-inverted-text" />
             </div>
             <div class="flex flex-col text-sm">
                 <p>Order Summary</p>
@@ -25,7 +21,7 @@
         <div class="header-totals">
             @if (hasItems) {
                 <p>
-                    Subtotal: <span class="font-semibold">{{ formattedSubTotal() }}</span>
+                    Subtotal: <span class="font-semibold text-primary-text">{{ formattedSubTotal() }}</span>
                 </p>
             }
             <atom-button
@@ -33,14 +29,9 @@
                 variant="primary"
                 className="shadow-none"
                 [disabled]="isSubmittingSplittable()"
-                (clicked)="isFormVisible.set(!isFormVisible())"
-            >
+                (clicked)="isFormVisible.set(!isFormVisible())">
                 <div class="w-full h-full grid place-items-center">
-                    <lucide-icon
-                        [size]="iconSize()"
-                        name="add-member-icon"
-                        [img]="isFormVisible() ? HideForm : ShowForm"
-                    />
+                    <lucide-icon [size]="iconSize()" name="add-member-icon" [img]="isFormVisible() ? HideForm : ShowForm" />
                 </div>
             </atom-button>
         </div>
@@ -59,8 +50,7 @@
                         id="splittable-name"
                         [formField]="splittableForm.name"
                         placeholder="Eg: Margherita Pizza"
-                        (clearOutput)="splittableForm.name().controlValue.set('')"
-                    />
+                        (clearOutput)="splittableForm.name().controlValue.set('')" />
 
                     <atom-select
                         id="quantity"
@@ -69,8 +59,7 @@
                         [inverted]="true"
                         placeholder="Select quantity"
                         [options]="orderQuantities()"
-                        [formField]="splittableForm.quantity"
-                    />
+                        [formField]="splittableForm.quantity" />
                 </div>
 
                 <div class="flex flex-row gap-2 mb-4">
@@ -85,8 +74,7 @@
                         placeholder="Eg: 760.50"
                         id="splittable-unit-price"
                         [formField]="splittableForm.unitPrice"
-                        (clearOutput)="splittableForm.unitPrice().controlValue.set(null)"
-                    />
+                        (clearOutput)="splittableForm.unitPrice().controlValue.set(null)" />
 
                     <atom-select
                         class="flex-1"
@@ -96,22 +84,18 @@
                         wrapperClassName="my-0!"
                         [options]="splitStrategyOptions()"
                         placeholder="Select split strategy"
-                        [formField]="splittableForm.splitStrategy"
-                    />
+                        [formField]="splittableForm.splitStrategy" />
                 </div>
 
                 <div class="flex flex-col space-y-2 mb-4">
                     <!-- Member Selection -->
                     <div class="flex flex-row items-center gap-px text-[0.875rem] mb-2">
-                        <p class="text-inverted-text">
-                            <span class="required-asterix">*</span>Consumers:
-                        </p>
+                        <p class="text-inverted-text"><span class="required-asterix">*</span>Consumers:</p>
                     </div>
 
                     <!-- Squad Member Container -->
                     <div
-                        class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar"
-                    >
+                        class="min-h-12 border-2 border-dashed border-primary rounded-lg flex flex-row flex-wrap gap-1 p-2 overflow-y-scroll no-scrollbar">
                         @for (member of formattedConsumers(); track member.memberName) {
                             <squad-member
                                 [inverted]="true"
@@ -121,8 +105,7 @@
                                 [isQuantifiable]="isStrategyCustom()"
                                 [isMaximumQuantityReached]="!canAddConsumer()"
                                 (onMemberEventClick)="addConsumerToOrder($event)"
-                                (onMemberQuantityChange)="handleOnConsumerQuantityChange($event)"
-                            />
+                                (onMemberQuantityChange)="handleOnConsumerQuantityChange($event)" />
                         }
                     </div>
                 </div>
@@ -138,8 +121,7 @@
                     form="new-splittable-form"
                     id="reset-splittable-form"
                     (clicked)="resetSplittableForm()"
-                    [disabled]="!splittableForm().dirty() || isSubmittingSplittable()"
-                />
+                    [disabled]="!splittableForm().dirty() || isSubmittingSplittable()" />
 
                 @let hasConsumers = splittableForm().value().quantitySplits.length > 0;
                 <atom-button
@@ -149,10 +131,7 @@
                     form="new-splittable-form"
                     id="submit-splittable-form"
                     [isLoading]="isSubmittingSplittable()"
-                    [disabled]="
-                        splittableForm().invalid() || !hasConsumers || isSubmittingSplittable()
-                    "
-                />
+                    [disabled]="splittableForm().invalid() || !hasConsumers || isSubmittingSplittable()" />
             </div>
         </div>
     }
@@ -167,8 +146,7 @@
                         [order]="splittable"
                         [presentMembers]="consumerOptions()"
                         (onDeleteClickEvent)="handleOnDeleteOrder($event)"
-                        (onUpdateSplittableEvent)="updateEventSplittables($event)"
-                    />
+                        (onUpdateSplittableEvent)="updateEventSplittables($event)" />
                 }
             </div>
         }

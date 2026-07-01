@@ -10,11 +10,11 @@ const syncfusionLicenseKey = process.env['SYNCFUSION_LICENSE_KEY'] || '';
 const prodBaseApiUrl = process.env['PROD_API_BASE_URL'] || 'https://prod-dummy/api/v1/';
 
 const prodFileContent = `export const environment = {
-  production: true,
-  awsRegion: '${awsRegion}',
-  API_BASE_URL: '${prodBaseApiUrl}',
-  awsS3BucketName: '${awsS3BucketName}',
-  syncfusionLicenseKey: '${syncfusionLicenseKey}',
+    production: true,
+    awsRegion: '${awsRegion}',
+    awsS3BucketName: '${awsS3BucketName}',
+    API_BASE_URL: '${prodBaseApiUrl}',
+    syncfusionLicenseKey: '${syncfusionLicenseKey}',
 };
 `;
 

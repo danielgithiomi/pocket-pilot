@@ -1,13 +1,6 @@
-<div
-    [id]="squadId()"
-    class="squad-item card-item-border"
-    (mouseleave)="isDeletingSquad() ? null : isDropdownOpen.set(false)"
->
+<div [id]="squadId()" class="squad-item card-item-border" (mouseleave)="isDeletingSquad() ? null : isDropdownOpen.set(false)">
     @let hasImage = squad().squadImageKey;
-    <div
-        class="squad-image"
-        [ngClass]="{ 'grid place-items-center bg-body-background': !hasImage }"
-    >
+    <div class="squad-image" [ngClass]="{ 'grid place-items-center bg-body-background': !hasImage }">
         @if (!hasImage) {
             <p>{{ squadInitial() }}</p>
         } @else {
@@ -26,25 +19,14 @@
     </div>
 
     <div class="squad-options" [ngClass]="{ 'bg-body-background': isDropdownOpen() }">
-        <lucide-angular
-            name="squad-options"
-            [img]="options"
-            [size]="iconSize"
-            (click)="isDropdownOpen.set(!isDropdownOpen())"
-        />
+        <lucide-angular name="squad-options" [img]="options" [size]="iconSize" (click)="isDropdownOpen.set(!isDropdownOpen())" />
 
         <!-- Squad Item Dropdown -->
         @if (isDropdownOpen() || isDeletingSquad()) {
             <div class="squad-item-dropdown">
                 <div class="dropdown-arrow"></div>
                 <div class="dropdown-content">
-                    <lucide-angular
-                        name="edit"
-                        [img]="edit"
-                        [size]="iconSize"
-                        class="atom-icon"
-                        (click)="handleOnItemEdit()"
-                    />
+                    <lucide-angular name="edit" [img]="edit" [size]="iconSize" class="atom-icon" (click)="handleOnItemEdit()" />
 
                     @if (isDeletingSquad()) {
                         <div class="delete-loader"></div>
@@ -54,8 +36,7 @@
                             [img]="delete"
                             [size]="iconSize"
                             (click)="handleOnItemDelete()"
-                            class="atom-icon hover:text-expense"
-                        />
+                            class="atom-icon hover:text-expense" />
                     }
                 </div>
             </div>

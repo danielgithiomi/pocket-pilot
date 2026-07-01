@@ -4,11 +4,7 @@ import { form } from '@angular/forms/signals';
 import { UserService } from '@api/user.service';
 import { ToastService } from '@components/ui/atoms/toast';
 import { Component, inject, input, signal } from '@angular/core';
-import {
-    ChangePasswordSchema,
-    changePasswordValidationSchema,
-    initialChangePasswordFormState,
-} from './change-password.types';
+import { ChangePasswordSchema, changePasswordValidationSchema, initialChangePasswordFormState } from './change-password.types';
 import { AuthService } from '@api/auth.service';
 import { IVoidResourceResponse } from '@global/types';
 
@@ -31,13 +27,7 @@ import { IVoidResourceResponse } from '@global/types';
         <div class="card-content overflow-y-scroll no-scrollbar">
             <form id="change-password-form" (submit)="onSubmitChangePassword($event)">
                 <!-- Start Hidden username for accessibility -->
-                <input
-                    type="text"
-                    class="hidden"
-                    name="username"
-                    [value]="userEmail()"
-                    autocomplete="username"
-                />
+                <input type="text" class="hidden" name="username" [value]="userEmail()" autocomplete="username" />
                 <!-- End of hidden username for accessibility -->
 
                 <atom-input
@@ -48,8 +38,7 @@ import { IVoidResourceResponse } from '@global/types';
                     label="Current Password"
                     autocomplete="current-password"
                     [formField]="changePasswordForm.currentPassword"
-                    inputClassName="bg-inverted-background text-inverted-text"
-                />
+                    inputClassName="bg-inverted-background text-inverted-text" />
 
                 <atom-input
                     type="password"
@@ -59,8 +48,7 @@ import { IVoidResourceResponse } from '@global/types';
                     placeholder="••••••••"
                     autocomplete="new-password"
                     [formField]="changePasswordForm.newPassword"
-                    inputClassName="bg-inverted-background text-inverted-text"
-                />
+                    inputClassName="bg-inverted-background text-inverted-text" />
 
                 <atom-input
                     type="password"
@@ -70,8 +58,7 @@ import { IVoidResourceResponse } from '@global/types';
                     autocomplete="new-password"
                     label="Confirm New Password"
                     [formField]="changePasswordForm.confirmNewPassword"
-                    inputClassName="bg-inverted-background text-inverted-text"
-                />
+                    inputClassName="bg-inverted-background text-inverted-text" />
             </form>
         </div>
 
@@ -82,10 +69,9 @@ import { IVoidResourceResponse } from '@global/types';
                 id="submit-change-password"
                 form="change-password-form"
                 [isLoading]="isSubmittingChangePassword()"
-                [disabled]="changePasswordForm().invalid() || isSubmittingChangePassword()"
-            />
+                [disabled]="changePasswordForm().invalid() || isSubmittingChangePassword()" />
         </div>
-    `,
+    `
 })
 export class ChangePassword {
     // INPUTS
@@ -100,13 +86,8 @@ export class ChangePassword {
     protected readonly isSubmittingChangePassword = signal<boolean>(false);
 
     // FORM
-    protected changePasswordFormModel = signal<ChangePasswordSchema>(
-        initialChangePasswordFormState,
-    );
-    protected changePasswordForm = form(
-        this.changePasswordFormModel,
-        changePasswordValidationSchema,
-    );
+    protected changePasswordFormModel = signal<ChangePasswordSchema>(initialChangePasswordFormState);
+    protected changePasswordForm = form(this.changePasswordFormModel, changePasswordValidationSchema);
 
     // METHODS
     private resetChangePasswordForm() {
@@ -128,12 +109,12 @@ export class ChangePassword {
                 this.toastService.show({
                     details,
                     title: message,
-                    variant: 'success',
+                    variant: 'success'
                 });
 
                 this.resetChangePasswordForm();
             },
-            complete: () => this.isSubmittingChangePassword.set(false),
+            complete: () => this.isSubmittingChangePassword.set(false)
         });
     }
 }

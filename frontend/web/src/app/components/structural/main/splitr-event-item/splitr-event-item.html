@@ -1,8 +1,4 @@
-<div
-    [id]="splitrEvent().id"
-    (click)="handleOnSplitrEventClick($event)"
-    class="splitr-event card-item-border group/event"
->
+<div [id]="splitrEvent().id" (click)="handleOnSplitrEventClick($event)" class="splitr-event card-item-border group/event">
     <div class="splitr-event-content">
         <div class="splitr-event-details">
             <div class="splitr-event-info">
@@ -27,17 +23,14 @@
                 <div class="splitr-event-members-wrapper">
                     <atom-overlapper [items]="splitrEvent().eventMembers" />
 
-                    <p class="text-muted-text text-xs">
-                        {{ splitrEvent().eventMembers.length }} people
-                    </p>
+                    <p class="text-muted-text text-xs">{{ splitrEvent().eventMembers.length }} people</p>
                 </div>
 
                 <div class="splitr-event-tags">
                     <atom-badge variant="info" [label]="payerCount()" />
                     <atom-badge
                         [label]="splitrEvent().isSettled ? 'Settled' : 'Pending'"
-                        [variant]="splitrEvent().isSettled ? 'success' : 'warning'"
-                    />
+                        [variant]="splitrEvent().isSettled ? 'success' : 'warning'" />
                 </div>
             </div>
         </div>
@@ -51,8 +44,7 @@
                         variant="neutral"
                         [uppercase]="false"
                         className="cursor-default py-1.5 text-black dark:text-white"
-                        [label]="splittable.name.toUpperCase() + ' x ' + splittable.quantity"
-                    />
+                        [label]="splittable.name.toUpperCase() + ' x ' + splittable.quantity" />
                 }
             </div>
         </div>

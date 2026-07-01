@@ -19,22 +19,18 @@ export class AwsService {
             maxAttempts,
             requestHandler: {
                 socketTimeout,
-                connectionTimeout,
+                connectionTimeout
             },
             region,
             credentials: {
                 accessKeyId,
-                secretAccessKey,
-            },
+                secretAccessKey
+            }
         });
         this.s3BucketName = s3BucketName;
     }
 
-    async generateProfilePicturePresignedUrl(
-        user: User,
-        contentType: string,
-        fileSize: number,
-    ): Promise<PreSignedUrlResponse> {
+    async generateProfilePicturePresignedUrl(user: User, contentType: string, fileSize: number): Promise<PreSignedUrlResponse> {
         const ext = contentType.split('/')[1];
         const { presignedUrlExpiration: expiresIn } = this.configService.aws;
         const key = `${user.email}/profile-picture-${Date.now()}.${ext}`;
@@ -43,16 +39,16 @@ export class AwsService {
             Bucket: this.s3BucketName,
             Key: key,
             ContentType: contentType,
-            ContentLength: fileSize,
+            ContentLength: fileSize
         });
 
         const presignedUrl = await getSignedUrl(this.s3Client, uploadCommand, {
-            expiresIn,
+            expiresIn
         });
 
         return {
             key,
-            presignedUrl,
+            presignedUrl
         };
     }
 
@@ -61,7 +57,7 @@ export class AwsService {
 
         const getObjectCommand = new GetObjectCommand({
             Bucket: this.s3BucketName,
-            Key: profilePictureKey,
+            Key: profilePictureKey
         });
 
         return getSignedUrl(this.s3Client, getObjectCommand, { expiresIn });
@@ -76,7 +72,7 @@ export class AwsService {
         try {
             const command = new HeadObjectCommand({
                 Key,
-                Bucket: this.s3BucketName,
+                Bucket: this.s3BucketName
             });
             await this.s3Client.send(command);
             return true;

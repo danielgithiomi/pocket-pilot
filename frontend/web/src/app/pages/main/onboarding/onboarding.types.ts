@@ -13,19 +13,19 @@ export const INITIAL_ONBOARDING_FORM_STATE: OnboardingFormSchema = {
     phoneNumber: '',
     defaultCurrency: '',
     preferredLanguage: 'en',
-    monthlySpendingLimit: null,
+    monthlySpendingLimit: null
 };
 
-export const ONBOARDING_FORM_VALIDATION_SCHEMA = schema<OnboardingFormSchema>((root) => {
+export const ONBOARDING_FORM_VALIDATION_SCHEMA = schema<OnboardingFormSchema>(root => {
     required(root.phoneNumber, { message: 'The phone number is required field!' });
-    validate(root.phoneNumber, (control) => {
+    validate(root.phoneNumber, control => {
         const number = control.value();
         if (!number) return null;
 
         if (!/^\+\d+$/.test(number)) {
             return {
                 kind: 'phone-number-invalid',
-                message: 'Please enter a valid phone number!',
+                message: 'Please enter a valid phone number!'
             };
         }
 
@@ -33,14 +33,14 @@ export const ONBOARDING_FORM_VALIDATION_SCHEMA = schema<OnboardingFormSchema>((r
         if (nationalDigits.length < 7) {
             return {
                 kind: 'phone-number-too-short',
-                message: 'The phone number must be at least 7 digits long!',
+                message: 'The phone number must be at least 7 digits long!'
             };
         }
 
         if (nationalDigits.length > 14) {
             return {
                 kind: 'phone-number-too-long',
-                message: 'The phone number must not exceed 14 digits!',
+                message: 'The phone number must not exceed 14 digits!'
             };
         }
 
@@ -55,6 +55,6 @@ export const ONBOARDING_FORM_VALIDATION_SCHEMA = schema<OnboardingFormSchema>((r
 
     // Monthly Spending Limit
     required(root.monthlySpendingLimit, {
-        message: 'The monthly spending limit is required field!',
+        message: 'The monthly spending limit is required field!'
     });
 });

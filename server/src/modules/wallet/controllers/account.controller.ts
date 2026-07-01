@@ -17,7 +17,7 @@ import {
     AccountWithHolderDto,
     UserAccountsResponseDto,
     AccountWithTransactionsResponseDto,
-    ToggleAccountBalanceVisibilityPayload,
+    ToggleAccountBalanceVisibilityPayload
 } from '../dto/account.dto';
 
 @ApiTags('Accounts')
@@ -36,7 +36,7 @@ export class AccountController {
         status: 200,
         isArray: true,
         type: ExposeEnumDto,
-        description: 'Account types fetched successfully',
+        description: 'Account types fetched successfully'
     })
     async getAccountTypes(): Promise<ExposeEnumDto[]> {
         return await this.accountService.getAccountTypes();
@@ -50,14 +50,14 @@ export class AccountController {
         status: 200,
         isArray: false,
         type: AccountsResponseDto,
-        description: 'Accounts fetched successfully',
+        description: 'Accounts fetched successfully'
     })
     async getAllAccounts(): Promise<AccountsResponseDto> {
         const allAccounts: AccountWithHolder[] = await this.accountService.getAllAccounts();
 
         return {
             count: allAccounts.length,
-            data: plainToInstance(AccountWithHolderDto, allAccounts),
+            data: plainToInstance(AccountWithHolderDto, allAccounts)
         };
     }
 
@@ -69,14 +69,14 @@ export class AccountController {
         status: 200,
         isArray: false,
         type: UserAccountsResponseDto,
-        description: 'Accounts fetched successfully',
+        description: 'Accounts fetched successfully'
     })
     async getUserAccounts(@UserInRequest() user: User): Promise<UserAccountsResponseDto> {
         const userAccounts: Account[] = await this.accountService.getUserAccounts(user.id!);
 
         return {
             count: userAccounts.length,
-            data: userAccounts,
+            data: userAccounts
         };
     }
 
@@ -89,7 +89,7 @@ export class AccountController {
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to be fetched',
+        description: 'The id of the account to be fetched'
     })
     getAccountById(@UserInRequest() user: User, @Param('accountId') accountId: string): Promise<Account> {
         return this.accountService.getAccountById(user.id!, accountId);
@@ -101,28 +101,28 @@ export class AccountController {
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to be fetched with its transactions.',
+        description: 'The id of the account to be fetched with its transactions.'
     })
     @ApiOperation({
         summary: 'Get Account and its transactions',
-        description: 'Get an account and all its relevant transactions.',
+        description: 'Get an account and all its relevant transactions.'
     })
     @ApiResponse({
         status: 200,
         isArray: false,
         type: AccountWithTransactionsResponseDto,
-        description: 'Account and transactions fetched successfully.',
+        description: 'Account and transactions fetched successfully.'
     })
     @Summary('Account Transactions Retrieved!', 'You have successfully retrieved the account transactions.')
     async getAccountAndTransactions(
         @UserInRequest() user: User,
-        @Param('accountId') accountId: string,
+        @Param('accountId') accountId: string
     ): Promise<AccountWithTransactionsResponseDto> {
         const accountWithTransactions = await this.accountService.getAccountAndTransactions(user.id!, accountId);
 
         return {
             count: accountWithTransactions.transactions.length,
-            data: accountWithTransactions,
+            data: accountWithTransactions
         };
     }
 
@@ -135,7 +135,7 @@ export class AccountController {
         status: 201,
         type: Account,
         isArray: false,
-        description: 'Account created successfully',
+        description: 'Account created successfully'
     })
     createAccount(@UserInRequest() user: User, @Body() payload: CreateAccountDto): Promise<Account> {
         return this.accountService.createAccount(user.id!, payload);
@@ -147,7 +147,7 @@ export class AccountController {
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to be updated.',
+        description: 'The id of the account to be updated.'
     })
     @ApiBody({ type: UpdateAccountPayload })
     @Summary('Account Updated!', 'You have successfully updated the account.')
@@ -156,12 +156,12 @@ export class AccountController {
         status: 200,
         isArray: false,
         type: Account,
-        description: 'Account updated successfully',
+        description: 'Account updated successfully'
     })
     updateAccount(
         @UserInRequest() user: User,
         @Param('accountId') accountId: string,
-        @Body() payload: UpdateAccountPayload,
+        @Body() payload: UpdateAccountPayload
     ): Promise<Account> {
         return this.accountService.updateAccount(user.id!, accountId, payload);
     }
@@ -172,24 +172,24 @@ export class AccountController {
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to update the balance visibility.',
+        description: 'The id of the account to update the balance visibility.'
     })
     @ApiBody({ type: UpdateAccountPayload })
     @Summary('Balance Visibility Updated!', 'You have successfully updated the balance visibility.')
     @ApiOperation({
         summary: 'Update Account Balance Visibility',
-        description: 'Update the balance visibility of an account by its id',
+        description: 'Update the balance visibility of an account by its id'
     })
     @ApiResponse({
         status: 200,
         isArray: false,
         type: Account,
-        description: 'Account balance visibility updated successfully',
+        description: 'Account balance visibility updated successfully'
     })
     toggleAccountBalanceVisibility(
         @UserInRequest() user: User,
         @Param('accountId') accountId: string,
-        @Body() payload: ToggleAccountBalanceVisibilityPayload,
+        @Body() payload: ToggleAccountBalanceVisibilityPayload
     ): Promise<Account> {
         return this.accountService.toggleAccountBalanceVisibility(user.id!, accountId, payload);
     }
@@ -200,25 +200,22 @@ export class AccountController {
         required: true,
         name: 'accountId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The id of the account to be deleted.',
+        description: 'The id of the account to be deleted.'
     })
     @ApiResponse({
         status: 200,
         isArray: false,
         type: VoidResourceResponse,
-        description: 'Account deleted successfully',
+        description: 'Account deleted successfully'
     })
     @Summary('Delete Successful!', 'You have successfully deleted the account.')
     @ApiOperation({ summary: 'Delete Account', description: 'Delete an account by its id' })
-    async deleteAccountById(
-        @UserInRequest() user: User,
-        @Param('accountId') accountId: string,
-    ): Promise<VoidResourceResponse> {
+    async deleteAccountById(@UserInRequest() user: User, @Param('accountId') accountId: string): Promise<VoidResourceResponse> {
         const deletedWallet = await this.accountService.deleteAccountById(user.id!, accountId);
 
         return {
             message: 'Account Deleted!',
-            details: `Your [${denormalizeCategoryName(deletedWallet.name)}] account has been deleted successfully.`,
+            details: `Your [${denormalizeCategoryName(deletedWallet.name)}] account has been deleted successfully.`
         };
     }
 }

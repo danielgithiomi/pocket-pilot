@@ -16,34 +16,25 @@ import { Component, Input, signal, WritableSignal } from '@angular/core';
 
                 <div
                     class="flex flex-col gap-8 text-balance"
-                    [ngClass]="
-                        contentAlign == 'right' ? 'items-end text-end' : 'items-start text-start'
-                    "
-                >
+                    [ngClass]="contentAlign == 'right' ? 'items-end text-end' : 'items-start text-start'">
                     <h1>Pocket Pilot</h1>
 
-                    <p>
-                        Take control of your finances with intuitive tracking, instant insights, and
-                        easy-to-manage accounts.
-                    </p>
+                    <p>Take control of your finances with intuitive tracking, instant insights, and easy-to-manage accounts.</p>
 
                     <ul class="flex flex-col gap-2">
                         @for (feature of features; track feature.id) {
                             <auth-feature
                                 [contentOrder]="contentAlign == 'right' ? 'reversed' : 'normal'"
-                                [feature]="feature.name"
-                            ></auth-feature>
+                                [feature]="feature.name"></auth-feature>
                         }
                     </ul>
                 </div>
 
-                <p class="text-muted-text text-sm">
-                    Copyright &copy; {{ year() }}. All Rights Reserved.
-                </p>
+                <p class="text-muted-text text-sm">Copyright &copy; {{ year() }}. All Rights Reserved.</p>
             </div>
         </div>
     `,
-    styleUrl: './branding.css',
+    styleUrl: './branding.css'
 })
 export class AuthBranding {
     @Input({ required: true }) contentAlign: 'right' | 'left' = 'left';

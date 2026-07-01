@@ -15,10 +15,10 @@ export const InitialNewSplittableData: NewSplittableSchema = {
     quantity: '1',
     unitPrice: null,
     quantitySplits: [],
-    splitStrategy: 'SOLE' as SplitStrategyVariant,
+    splitStrategy: 'SOLE' as SplitStrategyVariant
 };
 
-export const NewSplittableFormValidation = schema<NewSplittableSchema>((root) => {
+export const NewSplittableFormValidation = schema<NewSplittableSchema>(root => {
     // Name
     required(root.name, { message: 'The name is required field!' });
 

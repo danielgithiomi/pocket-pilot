@@ -6,7 +6,7 @@ import { LucideIconData, LucideAngularModule } from 'lucide-angular';
     selector: 'dashboard-card',
     styleUrl: './dashboard-card.css',
     templateUrl: './dashboard-card.html',
-    imports: [LucideAngularModule, CommonModule, NgClass],
+    imports: [LucideAngularModule, CommonModule, NgClass]
 })
 export class DashboardCard {
     value = input<string>();

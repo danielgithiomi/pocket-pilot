@@ -13,7 +13,7 @@ import { Component, inject, input, output } from '@angular/core';
         :host {
             @apply px-2 w-full h-full flex flex-row items-center gap-6 overflow-hidden;
         }
-    `,
+    `
 })
 export class ProfileSummary {
     // INPUTS

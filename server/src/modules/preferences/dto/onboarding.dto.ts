@@ -25,28 +25,28 @@ export class UserPreferencesDto {
     @Expose()
     @ApiProperty({
         example: 1000,
-        description: 'Monthly spending limit of the user',
+        description: 'Monthly spending limit of the user'
     })
     monthlySpendingLimit!: number;
 
     @Expose()
     @ApiProperty({
         example: 'USD',
-        description: 'Default currency of the user',
+        description: 'Default currency of the user'
     })
     defaultCurrency!: string;
 
     @Expose()
     @ApiProperty({
         example: 'en',
-        description: 'Preferred language of the user',
+        description: 'Preferred language of the user'
     })
     preferredLanguage!: string;
 
     @Expose()
     @ApiProperty({
         example: 'DARK',
-        description: 'Preferred theme of the user',
+        description: 'Preferred theme of the user'
     })
     preferredTheme!: string;
 }

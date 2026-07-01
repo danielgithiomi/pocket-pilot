@@ -1,4 +1,4 @@
-import { Endpoints } from "../types";
+import {Endpoints} from "../types";
 
 export const CLEAR_SESSION_ERROR_NAME: Record<string, string> = {
   TOKEN_EXPIRED: "TOKEN_EXPIRED",
@@ -52,9 +52,9 @@ export const API_ENDPOINTS = {
   // features
   features: "features",
   user_features: "features/user",
+  feature_votes: "features/votes",
   feature_status: "features/status",
   feature_categories: "features/categories",
-  feature_vote_variants: "features/vote-variants",
 
   // transactions
   all_transactions: "accounts/transactions/all",

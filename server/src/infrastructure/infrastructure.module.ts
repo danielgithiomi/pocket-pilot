@@ -7,6 +7,6 @@ import { DatabaseModule } from './database/database.module';
 @Global()
 @Module({
     exports: [DatabaseModule, PPConfigModule],
-    imports: [DatabaseModule, PPConfigModule, CacheModule.registerAsync(RedisConfig)],
+    imports: [DatabaseModule, PPConfigModule, CacheModule.registerAsync(RedisConfig)]
 })
 export class InfrastructureModule {}

@@ -1,7 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class DrawerService {
     private readonly dropdownOpen$ = signal(false);

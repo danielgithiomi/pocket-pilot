@@ -21,7 +21,7 @@ export class SplitrController {
     @ApiResponse({
         status: 200,
         isArray: true,
-        type: [SplitrEventDto],
+        type: [SplitrEventDto]
     })
     getUserSplitrEvents(@UserInRequest() user: User) {
         return this.splitrService.getUserSplitrEvents(user.id);
@@ -35,11 +35,11 @@ export class SplitrController {
     @ApiParam({
         name: 'eventId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The ID of the splitr event to retrieve',
+        description: 'The ID of the splitr event to retrieve'
     })
     @ApiResponse({
         status: 200,
-        type: SplitrEventDto,
+        type: SplitrEventDto
     })
     getSplitrEventById(@UserInRequest() user: User, @Param('eventId') eventId: string) {
         return this.splitrService.getSplitrEventById(user.id, eventId);
@@ -53,7 +53,7 @@ export class SplitrController {
     @ApiResponse({
         status: 201,
         isArray: false,
-        type: SplitrEventDto,
+        type: SplitrEventDto
     })
     createSplitrEvent(@UserInRequest() user: User, @Body() payload: SplitrEventPayload) {
         return this.splitrService.createSplitrEvent(user.id, payload);
@@ -67,22 +67,18 @@ export class SplitrController {
     @ApiParam({
         name: 'eventId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The ID of the splitr event to mark as settled or pending',
+        description: 'The ID of the splitr event to mark as settled or pending'
     })
     @ApiResponse({
         status: 200,
-        type: VoidResourceResponse,
+        type: VoidResourceResponse
     })
     async markSplitrEventAsSettledOrPending(
         @UserInRequest() user: User,
         @Param('eventId') eventId: string,
-        @Body() payload: SettleSplitrPayload,
+        @Body() payload: SettleSplitrPayload
     ): Promise<VoidResourceResponse> {
-        const { eventName, isSettled } = await this.splitrService.markSplitrEventAsSettledOrPending(
-            user.id,
-            eventId,
-            payload,
-        );
+        const { eventName, isSettled } = await this.splitrService.markSplitrEventAsSettledOrPending(user.id, eventId, payload);
 
         const message = 'Event status updated!';
         const details = `Your [${eventName}] splitr event has been marked as ${isSettled ? 'settled' : 'pending'} successfully.`;
@@ -98,21 +94,18 @@ export class SplitrController {
     @ApiParam({
         name: 'eventId',
         schema: { type: 'string', format: 'uuid' },
-        description: 'The ID of the splitr event to delete',
+        description: 'The ID of the splitr event to delete'
     })
     @ApiResponse({
         status: 200,
-        type: VoidResourceResponse,
+        type: VoidResourceResponse
     })
-    async deleteSplitrEvent(
-        @UserInRequest() user: User,
-        @Param('eventId') eventId: string,
-    ): Promise<VoidResourceResponse> {
+    async deleteSplitrEvent(@UserInRequest() user: User, @Param('eventId') eventId: string): Promise<VoidResourceResponse> {
         const deletedEvent = await this.splitrService.deleteSplitrEvent(user.id, eventId);
 
         return {
             message: 'Splitr event deleted!',
-            details: `Your [${deletedEvent.eventName}] splitr event has been deleted successfully.`,
+            details: `Your [${deletedEvent.eventName}] splitr event has been deleted successfully.`
         };
     }
 }

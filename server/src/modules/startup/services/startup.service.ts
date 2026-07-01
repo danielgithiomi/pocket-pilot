@@ -15,21 +15,21 @@ export class StartupService implements OnApplicationBootstrap {
      *
      * @returns {Promise<void>} A promise that resolves when the exchange rate data has been successfully fetched and processed.
      */
-    async onApplicationBootstrap(): Promise<void> {
-        const { baseCurrency, nextUpdateTime, lastUpdatedTime, fetchedAt }: ExchangeRateDto =
-            await this.exchangeRateService.fetchAndPersistExchangeRates();
-
-        this.logger.warn({
-            name: 'EXCHANGE_RATE_FETCH_SUCCESS_STARTUP',
-            title: '(STARTUP) Exchange Rate Data Fetch Success',
-            message: `(STARTUP) Successfully persisted exchange rate snapshot at ${fetchedAt.toISOString()}.`,
-            exchangeRate: {
-                baseCurrency,
-                fetchedAt: fetchedAt.toISOString(),
-                nextUpdateTime: nextUpdateTime.toISOString(),
-                lastUpdatedTime: lastUpdatedTime.toISOString(),
-            },
-        });
+    onApplicationBootstrap(): void {
+        // const { baseCurrency, nextUpdateTime, lastUpdatedTime, fetchedAt }: ExchangeRateDto =
+        //     await this.exchangeRateService.fetchAndPersistExchangeRates();
+        //
+        // this.logger.warn({
+        //     name: 'EXCHANGE_RATE_FETCH_SUCCESS_STARTUP',
+        //     title: '(STARTUP) Exchange Rate Data Fetch Success',
+        //     message: `(STARTUP) Successfully persisted exchange rate snapshot at ${fetchedAt.toISOString()}.`,
+        //     exchangeRate: {
+        //         baseCurrency,
+        //         fetchedAt: fetchedAt.toISOString(),
+        //         nextUpdateTime: nextUpdateTime.toISOString(),
+        //         lastUpdatedTime: lastUpdatedTime.toISOString()
+        //     }
+        // });
     }
 
     /**
@@ -51,8 +51,8 @@ export class StartupService implements OnApplicationBootstrap {
                 baseCurrency,
                 fetchedAt: fetchedAt.toISOString(),
                 nextUpdateTime: nextUpdateTime.toISOString(),
-                lastUpdatedTime: lastUpdatedTime.toISOString(),
-            },
+                lastUpdatedTime: lastUpdatedTime.toISOString()
+            }
         });
     }
 }

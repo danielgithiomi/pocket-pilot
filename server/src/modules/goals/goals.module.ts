@@ -7,6 +7,6 @@ import { GoalsRepository } from './repositories/goals.repository';
 @Module({
     imports: [IdentityModule],
     controllers: [GoalsController],
-    providers: [GoalsService, GoalsRepository],
+    providers: [GoalsService, GoalsRepository]
 })
 export class GoalsModule {}

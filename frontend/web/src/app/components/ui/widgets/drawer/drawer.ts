@@ -5,16 +5,13 @@ import { ThemeService } from '@infrastructure/services';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { Component, inject, input, output } from '@angular/core';
 import { NgOptimizedImage, NgClass } from '@angular/common';
-import {
-    DrawerNavigationLinks as links,
-    AdditionalDrawerNavigationLinks as additionalLinks,
-} from '@libs/constants';
+import { DrawerNavigationLinks as links, AdditionalDrawerNavigationLinks as additionalLinks } from '@libs/constants';
 
 @Component({
     selector: 'app-drawer',
     styleUrl: './drawer.css',
     templateUrl: './drawer.html',
-    imports: [NgOptimizedImage, Chevron, NavLink, NgClass, LucideAngularModule],
+    imports: [NgOptimizedImage, Chevron, NavLink, NgClass, LucideAngularModule]
 })
 export class Drawer {
     linkClicked = output<void>();

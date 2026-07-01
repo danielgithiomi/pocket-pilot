@@ -7,7 +7,7 @@ import { Component, input, output, computed } from '@angular/core';
     selector: 'organism-table',
     styleUrl: './table.css',
     templateUrl: './table.html',
-    imports: [CommonModule, LucideAngularModule, NgClass],
+    imports: [CommonModule, LucideAngularModule, NgClass]
 })
 export class Table<T extends object> {
     /* INPUTS */
@@ -27,7 +27,7 @@ export class Table<T extends object> {
     /* COMPUTED */
     gridTemplateColumns = computed<string>(() => {
         return this.columns()
-            .map((col) => col.width || '1fr')
+            .map(col => col.width || '1fr')
             .join(' ');
     });
 

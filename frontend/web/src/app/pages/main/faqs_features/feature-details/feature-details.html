@@ -1,0 +1,99 @@
+<atom-modal
+    [inverted]="true"
+    [id]="compositeFeatureId()"
+    [showExternalCloseButton]="true"
+    wrapperClasses="bg-body-background!"
+    [closeModalOnBackdropClick]="onBackdropClickClose()"
+    (onModalCloseEvent)="onFeatureModalCloseEvent.emit()">
+
+    @let isLoading = isLoadingComments();
+    <div slot="modal-content" [id]="featureId()" class="feature-details p-4 lg:p-6" [ngClass]="{ 'h-full': isLoading }">
+        <section class="feature-details-card feature-details-overview">
+            <div class="flex flex-col items-center justify-center gap-2">
+                <div class="feature-vote" aria-label="Feature votes">
+                    <lucide-icon [img]="UpVoteIcon" [size]="iconSize" name="feature-upvote" />
+                </div>
+
+                @let voteCount = feature().upvoteCount;
+                <div class="flex flex-col items-center">
+                    <p class="feature-vote-count">{{ voteCount }}</p>
+                    <p class="feature-vote-label">{{ voteCount == 1 ? 'upvote' : 'upvotes' }}</p>
+                </div>
+            </div>
+
+            <div class="feature-overview-content">
+                <h2 class="feature-title">{{ feature().featureTitle }}</h2>
+                <p class="feature-content">{{ feature().featureContent }}</p>
+
+                <div class="feature-meta">
+                    <div class="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                        <div class="flex flex-row items-center gap-1">
+                            <atom-badge [label]="formattedStatus()" [variant]="statusBadgeVariant()" />
+                            <atom-badge [label]="formattedCategory()" variant="neutral" [uppercase]="false" />
+                        </div>
+
+                        <div class="feature-meta-submitted flex flex-row items-center gap-2 self-end">
+                            <p>
+                                Submitted by <span class="text-primary font-bold">{{ formattedAuthorName() }}</span>
+                            </p>
+                            <p aria-hidden="true">• {{ formattedSubmittedDate() }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-details-status">
+            <molecule-status
+                label="Status"
+                [showLabel]="false"
+                [id]="feature().id"
+                [steps]="statusSteps()"
+                [activeIndex]="statusActiveIndex()" />
+        </section>
+
+        <section
+            class="feature-details-card feature-comments"
+            [ngClass]="{ 'grid place-items-center bg-transparent! border-none!': isLoading }">
+            @if (isLoading) {
+                <div class="layered-loader"></div>
+            } @else {
+                <div class="feature-comments-header">
+                    <lucide-icon [img]="CommentIcon" [size]="iconSize" name="feature-comments" />
+                    <span>{{ commentCount() }} {{ commentCount() === 1 ? 'comment' : 'comments' }}</span>
+                </div>
+
+                @if (commentCount() === 0) {
+                    <p class="feature-comments-empty">No comments yet. Be the first to share your thoughts.</p>
+                } @else {
+                    <div class="feature-comments-wrapper flex flex-col divide-y divide-reactive-text">
+                        @for (comment of featureComments(); track comment.id) {
+                            <feature-comment [featureComment]="comment" />
+                        }
+                    </div>
+                }
+
+                <div class="feature-comment-form">
+                    <textarea
+                        rows="1"
+                        [value]="commentDraft()"
+                        class="feature-comment-input"
+                        placeholder="Add your comment..."
+                        (input)="handleCommentInput($event)"
+                        [attr.aria-label]="'Add a comment to ' + feature().featureTitle">
+                    </textarea>
+
+                    <atom-button
+                        type="button"
+                        id="submit-comment"
+                        [disabled]="!canPostComment()"
+                        (clicked)="handlePostComment()">
+                        <div class="w-full py-1 grid place-items-center">
+                            <lucide-icon [img]="SendIcon" [size]="iconSize" name="post-comment" />
+                        </div>
+                    </atom-button>
+                </div>
+            }
+        </section>
+    </div>
+</atom-modal>

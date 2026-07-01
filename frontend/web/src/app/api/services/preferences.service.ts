@@ -3,15 +3,10 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { ApiServiceError } from './api-error.service';
 import { PreferencesMutation } from '@methods/mutations';
-import {
-    IStandardError,
-    IStandardResponse,
-    IVoidResourceResponse,
-    UpdateUserPreferencesPayload,
-} from '@global/types';
+import { IStandardError, IStandardResponse, IVoidResourceResponse, UpdateUserPreferencesPayload } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class PreferencesService {
     private readonly authService = inject(AuthService);
@@ -25,7 +20,7 @@ export class PreferencesService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 }

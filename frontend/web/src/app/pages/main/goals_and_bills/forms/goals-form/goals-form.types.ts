@@ -23,7 +23,7 @@ export type NewGoalSchema = {
     targetCompletionStrategy: TargetCompletionStrategy | null;
 };
 
-export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
+export const newGoalFormValidationSchema = schema<NewGoalSchema>(root => {
     // Name
     required(root.name, { message: 'The goal name is required field!' });
 
@@ -41,7 +41,7 @@ export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
 
     // Target Amount
     required(root.targetAmount, { message: 'The goal target amount is required field!' });
-    validate(root.targetAmount, (context) => {
+    validate(root.targetAmount, context => {
         const value = context.value();
         if (value === null) return undefined;
 
@@ -51,29 +51,25 @@ export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
         // const isValid = Math.round(value * 100) === value * 100;
         // const isValid = Math.abs(value * 100 - Math.round(value * 100)) < Number.EPSILON;
 
-        return isValid
-            ? undefined
-            : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
+        return isValid ? undefined : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
     });
 
     // Monthly Contribution
     required(root.monthlyContribution, {
-        message: 'The goal monthly contribution is required field!',
+        message: 'The goal monthly contribution is required field!'
     });
-    validate(root.monthlyContribution, (context) => {
+    validate(root.monthlyContribution, context => {
         const value = context.value();
         if (value === null) return undefined;
 
         const asString = value.toString();
         const isValid = /^\d+(\.\d{1,2})?$/.test(asString);
 
-        return isValid
-            ? undefined
-            : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
+        return isValid ? undefined : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
     });
 
     // Target Completion Strategy
     required(root.targetCompletionStrategy, {
-        message: 'The goal target completion strategy is required field!',
+        message: 'The goal target completion strategy is required field!'
     });
 });

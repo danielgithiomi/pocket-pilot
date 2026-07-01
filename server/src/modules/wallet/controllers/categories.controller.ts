@@ -21,7 +21,7 @@ export class CategoriesController {
         status: 200,
         isArray: false,
         type: CategoriesDto,
-        description: 'The categories fetched successfully by User ID',
+        description: 'The categories fetched successfully by User ID'
     })
     getUserCategories(@UserInRequest() user: UserResponseDto) {
         return this.categoriesService.getAllUserCategories(user);
@@ -33,7 +33,7 @@ export class CategoriesController {
     @ApiResponse({
         status: 201,
         type: CategoriesDto,
-        description: 'The categories created or updated successfully by User ID',
+        description: 'The categories created or updated successfully by User ID'
     })
     createCategory(@Body() payload: CreateCategoryDto, @UserInRequest() user: UserResponseDto) {
         return this.categoriesService.createCategory(user.id, payload);
@@ -45,7 +45,7 @@ export class CategoriesController {
     @ApiResponse({
         status: 200,
         type: VoidResourceResponse,
-        description: 'The category deleted successfully by User ID',
+        description: 'The category deleted successfully by User ID'
     })
     async deleteCategory(@Body() payload: DeleteCategoryPayload, @UserInRequest() user: UserResponseDto) {
         await this.categoriesService.deleteCategoryByName(user.id, payload);
@@ -53,7 +53,7 @@ export class CategoriesController {
 
         return {
             message: 'Category deleted!',
-            details: `Your [${denormalisedCategoryName}] category has been deleted successfully.`,
+            details: `Your [${denormalisedCategoryName}] category has been deleted successfully.`
         };
     }
 }

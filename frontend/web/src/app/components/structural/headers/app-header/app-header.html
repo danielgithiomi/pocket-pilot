@@ -2,12 +2,7 @@
     <div class="flex flex-row items-center gap-2">
         @if (withDrawerLayout()) {
             <div class="hamburger-wrapper group" (click)="hamburgerClickEmitter.emit()">
-                <lucide-angular
-                    size="24"
-                    [img]="Menu"
-                    name="hamburger-icon"
-                    class="hamburger-icon"
-                />
+                <lucide-angular size="24" [img]="Menu" name="hamburger-icon" class="hamburger-icon" />
             </div>
         }
 
@@ -30,8 +25,7 @@
                     [name]="Settings"
                     [size]="iconSize"
                     (click)="goToSettings()"
-                    [ngClass]="{ 'text-primary': isLinkActive('/settings') }"
-                />
+                    [ngClass]="{ 'text-primary': isLinkActive('/settings') }" />
             </div>
 
             <div class="vertical-separator h-8 md:hidden! lg:flex!"></div>

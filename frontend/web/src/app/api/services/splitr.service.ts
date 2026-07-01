@@ -11,11 +11,11 @@ import {
     SplitrSquadPayload,
     SplitrEventPayload,
     SettleSplitrPayload,
-    IVoidResourceResponse,
+    IVoidResourceResponse
 } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class SplitrService {
     private readonly mutation = inject(SplitrMutation);
@@ -33,19 +33,19 @@ export class SplitrService {
                 type: 'error',
                 statusCode: 404,
                 title: 'Error fetching your squad!',
-                details: `Failed to load the squad resource in time.`,
+                details: `Failed to load the squad resource in time.`
             });
             return EMPTY;
         }
 
-        const squad = resourceValue.data.find((squad) => squad.id === squadId);
+        const squad = resourceValue.data.find(squad => squad.id === squadId);
 
         if (!squad) {
             this.errorService.renderToast({
                 type: 'error',
                 statusCode: 404,
                 title: 'Squad not found!',
-                details: `No squad was found for this user. Please refresh the page.`,
+                details: `No squad was found for this user. Please refresh the page.`
             });
             return EMPTY;
         }
@@ -59,7 +59,7 @@ export class SplitrService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -69,7 +69,7 @@ export class SplitrService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -79,7 +79,7 @@ export class SplitrService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -94,20 +94,17 @@ export class SplitrService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
-    markSplitrEventAsSettledOrPending(
-        eventId: string,
-        payload: SettleSplitrPayload,
-    ): Observable<IVoidResourceResponse> {
+    markSplitrEventAsSettledOrPending(eventId: string, payload: SettleSplitrPayload): Observable<IVoidResourceResponse> {
         return this.mutation.markSplitrEventAsSettledOrPending(eventId, payload).pipe(
             map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -117,7 +114,7 @@ export class SplitrService {
             catchError((error: IStandardError) => {
                 this.errorService.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 }

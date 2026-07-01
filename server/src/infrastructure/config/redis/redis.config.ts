@@ -14,12 +14,12 @@ export const RedisConfig: CacheModuleAsyncOptions = {
             pingInterval,
             socket: { port },
             name: 'bff-redis',
-            url: `redis://${host}:${port}`,
+            url: `redis://${host}:${port}`
         };
 
         return {
             stores: [new KeyvRedis(options)],
-            ttl: secondsToMilliseconds(defaultTTL),
+            ttl: secondsToMilliseconds(defaultTTL)
         };
-    },
+    }
 };

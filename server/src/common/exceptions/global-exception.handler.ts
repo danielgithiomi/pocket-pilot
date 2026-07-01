@@ -45,13 +45,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
                     type,
                     name,
                     message,
-                    details,
+                    details
                 },
                 metadata: {
                     endpoint: request.url,
                     timestamp: new Date().toISOString(),
-                    requestId: randomUUID(),
-                },
+                    requestId: randomUUID()
+                }
             });
         }
 
@@ -93,13 +93,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
                 name,
                 title,
                 message,
-                details,
+                details
             },
             metadata: {
                 endpoint: request.url,
                 timestamp: new Date().toISOString(),
-                requestId: randomUUID(),
-            },
+                requestId: randomUUID()
+            }
         });
     }
 }

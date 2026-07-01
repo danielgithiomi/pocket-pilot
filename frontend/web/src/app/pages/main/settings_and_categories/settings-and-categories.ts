@@ -15,7 +15,7 @@ import { CategoriesForm } from './categories/categories-form/categories-form';
     selector: 'settings_and_categories',
     styleUrl: './settings-and-categories.css',
     templateUrl: './settings-and-categories.html',
-    imports: [LucideAngularModule, Settings, Button, Categories, CategoriesForm, NgClass],
+    imports: [LucideAngularModule, Settings, Button, Categories, CategoriesForm, NgClass]
 })
 export class SettingsAndCategories {
     // ICONS
@@ -53,10 +53,10 @@ export class SettingsAndCategories {
                 this.toastService.show({
                     details,
                     title: message,
-                    variant: 'success',
+                    variant: 'success'
                 });
                 this.categories$.reload();
-            },
+            }
         });
     }
 }

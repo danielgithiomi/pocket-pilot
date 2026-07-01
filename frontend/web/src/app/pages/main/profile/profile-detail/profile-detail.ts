@@ -9,7 +9,7 @@ import {
     CalendarClock,
     LucideIconData,
     ShieldEllipsis,
-    LucideAngularModule,
+    LucideAngularModule
 } from 'lucide-angular';
 
 type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-login';
@@ -21,16 +21,14 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
     template: ` <div
         id="profile-detail"
         class="profile-detail"
-        [ngClass]="{ 'border-b border-muted-text': !isLast(), 'mb-6! md:mb-0!': isLast() }"
-    >
+        [ngClass]="{ 'border-b border-muted-text': !isLast(), 'mb-6! md:mb-0!': isLast() }">
         <div class="icon shrink-0">
             <lucide-icon
                 [size]="18"
                 [strokeWidth]="2.5"
                 [img]="detailIcon()"
                 color="var(--primary)"
-                [name]="detailVariant()"
-            ></lucide-icon>
+                [name]="detailVariant()"></lucide-icon>
         </div>
 
         <div class="info">
@@ -39,15 +37,11 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
                 <div
                     class="skeleton h-5"
                     [ngClass]="{
-                        'w-1/2':
-                            detailVariant() === 'name' ||
-                            detailVariant() === 'email' ||
-                            detailVariant() === 'last-login',
+                        'w-1/2': detailVariant() === 'name' || detailVariant() === 'email' || detailVariant() === 'last-login',
                         'w-1/3': detailVariant() === 'phone',
                         'w-1/6': detailVariant() === 'role',
-                        'w-1/5': detailVariant() === 'status',
-                    }"
-                ></div>
+                        'w-1/5': detailVariant() === 'status'
+                    }"></div>
             } @else {
                 @switch (detailVariant()) {
                     @case ('status') {
@@ -64,19 +58,10 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
                         @if (formattedPhone(); as phone) {
                             <p
                                 class="value phone-value"
-                                [attr.aria-label]="
-                                    phone.countryName +
-                                    ' ' +
-                                    phone.dialCode +
-                                    ' ' +
-                                    phone.nationalNumber
-                                "
-                            >
+                                [attr.aria-label]="phone.countryName + ' ' + phone.dialCode + ' ' + phone.nationalNumber">
                                 <span class="phone-flag" aria-hidden="true">{{ phone.flag }}</span>
                                 <span class="phone-dial-code">{{ phone.dialCode }}</span>
-                                <span class="phone-national-number">{{
-                                    phone.nationalNumber
-                                }}</span>
+                                <span class="phone-national-number">{{ phone.nationalNumber }}</span>
                             </p>
                         } @else {
                             <p class="value truncate-text">{{ detailValue() }}</p>
@@ -88,7 +73,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
                 }
             }
         </div>
-    </div>`,
+    </div>`
 })
 export class ProfileDetail {
     isLoading = input(true);

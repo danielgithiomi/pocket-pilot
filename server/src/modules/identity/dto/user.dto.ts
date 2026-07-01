@@ -64,7 +64,7 @@ export class UpdateUserProfilePicturePayload {
     @IsNotEmpty()
     @ApiProperty({
         example: 'user@email.com/profile-picture-123.jpg',
-        description: 'The AWS S3 key for the profile picture',
+        description: 'The AWS S3 key for the profile picture'
     })
     profilePictureAwsKey!: string;
 }
@@ -77,77 +77,77 @@ export class UserResponseDto {
     @Expose()
     @ApiProperty({
         description: 'Unique identifier for the user',
-        example: '123e4567-e89b-12d3-a456-426614174000',
+        example: '123e4567-e89b-12d3-a456-426614174000'
     })
     id!: string;
 
     @Expose()
     @ApiProperty({
         example: 'johndoe@test.com',
-        description: 'Email address of the user',
+        description: 'Email address of the user'
     })
     email!: string;
 
     @Expose()
     @ApiProperty({
         example: 'John Doe',
-        description: 'Name of the user',
+        description: 'Name of the user'
     })
     name!: string;
 
     @Expose()
     @ApiProperty({
         example: '+1234567890',
-        description: 'Phone number of the user',
+        description: 'Phone number of the user'
     })
     phoneNumber!: string;
 
     @Expose()
     @ApiProperty({
         example: 'https://example.com/profile.jpg',
-        description: "URL to the user's profile picture",
+        description: "URL to the user's profile picture"
     })
     profilePictureUrl!: string | null;
 
     @Expose()
     @ApiProperty({
         example: '2022-01-01T00:00:00.000Z',
-        description: 'Date and time when the user was created',
+        description: 'Date and time when the user was created'
     })
     createdAt!: Date;
 
     @Expose()
     @ApiProperty({
         example: '2022-01-01T00:00:00.000Z',
-        description: 'Date and time when the user was last updated',
+        description: 'Date and time when the user was last updated'
     })
     updatedAt!: Date;
 
     @Expose()
     @ApiProperty({
         example: '2022-01-01T00:00:00.000Z',
-        description: 'Date and time when the user last logged in',
+        description: 'Date and time when the user last logged in'
     })
     lastLoginAt!: Date | null;
 
     @Expose()
     @ApiProperty({
         example: 0,
-        description: 'Number of failed login attempts',
+        description: 'Number of failed login attempts'
     })
     failedLoginAttempts!: number;
 
     @Expose()
     @ApiProperty({
         example: false,
-        description: 'Whether the account is locked',
+        description: 'Whether the account is locked'
     })
     isAccountLocked!: boolean;
 
     @Expose()
     @ApiProperty({
         example: true,
-        description: 'Whether the user has completed onboarding',
+        description: 'Whether the user has completed onboarding'
     })
     isOnboarded!: boolean;
 }
@@ -159,7 +159,7 @@ export class UserWithPreferencesDto extends UserResponseDto {
     @Type(() => UserPreferencesDto)
     @ApiProperty({
         type: UserPreferencesDto,
-        description: 'User preferences',
+        description: 'User preferences'
     })
     userPreferences!: UserPreferencesDto;
 }

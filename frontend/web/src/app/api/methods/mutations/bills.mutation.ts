@@ -4,7 +4,7 @@ import { API_ENDPOINTS as endpoints } from '@global/constants';
 import { Bill, CreateBillPayload, IVoidResourceResponse } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class BillsMutation {
     private readonly client = inject(ApiClient);

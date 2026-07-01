@@ -27,7 +27,7 @@ import { CategoriesCache, AccountsCache, AccountDetailsCache } from './cache/wal
         TransactionService,
         AccountDetailsCache,
         CategoriesRepository,
-        TransactionRepository,
-    ],
+        TransactionRepository
+    ]
 })
 export class WalletModule {}

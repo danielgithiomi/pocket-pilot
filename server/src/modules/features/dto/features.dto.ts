@@ -1,14 +1,31 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { FeatureCommentDto } from './comments.dto';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsNotEmpty, IsString, IsEnum } from 'class-validator';
-import { FeatureCategory, FeatureStatus, Prisma, VoteVariant } from '@prisma/client';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { FeatureCategory, FeatureStatus, Prisma } from '@prisma/client';
 
 // PRISMA TYPES
 export type FeatureWithUser = Prisma.FeatureGetPayload<{
-    include: { featureVotes: true; user: { select: { name: true } } };
+    include: {
+        featureVotes: true;
+        user: { select: { name: true } };
+        _count: { select: { featureComments: true; featureVotes: true } };
+    };
 }>;
 
-// SERVER DTOs
+export type PrismaFeatureWithComments = FeatureWithUser &
+    Prisma.FeatureGetPayload<{
+        include: {
+            featureComments: {
+                include: {
+                    feature: { select: { id: true } };
+                    author: { select: { name: true; profilePictureUrl: true } };
+                };
+            };
+        };
+    }>;
+
+// SERVER PAYLOADS
 export class FeaturePayload {
     @IsString()
     @IsNotEmpty()
@@ -33,6 +50,7 @@ export class UpdateFeatureStatusPayload {
     featureStatus!: FeatureStatus;
 }
 
+// SERVER DTOs
 @Exclude()
 export class FeatureVotesDto {
     @Expose()
@@ -40,17 +58,13 @@ export class FeatureVotesDto {
     id!: string;
 
     @Expose()
-    @ApiProperty({ enum: VoteVariant, example: VoteVariant.UPVOTE, description: 'The type of the vote' })
-    voteVariant!: VoteVariant;
-
-    @Expose()
     @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the user who voted' })
-    voterId!: string;
+    userId!: string;
 
     @Expose()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The ID of the feature that was voted on',
+        description: 'The ID of the feature that was voted on'
     })
     featureId!: string;
 
@@ -72,7 +86,7 @@ export class FeatureDto {
     @Expose()
     @ApiProperty({
         example: '123e4567-e89b-12d3-a456-426614174000',
-        description: 'The ID of the user who created the feature',
+        description: 'The ID of the user who created the feature'
     })
     authorId!: string;
 
@@ -89,16 +103,12 @@ export class FeatureDto {
     featureContent!: string;
 
     @Expose()
-    @ApiProperty({ example: 5, description: 'The score of the feature' })
-    featureScore!: number;
-
-    @Expose()
     @ApiProperty({ example: 8, description: 'The upvote count of the feature' })
     upvoteCount!: number;
 
     @Expose()
-    @ApiProperty({ example: 3, description: 'The downvote count of the feature' })
-    downvoteCount!: number;
+    @ApiProperty({ example: 12, description: 'The number of comments associated with this feature' })
+    commentsCount!: number;
 
     @Expose()
     @ApiProperty({ enum: FeatureStatus, example: FeatureStatus.NEW, description: 'The status of the feature' })
@@ -123,26 +133,11 @@ export class FeatureDto {
 }
 
 @Exclude()
-export class FeatureCommentsDto {
-    @Expose()
-    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'The ID of the comment in the table' })
-    id!: string;
-
-    @Expose()
-    @ApiProperty({ example: 'My Comment', description: 'The content of the comment' })
-    comment!: string;
-
-    @Expose()
-    @ApiProperty({ example: '2025-01-01', description: 'The created date of the comment' })
-    createdAt!: Date;
-}
-
-@Exclude()
 export class FeatureWithCommentsDto extends FeatureDto {
     @Expose()
-    @Type(() => FeatureCommentsDto)
-    @ApiProperty({ type: FeatureCommentsDto, isArray: true, description: 'The comments on the feature' })
-    featureComments!: FeatureCommentsDto[];
+    @Type(() => FeatureCommentDto)
+    @ApiProperty({ type: FeatureCommentDto, isArray: true, description: 'The comments on the feature' })
+    featureComments!: FeatureCommentDto[];
 }
 
 @Exclude()

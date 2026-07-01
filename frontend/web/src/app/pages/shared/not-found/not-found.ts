@@ -19,7 +19,7 @@ import { AnimationOptions, LottieComponent } from 'ngx-lottie';
         .lottie-animation {
             animation: slideHalfDown 0.5s ease-in-out;
         }
-    `,
+    `
 })
 export class NotFound {
     protected readonly router: Router = inject(Router);
@@ -29,7 +29,7 @@ export class NotFound {
     protected readonly options: AnimationOptions = {
         loop: true,
         autoplay: true,
-        path: '/animations/not_found.json',
+        path: '/animations/not_found.json'
     };
 
     navigateToSafety() {

@@ -1,19 +1,19 @@
-import { Badge, BadgeVariant } from '@atoms/badge';
 import { formatDate } from '@libs/utils';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { AuthService } from '@api/auth.service';
+import { Badge, BadgeVariant } from '@atoms/badge';
 import { denormalizeCategoryName } from '@global/utils';
 import { FeaturesService } from '@api/features.service';
 import { Feature, IVoidResourceResponse } from '@global/types';
-import { Component, computed, inject, input, signal } from '@angular/core';
-import { LucideAngularModule, ChevronsUp, MessageSquareReply, Trash2 } from 'lucide-angular';
 import { FeatureStatusEnum } from '@global/enums';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChevronsUp, LucideAngularModule, MessageSquareReply, Trash2 } from 'lucide-angular';
 
 @Component({
     selector: 'feature-item',
     templateUrl: 'feature-item.html',
-    imports: [NgClass, LucideAngularModule, Badge],
+    imports: [NgClass, LucideAngularModule, Badge]
 })
 export class FeatureItem {
     // ICONS
@@ -24,7 +24,9 @@ export class FeatureItem {
 
     // SIGNAL STATES
     protected readonly isDeleting = signal<boolean>(false);
-    protected readonly isUserUpvoted = signal<boolean>(false);
+    protected readonly isVotingOnFeature = signal<boolean>(false);
+    private readonly optimisticFeatureScore = signal<number | null>(null);
+    private readonly optimisticIsUserUpvoted = signal<boolean | null>(null);
 
     // SERVICES
     protected readonly authService = inject(AuthService);
@@ -36,12 +38,26 @@ export class FeatureItem {
     readonly feature = input.required<Feature>();
     readonly showDeleteIcon = input.required<boolean>();
 
+    // OUTPUTS
+    onFeatureItemClick = output<string>();
+
     // COMPUTED
-    protected readonly hasUserUpvoted = computed<boolean>(() => true);
     protected readonly isOwnedByCurrentUser = computed<boolean>(() => {
         const userId = this.authService.user()?.id;
         return this.feature().authorId === userId;
     });
+    protected readonly isUserUpvoted = computed<boolean>(() => {
+        const optimisticState = this.optimisticIsUserUpvoted();
+        if (optimisticState !== null) return optimisticState;
+
+        const userId = this.authService.user()?.id;
+        if (!userId) return false;
+
+        return this.feature().featureVotes.some(vote => vote.userId === userId);
+    });
+    protected readonly displayedFeatureScore = computed<number>(
+        () => this.optimisticFeatureScore() ?? this.feature().upvoteCount
+    );
     protected readonly featureId = computed<string>(() => `feature-item-${this.id()}`);
     protected readonly formattedDate = computed<string>(() => {
         const date = this.feature().createdAt.toString();
@@ -59,7 +75,7 @@ export class FeatureItem {
             SHIPPED: 'success',
             PLANNED: 'success',
             IN_PROGRESS: 'info',
-            UNDER_REVIEW: 'warning',
+            UNDER_REVIEW: 'warning'
         };
 
         return VARIANT_MAP[this.feature().featureStatus];
@@ -75,12 +91,54 @@ export class FeatureItem {
 
     // METHODS
     handleFeatureClick() {
-        console.log('feature clicked', this.feature());
+        this.onFeatureItemClick.emit(this.feature().id);
     }
 
     handleUpvoteClick(event: Event) {
         event.stopPropagation();
-        this.isUserUpvoted.set(!this.isUserUpvoted());
+
+        // Prevent multiple calls
+        if (this.isVotingOnFeature()) return;
+
+        this.isVotingOnFeature.set(true);
+        const previousState = this.isUserUpvoted();
+        const previousScore = this.displayedFeatureScore();
+        const nextState = !previousState;
+
+        this.optimisticIsUserUpvoted.set(nextState);
+        this.optimisticFeatureScore.set(previousScore + (nextState ? 1 : -1));
+
+        this.featuresService.toggleFeatureUpvoteById(this.feature().id).subscribe({
+            next: (response: Feature) => {
+                const userId = this.authService.user()?.id;
+                const isUserUpvoted = !!userId && response.featureVotes.some(vote => vote.userId === userId);
+
+                this.optimisticIsUserUpvoted.set(isUserUpvoted);
+                this.optimisticFeatureScore.set(response.upvoteCount);
+
+                this.toastService.show({
+                    variant: 'success',
+                    title: nextState ? 'Feature upvoted!' : 'Feature upvote removed!',
+                    details: nextState
+                        ? `You now support [${response.featureTitle}].`
+                        : `You no longer support [${response.featureTitle}].`
+                });
+
+                this.featuresService.refreshFeatureRequests();
+                this.featuresService.refreshUserFeatureRequests();
+            },
+            error: () => {
+                this.toastService.show({
+                    variant: 'error',
+                    title: 'Something went wrong!',
+                    details: 'There was an unexpected error while updating your feature upvote.'
+                });
+
+                this.optimisticIsUserUpvoted.set(previousState);
+                this.optimisticFeatureScore.set(previousScore);
+            },
+            complete: () => this.isVotingOnFeature.set(false)
+        });
     }
 
     handleOnFeatureDelete() {
@@ -92,12 +150,12 @@ export class FeatureItem {
                 this.toastService.show({
                     details,
                     variant: 'success',
-                    title: 'Feature deleted successfully',
+                    title: 'Feature deleted successfully'
                 });
 
                 this.featuresService.refreshAll();
             },
-            complete: () => this.isDeleting.set(false),
+            complete: () => this.isDeleting.set(false)
         });
     }
 }

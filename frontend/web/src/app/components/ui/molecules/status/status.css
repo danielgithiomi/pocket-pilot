@@ -1,0 +1,116 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
+.status {
+    width: 100%;
+    min-width: 0;
+    padding: clamp(0.75rem, 2cqi, 1rem);
+    border-radius: 0.75rem;
+    background: var(--alternate-background);
+    border: 1px solid color-mix(in srgb, var(--loader-primary) 65%, transparent);
+    container-type: inline-size;
+}
+
+.status-label {
+    font-weight: 600;
+    margin-bottom: clamp(0.75rem, 2.5cqi, 1rem);
+    font-size: clamp(0.625rem, 2.5cqi, 0.6875rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--inverted-text);
+}
+
+.status-track {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    align-items: flex-start;
+}
+
+.status-step,
+.status-connector {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.status-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.25rem, 1.5cqi, 0.5rem);
+    text-align: center;
+}
+
+.status-icon-wrap {
+    display: grid;
+    width: clamp(1.75rem, 16cqi, 2.5rem);
+    height: clamp(1.75rem, 16cqi, 2.5rem);
+    border-radius: 50%;
+    place-items: center;
+    aspect-ratio: 1;
+    border: 1px solid transparent;
+    transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease;
+}
+
+.status-icon-wrap--completed {
+    border-color: color-mix(in srgb, var(--success) 45%, transparent);
+    background: color-mix(in srgb, var(--success) 18%, transparent);
+    color: var(--success);
+}
+
+.status-icon-wrap--active {
+    border-color: color-mix(in srgb, var(--primary) 55%, transparent);
+    background: color-mix(in srgb, var(--primary) 22%, transparent);
+    color: var(--primary);
+}
+
+.status-icon-wrap--pending {
+    border-color: color-mix(in srgb, var(--gray2) 35%, transparent);
+    background: color-mix(in srgb, var(--body-background) 85%, transparent);
+    color: var(--tertiary-dark);
+}
+
+.status-icon-wrap--error {
+    border-color: color-mix(in srgb, var(--error) 45%, transparent);
+    background: color-mix(in srgb, var(--error) 18%, transparent);
+    color: var(--error);
+}
+
+.status-name {
+    width: 100%;
+    overflow: hidden;
+    font-weight: 600;
+    font-size: clamp(0.625rem, 2.75cqi, 0.75rem);
+    line-height: 1.25;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--reactive-text);
+}
+
+.status-name--active {
+    color: var(--primary-text);
+}
+
+.status-name--error {
+    color: var(--error);
+}
+
+.status-connector {
+    align-self: flex-start;
+    height: 2px;
+    margin-top: calc(clamp(1.75rem, 16cqi, 2.5rem) / 2 - 1px);
+    background: color-mix(in srgb, var(--gray2) 55%, transparent);
+}
+
+.status-connector--completed {
+    background: var(--success);
+}

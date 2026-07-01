@@ -1,0 +1,22 @@
+@let hasProfilePicture = !!featureComment().authorProfilePictureUrl;
+<article [id]="featureCommentId()" class="feature-comment w-full px-2 py-4 flex flex-row items-center gap-3">
+    @if (hasProfilePicture) {
+        <img
+            width="40"
+            height="40"
+            alt="Profile Picture"
+            class="rounded-full"
+            [ngSrc]="featureComment().authorProfilePictureUrl!" />
+    } @else {
+        <atom-avatar [numberOfInitials]="2" [displayName]="featureComment().authorName" />
+    }
+
+    <div class="flex-1 flex flex-col gap-1 text-sm">
+        <div class="flex flex-row items-center justify-between">
+            <p class="text-primary font-semibold">{{ authorName() }}</p>
+            <p class="text-reactive-text text-xs">{{ commentCreationDate() }}</p>
+        </div>
+
+        <p class="text-xs text-primary-text">{{ featureComment().comment }}</p>
+    </div>
+</article>

@@ -15,9 +15,9 @@ export class LockedException extends HttpException {
                 name: payload.name,
                 title: payload.title,
                 message: payload.message,
-                details: payload.details ?? null,
+                details: payload.details ?? null
             },
-            HttpStatus.LOCKED,
+            HttpStatus.LOCKED
         );
     }
 }

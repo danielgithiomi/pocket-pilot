@@ -4,25 +4,19 @@ import { WEB_ROUTES } from '@global/constants';
 import { AuthMutation } from '@methods/mutations';
 import { HttpClient } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
-import { catchError, EMPTY, firstValueFrom, tap, of, throwError, Observable } from 'rxjs';
+import { catchError, EMPTY, firstValueFrom, Observable, of, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import {
-    STORED_AUTH_USER_KEY,
-    INVALID_EMAIL_IDENTIFIER,
-    STORED_ONBOARDING_USER_KEY,
-    INVALID_PASSWORD_IDENTIFIER,
     AuthError,
+    INVALID_EMAIL_IDENTIFIER,
+    INVALID_PASSWORD_IDENTIFIER,
+    STORED_AUTH_USER_KEY,
+    STORED_ONBOARDING_USER_KEY
 } from '@libs/constants';
-import {
-    User,
-    LoginPayload,
-    IStandardError,
-    UserPreferences,
-    IStandardResponse,
-} from '@global/types';
+import { IStandardError, IStandardResponse, LoginPayload, User, UserPreferences } from '@global/types';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class AuthService {
     private readonly router = inject(Router);
@@ -49,7 +43,7 @@ export class AuthService {
         }
 
         // Listen to cross-tab session changes
-        window.addEventListener('storage', (event) => {
+        window.addEventListener('storage', event => {
             if (event.key === STORED_AUTH_USER_KEY) {
                 if (event.newValue) {
                     this.userSignal.set(JSON.parse(event.newValue));
@@ -70,8 +64,8 @@ export class AuthService {
         try {
             const response = await firstValueFrom(
                 this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
-                    credentials: 'include',
-                }),
+                    credentials: 'include'
+                })
             );
 
             const { data: user } = response;
@@ -95,8 +89,8 @@ export class AuthService {
             try {
                 const response = await firstValueFrom(
                     this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
-                        credentials: 'include',
-                    }),
+                        credentials: 'include'
+                    })
                 );
 
                 const { data: user } = response;
@@ -129,28 +123,31 @@ export class AuthService {
             tap((response: IStandardResponse<User>) => {
                 this.createSession(response.data);
             }),
-            catchError(
-                (error: IStandardError): Observable<{ type: AuthError; message: string }> => {
-                    this.renderToast(error);
-                    const { name } = error;
-                    if (!name) return EMPTY;
+            catchError((error: IStandardError): Observable<{ type: AuthError; message: string }> => {
+                const toastError = {
+                    ...error,
+                    title: error.title.split('!')[0]
+                };
+                this.renderToast(toastError);
 
-                    switch (name) {
-                        case INVALID_EMAIL_IDENTIFIER:
-                            return of({
-                                type: 'email' as const,
-                                message: error.message ?? 'This email address is invalid',
-                            });
-                        case INVALID_PASSWORD_IDENTIFIER:
-                            return of({
-                                type: 'password' as const,
-                                message: error.message ?? 'The password entered in incorrect',
-                            });
-                        default:
-                            return EMPTY;
-                    }
-                },
-            ),
+                const { name } = error;
+                if (!name) return EMPTY;
+
+                switch (name) {
+                    case INVALID_EMAIL_IDENTIFIER:
+                        return of({
+                            type: 'email' as const,
+                            message: error.title ?? 'This email address is invalid! Please confirm.'
+                        });
+                    case INVALID_PASSWORD_IDENTIFIER:
+                        return of({
+                            type: 'password' as const,
+                            message: error.title ?? 'The password you entered is incorrect! Please try again.'
+                        });
+                    default:
+                        return EMPTY;
+                }
+            })
         );
     }
 
@@ -160,7 +157,7 @@ export class AuthService {
             catchError((error: IStandardError) => {
                 this.renderToast(error);
                 return EMPTY;
-            }),
+            })
         );
     }
 
@@ -189,8 +186,8 @@ export class AuthService {
             ...user,
             userPreferences: {
                 ...user.userPreferences,
-                ...preferences,
-            },
+                ...preferences
+            }
         };
 
         this.userSignal.set(updatedUser);
@@ -206,8 +203,8 @@ export class AuthService {
         try {
             const response = await firstValueFrom(
                 this.http.get<IStandardResponse<User>>(concatUrl('auth/me'), {
-                    credentials: 'include',
-                }),
+                    credentials: 'include'
+                })
             );
 
             this.createSession(response.data);
@@ -221,7 +218,7 @@ export class AuthService {
         this.toastService.show({
             title,
             variant: 'error',
-            details: details as string,
+            details: details as string
         });
     };
 }
