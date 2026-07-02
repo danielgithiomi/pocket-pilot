@@ -5,12 +5,15 @@
     wrapperClasses="bg-body-background!"
     [closeModalOnBackdropClick]="onBackdropClickClose()"
     (onModalCloseEvent)="onFeatureModalCloseEvent.emit()">
-
     @let isLoading = isLoadingComments();
     <div slot="modal-content" [id]="featureId()" class="feature-details p-4 lg:p-6" [ngClass]="{ 'h-full': isLoading }">
         <section class="feature-details-card feature-details-overview">
             <div class="flex flex-col items-center justify-center gap-2">
-                <div class="feature-vote" aria-label="Feature votes">
+                <div
+                    class="feature-vote"
+                    aria-label="Feature votes"
+                    (click)="handleOnVoteToggle()"
+                    [ngClass]="{ 'bg-primary': isUserUpvoted() }">
                     <lucide-icon [img]="UpVoteIcon" [size]="iconSize" name="feature-upvote" />
                 </div>
 
