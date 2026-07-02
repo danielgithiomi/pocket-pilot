@@ -3,6 +3,7 @@ import { formatToReadable } from '@libs/utils';
 import { CategoryTypeEnum } from '@global/enums';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { Component, computed, input, output, signal } from '@angular/core';
+import { CategoryVariant } from '@global/types';
 
 @Component({
     selector: 'category-item',
@@ -29,7 +30,7 @@ export class CategoryItem {
 
     // INPUTS
     categoryName = input.required<string>();
-    variant = input.required<CategoryItemVariant>();
+    variant = input.required<CategoryVariant>();
 
     // OUTPUTS
     onCategoryDelete = output<CategoryItemOutput>();
@@ -47,6 +48,8 @@ export class CategoryItem {
                 return 'expense';
             case 'INCOME':
                 return 'income';
+            default:
+                return '';
         }
     });
 
@@ -66,9 +69,7 @@ export class CategoryItem {
     }
 }
 
-export type CategoryItemVariant = keyof typeof CategoryTypeEnum;
-
 export interface CategoryItemOutput {
     categoryName: string;
-    categoryVariant: CategoryItemVariant;
+    categoryVariant: CategoryVariant;
 }

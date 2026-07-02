@@ -7,7 +7,8 @@ import { normalizeCategoryName } from '@global/utils';
 import { DrawerService } from '@infrastructure/services';
 import { Component, inject, signal } from '@angular/core';
 import { CategoriesService } from '@api/categories.service';
-import { CategoryVariant, IVoidResourceResponse } from '@global/types';
+import { CategoryItemOutput } from './categories/category-item';
+import { IVoidResourceResponse } from '@global/types';
 import { ListFilterPlus, LucideAngularModule, X } from 'lucide-angular';
 import { CategoriesForm } from './categories/categories-form/categories-form';
 
@@ -43,11 +44,11 @@ export class SettingsAndCategories {
         this.isCategoriesFormOpen.set(false);
     }
 
-    protected deleteCategory(deleteEvent: { category: string; type: CategoryVariant }) {
-        const { category, type } = deleteEvent;
-        const formattedCategoryName = normalizeCategoryName(category);
+    protected deleteCategory(deleteEvent: CategoryItemOutput) {
+        const { categoryName, categoryVariant } = deleteEvent;
+        const formattedCategoryName = normalizeCategoryName(categoryName);
 
-        this.categoriesService.deleteCategoryByName(formattedCategoryName, type).subscribe({
+        this.categoriesService.deleteCategoryByName(formattedCategoryName, categoryVariant).subscribe({
             next: (response: IVoidResourceResponse) => {
                 const { message, details } = response;
                 this.toastService.show({
