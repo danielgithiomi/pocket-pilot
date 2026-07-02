@@ -114,7 +114,7 @@ export class FeatureDetails {
         this.toastService.show({
             variant: 'warning',
             title: 'Vote from feature list!',
-            details: 'Please close the modal and vote from the features list.'
+            details: 'Please close this details modal and vote from the features list.'
         });
     }
 
@@ -144,7 +144,7 @@ export class FeatureDetails {
                     details: 'Your comment has been added to the feature request successfully.'
                 });
 
-                // Find the optimistic updates
+                // Filter out the optimistic comment
                 const filteredComments = this.optimisticComments().filter(
                     comment => comment.id !== optimisticComment.id
                 );

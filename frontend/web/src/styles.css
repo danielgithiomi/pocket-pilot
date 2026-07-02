@@ -491,7 +491,7 @@ main {
     }
 
     .input-end-icon {
-        @apply text-tertiary-dark! hover:text-loader-primary! transition-all duration-300 ease-in-out;
+        @apply text-tertiary-dark hover:text-primary-text transition-all duration-300 ease-in-out;
     }
 
     .subtle-item-hover {
