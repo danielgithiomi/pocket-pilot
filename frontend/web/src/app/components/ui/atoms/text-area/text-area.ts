@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { FieldTree, FormField } from '@angular/forms/signals';
-import { booleanAttribute, Component, computed, input, output } from '@angular/core';
 import { TextAreaAutoComplete, TextAreaResize } from './text-area.types';
+import { booleanAttribute, Component, computed, input, output } from '@angular/core';
 import {
     FORM_FIELD_ERROR_BORDER_CLASSES,
     isFormFieldInError,
