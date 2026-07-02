@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
-import { formatToReadable } from '@libs/utils';
 import { CategoryTypeEnum } from '@global/enums';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { DrawerService } from '@infrastructure/services';
 import { CategoriesService } from '@api/categories.service';
 import { CategoryLength } from '../settings-and-categories.types';
+import { CategoryItem, CategoryItemOutput } from './category-item';
 import { Component, computed, inject, output } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
@@ -13,11 +13,11 @@ import { FetchError } from '@components/structural/main/fetch-error/fetch-error'
     selector: 'categories',
     styleUrl: './categories.css',
     templateUrl: './categories.html',
-    imports: [FetchError, NoData, NgClass, LucideAngularModule]
+    imports: [FetchError, NoData, NgClass, LucideAngularModule, CategoryItem]
 })
 export class Categories {
     // OUTPUTS
-    onCategoryDelete = output<{ category: string; type: CategoryTypeEnum }>();
+    onCategoryDelete = output<CategoryItemOutput>();
 
     // ICONS
     protected readonly X = X;
@@ -34,9 +34,4 @@ export class Categories {
 
     // COMPUTED
     protected readonly isFetchingCategories = computed(() => this.categories$.isLoading());
-
-    // HELPER FUNCTIONS
-    protected formatCategoryName(categoryName: string): string {
-        return formatToReadable(categoryName);
-    }
 }

@@ -1,0 +1,74 @@
+import { NgClass } from '@angular/common';
+import { formatToReadable } from '@libs/utils';
+import { CategoryTypeEnum } from '@global/enums';
+import { LucideAngularModule, X } from 'lucide-angular';
+import { Component, computed, input, output, signal } from '@angular/core';
+
+@Component({
+    selector: 'category-item',
+    styleUrl: 'category-item.css',
+    imports: [LucideAngularModule, NgClass],
+    template: `
+        <div class="category-item group/item" [ngClass]="categoryVariantClasses()">
+            <p>{{ formatCategoryName(categoryName()) }}</p>
+
+            <button (click)="handleOnCategoryDelete()" class="category-icon atom-icon">
+                @if (isDeletingCategory()) {
+                    <div class="delete-loader"></div>
+                } @else {
+                    <lucide-icon [img]="DeleteIcon" [size]="13" name="delete-category" />
+                }
+            </button>
+        </div>
+    `
+})
+export class CategoryItem {
+    // ICONS
+    protected readonly iconSize = 13;
+    protected readonly DeleteIcon = X;
+
+    // INPUTS
+    categoryName = input.required<string>();
+    variant = input.required<CategoryItemVariant>();
+
+    // OUTPUTS
+    onCategoryDelete = output<CategoryItemOutput>();
+
+    // SIGNAL STATES
+    isDeletingCategory = signal<boolean>(false);
+
+    // DATA
+    protected readonly CategoryTypeEnum = CategoryTypeEnum;
+
+    // COMPUTED
+    protected readonly categoryVariantClasses = computed<string>(() => {
+        switch (this.variant()) {
+            case 'EXPENSE':
+                return 'expense';
+            case 'INCOME':
+                return 'income';
+        }
+    });
+
+    // METHODS
+    protected handleOnCategoryDelete() {
+        this.isDeletingCategory.set(true);
+
+        this.onCategoryDelete.emit({
+            categoryVariant: this.variant(),
+            categoryName: this.categoryName()
+        });
+    }
+
+    // FORMATTERS
+    protected formatCategoryName(categoryName: string): string {
+        return formatToReadable(categoryName);
+    }
+}
+
+export type CategoryItemVariant = keyof typeof CategoryTypeEnum;
+
+export interface CategoryItemOutput {
+    categoryName: string;
+    categoryVariant: CategoryItemVariant;
+}
