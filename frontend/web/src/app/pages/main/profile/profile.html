@@ -58,9 +58,10 @@
         id="edit-profile"
         title="Edit Profile"
         [class.hidden]="!isEditFormOpen()"
-        (closeForm)="isEditFormOpen.set(false)"
-        description="Update your personal information.">
-        <form slot="content" id="edit-user-profile" (submit)="submitEditProfileForm($event)">
+        description="Update your personal information."
+        (onFormCloseEvent)="isEditFormOpen.set(false)">
+
+    <form slot="content" id="edit-user-profile" (submit)="submitEditProfileForm($event)">
             <atom-input
                 type="text"
                 id="update-name"
@@ -119,8 +120,9 @@
         id="profile-picture-form-wrapper"
         description="Update your profile picture."
         [class.hidden]="!isProfilePictureFormOpen()"
-        (closeForm)="isProfilePictureFormOpen.set(false)">
-        <form
+        (onFormCloseEvent)="isProfilePictureFormOpen.set(false)">
+
+    <form
             slot="content"
             class="h-full py-4"
             [formGroup]="formGroup"
