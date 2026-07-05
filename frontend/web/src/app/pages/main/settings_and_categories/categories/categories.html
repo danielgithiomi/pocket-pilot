@@ -63,8 +63,8 @@
                         } @else {
                             @for (income of incomes; track income) {
                                 <category-item
-                                    variant="INCOME"
                                     [categoryName]="income"
+                                    [variant]="CategoryTypeEnum.INCOME"
                                     (onCategoryDelete)="onCategoryDelete.emit($event)"/>
                             }
                         }
@@ -116,8 +116,8 @@
                         } @else {
                             @for (expense of expenses; track expense) {
                                 <category-item
-                                    variant="EXPENSE"
                                     [categoryName]="expense"
+                                    [variant]="CategoryTypeEnum.EXPENSE"
                                     (onCategoryDelete)="onCategoryDelete.emit($event)"/>
                             }
                         }
