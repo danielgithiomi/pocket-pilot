@@ -11,4 +11,8 @@ header {
             animation: animateInBottomLeft 400ms ease-out forwards;
         }
     }
+
+    .notifications-dropdown-wrapper {
+        @apply relative overflow-visible;
+    }
 }

@@ -18,7 +18,20 @@
     @if (withDrawerLayout()) {
         <div class="flex flex-row items-center gap-4">
             <div class="hidden sm:flex gap-4 md:hidden lg:flex">
-                <lucide-icon class="atom-icon" [name]="Bell" [img]="Bell" [size]="iconSize" />
+                <div class="notifications-dropdown-wrapper">
+                    <lucide-icon
+                        [name]="Bell"
+                        [img]="Bell"
+                        [size]="iconSize"
+                        class="atom-icon"
+                        (click)="handleNotificationsPanelToggle()"
+                        [ngClass]="{ 'text-primary': isNotificationsPanelOpen()}"/>
+
+                    @if (isNotificationsPanelOpen()) {
+                        <notifications-dropdown/>
+                    }
+                </div>
+
                 <lucide-icon
                     [img]="Settings"
                     class="atom-icon"

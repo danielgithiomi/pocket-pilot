@@ -1,0 +1,5 @@
+@reference 'tailwindcss';
+
+.notification-dropdown {
+    @apply absolute top-full right-0 w-full md:w-1/2 lg:w-1/3 xl:w-1/4 bg-(--primary) min-h-30 mt-4;
+}
