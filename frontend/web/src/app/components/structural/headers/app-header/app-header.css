@@ -13,6 +13,6 @@ header {
     }
 
     .notifications-dropdown-wrapper {
-        @apply relative overflow-visible;
+        @apply relative overflow-visible flex-1 flex justify-end;
     }
 }
