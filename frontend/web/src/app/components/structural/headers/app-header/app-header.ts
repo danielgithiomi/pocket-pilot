@@ -9,7 +9,7 @@ import { UserSummary } from './user-summary/user-summary';
 import { STORED_ONBOARDING_USER_KEY } from '@libs/constants';
 import { NotificationsDropdown } from './notifications-dropdown';
 import { NotificationsService } from '@api/notifications.service';
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { Bell, LogOut, LucideAngularModule, Menu, Settings2 } from 'lucide-angular';
 
 @Component({
@@ -41,19 +41,8 @@ export class AppHeader {
     private readonly notificationsService = inject(NotificationsService);
 
     // DATA
-    protected readonly notifications = this.notificationsService.getNotifications();
+    protected readonly notifications = this.notificationsService.getUserWrappedNotifications();
     protected readonly isLinkActive = (link: string) => this.router.url === link;
-
-    // COMPUTED
-    protected readonly hasUnreadNotifications = computed<hasUnreadNotifications>(() => {
-        const unreadNotifications = this.notifications().filter(notification => notification.status === 'unread');
-        const unreadCount = unreadNotifications.length;
-
-        return {
-            count: unreadCount,
-            hasUnread: unreadCount > 0
-        };
-    });
 
     // METHODS
     protected async goToSettings(): Promise<void> {

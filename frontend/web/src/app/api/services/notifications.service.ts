@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
     providedIn: 'root'
 })
 export class NotificationsService {
-    private readonly NOTIFICATIONS = [
+    private readonly NOTIFICATIONS: Notification[] = [
         {
             id: 1,
             link: '/profile',
@@ -28,7 +28,36 @@ export class NotificationsService {
         }
     ];
 
-    private readonly notifications = signal(this.NOTIFICATIONS);
+    private readonly notifications = signal<Notification[]>(this.NOTIFICATIONS);
 
-    getNotifications = () => this.notifications.asReadonly();
+    // getNotifications = () => this.notifications.asReadonly();
+
+    getUserWrappedNotifications = (): UserWrappedNotifications => {
+        const totalCount = this.notifications().length;
+        const notifications = this.notifications();
+        const unreadCount = this.notifications().filter(n => n.status === 'unread').length;
+
+        return {
+            totalCount,
+            unreadCount,
+            notifications,
+            hasUnreadNotifications: unreadCount > 0
+        };
+    };
+}
+
+// INTERNAL TYPES
+interface Notification {
+    id: number;
+    link: string;
+    title: string;
+    details: string;
+    status: 'unread' | 'read';
+}
+
+interface UserWrappedNotifications {
+    totalCount: number;
+    unreadCount: number;
+    notifications: Notification[];
+    hasUnreadNotifications: boolean;
 }
