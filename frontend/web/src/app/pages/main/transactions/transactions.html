@@ -64,7 +64,6 @@
         [class.hidden]="!isFormOpen()"
         (onFormCloseEvent)="handleCloseForm($event)"
         description="Record a new transaction">
-
         @let categories = transactionCategories();
         @let types = transactionTypes.value()?.data;
         <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">

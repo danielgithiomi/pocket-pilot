@@ -1,4 +1,4 @@
-<div class="tab-list">
+<div class="tab-list" [ngClass]="wrapperClassName()">
     @for (item of items(); track item.value; let index = $index) {
         <div
             [class]="getTabClasses(item)"

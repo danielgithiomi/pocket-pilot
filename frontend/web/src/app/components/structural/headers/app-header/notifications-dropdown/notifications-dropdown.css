@@ -10,8 +10,28 @@
     .notifications-content {
         @apply h-full p-2 flex flex-col justify-between;
 
+        p {
+            @apply text-sm;
+        }
+
+        .notifications-header {
+            @apply flex flex-row items-center justify-between;
+
+            .notifications-icon {
+                @apply rounded cursor-pointer p-1 hover:bg-(--body-background) hover:text-(--primary) transition-(--transition-custom);
+            }
+        }
+
         .notifications-body {
             @apply flex-1;
+        }
+
+        .notifications-footer {
+            @apply grid place-items-center border-t border-(--inverted-background) py-2;
+
+            p {
+                @apply mt-1 text-xs cursor-pointer w-full text-center hover:underline underline-offset-2 hover:text-(--primary) transition-(--transition-custom);
+            }
         }
     }
 }

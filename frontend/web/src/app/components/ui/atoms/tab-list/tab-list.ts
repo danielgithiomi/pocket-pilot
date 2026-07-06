@@ -1,7 +1,9 @@
+import { NgClass } from '@angular/common';
 import { TabListItem, TabSize } from './tab-list.types';
-import { Component, input, output, signal, computed, effect } from '@angular/core';
+import { Component, computed, effect, input, output, signal } from '@angular/core';
 
 @Component({
+    imports: [NgClass],
     selector: 'atom-tab-list',
     styleUrl: './tab-list.css',
     templateUrl: './tab-list.html'
@@ -13,6 +15,7 @@ export class TabList {
     activeItem = input<number>(0);
     disabled = input<boolean>(false);
     items = input.required<TabListItem[]>();
+    wrapperClassName = input<string>('');
 
     /* OUTPUTS */
     selectedValue = output<string>();
@@ -26,7 +29,7 @@ export class TabList {
         const index = this.activeItem();
         const items = this.items();
 
-        // Get the item at the specified index, fallback to first item if invalid
+        // Get the item at the specified index, fall back to first item if invalid
         return items[index] || items[0] || null;
     });
 
@@ -64,7 +67,7 @@ export class TabList {
     private getSizeClasses(): string {
         switch (this.size()) {
             case 'sm':
-                return 'px-3 py-1.5 text-sm';
+                return 'px-3 py-1 text-xs';
             case 'lg':
                 return 'px-5 py-3 text-base';
             default:

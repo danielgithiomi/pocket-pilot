@@ -1,18 +1,27 @@
 <section id="notification-dropdown" class="notification-dropdown">
-
     <div class="notifications-arrow"></div>
 
     <div class="notifications-content">
         <div class="notifications-header">
-            header
+            <p>Notifications</p>
+
+            <div class="flex flex-row items-center gap-2">
+                <lucide-icon name="mark-as-read" [img]="MarkAsReadIcon" [size]="iconSize" class="notifications-icon"/>
+                <lucide-icon name="close-icon" [img]="CloseIcon" [size]="iconSize" class="notifications-icon"/>
+            </div>
         </div>
 
         <div class="notifications-body">
-            body
+            <atom-tab-list
+                size="sm"
+                [items]="tabListItems"
+                [activeItem]="activeTabIndex()"
+                wrapperClassName="!bg-body-background"
+                (selectedIndex)="handleTabChange($event)"/>
         </div>
 
         <div class="notifications-footer">
-            footer
+            <p>View all notifications</p>
         </div>
     </div>
 </section>
