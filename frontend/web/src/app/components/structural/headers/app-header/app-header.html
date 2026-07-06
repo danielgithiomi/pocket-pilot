@@ -25,10 +25,10 @@
                         [size]="iconSize"
                         (click)="handleNotificationsPanelToggle()"
                         class="atom-icon header-icons transition-custom"
-                        [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen()}"/>
+                        [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen() }"/>
 
                     @if (isNotificationsPanelOpen()) {
-                        <notifications-dropdown/>
+                        <notifications-dropdown (closeNotificationsPanelEvent)="isNotificationsPanelOpen.set(false)"/>
                     }
                 </div>
 

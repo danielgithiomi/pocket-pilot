@@ -1,4 +1,4 @@
-<section id="notification-dropdown" class="notification-dropdown">
+<section id="notification-dropdown" class="notification-dropdown" (click)="$event.stopPropagation()">
     <div class="notifications-arrow"></div>
 
     <div class="notifications-content">
@@ -6,8 +6,28 @@
             <p>Notifications</p>
 
             <div class="flex flex-row items-center gap-2">
-                <lucide-icon name="mark-as-read" [img]="MarkAsReadIcon" [size]="iconSize" class="notifications-icon"/>
-                <lucide-icon name="close-icon" [img]="CloseIcon" [size]="iconSize" class="notifications-icon"/>
+                <div class="notifications-icon-wrapper">
+                    @if (isMarkingAllAsRead()) {
+                        <div class="icon-loader"></div>
+                    } @else {
+                        <lucide-icon
+                            [size]="iconSize"
+                            name="mark-as-read"
+                            [img]="MarkAsReadIcon"
+                            (click)="handleMarkAllAsRead()"
+                            [ngClass]="{ 'bg-body-background text-primary' : isMarkingAllAsRead()}"
+                        />
+                    }
+                </div>
+
+                <div class="notifications-icon-wrapper">
+                    <lucide-icon
+                        name="close-icon"
+                        [img]="CloseIcon"
+                        [size]="iconSize"
+                        class="notifications-icon"
+                        (click)="closeNotificationsPanelEvent.emit()"/>
+                </div>
             </div>
         </div>
 

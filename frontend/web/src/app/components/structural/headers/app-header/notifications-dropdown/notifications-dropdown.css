@@ -17,13 +17,13 @@
         .notifications-header {
             @apply flex flex-row items-center justify-between;
 
-            .notifications-icon {
-                @apply rounded cursor-pointer p-1 hover:bg-(--body-background) hover:text-(--primary) transition-(--transition-custom);
+            .notifications-icon-wrapper {
+                @apply size-7 grid place-items-center rounded cursor-pointer hover:bg-(--body-background) hover:text-(--primary) transition-(--transition-custom);
             }
         }
 
         .notifications-body {
-            @apply flex-1;
+            @apply flex-1 my-2 px-2 overflow-y-scroll;
         }
 
         .notifications-footer {
