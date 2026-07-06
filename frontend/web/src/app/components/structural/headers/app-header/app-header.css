@@ -12,6 +12,14 @@ header {
         }
     }
 
+    .header-icons {
+        @apply p-1.5 rounded-lg hover:bg-(--body-background);
+    }
+
+    .active-header-icon {
+        @apply text-(--primary) bg-(--body-background);
+    }
+
     .notifications-dropdown-wrapper {
         @apply relative overflow-visible flex-1 flex justify-end;
     }

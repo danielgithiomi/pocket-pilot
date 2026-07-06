@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { WEB_ROUTES } from '@global/constants';
 import { AuthService } from '@api/auth.service';
+import { DrawerService } from '@infrastructure/services';
 import { UserSummary } from './user-summary/user-summary';
 import { STORED_ONBOARDING_USER_KEY } from '@libs/constants';
 import { NotificationsDropdown } from './notifications-dropdown';
@@ -35,6 +36,7 @@ export class AppHeader {
     // SERVICES
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
+    private readonly drawerService = inject(DrawerService);
 
     // DATA
     protected readonly isLinkActive = (link: string) => this.router.url === link;

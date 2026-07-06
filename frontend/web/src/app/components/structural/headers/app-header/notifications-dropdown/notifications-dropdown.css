@@ -1,5 +1,9 @@
 @reference 'tailwindcss';
 
-.notification-dropdown {
-    @apply absolute top-full left-0 bg-(--primary) min-h-30 mt-4 w-full;
+#notification-dropdown {
+    @apply absolute top-full -right-2 bg-(--primary) min-h-50 mt-5 w-full rounded;
+
+    .notification-arrow {
+        @apply size-3 absolute -top-1.5 right-3 bg-inherit rotate-45;
+    }
 }

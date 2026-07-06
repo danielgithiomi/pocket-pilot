@@ -23,22 +23,23 @@
                         name="Bell"
                         [img]="Bell"
                         [size]="iconSize"
-                        class="atom-icon"
                         (click)="handleNotificationsPanelToggle()"
-                        [ngClass]="{ 'text-primary': isNotificationsPanelOpen()}"/>
+                        class="atom-icon header-icons transition-custom"
+                        [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen()}"/>
 
                     @if (isNotificationsPanelOpen()) {
                         <notifications-dropdown/>
                     }
                 </div>
 
+                @let isSettingsActive = isLinkActive('/settings');
                 <lucide-icon
                     name="Settings"
                     [img]="Settings"
-                    class="atom-icon"
                     [size]="iconSize"
                     (click)="goToSettings()"
-                    [ngClass]="{ 'text-primary': isLinkActive('/settings') }" />
+                    class="atom-icon header-icons transition-custom"
+                    [ngClass]="{ 'active-header-icon': isSettingsActive }"/>
             </div>
 
             <div class="vertical-separator h-8 md:hidden! lg:flex!"></div>
