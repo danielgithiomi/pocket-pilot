@@ -1,9 +1,17 @@
 @reference 'tailwindcss';
 
 #notification-dropdown {
-    @apply absolute top-full -right-2 bg-(--primary) min-h-50 mt-5 w-full rounded;
+    @apply absolute top-full -right-2 bg-(--alternate-background) min-h-80 h-full mt-5 w-full rounded z-999 border border-(--primary) shadow-2xl;
 
-    .notification-arrow {
-        @apply size-3 absolute -top-1.5 right-3 bg-inherit rotate-45;
+    .notifications-arrow {
+        @apply size-3 absolute -top-1.5 right-4.5 bg-inherit rotate-45 border-t border-l border-(--primary);
+    }
+
+    .notifications-content {
+        @apply h-full p-2 flex flex-col justify-between;
+
+        .notifications-body {
+            @apply flex-1;
+        }
     }
 }
