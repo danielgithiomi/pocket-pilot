@@ -8,7 +8,6 @@ import { UserSummary } from './user-summary/user-summary';
 import { STORED_ONBOARDING_USER_KEY } from '@libs/constants';
 import { NotificationsDropdown } from './notifications-dropdown';
 import { Component, inject, input, output, signal } from '@angular/core';
-import { isInNotificationPhase } from '@angular/core/primitives/signals';
 import { Bell, LogOut, LucideAngularModule, Menu, Settings2 } from 'lucide-angular';
 
 @Component({
@@ -37,12 +36,12 @@ export class AppHeader {
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
 
-    // Data
+    // DATA
     protected readonly isLinkActive = (link: string) => this.router.url === link;
 
     // METHODS
-    protected goToSettings() {
-        this.router.navigateByUrl(WEB_ROUTES.settings);
+    protected async goToSettings(): Promise<void> {
+        await this.router.navigateByUrl(WEB_ROUTES.settings);
     }
 
     protected handleNotificationsPanelToggle() {
@@ -52,11 +51,9 @@ export class AppHeader {
     protected logout() {
         this.authService
             .logout()
-            .pipe(tap(() => this.router.navigateByUrl(WEB_ROUTES.login)))
+            .pipe(tap(async () => await this.router.navigateByUrl(WEB_ROUTES.login)))
             .subscribe({
                 complete: () => localStorage.removeItem(STORED_ONBOARDING_USER_KEY)
             });
     }
-
-    protected readonly isInNotificationPhase = isInNotificationPhase;
 }

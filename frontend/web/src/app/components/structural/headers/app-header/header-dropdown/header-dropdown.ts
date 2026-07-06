@@ -13,12 +13,20 @@ import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-a
     styleUrl: './header-dropdown.css',
     imports: [NgClass, Button, LucideAngularModule],
     template: `
-        <div id="header-dropdown" (click)="$event.stopPropagation()" [ngClass]="{ 'hidden!': !drawerService.isDropdownOpen() }">
+        <div
+            id="header-dropdown"
+            (click)="$event.stopPropagation()"
+            [ngClass]="{ 'hidden!': !drawerService.isDropdownOpen() }">
             <div class="dropdown-pointer"></div>
 
             <div class="dropdown-notifications">
                 <div class="flex flex-row gap-4 items-center justify-center">
-                    <lucide-icon class="atom-icon" [name]="Bell" [img]="Bell" [size]="iconSize" color="var(--body-background)" />
+                    <lucide-icon
+                        class="atom-icon"
+                        [name]="Bell"
+                        [img]="Bell"
+                        [size]="iconSize"
+                        color="var(--body-background)" />
                     <lucide-icon
                         class="atom-icon"
                         [name]="Settings"
@@ -37,7 +45,8 @@ import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-a
                     (click)="routeToProfile()"
                     class="wrapper group/profile text-inverted-text! dark:hover:text-white!">
                     <lucide-icon [img]="UserLock" [name]="UserLock" [size]="iconSize" class="profile-icon" />
-                    <p class="group-hover/profile:text-white text-sm h-full grow text-inverted-text duration-300 transition-all">
+                    <p
+                        class="group-hover/profile:text-white text-sm h-full grow text-inverted-text duration-300 transition-all">
                         <span class="hidden sm:inline">View</span> Profile
                     </p>
                 </div>
@@ -45,7 +54,11 @@ import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-a
             </div>
 
             <div class="dropdown-logout">
-                <atom-button id="logout" (click)="logout()" className="w-full mb-2 sm:mb-0" [isLoading]="isLogoutLoading()">
+                <atom-button
+                    id="logout"
+                    (click)="logout()"
+                    className="w-full mb-2 sm:mb-0"
+                    [isLoading]="isLogoutLoading()">
                     <div class="w-full flex flex-row items-center justify-center gap-3">
                         <lucide-icon [img]="LogOut" [name]="LogOut" [size]="iconSize" />
                         <p class="text-white">Logout</p>
@@ -56,23 +69,29 @@ import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-a
     `
 })
 export class HeaderDropdown {
+    // ICONS
     protected readonly Bell = Bell;
     protected readonly iconSize = 20;
     protected readonly LogOut = LogOut;
     protected readonly UserLock = UserLock;
     protected readonly Settings = Settings2;
+
+    // STATE SIGNALS
+    protected readonly isLogoutLoading = signal<boolean>(false);
+
+    // SERVICES
     protected readonly router = inject(Router);
     protected readonly authService = inject(AuthService);
-    protected readonly isLogoutLoading = signal<boolean>(false);
     protected readonly drawerService: DrawerService = inject(DrawerService);
 
-    protected routeToProfile(): void {
-        this.router.navigateByUrl(WEB_ROUTES.profile);
+    // METHODS
+    protected async routeToProfile(): Promise<void> {
+        await this.router.navigateByUrl(WEB_ROUTES.profile);
         this.drawerService.closeDropDown();
     }
 
-    protected routeToSettings(): void {
-        this.router.navigateByUrl(WEB_ROUTES.settings);
+    protected async routeToSettings(): Promise<void> {
+        await this.router.navigateByUrl(WEB_ROUTES.settings);
         this.drawerService.closeDropDown();
     }
 
@@ -82,9 +101,9 @@ export class HeaderDropdown {
         this.authService
             .logout()
             .pipe(
-                tap(() => {
+                tap(async () => {
                     this.drawerService.closeDropDown();
-                    this.router.navigateByUrl(WEB_ROUTES.login);
+                    await this.router.navigateByUrl(WEB_ROUTES.login);
                 })
             )
             .subscribe({

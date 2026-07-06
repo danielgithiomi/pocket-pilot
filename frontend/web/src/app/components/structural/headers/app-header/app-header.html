@@ -17,10 +17,10 @@
 
     @if (withDrawerLayout()) {
         <div class="flex flex-row items-center gap-4">
-            <div class="hidden sm:flex justify-end gap-2 md:hidden lg:flex w-60">
+            <div class="hidden sm:flex justify-end gap-4 md:hidden lg:flex w-80">
                 <div class="notifications-dropdown-wrapper">
                     <lucide-icon
-                        [name]="Bell"
+                        name="Bell"
                         [img]="Bell"
                         [size]="iconSize"
                         class="atom-icon"
@@ -33,9 +33,9 @@
                 </div>
 
                 <lucide-icon
+                    name="Settings"
                     [img]="Settings"
                     class="atom-icon"
-                    [name]="Settings"
                     [size]="iconSize"
                     (click)="goToSettings()"
                     [ngClass]="{ 'text-primary': isLinkActive('/settings') }" />
