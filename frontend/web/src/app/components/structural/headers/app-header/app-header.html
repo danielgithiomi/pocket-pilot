@@ -24,8 +24,14 @@
                         [img]="Bell"
                         [size]="iconSize"
                         (click)="handleNotificationsPanelToggle()"
-                        class="atom-icon header-icons transition-custom"
+                        class="atom-icon header-icons transition-custom relative"
                         [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen() }"/>
+
+                    @if (hasUnreadNotifications().hasUnread) {
+                        <span class="icon-badge">
+                            {{ hasUnreadNotifications().count }}
+                        </span>
+                    }
 
                     @if (isNotificationsPanelOpen()) {
                         <notifications-dropdown (closeNotificationsPanelEvent)="isNotificationsPanelOpen.set(false)"/>

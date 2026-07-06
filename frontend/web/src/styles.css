@@ -451,6 +451,10 @@ main {
     .atom-icon {
         @apply cursor-pointer! hover:scale-105 duration-300 ease-in-out hover:text-primary;
     }
+
+    .icon-badge {
+        @apply absolute -top-0.5 right-0 bg-primary rounded-full size-4 flex items-center justify-center text-[10px] text-white font-semibold;
+    }
     /* ICONS END */
 }
 

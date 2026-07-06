@@ -30,7 +30,7 @@
             @apply grid place-items-center border-t border-(--inverted-background) py-2;
 
             p {
-                @apply mt-1 text-xs cursor-pointer w-full text-center hover:underline underline-offset-2 hover:text-(--primary) transition-(--transition-custom);
+                @apply mt-1 text-xs cursor-pointer w-full text-center underline underline-offset-2 hover:text-(--primary) transition-(--transition-custom);
             }
         }
     }
