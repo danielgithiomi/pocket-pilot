@@ -30,8 +30,6 @@ export class NotificationsService {
 
     private readonly notifications = signal<Notification[]>(this.NOTIFICATIONS);
 
-    // getNotifications = () => this.notifications.asReadonly();
-
     getUserWrappedNotifications = (): UserWrappedNotifications => {
         const totalCount = this.notifications().length;
         const notifications = this.notifications();
@@ -47,7 +45,7 @@ export class NotificationsService {
 }
 
 // INTERNAL TYPES
-interface Notification {
+export interface Notification {
     id: number;
     link: string;
     title: string;

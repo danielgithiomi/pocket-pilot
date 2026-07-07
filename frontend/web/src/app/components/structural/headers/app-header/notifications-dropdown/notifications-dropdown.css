@@ -23,7 +23,11 @@
         }
 
         .notifications-body {
-            @apply flex-1 my-2 px-2 overflow-y-scroll;
+            @apply flex-1 my-2 px-2 flex flex-col gap-2;
+
+            .notifications-list {
+                @apply overflow-y-scroll flex-1;
+            }
         }
 
         .notifications-footer {

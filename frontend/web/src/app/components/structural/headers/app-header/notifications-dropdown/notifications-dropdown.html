@@ -1,12 +1,14 @@
 <section id="notification-dropdown" class="notification-dropdown" (click)="$event.stopPropagation()">
     <div class="notifications-arrow"></div>
 
+    @let noNotifications = notifications.totalCount === 0;
+    @let noUnreadNotifications = notifications.unreadCount === 0;
     <div class="notifications-content">
         <div class="notifications-header">
             <p>Notifications</p>
 
             <div class="flex flex-row items-center gap-2">
-                <div class="notifications-icon-wrapper">
+                <div class="notifications-icon-wrapper" [ngClass]="{ 'cursor-not-allowed!': noUnreadNotifications }">
                     @if (isMarkingAllAsRead()) {
                         <div class="icon-loader"></div>
                     } @else {
@@ -15,8 +17,10 @@
                             name="mark-as-read"
                             [img]="MarkAsReadIcon"
                             (click)="handleMarkAllAsRead()"
-                            [ngClass]="{ 'bg-body-background text-primary' : isMarkingAllAsRead()}"
-                        />
+                            [ngClass]="{
+                                'bg-body-background text-primary': isMarkingAllAsRead(),
+                                'text-reactive-text': noUnreadNotifications
+                            }"/>
                     }
                 </div>
 
@@ -38,10 +42,22 @@
                 [activeItem]="activeTabIndex()"
                 wrapperClassName="!bg-body-background"
                 (selectedIndex)="handleTabChange($event)"/>
+
+            <div class="notifications-list">
+                @let notificationsList = notifications.notifications;
+                @for (notification of notificationsList; track notification.id) {
+                    <notification-item [notificationItem]="notification"/>
+                }
+            </div>
         </div>
 
         <div class="notifications-footer">
-            <p>View all notifications</p>
+            <p
+                [ngClass]="{
+                    'cursor-not-allowed! text-reactive-text! hover:text-reactive-text no-underline!': noNotifications
+                }">
+                View all notifications
+            </p>
         </div>
     </div>
 </section>

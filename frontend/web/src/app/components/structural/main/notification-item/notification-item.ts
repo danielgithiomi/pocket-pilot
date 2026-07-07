@@ -1,4 +1,5 @@
 import { Component, computed, input } from '@angular/core';
+import { Notification } from '@api/notifications.service';
 
 @Component({
     imports: [],
@@ -7,8 +8,8 @@ import { Component, computed, input } from '@angular/core';
 })
 export class NotificationItem {
     // INPUTS
-    readonly id = input.required<string>();
+    readonly notificationItem = input.required<Notification>();
 
     // COMPUTED
-    protected readonly notificationId = computed<string>(() => `notification-${this.id()}`);
+    protected readonly notificationId = computed<string>(() => `notification-${this.notificationItem().id}`);
 }
