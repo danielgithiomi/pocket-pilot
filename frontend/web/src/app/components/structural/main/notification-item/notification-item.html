@@ -1,4 +1,14 @@
-<article [id]="notificationId()">
-    <p>{{ notificationItem().title }}</p>
-    <p>{{ notificationItem().details }}</p>
+<article
+    [id]="notificationId()"
+    class="notification-item"
+    [ngClass]="{ unread: notificationItem().status === 'UNREAD' }">
+
+    <atom-pinger pingerSize="xs"/>
+
+    <div class="size-10 shrink-0 rounded-full bg-blue-600"></div>
+
+    <div class="flex flex-col gap-1">
+        <p class="text-sm">{{ notificationItem().title }}</p>
+        <p class="text-xs">{{ notificationItem().details }}</p>
+    </div>
 </article>
