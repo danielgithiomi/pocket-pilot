@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { WEB_ROUTES } from '@global/constants';
 import { AuthService } from '@api/auth.service';
-import { Button } from '@components/ui/atoms/button';
+import { Button } from '@atoms/button';
 import { DrawerService } from '@infrastructure/services';
 import { Component, inject, signal } from '@angular/core';
 import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-angular';

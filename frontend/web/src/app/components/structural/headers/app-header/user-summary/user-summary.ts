@@ -3,7 +3,7 @@ import { DrawerService } from '@infrastructure/services';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { ChevronDown, LucideAngularModule } from 'lucide-angular';
 import { Component, computed, inject, input } from '@angular/core';
-import { HeaderDropdown } from '../header-dropdown/header-dropdown';
+import { HeaderDropdown } from '@structural/dropdowns/header-dropdown/header-dropdown';
 
 @Component({
     selector: 'user-summary',

@@ -32,13 +32,13 @@ export class UpcomingBills {
     protected readonly isFetchingBills = computed(() => this.bills$.isLoading());
 
     protected readonly upcomingBills = computed<Bill[]>(() => {
+        if (!this.bills$.hasValue()) return [];
+
         const now = new Date();
         const oneWeekFromNow = new Date();
         oneWeekFromNow.setDate(now.getDate() + 7);
 
-        const allBills = this.bills$.value()?.data;
-
-        if (!allBills) return [];
+        const allBills = this.bills$.value().data;
 
         return allBills.filter(bill => {
             const billDueDate = new Date(bill.dueDate);

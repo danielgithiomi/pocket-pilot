@@ -7,10 +7,10 @@ import { AuthService } from '@api/auth.service';
 import { DrawerService } from '@infrastructure/services';
 import { UserSummary } from './user-summary/user-summary';
 import { STORED_ONBOARDING_USER_KEY } from '@libs/constants';
-import { NotificationsDropdown } from './notifications-dropdown';
 import { NotificationsStore } from '@stores/notifications.store';
 import { Component, inject, input, output, signal } from '@angular/core';
 import { Bell, LogOut, LucideAngularModule, Menu, Settings2 } from 'lucide-angular';
+import { NotificationsDropdown } from '@structural/dropdowns/notifications-dropdown';
 
 @Component({
     selector: 'app-header',
