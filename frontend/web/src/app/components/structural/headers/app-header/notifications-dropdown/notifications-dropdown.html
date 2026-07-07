@@ -1,8 +1,8 @@
 <section id="notification-dropdown" class="notification-dropdown" (click)="$event.stopPropagation()">
     <div class="notifications-arrow"></div>
 
-    @let noNotifications = notificationsSummary.totalCount === 0;
-    @let noUnreadNotifications = notificationsSummary.unreadCount === 0;
+    @let noNotifications = notificationsSummary().totalCount === 0;
+    @let noUnreadNotifications = notificationsSummary().unreadCount === 0;
     <div class="notifications-content">
         <div class="notifications-header">
             <p class="font-semibold text-primary underline underline-offset-3 uppercase">Notifications</p>
@@ -41,13 +41,15 @@
             <atom-tab-list
                 size="sm"
                 [items]="tabListItems"
+                [disabled]="noNotifications"
                 [activeItem]="activeTabIndex()"
                 wrapperClassName="!bg-body-background mx-2"
                 (selectedIndex)="handleTabChange($event)"/>
 
             @let showScrollbar = notifications().length < 4;
-            <div class="notifications-list"
-                 [ngClass]="{ 'no-scrollbar': showScrollbar, 'no-notifications': noNotifications }">
+            <div
+                class="notifications-list"
+                [ngClass]="{ 'no-scrollbar': showScrollbar, 'no-notifications': noNotifications }">
                 @if (noNotifications) {
                     <p class="text-xs! text-reactive-text">You have no notifications!</p>
                 } @else {

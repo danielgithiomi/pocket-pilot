@@ -31,7 +31,7 @@ export class NotificationsStore {
 
     // COMPUTEDs
     readonly notificationsSummary = computed<Summary>(() => {
-        const notifications = this.notifications();
+        const notifications = this.filteredNotifications();
         const unreadCount = notifications.filter(n => n.status === 'UNREAD').length;
 
         return {

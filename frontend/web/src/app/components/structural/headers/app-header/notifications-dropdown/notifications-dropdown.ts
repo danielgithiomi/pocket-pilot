@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
 import { TabList, TabListItem } from '@atoms/tab-list';
-import { PPNotification as Notification } from '@global/types';
 import { NotificationsStore } from '@stores/notifications.store';
 import { CheckCheck, LucideAngularModule, X } from 'lucide-angular';
 import { NotificationItem } from '@structural/main/notification-item';
 import { Component, computed, inject, output, signal } from '@angular/core';
+import { PPNotification as Notification, TNotificationFilter as NotificationFilter } from '@global/types';
 
 @Component({
     selector: 'notifications-dropdown',
@@ -25,22 +25,29 @@ export class NotificationsDropdown {
     protected readonly notificationsStore = inject(NotificationsStore);
 
     // DATA
-    protected readonly notificationsSummary = this.notificationsStore.notificationsSummary();
+    protected readonly notificationsSummary = this.notificationsStore.notificationsSummary;
 
     // SIGNAL STATES
     protected readonly activeTabIndex = signal<number>(0);
     protected readonly isMarkingAllAsRead = signal<boolean>(false);
 
     // COMPUTEDs
-    protected readonly notifications = computed<Notification[]>(() => this.notificationsSummary.notifications);
+    protected readonly notifications = computed<Notification[]>(() => {
+        console.log('notifications', this.notificationsSummary().notifications);
+        return this.notificationsSummary().notifications;
+    });
 
     // METHODS
     protected handleTabChange(index: number) {
         this.activeTabIndex.set(index);
+
+        const filterValue: NotificationFilter = this.tabListItems[index].value as NotificationFilter;
+        console.log('filterValue', filterValue);
+        this.notificationsStore.setNotificationFilter(filterValue);
     }
 
     protected handleMarkAllAsRead() {
-        if (!this.notificationsSummary.hasUnreadNotifications) return;
+        if (!this.notificationsSummary().hasUnreadNotifications) return;
 
         alert('Mark all as read');
         this.isMarkingAllAsRead.set(true);
@@ -54,11 +61,11 @@ export class NotificationsDropdown {
     protected readonly tabListItems: TabListItem[] = [
         {
             value: 'all',
-            label: `All [${this.notificationsSummary.totalCount}]`
+            label: `All${this.notificationsSummary().totalCount > 0 ? ` [${this.notificationsSummary().totalCount}]` : ''}`
         },
         {
             value: 'unread',
-            label: `Unread${this.notificationsSummary.hasUnreadNotifications ? ` [${this.notificationsSummary.unreadCount}]` : ''}`
+            label: `Unread${this.notificationsSummary().hasUnreadNotifications ? ` [${this.notificationsSummary().unreadCount}]` : ''}`
         }
     ];
 }

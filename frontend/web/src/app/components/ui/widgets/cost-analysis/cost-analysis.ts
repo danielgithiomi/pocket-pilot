@@ -7,7 +7,7 @@ import { LucideAngularModule, RotateCcw } from 'lucide-angular';
 import { TransactionsService } from '@api/transactions.service';
 import { COLOR_MAP, CostAnalysisCategory } from './cost-analysis.types';
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
-import { easeOutCubic, deferAnimationFrame, COMPONENT_ANIMATION_DURATION_MS } from '@libs/constants';
+import { COMPONENT_ANIMATION_DURATION_MS, deferAnimationFrame, easeOutCubic } from '@libs/constants';
 
 @Component({
     imports: [LucideAngularModule],
@@ -48,11 +48,17 @@ export class CostAnalysis {
     private readonly transactionsFromService = this.transactionsService.getUserTransactions();
 
     // COMPUTED
-    protected readonly loading = computed(() => this.categoriesFromService.isLoading());
+    protected readonly loading = computed(
+        () => this.categoriesFromService.isLoading() || this.transactionsFromService.isLoading()
+    );
 
-    protected readonly formattedTotalSpending = computed(() => this.formatCurrency(this.totalMonthlySpending().toString()));
+    protected readonly formattedTotalSpending = computed(() =>
+        this.formatCurrency(this.totalMonthlySpending().toString())
+    );
 
     protected readonly categories = computed(() => {
+        if (this.categoriesFromService.error()) return [];
+
         const response = this.categoriesFromService.value()?.data;
         if (!response) return [];
         const { incomes, expenses } = response;
@@ -65,6 +71,8 @@ export class CostAnalysis {
     });
 
     protected readonly transactions = computed(() => {
+        if (this.transactionsFromService.error()) return [];
+
         const transactions = this.transactionsFromService.value()?.data.data;
         if (!transactions) return [];
         return transactions;
@@ -106,7 +114,10 @@ export class CostAnalysis {
 
     readonly categoriesWithPercentage = computed(() => {
         const categoriesLength = this.costAnalysisCategories().length;
-        const categoriesTotalPercentage = this.costAnalysisCategories().reduce((sum, category) => sum + category.percentage, 0);
+        const categoriesTotalPercentage = this.costAnalysisCategories().reduce(
+            (sum, category) => sum + category.percentage,
+            0
+        );
         const remainingPercentage = 100 - categoriesTotalPercentage;
 
         const other: CostAnalysisCategory = {

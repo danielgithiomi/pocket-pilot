@@ -77,7 +77,7 @@ export class TabList {
 
     private getStateClasses(item: TabListItem): string {
         if (this.disabled()) {
-            return 'opacity-50 cursor-not-allowed';
+            return 'opacity-50 cursor-not-allowed!';
         }
 
         if (this.isActive(item)) {
