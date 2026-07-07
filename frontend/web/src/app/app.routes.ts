@@ -43,6 +43,11 @@ export const routes: Routes = [
         canMatch: [AuthGuard, OnboardedGuard],
         loadChildren: () => [
             {
+                path: WEB_ROUTES.notifications,
+                title: 'Notifications | Pocket Pilot',
+                loadComponent: () => import('@pages/main/notifications/notifications').then(m => m.Notifications)
+            },
+            {
                 path: WEB_ROUTES.dashboard,
                 title: 'Dashboard | Pocket Pilot',
                 loadComponent: () => import('@pages/main/dashboard/dashboard').then(m => m.Dashboard)
@@ -81,7 +86,9 @@ export const routes: Routes = [
                 title: 'Settings | Pocket Pilot',
                 path: WEB_ROUTES.settings,
                 loadComponent: () =>
-                    import('@pages/main/settings_and_categories/settings-and-categories').then(m => m.SettingsAndCategories)
+                    import('@pages/main/settings_and_categories/settings-and-categories').then(
+                        m => m.SettingsAndCategories
+                    )
             },
             {
                 title: 'Goals & Bills | Pocket Pilot',

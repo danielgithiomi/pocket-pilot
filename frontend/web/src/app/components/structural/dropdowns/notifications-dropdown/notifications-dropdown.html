@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="notifications-footer">
+        <div class="notifications-footer" (click)="handleOnViewAllClick()">
             <p [ngClass]="{ disabled: noNotifications }">View all notifications</p>
         </div>
     </div>

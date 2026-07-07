@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { NotificationsStore } from '@stores/notifications.store';
 import { CheckCheck, LucideAngularModule, X } from 'lucide-angular';
@@ -22,6 +23,7 @@ export class NotificationsDropdown {
     protected closeNotificationsPanelEvent = output<void>();
 
     // SERVICES
+    private readonly router = inject(Router);
     protected readonly notificationsStore = inject(NotificationsStore);
 
     // DATA
@@ -40,6 +42,10 @@ export class NotificationsDropdown {
     });
 
     // METHODS
+    protected handleOnViewAllClick = async () => {
+        this.closeNotificationsPanelEvent.emit();
+        await this.router.navigateByUrl('/notifications');
+    };
     protected handleOnTabChange({ index, value }: TabChangeEventOutput) {
         this.activeTabIndex.set(index);
         this.notificationsStore.setNotificationFilter(value as NotificationFilter);

@@ -1,0 +1,20 @@
+<section id="notifications-page" class="page">
+
+    <div class="page-header">
+        <h1 class="page-title">Notifications</h1>
+
+        <atom-button
+            id="add-account"
+            variant="primary"
+            (clicked)="handleMarkAllAsRead()"
+            [disabled]="isLoadingNotifications()">
+
+            <div class="w-full flex flex-row items-center justify-between gap-4">
+                <lucide-icon [img]="MarkAllAsReadIcon" [size]="iconSize" name="mark-all-as-read"/>
+                <span class="hidden sm:block">Mark All As Read</span>
+            </div>
+
+        </atom-button>
+
+    </div>
+</section>
