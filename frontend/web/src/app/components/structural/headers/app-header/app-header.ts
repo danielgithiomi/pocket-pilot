@@ -8,7 +8,7 @@ import { DrawerService } from '@infrastructure/services';
 import { UserSummary } from './user-summary/user-summary';
 import { STORED_ONBOARDING_USER_KEY } from '@libs/constants';
 import { NotificationsDropdown } from './notifications-dropdown';
-import { NotificationsService } from '@api/notifications.service';
+import { NotificationsStore } from '@stores/notifications.store';
 import { Component, inject, input, output, signal } from '@angular/core';
 import { Bell, LogOut, LucideAngularModule, Menu, Settings2 } from 'lucide-angular';
 
@@ -38,10 +38,10 @@ export class AppHeader {
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
     private readonly drawerService = inject(DrawerService);
-    private readonly notificationsService = inject(NotificationsService);
+    private readonly notificationsStore = inject(NotificationsStore);
 
     // DATA
-    protected readonly notifications = this.notificationsService.getUserWrappedNotifications();
+    protected readonly notificationsSummary = this.notificationsStore.notificationsSummary();
     protected readonly isLinkActive = (link: string) => this.router.url === link;
 
     // METHODS

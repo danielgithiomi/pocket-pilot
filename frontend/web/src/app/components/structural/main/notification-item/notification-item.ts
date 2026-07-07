@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { Notification } from '@api/notifications.service';
+import { PPNotification as Notification } from '@global/types';
 
 @Component({
     imports: [],

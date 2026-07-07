@@ -1,9 +1,10 @@
 import { NgClass } from '@angular/common';
 import { TabList, TabListItem } from '@atoms/tab-list';
-import { Component, inject, output, signal } from '@angular/core';
-import { NotificationsService } from '@api/notifications.service';
+import { NotificationsStore } from '@stores/notifications.store';
 import { CheckCheck, LucideAngularModule, X } from 'lucide-angular';
 import { NotificationItem } from '@structural/main/notification-item';
+import { Component, computed, inject, output, signal } from '@angular/core';
+import { PPNotification as Notification } from '@global/types';
 
 @Component({
     selector: 'notifications-dropdown',
@@ -21,14 +22,17 @@ export class NotificationsDropdown {
     protected closeNotificationsPanelEvent = output<void>();
 
     // SERVICES
-    protected readonly notificationsService = inject(NotificationsService);
+    protected readonly notificationsStore = inject(NotificationsStore);
 
     // DATA
-    protected readonly notifications = this.notificationsService.getUserWrappedNotifications();
+    protected readonly notificationsSummary = this.notificationsStore.notificationsSummary();
 
     // SIGNAL STATES
     protected readonly activeTabIndex = signal<number>(0);
     protected readonly isMarkingAllAsRead = signal<boolean>(false);
+
+    // COMPUTEDs
+    protected readonly notifications = computed<Notification[]>(() => this.notificationsSummary.notifications);
 
     // METHODS
     protected handleTabChange(index: number) {
@@ -36,7 +40,7 @@ export class NotificationsDropdown {
     }
 
     protected handleMarkAllAsRead() {
-        if (!this.notifications.hasUnreadNotifications) return;
+        if (!this.notificationsSummary.hasUnreadNotifications) return;
 
         alert('Mark all as read');
         this.isMarkingAllAsRead.set(true);
@@ -50,11 +54,11 @@ export class NotificationsDropdown {
     protected readonly tabListItems: TabListItem[] = [
         {
             value: 'all',
-            label: `All [${this.notifications.totalCount}]`
+            label: `All [${this.notificationsSummary.totalCount}]`
         },
         {
             value: 'unread',
-            label: `Unread${this.notifications.hasUnreadNotifications ? ` [${this.notifications.unreadCount}]` : ''}`
+            label: `Unread${this.notificationsSummary.hasUnreadNotifications ? ` [${this.notificationsSummary.unreadCount}]` : ''}`
         }
     ];
 }

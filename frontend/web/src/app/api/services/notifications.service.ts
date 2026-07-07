@@ -1,61 +1,36 @@
 import { Injectable, signal } from '@angular/core';
+import { PPNotification as Notification } from '@global/types';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NotificationsService {
-    private readonly NOTIFICATIONS: Notification[] = [
+    private readonly TEST_NOTIFICATIONS: Notification[] = [
         {
-            id: 1,
-            link: '/profile',
-            status: 'unread',
+            id: '1',
+            resourceLink: '/profile',
             title: 'New user registered',
+            status: 'UNREAD',
             details: 'You have 1 new user registered'
         },
         {
-            id: 2,
-            link: '/bills',
-            status: 'unread',
+            id: '2',
+            resourceLink: '/bills',
             title: 'Server Error',
-            details: 'Server error occurred'
+            details: 'Server error occurred',
+            status: 'UNREAD'
         },
         {
-            id: 3,
-            status: 'read',
-            link: '/accounts',
+            id: '3',
+            resourceLink: '/accounts',
             title: 'Suspicious activity',
+            status: 'READ',
             details: 'Some suspicious activity has been detected'
         }
     ];
 
-    private readonly notifications = signal<Notification[]>(this.NOTIFICATIONS);
+    private readonly notifications = signal<Notification[]>(this.TEST_NOTIFICATIONS);
 
-    getUserWrappedNotifications = (): UserWrappedNotifications => {
-        const totalCount = this.notifications().length;
-        const notifications = this.notifications();
-        const unreadCount = this.notifications().filter(n => n.status === 'unread').length;
-
-        return {
-            totalCount,
-            unreadCount,
-            notifications,
-            hasUnreadNotifications: unreadCount > 0
-        };
-    };
-}
-
-// INTERNAL TYPES
-export interface Notification {
-    id: number;
-    link: string;
-    title: string;
-    details: string;
-    status: 'unread' | 'read';
-}
-
-interface UserWrappedNotifications {
-    totalCount: number;
-    unreadCount: number;
-    notifications: Notification[];
-    hasUnreadNotifications: boolean;
+    // ACCESSORS
+    readonly notificationsSignal = this.notifications.asReadonly();
 }
