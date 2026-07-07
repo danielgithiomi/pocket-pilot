@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
 import { TabList, TabListItem } from '@atoms/tab-list';
+import { PPNotification as Notification } from '@global/types';
 import { NotificationsStore } from '@stores/notifications.store';
 import { CheckCheck, LucideAngularModule, X } from 'lucide-angular';
 import { NotificationItem } from '@structural/main/notification-item';
 import { Component, computed, inject, output, signal } from '@angular/core';
-import { PPNotification as Notification } from '@global/types';
 
 @Component({
     selector: 'notifications-dropdown',

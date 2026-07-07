@@ -38,7 +38,7 @@ export class AppHeader {
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
     private readonly drawerService = inject(DrawerService);
-    private readonly notificationsStore = inject(NotificationsStore);
+    protected readonly notificationsStore = inject(NotificationsStore);
 
     // DATA
     protected readonly notificationsSummary = this.notificationsStore.notificationsSummary();

@@ -11,7 +11,7 @@
                 <div class="vertical-separator h-8"></div>
             }
 
-            <h1 class="text-lg font-bold">Pocket Pilot</h1>
+            <h1 class="text-lg font-bold" (click)="notificationsStore.loadNotifications()">Pocket Pilot</h1>
         </div>
     </div>
 
@@ -19,22 +19,28 @@
         <div class="flex flex-row items-center gap-4">
             <div class="hidden sm:flex justify-end gap-4 md:hidden lg:flex w-100">
                 <div class="notifications-dropdown-wrapper">
-                    <lucide-icon
-                        name="Bell"
-                        [img]="Bell"
-                        [size]="iconSize"
-                        (click)="handleNotificationsPanelToggle()"
-                        class="atom-icon header-icons transition-custom relative"
-                        [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen() }"/>
+                    @let isLoadingNotifications = notificationsStore.notificationsLoading;
+                    @if (isLoadingNotifications()) {
+                        <div class="size-4 p-1 header-icons primary-loader self-center"></div>
+                    } @else {
+                        <lucide-icon
+                            name="Bell"
+                            [img]="Bell"
+                            [size]="iconSize"
+                            (click)="handleNotificationsPanelToggle()"
+                            class="atom-icon header-icons transition-custom relative"
+                            [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen() }"/>
 
-                    @if (notificationsSummary.hasUnreadNotifications) {
-                        <span class="icon-badge">
+                        @if (notificationsSummary.hasUnreadNotifications) {
+                            <span class="icon-badge">
                             {{ notificationsSummary.unreadCount }}
                         </span>
-                    }
+                        }
 
-                    @if (isNotificationsPanelOpen()) {
-                        <notifications-dropdown (closeNotificationsPanelEvent)="isNotificationsPanelOpen.set(false)"/>
+                        @if (isNotificationsPanelOpen()) {
+                            <notifications-dropdown
+                                (closeNotificationsPanelEvent)="isNotificationsPanelOpen.set(false)"/>
+                        }
                     }
                 </div>
 

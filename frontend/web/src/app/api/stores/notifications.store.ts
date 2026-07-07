@@ -58,7 +58,7 @@ export class NotificationsStore {
     });
 
     // METHODS
-    private loadNotifications() {
+    loadNotifications() {
         this._notificationsLoading.set(true);
 
         setTimeout(() => {
