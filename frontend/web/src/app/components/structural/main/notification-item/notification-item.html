@@ -4,8 +4,9 @@
         <atom-pinger pingerSize="xs"/>
     }
 
-    <div class="size-10 shrink-0 rounded-full bg-body-background grid place-items-center"
-         [ngClass]="{ 'ml-3': !isUnread }">
+    <div
+        [ngClass]="{ 'ml-3': !isUnread }"
+        class="size-10 shrink-0 rounded-full bg-body-background grid place-items-center">
         <lucide-icon name="notification" [img]="NotificationIcon" [size]="iconSize"/>
     </div>
 

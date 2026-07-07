@@ -21,7 +21,7 @@
                 <div class="notifications-dropdown-wrapper">
                     @let isLoadingNotifications = notificationsStore.notificationsLoading;
                     @if (isLoadingNotifications()) {
-                        <div class="p-1 mr-2 header-icons primary-loader self-center"></div>
+                        <div class="p-1 header-icons mr-2 primary-loader bg-alternate-background! self-center"></div>
                     } @else {
                         <lucide-icon
                             name="Bell"
@@ -33,8 +33,8 @@
 
                         @if (notificationsSummary.hasUnreadNotifications) {
                             <span class="icon-badge">
-                            {{ notificationsSummary.unreadCount }}
-                        </span>
+                                {{ notificationsSummary.unreadCount }}
+                            </span>
                         }
 
                         @if (isNotificationsPanelOpen()) {
