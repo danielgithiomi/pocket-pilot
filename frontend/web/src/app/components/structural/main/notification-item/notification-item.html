@@ -1,17 +1,21 @@
-@let isUnread = notificationItem().status === 'UNREAD';
-<article [id]="notificationId()" class="notification-item" [ngClass]="{ unread: isUnread }">
-    @if (isUnread) {
+@let isUnreadNotification = isUnread();
+<article [id]="notificationId()" class="notification-item" [ngClass]="{ unread: showUnreadHighlight() }">
+    @if (isUnreadNotification) {
         <atom-pinger pingerSize="xs"/>
     }
 
     <div
-        [ngClass]="{ 'ml-3': !isUnread }"
+        [ngClass]="{ 'ml-3': !isUnreadNotification }"
         class="size-10 shrink-0 rounded-full bg-body-background grid place-items-center">
         <lucide-icon name="notification" [img]="NotificationIcon" [size]="iconSize"/>
     </div>
 
-    <div class="flex flex-col gap-1 overflow-hidden">
-        <p class="text-xs font-semibold">{{ notificationItem().title }}</p>
+    <div class="flex-1 flex flex-col gap-1 overflow-hidden">
+        <div class="flex flex-row items-center gap-4 justify-between">
+            <p class="text-[11px] font-semibold text-primary-text truncate">{{ notificationItem().title }}</p>
+            <p class="shrink-0 text-[10px] line-clamp-1 text-reactive-text">{{ getRelativeDate(notificationItem().createdAt) }}</p>
+        </div>
+
         <p class="text-[11px] text-reactive-text line-clamp-1 truncate">{{ notificationItem().details }}</p>
     </div>
 </article>

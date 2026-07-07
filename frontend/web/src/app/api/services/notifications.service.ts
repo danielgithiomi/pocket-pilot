@@ -11,6 +11,7 @@ export class NotificationsService {
             status: 'UNREAD',
             resourceLink: '/profile',
             title: 'New user registered',
+            createdAt: new Date('2026-05-01'),
             details: 'You have 1 new user registered'
         },
         {
@@ -18,20 +19,15 @@ export class NotificationsService {
             status: 'UNREAD',
             title: 'Server Error',
             resourceLink: '/bills',
-            details: 'Server error occurred'
+            details: 'Server error occurred',
+            createdAt: new Date('2026-06-01')
         },
         {
             id: '3',
             status: 'READ',
             resourceLink: '/accounts',
-            title: 'Suspicious activity',
-            details: 'Some suspicious activity has been detected'
-        },
-        {
-            id: '4',
-            status: 'READ',
-            resourceLink: '/accounts',
             title: 'Additional activity',
+            createdAt: new Date('2026-07-01'),
             details: 'Some suspicious activity has been detected werwerwwerwe'
         }
     ];

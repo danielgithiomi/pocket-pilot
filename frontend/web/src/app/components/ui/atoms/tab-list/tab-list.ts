@@ -83,7 +83,7 @@ export class TabList {
         }
 
         if (this.isActive(item)) {
-            return 'bg-(--primary)/75 text-white';
+            return 'bg-(--primary)/75 text-white!';
         }
 
         return 'hover:bg-(--muted-text)/25';
