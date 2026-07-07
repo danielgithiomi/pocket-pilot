@@ -1,0 +1,115 @@
+@reference "tailwindcss";
+
+#notifications-page {
+    .page-header {
+        @apply items-start gap-4;
+    }
+
+    .page-subtitle {
+        @apply mt-1 text-sm text-(--reactive-text);
+    }
+
+    .header-actions,
+    .button-content {
+        @apply flex flex-row items-center gap-2;
+    }
+
+    .notifications-layout {
+        @apply grid flex-1 grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_320px];
+    }
+
+    .notifications-main {
+        @apply min-w-0 space-y-5;
+    }
+
+    .summary-grid {
+        @apply grid grid-cols-2 gap-3 lg:grid-cols-4;
+    }
+
+    .summary-card {
+        @apply rounded-md border border-(--loader-primary) bg-(--alternate-background) p-4;
+    }
+
+    .summary-card span {
+        @apply text-xs uppercase text-(--reactive-text);
+    }
+
+    .summary-card strong {
+        @apply mt-2 block text-2xl text-(--primary-text);
+    }
+
+    .summary-card.unread strong,
+    .summary-card.action strong {
+        @apply text-(--primary);
+    }
+
+    .summary-card.critical strong {
+        @apply text-(--error);
+    }
+
+    .filters-band {
+        @apply rounded-md bg-(--alternate-background) p-2;
+    }
+
+    .notifications-list {
+        @apply flex min-h-[420px] flex-col gap-3;
+    }
+
+    .notifications-list.centered {
+        @apply grid place-items-center;
+    }
+
+    .notification-skeleton {
+        @apply h-36 animate-pulse rounded-md bg-(--loader-primary);
+    }
+
+    .notifications-sidebar {
+        @apply space-y-4;
+    }
+
+    .sidebar-section {
+        @apply rounded-md border border-(--loader-primary) bg-(--alternate-background) p-4;
+    }
+
+    .sidebar-heading {
+        @apply mb-3 flex flex-row items-center gap-2 text-(--primary);
+    }
+
+    .sidebar-heading h2 {
+        @apply text-sm font-semibold text-(--primary-text);
+    }
+
+    .sidebar-empty {
+        @apply text-xs text-(--reactive-text);
+    }
+
+    .sidebar-alert,
+    .sidebar-reminder {
+        @apply mb-2 flex w-full flex-row items-center justify-between gap-3 rounded bg-(--body-background) px-3 py-2 text-left text-xs;
+    }
+
+    .sidebar-alert span,
+    .sidebar-reminder span {
+        @apply truncate text-(--primary-text);
+    }
+
+    .sidebar-alert strong {
+        @apply text-[10px] text-(--error);
+    }
+
+    .sidebar-reminder strong {
+        @apply rounded bg-(--loader-primary) px-2 py-0.5 text-[10px] text-(--primary-text);
+    }
+
+    .health-track {
+        @apply h-2 overflow-hidden rounded-full bg-(--body-background);
+    }
+
+    .health-progress {
+        @apply h-full rounded-full bg-(--primary) transition-all duration-300 ease-in-out;
+    }
+
+    .health-copy {
+        @apply mt-2 text-xs text-(--reactive-text);
+    }
+}
