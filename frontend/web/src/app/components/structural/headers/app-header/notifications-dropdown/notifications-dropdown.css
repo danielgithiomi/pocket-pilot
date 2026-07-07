@@ -8,14 +8,14 @@
     }
 
     .notifications-content {
-        @apply h-full p-2 flex flex-col justify-between;
+        @apply h-full py-2 flex flex-col justify-between;
 
         p {
             @apply text-sm;
         }
 
         .notifications-header {
-            @apply flex flex-row items-center justify-between;
+            @apply flex flex-row items-center justify-between px-2;
 
             .notifications-icon-wrapper {
                 @apply size-7 grid place-items-center rounded cursor-pointer hover:bg-(--body-background) hover:text-(--primary) transition-(--transition-custom);
@@ -23,10 +23,14 @@
         }
 
         .notifications-body {
-            @apply flex-1 my-2 px-2 flex flex-col gap-2;
+            @apply flex-1 my-1 flex flex-col gap-2 overflow-hidden;
 
             .notifications-list {
-                @apply overflow-y-scroll flex-1;
+                @apply overflow-y-scroll flex-1 flex flex-col divide-y divide-(--reactive-text);
+            }
+
+            .no-notifications {
+                @apply grid place-items-center;
             }
         }
 
@@ -35,6 +39,10 @@
 
             p {
                 @apply mt-1 text-xs cursor-pointer w-full text-center underline underline-offset-2 hover:text-(--primary) transition-(--transition-custom);
+            }
+
+            .disabled {
+                @apply cursor-not-allowed! text-(--reactive-text)! hover:text-(--reactive-text) no-underline!
             }
         }
     }

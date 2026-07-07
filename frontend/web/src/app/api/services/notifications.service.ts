@@ -8,24 +8,31 @@ export class NotificationsService {
     private readonly TEST_NOTIFICATIONS: Notification[] = [
         {
             id: '1',
+            status: 'UNREAD',
             resourceLink: '/profile',
             title: 'New user registered',
-            status: 'UNREAD',
             details: 'You have 1 new user registered'
         },
         {
             id: '2',
-            resourceLink: '/bills',
+            status: 'UNREAD',
             title: 'Server Error',
-            details: 'Server error occurred',
-            status: 'UNREAD'
+            resourceLink: '/bills',
+            details: 'Server error occurred'
         },
         {
             id: '3',
+            status: 'READ',
             resourceLink: '/accounts',
             title: 'Suspicious activity',
-            status: 'READ',
             details: 'Some suspicious activity has been detected'
+        },
+        {
+            id: '4',
+            status: 'READ',
+            resourceLink: '/accounts',
+            title: 'Additional activity',
+            details: 'Some suspicious activity has been detected werwerwwerwe'
         }
     ];
 

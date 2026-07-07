@@ -604,6 +604,16 @@ main {
     }
 }
 
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
 /*  SPECIALS  */
 @media (prefers-reduced-motion: reduce) {
     * {
