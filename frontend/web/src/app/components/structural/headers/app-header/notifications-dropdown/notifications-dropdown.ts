@@ -1,9 +1,9 @@
 import { NgClass } from '@angular/common';
-import { TabList, TabListItem } from '@atoms/tab-list';
 import { NotificationsStore } from '@stores/notifications.store';
 import { CheckCheck, LucideAngularModule, X } from 'lucide-angular';
 import { NotificationItem } from '@structural/main/notification-item';
 import { Component, computed, inject, output, signal } from '@angular/core';
+import { TabChangeEventOutput, TabList, TabListItem } from '@atoms/tab-list';
 import { PPNotification as Notification, TNotificationFilter as NotificationFilter } from '@global/types';
 
 @Component({
@@ -26,10 +26,12 @@ export class NotificationsDropdown {
 
     // DATA
     protected readonly notificationsSummary = this.notificationsStore.notificationsSummary;
+    protected readonly activeNotificationFilter = this.notificationsStore.activeNotificationsFilter;
 
     // SIGNAL STATES
     protected readonly activeTabIndex = signal<number>(0);
     protected readonly isMarkingAllAsRead = signal<boolean>(false);
+    protected readonly activeTabValue = signal<NotificationFilter>(this.activeNotificationFilter());
 
     // COMPUTEDs
     protected readonly notifications = computed<Notification[]>(() => {
@@ -38,12 +40,9 @@ export class NotificationsDropdown {
     });
 
     // METHODS
-    protected handleTabChange(index: number) {
+    protected handleOnTabChange({ index, value }: TabChangeEventOutput) {
         this.activeTabIndex.set(index);
-
-        const filterValue: NotificationFilter = this.tabListItems[index].value as NotificationFilter;
-        console.log('filterValue', filterValue);
-        this.notificationsStore.setNotificationFilter(filterValue);
+        this.notificationsStore.setNotificationFilter(value as NotificationFilter);
     }
 
     protected handleMarkAllAsRead() {

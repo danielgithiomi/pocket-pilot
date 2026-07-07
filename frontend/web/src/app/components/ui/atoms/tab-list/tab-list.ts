@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { TabListItem, TabSize } from './tab-list.types';
+import { TabChangeEventOutput, TabListItem, TabSize } from './tab-list.types';
 import { Component, computed, effect, input, output, signal } from '@angular/core';
 
 @Component({
@@ -20,6 +20,7 @@ export class TabList {
     /* OUTPUTS */
     selectedValue = output<string>();
     selectedIndex = output<number>();
+    selectedIndexValue = output<TabChangeEventOutput>();
 
     /* STATE */
     protected activeTab = signal<string>('');
@@ -44,12 +45,13 @@ export class TabList {
     }
 
     /* METHODS */
-    selectTab(item: TabListItem, index: number) {
+    selectTab({ value }: TabListItem, index: number) {
         if (this.disabled()) return;
 
-        this.activeTab.set(item.value);
+        this.activeTab.set(value);
         this.selectedIndex.emit(index);
-        this.selectedValue.emit(item.value);
+        this.selectedValue.emit(value);
+        this.selectedIndexValue.emit({ index, value });
     }
 
     isActive(item: TabListItem): boolean {

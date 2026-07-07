@@ -44,7 +44,7 @@
                 [disabled]="noNotifications"
                 [activeItem]="activeTabIndex()"
                 wrapperClassName="!bg-body-background mx-2"
-                (selectedIndex)="handleTabChange($event)"/>
+                (selectedIndexValue)="handleOnTabChange($event)"/>
 
             @let showScrollbar = notifications().length < 4;
             <div

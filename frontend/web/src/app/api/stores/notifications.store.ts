@@ -3,7 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import {
     PPNotification as Notification,
     PPNotificationSummary as Summary,
-    TNotificationFilter as Filter
+    TNotificationFilter as NotificationFilter
 } from '@global/types';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class NotificationsStore {
     private readonly _notifications = signal<Notification[]>([]);
     private readonly _notificationsError = signal<boolean>(false);
     private readonly _notificationsLoading = signal<boolean>(false);
-    private readonly _activeNotificationsFilter = signal<Filter>('all');
+    private readonly _activeNotificationsFilter = signal<NotificationFilter>('all');
 
     // ACCESSORS
     readonly notifications = this._notifications.asReadonly();
@@ -25,7 +25,7 @@ export class NotificationsStore {
     readonly activeNotificationsFilter = this._activeNotificationsFilter.asReadonly();
 
     // MODIFIERS
-    setNotificationFilter(filter: Filter) {
+    setNotificationFilter(filter: NotificationFilter) {
         this._activeNotificationsFilter.set(filter);
     }
 
