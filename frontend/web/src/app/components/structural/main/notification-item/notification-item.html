@@ -1,21 +1,75 @@
-@let isUnreadNotification = isUnread();
-<article [id]="notificationId()" class="notification-item" [ngClass]="{ unread: showUnreadHighlight() }">
-    @if (isUnreadNotification) {
-        <atom-pinger pingerSize="xs"/>
-    }
+@let notification = notificationItem();
+@let unread = isUnread();
 
-    <div
-        [ngClass]="{ 'ml-3': !isUnreadNotification }"
-        class="size-10 shrink-0 rounded-full bg-body-background grid place-items-center">
-        <lucide-icon name="notification" [img]="NotificationIcon" [size]="iconSize"/>
+<article
+    [id]="notificationId()"
+    class="notification-item"
+    [ngClass]="[priorityClass(), showUnreadHighlight() ? 'unread' : '', unread ? 'is-unread' : '']">
+    <div class="notification-leading">
+        @if (unread) {
+            <atom-pinger pingerSize="xs"/>
+        }
+
+        <div class="notification-icon">
+            <lucide-icon name="notification-type" [img]="icon()" [size]="18"/>
+        </div>
     </div>
 
-    <div class="flex-1 flex flex-col gap-1 overflow-hidden">
-        <div class="flex flex-row items-center gap-4 justify-between">
-            <p class="text-[11px] font-semibold text-primary-text truncate">{{ notificationItem().title }}</p>
-            <p class="shrink-0 text-[10px] line-clamp-1 text-reactive-text">{{ getRelativeDate(notificationItem().createdAt) }}</p>
+    <div class="notification-content">
+        <div class="notification-header">
+            <div class="min-w-0">
+                <div class="notification-badges">
+                    <span class="badge category">{{ categoryLabel() }}</span>
+                    <span class="badge priority">{{ priorityLabel() }}</span>
+                    @if (notification.requiresAction) {
+                        <span class="badge action-required">Action required</span>
+                    }
+                </div>
+
+                <h3>{{ notification.title }}</h3>
+            </div>
+
+            <span class="notification-time">{{ createdAtLabel() }}</span>
         </div>
 
-        <p class="text-[11px] text-reactive-text line-clamp-1 truncate">{{ notificationItem().details }}</p>
+        <p class="notification-message">{{ notification.message }}</p>
+
+        @if (metadataChips().length > 0) {
+            <div class="metadata-chips">
+                @for (chip of metadataChips(); track chip.label) {
+                    <span class="metadata-chip">
+                        <span>{{ chip.label }}</span>
+                        <strong>{{ chip.value }}</strong>
+                    </span>
+                }
+            </div>
+        }
+
+        <div class="notification-footer">
+            <div class="notification-actions">
+                @for (action of notification.actions ?? []; track action.id) {
+                    <button
+                        type="button"
+                        class="notification-action"
+                        [ngClass]="action.variant.toLowerCase()"
+                        (click)="handleAction(action)">
+                        {{ action.label }}
+                    </button>
+                }
+            </div>
+
+            <div class="utility-actions">
+                @if (unread) {
+                    <button type="button" aria-label="Mark notification as read"
+                            (click)="markAsRead.emit(notification.id)">
+                        <lucide-icon name="mark-read" [img]="MarkReadIcon" [size]="16"/>
+                    </button>
+                }
+
+                <button type="button" aria-label="Archive notification" (click)="archive.emit(notification.id)">
+                    <lucide-icon name="archive" [img]="ArchiveIcon" [size]="16"/>
+                </button>
+            </div>
+        </div>
     </div>
 </article>

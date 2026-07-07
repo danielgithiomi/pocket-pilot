@@ -1,20 +1,141 @@
 <section id="notifications-page" class="page">
+    @let state = pageState();
+    @let summary = state.summary;
 
     <div class="page-header">
-        <h1 class="page-title">Notifications</h1>
+        <div>
+            <h1 class="page-title">Notifications</h1>
+            <p class="page-subtitle">Your finance command center for alerts, reminders, and action items.</p>
+        </div>
 
-        <atom-button
-            id="add-account"
-            variant="primary"
-            (clicked)="handleMarkAllAsRead()"
-            [disabled]="isLoadingNotifications()">
+        <div class="header-actions">
+            <atom-button
+                id="notification-settings"
+                variant="secondary"
+                [disabled]="state.isLoading"
+                (clicked)="goToSettings()">
+                <div class="button-content">
+                    <lucide-icon [img]="SettingsIcon" [size]="iconSize" name="notification-settings"/>
+                    <span class="hidden sm:block">Settings</span>
+                </div>
+            </atom-button>
 
-            <div class="w-full flex flex-row items-center justify-between gap-4">
-                <lucide-icon [img]="MarkAllAsReadIcon" [size]="iconSize" name="mark-all-as-read"/>
-                <span class="hidden sm:block">Mark All As Read</span>
-            </div>
+            <atom-button
+                id="mark-all-notifications-read"
+                variant="primary"
+                [isLoading]="state.isMarkingAllAsRead"
+                [disabled]="!summary.hasUnreadNotifications"
+                (clicked)="notificationsStore.markAllAsRead()">
+                <div class="button-content">
+                    <lucide-icon [img]="MarkAllAsReadIcon" [size]="iconSize" name="mark-all-as-read"/>
+                    <span class="hidden sm:block">Mark All Read</span>
+                </div>
+            </atom-button>
+        </div>
+    </div>
 
-        </atom-button>
+    <div class="page-container notifications-layout">
+        <main class="notifications-main">
+            <section class="summary-grid">
+                <div class="summary-card">
+                    <span>Total</span>
+                    <strong>{{ summary.totalCount }}</strong>
+                </div>
+                <div class="summary-card unread">
+                    <span>Unread</span>
+                    <strong>{{ summary.unreadCount }}</strong>
+                </div>
+                <div class="summary-card action">
+                    <span>Action Required</span>
+                    <strong>{{ summary.actionRequiredCount }}</strong>
+                </div>
+                <div class="summary-card critical">
+                    <span>Critical</span>
+                    <strong>{{ summary.criticalCount }}</strong>
+                </div>
+            </section>
 
+            <section class="filters-band">
+                <atom-tab-list
+                    size="sm"
+                    [items]="filterTabs()"
+                    [activeItem]="activeTabIndex()"
+                    [disabled]="state.isLoading"
+                    (selectedIndexValue)="handleFilterChange($event)"/>
+            </section>
+
+            <section class="notifications-list"
+                     [ngClass]="{ centered: state.hasError || state.notifications.length === 0 }">
+                @if (state.isLoading) {
+                    @for (item of [1, 2, 3, 4]; track item) {
+                        <div class="notification-skeleton"></div>
+                    }
+                } @else if (state.hasError) {
+                    <fetch-error message="Failed to load notifications" messageClass="text-xs"/>
+                } @else if (state.notifications.length === 0) {
+                    <no-data
+                        messageClass="text-xs"
+                        animationDimensions="220px"
+                        message="No notifications match this filter."/>
+                } @else {
+                    @for (notification of state.notifications; track notification.id) {
+                        <notification-item
+                            [notificationItem]="notification"
+                            (archive)="notificationsStore.archive($event)"
+                            (markAsRead)="notificationsStore.markAsRead($event)"
+                            (actionSelected)="handleActionSelected($event)"/>
+                    }
+                }
+            </section>
+        </main>
+
+        <aside class="notifications-sidebar">
+            <section class="sidebar-section">
+                <div class="sidebar-heading">
+                    <lucide-icon [img]="CriticalIcon" [size]="iconSize" name="critical-alerts"/>
+                    <h2>Critical Alerts</h2>
+                </div>
+
+                @if (criticalAlerts().length === 0) {
+                    <p class="sidebar-empty">No critical alerts right now.</p>
+                } @else {
+                    @for (alert of criticalAlerts(); track alert.id) {
+                        <button type="button" class="sidebar-alert" (click)="notificationsStore.markAsRead(alert.id)">
+                            <span>{{ alert.title }}</span>
+                            <strong>{{ alert.priority }}</strong>
+                        </button>
+                    }
+                }
+            </section>
+
+            <section class="sidebar-section">
+                <div class="sidebar-heading">
+                    <lucide-icon [img]="BellIcon" [size]="iconSize" name="bill-reminders"/>
+                    <h2>Bill Reminders</h2>
+                </div>
+
+                @if (billReminders().length === 0) {
+                    <p class="sidebar-empty">No bill reminders due soon.</p>
+                } @else {
+                    @for (bill of billReminders(); track bill.id) {
+                        <div class="sidebar-reminder">
+                            <span>{{ bill.metadata?.billName ?? bill.title }}</span>
+                            <strong>{{ bill.metadata?.daysRemaining ?? 0 }}d</strong>
+                        </div>
+                    }
+                }
+            </section>
+
+            <section class="sidebar-section">
+                <div class="sidebar-heading">
+                    <h2>Notification Health</h2>
+                </div>
+
+                <div class="health-track">
+                    <div class="health-progress" [style.width.%]="notificationHealth()"></div>
+                </div>
+                <p class="health-copy">{{ notificationHealth() }}% reviewed</p>
+            </section>
+        </aside>
     </div>
 </section>

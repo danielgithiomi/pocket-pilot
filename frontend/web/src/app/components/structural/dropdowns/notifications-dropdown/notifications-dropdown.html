@@ -40,7 +40,7 @@
         <div class="notifications-body">
             <atom-tab-list
                 size="sm"
-                [items]="tabListItems"
+                [items]="tabListItems()"
                 [disabled]="noNotifications"
                 [activeItem]="activeTabIndex()"
                 wrapperClassName="!bg-body-background mx-2"
@@ -54,7 +54,11 @@
                     <p class="text-xs! text-reactive-text">You have no notifications!</p>
                 } @else {
                     @for (notification of notifications(); track notification.id) {
-                        <notification-item [notificationItem]="notification"/>
+                        <notification-item
+                            [notificationItem]="notification"
+                            (archive)="notificationsStore.archive($event)"
+                            (markAsRead)="notificationsStore.markAsRead($event)"
+                            (actionSelected)="handleActionSelected($event)"/>
                     }
                 }
             </div>

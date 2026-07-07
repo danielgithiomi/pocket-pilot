@@ -6,4 +6,5 @@ export * from './accounts.resource';
 export * from './features.resource';
 export * from './categories.resource';
 export * from './transactions.resource';
+export * from './notifications.resource';
 export * from './exchange-rates.resource';

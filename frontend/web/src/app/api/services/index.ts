@@ -11,3 +11,4 @@ export * from './preferences.service';
 export * from './transactions.service';
 export * from './exchange-rate.service';
 export * from './notifications.service';
+export * from './server-events.service';

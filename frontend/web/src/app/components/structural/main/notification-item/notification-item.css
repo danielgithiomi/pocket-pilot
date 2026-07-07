@@ -1,9 +1,129 @@
 @reference "tailwindcss";
 
 .notification-item {
-    @apply cursor-pointer! flex flex-row items-center gap-2 px-1 py-2.5 transition-all duration-500 ease-in-out hover:bg-(--loader-primary)/20;
+    @apply relative flex flex-row items-start gap-3 rounded-md border border-transparent bg-(--body-background) px-3 py-3 transition-all duration-300 ease-in-out;
 }
 
-.unread {
+.notification-item.unread {
     @apply bg-(--loader-primary)/40;
+}
+
+.notification-item.is-unread {
+    @apply border-(--loader-primary);
+}
+
+.notification-item.critical {
+    @apply border-l-4 border-l-(--error);
+}
+
+.notification-item.high {
+    @apply border-l-4 border-l-(--warning);
+}
+
+.notification-item.medium {
+    @apply border-l-4 border-l-(--primary);
+}
+
+.notification-leading {
+    @apply flex shrink-0 flex-row items-center gap-2 pt-0.5;
+}
+
+.notification-icon {
+    @apply grid size-10 place-items-center rounded-full bg-(--alternate-background) text-(--primary);
+}
+
+.notification-content {
+    @apply min-w-0 flex-1;
+}
+
+.notification-header {
+    @apply flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between;
+}
+
+.notification-header h3 {
+    @apply mt-1 truncate text-sm font-semibold text-(--primary-text);
+}
+
+.notification-time {
+    @apply shrink-0 text-[11px] text-(--reactive-text);
+}
+
+.notification-badges {
+    @apply flex flex-wrap gap-1.5;
+}
+
+.badge {
+    @apply rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-normal;
+}
+
+.badge.category {
+    @apply bg-(--alternate-background) text-(--primary-text);
+}
+
+.badge.priority {
+    @apply bg-(--loader-primary) text-(--primary-text);
+}
+
+.critical .badge.priority {
+    @apply bg-(--error) text-white;
+}
+
+.high .badge.priority {
+    @apply bg-(--warning) text-black;
+}
+
+.badge.action-required {
+    @apply bg-(--loader-secondary) text-(--primary-text);
+}
+
+.notification-message {
+    @apply mt-2 text-xs leading-5 text-(--reactive-text);
+}
+
+.metadata-chips {
+    @apply mt-3 flex flex-wrap gap-2;
+}
+
+.metadata-chip {
+    @apply flex items-center gap-1 rounded bg-(--alternate-background) px-2 py-1 text-[11px] text-(--reactive-text);
+}
+
+.metadata-chip strong {
+    @apply font-semibold text-(--primary-text);
+}
+
+.notification-footer {
+    @apply mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+}
+
+.notification-actions {
+    @apply flex flex-wrap gap-2;
+}
+
+.notification-action {
+    @apply rounded px-3 py-1.5 text-[11px] font-semibold transition-all duration-200 ease-in-out;
+}
+
+.notification-action.primary {
+    @apply bg-(--primary) text-white hover:scale-101;
+}
+
+.notification-action.secondary {
+    @apply bg-(--inverted-background) text-(--inverted-text) hover:scale-101;
+}
+
+.notification-action.danger {
+    @apply bg-(--error) text-white hover:scale-101;
+}
+
+.notification-action.ghost {
+    @apply text-(--primary) underline underline-offset-2;
+}
+
+.utility-actions {
+    @apply flex items-center gap-2;
+}
+
+.utility-actions button {
+    @apply grid size-8 place-items-center rounded bg-(--alternate-background) text-(--reactive-text) transition-colors duration-200 hover:text-(--primary);
 }

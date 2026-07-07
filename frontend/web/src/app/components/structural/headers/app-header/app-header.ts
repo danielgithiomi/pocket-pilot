@@ -41,7 +41,7 @@ export class AppHeader {
     protected readonly notificationsStore = inject(NotificationsStore);
 
     // DATA
-    protected readonly notificationsSummary = this.notificationsStore.notificationsSummary();
+    protected readonly notificationsSummary = this.notificationsStore.notificationsSummary;
     protected readonly isLinkActive = (link: string) => this.router.url === link;
 
     // METHODS
@@ -61,10 +61,4 @@ export class AppHeader {
                 complete: () => localStorage.removeItem(STORED_ONBOARDING_USER_KEY)
             });
     }
-}
-
-// INTERNAL TYPES
-interface hasUnreadNotifications {
-    count: number;
-    hasUnread: boolean;
 }

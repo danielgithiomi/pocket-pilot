@@ -31,9 +31,9 @@
                             class="atom-icon header-icons transition-custom relative"
                             [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen() }"/>
 
-                        @if (notificationsSummary.hasUnreadNotifications) {
+                        @if (notificationsSummary().hasUnreadNotifications) {
                             <span class="icon-badge">
-                                {{ notificationsSummary.unreadCount }}
+                                {{ notificationsSummary().unreadCount }}
                             </span>
                         }
 

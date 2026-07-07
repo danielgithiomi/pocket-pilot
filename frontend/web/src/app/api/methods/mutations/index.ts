@@ -10,3 +10,4 @@ export * from './onboarding.mutation';
 export * from './categories.mutation';
 export * from './preferences.mutation';
 export * from './transactions.mutation';
+export * from './notifications.mutation';

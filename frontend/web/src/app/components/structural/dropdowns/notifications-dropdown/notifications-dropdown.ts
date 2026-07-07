@@ -5,7 +5,7 @@ import { CheckCheck, LucideAngularModule, X } from 'lucide-angular';
 import { NotificationItem } from '@structural/main/notification-item';
 import { Component, computed, inject, output, signal } from '@angular/core';
 import { TabChangeEventOutput, TabList, TabListItem } from '@atoms/tab-list';
-import { PPNotification as Notification, TNotificationFilter as NotificationFilter } from '@global/types';
+import { AppNotification, NotificationAction, NotificationFilter } from '@global/types';
 
 @Component({
     selector: 'notifications-dropdown',
@@ -29,17 +29,27 @@ export class NotificationsDropdown {
     // DATA
     protected readonly notificationsSummary = this.notificationsStore.notificationsSummary;
     protected readonly activeNotificationFilter = this.notificationsStore.activeNotificationsFilter;
+    protected readonly isMarkingAllAsRead = this.notificationsStore.isMarkingAllAsRead;
 
     // SIGNAL STATES
     protected readonly activeTabIndex = signal<number>(0);
-    protected readonly isMarkingAllAsRead = signal<boolean>(false);
     protected readonly activeTabValue = signal<NotificationFilter>(this.activeNotificationFilter());
 
     // COMPUTEDs
-    protected readonly notifications = computed<Notification[]>(() => {
-        console.log('notifications', this.notificationsSummary().notifications);
-        return this.notificationsSummary().notifications;
-    });
+    protected readonly notifications = computed<AppNotification[]>(() =>
+        this.notificationsSummary().notifications.slice(0, 4)
+    );
+
+    protected readonly tabListItems = computed<TabListItem[]>(() => [
+        {
+            value: 'all',
+            label: `All${this.notificationsStore.getTabCount('all') > 0 ? ` [${this.notificationsStore.getTabCount('all')}]` : ''}`
+        },
+        {
+            value: 'unread',
+            label: `Unread${this.notificationsSummary().hasUnreadNotifications ? ` [${this.notificationsSummary().unreadCount}]` : ''}`
+        }
+    ]);
 
     // METHODS
     protected handleOnViewAllClick = async () => {
@@ -53,24 +63,10 @@ export class NotificationsDropdown {
 
     protected handleMarkAllAsRead() {
         if (!this.notificationsSummary().hasUnreadNotifications) return;
-
-        alert('Mark all as read');
-        this.isMarkingAllAsRead.set(true);
-
-        setTimeout(() => {
-            this.isMarkingAllAsRead.set(false);
-        }, 2500);
+        this.notificationsStore.markAllAsRead();
     }
 
-    // STATIC DATA
-    protected readonly tabListItems: TabListItem[] = [
-        {
-            value: 'all',
-            label: `All${this.notificationsSummary().totalCount > 0 ? ` [${this.notificationsSummary().totalCount}]` : ''}`
-        },
-        {
-            value: 'unread',
-            label: `Unread${this.notificationsSummary().hasUnreadNotifications ? ` [${this.notificationsSummary().unreadCount}]` : ''}`
-        }
-    ];
+    protected handleActionSelected(payload: { notificationId: string; action: NotificationAction }): void {
+        this.notificationsStore.executeAction(payload.notificationId, payload.action.id);
+    }
 }

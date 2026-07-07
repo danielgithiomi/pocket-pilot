@@ -104,4 +104,9 @@ export interface Endpoints {
   feature_votes: string;
   feature_status: string;
   feature_categories: string;
+
+  notifications: string;
+  notifications_sse: string;
+  notifications_summary: string;
+  notifications_mark_all_read: string;
 }

@@ -56,6 +56,12 @@ export const API_ENDPOINTS = {
   feature_status: "features/status",
   feature_categories: "features/categories",
 
+  // notifications
+  notifications: "notifications",
+  notifications_sse: "notifications/stream",
+  notifications_summary: "notifications/summary",
+  notifications_mark_all_read: "notifications/mark-all-read",
+
   // transactions
   all_transactions: "accounts/transactions/all",
   user_transactions: "accounts/transactions/user",
