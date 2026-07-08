@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { CookiesAuthGuard } from '@common/guards';
-import { ServerEventsService } from '@common/sse';
 import { VoidResourceResponse } from '@common/types';
+import { ServerSentEventsService } from '@common/sse';
 import { NotificationsService } from '../services/notifications.service';
 import { RawResponse, Summary, UserInRequest } from '@common/decorators';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
@@ -15,7 +15,7 @@ import { Body, Controller, Get, HttpCode, MessageEvent, Param, Patch, Post, Sse,
 @ApiCookieAuth('access_token')
 export class NotificationsController {
     constructor(
-        private readonly serverEvents: ServerEventsService,
+        private readonly serverEvents: ServerSentEventsService,
         private readonly notificationsService: NotificationsService
     ) {}
 

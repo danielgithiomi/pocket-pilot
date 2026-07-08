@@ -507,7 +507,7 @@ export class NotificationsStore {
         // ];
         if (this.notificationsResource.error()) return [];
         return this.notificationsResource.value().data;
-    };);
+    });
 
     readonly filteredNotifications = computed<AppNotification[]>(() => {
         const filter = this._activeNotificationsFilter();

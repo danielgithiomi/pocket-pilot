@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { Injectable, MessageEvent } from '@nestjs/common';
 import { finalize, merge, Observable, of, Subject } from 'rxjs';
 
-export type ServerEventName =
+export type ServerSentEventName =
     | 'connected'
     | 'wallet.updated'
     | 'account.updated'
@@ -11,7 +11,7 @@ export type ServerEventName =
     | 'notifications.refreshed';
 
 @Injectable()
-export class ServerEventsService {
+export class ServerSentEventsService {
     private readonly userStreams = new Map<string, Subject<MessageEvent>>();
     private readonly userStreamConnections = new Map<string, number>();
 
@@ -37,7 +37,7 @@ export class ServerEventsService {
         );
     }
 
-    emitToUser<T extends string | object>(userId: string, type: ServerEventName, data: T): void {
+    emitToUser<T extends string | object>(userId: string, type: ServerSentEventName, data: T): void {
         this.userStreams.get(userId)?.next(this.createEvent(type, data));
     }
 
@@ -50,7 +50,7 @@ export class ServerEventsService {
         return stream;
     }
 
-    private createEvent<T extends string | object>(type: ServerEventName, data: T): MessageEvent {
+    private createEvent<T extends string | object>(type: ServerSentEventName, data: T): MessageEvent {
         return {
             type,
             data,

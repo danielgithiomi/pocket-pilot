@@ -6,16 +6,16 @@ import {
     NotificationType,
     Prisma
 } from '@prisma/client';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { ServerEventsService } from '@common/sse';
 import { VoidResourceResponse } from '@common/types';
+import { ServerSentEventsService } from '@common/sse';
 import { NotificationsRepository } from '../repositories/notifications.repository';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { NotificationActionDto, NotificationActionResultDto, NotificationSummaryDto } from '../dto/notifications.dto';
 
 @Injectable()
 export class NotificationsService {
     constructor(
-        private readonly serverEvents: ServerEventsService,
+        private readonly serverEvents: ServerSentEventsService,
         private readonly notificationsRepository: NotificationsRepository
     ) {}
 

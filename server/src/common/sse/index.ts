@@ -1,2 +1,2 @@
-export * from './server-events.module';
-export * from './server-events.service';
+export * from './server-sent-events.module';
+export * from './server-sent-events.service';
