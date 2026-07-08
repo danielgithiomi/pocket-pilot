@@ -1,5 +1,5 @@
-import { NotificationsService } from '@api/notifications.service';
 import { Router } from '@angular/router';
+import { NotificationsService } from '@api/notifications.service';
 import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import {
     AppNotification,
@@ -25,9 +25,9 @@ export class NotificationsStore {
     private readonly _isMarkingAllAsRead = signal<boolean>(false);
     private readonly _activeMutationId = signal<string | null>(null);
 
-    readonly activeNotificationsFilter = this._activeNotificationsFilter.asReadonly();
-    readonly isMarkingAllAsRead = this._isMarkingAllAsRead.asReadonly();
     readonly activeMutationId = this._activeMutationId.asReadonly();
+    readonly isMarkingAllAsRead = this._isMarkingAllAsRead.asReadonly();
+    readonly activeNotificationsFilter = this._activeNotificationsFilter.asReadonly();
 
     readonly notificationsLoading = computed(
         () => this.notificationsResource.isLoading() || this.summaryResource.isLoading()
@@ -619,7 +619,7 @@ export class NotificationsStore {
         this.eventSource = this.notificationsService.connectToEvents(
             () => this.reload(),
             () => {
-                // EventSource handles reconnects automatically. We keep the error quiet here so
+                // EventSource handles reconnections automatically. We keep the error quiet here so
                 // transient local-dev backend restarts do not spam the UI with toasts.
             }
         );
