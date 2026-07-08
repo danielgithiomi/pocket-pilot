@@ -55,11 +55,11 @@ model User {
     // Link to preferences - one-to-one
     userPreferences UserPreferences?
 
-    // Link to feature comments - one-to-many
-    comments FeatureComments[] @relation("UserFeatureComments")
-
     // Link to notifications - one-to-many
     notifications Notification[]
+
+    // Link to feature comments - one-to-many
+    comments FeatureComments[] @relation("UserFeatureComments")
 
     @@unique([email])
     @@map("Users")

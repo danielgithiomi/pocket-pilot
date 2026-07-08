@@ -18,9 +18,9 @@ import {
 })
 export class NotificationsService {
     private readonly toastService = inject(ToastService);
-    private readonly serverEvents = inject(ServerEventsService);
     private readonly mutation = inject(NotificationsMutation);
     private readonly resource = inject(NotificationsResource);
+    private readonly serverEvents = inject(ServerEventsService);
 
     getUserNotifications = () => this.resource.userNotifications;
 

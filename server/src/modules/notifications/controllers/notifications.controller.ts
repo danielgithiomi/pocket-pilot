@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { Body, Controller, Get, HttpCode, MessageEvent, Param, Patch, Post, Sse, UseGuards } from '@nestjs/common';
 import { CookiesAuthGuard } from '@common/guards';
 import { ServerEventsService } from '@common/sse';
 import { VoidResourceResponse } from '@common/types';
@@ -8,6 +7,7 @@ import { RawResponse, Summary, UserInRequest } from '@common/decorators';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AppNotificationDto, NotificationActionResultDto, NotificationSummaryDto } from '../dto/notifications.dto';
+import { Body, Controller, Get, HttpCode, MessageEvent, Param, Patch, Post, Sse, UseGuards } from '@nestjs/common';
 
 @ApiTags('Notifications')
 @Controller('notifications')

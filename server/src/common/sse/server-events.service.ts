@@ -19,7 +19,7 @@ export class ServerEventsService {
         const stream = this.getOrCreateUserStream(userId);
         this.userStreamConnections.set(userId, (this.userStreamConnections.get(userId) ?? 0) + 1);
 
-        // Send a first event immediately so the client can confirm the channel is alive.
+        // Send the first event immediately so the client can confirm the channel is alive.
         const connectedEvent = of(this.createEvent('connected', { connectedAt: new Date().toISOString() }));
 
         return merge(connectedEvent, stream.asObservable()).pipe(
