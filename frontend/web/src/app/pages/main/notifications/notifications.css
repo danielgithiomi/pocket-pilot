@@ -1,3 +1,4 @@
+@reference "../../../../styles.css"
 @reference "tailwindcss";
 
 #notifications-page {
@@ -6,7 +7,7 @@
     }
 
     .page-subtitle {
-        @apply mt-1 text-sm text-(--reactive-text);
+        @apply mt-1 text-sm text-reactive-text;
     }
 
     .header-actions,
@@ -27,28 +28,28 @@
     }
 
     .summary-card {
-        @apply rounded-md border border-(--loader-primary) bg-(--alternate-background) p-4;
+        @apply rounded-md border border-loader-primary bg-alternate-background p-4;
     }
 
     .summary-card span {
-        @apply text-xs uppercase text-(--reactive-text);
+        @apply text-xs uppercase text-reactive-text;
     }
 
     .summary-card strong {
-        @apply mt-2 block text-2xl text-(--primary-text);
+        @apply mt-2 block text-2xl text-primary-text;
     }
 
     .summary-card.unread strong,
     .summary-card.action strong {
-        @apply text-(--primary);
+        @apply text-primary;
     }
 
     .summary-card.critical strong {
-        @apply text-(--error);
+        @apply text-error;
     }
 
     .filters-band {
-        @apply rounded-md bg-(--alternate-background) p-2;
+        @apply overflow-x-scroll rounded-md bg-alternate-background p-1;
     }
 
     .notifications-list {
@@ -60,7 +61,7 @@
     }
 
     .notification-skeleton {
-        @apply h-36 animate-pulse rounded-md bg-(--loader-primary);
+        @apply h-36 animate-pulse rounded-md bg-loader-primary;
     }
 
     .notifications-sidebar {
@@ -68,48 +69,48 @@
     }
 
     .sidebar-section {
-        @apply rounded-md border border-(--loader-primary) bg-(--alternate-background) p-4;
+        @apply rounded-md border border-loader-primary bg-alternate-background p-4;
     }
 
     .sidebar-heading {
-        @apply mb-3 flex flex-row items-center gap-2 text-(--primary);
+        @apply mb-3 flex flex-row items-center gap-2 text-primary;
     }
 
     .sidebar-heading h2 {
-        @apply text-sm font-semibold text-(--primary-text);
+        @apply text-sm font-semibold text-primary-text;
     }
 
     .sidebar-empty {
-        @apply text-xs text-(--reactive-text);
+        @apply text-xs text-reactive-text;
     }
 
     .sidebar-alert,
     .sidebar-reminder {
-        @apply mb-2 flex w-full flex-row items-center justify-between gap-3 rounded bg-(--body-background) px-3 py-2 text-left text-xs;
+        @apply mb-2 flex w-full flex-row items-center justify-between gap-3 rounded bg-body-background px-3 py-2 text-left text-xs;
     }
 
     .sidebar-alert span,
     .sidebar-reminder span {
-        @apply truncate text-(--primary-text);
+        @apply truncate text-primary-text;
     }
 
     .sidebar-alert strong {
-        @apply text-[10px] text-(--error);
+        @apply text-[10px] text-error;
     }
 
     .sidebar-reminder strong {
-        @apply rounded bg-(--loader-primary) px-2 py-0.5 text-[10px] text-(--primary-text);
+        @apply rounded bg-loader-primary px-2 py-0.5 text-[10px] text-primary-text;
     }
 
     .health-track {
-        @apply h-2 overflow-hidden rounded-full bg-(--body-background);
+        @apply h-2 overflow-hidden rounded-full bg-body-background;
     }
 
     .health-progress {
-        @apply h-full rounded-full bg-(--primary) transition-all duration-300 ease-in-out;
+        @apply h-full rounded-full bg-primary transition-all duration-300 ease-in-out;
     }
 
     .health-copy {
-        @apply mt-2 text-xs text-(--reactive-text);
+        @apply mt-2 text-xs text-reactive-text;
     }
 }

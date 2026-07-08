@@ -16,7 +16,7 @@
                 (clicked)="goToSettings()">
                 <div class="button-content">
                     <lucide-icon [img]="SettingsIcon" [size]="iconSize" name="notification-settings"/>
-                    <span class="hidden sm:block">Settings</span>
+                    <span class="hidden md:block">Settings</span>
                 </div>
             </atom-button>
 
@@ -28,7 +28,7 @@
                 (clicked)="notificationsStore.markAllAsRead()">
                 <div class="button-content">
                     <lucide-icon [img]="MarkAllAsReadIcon" [size]="iconSize" name="mark-all-as-read"/>
-                    <span class="hidden sm:block">Mark All Read</span>
+                    <span class="hidden md:block">Mark All Read</span>
                 </div>
             </atom-button>
         </div>
@@ -59,13 +59,14 @@
                 <atom-tab-list
                     size="sm"
                     [items]="filterTabs()"
-                    [activeItem]="activeTabIndex()"
                     [disabled]="state.isLoading"
+                    [activeItem]="activeTabIndex()"
                     (selectedIndexValue)="handleFilterChange($event)"/>
             </section>
 
-            <section class="notifications-list"
-                     [ngClass]="{ centered: state.hasError || state.notifications.length === 0 }">
+            <section
+                class="notifications-list"
+                [ngClass]="{ centered: state.hasError || state.notifications.length === 0 }">
                 @if (state.isLoading) {
                     @for (item of [1, 2, 3, 4]; track item) {
                         <div class="notification-skeleton"></div>

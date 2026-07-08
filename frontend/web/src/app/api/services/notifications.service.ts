@@ -1,10 +1,10 @@
-import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { ToastService } from '@atoms/toast';
 import { inject, Injectable } from '@angular/core';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { NotificationsMutation } from '@methods/mutations';
 import { NotificationsResource } from '@methods/resources';
 import { ServerEventsService } from './server-events.service';
+import { API_ENDPOINTS as endpoints } from '@global/constants';
 import {
     AppNotification,
     IStandardError,

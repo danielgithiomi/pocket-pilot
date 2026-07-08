@@ -1,12 +1,12 @@
+import { Button } from '@atoms/button';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
-import { Button } from '@atoms/button';
 import { TabList, TabListItem } from '@atoms/tab-list';
 import { NotificationsStore } from '@stores/notifications.store';
-import { NotificationItem } from '@structural/main/notification-item';
-import { NoData } from '@components/structural/main/no-data/no-data';
-import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import { Component, computed, inject, signal } from '@angular/core';
+import { NoData } from '@components/structural/main/no-data/no-data';
+import { NotificationItem } from '@structural/main/notification-item';
+import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
 import { AppNotification, NotificationAction, NotificationFilter } from '@global/types';
 import { Bell, CheckCheck, LucideAngularModule, Settings, ShieldAlert } from 'lucide-angular';
 
@@ -18,8 +18,8 @@ import { Bell, CheckCheck, LucideAngularModule, Settings, ShieldAlert } from 'lu
 })
 export class Notifications {
     // ICONS
-    protected readonly BellIcon = Bell;
     protected readonly iconSize = 18;
+    protected readonly BellIcon = Bell;
     protected readonly SettingsIcon = Settings;
     protected readonly CriticalIcon = ShieldAlert;
     protected readonly MarkAllAsReadIcon = CheckCheck;
