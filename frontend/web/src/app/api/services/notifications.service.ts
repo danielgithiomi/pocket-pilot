@@ -3,15 +3,16 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { NotificationsMutation } from '@methods/mutations';
 import { NotificationsResource } from '@methods/resources';
-import { ServerEventsService } from './server-events.service';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
 import {
     AppNotification,
     IStandardError,
     IVoidResourceResponse,
     NotificationActionResult,
-    NotificationEventPayload
+    NotificationEventPayload,
+    SSE_EVENT_NAME as SSE_EVENT
 } from '@global/types';
+import { ServerEventsService } from './server-events.service';
+import { API_ENDPOINTS as endpoints } from '@global/constants';
 
 @Injectable({
     providedIn: 'root'
@@ -59,10 +60,10 @@ export class NotificationsService {
         onError?: (event: Event) => void
     ): EventSource {
         return this.serverEvents.connect<NotificationEventPayload>({
-            endpoint: endpoints.notifications_sse,
-            eventTypes: ['notification.created', 'notification.updated', 'notifications.refreshed'],
+            onError,
+            endpoint: endpoints.sse,
             onEvent: event => onEvent(event.data),
-            onError
+            eventTypes: [SSE_EVENT.NOTIFICATION_CREATED, SSE_EVENT.NOTIFICATION_UPDATED, SSE_EVENT.NOTIFICATION_DELETED]
         });
     }
 

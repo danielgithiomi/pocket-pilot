@@ -72,6 +72,7 @@ export interface IEnumResponse {
 // ENDPOINTS
 export interface Endpoints {
   me: string;
+  sse: string;
   root: string;
   login: string;
   goals: string;
@@ -106,7 +107,6 @@ export interface Endpoints {
   feature_categories: string;
 
   notifications: string;
-  notifications_sse: string;
   notifications_summary: string;
   notifications_mark_all_read: string;
 }

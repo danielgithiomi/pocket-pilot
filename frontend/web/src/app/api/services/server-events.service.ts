@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
+import { SSE_EVENT_NAME } from '@global/types';
 import { environment } from '@environments/environment';
 
 export interface ServerEventPayload<T> {
-    type: string;
     data: T;
+    type: SSE_EVENT_NAME;
 }
 
 export interface ServerEventConnectionOptions<T> {
     endpoint: string;
-    eventTypes: string[];
-    onEvent: (event: ServerEventPayload<T>) => void;
+    eventTypes: SSE_EVENT_NAME[];
     onError?: (event: Event) => void;
+    onEvent: (event: ServerEventPayload<T>) => void;
 }
 
 @Injectable({

@@ -8,6 +8,9 @@ export const CLEAR_SESSION_ERROR_NAME: Record<string, string> = {
 export const API_ENDPOINTS = {
   root: "",
 
+  // sse
+  sse: "sse/events/stream",
+
   // users
   register: "users",
 
@@ -58,7 +61,6 @@ export const API_ENDPOINTS = {
 
   // notifications
   notifications: "notifications",
-  notifications_sse: "notifications/stream",
   notifications_summary: "notifications/summary",
   notifications_mark_all_read: "notifications/mark-all-read",
 
