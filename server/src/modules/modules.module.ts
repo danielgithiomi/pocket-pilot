@@ -2,7 +2,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AwsModule } from './aws/aws.module';
 import { BillsModule } from './bills/bills.module';
 import { GoalsModule } from './goals/goals.module';
-import { ServerSentEventsModule } from '@common/sse';
+import { SSEModule } from '@modules/sse/sse.module';
 import { SplitrModule } from './splitr/splitr.module';
 import { WalletModule } from './wallet/wallet.module';
 import { DynamicModule, Module } from '@nestjs/common';
@@ -26,6 +26,7 @@ const JWTModule: DynamicModule = JwtModule.register({
 @Module({
     exports: [IdentityModule, WalletModule, GoalsModule, BillsModule],
     imports: [
+        SSEModule,
         AwsModule,
         JWTModule,
         GoalsModule,
@@ -39,8 +40,7 @@ const JWTModule: DynamicModule = JwtModule.register({
         ScheduleConfig,
         PreferencesModule,
         ExchangeRateModule,
-        NotificationsModule,
-        ServerSentEventsModule
+        NotificationsModule
     ]
 })
 export class AppModules {}

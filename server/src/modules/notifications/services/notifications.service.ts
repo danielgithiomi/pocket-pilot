@@ -7,7 +7,8 @@ import {
     Prisma
 } from '@prisma/client';
 import { VoidResourceResponse } from '@common/types';
-import { ServerSentEventsService } from '@common/sse';
+import { SSE_EVENT_VARIANT } from '@modules/sse/sse.types';
+import { SSEService } from '@modules/sse/services/sse.service';
 import { NotificationsRepository } from '../repositories/notifications.repository';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { NotificationActionDto, NotificationActionResultDto, NotificationSummaryDto } from '../dto/notifications.dto';
@@ -15,7 +16,7 @@ import { NotificationActionDto, NotificationActionResultDto, NotificationSummary
 @Injectable()
 export class NotificationsService {
     constructor(
-        private readonly serverEvents: ServerSentEventsService,
+        private readonly sseService: SSEService,
         private readonly notificationsRepository: NotificationsRepository
     ) {}
 
@@ -51,9 +52,9 @@ export class NotificationsService {
     async markAsRead(userId: string, notificationId: string): Promise<Notification> {
         await this.ensureUserNotificationExists(userId, notificationId);
         const notification = await this.notificationsRepository.markAsRead(userId, notificationId);
-        this.serverEvents.emitToUser(userId, 'notification.updated', {
+        this.sseService.emitToUser(userId, SSE_EVENT_VARIANT.NOTIFICATION_UPDATED, {
             notification,
-            eventType: 'NOTIFICATION_UPDATED'
+            eventType: SSE_EVENT_VARIANT.NOTIFICATION_UPDATED
         });
         return notification;
     }
@@ -61,9 +62,9 @@ export class NotificationsService {
     async archive(userId: string, notificationId: string): Promise<Notification> {
         await this.ensureUserNotificationExists(userId, notificationId);
         const notification = await this.notificationsRepository.archive(userId, notificationId);
-        this.serverEvents.emitToUser(userId, 'notification.updated', {
+        this.sseService.emitToUser(userId, SSE_EVENT_VARIANT.NOTIFICATION_UPDATED, {
             notification,
-            eventType: 'NOTIFICATION_UPDATED'
+            eventType: SSE_EVENT_VARIANT.NOTIFICATION_UPDATED
         });
         return notification;
     }
@@ -72,10 +73,10 @@ export class NotificationsService {
         const result = await this.notificationsRepository.markAllAsRead(userId);
         const notifications = await this.notificationsRepository.getUserNotifications(userId);
 
-        this.serverEvents.emitToUser(userId, 'notifications.refreshed', {
+        this.sseService.emitToUser(userId, SSE_EVENT_VARIANT.NOTIFICATIONS_REFRESHED, {
             notifications,
-            eventType: 'NOTIFICATIONS_REFRESHED',
-            updatedCount: result.count
+            updatedCount: result.count,
+            eventType: SSE_EVENT_VARIANT.NOTIFICATIONS_REFRESHED
         });
 
         return {

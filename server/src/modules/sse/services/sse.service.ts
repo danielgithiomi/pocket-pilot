@@ -1,17 +1,10 @@
 import { randomUUID } from 'crypto';
 import { Injectable, MessageEvent } from '@nestjs/common';
 import { finalize, merge, Observable, of, Subject } from 'rxjs';
-
-export type ServerSentEventName =
-    | 'connected'
-    | 'wallet.updated'
-    | 'account.updated'
-    | 'notification.created'
-    | 'notification.updated'
-    | 'notifications.refreshed';
+import { SSE_EVENT_NAME, SSE_EVENT_VARIANT, type SSE_EVENT_VARIANT as SSE_EVENT_VARIANT_TYPE } from '../sse.types';
 
 @Injectable()
-export class ServerSentEventsService {
+export class SSEService {
     private readonly userStreams = new Map<string, Subject<MessageEvent>>();
     private readonly userStreamConnections = new Map<string, number>();
 
@@ -20,7 +13,7 @@ export class ServerSentEventsService {
         this.userStreamConnections.set(userId, (this.userStreamConnections.get(userId) ?? 0) + 1);
 
         // Send the first event immediately so the client can confirm the channel is alive.
-        const connectedEvent = of(this.createEvent('connected', { connectedAt: new Date().toISOString() }));
+        const connectedEvent = of(this.createEvent(SSE_EVENT_VARIANT.CONNECTED, { connectedAt: new Date().toISOString() }));
 
         return merge(connectedEvent, stream.asObservable()).pipe(
             finalize(() => {
@@ -37,7 +30,7 @@ export class ServerSentEventsService {
         );
     }
 
-    emitToUser<T extends string | object>(userId: string, type: ServerSentEventName, data: T): void {
+    emitToUser<T extends string | object>(userId: string, type: SSE_EVENT_VARIANT_TYPE, data: T): void {
         this.userStreams.get(userId)?.next(this.createEvent(type, data));
     }
 
@@ -50,12 +43,12 @@ export class ServerSentEventsService {
         return stream;
     }
 
-    private createEvent<T extends string | object>(type: ServerSentEventName, data: T): MessageEvent {
+    private createEvent<T extends string | object>(type: SSE_EVENT_VARIANT_TYPE, data: T): MessageEvent {
         return {
-            type,
             data,
             retry: 5000,
-            id: randomUUID()
+            id: randomUUID(),
+            type: SSE_EVENT_NAME[type]
         };
     }
 }

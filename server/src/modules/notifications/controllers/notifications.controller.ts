@@ -1,23 +1,18 @@
-import { Observable } from 'rxjs';
 import { CookiesAuthGuard } from '@common/guards';
 import { VoidResourceResponse } from '@common/types';
-import { ServerSentEventsService } from '@common/sse';
+import { Summary, UserInRequest } from '@common/decorators';
 import { NotificationsService } from '../services/notifications.service';
-import { RawResponse, Summary, UserInRequest } from '@common/decorators';
 import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpCode, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { AppNotificationDto, NotificationActionResultDto, NotificationSummaryDto } from '../dto/notifications.dto';
-import { Body, Controller, Get, HttpCode, MessageEvent, Param, Patch, Post, Sse, UseGuards } from '@nestjs/common';
 
 @ApiTags('Notifications')
 @Controller('notifications')
 @UseGuards(CookiesAuthGuard)
 @ApiCookieAuth('access_token')
 export class NotificationsController {
-    constructor(
-        private readonly serverEvents: ServerSentEventsService,
-        private readonly notificationsService: NotificationsService
-    ) {}
+    constructor(private readonly notificationsService: NotificationsService) {}
 
     @Get()
     @HttpCode(200)
@@ -35,13 +30,6 @@ export class NotificationsController {
     @ApiResponse({ status: 200, type: NotificationSummaryDto })
     getSummary(@UserInRequest() user: User) {
         return this.notificationsService.getSummary(user.id);
-    }
-
-    @Sse('stream')
-    @RawResponse()
-    @ApiOperation({ summary: 'Subscribe to user server-sent events' })
-    stream(@UserInRequest() user: User): Observable<MessageEvent> {
-        return this.serverEvents.streamForUser(user.id);
     }
 
     @Patch('mark-all-read')
