@@ -18,12 +18,12 @@ export class NotificationsStore {
     private readonly destroyRef = inject(DestroyRef);
     private readonly notificationsService = inject(NotificationsService);
 
-    private readonly notificationsResource = this.notificationsService.getUserNotifications();
     private readonly summaryResource = this.notificationsService.getNotificationSummary();
+    private readonly notificationsResource = this.notificationsService.getUserNotifications();
 
-    private readonly _activeNotificationsFilter = signal<NotificationFilter>('all');
     private readonly _isMarkingAllAsRead = signal<boolean>(false);
     private readonly _activeMutationId = signal<string | null>(null);
+    private readonly _activeNotificationsFilter = signal<NotificationFilter>('all');
 
     readonly activeMutationId = this._activeMutationId.asReadonly();
     readonly isMarkingAllAsRead = this._isMarkingAllAsRead.asReadonly();
@@ -505,13 +505,13 @@ export class NotificationsStore {
         //         dedupeKey: 'monthly_report:user_001:2026-06'
         //     }
         // ];
-        if (this.notificationsResource.error()) return [];
+        if (this.notificationsResource.error() || !this.notificationsResource.hasValue()) return [];
         return this.notificationsResource.value().data;
     });
 
     readonly filteredNotifications = computed<AppNotification[]>(() => {
-        const filter = this._activeNotificationsFilter();
         const notifications = this.notifications();
+        const filter = this._activeNotificationsFilter();
 
         if (filter === 'all') return notifications;
         if (filter === 'unread') return notifications.filter(notification => notification.status === 'UNREAD');
@@ -531,8 +531,8 @@ export class NotificationsStore {
             archivedCount: 0,
             totalCount: notifications.length,
             hasUnreadNotifications: unreadCount > 0,
-            criticalCount: notifications.filter(notification => notification.priority === 'CRITICAL').length,
-            actionRequiredCount: notifications.filter(notification => notification.requiresAction).length
+            actionRequiredCount: notifications.filter(notification => notification.requiresAction).length,
+            criticalCount: notifications.filter(notification => notification.priority === 'CRITICAL').length
         };
     });
 
@@ -564,10 +564,6 @@ export class NotificationsStore {
             return notifications.filter(notification => notification.requiresAction).length;
 
         return notifications.filter(notification => notification.category.toLowerCase() === filter).length;
-    }
-
-    loadNotifications(): void {
-        this.reload();
     }
 
     reload(): void {

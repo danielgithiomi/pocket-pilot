@@ -17,7 +17,7 @@ export interface ServerEventConnectionOptions<T> {
 @Injectable({
     providedIn: 'root'
 })
-export class ServerEventsService {
+export class SSEService {
     private readonly baseUrl = environment.API_BASE_URL;
 
     connect<T>({ endpoint, eventTypes, onEvent, onError }: ServerEventConnectionOptions<T>): EventSource {

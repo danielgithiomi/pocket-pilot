@@ -1,8 +1,10 @@
+import { SSEService } from './sse.service';
 import { ToastService } from '@atoms/toast';
 import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { NotificationsMutation } from '@methods/mutations';
 import { NotificationsResource } from '@methods/resources';
+import { API_ENDPOINTS as endpoints } from '@global/constants';
 import {
     AppNotification,
     IStandardError,
@@ -11,17 +13,15 @@ import {
     NotificationEventPayload,
     SSE_EVENT_NAME as SSE_EVENT
 } from '@global/types';
-import { ServerEventsService } from './server-events.service';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NotificationsService {
+    private readonly serverEvents = inject(SSEService);
     private readonly toastService = inject(ToastService);
     private readonly mutation = inject(NotificationsMutation);
     private readonly resource = inject(NotificationsResource);
-    private readonly serverEvents = inject(ServerEventsService);
 
     getUserNotifications = () => this.resource.userNotifications;
 

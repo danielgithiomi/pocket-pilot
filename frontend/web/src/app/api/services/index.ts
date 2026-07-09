@@ -1,3 +1,4 @@
+export * from './sse.service';
 export * from './aws.service';
 export * from './user.service';
 export * from './auth.service';
@@ -11,4 +12,3 @@ export * from './preferences.service';
 export * from './transactions.service';
 export * from './exchange-rate.service';
 export * from './notifications.service';
-export * from './server-events.service';
