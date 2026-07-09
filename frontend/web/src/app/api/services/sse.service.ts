@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { SSE_EVENT_NAME } from '@global/types';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 
 export interface ServerEventPayload<T> {
@@ -20,6 +21,8 @@ export interface ServerEventConnectionOptions<T> {
 export class SSEService {
     private readonly baseUrl = environment.API_BASE_URL;
 
+    private readonly router = inject(Router);
+
     connect<T>({ endpoint, eventTypes, onEvent, onError }: ServerEventConnectionOptions<T>): EventSource {
         const source = new EventSource(`${this.baseUrl}/${endpoint}`, { withCredentials: true });
 
@@ -36,6 +39,16 @@ export class SSEService {
         return source;
     }
 
+    redirectToActionTarget(redirectUrl: string): void {
+        if (/^https?:\/\//i.test(redirectUrl)) {
+            window.location.assign(redirectUrl);
+            return;
+        }
+
+        void this.router.navigateByUrl(redirectUrl);
+    }
+
+    // HELPER METHODS
     private parseEventData<T>(rawData: string): T {
         try {
             return JSON.parse(rawData) as T;

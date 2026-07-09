@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { SSEService } from '@root/app/api';
 import { NotificationsService } from '@api/notifications.service';
 import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import {
@@ -14,8 +14,8 @@ import {
 })
 export class NotificationsStore {
     private eventSource?: EventSource;
-    private readonly router = inject(Router);
     private readonly destroyRef = inject(DestroyRef);
+    private readonly sseService = inject(SSEService);
     private readonly notificationsService = inject(NotificationsService);
 
     private readonly summaryResource = this.notificationsService.getNotificationSummary();
@@ -602,7 +602,7 @@ export class NotificationsStore {
         this.notificationsService.executeAction(notificationId, actionId).subscribe({
             next: result => {
                 this.reload();
-                if (result.redirectUrl) this.redirectToActionTarget(result.redirectUrl);
+                if (result.redirectUrl) this.sseService.redirectToActionTarget(result.redirectUrl);
             },
             complete: () => this._activeMutationId.set(null)
         });
@@ -618,14 +618,5 @@ export class NotificationsStore {
                 // transient local-dev backend restarts do not spam the UI with toasts.
             }
         );
-    }
-
-    private redirectToActionTarget(redirectUrl: string): void {
-        if (/^https?:\/\//i.test(redirectUrl)) {
-            window.location.assign(redirectUrl);
-            return;
-        }
-
-        void this.router.navigateByUrl(redirectUrl);
     }
 }
