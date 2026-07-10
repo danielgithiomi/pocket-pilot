@@ -1,8 +1,8 @@
-import { SSEService } from '@root/app/api';
 import { NotificationsService } from '@api/notifications.service';
 import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import {
     AppNotification,
+    NotificationEventPayload,
     NotificationFilter,
     NotificationSummary,
     PPNotificationSummary,
@@ -15,7 +15,6 @@ import {
 export class NotificationsStore {
     private eventSource?: EventSource;
     private readonly destroyRef = inject(DestroyRef);
-    private readonly sseService = inject(SSEService);
     private readonly notificationsService = inject(NotificationsService);
 
     private readonly summaryResource = this.notificationsService.getNotificationSummary();
@@ -542,7 +541,7 @@ export class NotificationsStore {
     }));
 
     constructor() {
-        this.connectRealtime();
+        this.connectToSSE();
         this.destroyRef.onDestroy(() => this.eventSource?.close());
     }
 
@@ -567,8 +566,8 @@ export class NotificationsStore {
     }
 
     reload(): void {
-        this.notificationsResource.reload();
         this.summaryResource.reload();
+        this.notificationsResource.reload();
     }
 
     markAsRead(notificationId: string): void {
@@ -602,17 +601,17 @@ export class NotificationsStore {
         this.notificationsService.executeAction(notificationId, actionId).subscribe({
             next: result => {
                 this.reload();
-                if (result.redirectUrl) this.sseService.redirectToActionTarget(result.redirectUrl);
+                if (result.redirectUrl) this.notificationsService.redirectToActionTarget(result.redirectUrl);
             },
             complete: () => this._activeMutationId.set(null)
         });
     }
 
-    private connectRealtime(): void {
+    private connectToSSE(): void {
         if (this.eventSource) return;
 
-        this.eventSource = this.notificationsService.connectToEvents(
-            () => this.reload(),
+        this.eventSource = this.notificationsService.connectToNotificationsSSEStream(
+            (_: NotificationEventPayload) => this.reload(),
             () => {
                 // EventSource handles reconnections automatically. We keep the error quiet here so
                 // transient local-dev backend restarts do not spam the UI with toasts.

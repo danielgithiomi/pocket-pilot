@@ -1,16 +1,17 @@
-import { SSEService } from './sse.service';
+import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
 import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { NotificationsMutation } from '@methods/mutations';
 import { NotificationsResource } from '@methods/resources';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { SSEService } from './sse.service';
 import {
     AppNotification,
     IStandardError,
     IVoidResourceResponse,
     NotificationActionResult,
     NotificationEventPayload,
+    SSE_EVENT_NAME,
     SSE_EVENT_NAME as SSE_EVENT
 } from '@global/types';
 
@@ -18,7 +19,8 @@ import {
     providedIn: 'root'
 })
 export class NotificationsService {
-    private readonly serverEvents = inject(SSEService);
+    private readonly router = inject(Router);
+    private readonly sseService = inject(SSEService);
     private readonly toastService = inject(ToastService);
     private readonly mutation = inject(NotificationsMutation);
     private readonly resource = inject(NotificationsResource);
@@ -55,16 +57,26 @@ export class NotificationsService {
         );
     }
 
-    connectToEvents(
+    connectToNotificationsSSEStream(
         onEvent: (payload: NotificationEventPayload) => void,
         onError?: (event: Event) => void
     ): EventSource {
-        return this.serverEvents.connect<NotificationEventPayload>({
-            onError,
-            endpoint: endpoints.sse,
-            onEvent: event => onEvent(event.data),
-            eventTypes: [SSE_EVENT.NOTIFICATION_CREATED, SSE_EVENT.NOTIFICATION_UPDATED, SSE_EVENT.NOTIFICATION_DELETED]
-        });
+        const events: SSE_EVENT_NAME[] = [
+            SSE_EVENT.NOTIFICATION_CREATED,
+            SSE_EVENT.NOTIFICATION_UPDATED,
+            SSE_EVENT.NOTIFICATIONS_REFRESHED
+        ];
+
+        return this.sseService.configureSSEConnection<NotificationEventPayload>(events, onEvent, onError);
+    }
+
+    redirectToActionTarget(redirectUrl: string): void {
+        if (/^https?:\/\//i.test(redirectUrl)) {
+            window.location.assign(redirectUrl);
+            return;
+        }
+
+        void this.router.navigateByUrl(redirectUrl);
     }
 
     private handleError<T>(error: IStandardError): Observable<T> {
