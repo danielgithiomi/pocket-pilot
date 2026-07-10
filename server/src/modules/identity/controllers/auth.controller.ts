@@ -6,7 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { AuthService } from '../services/auth.service';
 import { Summary, UserInRequest } from '@common/decorators';
 import { CookiesService } from '../services/cookies.service';
-import { UserWithPreferencesDto, type User } from '../dto/user.dto';
+import { type User, UserWithPreferencesDto } from '../dto/user.dto';
 import { ApiBody, ApiCookieAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Body, Controller, Get, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
 
@@ -62,8 +62,7 @@ export class AuthController {
         description: 'Log out the current user and clear the access and refresh tokens from the cookies.'
     })
     logout(@Res({ passthrough: true }) res: Response) {
-        res.clearCookie('access_token');
-        res.clearCookie('refresh_token');
+        this.cookiesService.clearResponseCookies(res);
 
         return {
             message: 'User logged out successfully'

@@ -1,3 +1,7 @@
+export interface IApplicationConfig {
+    environment: 'development' | 'production' | 'test';
+}
+
 export interface ISSEConfig {
     heartBeatIntervalMinutes: number;
 }
