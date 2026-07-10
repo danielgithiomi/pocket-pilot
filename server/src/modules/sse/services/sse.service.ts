@@ -1,11 +1,14 @@
 import { randomUUID } from 'crypto';
+import { map } from 'rxjs/operators';
+import { PPConfigService } from '@infrastructure/config';
 import { Injectable, MessageEvent } from '@nestjs/common';
 import { finalize, interval, merge, Observable, of, Subject } from 'rxjs';
 import { SSE_EVENT_NAME, SSE_EVENT_VARIANT, type SSE_EVENT_VARIANT as SSE_EVENT_VARIANT_TYPE } from '../sse.types';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class SSEService {
+    constructor(private readonly configService: PPConfigService) {}
+
     private readonly userStreams = new Map<string, Subject<MessageEvent>>();
     private readonly userStreamConnections = new Map<string, number>();
 
@@ -17,7 +20,7 @@ export class SSEService {
         const connectedEvent = of(this.createEvent(SSE_EVENT_VARIANT.CONNECTED, { connectedAt: new Date().toISOString() }));
 
         // Send 'alive-checks' every 30 seconds so that the client can keep the connection open
-        const keepAliveEvent = interval(30 * 1000).pipe(
+        const keepAliveEvent = interval(this.convertToMs(this.configService.sse.heartBeatIntervalMinutes)).pipe(
             map(() => {
                 return this.createEvent(SSE_EVENT_VARIANT.HEARTBEAT, {
                     type: SSE_EVENT_VARIANT.HEARTBEAT,
@@ -61,5 +64,9 @@ export class SSEService {
             id: randomUUID(),
             type: SSE_EVENT_NAME[type]
         };
+    }
+
+    private convertToMs(minutes: number): number {
+        return minutes * 60 * 1000;
     }
 }

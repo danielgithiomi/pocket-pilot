@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PPCustomConfig } from '@infrastructure/config/config.schema';
-import { IDatabaseConfig, IRedisConfig } from '@infrastructure/config/config.types';
+import { IDatabaseConfig, IRedisConfig, ISSEConfig } from '@infrastructure/config/config.types';
 
 @Injectable()
 export class PPConfigService {
     constructor(private readonly service: ConfigService<PPCustomConfig, true>) {}
+
+    get sse(): ISSEConfig {
+        return {
+            heartBeatIntervalMinutes: this.service.getOrThrow<number>('SSE_HEARTBEAT_INTERVAL_MINUTES')
+        };
+    }
 
     get redis(): IRedisConfig {
         return {

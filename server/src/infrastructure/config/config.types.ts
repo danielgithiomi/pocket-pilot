@@ -1,3 +1,7 @@
+export interface ISSEConfig {
+    heartBeatIntervalMinutes: number;
+}
+
 export interface IRedisConfig {
     port: number;
     host: string;
