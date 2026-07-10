@@ -1,4 +1,5 @@
 export const SSE_EVENT_VARIANT = {
+    HEARTBEAT: 'HEARTBEAT',
     CONNECTED: 'CONNECTED',
     BILL_CREATED: 'BILL_CREATED',
     BILL_DUE_SOON: 'BILL_DUE_SOON',
@@ -14,6 +15,7 @@ export const SSE_EVENT_VARIANT = {
 export type SSE_EVENT_VARIANT = (typeof SSE_EVENT_VARIANT)[keyof typeof SSE_EVENT_VARIANT];
 
 export const SSE_EVENT_NAME = {
+    [SSE_EVENT_VARIANT.HEARTBEAT]: 'heartbeat',
     [SSE_EVENT_VARIANT.CONNECTED]: 'connected',
     [SSE_EVENT_VARIANT.BILL_CREATED]: 'bill.created',
     [SSE_EVENT_VARIANT.BILL_DUE_SOON]: 'bill.due-soon',

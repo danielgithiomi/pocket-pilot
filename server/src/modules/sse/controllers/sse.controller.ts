@@ -1,4 +1,4 @@
-import { interval, Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiOperation } from '@nestjs/swagger';
 import { CookiesAuthGuard } from '@common/guards';
 import { SSEService } from '@modules/sse/services/sse.service';
@@ -10,22 +10,6 @@ import { Controller, MessageEvent, Sse, UseGuards } from '@nestjs/common';
 @Controller('sse/events')
 export class SSEController {
     constructor(private readonly sseService: SSEService) {}
-
-    @RawResponse()
-    @Sse('connection')
-    @Summary('SSE connection', 'Subscribe to the health of the server-sent events (SSE) connection.')
-    @ApiOperation({
-        summary: 'SSE connection',
-        description: 'Subscribe to the health of the server-sent events (SSE) connection.'
-    })
-    connection() {
-        return interval(3000).pipe(
-            tap(() => {
-                const now = new Date(Date.now()).toISOString();
-                console.log(`SSE connection is still alive at: ${now}`);
-            })
-        );
-    }
 
     @RawResponse()
     @Sse('stream')

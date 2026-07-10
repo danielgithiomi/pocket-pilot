@@ -1,7 +1,8 @@
 import { randomUUID } from 'crypto';
 import { Injectable, MessageEvent } from '@nestjs/common';
-import { finalize, merge, Observable, of, Subject } from 'rxjs';
+import { finalize, interval, merge, Observable, of, Subject } from 'rxjs';
 import { SSE_EVENT_NAME, SSE_EVENT_VARIANT, type SSE_EVENT_VARIANT as SSE_EVENT_VARIANT_TYPE } from '../sse.types';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class SSEService {
@@ -15,7 +16,17 @@ export class SSEService {
         // Send the first event immediately so the client can confirm the channel is alive.
         const connectedEvent = of(this.createEvent(SSE_EVENT_VARIANT.CONNECTED, { connectedAt: new Date().toISOString() }));
 
-        return merge(connectedEvent, stream.asObservable()).pipe(
+        // Send 'alive-checks' every 30 seconds so that the client can keep the connection open
+        const keepAliveEvent = interval(30 * 1000).pipe(
+            map(() => {
+                return this.createEvent(SSE_EVENT_VARIANT.HEARTBEAT, {
+                    type: SSE_EVENT_VARIANT.HEARTBEAT,
+                    datetime: new Date(Date.now()).toISOString()
+                });
+            })
+        );
+
+        return merge(connectedEvent, keepAliveEvent, stream.asObservable()).pipe(
             finalize(() => {
                 // Drop the in-memory stream when the last tab/client disconnects.
                 const nextConnectionCount = (this.userStreamConnections.get(userId) ?? 1) - 1;
