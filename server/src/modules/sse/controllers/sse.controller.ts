@@ -16,6 +16,6 @@ export class SSEController {
     @Summary('SSE stream', 'Subscribe to the user server-sent events (SSE) stream.')
     @ApiOperation({ summary: 'SSE stream', description: 'Subscribe to the user server-sent events (SSE) stream.' })
     stream(@UserInRequest() user: User): Observable<MessageEvent> {
-        return this.sseService.streamForUser(user.id);
+        return this.sseService.streamForUser(user);
     }
 }

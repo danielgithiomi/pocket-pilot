@@ -6,8 +6,8 @@ import { NotificationsRepository } from './repositories/notifications.repository
 
 @Module({
     imports: [IdentityModule],
+    exports: [NotificationsService],
     controllers: [NotificationsController],
-    providers: [NotificationsService, NotificationsRepository],
-    exports: [NotificationsService]
+    providers: [NotificationsService, NotificationsRepository]
 })
 export class NotificationsModule {}

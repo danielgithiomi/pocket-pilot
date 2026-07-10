@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { map } from 'rxjs/operators';
 import { PPConfigService } from '@infrastructure/config';
 import { Injectable, MessageEvent } from '@nestjs/common';
+import { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { finalize, interval, merge, Observable, of, Subject } from 'rxjs';
 import { SSE_EVENT_NAME, SSE_EVENT_VARIANT, type SSE_EVENT_VARIANT as SSE_EVENT_VARIANT_TYPE } from '../sse.types';
 
@@ -12,24 +13,17 @@ export class SSEService {
     private readonly userStreams = new Map<string, Subject<MessageEvent>>();
     private readonly userStreamConnections = new Map<string, number>();
 
-    streamForUser(userId: string): Observable<MessageEvent> {
+    streamForUser({ id: userId, name: username }: User): Observable<MessageEvent> {
         const stream = this.getOrCreateUserStream(userId);
         this.userStreamConnections.set(userId, (this.userStreamConnections.get(userId) ?? 0) + 1);
 
         // Send the first event immediately so the client can confirm the channel is alive.
-        const connectedEvent = of(this.createEvent(SSE_EVENT_VARIANT.CONNECTED, { connectedAt: new Date().toISOString() }));
+        const connectedEvent = this.createConnectionEvent(userId, username);
 
         // Send 'alive-checks' every 30 seconds so that the client can keep the connection open
-        const keepAliveEvent = interval(this.convertToMs(this.configService.sse.heartBeatIntervalMinutes)).pipe(
-            map(() => {
-                return this.createEvent(SSE_EVENT_VARIANT.HEARTBEAT, {
-                    type: SSE_EVENT_VARIANT.HEARTBEAT,
-                    datetime: new Date(Date.now()).toISOString()
-                });
-            })
-        );
+        const heartbeatEvent = this.createHeartbeatEvent(userId, username);
 
-        return merge(connectedEvent, keepAliveEvent, stream.asObservable()).pipe(
+        return merge(connectedEvent, heartbeatEvent, stream.asObservable()).pipe(
             finalize(() => {
                 // Drop the in-memory stream when the last tab/client disconnects.
                 const nextConnectionCount = (this.userStreamConnections.get(userId) ?? 1) - 1;
@@ -64,6 +58,27 @@ export class SSEService {
             id: randomUUID(),
             type: SSE_EVENT_NAME[type]
         };
+    }
+
+    private createConnectionEvent(userId: string, username: string): Observable<MessageEvent> {
+        return of(
+            this.createEvent(SSE_EVENT_VARIANT.CONNECTED, {
+                connectedUser: { username, userId },
+                connectedAt: new Date().toISOString()
+            })
+        );
+    }
+
+    private createHeartbeatEvent(userId: string, username: string): Observable<MessageEvent> {
+        return interval(this.convertToMs(this.configService.sse.heartBeatIntervalMinutes)).pipe(
+            map(() => {
+                return this.createEvent(SSE_EVENT_VARIANT.HEARTBEAT, {
+                    type: SSE_EVENT_VARIANT.HEARTBEAT,
+                    connectedUser: { username, userId },
+                    datetime: new Date(Date.now()).toISOString()
+                });
+            })
+        );
     }
 
     private convertToMs(minutes: number): number {
