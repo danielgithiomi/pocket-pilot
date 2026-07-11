@@ -1,9 +1,14 @@
-import { Prisma, TransactionType } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
+import { Account, TransactionType } from '@prisma/client';
 import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
-export type FullTransaction = Prisma.TransactionCreateInput;
+// SSE
+export interface NegativeBalanceSSEPayload {
+    userId: string;
+    account: Account;
+    transaction: CreateTransactionDto;
+}
 
 export class CreateTransactionDto {
     @IsString()

@@ -144,7 +144,7 @@ export class TransactionRepository {
                 data: { balance: { decrement: sourceAmount } }
             });
 
-            // Increment the target account
+            // Increment of the target account
             await prisma.account.update({
                 where: { id: targetAccountId },
                 data: { balance: { increment: targetAmount } }

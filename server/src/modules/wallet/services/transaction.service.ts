@@ -1,24 +1,27 @@
 import { ExposeEnumDto } from '@common/types';
 import { plainToInstance } from 'class-transformer';
-import { TransactionType, Account } from '@prisma/client';
+import { Account, TransactionType } from '@prisma/client';
+import { SSE_EVENT_VARIANT } from '@modules/sse/sse.types';
+import { SSEService } from '@modules/sse/services/sse.service';
 import { AccountRepository } from '../repositories/account.repository';
-import { AccountsCache, AccountDetailsCache } from '../cache/wallet.cache';
+import { AccountDetailsCache, AccountsCache } from '../cache/wallet.cache';
 import { denormalizeCategoryName, formatEnumForFrontend } from '@libs/utils';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { TransactionDto, CreateTransactionDto, CompleteTransactionDto } from '../dto/transaction.dto';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { CompleteTransactionDto, CreateTransactionDto, NegativeBalanceSSEPayload } from '../dto/transaction.dto';
 
 @Injectable()
 export class TransactionService {
     constructor(
+        private readonly sseService: SSEService,
         private readonly accountsCache: AccountsCache,
         private readonly accountRepository: AccountRepository,
         private readonly accountDetailsCache: AccountDetailsCache,
         private readonly transactionRepository: TransactionRepository
     ) {}
 
-    async getTransactionTypes(): Promise<ExposeEnumDto[]> {
-        return await Promise.resolve(Object.values(TransactionType).map(formatEnumForFrontend));
+    getTransactionTypes(): ExposeEnumDto[] {
+        return Object.values(TransactionType).map(formatEnumForFrontend);
     }
 
     async getAllTransactions(): Promise<CompleteTransactionDto[]> {
@@ -31,12 +34,6 @@ export class TransactionService {
         const transactions = await this.transactionRepository.getUserTransactionsAndAccountData(userId);
 
         return plainToInstance(CompleteTransactionDto, transactions);
-    }
-
-    async getTransactionsByAccountId(accountId: string): Promise<TransactionDto[]> {
-        await this.confirmAccountExists(accountId);
-
-        return this.transactionRepository.getUserPlainTransactionsByAccountId(accountId);
     }
 
     async getAllTransactionsRelatedToAccountId(accountId: string): Promise<CompleteTransactionDto[]> {
@@ -52,32 +49,32 @@ export class TransactionService {
     ): Promise<CompleteTransactionDto> {
         const transformedDto: CreateTransactionDto = {
             ...createTransactionDto,
-            type: createTransactionDto.type,
             category: denormalizeCategoryName(createTransactionDto.category)
         };
 
-        if (!this.isTransactionTypeValid(transformedDto.type)) {
+        if (!this.isTransactionTypeValid(transformedDto.type))
             throw new BadRequestException({
                 name: 'INVALID_TRANSACTION_TYPE',
                 title: 'Invalid transaction type!',
                 message: `The transaction type ${transformedDto.type} is not valid.`
             });
-        }
 
-        const account = await this.confirmAccountExists(accountId);
+        const account: Account = await this.confirmAccountExists(accountId);
 
-        if (!this.isAccountOwnedByUser(userId, account.holderId)) {
+        if (!this.isAccountOwnedByUser(userId, account.holderId))
             throw new ForbiddenException({
                 name: 'CREATION_FORBIDDEN',
                 title: 'Failed to create the transaction!',
                 message: 'You are not allowed to create a transaction for this account.'
             });
-        }
+
+        this.alertIfNegativeBalance(userId, transformedDto, account);
 
         const createdTransaction = await this.transactionRepository.createNewTransactionAndUpdateBalance(
             accountId,
             transformedDto
         );
+
         await this.invalidateAccountCache(userId, accountId);
         return createdTransaction;
     }
@@ -122,5 +119,18 @@ export class TransactionService {
             });
 
         return account;
+    }
+
+    private alertIfNegativeBalance(userId: string, transaction: CreateTransactionDto, account: Account): void {
+        const { balance } = account;
+        const { amount } = transaction;
+
+        if (balance >= amount) return;
+
+        this.sseService.emitToUser<NegativeBalanceSSEPayload>(userId, SSE_EVENT_VARIANT.NEGATIVE_BALANCE, {
+            userId,
+            account,
+            transaction
+        });
     }
 }

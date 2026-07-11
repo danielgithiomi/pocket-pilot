@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { AccountsCache, AccountDetailsCache } from '../cache/wallet.cache';
+import { AccountDetailsCache, AccountsCache } from '../cache/wallet.cache';
 import { TransactionRepository } from '../repositories/transaction.respository';
-import { CreateTransferTransactionPayload, CompleteTransactionDto } from '../dto/transaction.dto';
+import { CompleteTransactionDto, CreateTransferTransactionPayload } from '../dto/transaction.dto';
 
 @Injectable()
 export class TransferService {
@@ -18,13 +18,12 @@ export class TransferService {
         payload: CreateTransferTransactionPayload
     ): Promise<CompleteTransactionDto> {
         const { sourceAccountId, targetAccountId } = payload;
-        // Safety Checks
         this.checkSourceAccountMatches(accountId, sourceAccountId);
 
-        const createdTranferTransaction = this.transactionRepository.createTransferTransactionAndUpdateBalances(payload);
+        const createdTransferTransaction = this.transactionRepository.createTransferTransactionAndUpdateBalances(payload);
 
         await this.invalidateCaches(userId, sourceAccountId, targetAccountId);
-        return createdTranferTransaction;
+        return createdTransferTransaction;
     }
 
     // HELPER METHODS
@@ -33,7 +32,7 @@ export class TransferService {
 
         throw new ConflictException({
             name: 'SOURCE_ACCOUNT_MISMATCH',
-            title: 'Missmatch between Source-ID and Param-ID',
+            title: 'Mismatch between Source-ID and Param-ID',
             message: "The source account Id doesn't match the param Id",
             details: { sourceAccountId, paramAccountId }
         });
