@@ -12,6 +12,7 @@ import { AccountsService } from '@api/accounts.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { TableColumn } from '@organisms/table/table.types';
 import { CategoriesService } from '@api/categories.service';
+import { TransactionsStore } from '@stores/transactions.store';
 import { TransactionsService } from '@api/transactions.service';
 import { ExchangeRateService } from '@api/exchange-rate.service';
 import { ListFilterPlus, LucideAngularModule } from 'lucide-angular';
@@ -43,15 +44,16 @@ export class Transactions {
     private readonly toastService = inject(ToastService);
     private readonly accountsService = inject(AccountsService);
     private readonly categoriesService = inject(CategoriesService);
-    private readonly exchangeRateService = inject(ExchangeRateService);
+    private readonly transactionsStore = inject(TransactionsStore);
     private readonly transactionsService = inject(TransactionsService);
+    private readonly exchangeRateService = inject(ExchangeRateService);
 
     // Data
-    protected readonly accounts = this.accountsService.getUserAccounts();
     protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
+    protected readonly accounts = this.accountsService.getUserAccounts();
+    protected readonly transactionCategories = this.categoriesService.getTransactionCategories;
     protected readonly transactions = this.transactionsService.getUserTransactions();
     protected readonly transactionTypes = this.transactionsService.getTransactionTypes();
-    protected readonly transactionCategories = this.categoriesService.getTransactionCategories;
 
     // States
     protected isDeleting = signal<boolean>(false);
@@ -248,7 +250,8 @@ export class Transactions {
             transactionsToFormat?.map(transaction => {
                 const currency = transaction.sourceAccount?.currency ?? defaultCurrency;
                 const conversionResult =
-                    snapshot && this.exchangeRateService.performCurrencyConversion(transaction.amount, currency, defaultCurrency);
+                    snapshot &&
+                    this.exchangeRateService.performCurrencyConversion(transaction.amount, currency, defaultCurrency);
 
                 const isSameCurrency = currency === defaultCurrency;
                 const convertedAmount = conversionResult
@@ -324,12 +327,12 @@ export class Transactions {
         const availableBalance: number =
             this.accounts.value()?.data?.data?.find(account => account.id === payload.sourceAccountId)?.balance ?? 0;
 
-        if (this.transactionsService.isNegativeBalance(availableBalance, payload))
-            this.toastService.show({
-                variant: 'warning',
-                title: 'Exceeded available balance!',
-                details: 'This transaction will result in a negative balance in your account.'
-            });
+        // if (this.transactionsService.isNegativeBalance(availableBalance, payload))
+        //     this.toastService.show({
+        //         variant: 'warning',
+        //         title: 'Exceeded available balance!',
+        //         details: 'This transaction will result in a negative balance in your account.'
+        //     });
 
         setTimeout(() => {
             this.transactionsService.createTransaction(payload.sourceAccountId, payload).subscribe({

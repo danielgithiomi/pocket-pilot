@@ -1,17 +1,16 @@
 import { Router } from '@angular/router';
+import { SSEService } from './sse.service';
 import { ToastService } from '@atoms/toast';
 import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { NotificationsMutation } from '@methods/mutations';
 import { NotificationsResource } from '@methods/resources';
-import { SSEService } from './sse.service';
 import {
     AppNotification,
     IStandardError,
     IVoidResourceResponse,
     NotificationActionResult,
     NotificationEventPayload,
-    SSE_EVENT_NAME,
     SSE_EVENT_NAME as SSE_EVENT
 } from '@global/types';
 
@@ -61,7 +60,7 @@ export class NotificationsService {
         onEvent: (payload: NotificationEventPayload) => void,
         onError?: (event: Event) => void
     ): EventSource {
-        const events: SSE_EVENT_NAME[] = [
+        const events: SSE_EVENT[] = [
             SSE_EVENT.NOTIFICATION_CREATED,
             SSE_EVENT.NOTIFICATION_UPDATED,
             SSE_EVENT.NOTIFICATIONS_REFRESHED
