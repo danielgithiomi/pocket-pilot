@@ -10,17 +10,6 @@
 
         <div class="header-actions">
             <atom-button
-                id="notification-settings"
-                variant="secondary"
-                [disabled]="state.isLoading"
-                (clicked)="goToSettings()">
-                <div class="button-content">
-                    <lucide-icon [img]="SettingsIcon" [size]="iconSize" name="notification-settings"/>
-                    <span class="hidden md:block">Settings</span>
-                </div>
-            </atom-button>
-
-            <atom-button
                 id="mark-all-notifications-read"
                 variant="primary"
                 [isLoading]="state.isMarkingAllAsRead"
@@ -28,7 +17,7 @@
                 (clicked)="notificationsStore.markAllAsRead()">
                 <div class="button-content">
                     <lucide-icon [img]="MarkAllAsReadIcon" [size]="iconSize" name="mark-all-as-read"/>
-                    <span class="hidden md:block">Mark All Read</span>
+                    <span class="hidden lg:block">Mark All As Read</span>
                 </div>
             </atom-button>
         </div>

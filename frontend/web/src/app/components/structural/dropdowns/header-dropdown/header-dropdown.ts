@@ -1,11 +1,12 @@
 import { tap } from 'rxjs';
+import { Button } from '@atoms/button';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { WEB_ROUTES } from '@global/constants';
 import { AuthService } from '@api/auth.service';
-import { Button } from '@atoms/button';
 import { DrawerService } from '@infrastructure/services';
 import { Component, inject, signal } from '@angular/core';
+import { NotificationsStore } from '@stores/notifications.store';
 import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-angular';
 
 @Component({
@@ -21,12 +22,22 @@ import { Bell, LogOut, LucideAngularModule, Settings2, UserLock } from 'lucide-a
 
             <div class="dropdown-notifications">
                 <div class="flex flex-row gap-4 items-center justify-center">
-                    <lucide-icon
-                        class="atom-icon"
-                        [name]="Bell"
-                        [img]="Bell"
-                        [size]="iconSize"
-                        color="var(--body-background)" />
+                    <div class="relative">
+                        <lucide-icon
+                            [img]="Bell"
+                            [name]="Bell"
+                            [size]="iconSize"
+                            class="atom-icon"
+                            color="var(--body-background)"
+                            (click)="navigateToNotificationsPage($event)" />
+
+                        @if (notificationsSummary().hasUnreadNotifications) {
+                            <span class="notifications-badge">
+                                {{ notificationsSummary().unreadCount }}
+                            </span>
+                        }
+                    </div>
+
                     <lucide-icon
                         class="atom-icon"
                         [name]="Settings"
@@ -84,7 +95,19 @@ export class HeaderDropdown {
     protected readonly authService = inject(AuthService);
     protected readonly drawerService: DrawerService = inject(DrawerService);
 
+    // STORES
+    protected readonly notificationsStore = inject(NotificationsStore);
+
+    // DATA
+    protected readonly notificationsSummary = this.notificationsStore.notificationsSummary;
+
     // METHODS
+    protected async navigateToNotificationsPage(event: MouseEvent): Promise<void> {
+        event.stopPropagation();
+        this.drawerService.closeDropDown();
+        await this.router.navigateByUrl(WEB_ROUTES.notifications);
+    }
+
     protected async routeToProfile(): Promise<void> {
         await this.router.navigateByUrl(WEB_ROUTES.profile);
         this.drawerService.closeDropDown();

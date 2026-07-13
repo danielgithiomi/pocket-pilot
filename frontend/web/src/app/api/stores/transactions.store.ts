@@ -1,6 +1,7 @@
 import { ToastService } from '@atoms/toast';
-import { TransactionsService } from '@root/app/api';
+import { AccountsService } from '@api/accounts.service';
 import { DestroyRef, inject, Injectable } from '@angular/core';
+import { TransactionsService } from '@api/transactions.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ export class TransactionsStore {
     private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
     private readonly toastService = inject(ToastService);
+    private readonly authService = inject(AccountsService);
     private readonly transactionsService = inject(TransactionsService);
 
     constructor() {
@@ -25,15 +27,15 @@ export class TransactionsStore {
         this.eventSource = this.transactionsService.configureTransactionsSSEStream<NegativeBalanceSSEPayload>(
             (payload: NegativeBalanceSSEPayload) => {
                 const {
-                    account: { name, balance },
-                    transaction: { amount }
+                    transaction: { amount },
+                    account: { name, balance }
                 } = payload;
                 const difference: number = balance - amount;
 
                 console.log(payload);
                 this.toastService.show({
                     variant: 'warning',
-                    title: 'Negative Balance Alert',
+                    title: 'Negative Balance Alert!',
                     details: `You have a negative balance of ${difference} in ${name}`
                 });
             },
