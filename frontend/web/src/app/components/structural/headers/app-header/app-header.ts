@@ -1,22 +1,23 @@
 import { tap } from 'rxjs';
 import { Button } from '@atoms/button';
-import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { WEB_ROUTES } from '@global/constants';
 import { AuthService } from '@api/auth.service';
 import { DrawerService } from '@infrastructure/services';
 import { UserSummary } from './user-summary/user-summary';
+import { Router } from '@angular/router';
+import { ClosePanelDirective } from '@infrastructure/directives';
 import { STORED_ONBOARDING_USER_KEY } from '@libs/constants';
 import { NotificationsStore } from '@stores/notifications.store';
-import { Component, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
 import { Bell, LogOut, LucideAngularModule, Menu, Settings2 } from 'lucide-angular';
 import { NotificationsDropdown } from '@structural/dropdowns/notifications-dropdown';
+import { Component, inject, input, output, signal } from '@angular/core';
 
 @Component({
     selector: 'app-header',
     styleUrl: './app-header.css',
     templateUrl: './app-header.html',
-    imports: [NgClass, LucideAngularModule, UserSummary, Button, NotificationsDropdown]
+    imports: [NgClass, LucideAngularModule, UserSummary, Button, NotificationsDropdown, ClosePanelDirective]
 })
 export class AppHeader {
     protected readonly Menu = Menu;
@@ -33,10 +34,6 @@ export class AppHeader {
 
     // SIGNAL STATES
     protected isNotificationsPanelOpen = signal<boolean>(false);
-
-    // VIEW REFERENCES
-    protected readonly notificationsDropdownWrapper =
-        viewChild<ElementRef<HTMLElement>>('notificationsDropdownWrapper');
 
     // SERVICES
     private readonly router = inject(Router);
@@ -57,15 +54,9 @@ export class AppHeader {
         this.isNotificationsPanelOpen.update(current => !current);
     }
 
-    @HostListener('document:click', ['$event'])
-    protected closeNotificationsPanelOnOutsideClick(event: MouseEvent): void {
+    protected closeNotificationsPanel(): void {
         if (!this.isNotificationsPanelOpen()) return;
-
-        const wrapper = this.notificationsDropdownWrapper()?.nativeElement;
-        const target = event.target;
-
-        if (!wrapper || !(target instanceof Node)) return;
-        if (!wrapper.contains(target)) this.isNotificationsPanelOpen.set(false);
+        this.isNotificationsPanelOpen.set(false);
     }
 
     protected logout() {

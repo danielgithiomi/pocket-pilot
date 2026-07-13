@@ -18,8 +18,13 @@
     @if (withDrawerLayout()) {
         <div class="flex flex-row items-center gap-4">
             <div class="hidden sm:flex justify-end gap-3 md:hidden lg:flex w-100">
-                <div #notificationsDropdownWrapper class="notifications-dropdown-wrapper">
-                    @let isLoadingNotifications = notificationsStore.notificationsLoading;
+                <div
+                    closePanel
+                    class="notifications-dropdown-wrapper"
+                    (closePanel)="closeNotificationsPanel()"
+                    [closePanelEnabled]="isNotificationsPanelOpen()">
+
+                @let isLoadingNotifications = notificationsStore.notificationsLoading;
                     @if (isLoadingNotifications()) {
                         <div class="p-1 header-icons mr-2 primary-loader bg-alternate-background! self-center"></div>
                     } @else {
