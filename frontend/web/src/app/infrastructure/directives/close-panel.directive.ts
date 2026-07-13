@@ -17,7 +17,7 @@ export class ClosePanelDirective {
     readonly closePanelOnEscape = input<boolean>(true);
     readonly closePanelOnOutsideClick = input<boolean>(true);
 
-    readonly closePanel = output<ClosePanelEvent>();
+    readonly onPanelClose = output<ClosePanelEvent>();
 
     @HostListener('document:click', ['$event'])
     protected handleDocumentClick(event: Event): void {
@@ -28,7 +28,7 @@ export class ClosePanelDirective {
         if (!(target instanceof Node)) return;
 
         if (!this.host.nativeElement.contains(target)) {
-            this.closePanel.emit({ reason: 'outside-click', sourceEvent: event });
+            this.onPanelClose.emit({ reason: 'outside-click', sourceEvent: event });
         }
     }
 
@@ -37,6 +37,6 @@ export class ClosePanelDirective {
         if (!this.closePanelEnabled() || !this.closePanelOnEscape()) return;
         if (!(event instanceof KeyboardEvent)) return;
 
-        this.closePanel.emit({ reason: 'escape', sourceEvent: event });
+        this.onPanelClose.emit({ reason: 'escape', sourceEvent: event });
     }
 }

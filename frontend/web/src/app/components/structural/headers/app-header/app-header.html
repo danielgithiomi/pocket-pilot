@@ -21,7 +21,7 @@
                 <div
                     closePanel
                     class="notifications-dropdown-wrapper"
-                    (closePanel)="closeNotificationsPanel()"
+                    (onPanelClose)="closeNotificationsPanel()"
                     [closePanelEnabled]="isNotificationsPanelOpen()">
 
                 @let isLoadingNotifications = notificationsStore.notificationsLoading;
