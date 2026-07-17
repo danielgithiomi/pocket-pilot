@@ -2,8 +2,8 @@ import 'dotenv/config.js';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
-import { ConsoleLogger, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConsoleLogger, Logger, ValidationPipe } from '@nestjs/common';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 const CORS_CONFIG: CorsOptions = {
