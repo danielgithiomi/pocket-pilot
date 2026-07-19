@@ -9,12 +9,12 @@
                 <div class="flex flex-row items-center gap-4 md:gap-6">
                     <div class="flex flex-row items-center gap-2">
                         <lucide-icon name="calendar" [img]="CalendarIcon" [size]="iconSize" />
-                        <span class="text-muted-text text-xs">{{ formattedEventDate() }}</span>
+                        <span class="text-reactive-text text-xs">{{ formattedEventDate() }}</span>
                     </div>
 
                     <div class="flex flex-row items-center gap-2">
                         <lucide-icon name="users" [img]="Squads" [size]="iconSize" />
-                        <span class="text-muted-text text-xs">{{ splitrEvent().squadName }}</span>
+                        <span class="text-reactive-text text-xs">{{ splitrEvent().squadName }}</span>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
         <hr />
 
         <div class="flex flex-row flex-wrap items-center gap-2">
-            <p class="text-sm text-muted-text">People:</p>
+            <p class="text-sm text-reactive-text">People:</p>
 
             @for (member of splitrEvent().eventMembers; track member) {
                 <atom-badge variant="neutral" [label]="member" className="text-xs! px-3!" />
@@ -53,7 +53,7 @@
 
                     <div class="flex-1 flex flex-col gap-1">
                         <p class="text-sm font-semibold">{{ payer.payerName }}</p>
-                        <p class="text-xs text-muted-text">
+                        <p class="text-xs text-reactive-text">
                             Paid
                             <span class="font-bold text-primary">{{ payer.percentageContribution }}%</span>
                             of the bill.
@@ -150,7 +150,7 @@
                         <p class="text-sm font-semibold" [ngClass]="settlement.kind === 'receive' ? 'text-income' : ''">
                             {{ settlement.fromParticipant }}
                         </p>
-                        <p class="text-xs text-muted-text">
+                        <p class="text-xs text-reactive-text">
                             @switch (settlement.kind) {
                                 @case ('pay') {
                                     pays {{ settlement.toParticipant }}.

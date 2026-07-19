@@ -1,10 +1,11 @@
 import { AuthService } from '@api/auth.service';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import { LucideAngularModule, Camera } from 'lucide-angular';
 import { Component, computed, inject, output, signal } from '@angular/core';
 
 @Component({
     selector: 'profile-picture',
-    imports: [LucideAngularModule],
+    imports: [LucideAngularModule, NgOptimizedImage, NgClass],
     styles: `
         @reference 'tailwindcss';
 
@@ -26,6 +27,7 @@ import { Component, computed, inject, output, signal } from '@angular/core';
             class="profile-picture group"
             (mouseenter)="isHovered.set(true)"
             (mouseleave)="isHovered.set(false)"
+            [ngClass]="{ 'border border-primary': !!profilePictureUrl() }"
             (click)="profilePictureClicked.emit()">
             @if (isHovered()) {
                 <div class="overlay animate-fade-in">
@@ -40,10 +42,11 @@ import { Component, computed, inject, output, signal } from '@angular/core';
 
             @if (profilePictureUrl()) {
                 <img
-                    [src]="profilePictureUrl()"
+                    fill
                     alt="Profile Picture"
-                    class="h-full w-full object-cover"
-                    (error)="onProfilePictureError()" />
+                    [ngSrc]="profilePictureUrl()"
+                    (error)="onProfilePictureError()"
+                    class="h-full w-full object-cover" />
             } @else {
                 <div class="flex items-center justify-center h-full">
                     <p class="text-white text-5xl">{{ initial() }}</p>
@@ -66,7 +69,7 @@ export class ProfilePicture {
     protected readonly authService = inject(AuthService);
 
     // DATA
-    protected readonly profilePictureUrl = computed(() => this.authService.user()?.profilePictureUrl ?? null);
+    protected readonly profilePictureUrl = computed(() => this.authService.user()?.profilePictureUrl ?? '');
 
     // METHODS
     protected readonly initial = computed(() => {
