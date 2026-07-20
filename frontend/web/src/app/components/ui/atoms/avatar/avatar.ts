@@ -7,7 +7,9 @@ import { AvatarClasses, AvatarSize, COLOR_PALETTE, AVATAR_SIZE_MAP, INITIALS_TEX
     selector: 'atom-avatar',
     imports: [NgClass],
     template: `
-        <div class="rounded-full grid place-items-center shrink-0" [ngClass]="[avatarClasses().background, avatarClasses().avatarSize]">
+        <div
+            class="rounded-full grid place-items-center shrink-0"
+            [ngClass]="[avatarClasses().background, avatarClasses().avatarSize]">
             <p class="font-semibold" [ngClass]="[avatarClasses().foreground, avatarClasses().initialsSize]">
                 {{ displayInitials() }}
             </p>
@@ -18,7 +20,7 @@ export class Avatar {
     // INPUTS
     readonly displayName = input.required<string>();
     readonly numberOfInitials = input.required<1 | 2>();
-    readonly avatarSize = input<AvatarSize>('md',  { alias: 'size'});
+    readonly avatarSize = input<AvatarSize>('md', { alias: 'size' });
 
     // COMPUTED
     protected readonly avatarClasses = computed<AvatarClasses>(() => {

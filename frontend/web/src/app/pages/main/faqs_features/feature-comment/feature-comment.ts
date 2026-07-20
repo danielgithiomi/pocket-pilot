@@ -7,7 +7,7 @@ import { FeatureComment as IFeatureComment } from '@global/types';
 @Component({
     selector: 'feature-comment',
     templateUrl: './feature-comment.html',
-    imports: [Avatar, NgOptimizedImage],
+    imports: [Avatar, NgOptimizedImage]
 })
 export class FeatureComment {
     // INPUTS

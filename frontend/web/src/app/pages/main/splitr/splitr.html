@@ -2,7 +2,11 @@
     <div class="page-header">
         <h1 class="page-title">Splitr</h1>
 
-        <atom-button id="add-split" variant="primary" [disabled]="isLoadingResources()" (clicked)="isAddSplitFormOpen.set(true)">
+        <atom-button
+            id="add-split"
+            variant="primary"
+            [disabled]="isLoadingResources()"
+            (clicked)="isAddSplitFormOpen.set(true)">
             <div class="w-full flex flex-row items-center justify-between gap-4">
                 <lucide-icon name="create-split" [img]="Plus" [size]="iconSize"></lucide-icon>
                 <span class="hidden sm:block">Add Split</span>
@@ -11,7 +15,9 @@
     </div>
 
     <div class="page-container flex-1 space-y-4">
-        <p class="page-subtitle mb-6">Keep track of <span class="font-semibold text-primary">shared</span> bills and expenses.</p>
+        <p class="page-subtitle mb-6">
+            Keep track of <span class="font-semibold text-primary">shared</span> bills and expenses.
+        </p>
 
         <div
             class="h-full flex flex-col-reverse md:flex-row gap-6 md:gap-8 pb-4"

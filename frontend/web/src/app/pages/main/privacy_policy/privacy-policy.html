@@ -51,15 +51,15 @@
 
             <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 @for (card of highlightCards; track card.id) {
-                <article
-                    class="rounded-xl border border-loader-primary bg-body-background p-4 transition-custom hover:border-primary hover:shadow-[0_0px_2px_var(--primary)]">
-                    <div
-                        class="mb-3 grid size-9 place-items-center rounded-lg border border-loader-primary bg-alternate-background">
-                        <lucide-icon [img]="card.icon" [size]="iconSize" [name]="card.id" />
-                    </div>
-                    <h3 class="text-sm font-semibold text-inverted-background">{{ card.title }}</h3>
-                    <p class="mt-2 text-sm leading-relaxed text-tertiary-dark">{{ card.description }}</p>
-                </article>
+                    <article
+                        class="rounded-xl border border-loader-primary bg-body-background p-4 transition-custom hover:border-primary hover:shadow-[0_0px_2px_var(--primary)]">
+                        <div
+                            class="mb-3 grid size-9 place-items-center rounded-lg border border-loader-primary bg-alternate-background">
+                            <lucide-icon [img]="card.icon" [size]="iconSize" [name]="card.id" />
+                        </div>
+                        <h3 class="text-sm font-semibold text-inverted-background">{{ card.title }}</h3>
+                        <p class="mt-2 text-sm leading-relaxed text-tertiary-dark">{{ card.description }}</p>
+                    </article>
                 }
             </div>
         </div>
@@ -67,29 +67,32 @@
 
     <div class="privacy-policy-body flex w-full flex-col gap-6 md:flex-row">
         <aside
-        [ngClass]="{ 'md:hidden': !drawerService.isDrawerCollapsed() }"
-        class="privacy-policy-aside w-full md:block md:w-64 lg:w-72 xl:w-80">
-
+            [ngClass]="{ 'md:hidden': !drawerService.isDrawerCollapsed() }"
+            class="privacy-policy-aside w-full md:block md:w-64 lg:w-72 xl:w-80">
             <div
                 class="privacy-policy-aside-panel rounded-2xl border border-loader-primary bg-alternate-background p-4">
                 <p class="mb-3 shrink-0 text-xs font-semibold tracking-wide text-primary uppercase">On this page</p>
 
-                <nav class="privacy-policy-toc-nav no-scrollbar flex flex-col gap-1 pr-1 overflow-y-scroll"
+                <nav
+                    class="privacy-policy-toc-nav no-scrollbar flex flex-col gap-1 pr-1 overflow-y-scroll"
                     aria-label="Privacy policy table of contents">
                     @for (item of content.tableOfContents; track item.id) {
-                    <a href="#{{ item.id }}"
-                        class="privacy-policy-toc-link flex min-w-0 items-center gap-2 rounded-xl border border-transparent px-3 py-2 text-left transition-custom hover:border-loader-primary hover:bg-body-background"
-                        [ngClass]="{ 'is-active': activeSectionId() === item.id }" [title]="item.title"
-                        (click)="scrollToSection($event, item.id)">
-                        <span class="shrink-0 text-xs font-semibold text-primary">{{ item.number }}.</span>
-                        <span class="min-w-0 flex-1 line-clamp-1 text-sm">{{ item.shortTitle }}</span>
-                    </a>
+                        <a
+                            href="#{{ item.id }}"
+                            class="privacy-policy-toc-link flex min-w-0 items-center gap-2 rounded-xl border border-transparent px-3 py-2 text-left transition-custom hover:border-loader-primary hover:bg-body-background"
+                            [ngClass]="{ 'is-active': activeSectionId() === item.id }"
+                            [title]="item.title"
+                            (click)="scrollToSection($event, item.id)">
+                            <span class="shrink-0 text-xs font-semibold text-primary">{{ item.number }}.</span>
+                            <span class="min-w-0 flex-1 line-clamp-1 text-sm">{{ item.shortTitle }}</span>
+                        </a>
                     }
                 </nav>
 
                 <div class="mt-4 shrink-0 rounded-xl border border-loader-primary bg-body-background p-4">
                     <p class="text-xs text-tertiary-dark">Questions about your data?</p>
-                    <a routerLink="/support"
+                    <a
+                        routerLink="/support"
                         class="mt-2 inline-block text-sm font-semibold text-primary transition-custom hover:underline">
                         Contact support
                     </a>
@@ -99,169 +102,192 @@
 
         <main class="privacy-policy-sections space-y-6">
             @for (section of content.sections; track section.id) {
-            <article [id]="section.id"
-                class="scroll-mt-5 rounded-2xl border border-loader-primary bg-alternate-background p-5 transition-custom hover:shadow-[0_0px_2px_var(--primary)] md:p-6">
-                <div class="mb-4 flex items-start gap-3">
-                    <div
-                        class="grid size-10 shrink-0 place-items-center rounded-xl border border-primary/30 bg-primary/10">
-                        <lucide-icon [img]="sectionIcon(section.id)" [size]="iconSize" [name]="section.id" />
+                <article
+                    [id]="section.id"
+                    class="scroll-mt-5 rounded-2xl border border-loader-primary bg-alternate-background p-5 transition-custom hover:shadow-[0_0px_2px_var(--primary)] md:p-6">
+                    <div class="mb-4 flex items-start gap-3">
+                        <div
+                            class="grid size-10 shrink-0 place-items-center rounded-xl border border-primary/30 bg-primary/10">
+                            <lucide-icon [img]="sectionIcon(section.id)" [size]="iconSize" [name]="section.id" />
+                        </div>
+                        <h2 class="text-xl font-semibold md:text-2xl">{{ section.title }}</h2>
                     </div>
-                    <h2 class="text-xl font-semibold md:text-2xl">{{ section.title }}</h2>
-                </div>
 
-                @if (section.callout) {
-                <div class="mb-4 rounded-xl border p-4 md:p-5" [ngClass]="{
+                    @if (section.callout) {
+                        <div
+                            class="mb-4 rounded-xl border p-4 md:p-5"
+                            [ngClass]="{
                                 'border-primary/40 bg-primary/5': section.callout.variant === 'info',
                                 'border-expense/40 bg-expense/5': section.callout.variant === 'warning',
                                 'border-transfer/40 bg-transfer/5': section.callout.variant === 'accent'
                             }">
-                    <p class="text-sm font-semibold text-inverted-background">{{ section.callout.title }}</p>
-                    <p class="mt-2 text-sm leading-relaxed text-tertiary-dark">{{ section.callout.text }}</p>
-                </div>
-                }
-
-                @if (section.paragraphs?.length) {
-                <div class="space-y-3">
-                    @for (paragraph of section.paragraphs; track paragraph) {
-                    <p class="text-sm leading-relaxed text-tertiary-dark">{{ paragraph }}</p>
+                            <p class="text-sm font-semibold text-inverted-background">{{ section.callout.title }}</p>
+                            <p class="mt-2 text-sm leading-relaxed text-tertiary-dark">{{ section.callout.text }}</p>
+                        </div>
                     }
-                </div>
-                }
 
-                @if (section.bullets?.length) {
-                <ul class="privacy-policy-bullets mt-3 space-y-2.5 pl-1">
-                    @for (bullet of section.bullets; track bullet) {
-                    <li class="text-sm leading-relaxed text-tertiary-dark">{{ bullet }}</li>
-                    }
-                </ul>
-                }
-
-                @if (section.table) {
-                    <div class="privacy-policy-table-wrap mt-4 overflow-x-auto rounded-xl border border-loader-primary">
-                        <table class="privacy-policy-table w-full min-w-[42rem] border-collapse text-left">
-                            <thead>
-                            <tr>
-                                @for (header of section.table.headers; track header) {
-                                    <th class="bg-body-background px-4 py-3 text-xs font-semibold text-primary uppercase">
-                                        {{ header }}
-                                    </th>
-                                }
-                            </tr>
-                            </thead>
-                            <tbody>
-                                @for (row of section.table.rows; track $index) {
-                                    <tr>
-                                        @for (cell of row; track $index) {
-                                            <td class="border-t border-loader-primary px-4 py-3 text-sm leading-relaxed">
-                                                {{ cell }}
-                                            </td>
-                                        }
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                }
-
-                @if (section.subsections?.length) {
-                <div class="mt-5 space-y-4">
-                    @for (subsection of section.subsections; track subsection.id) {
-                    <div class="rounded-xl border border-loader-primary bg-body-background p-4 md:p-5">
-                        <h3 class="text-base font-semibold text-inverted-background">{{ subsection.title }}</h3>
-
-                        @if (subsection.paragraphs?.length) {
-                        <div class="mt-3 space-y-3">
-                            @for (paragraph of subsection.paragraphs; track paragraph) {
-                            <p class="text-sm leading-relaxed text-tertiary-dark">{{ paragraph }}</p>
+                    @if (section.paragraphs?.length) {
+                        <div class="space-y-3">
+                            @for (paragraph of section.paragraphs; track paragraph) {
+                                <p class="text-sm leading-relaxed text-tertiary-dark">{{ paragraph }}</p>
                             }
                         </div>
-                        }
+                    }
 
-                        @if (subsection.bullets?.length) {
+                    @if (section.bullets?.length) {
                         <ul class="privacy-policy-bullets mt-3 space-y-2.5 pl-1">
-                            @for (bullet of subsection.bullets; track bullet) {
-                            <li class="text-sm leading-relaxed text-tertiary-dark">{{ bullet }}</li>
+                            @for (bullet of section.bullets; track bullet) {
+                                <li class="text-sm leading-relaxed text-tertiary-dark">{{ bullet }}</li>
                             }
                         </ul>
-                        }
+                    }
 
-                        @if (subsection.table) {
-                            <div
-                                class="privacy-policy-table-wrap mt-4 overflow-x-auto rounded-xl border border-loader-primary">
-                                <table class="privacy-policy-table w-full min-w-[42rem] border-collapse text-left">
-                                    <thead>
+                    @if (section.table) {
+                        <div
+                            class="privacy-policy-table-wrap mt-4 overflow-x-auto rounded-xl border border-loader-primary">
+                            <table class="privacy-policy-table w-full min-w-[42rem] border-collapse text-left">
+                                <thead>
                                     <tr>
-                                        @for (header of subsection.table.headers; track header) {
-                                            <th class="bg-alternate-background px-4 py-3 text-xs font-semibold text-primary uppercase">
+                                        @for (header of section.table.headers; track header) {
+                                            <th
+                                                class="bg-body-background px-4 py-3 text-xs font-semibold text-primary uppercase">
                                                 {{ header }}
                                             </th>
                                         }
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                        @for (row of subsection.table.rows; track $index) {
-                                            <tr>
-                                                @for (cell of row; track $index) {
-                                                    <td class="border-t border-loader-primary px-4 py-3 text-sm leading-relaxed text-primary-text">
-                                                        {{ cell }}
-                                                    </td>
-                                                }
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        }
+                                </thead>
+                                <tbody>
+                                    @for (row of section.table.rows; track $index) {
+                                        <tr>
+                                            @for (cell of row; track $index) {
+                                                <td
+                                                    class="border-t border-loader-primary px-4 py-3 text-sm leading-relaxed">
+                                                    {{ cell }}
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
 
-                        @if (subsection.closingParagraphs?.length) {
-                        <div class="mt-3 space-y-3">
-                            @for (paragraph of subsection.closingParagraphs; track paragraph) {
-                            <p class="text-sm leading-relaxed text-tertiary-dark">{{ paragraph }}</p>
+                    @if (section.subsections?.length) {
+                        <div class="mt-5 space-y-4">
+                            @for (subsection of section.subsections; track subsection.id) {
+                                <div class="rounded-xl border border-loader-primary bg-body-background p-4 md:p-5">
+                                    <h3 class="text-base font-semibold text-inverted-background">
+                                        {{ subsection.title }}
+                                    </h3>
+
+                                    @if (subsection.paragraphs?.length) {
+                                        <div class="mt-3 space-y-3">
+                                            @for (paragraph of subsection.paragraphs; track paragraph) {
+                                                <p class="text-sm leading-relaxed text-tertiary-dark">
+                                                    {{ paragraph }}
+                                                </p>
+                                            }
+                                        </div>
+                                    }
+
+                                    @if (subsection.bullets?.length) {
+                                        <ul class="privacy-policy-bullets mt-3 space-y-2.5 pl-1">
+                                            @for (bullet of subsection.bullets; track bullet) {
+                                                <li class="text-sm leading-relaxed text-tertiary-dark">{{ bullet }}</li>
+                                            }
+                                        </ul>
+                                    }
+
+                                    @if (subsection.table) {
+                                        <div
+                                            class="privacy-policy-table-wrap mt-4 overflow-x-auto rounded-xl border border-loader-primary">
+                                            <table
+                                                class="privacy-policy-table w-full min-w-[42rem] border-collapse text-left">
+                                                <thead>
+                                                    <tr>
+                                                        @for (header of subsection.table.headers; track header) {
+                                                            <th
+                                                                class="bg-alternate-background px-4 py-3 text-xs font-semibold text-primary uppercase">
+                                                                {{ header }}
+                                                            </th>
+                                                        }
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (row of subsection.table.rows; track $index) {
+                                                        <tr>
+                                                            @for (cell of row; track $index) {
+                                                                <td
+                                                                    class="border-t border-loader-primary px-4 py-3 text-sm leading-relaxed text-primary-text">
+                                                                    {{ cell }}
+                                                                </td>
+                                                            }
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    }
+
+                                    @if (subsection.closingParagraphs?.length) {
+                                        <div class="mt-3 space-y-3">
+                                            @for (paragraph of subsection.closingParagraphs; track paragraph) {
+                                                <p class="text-sm leading-relaxed text-tertiary-dark">
+                                                    {{ paragraph }}
+                                                </p>
+                                            }
+                                        </div>
+                                    }
+                                </div>
                             }
                         </div>
-                        }
-                    </div>
                     }
-                </div>
-                }
 
-                @if (section.closingParagraphs?.length) {
-                <div class="mt-4 space-y-3">
-                    @for (paragraph of section.closingParagraphs; track paragraph) {
-                    <p class="text-sm leading-relaxed text-tertiary-dark">{{ paragraph }}</p>
-                    }
-                </div>
-                }
-
-                @if (section.id === 'contact-us') {
-                <div class="mt-5 grid gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-5 md:grid-cols-3">
-                    <div>
-                        <p class="text-xs text-muted-text">Organization</p>
-                        <p class="mt-1 text-sm font-semibold">{{ content.contact.name }}</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-muted-text">Email</p>
-                        <a [href]="content.contact.emailLink"
-                            class="mt-1 inline-block text-sm font-semibold text-primary transition-custom hover:underline">
-                            {{ content.contact.email }}
-                        </a>
-                    </div>
-                    <div>
-                        <p class="text-xs text-muted-text">Links</p>
-                        <div class="mt-1 flex flex-col gap-1">
-                            <a [href]="content.contact.githubLink" target="_blank" rel="noopener noreferrer"
-                                class="text-sm text-primary transition-custom hover:underline">
-                                {{ content.contact.github }}
-                            </a>
-                            <a [href]="content.contact.websiteLink" target="_blank" rel="noopener noreferrer"
-                                class="text-sm text-primary transition-custom hover:underline">
-                                {{ content.contact.website }}
-                            </a>
+                    @if (section.closingParagraphs?.length) {
+                        <div class="mt-4 space-y-3">
+                            @for (paragraph of section.closingParagraphs; track paragraph) {
+                                <p class="text-sm leading-relaxed text-tertiary-dark">{{ paragraph }}</p>
+                            }
                         </div>
-                    </div>
-                </div>
-                }
-            </article>
+                    }
+
+                    @if (section.id === 'contact-us') {
+                        <div
+                            class="mt-5 grid gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-5 md:grid-cols-3">
+                            <div>
+                                <p class="text-xs text-muted-text">Organization</p>
+                                <p class="mt-1 text-sm font-semibold">{{ content.contact.name }}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-muted-text">Email</p>
+                                <a
+                                    [href]="content.contact.emailLink"
+                                    class="mt-1 inline-block text-sm font-semibold text-primary transition-custom hover:underline">
+                                    {{ content.contact.email }}
+                                </a>
+                            </div>
+                            <div>
+                                <p class="text-xs text-muted-text">Links</p>
+                                <div class="mt-1 flex flex-col gap-1">
+                                    <a
+                                        [href]="content.contact.githubLink"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="text-sm text-primary transition-custom hover:underline">
+                                        {{ content.contact.github }}
+                                    </a>
+                                    <a
+                                        [href]="content.contact.websiteLink"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="text-sm text-primary transition-custom hover:underline">
+                                        {{ content.contact.website }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </article>
             }
         </main>
     </div>

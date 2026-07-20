@@ -3,7 +3,6 @@
     class="form-modal-wrapper"
     (onModalCloseEvent)="onFormCloseEvent.emit($event)"
     [closeModalOnBackdropClick]="onBackdropClickClose()">
-
     <div [id]="formId()" class="form" slot="modal-content">
         <!-- HEADER -->
         <div class="form-header">

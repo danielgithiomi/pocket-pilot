@@ -7,8 +7,8 @@ export const INITIAL_FORM_STATE: AccountsSchema = {
     name: '',
     type: '',
     currency: '',
-    isBalanceVisible: true,
-}
+    isBalanceVisible: true
+};
 
 export const accountsFormValidationSchema = schema<AccountsSchema>(root => {
     // Account name

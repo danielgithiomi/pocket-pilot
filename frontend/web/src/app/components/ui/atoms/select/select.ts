@@ -4,7 +4,11 @@ import { SelectOption, SelectSize } from './select.types';
 import { Component, computed, input } from '@angular/core';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { ChevronDown, LucideAngularModule } from 'lucide-angular';
-import { FORM_FIELD_ERROR_BORDER_CLASSES, isFormFieldInError, resolveFormFieldVisualState } from '../form-field-visual-state';
+import {
+    FORM_FIELD_ERROR_BORDER_CLASSES,
+    isFormFieldInError,
+    resolveFormFieldVisualState
+} from '../form-field-visual-state';
 
 @Component({
     selector: 'atom-select',

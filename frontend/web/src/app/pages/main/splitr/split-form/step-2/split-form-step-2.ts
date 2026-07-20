@@ -112,7 +112,10 @@ export class SplitFormStep2 {
 
     // FORM
     protected readonly splittableFormModel = signal<NewSplittableSchema>(InitialNewSplittableData);
-    protected readonly splittableForm = form<NewSplittableSchema>(this.splittableFormModel, NewSplittableFormValidation);
+    protected readonly splittableForm = form<NewSplittableSchema>(
+        this.splittableFormModel,
+        NewSplittableFormValidation
+    );
 
     // METHODS
     protected resetSplittableForm(): void {

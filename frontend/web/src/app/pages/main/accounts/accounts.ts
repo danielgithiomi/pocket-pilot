@@ -70,7 +70,7 @@ export class Accounts {
     protected INITIAL_ACCOUNTS_FORM_STATE: AccountsSchema = {
         ...INITIAL_FORM_STATE,
         currency: this.currency
-    }
+    };
     protected accountsFormModel = signal<AccountsSchema>(this.INITIAL_ACCOUNTS_FORM_STATE);
     protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
 

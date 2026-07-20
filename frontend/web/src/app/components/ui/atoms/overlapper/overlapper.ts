@@ -54,7 +54,8 @@ export class Overlapper {
 
     private readonly sizeClasses = computed<string>(() => OVERLAPPER_SIZE_STYLES[this.size()]);
 
-    private readonly baseItemClasses = 'inline-flex items-center justify-center rounded-full font-semibold ring-1 first:ml-0';
+    private readonly baseItemClasses =
+        'inline-flex items-center justify-center rounded-full font-semibold ring-1 first:ml-0';
 
     protected itemClasses(palette: ColorPalette): string {
         return [this.baseItemClasses, this.sizeClasses(), palette.bg, palette.fg].join(' ');

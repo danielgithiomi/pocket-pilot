@@ -16,7 +16,7 @@ const FEATURE_STATUS_ACTIVE_INDEX: Record<FeatureStatusEnum, number> = {
     [FeatureStatusEnum.REJECTED]: 1,
     [FeatureStatusEnum.PLANNED]: 2,
     [FeatureStatusEnum.IN_PROGRESS]: 3,
-    [FeatureStatusEnum.SHIPPED]: FEATURE_STATUS_STEPS.length,
+    [FeatureStatusEnum.SHIPPED]: FEATURE_STATUS_STEPS.length
 };
 
 export function resolveFeatureStatusActiveIndex(status: FeatureStatusEnum): number {

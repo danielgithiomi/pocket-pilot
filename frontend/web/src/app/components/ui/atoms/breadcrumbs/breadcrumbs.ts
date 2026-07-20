@@ -14,7 +14,11 @@ import { LucideAngularModule, ChevronRight, LucideIconData } from 'lucide-angula
                 <div class="skeleton size-5 rounded-full"></div>
                 <div class="skeleton ml-2 w:1/5 md:w-25 h-4"></div>
 
-                <lucide-angular [size]="iconSide" class="text-muted-text" [img]="breadcrumbArrow" name="breadcrumb-arrow-next" />
+                <lucide-angular
+                    [size]="iconSide"
+                    class="text-muted-text"
+                    [img]="breadcrumbArrow"
+                    name="breadcrumb-arrow-next" />
 
                 <div class="skeleton w:1/5 md:w-30 h-4"></div>
             } @else {

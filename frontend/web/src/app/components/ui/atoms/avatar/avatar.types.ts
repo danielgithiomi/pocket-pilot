@@ -1,6 +1,6 @@
 import { ColorPalette } from '@libs/types';
 
-export type AvatarSize = 'xs' |'sm' | 'md' | 'lg' | 'xl';
+export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export const AVATAR_SIZE_MAP: Record<AvatarSize, string> = {
     xs: 'size-6',

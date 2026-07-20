@@ -71,7 +71,8 @@ export class SplitwiseSquardForm {
             .map(name => name.toLowerCase());
 
         const trimmedName = memberName.trim();
-        const isValid = trimmedName.length > 1 && trimmedName.length <= 20 && !allMemberNames.includes(trimmedName.toLowerCase());
+        const isValid =
+            trimmedName.length > 1 && trimmedName.length <= 20 && !allMemberNames.includes(trimmedName.toLowerCase());
 
         this.isMemberNameValid.set(isValid);
     }

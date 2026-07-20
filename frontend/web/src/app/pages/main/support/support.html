@@ -13,8 +13,8 @@
 
                 <div class="overflow-hidden w-3/5 mt-4">
                     <p class="overflow-hidden text-sm text-tertiary-dark text-ellipsis">
-                        Need support or have a question? Our Pocket Pilot Support Team is here to assist you with any questions or
-                        issues you may have. Please use the form to contact us.
+                        Need support or have a question? Our Pocket Pilot Support Team is here to assist you with any
+                        questions or issues you may have. Please use the form to contact us.
                     </p>
                 </div>
             </div>
@@ -27,9 +27,11 @@
                             class="size-8 grid place-items-center border group-hover:border-loader-primary bg-alternate-background rounded-lg transition-custom">
                             <lucide-icon [img]="item.icon" [size]="iconSize" [name]="item.id" />
                         </div>
-                        <a [href]="item.link" class="text-sm group-hover:underline group-hover:text-primary transition-custom">{{
-                            item.value
-                        }}</a>
+                        <a
+                            [href]="item.link"
+                            class="text-sm group-hover:underline group-hover:text-primary transition-custom"
+                            >{{ item.value }}</a
+                        >
                     </div>
                 }
             </div>

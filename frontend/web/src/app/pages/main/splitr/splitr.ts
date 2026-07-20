@@ -52,7 +52,9 @@ export class Splitr {
         if (this.hasSquadsError()) return [];
         return this.userSquads.value()?.data ?? [];
     });
-    protected allSquadMembers = computed<string[]>(() => Array.from(new Set(this.squads().flatMap(squad => squad.squadMembers))));
+    protected allSquadMembers = computed<string[]>(() =>
+        Array.from(new Set(this.squads().flatMap(squad => squad.squadMembers)))
+    );
 
     // METHODS
     protected handleOnUpdateSquadItemEvent(squadId: string) {

@@ -2,8 +2,7 @@
     [id]="featureId()"
     (click)="handleFeatureClick()"
     class="relative w-full cursor-pointer! lg:w-5/6 flex flex-row bg-alternate-background p-4 rounded-lg items-start gap-6 md:gap-4 subtle-item-hover">
-
-@if (isOwnedByCurrentUser() && showDeleteIcon()) {
+    @if (isOwnedByCurrentUser() && showDeleteIcon()) {
         <div (click)="handleOnFeatureDelete()" class="absolute top-4 right-4 size-6 grid place-items-center">
             @if (isDeleting()) {
                 <div class="delete-loader"></div>

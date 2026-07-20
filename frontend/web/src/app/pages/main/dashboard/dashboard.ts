@@ -31,7 +31,16 @@ import {
     selector: 'app-dashboard',
     styleUrl: './dashboard.css',
     templateUrl: './dashboard.html',
-    imports: [NgClass, RatioSlider, ProgressBar, CostAnalysis, UpcomingBills, DashboardCard, CalendarModule, LucideAngularModule]
+    imports: [
+        NgClass,
+        RatioSlider,
+        ProgressBar,
+        CostAnalysis,
+        UpcomingBills,
+        DashboardCard,
+        CalendarModule,
+        LucideAngularModule
+    ]
 })
 export class Dashboard {
     // Icons

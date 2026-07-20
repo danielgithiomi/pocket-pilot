@@ -19,7 +19,10 @@ import { Component, Input, signal, WritableSignal } from '@angular/core';
                     [ngClass]="contentAlign == 'right' ? 'items-end text-end' : 'items-start text-start'">
                     <h1>Pocket Pilot</h1>
 
-                    <p>Take control of your finances with intuitive tracking, instant insights, and easy-to-manage accounts.</p>
+                    <p>
+                        Take control of your finances with intuitive tracking, instant insights, and easy-to-manage
+                        accounts.
+                    </p>
 
                     <ul class="flex flex-col gap-2">
                         @for (feature of features; track feature.id) {

@@ -42,7 +42,7 @@
             }
 
             .disabled {
-                @apply cursor-not-allowed! text-(--reactive-text)! hover:text-(--reactive-text) no-underline!
+                @apply cursor-not-allowed! text-(--reactive-text)! hover:text-(--reactive-text) no-underline!;
             }
         }
     }

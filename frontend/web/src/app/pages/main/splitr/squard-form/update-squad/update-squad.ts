@@ -71,7 +71,8 @@ export class UpdateSplitrSquad {
             .map(name => name.toLowerCase());
 
         const normalizedName = memberName.trim().toLowerCase();
-        const isValid = normalizedName.length > 1 && normalizedName.length <= 20 && !allMemberNames.includes(normalizedName);
+        const isValid =
+            normalizedName.length > 1 && normalizedName.length <= 20 && !allMemberNames.includes(normalizedName);
 
         this.isMemberNameValid.set(isValid);
     }

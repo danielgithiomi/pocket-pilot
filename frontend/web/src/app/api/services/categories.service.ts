@@ -41,7 +41,14 @@ export class CategoriesService {
         if (!data) return [];
 
         const { incomes, expenses } = data;
-        const allCategories = ['---Incomes---', ...incomes, '---Expenses---', ...expenses, '---Internal---', 'Transfer'];
+        const allCategories = [
+            '---Incomes---',
+            ...incomes,
+            '---Expenses---',
+            ...expenses,
+            '---Internal---',
+            'Transfer'
+        ];
 
         return allCategories.map(category => ({
             value: category,

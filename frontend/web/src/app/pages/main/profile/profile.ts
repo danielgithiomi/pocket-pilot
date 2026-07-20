@@ -23,7 +23,17 @@ import { EditProfileSchema, editProfileFormValidationSchema } from './profile-su
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.html',
-    imports: [Form, Input, Button, NgClass, PhoneNumber, ProfileDetail, ProfileSummary, ChangePassword, ReactiveFormsModule]
+    imports: [
+        Form,
+        Input,
+        Button,
+        NgClass,
+        PhoneNumber,
+        ProfileDetail,
+        ProfileSummary,
+        ChangePassword,
+        ReactiveFormsModule
+    ]
 })
 export class Profile {
     // SERVICES

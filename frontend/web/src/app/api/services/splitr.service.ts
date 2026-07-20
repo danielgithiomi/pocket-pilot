@@ -98,7 +98,10 @@ export class SplitrService {
         );
     }
 
-    markSplitrEventAsSettledOrPending(eventId: string, payload: SettleSplitrPayload): Observable<IVoidResourceResponse> {
+    markSplitrEventAsSettledOrPending(
+        eventId: string,
+        payload: SettleSplitrPayload
+    ): Observable<IVoidResourceResponse> {
         return this.mutation.markSplitrEventAsSettledOrPending(eventId, payload).pipe(
             map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
             catchError((error: IStandardError) => {

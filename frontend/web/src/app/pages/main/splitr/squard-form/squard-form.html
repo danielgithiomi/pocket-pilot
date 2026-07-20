@@ -4,8 +4,7 @@
     [class.hidden]="!isSquadFormOpen()"
     (onFormCloseEvent)="handleCreateSquadFormClose($event)"
     description="People you regularly share expenses with.">
-
-<form (submit)="handleCreateSquadFormSubmit($event)" id="create-squad-form" slot="content">
+    <form (submit)="handleCreateSquadFormSubmit($event)" id="create-squad-form" slot="content">
         <atom-input
             type="text"
             id="squad-name"
@@ -79,6 +78,8 @@
             form="create-squad-form"
             id="submit-create-squad-form"
             [isLoading]="isSubmittingCreateSquadForm()"
-            [disabled]="createSquadForm().invalid() || isSubmittingCreateSquadForm() || selectedSquadMembers().length == 0" />
+            [disabled]="
+                createSquadForm().invalid() || isSubmittingCreateSquadForm() || selectedSquadMembers().length == 0
+            " />
     </div>
 </organism-form>

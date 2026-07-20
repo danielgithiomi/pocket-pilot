@@ -37,7 +37,10 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
                 <div
                     class="skeleton h-5"
                     [ngClass]="{
-                        'w-1/2': detailVariant() === 'name' || detailVariant() === 'email' || detailVariant() === 'last-login',
+                        'w-1/2':
+                            detailVariant() === 'name' ||
+                            detailVariant() === 'email' ||
+                            detailVariant() === 'last-login',
                         'w-1/3': detailVariant() === 'phone',
                         'w-1/6': detailVariant() === 'role',
                         'w-1/5': detailVariant() === 'status'
@@ -58,7 +61,9 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
                         @if (formattedPhone(); as phone) {
                             <p
                                 class="value phone-value"
-                                [attr.aria-label]="phone.countryName + ' ' + phone.dialCode + ' ' + phone.nationalNumber">
+                                [attr.aria-label]="
+                                    phone.countryName + ' ' + phone.dialCode + ' ' + phone.nationalNumber
+                                ">
                                 <span class="phone-flag" aria-hidden="true">{{ phone.flag }}</span>
                                 <span class="phone-dial-code">{{ phone.dialCode }}</span>
                                 <span class="phone-national-number">{{ phone.nationalNumber }}</span>

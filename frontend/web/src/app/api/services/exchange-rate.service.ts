@@ -1,7 +1,12 @@
 import { ApiServiceError } from './api-error.service';
 import { ExchangeRatesResource } from '@methods/resources';
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { IStandardError, ExchangeRatesSnapshot, CurrencyConversionResult, EXCHANGE_RATE_BASE_CURRENCY } from '@global/types';
+import {
+    IStandardError,
+    ExchangeRatesSnapshot,
+    CurrencyConversionResult,
+    EXCHANGE_RATE_BASE_CURRENCY
+} from '@global/types';
 
 @Injectable({
     providedIn: 'root'
@@ -33,7 +38,11 @@ export class ExchangeRateService {
         });
     }
 
-    performCurrencyConversion(amount: number, fromCurrency: string, toCurrency: string): CurrencyConversionResult | null {
+    performCurrencyConversion(
+        amount: number,
+        fromCurrency: string,
+        toCurrency: string
+    ): CurrencyConversionResult | null {
         const snapshot = this._exchangeRateSnapshot();
 
         if (!snapshot) return null;

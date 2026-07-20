@@ -56,7 +56,9 @@ export class AccountDetails {
     // DATA
     protected readonly accountId = this.route.snapshot.paramMap.get('id');
     protected readonly accountResource = this.accountsService.getAccountWithItsTransactionsById(this.accountId!);
-    protected readonly transactionsResource = this.transactionsService.getAllTransactionsRelatedToAccountId(this.accountId!);
+    protected readonly transactionsResource = this.transactionsService.getAllTransactionsRelatedToAccountId(
+        this.accountId!
+    );
 
     // COMPUTED
     protected readonly hasError = computed(() => !!this.accountResource.error() || !!this.transactionsResource.error());
@@ -125,7 +127,7 @@ export class AccountDetails {
 
         this.accountsService.updateAccountBalanceVisibilityById(accountId, payload).subscribe({
             next: (account: IAccount) => {
-                const {name, isBalanceVisible} = account;
+                const { name, isBalanceVisible } = account;
 
                 this.toastService.show({
                     variant: 'success',

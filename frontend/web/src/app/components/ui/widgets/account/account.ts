@@ -96,7 +96,7 @@ export class Account implements OnInit {
 
         this.accountsService.updateAccountBalanceVisibilityById(this.id(), payload).subscribe({
             next: (account: IAccount) => {
-                const {name, isBalanceVisible} = account
+                const { name, isBalanceVisible } = account;
 
                 this.toastService.show({
                     variant: 'success',

@@ -22,7 +22,7 @@
                             name="mark-as-read"
                             [img]="MarkAsReadIcon"
                             (click)="handleMarkAllAsRead()"
-                            [ngClass]="{ 'text-reactive-text': noUnreadNotifications }"/>
+                            [ngClass]="{ 'text-reactive-text': noUnreadNotifications }" />
                     }
                 </div>
 
@@ -32,7 +32,7 @@
                         [img]="CloseIcon"
                         [size]="iconSize"
                         class="notifications-icon"
-                        (click)="closeNotificationsPanelEvent.emit()"/>
+                        (click)="closeNotificationsPanelEvent.emit()" />
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 [disabled]="noNotifications"
                 [activeItem]="activeTabIndex()"
                 wrapperClassName="!bg-body-background mx-2"
-                (selectedIndexValue)="handleOnTabChange($event)"/>
+                (selectedIndexValue)="handleOnTabChange($event)" />
 
             @let showScrollbar = notifications().length < 4;
             <div
@@ -58,7 +58,7 @@
                             [notificationItem]="notification"
                             (archive)="notificationsStore.archive($event)"
                             (markAsRead)="notificationsStore.markAsRead($event)"
-                            (actionSelected)="handleActionSelected($event)"/>
+                            (actionSelected)="handleActionSelected($event)" />
                     }
                 }
             </div>

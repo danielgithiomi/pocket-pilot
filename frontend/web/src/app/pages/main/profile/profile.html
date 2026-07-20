@@ -27,16 +27,27 @@
         </div>
 
         <!-- Right Column - Profile Details -->
-        <div class="page-card flex-1 w-full md:w-1/2" [ngClass]="{ 'md:w-full lg:w-1/2': !drawerService.isDrawerCollapsed() }">
+        <div
+            class="page-card flex-1 w-full md:w-1/2"
+            [ngClass]="{ 'md:w-full lg:w-1/2': !drawerService.isDrawerCollapsed() }">
             <div class="card-header">
                 <p class="title">Personal Information.</p>
                 <p class="subtitle">Your account details and information.</p>
             </div>
 
             <div class="card-content">
-                <profile-detail detailVariant="name" [detailValue]="user()?.name" [isLoading]="isFetchingProfileData()" />
-                <profile-detail detailVariant="email" [detailValue]="user()?.email" [isLoading]="isFetchingProfileData()" />
-                <profile-detail detailVariant="phone" [detailValue]="user()?.phoneNumber" [isLoading]="isFetchingProfileData()" />
+                <profile-detail
+                    detailVariant="name"
+                    [detailValue]="user()?.name"
+                    [isLoading]="isFetchingProfileData()" />
+                <profile-detail
+                    detailVariant="email"
+                    [detailValue]="user()?.email"
+                    [isLoading]="isFetchingProfileData()" />
+                <profile-detail
+                    detailVariant="phone"
+                    [detailValue]="user()?.phoneNumber"
+                    [isLoading]="isFetchingProfileData()" />
                 <profile-detail detailValue="USER" detailVariant="role" [isLoading]="isFetchingProfileData()" />
                 <profile-detail
                     detailVariant="status"
@@ -60,8 +71,7 @@
         [class.hidden]="!isEditFormOpen()"
         description="Update your personal information."
         (onFormCloseEvent)="isEditFormOpen.set(false)">
-
-    <form slot="content" id="edit-user-profile" (submit)="submitEditProfileForm($event)">
+        <form slot="content" id="edit-user-profile" (submit)="submitEditProfileForm($event)">
             <atom-input
                 type="text"
                 id="update-name"
@@ -121,8 +131,7 @@
         description="Update your profile picture."
         [class.hidden]="!isProfilePictureFormOpen()"
         (onFormCloseEvent)="isProfilePictureFormOpen.set(false)">
-
-    <form
+        <form
             slot="content"
             class="h-full py-4"
             [formGroup]="formGroup"

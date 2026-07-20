@@ -4,8 +4,7 @@
     [class.hidden]="!isSplitFormOpen()"
     (onFormCloseEvent)="handleSplitFormClose($event)"
     description="Split shared expenses with your squad.">
-
-<form (submit)="handleSplitFormSubmit($event)" id="split-form" slot="content">
+    <form (submit)="handleSplitFormSubmit($event)" id="split-form" slot="content">
         @switch (splitFormStep()) {
             @case (1) {
                 <split-form-step-1

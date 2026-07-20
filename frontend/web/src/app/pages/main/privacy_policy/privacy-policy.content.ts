@@ -36,7 +36,12 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
         },
         { number: 5, id: 'how-we-use-information', title: 'How We Use Information', shortTitle: 'How We Use Data' },
         { number: 6, id: 'legal-basis', title: 'Legal Basis for Processing', shortTitle: 'Legal Basis' },
-        { number: 7, id: 'ai-voice-receipt', title: 'AI, Voice Input, and Receipt Scanning', shortTitle: 'AI & Voice Input' },
+        {
+            number: 7,
+            id: 'ai-voice-receipt',
+            title: 'AI, Voice Input, and Receipt Scanning',
+            shortTitle: 'AI & Voice Input'
+        },
         { number: 8, id: 'how-we-share-information', title: 'How We Share Information', shortTitle: 'How We Share' },
         {
             number: 9,
@@ -48,10 +53,25 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
         { number: 11, id: 'security', title: 'Security', shortTitle: 'Security' },
         { number: 12, id: 'breach-notification', title: 'Data Breach Notification', shortTitle: 'Breach Notice' },
         { number: 13, id: 'your-choices', title: 'Your Choices and Privacy Rights', shortTitle: 'Your Rights' },
-        { number: 14, id: 'regional-disclosures', title: 'Regional Privacy Disclosures', shortTitle: 'Regional Disclosures' },
+        {
+            number: 14,
+            id: 'regional-disclosures',
+            title: 'Regional Privacy Disclosures',
+            shortTitle: 'Regional Disclosures'
+        },
         { number: 15, id: 'childrens-privacy', title: "Children's Privacy", shortTitle: "Children's Privacy" },
-        { number: 16, id: 'international-transfers', title: 'International Data Transfers', shortTitle: 'Intl. Transfers' },
-        { number: 17, id: 'third-party-links', title: 'Third-Party Links and Services', shortTitle: 'Third-Party Links' },
+        {
+            number: 16,
+            id: 'international-transfers',
+            title: 'International Data Transfers',
+            shortTitle: 'Intl. Transfers'
+        },
+        {
+            number: 17,
+            id: 'third-party-links',
+            title: 'Third-Party Links and Services',
+            shortTitle: 'Third-Party Links'
+        },
         { number: 18, id: 'changes', title: 'Changes to This Policy', shortTitle: 'Policy Changes' },
         { number: 19, id: 'contact-us', title: 'Contact Us', shortTitle: 'Contact Us' }
     ],
@@ -227,7 +247,9 @@ export const PRIVACY_POLICY_CONTENT: PrivacyPolicyContent = {
                 {
                     id: 'technical-usage',
                     title: '8. Technical, Usage, and Security Information',
-                    paragraphs: ['When you use the Services, we may collect technical and security information, including:'],
+                    paragraphs: [
+                        'When you use the Services, we may collect technical and security information, including:'
+                    ],
                     bullets: [
                         'IP address.',
                         'Browser type and version.',

@@ -15,7 +15,7 @@
         [ngClass]="{ 'md:flex-col! lg:flex-row! md:gap-8!': !drawerService.isDrawerCollapsed() }">
         <settings class="flex-1" />
 
-        <categories (onCategoryDelete)="deleteCategory($event)" class="flex-1"/>
+        <categories (onCategoryDelete)="deleteCategory($event)" class="flex-1" />
     </div>
 </section>
 

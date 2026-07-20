@@ -8,7 +8,7 @@ import {
     FeaturePayload,
     IStandardResponse,
     IVoidResourceResponse,
-    FeatureCommentPayload,
+    FeatureCommentPayload
 } from '@global/types';
 
 @Injectable({
@@ -36,7 +36,10 @@ export class FeaturesMutation {
     }
 
     // COMMENTS
-    addCommentToFeature(featureId: string, payload: FeatureCommentPayload): Observable<IStandardResponse<FeatureComment>> {
+    addCommentToFeature(
+        featureId: string,
+        payload: FeatureCommentPayload
+    ): Observable<IStandardResponse<FeatureComment>> {
         // features/{featureId}/comments
         const url = `${endpoints.features}/${featureId}/comments`;
         return this.client.post<FeatureComment, FeatureCommentPayload>(url, payload);

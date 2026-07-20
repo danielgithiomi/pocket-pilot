@@ -7,11 +7,11 @@
     [ngClass]="[priorityClass(), showUnreadHighlight() ? 'unread' : '', unread ? 'is-unread' : '']">
     <div class="notification-leading">
         @if (unread) {
-            <atom-pinger pingerSize="xs"/>
+            <atom-pinger pingerSize="xs" />
         }
 
         <div class="notification-icon">
-            <lucide-icon name="notification-type" [img]="icon()" [size]="18"/>
+            <lucide-icon name="notification-type" [img]="icon()" [size]="18" />
         </div>
     </div>
 
@@ -60,14 +60,16 @@
 
             <div class="utility-actions">
                 @if (unread) {
-                    <button type="button" aria-label="Mark notification as read"
-                            (click)="markAsRead.emit(notification.id)">
-                        <lucide-icon name="mark-read" [img]="MarkReadIcon" [size]="16"/>
+                    <button
+                        type="button"
+                        aria-label="Mark notification as read"
+                        (click)="markAsRead.emit(notification.id)">
+                        <lucide-icon name="mark-read" [img]="MarkReadIcon" [size]="16" />
                     </button>
                 }
 
                 <button type="button" aria-label="Archive notification" (click)="archive.emit(notification.id)">
-                    <lucide-icon name="archive" [img]="ArchiveIcon" [size]="16"/>
+                    <lucide-icon name="archive" [img]="ArchiveIcon" [size]="16" />
                 </button>
             </div>
         </div>

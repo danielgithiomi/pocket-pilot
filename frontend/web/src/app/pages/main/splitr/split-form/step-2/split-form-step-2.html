@@ -1,7 +1,9 @@
 <div id="split-form-step-2">
     <div class="header">
         <div class="header-summary">
-            <div (click)="onBackIconClick.emit()" class="group/back-icon hover:bg-muted-text p-1 rounded-lg cursor-pointer">
+            <div
+                (click)="onBackIconClick.emit()"
+                class="group/back-icon hover:bg-muted-text p-1 rounded-lg cursor-pointer">
                 <lucide-angular
                     name="back-arrow"
                     [img]="leftArrow"
@@ -31,7 +33,10 @@
                 [disabled]="isSubmittingSplittable()"
                 (clicked)="isFormVisible.set(!isFormVisible())">
                 <div class="w-full h-full grid place-items-center">
-                    <lucide-icon [size]="iconSize()" name="add-member-icon" [img]="isFormVisible() ? HideForm : ShowForm" />
+                    <lucide-icon
+                        [size]="iconSize()"
+                        name="add-member-icon"
+                        [img]="isFormVisible() ? HideForm : ShowForm" />
                 </div>
             </atom-button>
         </div>

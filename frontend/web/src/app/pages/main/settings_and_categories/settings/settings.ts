@@ -13,7 +13,12 @@ import { UpdateUserPreferencesPayload } from '@global/types';
 import { PreferencesService } from '@api/preferences.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { normalizeThemePreference } from '@infrastructure/services/theme.utils';
-import { ThemeVariant, SettingsFormSchema, ApplicationThemeOptions, SettingsFormValidationSchema } from './settings.types';
+import {
+    ThemeVariant,
+    SettingsFormSchema,
+    ApplicationThemeOptions,
+    SettingsFormValidationSchema
+} from './settings.types';
 
 @Component({
     selector: 'settings',
@@ -66,7 +71,8 @@ export class Settings {
     // FORM
     private initialSettingsFormState: SettingsFormSchema = {
         defaultCurrency: this.defaultCurrency,
-        preferredTheme: normalizeThemePreference(this.user()?.userPreferences.preferredTheme) ?? this.themeService.theme(),
+        preferredTheme:
+            normalizeThemePreference(this.user()?.userPreferences.preferredTheme) ?? this.themeService.theme(),
         monthlySpendingLimit: this.monthlySpendingLimit,
         preferredLanguage: this.user()?.userPreferences.preferredLanguage ?? 'en'
     };

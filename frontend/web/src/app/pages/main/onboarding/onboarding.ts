@@ -11,7 +11,11 @@ import { CURRENCIES, DEFAULT_COUNTRY_ISO, LANGUAGES, WEB_ROUTES } from '@global/
 import { Component, inject, signal } from '@angular/core';
 import { OnboardingService } from '@api/onboarding.service';
 import { ChevronsRight, LucideAngularModule } from 'lucide-angular';
-import { INITIAL_ONBOARDING_FORM_STATE, ONBOARDING_FORM_VALIDATION_SCHEMA, OnboardingFormSchema } from './onboarding.types';
+import {
+    INITIAL_ONBOARDING_FORM_STATE,
+    ONBOARDING_FORM_VALIDATION_SCHEMA,
+    OnboardingFormSchema
+} from './onboarding.types';
 
 @Component({
     selector: 'onboarding',

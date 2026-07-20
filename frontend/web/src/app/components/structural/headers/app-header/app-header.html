@@ -23,8 +23,7 @@
                     class="notifications-dropdown-wrapper"
                     (onPanelClose)="closeNotificationsPanel()"
                     [closePanelEnabled]="isNotificationsPanelOpen()">
-
-                @let isLoadingNotifications = notificationsStore.notificationsLoading;
+                    @let isLoadingNotifications = notificationsStore.notificationsLoading;
                     @if (isLoadingNotifications()) {
                         <div class="p-1 header-icons mr-2 primary-loader bg-alternate-background! self-center"></div>
                     } @else {
@@ -34,7 +33,7 @@
                             [size]="iconSize"
                             (click)="handleNotificationsPanelToggle()"
                             class="atom-icon header-icons transition-custom relative"
-                            [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen() }"/>
+                            [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen() }" />
 
                         @if (notificationsSummary().hasUnreadNotifications) {
                             <span class="icon-badge">
@@ -44,7 +43,7 @@
 
                         @if (isNotificationsPanelOpen()) {
                             <notifications-dropdown
-                                (closeNotificationsPanelEvent)="isNotificationsPanelOpen.set(false)"/>
+                                (closeNotificationsPanelEvent)="isNotificationsPanelOpen.set(false)" />
                         }
                     }
                 </div>
@@ -56,7 +55,7 @@
                     [size]="iconSize"
                     (click)="goToSettings()"
                     class="atom-icon header-icons transition-custom"
-                    [ngClass]="{ 'active-header-icon': isSettingsActive }"/>
+                    [ngClass]="{ 'active-header-icon': isSettingsActive }" />
             </div>
 
             <div class="vertical-separator h-8 md:hidden! lg:flex!"></div>

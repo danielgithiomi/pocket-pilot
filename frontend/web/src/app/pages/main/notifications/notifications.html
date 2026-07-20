@@ -16,7 +16,7 @@
                 [disabled]="!summary.hasUnreadNotifications"
                 (clicked)="notificationsStore.markAllAsRead()">
                 <div class="button-content">
-                    <lucide-icon [img]="MarkAllAsReadIcon" [size]="iconSize" name="mark-all-as-read"/>
+                    <lucide-icon [img]="MarkAllAsReadIcon" [size]="iconSize" name="mark-all-as-read" />
                     <span class="hidden lg:block">Mark All As Read</span>
                 </div>
             </atom-button>
@@ -50,7 +50,7 @@
                     [items]="filterTabs()"
                     [disabled]="state.isLoading"
                     [activeItem]="activeTabIndex()"
-                    (selectedIndexValue)="handleFilterChange($event)"/>
+                    (selectedIndexValue)="handleFilterChange($event)" />
             </section>
 
             <section
@@ -61,19 +61,19 @@
                         <div class="notification-skeleton"></div>
                     }
                 } @else if (state.hasError) {
-                    <fetch-error message="Failed to load notifications" messageClass="text-xs"/>
+                    <fetch-error message="Failed to load notifications" messageClass="text-xs" />
                 } @else if (state.notifications.length === 0) {
                     <no-data
                         messageClass="text-xs"
                         animationDimensions="220px"
-                        message="No notifications match this filter."/>
+                        message="No notifications match this filter." />
                 } @else {
                     @for (notification of state.notifications; track notification.id) {
                         <notification-item
                             [notificationItem]="notification"
                             (archive)="notificationsStore.archive($event)"
                             (markAsRead)="notificationsStore.markAsRead($event)"
-                            (actionSelected)="handleActionSelected($event)"/>
+                            (actionSelected)="handleActionSelected($event)" />
                     }
                 }
             </section>
@@ -82,7 +82,7 @@
         <aside class="notifications-sidebar">
             <section class="sidebar-section">
                 <div class="sidebar-heading">
-                    <lucide-icon [img]="CriticalIcon" [size]="iconSize" name="critical-alerts"/>
+                    <lucide-icon [img]="CriticalIcon" [size]="iconSize" name="critical-alerts" />
                     <h2>Critical Alerts</h2>
                 </div>
 
@@ -100,7 +100,7 @@
 
             <section class="sidebar-section">
                 <div class="sidebar-heading">
-                    <lucide-icon [img]="BellIcon" [size]="iconSize" name="bill-reminders"/>
+                    <lucide-icon [img]="BellIcon" [size]="iconSize" name="bill-reminders" />
                     <h2>Bill Reminders</h2>
                 </div>
 
