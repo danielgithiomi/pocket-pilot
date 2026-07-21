@@ -13,12 +13,17 @@ import { CategoryVariant } from '@global/types';
         <div class="category-item group/item" [ngClass]="categoryVariantClasses()">
             <p>{{ formatCategoryName(categoryName()) }}</p>
 
-            <button (click)="handleOnCategoryDelete()" class="category-icon atom-icon">
+            <button
+                class="category-icon atom-icon"
+                (click)="handleOnCategoryDelete()"
+                [ngClass]="{ 'block! opacity-100!': isDeletingCategory() }">
+
                 @if (isDeletingCategory()) {
                     <div class="delete-loader"></div>
                 } @else {
                     <lucide-icon [img]="DeleteIcon" [size]="13" name="delete-category" />
                 }
+
             </button>
         </div>
     `
