@@ -26,7 +26,7 @@
                 <h3>{{ notification.title }}</h3>
 
                 <div class="utility-actions compact-utility-actions">
-                    @if (unread) {
+                    @if (true) {
                         <button
                             type="button"
                             aria-label="Mark notification as read"
@@ -75,7 +75,7 @@
                 <div class="metadata-chips">
                     @for (chip of metadataChips(); track chip.label) {
                         <span class="metadata-chip">
-                            <span>{{ chip.label }}</span>
+                            <span>{{ chip.label }}:</span>
                             <strong>{{ chip.value }}</strong>
                         </span>
                     }

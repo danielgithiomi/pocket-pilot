@@ -72,9 +72,9 @@
                         <notification-item
                             displayMode="full"
                             [notificationItem]="notification"
+                            (actionSelected)="handleActionSelected($event)"
                             (archive)="notificationsStore.archive($event)"
-                            (markAsRead)="notificationsStore.markAsRead($event)"
-                            (actionSelected)="handleActionSelected($event)" />
+                            (markAsRead)="notificationsStore.markAsRead($event)" />
                     }
                 }
             </section>

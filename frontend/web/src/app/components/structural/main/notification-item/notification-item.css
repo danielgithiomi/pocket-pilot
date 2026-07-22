@@ -1,11 +1,15 @@
 @reference "tailwindcss";
 
 .notification-item {
-    @apply relative flex flex-row items-start gap-3 border border-transparent bg-(--body-background) px-3 py-3 transition-all duration-300 ease-in-out;
+    @apply relative flex flex-row items-start gap-3 border border-transparent bg-(--alternate-background) px-3 py-3 transition-all duration-300 ease-in-out;
 }
 
 .notification-item.compact {
     @apply gap-2 px-3 py-2;
+}
+
+.notification-item.full {
+    @apply rounded-md;
 }
 
 .notification-item.unread {
@@ -37,7 +41,7 @@
 }
 
 .notification-icon {
-    @apply grid size-8 place-items-center rounded-full bg-(--alternate-background) text-(--primary);
+    @apply grid size-8 place-items-center rounded-full bg-(--inverted-background) text-(--inverted-text);
 }
 
 .notification-item.compact .notification-icon {
@@ -142,11 +146,11 @@
 }
 
 .metadata-chip {
-    @apply flex items-center gap-1 rounded bg-(--alternate-background) px-2 py-1 text-[11px] text-(--reactive-text);
+    @apply flex items-center gap-1 rounded bg-(--reactive-text) px-2 py-1 text-[11px] text-white;
 }
 
 .metadata-chip strong {
-    @apply font-semibold text-(--primary-text);
+    @apply font-semibold text-inherit;
 }
 
 .notification-footer {
