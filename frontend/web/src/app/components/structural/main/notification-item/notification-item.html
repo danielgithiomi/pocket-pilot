@@ -19,28 +19,49 @@
         </div>
 
         <div class="notification-icon">
-            <lucide-icon name="notification-type" [img]="icon()" [size]="IconSize + 3" />
+            <lucide-icon name="notification-type" [img]="icon()" [size]="NotificationIconSize" />
         </div>
     </div>
 
     @if (isCompact()) {
         <div class="notification-content compact-content">
             <div class="compact-header">
-                <h3>{{ notification.title }}</h3>
+                <h3 class="text-xs!">{{ notification.title }}</h3>
 
                 <div class="utility-actions compact-utility-actions">
                     @if (unread) {
-                        <button
+                        <atom-button
                             type="button"
+                            class="notification-icon"
+                            className="bg-transparent!"
                             aria-label="Mark notification as read"
-                            (click)="markAsRead.emit(notification.id)">
-                            <lucide-icon name="mark-read" [img]="MarkReadIcon" [size]="IconSize" />
-                        </button>
+                            [id]="`mark-${notification.id}-as-read`"
+                            (clicked)="markAsRead.emit(notification.id)">
+
+                            <lucide-icon
+                                name="mark-read"
+                                [img]="MarkReadIcon"
+                                [size]="FooterIconSize"
+                                class="notification-lucide-icon" />
+
+                        </atom-button>
                     }
 
-                    <button type="button" aria-label="Archive notification" (click)="archive.emit(notification.id)">
-                        <lucide-icon name="archive" [img]="ArchiveIcon" [size]="IconSize" />
-                    </button>
+                    <atom-button
+                        type="button"
+                        class="notification-action"
+                        className="bg-transparent!"
+                        aria-label="Archive Notification"
+                        (clicked)="archive.emit(notification.id)"
+                        [id]="`archive-notification-${notification.id}`">
+
+                        <lucide-icon
+                            name="archive"
+                            [img]="ArchiveIcon"
+                            [size]="FooterIconSize"
+                            class="notification-lucide-icon" />
+
+                    </atom-button>
                 </div>
             </div>
 
@@ -61,6 +82,7 @@
                     <div class="notification-badges">
                         <span class="badge category">{{ categoryLabel() }}</span>
                         <span class="badge priority">{{ priorityLabel() }}</span>
+
                         @if (notification.requiresAction) {
                             <span class="badge action-required">Action required</span>
                         }
@@ -101,17 +123,36 @@
 
                 <div class="utility-actions">
                     @if (unread) {
-                        <button
+                        <atom-button
                             type="button"
+                            className="bg-transparent!"
                             aria-label="Mark notification as read"
-                            (click)="markAsRead.emit(notification.id)">
-                            <lucide-icon name="mark-read" [img]="MarkReadIcon" [size]="16" />
-                        </button>
+                            [id]="`mark-${notification.id}-as-read`"
+                            (clicked)="markAsRead.emit(notification.id)">
+
+                            <lucide-icon
+                                name="mark-read"
+                                [img]="MarkReadIcon"
+                                [size]="FooterIconSize"
+                                class="notification-lucide-icon" />
+
+                        </atom-button>
                     }
 
-                    <button type="button" aria-label="Archive notification" (click)="archive.emit(notification.id)">
-                        <lucide-icon name="archive" [img]="ArchiveIcon" [size]="16" />
-                    </button>
+                    <atom-button
+                        type="button"
+                        className="bg-transparent!"
+                        [id]="`archive-notification`"
+                        aria-label="Archive notification"
+                        (clicked)="archive.emit(notification.id)">
+
+                        <lucide-icon
+                            [img]="ArchiveIcon"
+                            [size]="FooterIconSize"
+                            name="archive-notification"
+                            class="notification-lucide-icon" />
+
+                    </atom-button>
                 </div>
             </div>
         </div>

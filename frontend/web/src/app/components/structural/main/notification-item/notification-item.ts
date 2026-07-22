@@ -42,7 +42,8 @@ const ICON_MAP: Record<string, LucideIconData> = {
 })
 export class NotificationItem {
     // ICONS
-    protected readonly IconSize = 13;
+    protected readonly FooterIconSize = 14;
+    protected readonly NotificationIconSize = 16;
     protected readonly ArchiveIcon = Archive;
     protected readonly MarkReadIcon = EyeIcon;
 

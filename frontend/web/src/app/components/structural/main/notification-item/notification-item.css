@@ -1,17 +1,15 @@
 @reference "tailwindcss";
 
-button,
-lucide-icon
-{
-    @apply cursor-pointer!;
+.notification-lucide-icon {
+    @apply cursor-pointer! text-(--reactive-text) hover:text-(--primary);
 }
 
 .notification-item {
-    @apply relative flex w-full min-w-0 max-w-full flex-row items-start gap-3 overflow-hidden border border-transparent bg-(--alternate-background) px-2 py-2 transition-all duration-300 ease-in-out;
+    @apply relative flex w-full min-w-0 max-w-full flex-row items-start gap-3 overflow-hidden border border-transparent bg-(--alternate-background) p-3 transition-all duration-300 ease-in-out;
 }
 
 .notification-item.compact {
-    @apply gap-2 py-2;
+    @apply gap-3 py-2;
 }
 
 .notification-item.full {
@@ -202,13 +200,5 @@ lucide-icon
 }
 
 .utility-actions {
-    @apply flex shrink-0 items-center gap-2;
-}
-
-.utility-actions button {
-    @apply grid size-8 place-items-center rounded bg-(--alternate-background) text-(--reactive-text) transition-colors duration-200 hover:text-(--primary);
-}
-
-.compact-utility-actions button {
-    @apply size-6 bg-transparent;
+    @apply flex shrink-0 items-center gap-1 justify-end;
 }
