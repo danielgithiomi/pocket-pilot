@@ -1,4 +1,5 @@
 import { Pinger } from '@atoms/pinger';
+import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { formatToReadable } from '@libs/utils';
 import { Component, computed, effect, input, output, signal } from '@angular/core';
@@ -37,7 +38,7 @@ const ICON_MAP: Record<string, LucideIconData> = {
     selector: 'notification-item',
     styleUrl: './notification-item.css',
     templateUrl: './notification-item.html',
-    imports: [LucideAngularModule, NgClass, Pinger]
+    imports: [LucideAngularModule, NgClass, Button, Pinger]
 })
 export class NotificationItem {
     // ICONS

@@ -6,14 +6,17 @@
     class="notification-item"
     [ngClass]="[
         priorityClass(),
+        unread ? 'is-unread' : '',
         isCompact() ? 'compact' : 'full',
         showUnreadHighlight() ? 'unread' : '',
-        unread ? 'is-unread' : ''
+        isCompact() ? 'bg-body-background!' : ''
     ]">
     <div class="notification-leading">
-        @if (unread) {
-            <atom-pinger pingerSize="xs" />
-        }
+        <div class="notification-unread-indicator" aria-hidden="true">
+            @if (unread) {
+                <atom-pinger pingerSize="xs" />
+            }
+        </div>
 
         <div class="notification-icon">
             <lucide-icon name="notification-type" [img]="icon()" [size]="IconSize + 3" />
@@ -26,7 +29,7 @@
                 <h3>{{ notification.title }}</h3>
 
                 <div class="utility-actions compact-utility-actions">
-                    @if (true) {
+                    @if (unread) {
                         <button
                             type="button"
                             aria-label="Mark notification as read"
@@ -85,13 +88,14 @@
             <div class="notification-footer">
                 <div class="notification-actions">
                     @for (action of notification.actions ?? []; track action.id) {
-                        <button
+                        <atom-button
                             type="button"
+                            [label]="action.label"
                             class="notification-action"
-                            [ngClass]="action.variant.toLowerCase()"
-                            (click)="handleAction(action)">
-                            {{ action.label }}
-                        </button>
+                            className="bg-transparent!"
+                            (clicked)="handleAction(action)"
+                            [id]="action.id + '-' + action.label"
+                            [ngClass]="action.variant.toLowerCase()" />
                     }
                 </div>
 

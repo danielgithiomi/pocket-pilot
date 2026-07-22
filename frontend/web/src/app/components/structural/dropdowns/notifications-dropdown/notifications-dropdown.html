@@ -58,6 +58,7 @@
                 } @else {
                     @for (notification of notifications(); track notification.id) {
                         <notification-item
+                            class="w-full shrink-0"
                             [notificationItem]="notification"
                             (actionSelected)="handleActionSelected($event)"
                             (archive)="notificationsStore.archive($event)"

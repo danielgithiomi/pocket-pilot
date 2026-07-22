@@ -14,7 +14,7 @@ import { Component, computed, inject, output, signal } from '@angular/core';
         }
 
         .overlay {
-            @apply absolute inset-0 rounded-full grid place-items-center;
+            @apply absolute inset-0 rounded-full grid place-items-center z-1;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             background: var(--overlay-background);
@@ -25,10 +25,11 @@ import { Component, computed, inject, output, signal } from '@angular/core';
         <div
             id="profile-picture"
             class="profile-picture group"
+            (click)="profilePictureClicked.emit()"
             (mouseenter)="isHovered.set(true)"
             (mouseleave)="isHovered.set(false)"
-            [ngClass]="{ 'border border-primary': !!profilePictureUrl() }"
-            (click)="profilePictureClicked.emit()">
+            [ngClass]="{ 'border border-primary': !!profilePictureUrl() }" >
+
             @if (isHovered()) {
                 <div class="overlay animate-fade-in">
                     <div class="flex flex-col items-center gap-1">

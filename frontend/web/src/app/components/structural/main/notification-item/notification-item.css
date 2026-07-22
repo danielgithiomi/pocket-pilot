@@ -1,11 +1,17 @@
 @reference "tailwindcss";
 
+button,
+lucide-icon
+{
+    @apply cursor-pointer!;
+}
+
 .notification-item {
-    @apply relative flex flex-row items-start gap-3 border border-transparent bg-(--alternate-background) px-3 py-3 transition-all duration-300 ease-in-out;
+    @apply relative flex w-full min-w-0 max-w-full flex-row items-start gap-3 overflow-hidden border border-transparent bg-(--alternate-background) px-2 py-2 transition-all duration-300 ease-in-out;
 }
 
 .notification-item.compact {
-    @apply gap-2 px-3 py-2;
+    @apply gap-2 py-2;
 }
 
 .notification-item.full {
@@ -37,7 +43,11 @@
 }
 
 .notification-leading {
-    @apply flex shrink-0 flex-row items-center gap-2 pt-0.5;
+    @apply flex shrink-0 flex-row items-center justify-between pt-0.5;
+}
+
+.notification-unread-indicator {
+    @apply grid h-2 w-1 shrink-0 place-items-center;
 }
 
 .notification-icon {
@@ -49,32 +59,42 @@
 }
 
 .notification-content {
-    @apply min-w-0 flex-1;
+    @apply min-w-0 flex-1 overflow-hidden;
 }
 
 .compact-content {
-    @apply flex flex-col gap-1;
+    @apply flex w-full min-w-0 flex-col gap-1;
 }
 
 .compact-header {
-    @apply flex min-w-0 flex-row items-center justify-between gap-2;
+    @apply flex w-full min-w-0 flex-row items-center justify-between gap-2;
 }
 
 .compact-header h3 {
-    @apply truncate text-sm font-semibold text-(--primary-text);
+    @apply min-w-0 flex-1 truncate text-sm font-semibold text-(--primary-text);
 }
 
 .compact-message {
-    @apply mt-0 line-clamp-1 text-[11px] leading-4;
+    @apply mb-1 min-w-0 max-w-full line-clamp-1 text-[11px] leading-4;
 }
 
 .compact-meta {
-    @apply flex min-w-0 flex-row items-center gap-1.5 text-[10px] font-semibold uppercase text-(--reactive-text);
+    @apply flex w-full min-w-0 flex-row items-center gap-1.5 overflow-hidden text-[10px] font-semibold uppercase text-(--reactive-text);
 }
 
 .compact-meta span,
 .compact-meta time {
+    @apply min-w-0;
+}
+
+.compact-meta span[aria-hidden],
+.compact-meta time,
+.compact-priority {
     @apply shrink-0;
+}
+
+.compact-meta span:not([aria-hidden]):not(.compact-priority) {
+    @apply truncate;
 }
 
 .compact-priority.critical {
@@ -162,7 +182,7 @@
 }
 
 .notification-action {
-    @apply rounded px-3 py-1.5 text-[11px] font-semibold transition-all duration-200 ease-in-out;
+    @apply rounded text-[11px] font-semibold transition-all duration-200 ease-in-out text-(--inverted-text);
 }
 
 .notification-action.primary {
@@ -170,7 +190,7 @@
 }
 
 .notification-action.secondary {
-    @apply bg-(--inverted-background) text-(--inverted-text) hover:scale-101;
+    @apply bg-(--inverted-background) text-(--text-primary) hover:scale-101;
 }
 
 .notification-action.danger {
@@ -182,7 +202,7 @@
 }
 
 .utility-actions {
-    @apply flex items-center gap-2;
+    @apply flex shrink-0 items-center gap-2;
 }
 
 .utility-actions button {
