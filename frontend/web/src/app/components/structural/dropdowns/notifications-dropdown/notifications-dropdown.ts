@@ -15,7 +15,7 @@ import { AppNotification, NotificationAction, NotificationFilter } from '@global
 })
 export class NotificationsDropdown {
     // ICONS
-    protected readonly iconSize: number = 18;
+    protected readonly iconSize = 18;
     protected readonly CloseIcon = X;
     protected readonly MarkAsReadIcon = CheckCheck;
 
@@ -27,18 +27,23 @@ export class NotificationsDropdown {
     protected readonly notificationsStore = inject(NotificationsStore);
 
     // DATA
+    protected readonly isMarkingAllAsRead = this.notificationsStore.isMarkingAllAsRead;
     protected readonly notificationsSummary = this.notificationsStore.notificationsSummary;
     protected readonly activeNotificationFilter = this.notificationsStore.activeNotificationsFilter;
-    protected readonly isMarkingAllAsRead = this.notificationsStore.isMarkingAllAsRead;
 
     // SIGNAL STATES
-    protected readonly activeTabIndex = signal<number>(0);
+    protected readonly activeTabIndex = signal<0 | 1>(0);
     protected readonly activeTabValue = signal<NotificationFilter>(this.activeNotificationFilter());
 
-    // COMPUTEDs
+    // COMPUTEDS
     protected readonly notifications = computed<AppNotification[]>(() =>
         this.notificationsSummary().notifications.slice(0, 4)
     );
+    protected readonly tabEmptyMessage = computed<string>(() => {
+        const isUnreadTab = this.activeTabIndex() === 1;
+
+        return isUnreadTab ? 'You have no unread notifications.' : 'You have no notifications.';
+    });
 
     protected readonly tabListItems = computed<TabListItem[]>(() => [
         {
@@ -56,8 +61,9 @@ export class NotificationsDropdown {
         this.closeNotificationsPanelEvent.emit();
         await this.router.navigateByUrl('/notifications');
     };
+
     protected handleOnTabChange({ index, value }: TabChangeEventOutput) {
-        this.activeTabIndex.set(index);
+        this.activeTabIndex.set(index as 0 | 1);
         this.notificationsStore.setNotificationFilter(value as NotificationFilter);
     }
 

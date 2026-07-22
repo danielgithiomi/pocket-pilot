@@ -20,6 +20,8 @@ import {
 
 const UNREAD_HIGHLIGHT_DURATION_MS = 3000;
 
+type NotificationItemDisplayMode = 'compact' | 'full';
+
 const ICON_MAP: Record<string, LucideIconData> = {
     bell: Bell,
     gauge: Gauge,
@@ -39,11 +41,13 @@ const ICON_MAP: Record<string, LucideIconData> = {
 })
 export class NotificationItem {
     // ICONS
+    protected readonly IconSize = 13;
     protected readonly ArchiveIcon = Archive;
     protected readonly MarkReadIcon = EyeIcon;
 
     // INPUTS
     readonly notificationItem = input.required<AppNotification>();
+    readonly displayMode = input<NotificationItemDisplayMode>('compact');
 
     // OUTPUTS
     readonly archive = output<string>();
@@ -55,12 +59,21 @@ export class NotificationItem {
 
     // COMPUTED
     protected readonly isUnread = computed<boolean>(() => this.notificationItem().status === 'UNREAD');
+    protected readonly isCompact = computed<boolean>(() => this.displayMode() === 'compact');
     protected readonly icon = computed<LucideIconData>(() => ICON_MAP[this.notificationItem().icon] ?? Bell);
     protected readonly notificationId = computed<string>(() => `notification-${this.notificationItem().id}`);
     protected readonly priorityLabel = computed<string>(() => formatToReadable(this.notificationItem().priority));
     protected readonly categoryLabel = computed<string>(() => formatToReadable(this.notificationItem().category));
+    protected readonly previewMessage = computed<string>(
+        () => this.notificationItem().shortMessage ?? this.notificationItem().message
+    );
     protected readonly createdAtLabel = computed<string>(() =>
         new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(
+            new Date(this.notificationItem().createdAt)
+        )
+    );
+    protected readonly compactCreatedAtLabel = computed<string>(() =>
+        new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(
             new Date(this.notificationItem().createdAt)
         )
     );

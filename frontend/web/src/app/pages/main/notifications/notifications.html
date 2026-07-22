@@ -70,6 +70,7 @@
                 } @else {
                     @for (notification of state.notifications; track notification.id) {
                         <notification-item
+                            displayMode="full"
                             [notificationItem]="notification"
                             (archive)="notificationsStore.archive($event)"
                             (markAsRead)="notificationsStore.markAsRead($event)"

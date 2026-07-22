@@ -49,16 +49,19 @@
             @let showScrollbar = notifications().length < 4;
             <div
                 class="notifications-list"
-                [ngClass]="{ 'no-scrollbar': showScrollbar, 'no-notifications': noNotifications }">
+                [ngClass]="{
+                    'no-scrollbar': showScrollbar,
+                    'no-notifications': noNotifications || noUnreadNotifications
+                }">
                 @if (noNotifications) {
-                    <p class="text-xs! text-reactive-text">You have no notifications!</p>
+                    <p class="text-xs! text-reactive-text">{{ tabEmptyMessage() }}</p>
                 } @else {
                     @for (notification of notifications(); track notification.id) {
                         <notification-item
                             [notificationItem]="notification"
+                            (actionSelected)="handleActionSelected($event)"
                             (archive)="notificationsStore.archive($event)"
-                            (markAsRead)="notificationsStore.markAsRead($event)"
-                            (actionSelected)="handleActionSelected($event)" />
+                            (markAsRead)="notificationsStore.markAsRead($event)" />
                     }
                 }
             </div>

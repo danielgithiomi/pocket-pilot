@@ -1,77 +1,115 @@
-@let notification = notificationItem();
 @let unread = isUnread();
+@let notification = notificationItem();
 
 <article
     [id]="notificationId()"
     class="notification-item"
-    [ngClass]="[priorityClass(), showUnreadHighlight() ? 'unread' : '', unread ? 'is-unread' : '']">
+    [ngClass]="[
+        priorityClass(),
+        isCompact() ? 'compact' : 'full',
+        showUnreadHighlight() ? 'unread' : '',
+        unread ? 'is-unread' : ''
+    ]">
     <div class="notification-leading">
         @if (unread) {
             <atom-pinger pingerSize="xs" />
         }
 
         <div class="notification-icon">
-            <lucide-icon name="notification-type" [img]="icon()" [size]="18" />
+            <lucide-icon name="notification-type" [img]="icon()" [size]="IconSize + 3" />
         </div>
     </div>
 
-    <div class="notification-content">
-        <div class="notification-header">
-            <div class="min-w-0">
-                <div class="notification-badges">
-                    <span class="badge category">{{ categoryLabel() }}</span>
-                    <span class="badge priority">{{ priorityLabel() }}</span>
-                    @if (notification.requiresAction) {
-                        <span class="badge action-required">Action required</span>
+    @if (isCompact()) {
+        <div class="notification-content compact-content">
+            <div class="compact-header">
+                <h3>{{ notification.title }}</h3>
+
+                <div class="utility-actions compact-utility-actions">
+                    @if (unread) {
+                        <button
+                            type="button"
+                            aria-label="Mark notification as read"
+                            (click)="markAsRead.emit(notification.id)">
+                            <lucide-icon name="mark-read" [img]="MarkReadIcon" [size]="IconSize" />
+                        </button>
+                    }
+
+                    <button type="button" aria-label="Archive notification" (click)="archive.emit(notification.id)">
+                        <lucide-icon name="archive" [img]="ArchiveIcon" [size]="IconSize" />
+                    </button>
+                </div>
+            </div>
+
+            <p class="notification-message compact-message">{{ previewMessage() }}</p>
+
+            <div class="compact-meta">
+                <span [ngClass]="['compact-priority', priorityClass()]">{{ priorityLabel() }}</span>
+                <span aria-hidden="true">•</span>
+                <span>{{ categoryLabel() }}</span>
+                <span aria-hidden="true">•</span>
+                <time>{{ compactCreatedAtLabel() }}</time>
+            </div>
+        </div>
+    } @else {
+        <div class="notification-content">
+            <div class="notification-header">
+                <div class="min-w-0">
+                    <div class="notification-badges">
+                        <span class="badge category">{{ categoryLabel() }}</span>
+                        <span class="badge priority">{{ priorityLabel() }}</span>
+                        @if (notification.requiresAction) {
+                            <span class="badge action-required">Action required</span>
+                        }
+                    </div>
+
+                    <h3>{{ notification.title }}</h3>
+                </div>
+
+                <span class="notification-time">{{ createdAtLabel() }}</span>
+            </div>
+
+            <p class="notification-message">{{ notification.message }}</p>
+
+            @if (metadataChips().length > 0) {
+                <div class="metadata-chips">
+                    @for (chip of metadataChips(); track chip.label) {
+                        <span class="metadata-chip">
+                            <span>{{ chip.label }}</span>
+                            <strong>{{ chip.value }}</strong>
+                        </span>
+                    }
+                </div>
+            }
+
+            <div class="notification-footer">
+                <div class="notification-actions">
+                    @for (action of notification.actions ?? []; track action.id) {
+                        <button
+                            type="button"
+                            class="notification-action"
+                            [ngClass]="action.variant.toLowerCase()"
+                            (click)="handleAction(action)">
+                            {{ action.label }}
+                        </button>
                     }
                 </div>
 
-                <h3>{{ notification.title }}</h3>
-            </div>
+                <div class="utility-actions">
+                    @if (unread) {
+                        <button
+                            type="button"
+                            aria-label="Mark notification as read"
+                            (click)="markAsRead.emit(notification.id)">
+                            <lucide-icon name="mark-read" [img]="MarkReadIcon" [size]="16" />
+                        </button>
+                    }
 
-            <span class="notification-time">{{ createdAtLabel() }}</span>
-        </div>
-
-        <p class="notification-message">{{ notification.message }}</p>
-
-        @if (metadataChips().length > 0) {
-            <div class="metadata-chips">
-                @for (chip of metadataChips(); track chip.label) {
-                    <span class="metadata-chip">
-                        <span>{{ chip.label }}</span>
-                        <strong>{{ chip.value }}</strong>
-                    </span>
-                }
-            </div>
-        }
-
-        <div class="notification-footer">
-            <div class="notification-actions">
-                @for (action of notification.actions ?? []; track action.id) {
-                    <button
-                        type="button"
-                        class="notification-action"
-                        [ngClass]="action.variant.toLowerCase()"
-                        (click)="handleAction(action)">
-                        {{ action.label }}
+                    <button type="button" aria-label="Archive notification" (click)="archive.emit(notification.id)">
+                        <lucide-icon name="archive" [img]="ArchiveIcon" [size]="16" />
                     </button>
-                }
-            </div>
-
-            <div class="utility-actions">
-                @if (unread) {
-                    <button
-                        type="button"
-                        aria-label="Mark notification as read"
-                        (click)="markAsRead.emit(notification.id)">
-                        <lucide-icon name="mark-read" [img]="MarkReadIcon" [size]="16" />
-                    </button>
-                }
-
-                <button type="button" aria-label="Archive notification" (click)="archive.emit(notification.id)">
-                    <lucide-icon name="archive" [img]="ArchiveIcon" [size]="16" />
-                </button>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </article>

@@ -1,7 +1,11 @@
 @reference "tailwindcss";
 
 .notification-item {
-    @apply relative flex flex-row items-start gap-3 rounded-md border border-transparent bg-(--body-background) px-3 py-3 transition-all duration-300 ease-in-out;
+    @apply relative flex flex-row items-start gap-3 border border-transparent bg-(--body-background) px-3 py-3 transition-all duration-300 ease-in-out;
+}
+
+.notification-item.compact {
+    @apply gap-2 px-3 py-2;
 }
 
 .notification-item.unread {
@@ -17,11 +21,15 @@
 }
 
 .notification-item.high {
-    @apply border-l-4 border-l-(--warning);
+    @apply border-l-4 border-l-(--quaternary);
 }
 
 .notification-item.medium {
-    @apply border-l-4 border-l-(--primary);
+    @apply border-l-4 border-l-(--warning);
+}
+
+.notification-item.low {
+    @apply border-l-4 border-l-(--success);
 }
 
 .notification-leading {
@@ -29,11 +37,60 @@
 }
 
 .notification-icon {
-    @apply grid size-10 place-items-center rounded-full bg-(--alternate-background) text-(--primary);
+    @apply grid size-8 place-items-center rounded-full bg-(--alternate-background) text-(--primary);
+}
+
+.notification-item.compact .notification-icon {
+    @apply size-8;
 }
 
 .notification-content {
     @apply min-w-0 flex-1;
+}
+
+.compact-content {
+    @apply flex flex-col gap-1;
+}
+
+.compact-header {
+    @apply flex min-w-0 flex-row items-center justify-between gap-2;
+}
+
+.compact-header h3 {
+    @apply truncate text-sm font-semibold text-(--primary-text);
+}
+
+.compact-message {
+    @apply mt-0 line-clamp-1 text-[11px] leading-4;
+}
+
+.compact-meta {
+    @apply flex min-w-0 flex-row items-center gap-1.5 text-[10px] font-semibold uppercase text-(--reactive-text);
+}
+
+.compact-meta span,
+.compact-meta time {
+    @apply shrink-0;
+}
+
+.compact-priority.critical {
+    @apply text-(--error);
+}
+
+.compact-priority.high {
+    @apply text-(--quaternary);
+}
+
+.compact-priority.medium {
+    @apply text-(--warning);
+}
+
+.compact-priority.low {
+    @apply text-(--success);
+}
+
+.compact-utility-actions {
+    @apply shrink-0 gap-1;
 }
 
 .notification-header {
@@ -126,4 +183,8 @@
 
 .utility-actions button {
     @apply grid size-8 place-items-center rounded bg-(--alternate-background) text-(--reactive-text) transition-colors duration-200 hover:text-(--primary);
+}
+
+.compact-utility-actions button {
+    @apply size-6 bg-transparent;
 }

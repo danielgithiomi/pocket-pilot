@@ -17,13 +17,11 @@ import { CategoryVariant } from '@global/types';
                 class="category-icon atom-icon"
                 (click)="handleOnCategoryDelete()"
                 [ngClass]="{ 'block! opacity-100!': isDeletingCategory() }">
-
                 @if (isDeletingCategory()) {
                     <div class="delete-loader"></div>
                 } @else {
                     <lucide-icon [img]="DeleteIcon" [size]="13" name="delete-category" />
                 }
-
             </button>
         </div>
     `
