@@ -117,7 +117,8 @@
                             className="bg-transparent!"
                             (clicked)="handleAction(action)"
                             [id]="action.id + '-' + action.label"
-                            [ngClass]="action.variant.toLowerCase()" />
+                            [ngClass]="action.variant.toLowerCase()"
+                            [variant]="action.variant === 'SECONDARY' ? 'secondary' : 'primary'" />
                     }
                 </div>
 

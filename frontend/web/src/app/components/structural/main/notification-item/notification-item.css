@@ -188,7 +188,7 @@
 }
 
 .notification-action.secondary {
-    @apply bg-(--inverted-background) text-(--text-primary) hover:scale-101;
+    @apply bg-(--inverted-background) text-black hover:scale-101;
 }
 
 .notification-action.danger {
