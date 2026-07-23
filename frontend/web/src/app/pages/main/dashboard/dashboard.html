@@ -123,7 +123,7 @@
                 subtitle="The monthly calendar"
                 [ngClass]="{ 'md:col-span-2! xl:col-span-1!': !drawerService.isDrawerCollapsed() }">
                 <div custom-content class="w-full grid place-items-center">
-                    <ejs-calendar [min]="minDate" />
+                    <ejs-calendar (change)="handleOnDateClick($event)" [min]="minDate" />
                 </div>
             </dashboard-card>
 

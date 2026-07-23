@@ -9,9 +9,9 @@ import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { TransactionsService } from '@api/transactions.service';
 import { UpcomingBills } from './upcoming-bills/upcoming-bills';
-import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { Component, computed, inject, signal } from '@angular/core';
 import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
+import { CalendarModule, ChangedEventArgs } from '@syncfusion/ej2-angular-calendars';
 import {
     Wallet,
     HandCoins,
@@ -127,7 +127,7 @@ export class Dashboard {
         return Math.min(100, Math.max(0, Math.round(ratio)));
     });
 
-    // Methods
+    // METHODS
     protected onMonthChange(month: string) {
         this.currentMonth.set(month);
     }
@@ -140,7 +140,11 @@ export class Dashboard {
         });
     }
 
-    // Helper Methods
+    protected handleOnDateClick(event: ChangedEventArgs) {
+        console.log(event);
+    }
+
+    // HELPER FUNCTIONS
     protected formatCurrency(value: string) {
         return formatCurrency(Number(value), this.currency, 2, true, false);
     }

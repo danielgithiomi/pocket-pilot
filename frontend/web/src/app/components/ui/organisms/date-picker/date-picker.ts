@@ -33,16 +33,20 @@ export class DatePicker {
     clearOutput = output<void>();
 
     /* ICONS */
-    readonly X = X;
-    readonly iconSize = 18;
-    readonly CalendarIcon = Calendar;
+    protected readonly X = X;
+    protected readonly iconSize = 18;
+    protected readonly CalendarIcon = Calendar;
 
     /* SIGNALS */
-    protected isCalendarOpen = signal(false);
+    protected readonly isCalendarOpen = signal(false);
 
     /* COMPUTED */
-    fieldState = computed(() => this.formField()());
-    inputId = computed<string>(() => `date-picker-${this.id()}`);
+    protected readonly inputId = computed<string>(() => `date-picker-${this.id()}`);
+    protected readonly fieldState = computed(() => this.formField()());
+
+    protected readonly calendarValue = computed<Date>(() => this.selectedDateValue() ?? new Date(Date.now()));
+    protected readonly calendarMin = computed<Date>(() => this.min() ?? new Date(1900, 0, 1));
+    protected readonly calendarMax = computed<Date>(() => this.max() ?? new Date(2099, 11, 31));
 
     formattedDate = computed<string>(() => {
         const value = this.fieldState().value();
