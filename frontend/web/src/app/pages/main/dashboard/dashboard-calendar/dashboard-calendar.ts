@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Calendar1 } from 'lucide-angular';
-import { Component, inject } from '@angular/core';
 import { DrawerService } from '@infrastructure/services';
+import { Component, inject, output } from '@angular/core';
 import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
 import { CalendarModule, ChangedEventArgs } from '@syncfusion/ej2-angular-calendars';
 
@@ -14,6 +14,9 @@ export class DashboardCalendar {
     // ICONS
     protected readonly calendarIcon = Calendar1;
 
+    // OUTPUTS
+    onDateClickedEvent = output<ChangedEventArgs>();
+
     // DATA
     protected readonly minDate: Date = new Date(Date.now());
 
@@ -21,5 +24,7 @@ export class DashboardCalendar {
     protected readonly drawerService = inject(DrawerService);
 
     // METHODS
-    handleOnDateClick(event: ChangedEventArgs) {}
+    handleOnDateClick(event: ChangedEventArgs) {
+        this.onDateClickedEvent.emit(event);
+    }
 }

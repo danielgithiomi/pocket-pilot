@@ -113,7 +113,7 @@
             </dashboard-card>
 
             <!-- Calendar Card -->
-            <dashboard-calendar />
+            <dashboard-calendar (onDateClickedEvent)="handleOnDateClicked($event)" />
 
             <!-- Analysis Card -->
             <dashboard-card
@@ -144,3 +144,18 @@
         </div>
     </div>
 </section>
+
+@if (isDateClickedModalOpen()) {
+    <organism-form
+        id="date-selector"
+        title="Set Date Action"
+        [class.hidden]="!isDateClickedModalOpen()"
+        description="Set a reminder or event on a specific date"
+        (onFormCloseEvent)="isDateClickedModalOpen.set(false)" >
+
+        <form slot="content" id="date-picker-form" (submit)="handleOnDatePickerSubmit($event)">
+
+        </form>
+
+    </organism-form>
+}

@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { Form } from '@organisms/form';
 import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
 import { MONTHS_ENUM } from '@global/constants';
@@ -6,22 +6,19 @@ import { RatioSlider } from '@atoms/ratio-slider';
 import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
-import { DrawerService } from '@infrastructure/services';
 import { DashboardCalendar } from './dashboard-calendar';
+import { DrawerService } from '@infrastructure/services';
 import { TransactionsService } from '@api/transactions.service';
 import { UpcomingBills } from './upcoming-bills/upcoming-bills';
 import { Component, computed, inject, signal } from '@angular/core';
+import { ChangedEventArgs } from '@syncfusion/ej2-angular-calendars';
 import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
-import { CalendarModule, ChangedEventArgs } from '@syncfusion/ej2-angular-calendars';
 import {
     Wallet,
     HandCoins,
-    PiggyBank,
-    Calendar1,
     CirclePile,
     TrendingUp,
     CircleGauge,
-    ReceiptCent,
     TrendingDown,
     ArrowLeftRight,
     BrickWallShield,
@@ -33,13 +30,12 @@ import {
     styleUrl: './dashboard.css',
     templateUrl: './dashboard.html',
     imports: [
-        NgClass,
+        Form,
         RatioSlider,
         ProgressBar,
         CostAnalysis,
         UpcomingBills,
         DashboardCard,
-        CalendarModule,
         DashboardCalendar,
         LucideAngularModule
     ]
@@ -48,10 +44,8 @@ export class Dashboard {
     // Icons
     readonly iconSize: number = 16;
     protected readonly walletIcon = Wallet;
-    protected readonly ratioIcon = PiggyBank;
     protected readonly pilesIcon = CirclePile;
     protected readonly gaugeIcon = CircleGauge;
-    protected readonly billsIcon = ReceiptCent;
     protected readonly incomeIcon = TrendingUp;
     protected readonly handCoinsIcon = HandCoins;
     protected readonly expenseIcon = TrendingDown;
@@ -65,7 +59,6 @@ export class Dashboard {
     private readonly transactionsService = inject(TransactionsService);
 
     // Data
-    protected readonly minDate = new Date();
     protected readonly currentMonthIndex = new Date().getMonth();
     protected readonly accounts = this.accountsService.getUserAccounts();
     protected readonly currency = this.accountsService.getDefaultCurrency();
@@ -75,6 +68,7 @@ export class Dashboard {
 
     // States
     protected readonly currentMonth = signal<string>(this.actualMonth);
+    protected readonly isDateClickedModalOpen = signal<boolean>(false);
 
     // Computed
     protected readonly isDataLoading = computed(() => this.accounts.isLoading() || this.transactions.isLoading());
@@ -141,9 +135,16 @@ export class Dashboard {
         });
     }
 
-    protected handleOnDateClick(event: ChangedEventArgs) {
+    protected handleOnDateClicked(event: ChangedEventArgs) {
         console.log(event);
+        if (event.value) this.isDateClickedModalOpen.set(true);
     }
+
+    protected handleOnDatePickerSubmit(event: Event) {
+        event.preventDefault();
+
+        console.log("Submitted form")
+    };
 
     // HELPER FUNCTIONS
     protected formatCurrency(value: string) {
