@@ -127,7 +127,8 @@ export class FeatureDetails {
             comment: this.commentDraft(),
             createdAt: new Date(Date.now()),
             authorName: this.authService.user()!.name,
-            authorProfilePictureUrl: this.authService.user()?.profilePictureUrl
+            authorProfilePictureUrl: this.authService.user()?.profilePictureUrl,
+            authorProfilePictureThumbnailUrl: this.authService.user()?.profilePictureThumbnailUrl
         };
 
         this.optimisticComments.update(comments => [optimisticComment, ...comments]);

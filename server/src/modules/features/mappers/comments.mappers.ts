@@ -10,15 +10,19 @@ export async function mapPrismaCommentToDto(
     formatProfilePictureUrl: (key: string | null) => Promise<string | null>
 ): Promise<FeatureCommentDto> {
     const {
-        author: { name: authorName, profilePictureKey },
+        author: { name: authorName, profilePictureKey, profilePictureThumbnailKey },
         ...rest
     } = comment;
 
-    const authorProfilePictureUrl = await formatProfilePictureUrl(profilePictureKey);
+    const [authorProfilePictureUrl, authorProfilePictureThumbnailUrl] = await Promise.all([
+        formatProfilePictureUrl(profilePictureKey),
+        formatProfilePictureUrl(profilePictureThumbnailKey)
+    ]);
 
     return {
         authorName,
         authorProfilePictureUrl,
+        authorProfilePictureThumbnailUrl,
         ...rest
     };
 }

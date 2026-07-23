@@ -7,10 +7,12 @@ import { PreSignedUrlResponseDto } from './aws.types';
 import { AWS_FILE_CONSTANTS } from '@common/constants';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Summary, UserInRequest } from '@common/decorators';
+import type { ProfilePictureUploadVariant } from './aws.types';
 import type { UserResponseDto as User } from '@modules/identity/dto/user.dto';
 import { ApiCookieAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     Post,
+    Query,
     HttpCode,
     UseGuards,
     Controller,
@@ -42,6 +44,7 @@ export class AwsController {
     })
     initiateProfilePictureUpload(
         @UserInRequest() user: User,
+        @Query('variant') variant: ProfilePictureUploadVariant = 'original',
         @UploadedFile(
             new ParseFilePipe({
                 validators: [
@@ -58,6 +61,7 @@ export class AwsController {
         )
         file: Express.Multer.File
     ) {
-        return this.awsService.generateProfilePicturePresignedUrl(user, file.mimetype, file.size);
+        const uploadVariant = variant === 'thumbnail' ? 'thumbnail' : 'original';
+        return this.awsService.generateProfilePicturePresignedUrl(user, file.mimetype, file.size, uploadVariant);
     }
 }

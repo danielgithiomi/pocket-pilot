@@ -98,9 +98,15 @@ export class AuthService {
     }
 
     private async toUserWithPreferenceAndPictureUrl(user: UserWithPreferences) {
+        const [profilePictureUrl, profilePictureThumbnailUrl] = await Promise.all([
+            this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey),
+            this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureThumbnailKey)
+        ]);
+
         const userWithProfilePictureUrl = {
             ...user,
-            profilePictureUrl: await this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey)
+            profilePictureUrl,
+            profilePictureThumbnailUrl
         };
 
         return plainToInstance(UserWithPreferencesDto, userWithProfilePictureUrl, { excludeExtraneousValues: true });

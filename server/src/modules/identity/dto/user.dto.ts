@@ -67,6 +67,14 @@ export class UpdateUserProfilePicturePayload {
         description: 'The AWS S3 key for the profile picture'
     })
     profilePictureAwsKey!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({
+        example: 'user@email.com/profile-picture-thumbnail-123.webp',
+        description: 'The AWS S3 key for the profile picture thumbnail'
+    })
+    profilePictureThumbnailAwsKey!: string;
 }
 
 // OUTPUT DTOs
@@ -108,6 +116,13 @@ export class UserResponseDto {
         description: "URL to the user's profile picture"
     })
     profilePictureUrl!: string | null;
+
+    @Expose()
+    @ApiProperty({
+        example: 'https://example.com/profile-thumbnail.webp',
+        description: "URL to the user's profile picture thumbnail"
+    })
+    profilePictureThumbnailUrl!: string | null;
 
     @Expose()
     @ApiProperty({

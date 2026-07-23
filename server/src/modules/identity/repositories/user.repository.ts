@@ -37,10 +37,13 @@ export class UserRepository {
         return this.db.user.update({ where: { id: userId }, data: { password }, include: { userPreferences: true } });
     }
 
-    async updateUserProfilePictureKey(userId: string, profilePictureAwsKey: string) {
+    async updateUserProfilePictureKeys(userId: string, profilePictureAwsKey: string, profilePictureThumbnailAwsKey: string) {
         return this.db.user.update({
             where: { id: userId },
-            data: { profilePictureKey: profilePictureAwsKey },
+            data: {
+                profilePictureKey: profilePictureAwsKey,
+                profilePictureThumbnailKey: profilePictureThumbnailAwsKey
+            },
             include: { userPreferences: true }
         });
     }

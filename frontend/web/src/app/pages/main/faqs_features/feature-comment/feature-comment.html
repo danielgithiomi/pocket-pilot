@@ -1,12 +1,7 @@
-@let hasProfilePicture = !!featureComment().authorProfilePictureUrl;
+@let hasProfilePicture = !!authorProfilePictureUrl();
 <article [id]="featureCommentId()" class="feature-comment w-full px-2 py-4 flex flex-row items-center gap-3">
     @if (hasProfilePicture) {
-        <img
-            width="40"
-            height="40"
-            alt="Profile Picture"
-            class="rounded-full"
-            [ngSrc]="featureComment().authorProfilePictureUrl!" />
+        <img width="40" height="40" alt="Profile Picture" class="rounded-full" [ngSrc]="authorProfilePictureUrl()!" />
     } @else {
         <atom-avatar [numberOfInitials]="2" [displayName]="featureComment().authorName" />
     }

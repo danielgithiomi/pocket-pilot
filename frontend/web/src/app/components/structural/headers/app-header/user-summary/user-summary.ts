@@ -47,13 +47,13 @@ import { HeaderDropdown } from '@structural/dropdowns/header-dropdown/header-dro
             }
             <!-- ABS: Dropdown Chevron End -->
 
-            <div id="avatar" class="avatar" [ngClass]="{ 'border border-primary': profilePictureUrl() }">
-                @if (profilePictureUrl()) {
+            <div id="avatar" class="avatar" [ngClass]="{ 'border border-primary': avatarPictureUrl() }">
+                @if (avatarPictureUrl()) {
                     <img
-                        [width]="100"
-                        [height]="100"
+                        [width]="32"
+                        [height]="32"
                         [alt]="fallbackInitial()"
-                        [ngSrc]="profilePictureUrl()"
+                        [ngSrc]="avatarPictureUrl()"
                         (error)="onProfilePictureError()"
                         class="h-full w-full object-cover" />
                 } @else {
@@ -89,7 +89,10 @@ export class UserSummary {
     // COMPUTED
     protected readonly email = computed(() => this.user()?.email ?? '');
     protected readonly username = computed(() => this.user()?.name ?? '');
-    protected readonly profilePictureUrl = computed(() => this.authService.user()?.profilePictureUrl ?? '');
+    protected readonly avatarPictureUrl = computed(() => {
+        const user = this.authService.user();
+        return user?.profilePictureThumbnailUrl ?? user?.profilePictureUrl ?? '';
+    });
     protected readonly fallbackInitial = computed(() => {
         const name = this.username();
         return name ? name.substring(0, 1).toUpperCase() : '';

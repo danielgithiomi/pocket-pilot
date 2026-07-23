@@ -26,7 +26,8 @@ export interface FeatureComment {
 	comment: string;
 	featureId: string;
 	authorName: string;
-	authorProfilePictureUrl?: string;
+	authorProfilePictureUrl?: string | null;
+	authorProfilePictureThumbnailUrl?: string | null;
 }
 
 export interface Feature {

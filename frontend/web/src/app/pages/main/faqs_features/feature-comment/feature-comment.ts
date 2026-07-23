@@ -17,4 +17,8 @@ export class FeatureComment {
     protected authorName = computed<string>(() => this.featureComment().authorName);
     protected featureCommentId = computed<string>(() => `feature-comment-${this.featureComment().id}`);
     protected commentCreationDate = computed<string>(() => formatRelativeDate(this.featureComment().createdAt));
+    protected authorProfilePictureUrl = computed<string | null>(() => {
+        const comment = this.featureComment();
+        return comment.authorProfilePictureThumbnailUrl ?? comment.authorProfilePictureUrl ?? null;
+    });
 }

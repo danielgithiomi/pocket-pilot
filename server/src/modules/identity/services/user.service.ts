@@ -95,8 +95,12 @@ export class UserService {
         return this.toUserPreferenceDto(updatedUser);
     }
 
-    async updateUserProfileWithPictureKey(userId: string, profilePictureAwsKey: string) {
-        const userWithProfilePictureKey = await this.userRepository.updateUserProfilePictureKey(userId, profilePictureAwsKey);
+    async updateUserProfileWithPictureKeys(userId: string, profilePictureAwsKey: string, profilePictureThumbnailAwsKey: string) {
+        const userWithProfilePictureKey = await this.userRepository.updateUserProfilePictureKeys(
+            userId,
+            profilePictureAwsKey,
+            profilePictureThumbnailAwsKey
+        );
 
         return this.toUserPreferenceDto(userWithProfilePictureKey);
     }
@@ -116,9 +120,15 @@ export class UserService {
     }
 
     private async toUserPreferenceDto(user: UserWithPreferences): Promise<UserWithPreferencesDto> {
+        const [profilePictureUrl, profilePictureThumbnailUrl] = await Promise.all([
+            this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey),
+            this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureThumbnailKey)
+        ]);
+
         const userWithProfilePicture = {
             ...user,
-            profilePictureUrl: await this.awsService.checkAndGenerateProfilePictureUrl(user.profilePictureKey)
+            profilePictureUrl,
+            profilePictureThumbnailUrl
         };
 
         return plainToInstance(UserWithPreferencesDto, userWithProfilePicture);
