@@ -7,6 +7,7 @@ import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
+import { DashboardCalendar } from './dashboard-calendar';
 import { TransactionsService } from '@api/transactions.service';
 import { UpcomingBills } from './upcoming-bills/upcoming-bills';
 import { Component, computed, inject, signal } from '@angular/core';
@@ -39,6 +40,7 @@ import {
         UpcomingBills,
         DashboardCard,
         CalendarModule,
+        DashboardCalendar,
         LucideAngularModule
     ]
 })
@@ -51,7 +53,6 @@ export class Dashboard {
     protected readonly gaugeIcon = CircleGauge;
     protected readonly billsIcon = ReceiptCent;
     protected readonly incomeIcon = TrendingUp;
-    protected readonly calendarIcon = Calendar1;
     protected readonly handCoinsIcon = HandCoins;
     protected readonly expenseIcon = TrendingDown;
     protected readonly transactionIcon = ArrowLeftRight;

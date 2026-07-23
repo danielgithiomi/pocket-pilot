@@ -113,19 +113,7 @@
             </dashboard-card>
 
             <!-- Calendar Card -->
-            <dashboard-card
-                id="calendar"
-                title="Calendar"
-                class="col-span-1"
-                [isLoading]="false"
-                [icon]="calendarIcon"
-                wrapperClassName="px-2!"
-                subtitle="The monthly calendar"
-                [ngClass]="{ 'md:col-span-2! xl:col-span-1!': !drawerService.isDrawerCollapsed() }">
-                <div custom-content class="w-full grid place-items-center">
-                    <ejs-calendar (change)="handleOnDateClick($event)" [min]="minDate" />
-                </div>
-            </dashboard-card>
+            <dashboard-calendar />
 
             <!-- Analysis Card -->
             <dashboard-card
