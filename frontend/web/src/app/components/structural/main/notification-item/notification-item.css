@@ -5,7 +5,7 @@
 }
 
 .notification-item {
-    @apply relative flex w-full min-w-0 max-w-full flex-row items-start gap-3 overflow-hidden border border-transparent bg-(--alternate-background) p-3 transition-all duration-300 ease-in-out;
+    @apply cursor-default! relative flex w-full min-w-0 max-w-full flex-row items-start gap-3 overflow-hidden border border-transparent bg-(--alternate-background) p-3 transition-all duration-300 ease-in-out;
 }
 
 .notification-item.compact {

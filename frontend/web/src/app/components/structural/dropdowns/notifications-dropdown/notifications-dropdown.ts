@@ -35,15 +35,10 @@ export class NotificationsDropdown {
     protected readonly activeTabIndex = signal<0 | 1>(0);
     protected readonly activeTabValue = signal<NotificationFilter>(this.activeNotificationFilter());
 
-    // COMPUTEDS
+    // COMPUTED
     protected readonly notifications = computed<AppNotification[]>(() =>
         this.notificationsSummary().notifications.slice(0, 4)
     );
-    protected readonly tabEmptyMessage = computed<string>(() => {
-        const isUnreadTab = this.activeTabIndex() === 1;
-
-        return isUnreadTab ? 'You have no unread notifications.' : 'You have no notifications.';
-    });
 
     protected readonly tabListItems = computed<TabListItem[]>(() => [
         {
