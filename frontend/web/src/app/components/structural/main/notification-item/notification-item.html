@@ -12,11 +12,11 @@
         isCompact() ? 'bg-body-background!' : ''
     ]">
     <div class="notification-leading">
-        <div class="notification-unread-indicator" aria-hidden="true">
-            @if (unread) {
+        @if (unread) {
+            <div class="notification-unread-indicator" aria-hidden="true">
                 <atom-pinger pingerSize="xs" />
-            }
-        </div>
+            </div>
+        }
 
         <div class="notification-icon">
             <lucide-icon name="notification-type" [img]="icon()" [size]="NotificationIconSize" />
@@ -32,35 +32,31 @@
                     @if (unread) {
                         <atom-button
                             type="button"
-                            class="notification-icon"
-                            className="bg-transparent!"
+                            class="notification-action"
+                            className="bg-transparent! px-0.5!"
                             aria-label="Mark notification as read"
                             [id]="`mark-${notification.id}-as-read`"
                             (clicked)="markAsRead.emit(notification.id)">
-
                             <lucide-icon
                                 name="mark-read"
                                 [img]="MarkReadIcon"
                                 [size]="FooterIconSize"
                                 class="notification-lucide-icon" />
-
                         </atom-button>
                     }
 
                     <atom-button
                         type="button"
                         class="notification-action"
-                        className="bg-transparent!"
                         aria-label="Archive Notification"
+                        className="bg-transparent! px-0.5!"
                         (clicked)="archive.emit(notification.id)"
                         [id]="`archive-notification-${notification.id}`">
-
                         <lucide-icon
                             name="archive"
                             [img]="ArchiveIcon"
                             [size]="FooterIconSize"
                             class="notification-lucide-icon" />
-
                     </atom-button>
                 </div>
             </div>
@@ -122,37 +118,33 @@
                     }
                 </div>
 
-                <div class="utility-actions">
+                <div class="utility-actions mr-2">
                     @if (unread) {
                         <atom-button
                             type="button"
-                            className="bg-transparent!"
+                            className="bg-transparent! px-1!"
                             aria-label="Mark notification as read"
                             [id]="`mark-${notification.id}-as-read`"
                             (clicked)="markAsRead.emit(notification.id)">
-
                             <lucide-icon
                                 name="mark-read"
                                 [img]="MarkReadIcon"
                                 [size]="FooterIconSize"
                                 class="notification-lucide-icon" />
-
                         </atom-button>
                     }
 
                     <atom-button
                         type="button"
-                        className="bg-transparent!"
                         [id]="`archive-notification`"
+                        className="bg-transparent! px-1!"
                         aria-label="Archive notification"
                         (clicked)="archive.emit(notification.id)">
-
                         <lucide-icon
                             [img]="ArchiveIcon"
                             [size]="FooterIconSize"
                             name="archive-notification"
                             class="notification-lucide-icon" />
-
                     </atom-button>
                 </div>
             </div>

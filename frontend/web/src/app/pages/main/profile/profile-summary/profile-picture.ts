@@ -44,6 +44,7 @@ import { Component, computed, inject, output, signal } from '@angular/core';
             @if (profilePictureUrl()) {
                 <img
                     fill
+                    priority
                     alt="Profile Picture"
                     [ngSrc]="profilePictureUrl()"
                     (error)="onProfilePictureError()"

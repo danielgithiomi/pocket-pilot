@@ -125,15 +125,15 @@ export class AuthService {
             tap((response: IStandardResponse<User>) => {
                 this.createSession(response.data);
             }),
-            catchError((error: IStandardError): Observable<{ type: AuthError; message: string }> => {
+            catchError((error: IStandardError): Observable<{ type: AuthError; message: string } | null> => {
                 const toastError = {
                     ...error,
-                    title: error.title.split('!')[0]
+                    title: error.title ? error.title.split('!')[0] : 'Something went wrong'
                 };
                 this.renderToast(toastError);
 
                 const { name } = error;
-                if (!name) return EMPTY;
+                if (!name) return of(null);
 
                 switch (name) {
                     case INVALID_EMAIL_IDENTIFIER:
@@ -147,7 +147,7 @@ export class AuthService {
                             message: error.title ?? 'The password you entered is incorrect! Please try again.'
                         });
                     default:
-                        return EMPTY;
+                        return of(null);
                 }
             })
         );

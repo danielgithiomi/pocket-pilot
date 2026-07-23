@@ -60,6 +60,8 @@ export class Login {
 
         const response = await firstValueFrom(this.authService.login(payload));
 
+        if (!response) return;
+
         if ('data' in response) {
             this.routeTo(WEB_ROUTES.dashboard).then(() => {
                 this.toastService.show({
