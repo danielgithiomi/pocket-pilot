@@ -40,8 +40,8 @@
     /* Orange */
     --transparent: transparent;
     --loader-primary: rgba(91, 146, 121, 50%);
-    --loader-secondary: rgba(254, 127, 45, 50%);
     --scrollbar-track: rgb(91, 146, 121, 25%);
+    --loader-secondary: rgba(254, 127, 45, 50%);
 
     /* State Colors */
     --success: #22c55d;

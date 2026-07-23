@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 header {
-    @apply w-full px-6 flex items-center justify-between;
+    @apply w-full px-6 flex items-center justify-between border-b border-(--loader-primary);
 
     .hamburger-wrapper {
         @apply block md:hidden p-2 mr-3 cursor-pointer hover:bg-(--inverted-background) transition-all duration-400 rounded-md;

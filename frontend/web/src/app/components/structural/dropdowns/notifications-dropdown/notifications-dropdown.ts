@@ -37,7 +37,7 @@ export class NotificationsDropdown {
 
     // COMPUTED
     protected readonly notifications = computed<AppNotification[]>(() =>
-        this.notificationsSummary().notifications.slice(0, 4)
+        this.notificationsSummary().notifications
     );
 
     protected readonly tabListItems = computed<TabListItem[]>(() => [
