@@ -2,7 +2,7 @@
     "name": "pocket-pilot-web",
     "version": "1.0.0",
     "author": "danielgithiomi <https://github.com/danielgithiomi>",
-    "description": "This is the pocket-pilot server developed with NestJs.",
+    "description": "This is the pocket-pilot web application developed with Angular.",
     "private": true,
     "license": "ISC",
     "type": "module",
@@ -12,7 +12,7 @@
         "test": "ng test",
         "start": "ng serve",
         "build": "ng build",
-        "predev": "ts-node scripts/set-env.development.ts",
+        "pre-dev": "ts-node scripts/set-env.development.ts",
         "prebuild": "ts-node scripts/set-env.production.ts",
         "watch": "ng build --watch --configuration development"
     },

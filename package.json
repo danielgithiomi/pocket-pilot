@@ -10,7 +10,8 @@
   ],
   "workspaces": [
     "./server",
-    "./frontend/web"
+    "./frontend/web",
+    "./frontend/mobile"
   ],
   "repository": {
     "type": "git",

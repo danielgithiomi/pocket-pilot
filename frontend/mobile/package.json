@@ -1,7 +1,10 @@
 {
-  "name": "mobile",
-  "main": "expo-router/entry",
+  "name": "pocket-pilot-mobile",
   "version": "1.0.0",
+  "private": true,
+  "license": "ISC",
+  "main": "expo-router/entry",
+  "author": "danielgithiomi <https://github.com/danielgithiomi>",
   "dependencies": {
     "@expo/ui": "~57.0.7",
     "expo": "~57.0.8",
@@ -29,6 +32,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "eslint-config-expo": "~57.0.0",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -39,6 +43,5 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint"
-  },
-  "private": true
+  }
 }
