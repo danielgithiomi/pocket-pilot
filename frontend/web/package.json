@@ -14,7 +14,8 @@
         "build": "ng build",
         "pre-dev": "ts-node scripts/set-env.development.ts",
         "prebuild": "ts-node scripts/set-env.production.ts",
-        "watch": "ng build --watch --configuration development"
+        "watch": "ng build --watch --configuration development",
+        "clean": "rimraf node_modules package-lock.json .turbo .angular .cache && npm cache clean --force"
     },
     "dependencies": {
         "@angular/animations": "^21.1.5",
