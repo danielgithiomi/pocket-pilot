@@ -166,6 +166,6 @@ export function formatToReadable(normalizedName: string): string {
         .replace(/[_-]/g, ' ') // underscores & hyphens → spaces
         .split(' ')
         .filter(Boolean) // remove empty strings (safety)
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 }

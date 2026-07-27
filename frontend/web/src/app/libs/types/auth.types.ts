@@ -16,7 +16,7 @@ export const initialLoginFormState: LoginSchema = {
     password: ''
 };
 
-export const loginFormValidationSchema = schema<LoginSchema>(root => {
+export const loginFormValidationSchema = schema<LoginSchema>((root) => {
     // Email
     required(root.email, { message: 'The email address is required field!' });
     email(root.email, { message: 'The email address format is invalid!' });
@@ -41,7 +41,7 @@ export const initialRegisterFormState: RegisterSchema = {
     confirmPassword: ''
 };
 
-export const registerFormValidationSchema = schema<RegisterSchema>(root => {
+export const registerFormValidationSchema = schema<RegisterSchema>((root) => {
     // Email
     email(root.email, { message: 'The email address format is invalid!' });
     required(root.email, { message: 'The email address is required field!' });
@@ -59,7 +59,7 @@ export const registerFormValidationSchema = schema<RegisterSchema>(root => {
     minLength(root.confirmPassword, 8, {
         message: 'The confirm password cannot be less than 8 characters!'
     });
-    validate(root.confirmPassword, context => {
+    validate(root.confirmPassword, (context) => {
         const confirmPassword = context.value();
         const password = context.valueOf(root.password);
         if (confirmPassword === password) return null;

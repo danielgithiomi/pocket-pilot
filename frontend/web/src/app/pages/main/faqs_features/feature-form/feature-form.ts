@@ -44,7 +44,7 @@ export class SuggestFeatureForm {
         }
 
         const categories = this.featuresService.getFeatureCategories();
-        return categories().map(category => {
+        return categories().map((category) => {
             const { value, label } = category;
 
             return {

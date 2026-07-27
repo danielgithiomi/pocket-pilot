@@ -91,15 +91,15 @@ export class PrivacyPolicy {
     constructor() {
         afterNextRender(() => {
             const sectionElements = this.content.tableOfContents
-                .map(item => document.getElementById(item.id))
+                .map((item) => document.getElementById(item.id))
                 .filter((element): element is HTMLElement => element !== null);
 
             if (!sectionElements.length) return;
 
             const observer = new IntersectionObserver(
-                entries => {
+                (entries) => {
                     const visible = entries
-                        .filter(entry => entry.isIntersecting)
+                        .filter((entry) => entry.isIntersecting)
                         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
 
                     if (visible?.target.id) {
@@ -112,7 +112,7 @@ export class PrivacyPolicy {
                 }
             );
 
-            sectionElements.forEach(element => observer.observe(element));
+            sectionElements.forEach((element) => observer.observe(element));
             this.destroyRef.onDestroy(() => observer.disconnect());
         });
     }

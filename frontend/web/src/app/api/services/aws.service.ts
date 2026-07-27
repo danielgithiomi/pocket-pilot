@@ -31,7 +31,7 @@ export class AwsService {
         this.uploadProgress.set(0);
 
         return from(this.createProfilePictureThumbnail(file)).pipe(
-            switchMap(profilePictureThumbnail => {
+            switchMap((profilePictureThumbnail) => {
                 return forkJoin({
                     profilePictureAwsKey: this.uploadProfilePictureFile(file, 'original'),
                     profilePictureThumbnailAwsKey: this.uploadProfilePictureFile(profilePictureThumbnail, 'thumbnail')
@@ -50,7 +50,7 @@ export class AwsService {
                 );
             }),
             retry(2),
-            catchError(error => {
+            catchError((error) => {
                 console.error('ERROR from AWS Service', error);
                 if (error.status !== 401)
                     this.renderToast({
@@ -78,14 +78,14 @@ export class AwsService {
                         observe: 'events' as const
                     })
                     .pipe(
-                        tap(event => {
+                        tap((event) => {
                             if (variant !== 'original' || event.type !== HttpEventType.UploadProgress || !event.total)
                                 return;
 
                             const progress = Math.round((event.loaded / event.total) * 80);
                             this.uploadProgress.set(progress);
                         }),
-                        filter(event => event.type === HttpEventType.Response),
+                        filter((event) => event.type === HttpEventType.Response),
                         map(() => key)
                     );
             })
@@ -157,7 +157,7 @@ export class AwsService {
     private createCanvasBlob(canvas: HTMLCanvasElement): Promise<Blob> {
         return new Promise((resolve, reject) => {
             canvas.toBlob(
-                blob => {
+                (blob) => {
                     if (blob) {
                         resolve(blob);
                         return;

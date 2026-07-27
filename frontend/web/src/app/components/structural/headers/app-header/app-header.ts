@@ -51,7 +51,7 @@ export class AppHeader {
     }
 
     protected handleNotificationsPanelToggle() {
-        this.isNotificationsPanelOpen.update(current => !current);
+        this.isNotificationsPanelOpen.update((current) => !current);
     }
 
     protected closeNotificationsPanel(): void {

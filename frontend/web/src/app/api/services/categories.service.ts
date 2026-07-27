@@ -50,7 +50,7 @@ export class CategoriesService {
             'Transfer'
         ];
 
-        return allCategories.map(category => ({
+        return allCategories.map((category) => ({
             value: category,
             disabled: category.startsWith('---') || category === 'Transfer',
             label: category.startsWith('---')

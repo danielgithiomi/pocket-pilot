@@ -54,7 +54,7 @@ export class Select {
     formattedOptions = computed(() => {
         const options = this.options();
         if (!options) return [];
-        return options.map(option => ({
+        return options.map((option) => ({
             ...option,
             label: capitalize(option.label)
         }));

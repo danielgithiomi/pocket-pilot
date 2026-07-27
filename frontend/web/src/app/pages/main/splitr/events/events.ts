@@ -40,7 +40,7 @@ export class SplitrEvents {
 
         if (!rawEvents) return [];
 
-        return rawEvents.data.map(event => ({
+        return rawEvents.data.map((event) => ({
             ...event,
             eventMembers: [...event.eventMembers, this.selfName()]
         }));

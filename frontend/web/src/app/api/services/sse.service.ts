@@ -41,10 +41,10 @@ export class SSEService {
         const source = new EventSource(sseUrl, { withCredentials: true });
 
         source.onopen = () => console.log('SSE connection established');
-        source.onmessage = event => console.log('SSE message received:', event);
+        source.onmessage = (event) => console.log('SSE message received:', event);
 
-        eventTypes.forEach(type => {
-            source.addEventListener(type, event => {
+        eventTypes.forEach((type) => {
+            source.addEventListener(type, (event) => {
                 onEvent({
                     type,
                     data: this.parseEventData<T>((event as MessageEvent).data)
@@ -52,7 +52,7 @@ export class SSEService {
             });
         });
 
-        source.onerror = event => onError?.(event);
+        source.onerror = (event) => onError?.(event);
         return source;
     }
 

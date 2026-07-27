@@ -78,7 +78,7 @@ export class SplitFormStep2 {
     });
     protected readonly itemsCount = computed<number>(() => this.splittables().length);
     protected readonly orderQuantities = computed<SelectOption[]>(() => {
-        return QUANTITIES.map(quantity => ({
+        return QUANTITIES.map((quantity) => ({
             value: quantity,
             label: quantity.toString()
         }));
@@ -101,12 +101,12 @@ export class SplitFormStep2 {
     });
     protected readonly formattedConsumers = computed<ISquadMember[]>(() => {
         const currentSplits = this.splittableForm().value().quantitySplits;
-        const currentMembers = currentSplits.map(split => split.consumerName);
+        const currentMembers = currentSplits.map((split) => split.consumerName);
 
-        return this.consumerOptions().map(member => ({
+        return this.consumerOptions().map((member) => ({
             memberName: member,
             isChecked: currentMembers.includes(member),
-            quantity: currentSplits.find(split => split.consumerName === member)?.consumerQuantity || 1
+            quantity: currentSplits.find((split) => split.consumerName === member)?.consumerQuantity || 1
         }));
     });
 
@@ -126,12 +126,12 @@ export class SplitFormStep2 {
     protected addConsumerToOrder(memberName: string): void {
         const strategy = this.splittableForm().value().splitStrategy;
         const orderSplits = this.splittableForm().value().quantitySplits;
-        const consumersInOrder = orderSplits.map(split => split.consumerName);
+        const consumersInOrder = orderSplits.map((split) => split.consumerName);
 
         let updatedSplits: LocalQuantitySplit[];
         const memberExists = consumersInOrder.includes(memberName);
 
-        if (memberExists) updatedSplits = orderSplits.filter(split => split.consumerName !== memberName);
+        if (memberExists) updatedSplits = orderSplits.filter((split) => split.consumerName !== memberName);
         else {
             if (!this.canAddConsumer()) {
                 this.toastService.show({
@@ -160,7 +160,7 @@ export class SplitFormStep2 {
 
         const currentSplits = this.splittableForm().value().quantitySplits;
 
-        const updatedSplits = currentSplits.map(split => {
+        const updatedSplits = currentSplits.map((split) => {
             if (split.consumerName === memberName)
                 return {
                     ...split,
@@ -203,7 +203,7 @@ export class SplitFormStep2 {
         const updatedQuantitySplits =
             splitStrategy === 'QUANTITY'
                 ? quantitySplits
-                : quantitySplits.map(split => ({
+                : quantitySplits.map((split) => ({
                       ...split,
                       consumerQuantity: quantity / quantitySplits.length
                   }));
@@ -227,7 +227,7 @@ export class SplitFormStep2 {
     }
 
     protected updateEventSplittables(splittable: SplittableOrder) {
-        const splittableExists = this.splittables().find(s => s.id === splittable.id);
+        const splittableExists = this.splittables().find((s) => s.id === splittable.id);
 
         if (!splittableExists) {
             this.toastService.show({
@@ -243,7 +243,7 @@ export class SplitFormStep2 {
             total: splittable.quantity * splittable.unitPrice
         };
 
-        const modifiedSplittables = this.splittables().map(splittableItem =>
+        const modifiedSplittables = this.splittables().map((splittableItem) =>
             splittableItem.id === updatedSplittable.id ? updatedSplittable : splittableItem
         );
 
@@ -251,7 +251,7 @@ export class SplitFormStep2 {
     }
 
     protected handleOnDeleteOrder(orderId: number) {
-        const modifiedSplittables = this.splittables().filter(splittable => splittable.id !== orderId);
+        const modifiedSplittables = this.splittables().filter((splittable) => splittable.id !== orderId);
 
         this.onSplittablesChangeEvent.emit(modifiedSplittables);
     }

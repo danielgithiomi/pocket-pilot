@@ -18,7 +18,7 @@ export const InitialNewSplittableData: NewSplittableSchema = {
     splitStrategy: 'SOLE' as SplitStrategyVariant
 };
 
-export const NewSplittableFormValidation = schema<NewSplittableSchema>(root => {
+export const NewSplittableFormValidation = schema<NewSplittableSchema>((root) => {
     // Name
     required(root.name, { message: 'The name is required field!' });
 

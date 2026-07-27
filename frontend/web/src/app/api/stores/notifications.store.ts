@@ -44,25 +44,25 @@ export class NotificationsStore {
         const filter = this._activeNotificationsFilter();
 
         if (filter === 'all') return notifications;
-        if (filter === 'unread') return notifications.filter(notification => notification.status === 'UNREAD');
-        if (filter === 'action_required') return notifications.filter(notification => notification.requiresAction);
+        if (filter === 'unread') return notifications.filter((notification) => notification.status === 'UNREAD');
+        if (filter === 'action_required') return notifications.filter((notification) => notification.requiresAction);
 
-        return notifications.filter(notification => notification.category.toLowerCase() === filter);
+        return notifications.filter((notification) => notification.category.toLowerCase() === filter);
     });
 
     readonly summary = computed<NotificationSummary>(() => {
         if (!this.summaryResource.error()) return this.summaryResource.value().data;
 
         const notifications = this.notifications();
-        const unreadCount = notifications.filter(notification => notification.status === 'UNREAD').length;
+        const unreadCount = notifications.filter((notification) => notification.status === 'UNREAD').length;
 
         return {
             unreadCount,
             archivedCount: 0,
             totalCount: notifications.length,
             hasUnreadNotifications: unreadCount > 0,
-            actionRequiredCount: notifications.filter(notification => notification.requiresAction).length,
-            criticalCount: notifications.filter(notification => notification.priority === 'CRITICAL').length
+            actionRequiredCount: notifications.filter((notification) => notification.requiresAction).length,
+            criticalCount: notifications.filter((notification) => notification.priority === 'CRITICAL').length
         };
     });
 
@@ -89,11 +89,11 @@ export class NotificationsStore {
         const notifications = this.notifications();
 
         if (filter === 'all') return notifications.length;
-        if (filter === 'unread') return notifications.filter(notification => notification.status === 'UNREAD').length;
+        if (filter === 'unread') return notifications.filter((notification) => notification.status === 'UNREAD').length;
         if (filter === 'action_required')
-            return notifications.filter(notification => notification.requiresAction).length;
+            return notifications.filter((notification) => notification.requiresAction).length;
 
-        return notifications.filter(notification => notification.category.toLowerCase() === filter).length;
+        return notifications.filter((notification) => notification.category.toLowerCase() === filter).length;
     }
 
     reload(): void {
@@ -130,7 +130,7 @@ export class NotificationsStore {
     executeAction(notificationId: string, actionId: string): void {
         this._activeMutationId.set(notificationId);
         this.notificationsService.executeAction(notificationId, actionId).subscribe({
-            next: result => {
+            next: (result) => {
                 this.reload();
                 if (result.redirectUrl) this.notificationsService.redirectToActionTarget(result.redirectUrl);
             },

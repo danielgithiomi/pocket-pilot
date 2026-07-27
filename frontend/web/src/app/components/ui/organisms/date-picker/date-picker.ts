@@ -78,7 +78,7 @@ export class DatePicker {
 
     /* METHODS */
     toggleCalendar(): void {
-        this.isCalendarOpen.update(curr => !curr);
+        this.isCalendarOpen.update((curr) => !curr);
     }
 
     closeCalendar(): void {

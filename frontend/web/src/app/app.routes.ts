@@ -21,7 +21,7 @@ export const routes: Routes = [
             {
                 path: 'register',
                 title: 'Register | Pocket Pilot',
-                loadComponent: () => import('@pages/auth/register/register').then(m => m.Register)
+                loadComponent: () => import('@pages/auth/register/register').then((m) => m.Register)
             }
         ]
     },
@@ -33,7 +33,7 @@ export const routes: Routes = [
             {
                 path: '',
                 title: 'Onboarding | Pocket Pilot',
-                loadComponent: () => import('@pages/main/onboarding/onboarding').then(m => m.Onboarding)
+                loadComponent: () => import('@pages/main/onboarding/onboarding').then((m) => m.Onboarding)
             }
         ]
     },
@@ -45,70 +45,70 @@ export const routes: Routes = [
             {
                 path: WEB_ROUTES.notifications,
                 title: 'Notifications | Pocket Pilot',
-                loadComponent: () => import('@pages/main/notifications/notifications').then(m => m.Notifications)
+                loadComponent: () => import('@pages/main/notifications/notifications').then((m) => m.Notifications)
             },
             {
                 path: WEB_ROUTES.dashboard,
                 title: 'Dashboard | Pocket Pilot',
-                loadComponent: () => import('@pages/main/dashboard/dashboard').then(m => m.Dashboard)
+                loadComponent: () => import('@pages/main/dashboard/dashboard').then((m) => m.Dashboard)
             },
             {
                 path: WEB_ROUTES.profile,
                 title: 'Profile | Pocket Pilot',
-                loadComponent: () => import('@pages/main/profile/profile').then(m => m.Profile)
+                loadComponent: () => import('@pages/main/profile/profile').then((m) => m.Profile)
             },
             {
                 title: 'Accounts | Pocket Pilot',
                 path: WEB_ROUTES.accounts,
-                loadComponent: () => import('@pages/main/accounts/accounts').then(m => m.Accounts)
+                loadComponent: () => import('@pages/main/accounts/accounts').then((m) => m.Accounts)
             },
             {
                 title: 'Account Details | Pocket Pilot',
                 path: WEB_ROUTES.accountDetails,
-                loadComponent: () => import('@pages/main/account_details/account-details').then(m => m.AccountDetails)
+                loadComponent: () => import('@pages/main/account_details/account-details').then((m) => m.AccountDetails)
             },
             {
                 title: 'Transactions | Pocket Pilot',
                 path: WEB_ROUTES.transactions,
-                loadComponent: () => import('@pages/main/transactions/transactions').then(m => m.Transactions)
+                loadComponent: () => import('@pages/main/transactions/transactions').then((m) => m.Transactions)
             },
             {
                 title: 'Splitr | Pocket Pilot',
                 path: WEB_ROUTES.splitr,
-                loadComponent: () => import('@pages/main/splitr/splitr').then(m => m.Splitr)
+                loadComponent: () => import('@pages/main/splitr/splitr').then((m) => m.Splitr)
             },
             {
                 title: 'Splitr Details | Pocket Pilot',
                 path: WEB_ROUTES.splitrDetails,
-                loadComponent: () => import('@pages/main/splitr_details/splitr-details').then(m => m.SplitrDetails)
+                loadComponent: () => import('@pages/main/splitr_details/splitr-details').then((m) => m.SplitrDetails)
             },
             {
                 title: 'Settings | Pocket Pilot',
                 path: WEB_ROUTES.settings,
                 loadComponent: () =>
                     import('@pages/main/settings_and_categories/settings-and-categories').then(
-                        m => m.SettingsAndCategories
+                        (m) => m.SettingsAndCategories
                     )
             },
             {
                 title: 'Goals & Bills | Pocket Pilot',
                 path: WEB_ROUTES.goals,
-                loadComponent: () => import('@pages/main/goals_and_bills/goals-and-bills').then(m => m.Goals)
+                loadComponent: () => import('@pages/main/goals_and_bills/goals-and-bills').then((m) => m.Goals)
             },
             {
                 title: 'Support | Pocket Pilot',
                 path: WEB_ROUTES.support,
-                loadComponent: () => import('@pages/main/support/support').then(m => m.Support)
+                loadComponent: () => import('@pages/main/support/support').then((m) => m.Support)
             },
             {
                 title: 'FAQs & Features | Pocket Pilot',
                 path: WEB_ROUTES.faqsFeatures,
-                loadComponent: () => import('@pages/main/faqs_features/faqs-features').then(m => m.FaqsFeatures)
+                loadComponent: () => import('@pages/main/faqs_features/faqs-features').then((m) => m.FaqsFeatures)
             },
             {
                 title: 'Privacy Policy | Pocket Pilot',
                 path: WEB_ROUTES.privacyPolicy,
-                loadComponent: () => import('@pages/main/privacy_policy/privacy-policy').then(m => m.PrivacyPolicy)
+                loadComponent: () => import('@pages/main/privacy_policy/privacy-policy').then((m) => m.PrivacyPolicy)
             },
             {
                 path: '**',

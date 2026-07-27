@@ -72,6 +72,6 @@ export class Input {
 
     /* METHODS */
     togglePasswordVisibility() {
-        this.isPasswordVisible.update(curr => !curr);
+        this.isPasswordVisible.update((curr) => !curr);
     }
 }

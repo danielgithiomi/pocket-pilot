@@ -55,11 +55,9 @@
                 }">
                 @if (activeTabIndex() === 0 && noNotifications) {
                     <p class="text-xs! text-reactive-text">You have no notifications.</p>
-                }
-                @else if (activeTabIndex() === 1 && noUnreadNotifications){
+                } @else if (activeTabIndex() === 1 && noUnreadNotifications) {
                     <p class="text-xs! text-reactive-text">You have no unread notifications.</p>
-                }
-                @else {
+                } @else {
                     @for (notification of notifications(); track notification.id) {
                         <notification-item
                             class="w-full shrink-0"

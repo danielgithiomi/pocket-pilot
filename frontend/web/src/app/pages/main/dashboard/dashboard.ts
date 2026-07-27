@@ -88,7 +88,7 @@ export class Dashboard {
         const transactions = this.transactions.value()?.data.data;
         if (!transactions) return 0;
         return transactions
-            .filter(transaction => transaction.type === 'INCOME')
+            .filter((transaction) => transaction.type === 'INCOME')
             .reduce((total, transaction) => total + transaction.amount, 0);
     });
 
@@ -97,7 +97,7 @@ export class Dashboard {
         const transactions = this.transactions.value()?.data.data;
         if (!transactions) return 0;
         return transactions
-            .filter(transaction => transaction.type === 'EXPENSE')
+            .filter((transaction) => transaction.type === 'EXPENSE')
             .reduce((total, transaction) => total + transaction.amount, 0);
     });
 
@@ -143,8 +143,8 @@ export class Dashboard {
     protected handleOnDatePickerSubmit(event: Event) {
         event.preventDefault();
 
-        console.log("Submitted form")
-    };
+        console.log('Submitted form');
+    }
 
     // HELPER FUNCTIONS
     protected formatCurrency(value: string) {

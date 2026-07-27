@@ -19,11 +19,11 @@ export class ToastService {
 
         if (this.checkSessionToastAlreadyExists(this._toasts(), toast)) return;
 
-        this._toasts.update(prev => [...prev, toast]);
+        this._toasts.update((prev) => [...prev, toast]);
     }
 
     remove(id: string) {
-        this._toasts.update(prev => prev.filter(t => t.id !== id));
+        this._toasts.update((prev) => prev.filter((t) => t.id !== id));
     }
 
     private checkSessionToastAlreadyExists(toasts: ToastInternal[], toast: ToastInternal): boolean {

@@ -38,7 +38,7 @@ export class SplitrService {
             return EMPTY;
         }
 
-        const squad = resourceValue.data.find(squad => squad.id === squadId);
+        const squad = resourceValue.data.find((squad) => squad.id === squadId);
 
         if (!squad) {
             this.errorService.renderToast({

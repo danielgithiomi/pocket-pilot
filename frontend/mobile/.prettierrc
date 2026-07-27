@@ -7,13 +7,5 @@
     "bracketSpacing": true,
     "arrowParens": "always",
     "endOfLine": "auto",
-    "bracketSameLine": true,
-    "overrides": [
-        {
-            "files": "*.html",
-            "options": {
-                "parser": "angular"
-            }
-        }
-    ]
+    "bracketSameLine": true
 }

@@ -47,7 +47,7 @@ export class Avatar {
         } else
             return this.displayName()
                 .split(' ')
-                .map(name => name.slice(0, 1).toUpperCase())
+                .map((name) => name.slice(0, 1).toUpperCase())
                 .join('');
     });
 }

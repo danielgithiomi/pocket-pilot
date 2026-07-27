@@ -40,7 +40,7 @@ export class UpcomingBills {
 
         const allBills = this.bills$.value().data;
 
-        return allBills.filter(bill => {
+        return allBills.filter((bill) => {
             const billDueDate = new Date(bill.dueDate);
             return billDueDate >= now && billDueDate <= oneWeekFromNow;
         });

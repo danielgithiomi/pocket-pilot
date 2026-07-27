@@ -96,7 +96,7 @@ export class TransactionsComponent {
         const transactionsToFormat = this.transactions();
 
         return transactionsToFormat
-            .map(transaction => {
+            .map((transaction) => {
                 const {
                     id,
                     type,

@@ -52,7 +52,7 @@ export class Accordion {
     }
 
     toggleItem(index: number): void {
-        this.expandedIndexes.update(current => {
+        this.expandedIndexes.update((current) => {
             const isOpen = current.has(index);
 
             if (isOpen) {

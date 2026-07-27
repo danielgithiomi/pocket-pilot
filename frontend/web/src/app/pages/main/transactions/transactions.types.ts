@@ -31,14 +31,14 @@ export const initialTransactionFormState: TransactionSchema = {
     sourceAccountId: ''
 };
 
-export const transactionFormValidationSchema = schema<TransactionSchema>(root => {
+export const transactionFormValidationSchema = schema<TransactionSchema>((root) => {
     maxLength(root.description, 50, {
         message: 'The description must be less than 50 characters!'
     });
 
     required(root.amount, { message: 'The amount is required field!' });
     min(root.amount, 1, { message: 'The minimum transaction amount must be at least 1!' });
-    validate(root.amount, context => {
+    validate(root.amount, (context) => {
         const value = context.value();
         if (value === null) return undefined;
 
@@ -48,7 +48,7 @@ export const transactionFormValidationSchema = schema<TransactionSchema>(root =>
         return isValid ? undefined : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
     });
 
-    validate(root.type, context => {
+    validate(root.type, (context) => {
         const type = context.value();
         if (!type || type.trim() === '') {
             return {
@@ -59,7 +59,7 @@ export const transactionFormValidationSchema = schema<TransactionSchema>(root =>
         return null;
     });
 
-    validate(root.category, context => {
+    validate(root.category, (context) => {
         const category = context.value();
         if (!category || category.trim() === '') {
             return {

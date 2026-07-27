@@ -52,7 +52,7 @@ export class Notifications {
             { value: 'security', label: 'Security' }
         ];
 
-        return filters.map(filter => {
+        return filters.map((filter) => {
             const count = this.notificationsStore.getTabCount(filter.value);
             return {
                 value: filter.value,
@@ -64,14 +64,14 @@ export class Notifications {
     protected readonly criticalAlerts = computed<AppNotification[]>(() =>
         this.notificationsStore
             .notifications()
-            .filter(notification => notification.priority === 'CRITICAL')
+            .filter((notification) => notification.priority === 'CRITICAL')
             .slice(0, 3)
     );
 
     protected readonly billReminders = computed<AppNotification[]>(() =>
         this.notificationsStore
             .notifications()
-            .filter(notification => notification.category === 'BILL')
+            .filter((notification) => notification.category === 'BILL')
             .slice(0, 3)
     );
 

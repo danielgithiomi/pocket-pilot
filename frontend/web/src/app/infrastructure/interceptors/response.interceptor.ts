@@ -4,7 +4,7 @@ import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 
 export const ResponseInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req).pipe(
-        map(event => {
+        map((event) => {
             if (event instanceof HttpResponse) {
                 const response = event.body as IGlobalResponse<unknown>;
                 const matchesBackendContract: boolean = response && response.success === true && 'body' in response;

@@ -19,7 +19,7 @@ export class TextArea {
     id = input.required<string>();
     rows = input<number>(4);
     resize = input<TextAreaResize, boolean | TextAreaResize>('vertical', {
-        transform: value => {
+        transform: (value) => {
             if (value === true) return 'vertical';
             if (value === false) return 'none';
             return value;
@@ -31,7 +31,7 @@ export class TextArea {
     allowEndIcon = input<boolean>(true);
     showCharacterCount = input(false, { transform: booleanAttribute });
     maxCharacterCount = input<number, number | string | null | undefined>(100, {
-        transform: value => {
+        transform: (value) => {
             const parsedValue = Number(value);
             return Number.isFinite(parsedValue) ? Math.max(0, Math.trunc(parsedValue)) : 100;
         }

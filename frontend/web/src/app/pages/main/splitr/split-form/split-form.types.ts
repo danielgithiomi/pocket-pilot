@@ -26,7 +26,7 @@ export const InitialSplitFormState = {
     billPaymentStrategy: 'ONE' as PaymentStrategyVariant
 };
 
-export const SplitFormValidationSchema = schema<SplitFormSchema>(root => {
+export const SplitFormValidationSchema = schema<SplitFormSchema>((root) => {
     // Name
     required(root.eventName, { message: 'The event name is required field!' });
 

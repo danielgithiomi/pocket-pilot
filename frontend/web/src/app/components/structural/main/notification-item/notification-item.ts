@@ -102,7 +102,7 @@ export class NotificationItem {
     );
 
     constructor() {
-        effect(onCleanup => {
+        effect((onCleanup) => {
             if (!this.isUnread()) {
                 this.showUnreadHighlight.set(false);
                 return;

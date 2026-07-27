@@ -104,7 +104,7 @@ export class Accounts {
                     this.resetAccountsForm();
                     this.isFormOpen.set(false);
                 },
-                error: error => console.error('Account creation failed:', error),
+                error: (error) => console.error('Account creation failed:', error),
                 complete: () => this.isSubmitting.set(false)
             });
         }, 1000);

@@ -47,7 +47,7 @@ export class SplitrBreakdown {
     protected readonly payers = computed<EventPayer[]>(() => {
         const { billPayers, verificationTotal, billingCurrency } = this.splitrEvent();
 
-        return billPayers.map(billPayer => ({
+        return billPayers.map((billPayer) => ({
             id: crypto.randomUUID(),
             payerName: billPayer.payerName,
             avatar: buildAvatarMap(billPayer.payerName),
@@ -64,14 +64,14 @@ export class SplitrBreakdown {
             return formatCurrency(total, billingCurrency, 2, false);
         };
 
-        return eventSplittables.map(splittable => ({
+        return eventSplittables.map((splittable) => ({
             id: splittable.id,
             orderName: splittable.name,
             orderQuantity: splittable.quantity,
             splitStrategy: SPLIT_STRATEGY_MAP[splittable.splitStrategy],
             unitPrice: formatCurrency(splittable.unitPrice, billingCurrency, 2, false),
             orderTotal: formatCurrency(splittable.total, billingCurrency, 2, true, true),
-            orderQuantitySplits: splittable.quantitySplits.map(quantitySplit => ({
+            orderQuantitySplits: splittable.quantitySplits.map((quantitySplit) => ({
                 id: quantitySplit.id,
                 consumerName: quantitySplit.consumerName,
                 consumerQuantity: quantitySplit.consumerQuantity,

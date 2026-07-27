@@ -49,7 +49,7 @@ export class Settings {
         return `Monthly Spending Limit (${this.defaultCurrency})`;
     });
     protected readonly applicationThemes = computed<RadioOption[]>(() =>
-        ApplicationThemeOptions.map(theme => {
+        ApplicationThemeOptions.map((theme) => {
             let label: string;
 
             switch (theme) {

@@ -53,13 +53,13 @@ export class Splitr {
         return this.userSquads.value()?.data ?? [];
     });
     protected allSquadMembers = computed<string[]>(() =>
-        Array.from(new Set(this.squads().flatMap(squad => squad.squadMembers)))
+        Array.from(new Set(this.squads().flatMap((squad) => squad.squadMembers)))
     );
 
     // METHODS
     protected handleOnUpdateSquadItemEvent(squadId: string) {
         this.splitrService.getSquadById(squadId).subscribe({
-            next: squad => {
+            next: (squad) => {
                 this.squadToUpdate.set(squad);
                 this.isUpdateSquadFormOpen.set(true);
             }

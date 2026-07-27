@@ -12,7 +12,7 @@ export const INITIAL_FEATURE_FORM_STATE: FeatureSchema = {
     featureCategory: ''
 };
 
-export const suggestFeatureSchema = schema<FeatureSchema>(root => {
+export const suggestFeatureSchema = schema<FeatureSchema>((root) => {
     // FEATURE TITLE
     required(root.featureTitle, { message: 'The feature title is required field!' });
     minLength(root.featureTitle, 10, {

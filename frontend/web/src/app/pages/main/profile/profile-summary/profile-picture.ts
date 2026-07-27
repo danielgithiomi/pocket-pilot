@@ -28,8 +28,7 @@ import { Component, computed, inject, output, signal } from '@angular/core';
             (click)="profilePictureClicked.emit()"
             (mouseenter)="isHovered.set(true)"
             (mouseleave)="isHovered.set(false)"
-            [ngClass]="{ 'border border-primary': !!profilePictureUrl() }" >
-
+            [ngClass]="{ 'border border-primary': !!profilePictureUrl() }">
             @if (isHovered()) {
                 <div class="overlay animate-fade-in">
                     <div class="flex flex-col items-center gap-1">

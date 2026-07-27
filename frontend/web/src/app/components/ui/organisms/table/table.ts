@@ -27,7 +27,7 @@ export class Table<T extends object> {
     /* COMPUTED */
     gridTemplateColumns = computed<string>(() => {
         return this.columns()
-            .map(col => col.width || '1fr')
+            .map((col) => col.width || '1fr')
             .join(' ');
     });
 

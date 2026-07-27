@@ -36,9 +36,7 @@ export class NotificationsDropdown {
     protected readonly activeTabValue = signal<NotificationFilter>(this.activeNotificationFilter());
 
     // COMPUTED
-    protected readonly notifications = computed<AppNotification[]>(() =>
-        this.notificationsSummary().notifications
-    );
+    protected readonly notifications = computed<AppNotification[]>(() => this.notificationsSummary().notifications);
 
     protected readonly tabListItems = computed<TabListItem[]>(() => [
         {

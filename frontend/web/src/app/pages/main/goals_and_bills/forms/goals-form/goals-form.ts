@@ -166,7 +166,7 @@ export class GoalsForm {
     });
 
     protected readonly goalCreationStrategies = computed<RadioOption[]>(() =>
-        TargetCompletionStrategies.map(strategy => {
+        TargetCompletionStrategies.map((strategy) => {
             let label: string = '';
             switch (strategy) {
                 case 'date':
@@ -197,7 +197,7 @@ export class GoalsForm {
         const categories = this.goalCategories$.value()?.data;
         if (!categories) return [];
 
-        return categories.map(category => {
+        return categories.map((category) => {
             const { value, label } = category;
 
             return {

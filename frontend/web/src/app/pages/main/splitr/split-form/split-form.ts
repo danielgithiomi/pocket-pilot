@@ -49,7 +49,7 @@ export class SplitrSplitForm {
     protected readonly initalMemberPool = computed<string[]>(() => {
         const squadName = this.splitForm.squadName().value();
 
-        const squad = this.squads().find(squad => squad.squadName === squadName);
+        const squad = this.squads().find((squad) => squad.squadName === squadName);
 
         if (!squad) return this.customMembers();
         return squad.squadMembers;
@@ -149,7 +149,8 @@ export class SplitrSplitForm {
                 const squadName = this.splitForm.squadName().value();
 
                 untracked(() => {
-                    const squadMembers = this.squads().find(squad => squad.squadName === squadName)?.squadMembers || [];
+                    const squadMembers =
+                        this.squads().find((squad) => squad.squadName === squadName)?.squadMembers || [];
 
                     this.splitForm.eventMembers().controlValue.set(squadMembers);
                 });

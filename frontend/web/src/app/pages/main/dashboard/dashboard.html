@@ -151,11 +151,7 @@
         title="Set Date Action"
         [class.hidden]="!isDateClickedModalOpen()"
         description="Set a reminder or event on a specific date"
-        (onFormCloseEvent)="isDateClickedModalOpen.set(false)" >
-
-        <form slot="content" id="date-picker-form" (submit)="handleOnDatePickerSubmit($event)">
-
-        </form>
-
+        (onFormCloseEvent)="isDateClickedModalOpen.set(false)">
+        <form slot="content" id="date-picker-form" (submit)="handleOnDatePickerSubmit($event)"></form>
     </organism-form>
 }

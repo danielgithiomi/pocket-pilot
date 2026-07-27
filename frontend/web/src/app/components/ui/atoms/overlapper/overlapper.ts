@@ -37,7 +37,7 @@ export class Overlapper {
     protected readonly visibleItems = computed<OverlapperItem[]>(() => {
         return this.items()
             .slice(0, this.maxVisible())
-            .map(name => ({
+            .map((name) => ({
                 name,
                 initials: this.getInitials(name),
                 palette: COLOR_PALETTE[Math.abs(hashFromName(name)) % COLOR_PALETTE.length]
@@ -71,7 +71,7 @@ export class Overlapper {
 
         const parts = trimmed.split(/\s+/);
         if (parts.length === 1) {
-            return trimmed.slice(0, 2).replace(/^./, c => c.toUpperCase());
+            return trimmed.slice(0, 2).replace(/^./, (c) => c.toUpperCase());
         }
         return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     }

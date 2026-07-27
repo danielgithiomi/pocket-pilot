@@ -30,28 +30,28 @@ export class NotificationsService {
 
     markAsRead(notificationId: string): Observable<AppNotification> {
         return this.mutation.markAsRead(notificationId).pipe(
-            map(response => response.data),
+            map((response) => response.data),
             catchError((error: IStandardError) => this.handleError<AppNotification>(error))
         );
     }
 
     archive(notificationId: string): Observable<AppNotification> {
         return this.mutation.archive(notificationId).pipe(
-            map(response => response.data),
+            map((response) => response.data),
             catchError((error: IStandardError) => this.handleError<AppNotification>(error))
         );
     }
 
     markAllAsRead(): Observable<IVoidResourceResponse> {
         return this.mutation.markAllAsRead().pipe(
-            map(response => response.data),
+            map((response) => response.data),
             catchError((error: IStandardError) => this.handleError<IVoidResourceResponse>(error))
         );
     }
 
     executeAction(notificationId: string, actionId: string): Observable<NotificationActionResult> {
         return this.mutation.executeAction(notificationId, actionId).pipe(
-            map(response => response.data),
+            map((response) => response.data),
             catchError((error: IStandardError) => this.handleError<NotificationActionResult>(error))
         );
     }

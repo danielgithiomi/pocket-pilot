@@ -9,7 +9,7 @@ export interface NewBillSchema {
     amount: number | null;
 }
 
-export const NewBillFormValidationSchema = schema<NewBillSchema>(root => {
+export const NewBillFormValidationSchema = schema<NewBillSchema>((root) => {
     // Name
     required(root.name, { message: 'The bill name is required field!' });
 
@@ -24,7 +24,7 @@ export const NewBillFormValidationSchema = schema<NewBillSchema>(root => {
 
     // Amount
     required(root.amount, { message: 'The bill amount is required field!' });
-    validate(root.amount, context => {
+    validate(root.amount, (context) => {
         const value = context.value();
         if (value === null) return undefined;
 

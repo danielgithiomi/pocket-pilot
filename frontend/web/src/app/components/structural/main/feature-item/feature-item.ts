@@ -53,7 +53,7 @@ export class FeatureItem {
         const userId = this.authService.user()?.id;
         if (!userId) return false;
 
-        return this.feature().featureVotes.some(vote => vote.userId === userId);
+        return this.feature().featureVotes.some((vote) => vote.userId === userId);
     });
     protected readonly displayedFeatureScore = computed<number>(
         () => this.optimisticFeatureScore() ?? this.feature().upvoteCount
@@ -111,7 +111,7 @@ export class FeatureItem {
         this.featuresService.toggleFeatureUpvoteById(this.feature().id).subscribe({
             next: (response: Feature) => {
                 const userId = this.authService.user()?.id;
-                const isUserUpvoted = !!userId && response.featureVotes.some(vote => vote.userId === userId);
+                const isUserUpvoted = !!userId && response.featureVotes.some((vote) => vote.userId === userId);
 
                 this.optimisticIsUserUpvoted.set(isUserUpvoted);
                 this.optimisticFeatureScore.set(response.upvoteCount);

@@ -5,14 +5,14 @@ export function isoToFlag(iso: string): string {
     const code = iso.toUpperCase();
     if (code.length !== 2) return '';
 
-    return String.fromCodePoint(...[...code].map(char => 127397 + char.charCodeAt(0)));
+    return String.fromCodePoint(...[...code].map((char) => 127397 + char.charCodeAt(0)));
 }
 
 export function findCountryByIso(iso: string): Country {
-    const country = COUNTRIES.find(entry => entry.iso === iso);
+    const country = COUNTRIES.find((entry) => entry.iso === iso);
     if (country) return country;
 
-    return COUNTRIES.find(entry => entry.iso === DEFAULT_COUNTRY_ISO) ?? COUNTRIES[0];
+    return COUNTRIES.find((entry) => entry.iso === DEFAULT_COUNTRY_ISO) ?? COUNTRIES[0];
 }
 
 export function parsePhoneNumber(
@@ -61,7 +61,7 @@ export function filterCountries(countries: Country[], query: string): Country[] 
     const normalizedQuery = query.trim().toLowerCase();
     if (!normalizedQuery) return countries;
 
-    return countries.filter(country => {
+    return countries.filter((country) => {
         const searchable = `${country.name} ${country.iso} +${country.dialCode} ${country.dialCode}`.toLowerCase();
         return searchable.includes(normalizedQuery);
     });

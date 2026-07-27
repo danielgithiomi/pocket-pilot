@@ -58,7 +58,7 @@ export class FeatureDetails {
     protected readonly formattedStatus = computed<string>(() => formatToReadable(this.feature().featureStatus));
     protected readonly formattedSubmittedDate = computed<string>(() => formatRelativeDate(this.feature().createdAt));
     protected readonly isUserUpvoted = computed<boolean>(() =>
-        this.feature().featureVotes.some(vote => vote.userId === this.userId)
+        this.feature().featureVotes.some((vote) => vote.userId === this.userId)
     );
     protected readonly statusActiveIndex = computed<number>(() =>
         resolveFeatureStatusActiveIndex(this.feature().featureStatus)
@@ -131,7 +131,7 @@ export class FeatureDetails {
             authorProfilePictureThumbnailUrl: this.authService.user()?.profilePictureThumbnailUrl
         };
 
-        this.optimisticComments.update(comments => [optimisticComment, ...comments]);
+        this.optimisticComments.update((comments) => [optimisticComment, ...comments]);
 
         this.isPostingComment.set(true);
 
@@ -147,7 +147,7 @@ export class FeatureDetails {
 
                 // Filter out the optimistic comment
                 const filteredComments = this.optimisticComments().filter(
-                    comment => comment.id !== optimisticComment.id
+                    (comment) => comment.id !== optimisticComment.id
                 );
 
                 this.optimisticComments.set(filteredComments);
@@ -167,7 +167,7 @@ export class FeatureDetails {
                 // Remove comment from optimistic comments
                 setTimeout(() => {
                     const updatedList = this.optimisticComments().filter(
-                        comment => comment.id !== optimisticComment.id
+                        (comment) => comment.id !== optimisticComment.id
                     );
                     this.optimisticComments.set(updatedList);
                 }, 2000);

@@ -55,7 +55,9 @@ export class FaqsFeatures {
 
     // DATA
     protected readonly faqItems = FAQ_ITEMS;
-    protected readonly contactItems = computed<ContactItem[]>(() => CONTACT_ITEMS.filter(item => item.id === 'email'));
+    protected readonly contactItems = computed<ContactItem[]>(() =>
+        CONTACT_ITEMS.filter((item) => item.id === 'email')
+    );
 
     // STORE
     private readonly featureStatuses = this.featuresService.getFeatureStatuses();
@@ -101,7 +103,7 @@ export class FaqsFeatures {
     }
 
     protected handleOnFeatureItemClick(featureId: string) {
-        const feature = this.featureRequests().features.find(f => f.id === featureId);
+        const feature = this.featureRequests().features.find((f) => f.id === featureId);
 
         if (!feature) {
             this.toastService.show({

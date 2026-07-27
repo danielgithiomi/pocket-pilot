@@ -72,14 +72,14 @@ export class Transactions {
         const targetAccountId = this.transactionFormModel().targetAccountId;
 
         if (!targetAccountId || targetAccountId === '')
-            return accounts?.map(account => ({
+            return accounts?.map((account) => ({
                 value: account.id,
                 label: account.name
             }));
 
         const sourceAccounts = accounts
-            ?.filter(account => account.id !== targetAccountId)
-            .map(account => ({
+            ?.filter((account) => account.id !== targetAccountId)
+            .map((account) => ({
                 value: account.id,
                 label: account.name
             }));
@@ -96,8 +96,8 @@ export class Transactions {
         const sourceAccountId = this.transactionFormModel().sourceAccountId;
 
         const targetAccounts = accounts
-            ?.filter(account => account.id !== sourceAccountId)
-            .map(account => ({
+            ?.filter((account) => account.id !== sourceAccountId)
+            .map((account) => ({
                 value: account.id,
                 label: account.name
             }));
@@ -129,7 +129,7 @@ export class Transactions {
 
         if (!transactions) return [];
 
-        return transactions.filter(transaction => {
+        return transactions.filter((transaction) => {
             if (activeTabIndex === 0) return true;
             return transaction.type.toLowerCase() === activeTabValue;
         });
@@ -247,7 +247,7 @@ export class Transactions {
         const defaultCurrency = this.defaultCurrency;
 
         return (
-            transactionsToFormat?.map(transaction => {
+            transactionsToFormat?.map((transaction) => {
                 const currency = transaction.sourceAccount?.currency ?? defaultCurrency;
                 const conversionResult =
                     snapshot &&
@@ -295,7 +295,7 @@ export class Transactions {
                 });
                 this.reloadResources();
             },
-            error: error => console.error(error),
+            error: (error) => console.error(error),
             complete: () => this.isDeleting.set(false)
         });
     }
@@ -325,7 +325,7 @@ export class Transactions {
 
         const payload = this.transactionFormModel();
         const availableBalance: number =
-            this.accounts.value()?.data?.data?.find(account => account.id === payload.sourceAccountId)?.balance ?? 0;
+            this.accounts.value()?.data?.data?.find((account) => account.id === payload.sourceAccountId)?.balance ?? 0;
 
         // if (this.transactionsService.isNegativeBalance(availableBalance, payload))
         //     this.toastService.show({
@@ -347,7 +347,7 @@ export class Transactions {
                     this.resetTransactionForm();
                     this.isFormOpen.set(false);
                 },
-                error: error => console.error('Transaction creation failed:', error),
+                error: (error) => console.error('Transaction creation failed:', error),
                 complete: () => this.isSubmitting.set(false)
             });
         }, 3500);
