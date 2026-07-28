@@ -6,6 +6,7 @@ import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
 import { LoginPayload } from '@global/types';
 import { AuthService } from '@api/auth.service';
+import { extractValueFromInputField } from '@libs/utils';
 import { Input } from '@components/ui/atoms/input';
 import { Component, inject, signal } from '@angular/core';
 import { WEB_ROUTES } from '@global/constants/routes.constants';
@@ -52,11 +53,7 @@ export class Login {
 
     // FORM SUBMISSIONS
     private async handleLoginFormSubmission(field: FieldTree<LoginSchema>) {
-        const { email, password } = field;
-        const payload: LoginPayload = {
-            email: email().value(),
-            password: password().value()
-        };
+        const payload: LoginPayload = extractValueFromInputField(field);
 
         const response = await firstValueFrom(this.authService.login(payload));
 

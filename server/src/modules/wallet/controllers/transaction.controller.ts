@@ -7,12 +7,12 @@ import { TransactionService } from '../services/transaction.service';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
-    CompleteTransactionDto,
     CreateTransactionDto,
-    CreateTransferTransactionPayload,
+    TransactionWithAccount,
+    CompleteTransactionDto,
     TransactionsResponseDto,
-    TransactionsWithAccountResponseDto,
-    TransactionWithAccount
+    CreateTransferTransactionPayload,
+    TransactionsWithAccountResponseDto
 } from '../dto/transaction.dto';
 
 @Controller('accounts')
@@ -177,17 +177,17 @@ export class TransactionController {
         description: 'Returns the deleted transaction.'
     })
     async deleteTransactionByAccountId(
+        @UserInRequest() currentUser: UserResponseDto,
         @Param('accountId') accountId: string,
-        @Param('transactionId') transactionId: string,
-        @UserInRequest() currentUser: UserResponseDto
+        @Param('transactionId') transactionId: string
     ): Promise<VoidResourceResponse> {
         const { id: userId } = currentUser;
 
-        await this.transactionService.deleteTransactionByAccountId(userId, accountId, transactionId);
+        const { description } = await this.transactionService.deleteTransactionByAccountId(userId, accountId, transactionId);
 
         return {
             message: 'Transaction Deleted!',
-            details: `The transaction with id: {${transactionId}} has been deleted successfully.`
+            details: `Your [${description}] transaction has been deleted successfully.`
         };
     }
 }

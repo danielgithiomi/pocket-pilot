@@ -1,7 +1,7 @@
 import { NgClass, CommonModule } from '@angular/common';
 import { TableColumn, TableAlign } from './table.types';
 import { Trash2, LucideAngularModule } from 'lucide-angular';
-import { Component, input, output, computed } from '@angular/core';
+import { Component, input, output, computed, signal } from '@angular/core';
 
 @Component({
     selector: 'organism-table',
@@ -10,9 +10,13 @@ import { Component, input, output, computed } from '@angular/core';
     imports: [CommonModule, LucideAngularModule, NgClass]
 })
 export class Table<T extends object> {
+    /* ICONS */
+    readonly iconSize: number = 18;
+    readonly Trash2 = Trash2;
+
     /* INPUTS */
-    id = input.required<string>();
     data = input.required<T[]>();
+    id = input.required<string>();
     isLoading = input<boolean>(true);
     columns = input.required<TableColumn<T>[]>();
     emptyMessage = input<string>('No data available');
@@ -20,9 +24,8 @@ export class Table<T extends object> {
     /* OUTPUTS */
     deleteRow = output<T>();
 
-    /* ICONS */
-    readonly Trash2 = Trash2;
-    readonly iconSize = 18;
+    // STATE SIGNALS
+    protected readonly isDeleting = signal<boolean>(false);
 
     /* COMPUTED */
     gridTemplateColumns = computed<string>(() => {
@@ -35,6 +38,7 @@ export class Table<T extends object> {
 
     /* METHODS */
     handleDelete(item: T) {
+        this.isDeleting.set(true);
         this.deleteRow.emit(item);
     }
 

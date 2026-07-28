@@ -79,7 +79,7 @@ export class TransactionService {
         return createdTransaction;
     }
 
-    async deleteTransactionByAccountId(userId: string, accountId: string, transactionId: string): Promise<void> {
+    async deleteTransactionByAccountId(userId: string, accountId: string, transactionId: string) {
         const account = await this.confirmAccountExists(accountId);
 
         if (!this.isAccountOwnedByUser(userId, account.holderId)) {
@@ -90,8 +90,9 @@ export class TransactionService {
             });
         }
 
-        await this.transactionRepository.deleteTransactionById(transactionId);
+        const deletedTransaction = await this.transactionRepository.deleteTransactionById(transactionId);
         await this.invalidateAccountCache(userId, accountId);
+        return deletedTransaction;
     }
 
     // HELPER FUNCTIONS

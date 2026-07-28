@@ -154,8 +154,8 @@ export class TransactionRepository {
         });
     }
 
-    async deleteTransactionById(transactionId: string): Promise<void> {
-        await this.db.transaction.delete({
+    async deleteTransactionById(transactionId: string) {
+        return this.db.transaction.delete({
             where: { id: transactionId }
         });
     }

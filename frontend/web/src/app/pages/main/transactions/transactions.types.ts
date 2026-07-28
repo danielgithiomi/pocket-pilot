@@ -1,5 +1,5 @@
+import { TabListItem } from '@atoms/tab-list';
 import { CreateTransactionRequest } from '@global/types';
-import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
 import { maxLength, min, required, schema, validate } from '@angular/forms/signals';
 
 // TABLE

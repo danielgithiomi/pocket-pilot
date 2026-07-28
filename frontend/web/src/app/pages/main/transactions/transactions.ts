@@ -6,12 +6,12 @@ import { NgClass } from '@angular/common';
 import { Form } from '@organisms/form/form';
 import { ToastService } from '@atoms/toast';
 import { TabList } from '@atoms/tab-list/tab-list';
+import { extractValueFromInputField } from '@libs/utils';
 import { IVoidResourceResponse } from '@global/types';
 import { AccountsService } from '@api/accounts.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { TableColumn } from '@organisms/table/table.types';
 import { CategoriesService } from '@api/categories.service';
-import { TransactionsStore } from '@stores/transactions.store';
 import { TransactionsService } from '@api/transactions.service';
 import { ExchangeRateService } from '@api/exchange-rate.service';
 import { form, FieldTree, FormRoot } from '@angular/forms/signals';
@@ -45,7 +45,6 @@ export class Transactions {
     private readonly toastService = inject(ToastService);
     private readonly accountsService = inject(AccountsService);
     private readonly categoriesService = inject(CategoriesService);
-    private readonly transactionsStore = inject(TransactionsStore);
     private readonly transactionsService = inject(TransactionsService);
     private readonly exchangeRateService = inject(ExchangeRateService);
 
@@ -242,7 +241,7 @@ export class Transactions {
             key: 'actions',
             label: 'Actions',
             align: 'right',
-            width: '1fr'
+            width: '1fr',
         }
     ];
 
@@ -324,38 +323,30 @@ export class Transactions {
     }
 
     protected async submitTransactionForm(fieldTree: FieldTree<TransactionSchema>) {
-        const { type, amount, category, description, sourceAccountId, targetAccountId } = fieldTree;
-
-        const payload: TransactionSchema = {
-            type: type().value(),
-            amount: amount().value(),
-            category: category().value(),
-            description: category().value(),
-            sourceAccountId: sourceAccountId().value(),
-            targetAccountId: targetAccountId().value()
-        };
+        const payload: TransactionSchema = extractValueFromInputField(fieldTree);
 
         const response = await firstValueFrom(
             this.transactionsService.createTransaction(payload.sourceAccountId, payload)
         );
 
         if ('data' in response) {
-            const { data: { type } } = response;
-            this.toastService.show({
-                variant: 'success',
-                title: 'Transaction created!',
-                details: `Your [${type.toUpperCase()}] transaction has been logged successfully.`
-            });
+            // const { data: { type } } = response;
+
+            // this.toastService.show({
+            //     variant: 'success',
+            //     title: 'Transaction created!',
+            //     details: `Your [${type.toUpperCase()}] transaction has been logged successfully.`
+            // });
 
             this.reloadResources();
             this.resetTransactionForm();
             this.isFormOpen.set(false);
-        }else {
+        } else {
             this.toastService.show({
                 variant: 'error',
                 title: 'An error occurred.',
                 details: 'There was an error encountered while creating the transaction.'
-            })
+            });
         }
     }
 
