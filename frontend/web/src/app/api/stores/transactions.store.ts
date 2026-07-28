@@ -1,21 +1,43 @@
+import { getMonthValue } from '@libs/utils'
 import { ToastService } from '@atoms/toast';
-import { DestroyRef, inject, Injectable } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
+import { DestroyRef, inject, Injectable, signal, computed } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TransactionsStore {
+    private readonly MONTH_INDEX = new Date().getMonth();
+
     // SSE
     private eventSource?: EventSource;
     private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
+    // SERVICES
     private readonly toastService = inject(ToastService);
     private readonly transactionsService = inject(TransactionsService);
+
+    // DATA
+    private readonly currentMonthIndex = signal<number>(this.MONTH_INDEX);
+
+    // COMPUTED
+    readonly currentMonth = computed<string>(() => getMonthValue(this.currentMonthIndex()));
+
+    // EXPOSED
+    readonly actualMonth = getMonthValue(this.MONTH_INDEX);
 
     constructor() {
         this.connectToSSEStream();
         this.destroyRef.onDestroy(() => this.eventSource?.close());
+    }
+
+    // SETTERS
+    setCurrentMonth(monthIndex: number){
+        this.currentMonthIndex.set(monthIndex);
+    }
+
+    resetCurrentMonth(){
+        this.currentMonthIndex.set(this.MONTH_INDEX);
     }
 
     private connectToSSEStream() {

@@ -24,9 +24,6 @@ export class Table<T extends object> {
     /* OUTPUTS */
     deleteRow = output<T>();
 
-    // STATE SIGNALS
-    protected readonly isDeleting = signal<boolean>(false);
-
     /* COMPUTED */
     gridTemplateColumns = computed<string>(() => {
         return this.columns()
@@ -38,7 +35,6 @@ export class Table<T extends object> {
 
     /* METHODS */
     handleDelete(item: T) {
-        this.isDeleting.set(true);
         this.deleteRow.emit(item);
     }
 

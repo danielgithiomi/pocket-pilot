@@ -1,13 +1,13 @@
 import { Form } from '@organisms/form';
 import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
-import { MONTHS_ENUM } from '@global/constants';
 import { RatioSlider } from '@atoms/ratio-slider';
 import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
 import { DashboardCalendar } from './dashboard-calendar';
 import { DrawerService } from '@infrastructure/services';
+import { TransactionsStore } from '@stores/transactions.store';
 import { TransactionsService } from '@api/transactions.service';
 import { UpcomingBills } from './upcoming-bills/upcoming-bills';
 import { Component, computed, inject, signal } from '@angular/core';
@@ -58,16 +58,18 @@ export class Dashboard {
     private readonly accountsService = inject(AccountsService);
     private readonly transactionsService = inject(TransactionsService);
 
-    // Data
-    protected readonly currentMonthIndex = new Date().getMonth();
-    protected readonly accounts = this.accountsService.getUserAccounts();
+    // STORES
+    protected readonly transactionsStore = inject(TransactionsStore);
+
+    // DATA
+    protected readonly actualMonth = this.transactionsStore.actualMonth;
     protected readonly currency = this.accountsService.getDefaultCurrency();
-    protected readonly actualMonth = MONTHS_ENUM[this.currentMonthIndex].value;
-    protected readonly transactions = this.transactionsService.getUserTransactions();
+    protected readonly currentAnalysisMonth = this.transactionsStore.currentMonth;
     protected readonly monthlySpendingLimit = this.accountsService.getMonthlySpendingLimit();
+    protected readonly accounts = this.accountsService.getUserAccounts();
+    protected readonly transactions = this.transactionsService.getUserTransactions();
 
     // States
-    protected readonly currentMonth = signal<string>(this.actualMonth);
     protected readonly isDateClickedModalOpen = signal<boolean>(false);
 
     // Computed
@@ -123,8 +125,8 @@ export class Dashboard {
     });
 
     // METHODS
-    protected onMonthChange(month: string) {
-        this.currentMonth.set(month);
+    protected onMonthChange(monthIndex: number) {
+        this.transactionsStore.setCurrentMonth(monthIndex);
     }
 
     protected onSpendingLimitClick() {

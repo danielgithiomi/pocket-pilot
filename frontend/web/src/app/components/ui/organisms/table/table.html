@@ -27,17 +27,17 @@
                                     @if (isLoading()) {
                                         <div class="skeleton size-4"></div>
                                     } @else {
-                                        @if (isDeleting()){
-                                            <div class="delete-loader py-1!"></div>
-                                        }
-                                        @else {
+<!--                                        @if (isDeleting()){-->
+<!--                                            <div class="delete-loader py-1!"></div>-->
+<!--                                        }-->
+<!--                                        @else {-->
                                             <lucide-icon
                                                 [img]="Trash2"
                                                 [size]="iconSize"
                                                 name="action-cell"
                                                 (click)="handleDelete(item)"
                                                 class="action-icon delete-icon" />
-                                        }
+<!--                                        }-->
                                     }
                                 </div>
                             } @else {

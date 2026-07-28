@@ -28,8 +28,8 @@ export class CostAnalysis {
     protected readonly animationDuration = input<number>(COMPONENT_ANIMATION_DURATION_MS);
 
     // OUTPUTS
-    protected readonly monthChange = output<string>();
     protected readonly resetMonthEvent = output<void>();
+    protected readonly monthChange = output<number>();
 
     // STATES
     private _hasInitialized = false;
@@ -52,7 +52,7 @@ export class CostAnalysis {
         () => this.categoriesFromService.isLoading() || this.transactionsFromService.isLoading()
     );
 
-    protected readonly formattedTotalSpending = computed(() =>
+    protected readonly formattedTotalMonthlySpending = computed(() =>
         this.formatCurrency(this.totalMonthlySpending().toString())
     );
 
@@ -149,7 +149,7 @@ export class CostAnalysis {
     onMonthChange(event: Event): void {
         const select = event.target as HTMLSelectElement;
         this.isMonthChanged.set(true);
-        this.monthChange.emit(select.value);
+        this.monthChange.emit(Number(select.value));
     }
 
     constructor() {

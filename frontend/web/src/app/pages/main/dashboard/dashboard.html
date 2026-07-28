@@ -129,10 +129,10 @@
                     } @else {
                         <widget-cost-analysis
                             [actualMonth]="actualMonth"
-                            [currentMonth]="currentMonth()"
                             (monthChange)="onMonthChange($event)"
+                            [currentMonth]="currentAnalysisMonth()"
                             [totalMonthlySpending]="totalExpenses()"
-                            (resetMonthEvent)="onMonthChange(actualMonth)" />
+                            (resetMonthEvent)="transactionsStore.resetCurrentMonth()" />
                     }
                 </div>
             </dashboard-card>
