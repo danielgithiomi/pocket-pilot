@@ -5,7 +5,6 @@ import { Table } from '@organisms/table';
 import { NgClass } from '@angular/common';
 import { Form } from '@organisms/form/form';
 import { ToastService } from '@atoms/toast';
-import { form } from '@angular/forms/signals';
 import { TabList } from '@atoms/tab-list/tab-list';
 import { IVoidResourceResponse } from '@global/types';
 import { AccountsService } from '@api/accounts.service';
@@ -15,32 +14,34 @@ import { CategoriesService } from '@api/categories.service';
 import { TransactionsStore } from '@stores/transactions.store';
 import { TransactionsService } from '@api/transactions.service';
 import { ExchangeRateService } from '@api/exchange-rate.service';
+import { form, FieldTree, FormRoot } from '@angular/forms/signals';
 import { ListFilterPlus, LucideAngularModule } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { formatCurrency, formatDate, formatToReadable, splitTransactionId } from '@libs/utils/formatters';
 import {
-    initialTransactionFormState,
     skeletonData,
     tabListItems,
-    transactionFormValidationSchema,
     TransactionRow,
-    TransactionSchema
+    TransactionSchema,
+    initialTransactionFormState,
+    transactionFormValidationSchema
 } from './transactions.types';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-transactions',
     templateUrl: './transactions.html',
-    imports: [Form, Input, Table, NoData, Select, Button, NgClass, TabList, FetchError, LucideAngularModule]
+    imports: [Form, FormRoot, Input, Table, NoData, Select, Button, NgClass, TabList, FetchError, LucideAngularModule]
 })
 export class Transactions {
-    // Icons
+    // ICONS
     protected readonly iconSize: number = 18;
     protected readonly Plus = ListFilterPlus;
     protected readonly skeletonData = skeletonData;
     protected readonly tabListItems = tabListItems;
 
-    // Services
+    // SERVICES
     private readonly toastService = inject(ToastService);
     private readonly accountsService = inject(AccountsService);
     private readonly categoriesService = inject(CategoriesService);
@@ -48,20 +49,20 @@ export class Transactions {
     private readonly transactionsService = inject(TransactionsService);
     private readonly exchangeRateService = inject(ExchangeRateService);
 
-    // Data
+    // DATA
     protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
     protected readonly accounts = this.accountsService.getUserAccounts();
     protected readonly transactionCategories = this.categoriesService.getTransactionCategories;
     protected readonly transactions = this.transactionsService.getUserTransactions();
     protected readonly transactionTypes = this.transactionsService.getTransactionTypes();
 
-    // States
+    // SIGNAL STATES
     protected isDeleting = signal<boolean>(false);
     protected isFormOpen = signal<boolean>(false);
     protected readonly activeTabIndex = signal<number>(0);
     protected readonly isTransferTransaction = signal<boolean>(false);
 
-    // Computed
+    // COMPUTED
     protected isFetching = computed(() => {
         return this.accounts.isLoading() || this.transactions.isLoading();
     });
@@ -134,9 +135,14 @@ export class Transactions {
         });
     });
 
-    // Form
+    // FORM
     protected transactionFormModel = signal<TransactionSchema>(initialTransactionFormState);
-    protected transactionForm = form(this.transactionFormModel, transactionFormValidationSchema);
+    protected transactionForm = form(this.transactionFormModel, transactionFormValidationSchema, {
+        submission: {
+            ignoreValidators: 'none',
+            action: (fieldTree: FieldTree<TransactionSchema>) => this.submitTransactionForm(fieldTree)
+        }
+    });
 
     // Methods
     protected resetTransactionForm() {
@@ -317,37 +323,40 @@ export class Transactions {
         this.isFormOpen.set(false);
     }
 
-    protected submitTransactionForm(event: Event) {
-        event.preventDefault();
+    protected async submitTransactionForm(fieldTree: FieldTree<TransactionSchema>) {
+        const { type, amount, category, description, sourceAccountId, targetAccountId } = fieldTree;
 
-        const payload = this.transactionFormModel();
-        const availableBalance: number =
-            this.accounts.value()?.data?.data?.find((account) => account.id === payload.sourceAccountId)?.balance ?? 0;
+        const payload: TransactionSchema = {
+            type: type().value(),
+            amount: amount().value(),
+            category: category().value(),
+            description: category().value(),
+            sourceAccountId: sourceAccountId().value(),
+            targetAccountId: targetAccountId().value()
+        };
 
-        // if (this.transactionsService.isNegativeBalance(availableBalance, payload))
-        //     this.toastService.show({
-        //         variant: 'warning',
-        //         title: 'Exceeded available balance!',
-        //         details: 'This transaction will result in a negative balance in your account.'
-        //     });
+        const response = await firstValueFrom(
+            this.transactionsService.createTransaction(payload.sourceAccountId, payload)
+        );
 
-        setTimeout(() => {
-            this.transactionsService.createTransaction(payload.sourceAccountId, payload).subscribe({
-                next: () => {
-                    this.toastService.show({
-                        variant: 'success',
-                        title: 'Transaction created!',
-                        details: `Your [${payload.type.toUpperCase()}] transaction has been logged successfully.`
-                    });
-
-                    this.reloadResources();
-                    this.resetTransactionForm();
-                    this.isFormOpen.set(false);
-                },
-                error: (error) => console.error('Transaction creation failed:', error),
-                complete: () => {}
+        if ('data' in response) {
+            const { data: { type } } = response;
+            this.toastService.show({
+                variant: 'success',
+                title: 'Transaction created!',
+                details: `Your [${type.toUpperCase()}] transaction has been logged successfully.`
             });
-        }, 3500);
+
+            this.reloadResources();
+            this.resetTransactionForm();
+            this.isFormOpen.set(false);
+        }else {
+            this.toastService.show({
+                variant: 'error',
+                title: 'An error occurred.',
+                details: 'There was an error encountered while creating the transaction.'
+            })
+        }
     }
 
     constructor() {

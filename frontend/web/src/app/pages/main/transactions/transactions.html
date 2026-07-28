@@ -68,7 +68,7 @@
         @let categories = transactionCategories();
         @let types = transactionTypes.value()?.data;
 
-        <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
+        <form slot="content" id="transactions-form" [formRoot]="transactionForm">
             <atom-input
                 id="name"
                 type="number"
