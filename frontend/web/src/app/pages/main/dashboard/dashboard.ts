@@ -125,10 +125,6 @@ export class Dashboard {
     });
 
     // METHODS
-    protected onMonthChange(monthIndex: number) {
-        this.transactionsStore.setCurrentMonth(monthIndex);
-    }
-
     protected onSpendingLimitClick() {
         this.toastService.show({
             variant: 'info',

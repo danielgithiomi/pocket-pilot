@@ -48,10 +48,6 @@ export class CostAnalysis {
     private readonly transactionsFromService = this.transactionsService.getUserTransactions();
 
     // COMPUTED
-    protected readonly loading = computed(
-        () => this.categoriesFromService.isLoading() || this.transactionsFromService.isLoading()
-    );
-
     protected readonly formattedTotalMonthlySpending = computed(() =>
         this.formatCurrency(this.totalMonthlySpending().toString())
     );
@@ -139,9 +135,9 @@ export class CostAnalysis {
 
     readonly animatedSegments = computed(() => {
         const percentages = this._animatedPercentages();
-        return this.categoriesWithPercentage().map((cat) => ({
-            ...cat,
-            animatedPercentage: percentages.get(cat.id) ?? 0
+        return this.categoriesWithPercentage().map((category) => ({
+            ...category,
+            animatedPercentage: percentages.get(category.id) ?? 0
         }));
     });
 
@@ -162,8 +158,8 @@ export class CostAnalysis {
 
             if (!animate) {
                 const percentages = new Map<string, number>();
-                categories.forEach((cat) => {
-                    percentages.set(cat.id, cat.percentage);
+                categories.forEach((category) => {
+                    percentages.set(category.id, category.percentage);
                 });
                 this._animatedPercentages.set(percentages);
                 return;
@@ -172,8 +168,8 @@ export class CostAnalysis {
             if (!this._hasInitialized) {
                 this._hasInitialized = true;
                 const initialPercentages = new Map<string, number>();
-                categories.forEach((cat) => {
-                    initialPercentages.set(cat.id, 0);
+                categories.forEach((category) => {
+                    initialPercentages.set(category.id, 0);
                 });
                 this._animatedPercentages.set(initialPercentages);
 
@@ -197,10 +193,10 @@ export class CostAnalysis {
             const eased = easeOutCubic(progress);
 
             const newPercentages = new Map<string, number>();
-            categories.forEach((cat) => {
-                const start = startPercentages.get(cat.id) ?? 0;
-                const current = start + (cat.percentage - start) * eased;
-                newPercentages.set(cat.id, Math.round(current * 10) / 10);
+            categories.forEach((category) => {
+                const start = startPercentages.get(category.id) ?? 0;
+                const current = start + (category.percentage - start) * eased;
+                newPercentages.set(category.id, Math.round(current * 10) / 10);
             });
 
             this._animatedPercentages.set(newPercentages);
@@ -209,8 +205,8 @@ export class CostAnalysis {
                 requestAnimationFrame(animate);
             } else {
                 const finalPercentages = new Map<string, number>();
-                categories.forEach((cat) => {
-                    finalPercentages.set(cat.id, cat.percentage);
+                categories.forEach((category) => {
+                    finalPercentages.set(category.id, category.percentage);
                 });
                 this._animatedPercentages.set(finalPercentages);
             }
