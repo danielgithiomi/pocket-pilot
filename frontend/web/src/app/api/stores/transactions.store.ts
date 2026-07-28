@@ -1,5 +1,4 @@
 import { ToastService } from '@atoms/toast';
-import { AccountsService } from '@api/accounts.service';
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { TransactionsService } from '@api/transactions.service';
 
@@ -12,7 +11,6 @@ export class TransactionsStore {
     private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
     private readonly toastService = inject(ToastService);
-    private readonly authService = inject(AccountsService);
     private readonly transactionsService = inject(TransactionsService);
 
     constructor() {
@@ -32,11 +30,10 @@ export class TransactionsStore {
                 } = payload;
                 const difference: number = balance - amount;
 
-                console.log(payload);
                 this.toastService.show({
                     variant: 'warning',
                     title: 'Negative Balance Alert!',
-                    details: `You have a negative balance of ${difference} in ${name}`
+                    details: `You have a negative balance of ${difference} in your [${name}] account.`
                 });
             },
             (event: Event) => console.error('Event Source Error', event)

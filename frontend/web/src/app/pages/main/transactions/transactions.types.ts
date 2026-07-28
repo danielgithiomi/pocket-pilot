@@ -32,10 +32,12 @@ export const initialTransactionFormState: TransactionSchema = {
 };
 
 export const transactionFormValidationSchema = schema<TransactionSchema>((root) => {
+    // DESCRIPTION
     maxLength(root.description, 50, {
         message: 'The description must be less than 50 characters!'
     });
 
+    // TRANSACTION AMOUNT
     required(root.amount, { message: 'The amount is required field!' });
     min(root.amount, 1, { message: 'The minimum transaction amount must be at least 1!' });
     validate(root.amount, (context) => {
@@ -48,6 +50,7 @@ export const transactionFormValidationSchema = schema<TransactionSchema>((root) 
         return isValid ? undefined : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
     });
 
+    // TRANSACTION TYPE
     validate(root.type, (context) => {
         const type = context.value();
         if (!type || type.trim() === '') {
@@ -59,6 +62,7 @@ export const transactionFormValidationSchema = schema<TransactionSchema>((root) 
         return null;
     });
 
+    // CATEGORY
     validate(root.category, (context) => {
         const category = context.value();
         if (!category || category.trim() === '') {
@@ -69,6 +73,9 @@ export const transactionFormValidationSchema = schema<TransactionSchema>((root) 
         }
         return null;
     });
+
+    // ASSOCIATED ACCOUNT
+    required(root.sourceAccountId, { message: 'You must enter the associated account' });
 });
 
 // SKELETON

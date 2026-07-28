@@ -104,7 +104,7 @@ export class Dashboard {
     protected readonly netCashFlow = computed(() => {
         const revenue = this.totalRevenue();
         const expenses = this.totalExpenses();
-        return revenue + expenses;
+        return revenue - expenses;
     });
 
     protected readonly formattedNetCashFlow = computed(() => {

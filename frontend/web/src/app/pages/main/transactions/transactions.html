@@ -62,10 +62,12 @@
         id="transactions"
         title="Log Transaction"
         [class.hidden]="!isFormOpen()"
-        (onFormCloseEvent)="handleCloseForm($event)"
-        description="Record a new transaction">
+        description="Record a new transaction"
+        (onFormCloseEvent)="handleCloseForm($event)">
+
         @let categories = transactionCategories();
         @let types = transactionTypes.value()?.data;
+
         <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
             <atom-input
                 id="name"
@@ -131,6 +133,7 @@
             }
         </form>
 
+        @let isSubmittingForm = transactionForm().submitting();
         <div class="form-footer-buttons" slot="footer">
             <atom-button
                 type="button"
@@ -140,15 +143,15 @@
                 form="transactions-form"
                 id="reset-transaction-form"
                 (clicked)="resetTransactionForm()"
-                [disabled]="!transactionForm().dirty() || isSubmitting()" />
+                [disabled]="!transactionForm().dirty() || isSubmittingForm" />
 
             <atom-button
                 type="submit"
                 label="Log Transaction"
                 form="transactions-form"
                 id="submit-transaction-form"
-                [isLoading]="isSubmitting()"
-                [disabled]="transactionForm().invalid() || isSubmitting()" />
+                [isLoading]="isSubmittingForm"
+                [disabled]="transactionForm().invalid() || transactionForm().submitting()" />
         </div>
     </organism-form>
 }

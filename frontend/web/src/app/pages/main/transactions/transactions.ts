@@ -58,7 +58,6 @@ export class Transactions {
     // States
     protected isDeleting = signal<boolean>(false);
     protected isFormOpen = signal<boolean>(false);
-    protected isSubmitting = signal<boolean>(false);
     protected readonly activeTabIndex = signal<number>(0);
     protected readonly isTransferTransaction = signal<boolean>(false);
 
@@ -321,8 +320,6 @@ export class Transactions {
     protected submitTransactionForm(event: Event) {
         event.preventDefault();
 
-        this.isSubmitting.set(true);
-
         const payload = this.transactionFormModel();
         const availableBalance: number =
             this.accounts.value()?.data?.data?.find((account) => account.id === payload.sourceAccountId)?.balance ?? 0;
@@ -348,7 +345,7 @@ export class Transactions {
                     this.isFormOpen.set(false);
                 },
                 error: (error) => console.error('Transaction creation failed:', error),
-                complete: () => this.isSubmitting.set(false)
+                complete: () => {}
             });
         }, 3500);
     }
