@@ -1,6 +1,7 @@
 import { Form } from '@organisms/form';
 import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
+import { AuthService } from '@api/auth.service';
 import { RatioSlider } from '@atoms/ratio-slider';
 import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
@@ -53,6 +54,7 @@ export class Dashboard {
     protected readonly spendingLimitIcon = BrickWallShield;
 
     // Services
+    protected readonly authService = inject(AuthService);
     private readonly toastService = inject(ToastService);
     protected readonly drawerService = inject(DrawerService);
     private readonly accountsService = inject(AccountsService);
