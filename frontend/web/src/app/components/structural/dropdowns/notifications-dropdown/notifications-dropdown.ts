@@ -5,7 +5,7 @@ import { CheckCheck, LucideAngularModule, X } from 'lucide-angular';
 import { NotificationItem } from '@structural/main/notification-item';
 import { Component, computed, inject, output, signal } from '@angular/core';
 import { TabChangeEventOutput, TabList, TabListItem } from '@atoms/tab-list';
-import { AppNotification, NotificationAction, NotificationFilter } from '@global/types';
+import { AppNotification, NotificationAction, NotificationFilter } from '@shared/types';
 
 @Component({
     selector: 'notifications-dropdown',

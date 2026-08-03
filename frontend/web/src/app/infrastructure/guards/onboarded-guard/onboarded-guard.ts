@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { AuthService } from '@api/auth.service';
 import { CanMatchFn, Router } from '@angular/router';
-import { WEB_ROUTES as routes } from '@global/constants';
+import { WEB_ROUTES as routes } from '@shared/constants';
 
 export const OnboardedGuard: CanMatchFn = async () => {
     const router = inject(Router);

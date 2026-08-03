@@ -1,4 +1,4 @@
-import { GoalCategoryEnum } from '@global/enums';
+import { GoalCategoryEnum } from '@shared/enums';
 import { required, schema, validate } from '@angular/forms/signals';
 
 // TYPES

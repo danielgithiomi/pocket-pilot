@@ -1,5 +1,5 @@
 import { Badge } from '@atoms/badge';
-import { ISplitrEvent } from '@global/types';
+import { ISplitrEvent } from '@shared/types';
 import { Overlapper } from '@atoms/overlapper';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';

@@ -6,7 +6,7 @@ import {
     ExchangeRatesSnapshot,
     CurrencyConversionResult,
     EXCHANGE_RATE_BASE_CURRENCY
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

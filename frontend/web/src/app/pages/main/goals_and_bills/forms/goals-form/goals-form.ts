@@ -4,8 +4,8 @@ import { Form } from '@organisms/form';
 import { Button } from '@atoms/button';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
-import { GoalCategoryEnum } from '@global/enums';
-import { CreateGoalRequest } from '@global/types';
+import { GoalCategoryEnum } from '@shared/enums';
+import { CreateGoalRequest } from '@shared/types';
 import { GoalsService } from '@api/goals.service';
 import { Radio, RadioOption } from '@atoms/radio';
 import { DatePicker } from '@organisms/date-picker';
@@ -20,7 +20,7 @@ import {
     TargetCompletionStrategies,
     TargetCompletionStrategy
 } from './goals-form.types';
-import { CURRENCIES } from '@global/constants';
+import { CURRENCIES } from '@shared/constants';
 
 @Component({
     selector: 'goals-form',

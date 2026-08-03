@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { IGlobalResponse, IStandardResponse } from '@global/types';
+import { IGlobalResponse, IStandardResponse } from '@shared/types';
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 
 export const ResponseInterceptor: HttpInterceptorFn = (req, next) => {

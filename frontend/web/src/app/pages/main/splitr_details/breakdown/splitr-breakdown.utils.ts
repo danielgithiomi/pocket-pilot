@@ -1,4 +1,4 @@
-import { ISplitrEvent } from '@global/types';
+import { ISplitrEvent } from '@shared/types';
 import { COLOR_PALETTE } from '@libs/constants';
 import { formatCurrency, hashFromName } from '@libs/utils';
 import { Avatar, Participant, Settlement } from './splitr-breakdown.types';

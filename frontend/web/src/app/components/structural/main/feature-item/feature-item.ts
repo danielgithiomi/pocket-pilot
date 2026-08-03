@@ -3,10 +3,10 @@ import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { AuthService } from '@api/auth.service';
 import { Badge, BadgeVariant } from '@atoms/badge';
-import { denormalizeCategoryName } from '@global/utils';
+import { denormalizeCategoryName } from '@shared/utils';
 import { FeaturesService } from '@api/features.service';
-import { Feature, IVoidResourceResponse } from '@global/types';
-import { FeatureStatusEnum } from '@global/enums';
+import { Feature, IVoidResourceResponse } from '@shared/types';
+import { FeatureStatusEnum } from '@shared/enums';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareReply, Trash2 } from 'lucide-angular';
 

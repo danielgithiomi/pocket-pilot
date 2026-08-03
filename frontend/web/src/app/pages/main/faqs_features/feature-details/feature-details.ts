@@ -4,16 +4,16 @@ import { NgClass } from '@angular/common';
 import { Status } from '@molecules/status';
 import { ToastService } from '@atoms/toast';
 import { AuthService } from '@api/auth.service';
-import { FeatureStatusEnum } from '@global/enums';
+import { FeatureStatusEnum } from '@shared/enums';
 import { Badge, BadgeVariant } from '@atoms/badge';
 import { FeatureComment } from '../feature-comment';
-import { denormalizeCategoryName } from '@global/utils';
+import { denormalizeCategoryName } from '@shared/utils';
 import { FeaturesService } from '@api/features.service';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareText, Send } from 'lucide-angular';
 import { FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
-import { FeatureComment as IFeatureComment, FeatureCommentPayload, FeatureWithComments } from '@global/types';
+import { FeatureComment as IFeatureComment, FeatureCommentPayload, FeatureWithComments } from '@shared/types';
 
 @Component({
     selector: 'feature-details',

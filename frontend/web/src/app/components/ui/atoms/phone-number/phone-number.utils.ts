@@ -1,5 +1,5 @@
-import { Country } from '@global/types';
-import { COUNTRIES, COUNTRIES_BY_DIAL_CODE, DEFAULT_COUNTRY_ISO } from '@global/constants';
+import { Country } from '@shared/types';
+import { COUNTRIES, COUNTRIES_BY_DIAL_CODE, DEFAULT_COUNTRY_ISO } from '@shared/constants';
 
 export function isoToFlag(iso: string): string {
     const code = iso.toUpperCase();

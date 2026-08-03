@@ -1,4 +1,4 @@
-import { User } from '@global/types';
+import { User } from '@shared/types';
 import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
 import { formatFullDate } from '@libs/utils';
@@ -6,7 +6,7 @@ import { form } from '@angular/forms/signals';
 import { AwsService } from '@api/aws.service';
 import { AuthService } from '@api/auth.service';
 import { UserService } from '@api/user.service';
-import { DEFAULT_COUNTRY_ISO } from '@global/constants';
+import { DEFAULT_COUNTRY_ISO } from '@shared/constants';
 import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
 import { ReactiveFormsModule } from '@angular/forms';

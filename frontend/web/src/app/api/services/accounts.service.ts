@@ -13,7 +13,7 @@ import {
     CreateAccountPayload,
     IVoidResourceResponse,
     UpdateAccountBalanceVisibilityPayload
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

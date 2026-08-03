@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
 import {
     Feature,
     FeatureComment,
@@ -9,7 +9,7 @@ import {
     IStandardResponse,
     IVoidResourceResponse,
     FeatureCommentPayload
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

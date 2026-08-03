@@ -1,6 +1,6 @@
 import { TabListItem } from '@atoms/tab-list';
-import { CategoryTypeEnum } from '@global/enums';
-import { CreateCategoryRequest } from '@global/types';
+import { CategoryTypeEnum } from '@shared/enums';
+import { CreateCategoryRequest } from '@shared/types';
 import { minLength, required, schema } from '@angular/forms/signals';
 
 // DATA

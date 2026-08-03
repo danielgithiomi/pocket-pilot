@@ -10,7 +10,7 @@ import {
     initialChangePasswordFormState
 } from './change-password.types';
 import { AuthService } from '@api/auth.service';
-import { IVoidResourceResponse } from '@global/types';
+import { IVoidResourceResponse } from '@shared/types';
 
 @Component({
     selector: 'change-password',

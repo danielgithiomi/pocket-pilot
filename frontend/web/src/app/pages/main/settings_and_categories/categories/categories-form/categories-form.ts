@@ -12,7 +12,7 @@ import {
     categoryTabItems,
     initialCategoryFormState
 } from './categories-form.types';
-import { CategoryVariant } from '@global/types';
+import { CategoryVariant } from '@shared/types';
 
 @Component({
     selector: 'categories-form',

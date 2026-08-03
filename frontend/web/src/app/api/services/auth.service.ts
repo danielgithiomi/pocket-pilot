@@ -1,13 +1,13 @@
 import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
 import { SSEService } from '@api/sse.service';
-import { WEB_ROUTES } from '@global/constants';
+import { WEB_ROUTES } from '@shared/constants';
 import { AuthMutation } from '@methods/mutations';
 import { HttpClient } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError, EMPTY, firstValueFrom, Observable, of, tap } from 'rxjs';
-import { IStandardError, IStandardResponse, LoginPayload, User, UserPreferences } from '@global/types';
+import { IStandardError, IStandardResponse, LoginPayload, User, UserPreferences } from '@shared/types';
 import {
     AuthError,
     INVALID_EMAIL_IDENTIFIER,

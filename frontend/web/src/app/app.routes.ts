@@ -4,7 +4,7 @@ import { AuthLayout } from '@pages/layouts/auth';
 import { MainLayout } from '@pages/layouts/main';
 import { DrawerlessLayout } from '@pages/layouts/drawerless';
 import { NotFound } from '@pages/shared/not-found/not-found';
-import { WEB_ROUTES } from '@global/constants/routes.constants';
+import { WEB_ROUTES } from '@shared/constants/routes.constants';
 import { AuthGuard, GuestGuard, OnboardedGuard, OnboardingGuard } from '@infrastructure/guards';
 
 export const routes: Routes = [

@@ -1,5 +1,5 @@
-import { MONTHS_ENUM } from '@global/constants';
-import { normalizeCategoryName } from '@global/utils';
+import { MONTHS_ENUM } from '@shared/constants';
+import { normalizeCategoryName } from '@shared/utils';
 import { AccountsService } from '@api/accounts.service';
 import { CategoriesService } from '@api/categories.service';
 import { formatCurrency, formatToReadable } from '@libs/utils';

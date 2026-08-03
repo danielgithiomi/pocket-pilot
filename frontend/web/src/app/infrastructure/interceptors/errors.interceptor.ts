@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '@api/auth.service';
-import { IGlobalException, IStandardError } from '@global/types';
-import { CLEAR_SESSION_ERROR_NAME, WEB_ROUTES } from '@global/constants';
+import { IGlobalException, IStandardError } from '@shared/types';
+import { CLEAR_SESSION_ERROR_NAME, WEB_ROUTES } from '@shared/constants';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 
 export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {

@@ -1,4 +1,4 @@
-import type { User } from '@global/types';
+import type { User } from '@shared/types';
 import { STORED_AUTH_USER_KEY } from '@libs/constants';
 
 export type ThemePreference = 'SYSTEM' | 'LIGHT' | 'DARK';

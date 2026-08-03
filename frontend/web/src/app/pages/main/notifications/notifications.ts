@@ -7,7 +7,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { NoData } from '@components/structural/main/no-data/no-data';
 import { NotificationItem } from '@structural/main/notification-item';
 import { FetchError } from '@components/structural/main/fetch-error/fetch-error';
-import { AppNotification, NotificationAction, NotificationFilter } from '@global/types';
+import { AppNotification, NotificationAction, NotificationFilter } from '@shared/types';
 import { Bell, CheckCheck, LucideAngularModule, Settings, ShieldAlert } from 'lucide-angular';
 
 @Component({

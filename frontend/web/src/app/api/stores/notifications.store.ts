@@ -7,7 +7,7 @@ import {
     NotificationSummary,
     PPNotificationSummary,
     TNotificationFilter
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

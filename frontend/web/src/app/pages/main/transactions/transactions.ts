@@ -7,7 +7,7 @@ import { Form } from '@organisms/form/form';
 import { ToastService } from '@atoms/toast';
 import { TabList } from '@atoms/tab-list/tab-list';
 import { extractValueFromInputField } from '@libs/utils';
-import { IVoidResourceResponse } from '@global/types';
+import { IVoidResourceResponse } from '@shared/types';
 import { AccountsService } from '@api/accounts.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { TableColumn } from '@organisms/table/table.types';

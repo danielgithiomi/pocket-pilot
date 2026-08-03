@@ -1,5 +1,5 @@
 import { ToastService } from '@atoms/toast';
-import { IStandardError } from '@global/types';
+import { IStandardError } from '@shared/types';
 import { inject, Injectable } from '@angular/core';
 
 @Injectable({

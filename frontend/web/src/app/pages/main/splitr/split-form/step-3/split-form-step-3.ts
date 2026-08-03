@@ -10,7 +10,7 @@ import { SelectOption } from '@atoms/select/select.types';
 import { LucideAngularModule, Check, X } from 'lucide-angular';
 import { ISquadMember, SquadMember } from '@structural/main/squad-member/squad-member';
 import { input, effect, inject, output, computed, untracked, Component } from '@angular/core';
-import { BillPayerPayload, PAYMENT_OPTIONS, PAYMENT_OPTIONS_MAP, PaymentStrategyVariant } from '@global/types';
+import { BillPayerPayload, PAYMENT_OPTIONS, PAYMENT_OPTIONS_MAP, PaymentStrategyVariant } from '@shared/types';
 
 @Component({
     selector: 'split-form-step-3',

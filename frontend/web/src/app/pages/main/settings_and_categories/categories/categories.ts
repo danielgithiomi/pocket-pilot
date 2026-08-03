@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { CategoryTypeEnum } from '@global/enums';
+import { CategoryTypeEnum } from '@shared/enums';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { DrawerService } from '@infrastructure/services';
 import { CategoriesService } from '@api/categories.service';

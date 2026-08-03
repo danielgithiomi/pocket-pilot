@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
-import { IEnumResponse, IStandardResponse, UserAccountsWithCount, AccountWithTransactions } from '@global/types';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
+import { IEnumResponse, IStandardResponse, UserAccountsWithCount, AccountWithTransactions } from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

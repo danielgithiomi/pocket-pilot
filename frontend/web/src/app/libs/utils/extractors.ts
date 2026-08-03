@@ -1,5 +1,5 @@
 import { FieldTree } from '@angular/forms/signals';
-import { MONTHS_ENUM } from '@global/constants';
+import { MONTHS_ENUM } from '@shared/constants';
 
 /**
  * Extracts the current value from an Angular signal-form field tree.

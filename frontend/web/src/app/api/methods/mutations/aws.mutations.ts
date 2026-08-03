@@ -1,12 +1,12 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
 import {
     AwsPresignedUrlResponse,
     IUpdateUserProfilePictureRequest,
     ProfilePictureUploadVariant,
     User
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

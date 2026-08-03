@@ -12,7 +12,7 @@ import {
     SplitrEventPayload,
     SettleSplitrPayload,
     IVoidResourceResponse
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

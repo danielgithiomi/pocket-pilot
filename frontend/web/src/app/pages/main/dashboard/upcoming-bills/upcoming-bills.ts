@@ -1,4 +1,4 @@
-import { Bill } from '@global/types';
+import { Bill } from '@shared/types';
 import { NgClass } from '@angular/common';
 import { ReceiptCent } from 'lucide-angular';
 import { BillsService } from '@api/bills.service';

@@ -1,4 +1,4 @@
-import { CreateAccountPayload } from '@global/types';
+import { CreateAccountPayload } from '@shared/types';
 import { minLength, required, schema, validate } from '@angular/forms/signals';
 
 export type AccountsSchema = CreateAccountPayload;

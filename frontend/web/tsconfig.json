@@ -1,4 +1,4 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about TypeScript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
     "compileOnSave": false,
@@ -16,9 +16,9 @@
         "module": "preserve",
         "paths": {
             "@root/*": ["./src/*"],
+            "@shared/*": ["../../shared/*"],
             "@libs/*": ["./src/app/libs/*"],
             "@pages/*": ["./src/app/pages/*"],
-            "@global/*": ["../../shared/*"],
             "@api/*": ["./src/app/api/services/*"],
             "@stores/*": ["./src/app/api/stores/*"],
             "@methods/*": ["./src/app/api/methods/*"],

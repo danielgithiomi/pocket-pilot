@@ -1,4 +1,4 @@
-import { User } from '@global/types';
+import { User } from '@shared/types';
 import { Injectable } from '@angular/core';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';

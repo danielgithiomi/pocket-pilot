@@ -1,6 +1,6 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { IVoidResourceResponse, TransactionWithAccount, CreateTransactionRequest } from '@global/types';
+import { IVoidResourceResponse, TransactionWithAccount, CreateTransactionRequest } from '@shared/types';
 
 interface NormalTransactionPayload {
     type: string;

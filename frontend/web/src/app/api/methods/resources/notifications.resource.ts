@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
-import { AppNotification, IStandardResponse, NotificationSummary } from '@global/types';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
+import { AppNotification, IStandardResponse, NotificationSummary } from '@shared/types';
 
 const EMPTY_NOTIFICATIONS_RESPONSE: IStandardResponse<AppNotification[]> = {
     data: [],

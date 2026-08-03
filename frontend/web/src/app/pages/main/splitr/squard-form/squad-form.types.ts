@@ -1,4 +1,4 @@
-import { SplitrSquadPayload } from '@global/types';
+import { SplitrSquadPayload } from '@shared/types';
 import { maxLength, minLength, required, schema } from '@angular/forms/signals';
 
 export type squadSchema = SplitrSquadPayload;

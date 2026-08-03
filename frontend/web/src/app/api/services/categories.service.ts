@@ -13,7 +13,7 @@ import {
     CreateCategoryRequest,
     DeleteCategoryRequest,
     IVoidResourceResponse
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

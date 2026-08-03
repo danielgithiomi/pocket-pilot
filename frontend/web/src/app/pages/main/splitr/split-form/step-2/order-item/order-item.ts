@@ -18,7 +18,7 @@ import {
     SPLIT_STRATEGY_MAP,
     SplitStrategyVariant,
     SPLIT_STRATEGY_OPTIONS
-} from '@global/types';
+} from '@shared/types';
 
 @Component({
     selector: 'order-item',

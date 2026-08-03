@@ -9,7 +9,7 @@ import { SplitFormStep1 } from './step-1/split-form-step-1';
 import { SplitFormStep2 } from './step-2/split-form-step-2';
 import { SplitFormStep3 } from './step-3/split-form-step-3';
 import { ChevronsRight, ChevronsLeft, LucideAngularModule } from 'lucide-angular';
-import { SplitrSquad, ISplitrEvent, SplittableOrder, BillPayerPayload, SplitrEventPayload } from '@global/types';
+import { SplitrSquad, ISplitrEvent, SplittableOrder, BillPayerPayload, SplitrEventPayload } from '@shared/types';
 import { input, effect, inject, output, signal, computed, untracked, Component } from '@angular/core';
 import { SplitFormSchema, InitialSplitFormState, SplitFormValidationSchema } from './split-form.types';
 

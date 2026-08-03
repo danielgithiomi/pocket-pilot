@@ -7,7 +7,7 @@ import { ThemeService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
-import { Account as IAccount, IVoidResourceResponse, UpdateAccountBalanceVisibilityPayload } from '@global/types';
+import { Account as IAccount, IVoidResourceResponse, UpdateAccountBalanceVisibilityPayload } from '@shared/types';
 import { Nfc, Trash, EyeOff, ScanEye, EllipsisVertical, FingerprintPattern, LucideAngularModule } from 'lucide-angular';
 
 @Component({

@@ -1,9 +1,9 @@
 import { NgClass } from '@angular/common';
 import { formatToReadable } from '@libs/utils';
-import { CategoryTypeEnum } from '@global/enums';
+import { CategoryTypeEnum } from '@shared/enums';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { Component, computed, input, output, signal } from '@angular/core';
-import { CategoryVariant } from '@global/types';
+import { CategoryVariant } from '@shared/types';
 
 @Component({
     selector: 'category-item',

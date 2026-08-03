@@ -1,4 +1,4 @@
-import { ISplitrEvent } from '@global/types';
+import { ISplitrEvent } from '@shared/types';
 import { formatCurrency } from '@libs/utils';
 import { Component, computed, input } from '@angular/core';
 import { ConsumerSummary, IConsumerSummary } from './consumer_summary/consumer-summary';

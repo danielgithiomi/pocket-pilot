@@ -12,7 +12,7 @@ import {
     NotificationActionResult,
     NotificationEventPayload,
     SSE_EVENT_NAME as SSE_EVENT
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

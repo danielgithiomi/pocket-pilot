@@ -3,7 +3,7 @@ import { SplitrService } from '@api/splitr.service';
 import { SquadMember } from '../squad-member/squad-member';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { ISquadMember } from '../squad-member/squad-member';
-import { IVoidResourceResponse, SplitrSquad } from '@global/types';
+import { IVoidResourceResponse, SplitrSquad } from '@shared/types';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { LucideAngularModule, EllipsisVertical, Trash2, Pencil } from 'lucide-angular';
 

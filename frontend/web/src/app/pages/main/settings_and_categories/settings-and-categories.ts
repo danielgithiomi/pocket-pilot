@@ -3,12 +3,12 @@ import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
 import { Settings } from './settings/settings';
 import { Categories } from './categories/categories';
-import { normalizeCategoryName } from '@global/utils';
+import { normalizeCategoryName } from '@shared/utils';
 import { DrawerService } from '@infrastructure/services';
 import { Component, inject, signal } from '@angular/core';
 import { CategoriesService } from '@api/categories.service';
 import { CategoryItemOutput } from './categories/category-item';
-import { IVoidResourceResponse } from '@global/types';
+import { IVoidResourceResponse } from '@shared/types';
 import { ListFilterPlus, LucideAngularModule, X } from 'lucide-angular';
 import { CategoriesForm } from './categories/categories-form/categories-form';
 

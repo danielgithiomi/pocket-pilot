@@ -3,7 +3,7 @@ import { ToastService } from '@atoms/toast';
 import { BillsService } from '@api/bills.service';
 import { AccountsService } from '@api/accounts.service';
 import { formatCurrency, formatDate } from '@libs/utils';
-import { Bill, IVoidResourceResponse } from '@global/types';
+import { Bill, IVoidResourceResponse } from '@shared/types';
 import { LucideAngularModule, Sailboat, Trash } from 'lucide-angular';
 import { Component, computed, inject, input, signal } from '@angular/core';
 

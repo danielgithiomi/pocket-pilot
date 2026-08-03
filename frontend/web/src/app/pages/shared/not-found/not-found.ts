@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { WEB_ROUTES } from '@global/constants';
+import { WEB_ROUTES } from '@shared/constants';
 import { Component, inject } from '@angular/core';
 import { Button } from '@components/ui/atoms/button';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';

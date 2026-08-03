@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ToastService } from '@atoms/toast';
-import { WEB_ROUTES } from '@global/constants';
+import { WEB_ROUTES } from '@shared/constants';
 import { AuthService } from '@api/auth.service';
 import { CanMatchFn, Router } from '@angular/router';
 

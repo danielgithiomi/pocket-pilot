@@ -1,7 +1,7 @@
 import { tap } from 'rxjs';
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { WEB_ROUTES } from '@global/constants';
+import { WEB_ROUTES } from '@shared/constants';
 import { AuthService } from '@api/auth.service';
 import { DrawerService } from '@infrastructure/services';
 import { UserSummary } from './user-summary/user-summary';

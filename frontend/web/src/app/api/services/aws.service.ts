@@ -10,7 +10,7 @@ import {
     IStandardResponse,
     ProfilePictureUploadVariant,
     User
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

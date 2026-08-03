@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { SSE_EVENT_NAME } from '@global/types';
+import { SSE_EVENT_NAME } from '@shared/types';
 import { environment } from '@environments/environment';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
 
 export interface ServerEventPayload<T> {
     data: T;

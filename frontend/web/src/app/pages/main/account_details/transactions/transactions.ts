@@ -1,5 +1,5 @@
 import { Table, TableColumn } from '@organisms/table';
-import { TransactionWithAccount } from '@global/types';
+import { TransactionWithAccount } from '@shared/types';
 import { formatCurrency, formatDate } from '@libs/utils';
 import { AccountTransactionRow } from './transactions.types';
 import { ExchangeRateService } from '@api/exchange-rate.service';

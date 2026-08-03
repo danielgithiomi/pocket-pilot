@@ -1,5 +1,5 @@
-import { LocalQuantitySplit } from '@global/types';
-import { SplitStrategyVariant } from '@global/types';
+import { LocalQuantitySplit } from '@shared/types';
+import { SplitStrategyVariant } from '@shared/types';
 import { required, schema, min } from '@angular/forms/signals';
 
 export interface NewSplittableSchema {

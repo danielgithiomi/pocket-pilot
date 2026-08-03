@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ISplitrEvent } from '@global/types';
+import { ISplitrEvent } from '@shared/types';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
-import { IStandardResponse, SplitrSquad } from '@global/types';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { IStandardResponse, SplitrSquad } from '@shared/types';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
 
 @Injectable({
     providedIn: 'root'

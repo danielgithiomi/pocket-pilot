@@ -3,7 +3,7 @@ import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { formatToReadable } from '@libs/utils';
 import { Component, computed, effect, input, output, signal } from '@angular/core';
-import { AppNotification, NotificationAction, NotificationMetadata, NotificationPriority } from '@global/types';
+import { AppNotification, NotificationAction, NotificationMetadata, NotificationPriority } from '@shared/types';
 import {
     Archive,
     Bell,

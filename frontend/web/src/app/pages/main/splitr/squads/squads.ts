@@ -1,6 +1,6 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { SplitrSquad } from '@global/types';
+import { SplitrSquad } from '@shared/types';
 import { SplitrService } from '@api/splitr.service';
 import { DrawerService } from '@infrastructure/services';
 import { NoData } from '@structural/main/no-data/no-data';

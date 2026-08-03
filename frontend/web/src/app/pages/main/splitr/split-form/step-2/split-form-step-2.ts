@@ -15,7 +15,7 @@ import {
     LocalQuantitySplit,
     SplitStrategyVariant,
     SPLIT_STRATEGY_OPTIONS
-} from '@global/types';
+} from '@shared/types';
 import { input, effect, inject, output, signal, computed, untracked, Component } from '@angular/core';
 import { SquadMember, ISquadMember, QuantityChangeEmmision } from '@structural/main/squad-member/squad-member';
 import { NewSplittableSchema, InitialNewSplittableData, NewSplittableFormValidation } from './split-form-step-2.types';

@@ -1,6 +1,6 @@
 import { Account } from '@widgets/account';
 import { SummaryItem } from './summary-item';
-import { Account as IAccount } from '@global/types';
+import { Account as IAccount } from '@shared/types';
 import { AccountsService } from '@api/accounts.service';
 import { Component, computed, inject, input } from '@angular/core';
 import { formatToReadable, formatCurrency, formatDate } from '@libs/utils';

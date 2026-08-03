@@ -1,5 +1,5 @@
-import { FeaturePayload } from '@global/types';
-import { FeatureCategoryEnum } from '@global/enums';
+import { FeaturePayload } from '@shared/types';
+import { FeatureCategoryEnum } from '@shared/enums';
 import { minLength, required, schema } from '@angular/forms/signals';
 
 export type FeatureSchema = Omit<FeaturePayload, 'featureCategory'> & {

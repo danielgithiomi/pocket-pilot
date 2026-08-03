@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IStandardResponse } from '@global/types';
+import { IStandardResponse } from '@shared/types';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';

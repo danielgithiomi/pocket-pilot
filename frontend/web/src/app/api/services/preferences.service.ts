@@ -3,7 +3,7 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { ApiServiceError } from './api-error.service';
 import { PreferencesMutation } from '@methods/mutations';
-import { IStandardError, IStandardResponse, IVoidResourceResponse, UpdateUserPreferencesPayload } from '@global/types';
+import { IStandardError, IStandardResponse, IVoidResourceResponse, UpdateUserPreferencesPayload } from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

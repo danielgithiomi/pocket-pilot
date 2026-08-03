@@ -9,7 +9,7 @@ import { DrawerService } from '@infrastructure/services';
 import { NoData } from '@structural/main/no-data/no-data';
 import { Breadcrumbs } from '@components/ui/atoms/breadcrumbs';
 import { SplitrBreakdown } from './breakdown/splitr-breakdown';
-import { ISplitrEvent, IVoidResourceResponse } from '@global/types';
+import { ISplitrEvent, IVoidResourceResponse } from '@shared/types';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { LucideAngularModule, CheckCheck, ReceiptText, Trash2, Hourglass } from 'lucide-angular';

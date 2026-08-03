@@ -2,7 +2,7 @@ import { Avatar } from '@atoms/avatar/avatar';
 import { formatRelativeDate } from '@libs/utils';
 import { NgOptimizedImage } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { FeatureComment as IFeatureComment } from '@global/types';
+import { FeatureComment as IFeatureComment } from '@shared/types';
 
 @Component({
     selector: 'feature-comment',

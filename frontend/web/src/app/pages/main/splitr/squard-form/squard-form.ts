@@ -2,7 +2,7 @@ import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
-import { SplitrSquad } from '@global/types';
+import { SplitrSquad } from '@shared/types';
 import { form } from '@angular/forms/signals';
 import { Form, FormCloseEvent } from '@organisms/form';
 import { SplitrService } from '@api/splitr.service';
