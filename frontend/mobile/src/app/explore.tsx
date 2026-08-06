@@ -2,7 +2,7 @@ import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import { Button } from '@atoms';
 import { ExternalLink } from '@/components/external-link';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -61,6 +61,8 @@ export default function TabTwoScreen() {
                         </Pressable>
                     </ExternalLink>
                 </ThemedView>
+                
+                <Button id='test' label='test-label' variant='secondary' style={styles.testButton} />
 
                 <ThemedView style={styles.sectionsWrapper}>
                     <Collapsible title="File-based routing">
@@ -128,6 +130,11 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
     scrollView: {
         flex: 1
+    },
+    testButton: {
+        width: 'auto',
+        color: 'white',
+        backgroundColor: 'red',
     },
     contentContainer: {
         flexDirection: 'row',

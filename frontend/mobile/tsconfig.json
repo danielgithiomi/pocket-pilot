@@ -4,7 +4,9 @@
         "strict": true,
         "paths": {
             "@/*": ["./src/*"],
-            "@/assets/*": ["./assets/*"]
+            "@/assets/*": ["./assets/*"],
+            "@atoms/*": ["./src/components/ui/atoms/*"],
+            "@atoms": ["./src/components/ui/atoms/index.ts"]
         }
     },
     "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

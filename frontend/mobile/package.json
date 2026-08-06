@@ -5,6 +5,7 @@
     "license": "ISC",
     "main": "expo-router/entry",
     "author": "danielgithiomi <https://github.com/danielgithiomi>",
+    "description": "This is the pocket-pilot mobile application developed with Expo - React Native.",
     "dependencies": {
         "@expo/ui": "~57.0.9",
         "expo": "~57.0.10",
@@ -36,12 +37,12 @@
         "typescript": "~6.0.3"
     },
     "scripts": {
-        "dev": "expo start",
         "lint": "expo lint",
-        "start": "expo start",
-        "ios": "expo start --ios",
-        "web": "expo start --web",
-        "android": "expo start --android",
+        "dev": "expo start --port 8088",
+        "start": "expo start --port 8088",
+        "ios": "expo start --ios --port 8088",
+        "web": "expo start --web --port 8088",
+        "android": "expo start --android --port 8088",
         "reset-project": "node ./scripts/reset-project.js",
         "clean": "rimraf node_modules package-lock.json .turbo .expo .claude .cache && npm cache clean --force"
     }
