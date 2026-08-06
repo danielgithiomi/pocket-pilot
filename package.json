@@ -24,7 +24,7 @@
   "main": "index.js",
   "dependencies": {
     "husky": "^9.1.7",
-    "rimraf": "^6.0.1",
+    "rimraf": "^6.1.3",
     "turbo": "latest"
   },
   "scripts": {
@@ -37,8 +37,8 @@
     "check-types": "echo \"Skipping type checking for server\"",
     "docker:up": "turbo run docker:up --filter=pocket-pilot-server",
     "prisma:reset": "turbo run prisma:reset --filter=pocket-pilot-server",
-    "prisma:migrate": "turbo run prisma:migrate --filter=pocket-pilot-server --",
     "prisma:generate": "turbo run prisma:generate --filter=pocket-pilot-server",
+    "prisma:migrate": "turbo run prisma:migrate --filter=pocket-pilot-server --",
     "clean": "turbo run clean && rimraf node_modules package-lock.json .turbo .cache && npm cache clean --force"
   },
   "lint-staged": {
