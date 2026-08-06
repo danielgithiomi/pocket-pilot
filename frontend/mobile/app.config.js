@@ -108,6 +108,7 @@ export default ({ config }) => ({
 
     plugins: [
         'expo-router',
+        'expo-image',
         [
             'expo-splash-screen',
             {
