@@ -16,7 +16,7 @@
         "module": "preserve",
         "paths": {
             "@root/*": ["./src/*"],
-            "@shared/*": ["../../shared/*"],
+            "@shared/*": ["./../shared/*"],
             "@libs/*": ["./src/app/libs/*"],
             "@pages/*": ["./src/app/pages/*"],
             "@api/*": ["./src/app/api/services/*"],
