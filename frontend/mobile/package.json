@@ -2,7 +2,7 @@
     "name": "pocket-pilot-mobile",
     "version": "1.0.0",
     "private": true,
-    "license": "ISC",
+    "license": "MIT",
     "main": "expo-router/entry",
     "author": "danielgithiomi <https://github.com/danielgithiomi>",
     "description": "This is the pocket-pilot mobile application developed with Expo - React Native.",

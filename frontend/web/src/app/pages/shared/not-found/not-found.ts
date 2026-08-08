@@ -32,7 +32,7 @@ export class NotFound {
         path: '/animations/not_found.json'
     };
 
-    navigateToSafety() {
-        this.router.navigateByUrl(WEB_ROUTES.dashboard);
+    async navigateToSafety() {
+        await this.router.navigateByUrl(WEB_ROUTES.dashboard);
     }
 }
