@@ -8,7 +8,7 @@
     "description": "This is the pocket-pilot mobile application developed with Expo - React Native.",
     "dependencies": {
         "@expo/ui": "~57.0.9",
-        "expo": "~57.0.10",
+        "expo": "~57.0.11",
         "expo-constants": "~57.0.9",
         "expo-device": "~57.0.1",
         "expo-font": "~57.0.1",
