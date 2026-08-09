@@ -26,13 +26,13 @@ module.exports = {
 
                 /* Semantic */
                 'body-background': 'var(--body-background)',
-                'alternate-background': 'var(--alternate-background)',
                 'inverted-background': 'var(--inverted-background)',
+                'alternate-background': 'var(--alternate-background)',
 
+                'muted-text': 'var(--muted-text)',
                 'primary-text': 'var(--primary-text)',
-                'alternate-text': 'var(--alternate-text)',
                 'inverted-text': 'var(--inverted-text)',
-                'muted-text': 'var(--muted-text)'
+                'alternate-text': 'var(--alternate-text)',
             }
         }
     },
