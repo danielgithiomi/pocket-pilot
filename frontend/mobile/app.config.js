@@ -112,7 +112,7 @@ export default ({ config }) => ({
         [
             'expo-splash-screen',
             {
-                imageWidth: 76,
+                imageWidth: 72,
                 backgroundColor: primaryColor,
                 image: './assets/images/branding/logo.png',
                 // ADDED: Documents the intended scaling instead of relying on the default.
