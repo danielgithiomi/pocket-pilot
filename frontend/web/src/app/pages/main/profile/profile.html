@@ -4,7 +4,7 @@
     </div>
 
     <div
-        class="page-container flex flex-col md:flex-row gap-6 md:gap-8"
+        class="page-container flex-1 flex flex-col md:flex-row gap-6 md:gap-8"
         [ngClass]="{
             'md:flex-col! lg:flex-row!': !drawerService.isDrawerCollapsed()
         }">
@@ -28,14 +28,14 @@
 
         <!-- Right Column - Profile Details -->
         <div
-            class="page-card flex-1 w-full md:w-1/2"
+            class="page-card flex-1 w-full md:w-1/2 flex flex-col"
             [ngClass]="{ 'md:w-full lg:w-1/2': !drawerService.isDrawerCollapsed() }">
             <div class="card-header">
                 <p class="title">Personal Information.</p>
                 <p class="subtitle">Your account details and information.</p>
             </div>
 
-            <div class="card-content">
+            <div class="card-content flex-1 flex flex-col justify-around">
                 <profile-detail
                     detailVariant="name"
                     [detailValue]="user()?.name"
