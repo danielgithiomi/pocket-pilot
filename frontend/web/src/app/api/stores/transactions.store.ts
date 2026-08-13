@@ -41,7 +41,7 @@ export class TransactionsStore {
     }
 
     private connectToSSEStream() {
-        console.log('Connecting to SSE Stream from Transactions Store');
+        // console.log('Connecting to SSE Stream from Transactions Store');
         if (this.eventSource) return;
 
         this.eventSource = this.transactionsService.configureTransactionsSSEStream<NegativeBalanceSSEPayload>(
