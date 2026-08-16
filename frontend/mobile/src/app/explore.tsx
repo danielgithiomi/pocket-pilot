@@ -1,15 +1,15 @@
+import { Button } from '@atoms';
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
-import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Button } from '@atoms';
-import { ExternalLink } from '@/components/external-link';
+import { useTheme } from '@/hooks/use-theme';
+import { WebBadge } from '@/components/web-badge';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { ExternalLink } from '@/components/external-link';
 import { Collapsible } from '@/components/ui/collapsible';
-import { WebBadge } from '@/components/web-badge';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
 
 export default function TabTwoScreen() {
     const safeAreaInsets = useSafeAreaInsets();
@@ -61,8 +61,8 @@ export default function TabTwoScreen() {
                         </Pressable>
                     </ExternalLink>
                 </ThemedView>
-                
-                <Button id='test' label='test-label' variant='secondary' style={styles.testButton} />
+
+                <Button id="test" label="test-label" variant="secondary" style={styles.testButton} />
 
                 <ThemedView style={styles.sectionsWrapper}>
                     <Collapsible title="File-based routing">
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     testButton: {
         width: 'auto',
         color: 'white',
-        backgroundColor: 'red',
+        backgroundColor: 'red'
     },
     contentContainer: {
         flexDirection: 'row',
