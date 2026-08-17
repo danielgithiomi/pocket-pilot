@@ -89,6 +89,7 @@ export default ({ config }) => ({
     },
 
     web: {
+        bundler: 'metro',
         output: 'static',
         favicon: './assets/images/branding/logo.png',
 

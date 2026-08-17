@@ -1,53 +1,6 @@
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/preflight.css" layer(base);
-@import "tailwindcss/utilities.css";
-@import "nativewind/theme";
-
 /* This file is generated from frontend/shared/colors.ts. */
 
 /* Run `npm run generate:colors` after changing shared color tokens. */
-
-@theme {
-    --color-primary: var(--primary);
-    --color-secondary: var(--secondary);
-    --color-tertiary: var(--tertiary);
-    --color-quaternary: var(--quaternary);
-    --color-transparent: var(--transparent);
-    --color-loader-primary: var(--loader-primary);
-    --color-scrollbar-track: var(--scrollbar-track);
-    --color-loader-secondary: var(--loader-secondary);
-    --color-success: var(--success);
-    --color-warning: var(--warning);
-    --color-error: var(--error);
-    --color-danger: var(--danger);
-    --color-info: var(--info);
-    --color-muted: var(--muted);
-    --color-income: var(--income);
-    --color-expense: var(--expense);
-    --color-transfer: var(--transfer);
-    --color-tertiary-dark: var(--tertiary-dark);
-    --color-dark: var(--dark);
-    --color-black: var(--black);
-    --color-gray1: var(--gray1);
-    --color-gray2: var(--gray2);
-    --color-gray3: var(--gray3);
-    --color-gray4: var(--gray4);
-    --color-white: var(--white);
-    --color-wild-sand: var(--wild-sand);
-    --color-mild-white: var(--mild-white);
-    --color-alternate-white: var(--alternate-white);
-    --color-muted-text: var(--muted-text);
-    --color-primary-text: var(--primary-text);
-    --color-inverted-text: var(--inverted-text);
-    --color-reactive-text: var(--reactive-text);
-    --color-alternate-text: var(--alternate-text);
-    --color-body-background: var(--body-background);
-    --color-inverted-background: var(--inverted-background);
-    --color-alternate-background: var(--alternate-background);
-    --color-background: var(--background);
-    --color-text-secondary: var(--text-secondary);
-    --color-overlay-background: var(--overlay-background);
-}
 
 :root {
     --primary: #5b9279;
@@ -165,9 +118,44 @@
     }
 }
 
-:root {
-    --font-display: Spline Sans, Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
-    --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif;
-    --font-serif: Georgia, 'Times New Roman', serif;
+@theme inline {
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-tertiary: var(--tertiary);
+    --color-quaternary: var(--quaternary);
+    --color-transparent: var(--transparent);
+    --color-loader-primary: var(--loader-primary);
+    --color-scrollbar-track: var(--scrollbar-track);
+    --color-loader-secondary: var(--loader-secondary);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-error: var(--error);
+    --color-danger: var(--danger);
+    --color-info: var(--info);
+    --color-muted: var(--muted);
+    --color-income: var(--income);
+    --color-expense: var(--expense);
+    --color-transfer: var(--transfer);
+    --color-tertiary-dark: var(--tertiary-dark);
+    --color-dark: var(--dark);
+    --color-black: var(--black);
+    --color-gray1: var(--gray1);
+    --color-gray2: var(--gray2);
+    --color-gray3: var(--gray3);
+    --color-gray4: var(--gray4);
+    --color-white: var(--white);
+    --color-wild-sand: var(--wild-sand);
+    --color-mild-white: var(--mild-white);
+    --color-alternate-white: var(--alternate-white);
+    --color-muted-text: var(--muted-text);
+    --color-primary-text: var(--primary-text);
+    --color-inverted-text: var(--inverted-text);
+    --color-reactive-text: var(--reactive-text);
+    --color-alternate-text: var(--alternate-text);
+    --color-body-background: var(--body-background);
+    --color-inverted-background: var(--inverted-background);
+    --color-alternate-background: var(--alternate-background);
+    --color-background: var(--background);
+    --color-text-secondary: var(--text-secondary);
+    --color-overlay-background: var(--overlay-background);
 }

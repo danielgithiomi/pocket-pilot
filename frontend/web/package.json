@@ -8,12 +8,15 @@
     "type": "module",
     "scripts": {
         "ng": "ng",
+        "generate:colors": "node ../shared/scripts/generate-colors.cjs",
+        "predev": "npm run generate:colors && ts-node scripts/set-env.development.ts",
         "dev": "ng serve",
         "test": "ng test",
+        "prestart": "npm run generate:colors",
         "start": "ng serve",
         "build": "ng build",
         "pre-dev": "ts-node scripts/set-env.development.ts",
-        "prebuild": "ts-node scripts/set-env.production.ts",
+        "prebuild": "npm run generate:colors && ts-node scripts/set-env.production.ts",
         "watch": "ng build --watch --configuration development",
         "clean": "rimraf node_modules package-lock.json .turbo .angular .cache && npm cache clean --force"
     },
