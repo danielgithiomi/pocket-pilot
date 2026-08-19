@@ -1,5 +1,5 @@
-import { POCKET_PILOT_NATIVE_COLORS } from '@shared/colors';
 import { Platform } from 'react-native';
+import { POCKET_PILOT_NATIVE_COLORS } from '@shared/resources';
 
 export const Colors = POCKET_PILOT_NATIVE_COLORS;
 

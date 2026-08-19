@@ -10,7 +10,7 @@ require('ts-node').register({
 const {mkdirSync, writeFileSync} = require('node:fs');
 const {dirname, resolve} = require('node:path');
 
-const {buildPocketPilotMobileGlobalCss, buildPocketPilotWebColorCss} = require('../colors.ts');
+const {buildPocketPilotMobileGlobalCss, buildPocketPilotWebColorCss} = require('../resources/colors.ts');
 
 const frontendRoot = resolve(__dirname, '..', '..');
 
