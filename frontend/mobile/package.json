@@ -8,7 +8,7 @@
     "description": "This is the pocket-pilot mobile application developed with Expo - React Native.",
     "dependencies": {
         "@expo/ui": "~57.0.11",
-        "expo": "~57.0.14",
+        "expo": "~57.0.16",
         "expo-constants": "~57.0.12",
         "expo-device": "~57.0.1",
         "expo-font": "~57.0.1",
@@ -43,20 +43,20 @@
         "typescript": "~6.0.3"
     },
     "scripts": {
-        "generate:colors": "node ../shared/scripts/generate-colors.cjs",
-        "prelint": "npm run generate:colors",
         "lint": "expo lint",
-        "predev": "npm run generate:colors",
         "dev": "expo start --port 8088",
-        "prestart": "npm run generate:colors",
         "start": "expo start --port 8088",
-        "preios": "npm run generate:colors",
-        "ios": "expo start --ios --port 8088",
         "preweb": "npm run generate:colors",
+        "preios": "npm run generate:colors",
+        "predev": "npm run generate:colors",
+        "prelint": "npm run generate:colors",
+        "prestart": "npm run generate:colors",
+        "ios": "expo start --ios --port 8088",
         "web": "expo start --web --port 8088",
         "preandroid": "npm run generate:colors",
         "android": "expo start --android --port 8088",
         "reset-project": "node ./scripts/reset-project.js",
+        "generate:colors": "node ../shared/scripts/generate-colors.cjs",
         "clean": "rimraf node_modules package-lock.json .turbo .expo .claude .cache && npm cache clean --force"
     }
 }
