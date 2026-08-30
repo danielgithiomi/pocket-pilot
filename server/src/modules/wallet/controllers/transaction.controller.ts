@@ -2,14 +2,14 @@ import { CookiesAuthGuard } from '@common/guards';
 import { UserInRequest } from '@common/decorators';
 import { TransferService } from '../services/transfer.service';
 import { UserResponseDto } from '@modules/identity/dto/user.dto';
-import { VoidResourceResponse, ExposeEnumDto } from '@common/types';
+import { ExposeEnumDto, VoidResourceResponse } from '@common/types';
 import { TransactionService } from '../services/transaction.service';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
     CreateTransactionDto,
-    CompleteTransactionDto,
     TransactionWithAccount,
+    CompleteTransactionDto,
     TransactionsResponseDto,
     CreateTransferTransactionPayload,
     TransactionsWithAccountResponseDto
@@ -32,7 +32,7 @@ export class TransactionController {
         type: ExposeEnumDto,
         description: 'Returns all transaction types.'
     })
-    async getTransactionTypes(): Promise<ExposeEnumDto[]> {
+    getTransactionTypes(): ExposeEnumDto[] {
         return this.transactionService.getTransactionTypes();
     }
 
@@ -177,17 +177,17 @@ export class TransactionController {
         description: 'Returns the deleted transaction.'
     })
     async deleteTransactionByAccountId(
+        @UserInRequest() currentUser: UserResponseDto,
         @Param('accountId') accountId: string,
-        @Param('transactionId') transactionId: string,
-        @UserInRequest() currentUser: UserResponseDto
+        @Param('transactionId') transactionId: string
     ): Promise<VoidResourceResponse> {
         const { id: userId } = currentUser;
 
-        await this.transactionService.deleteTransactionByAccountId(userId, accountId, transactionId);
+        const { description } = await this.transactionService.deleteTransactionByAccountId(userId, accountId, transactionId);
 
         return {
             message: 'Transaction Deleted!',
-            details: `The transaction with id: {${transactionId}} has been deleted successfully.`
+            details: `Your [${description}] transaction has been deleted successfully.`
         };
     }
 }

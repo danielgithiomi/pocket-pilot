@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { AuthError } from '@libs/constants';
 import { ToastService } from '@atoms/toast';
 import { CheckedShield } from '@atoms/icons';
-import { LoginPayload } from '@global/types';
+import { LoginPayload } from '@shared/types';
 import { AuthService } from '@api/auth.service';
+import { extractValueFromInputField } from '@libs/utils';
 import { Input } from '@components/ui/atoms/input';
 import { Component, inject, signal } from '@angular/core';
-import { WEB_ROUTES } from '@global/constants/routes.constants';
+import { WEB_ROUTES } from '@shared/constants/routes.constants';
 import { Eye, EyeOff, LucideAngularModule } from 'lucide-angular';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { FieldTree, form, FormField, FormRoot } from '@angular/forms/signals';
@@ -52,13 +53,11 @@ export class Login {
 
     // FORM SUBMISSIONS
     private async handleLoginFormSubmission(field: FieldTree<LoginSchema>) {
-        const { email, password } = field;
-        const payload: LoginPayload = {
-            email: email().value(),
-            password: password().value()
-        };
+        const payload: LoginPayload = extractValueFromInputField(field);
 
         const response = await firstValueFrom(this.authService.login(payload));
+
+        if (!response) return;
 
         if ('data' in response) {
             this.routeTo(WEB_ROUTES.dashboard).then(() => {

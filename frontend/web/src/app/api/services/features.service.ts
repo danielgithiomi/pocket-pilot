@@ -14,7 +14,7 @@ import {
     FeatureWithComments,
     IVoidResourceResponse,
     FeatureCommentPayload
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

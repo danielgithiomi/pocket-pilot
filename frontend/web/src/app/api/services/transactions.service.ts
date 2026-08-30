@@ -1,14 +1,22 @@
+import { SSEService } from '@api/sse.service';
 import { catchError, EMPTY, map } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { TransactionsResource } from '@methods/resources';
 import { ToastService } from '@components/ui/atoms/toast';
 import { TransactionsMutation } from '@methods/mutations';
-import { IStandardError, IStandardResponse, IVoidResourceResponse, CreateTransactionRequest } from '@global/types';
+import {
+    CreateTransactionRequest,
+    IStandardError,
+    IStandardResponse,
+    IVoidResourceResponse,
+    SSE_EVENT_NAME as SSE_EVENT
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TransactionsService {
+    private readonly sseService = inject(SSEService);
     private readonly toastService = inject(ToastService);
     private readonly transactionsMutation = inject(TransactionsMutation);
     private readonly transactionsResource = inject(TransactionsResource);
@@ -56,6 +64,13 @@ export class TransactionsService {
                 return EMPTY;
             })
         );
+    }
+
+    // SSE
+    configureTransactionsSSEStream<T>(onEvent: (payload: T) => void, onError?: (event: Event) => void): EventSource {
+        const events: SSE_EVENT[] = [SSE_EVENT.NEGATIVE_BALANCE];
+
+        return this.sseService.configureSSEConnection<T>(events, onEvent, onError);
     }
 
     // HELPER FUNCTIONS

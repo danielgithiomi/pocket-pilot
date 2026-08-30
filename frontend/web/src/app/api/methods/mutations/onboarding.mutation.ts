@@ -1,7 +1,7 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { User, OnboardingPayload } from '@global/types';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { User, OnboardingPayload } from '@shared/types';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
 
 @Injectable({
     providedIn: 'root'

@@ -5,62 +5,63 @@ import { Table } from '@organisms/table';
 import { NgClass } from '@angular/common';
 import { Form } from '@organisms/form/form';
 import { ToastService } from '@atoms/toast';
-import { form } from '@angular/forms/signals';
 import { TabList } from '@atoms/tab-list/tab-list';
-import { IVoidResourceResponse } from '@global/types';
+import { extractValueFromInputField } from '@libs/utils';
+import { IVoidResourceResponse } from '@shared/types';
 import { AccountsService } from '@api/accounts.service';
 import { NoData } from '@structural/main/no-data/no-data';
 import { TableColumn } from '@organisms/table/table.types';
 import { CategoriesService } from '@api/categories.service';
 import { TransactionsService } from '@api/transactions.service';
 import { ExchangeRateService } from '@api/exchange-rate.service';
+import { form, FieldTree, FormRoot } from '@angular/forms/signals';
 import { ListFilterPlus, LucideAngularModule } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { formatCurrency, formatDate, formatToReadable, splitTransactionId } from '@libs/utils/formatters';
 import {
-    initialTransactionFormState,
     skeletonData,
     tabListItems,
-    transactionFormValidationSchema,
     TransactionRow,
-    TransactionSchema
+    TransactionSchema,
+    initialTransactionFormState,
+    transactionFormValidationSchema
 } from './transactions.types';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-transactions',
     templateUrl: './transactions.html',
-    imports: [Form, Input, Table, NoData, Select, Button, NgClass, TabList, FetchError, LucideAngularModule]
+    imports: [Form, FormRoot, Input, Table, NoData, Select, Button, NgClass, TabList, FetchError, LucideAngularModule]
 })
 export class Transactions {
-    // Icons
+    // ICONS
     protected readonly iconSize: number = 18;
     protected readonly Plus = ListFilterPlus;
     protected readonly skeletonData = skeletonData;
     protected readonly tabListItems = tabListItems;
 
-    // Services
+    // SERVICES
     private readonly toastService = inject(ToastService);
     private readonly accountsService = inject(AccountsService);
     private readonly categoriesService = inject(CategoriesService);
-    private readonly exchangeRateService = inject(ExchangeRateService);
     private readonly transactionsService = inject(TransactionsService);
+    private readonly exchangeRateService = inject(ExchangeRateService);
 
-    // Data
-    protected readonly accounts = this.accountsService.getUserAccounts();
+    // DATA
     protected readonly defaultCurrency = this.accountsService.getDefaultCurrency();
+    protected readonly accounts = this.accountsService.getUserAccounts();
+    protected readonly transactionCategories = this.categoriesService.getTransactionCategories;
     protected readonly transactions = this.transactionsService.getUserTransactions();
     protected readonly transactionTypes = this.transactionsService.getTransactionTypes();
-    protected readonly transactionCategories = this.categoriesService.getTransactionCategories;
 
-    // States
+    // SIGNAL STATES
     protected isDeleting = signal<boolean>(false);
     protected isFormOpen = signal<boolean>(false);
-    protected isSubmitting = signal<boolean>(false);
     protected readonly activeTabIndex = signal<number>(0);
     protected readonly isTransferTransaction = signal<boolean>(false);
 
-    // Computed
+    // COMPUTED
     protected isFetching = computed(() => {
         return this.accounts.isLoading() || this.transactions.isLoading();
     });
@@ -70,14 +71,14 @@ export class Transactions {
         const targetAccountId = this.transactionFormModel().targetAccountId;
 
         if (!targetAccountId || targetAccountId === '')
-            return accounts?.map(account => ({
+            return accounts?.map((account) => ({
                 value: account.id,
                 label: account.name
             }));
 
         const sourceAccounts = accounts
-            ?.filter(account => account.id !== targetAccountId)
-            .map(account => ({
+            ?.filter((account) => account.id !== targetAccountId)
+            .map((account) => ({
                 value: account.id,
                 label: account.name
             }));
@@ -94,8 +95,8 @@ export class Transactions {
         const sourceAccountId = this.transactionFormModel().sourceAccountId;
 
         const targetAccounts = accounts
-            ?.filter(account => account.id !== sourceAccountId)
-            .map(account => ({
+            ?.filter((account) => account.id !== sourceAccountId)
+            .map((account) => ({
                 value: account.id,
                 label: account.name
             }));
@@ -127,15 +128,20 @@ export class Transactions {
 
         if (!transactions) return [];
 
-        return transactions.filter(transaction => {
+        return transactions.filter((transaction) => {
             if (activeTabIndex === 0) return true;
             return transaction.type.toLowerCase() === activeTabValue;
         });
     });
 
-    // Form
+    // FORM
     protected transactionFormModel = signal<TransactionSchema>(initialTransactionFormState);
-    protected transactionForm = form(this.transactionFormModel, transactionFormValidationSchema);
+    protected transactionForm = form(this.transactionFormModel, transactionFormValidationSchema, {
+        submission: {
+            ignoreValidators: 'none',
+            action: (fieldTree: FieldTree<TransactionSchema>) => this.submitTransactionForm(fieldTree)
+        }
+    });
 
     // Methods
     protected resetTransactionForm() {
@@ -235,7 +241,7 @@ export class Transactions {
             key: 'actions',
             label: 'Actions',
             align: 'right',
-            width: '1fr'
+            width: '1fr',
         }
     ];
 
@@ -245,10 +251,11 @@ export class Transactions {
         const defaultCurrency = this.defaultCurrency;
 
         return (
-            transactionsToFormat?.map(transaction => {
+            transactionsToFormat?.map((transaction) => {
                 const currency = transaction.sourceAccount?.currency ?? defaultCurrency;
                 const conversionResult =
-                    snapshot && this.exchangeRateService.performCurrencyConversion(transaction.amount, currency, defaultCurrency);
+                    snapshot &&
+                    this.exchangeRateService.performCurrencyConversion(transaction.amount, currency, defaultCurrency);
 
                 const isSameCurrency = currency === defaultCurrency;
                 const convertedAmount = conversionResult
@@ -292,7 +299,7 @@ export class Transactions {
                 });
                 this.reloadResources();
             },
-            error: error => console.error(error),
+            error: (error) => console.error(error),
             complete: () => this.isDeleting.set(false)
         });
     }
@@ -315,39 +322,32 @@ export class Transactions {
         this.isFormOpen.set(false);
     }
 
-    protected submitTransactionForm(event: Event) {
-        event.preventDefault();
+    protected async submitTransactionForm(fieldTree: FieldTree<TransactionSchema>) {
+        const payload: TransactionSchema = extractValueFromInputField(fieldTree);
 
-        this.isSubmitting.set(true);
+        const response = await firstValueFrom(
+            this.transactionsService.createTransaction(payload.sourceAccountId, payload)
+        );
 
-        const payload = this.transactionFormModel();
-        const availableBalance: number =
-            this.accounts.value()?.data?.data?.find(account => account.id === payload.sourceAccountId)?.balance ?? 0;
+        if ('data' in response) {
+            // const { data: { type } } = response;
 
-        if (this.transactionsService.isNegativeBalance(availableBalance, payload))
+            // this.toastService.show({
+            //     variant: 'success',
+            //     title: 'Transaction created!',
+            //     details: `Your [${type.toUpperCase()}] transaction has been logged successfully.`
+            // });
+
+            this.reloadResources();
+            this.resetTransactionForm();
+            this.isFormOpen.set(false);
+        } else {
             this.toastService.show({
-                variant: 'warning',
-                title: 'Exceeded available balance!',
-                details: 'This transaction will result in a negative balance in your account.'
+                variant: 'error',
+                title: 'An error occurred.',
+                details: 'There was an error encountered while creating the transaction.'
             });
-
-        setTimeout(() => {
-            this.transactionsService.createTransaction(payload.sourceAccountId, payload).subscribe({
-                next: () => {
-                    this.toastService.show({
-                        variant: 'success',
-                        title: 'Transaction created!',
-                        details: `Your [${payload.type.toUpperCase()}] transaction has been logged successfully.`
-                    });
-
-                    this.reloadResources();
-                    this.resetTransactionForm();
-                    this.isFormOpen.set(false);
-                },
-                error: error => console.error('Transaction creation failed:', error),
-                complete: () => this.isSubmitting.set(false)
-            });
-        }, 3500);
+        }
     }
 
     constructor() {

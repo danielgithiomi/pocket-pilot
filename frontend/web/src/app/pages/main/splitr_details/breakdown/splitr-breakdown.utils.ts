@@ -1,4 +1,4 @@
-import { ISplitrEvent } from '@global/types';
+import { ISplitrEvent } from '@shared/types';
 import { COLOR_PALETTE } from '@libs/constants';
 import { formatCurrency, hashFromName } from '@libs/utils';
 import { Avatar, Participant, Settlement } from './splitr-breakdown.types';
@@ -20,15 +20,15 @@ export function buildParticipantsMap(event: ISplitrEvent): Participant[] {
         });
     });
 
-    billPayers.forEach(billPayer => {
+    billPayers.forEach((billPayer) => {
         const participant = participantsMap.get(billPayer.payerName);
         if (participant) participant.totalPaid += billPayer.payerAmount;
     });
 
-    eventSplittables.forEach(splittable => {
+    eventSplittables.forEach((splittable) => {
         const { quantitySplits, unitPrice } = splittable;
 
-        quantitySplits.forEach(quantitySplit => {
+        quantitySplits.forEach((quantitySplit) => {
             const { consumerName, consumerQuantity } = quantitySplit;
             const participant = participantsMap.get(consumerName);
 
@@ -48,15 +48,15 @@ function isSettled(balance: number): boolean {
 export function calculateSettlments(participants: Participant[], currency: string): Settlement[] {
     const settlements: Settlement[] = [];
 
-    const balances = participants.map(p => ({
+    const balances = participants.map((p) => ({
         id: p.id,
         name: p.name,
         balance: p.totalPaid - p.totalOwed
     }));
 
-    const workingBalances = balances.map(b => ({ ...b }));
-    const creditors = workingBalances.filter(b => b.balance > BALANCE_EPSILON);
-    const debtors = workingBalances.filter(b => b.balance < -BALANCE_EPSILON);
+    const workingBalances = balances.map((b) => ({ ...b }));
+    const creditors = workingBalances.filter((b) => b.balance > BALANCE_EPSILON);
+    const debtors = workingBalances.filter((b) => b.balance < -BALANCE_EPSILON);
 
     let transferIndex = 0;
     let i = 0;
@@ -85,8 +85,8 @@ export function calculateSettlments(participants: Participant[], currency: strin
     }
 
     balances
-        .filter(participant => participant.balance > BALANCE_EPSILON)
-        .forEach(creditor => {
+        .filter((participant) => participant.balance > BALANCE_EPSILON)
+        .forEach((creditor) => {
             settlements.push({
                 id: `receive-${creditor.id}`,
                 kind: 'receive',
@@ -99,8 +99,8 @@ export function calculateSettlments(participants: Participant[], currency: strin
         });
 
     balances
-        .filter(participant => isSettled(participant.balance))
-        .forEach(participant => {
+        .filter((participant) => isSettled(participant.balance))
+        .forEach((participant) => {
             settlements.push({
                 id: participant.id,
                 kind: 'settled',

@@ -1,0 +1,173 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+@import "nativewind/theme";
+
+/* This file is generated from frontend/shared/colors.ts. */
+
+/* Run `npm run generate:colors` after changing shared color tokens. */
+
+@theme {
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-tertiary: var(--tertiary);
+    --color-quaternary: var(--quaternary);
+    --color-transparent: var(--transparent);
+    --color-loader-primary: var(--loader-primary);
+    --color-scrollbar-track: var(--scrollbar-track);
+    --color-loader-secondary: var(--loader-secondary);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-error: var(--error);
+    --color-danger: var(--danger);
+    --color-info: var(--info);
+    --color-muted: var(--muted);
+    --color-income: var(--income);
+    --color-expense: var(--expense);
+    --color-transfer: var(--transfer);
+    --color-tertiary-dark: var(--tertiary-dark);
+    --color-dark: var(--dark);
+    --color-black: var(--black);
+    --color-gray1: var(--gray1);
+    --color-gray2: var(--gray2);
+    --color-gray3: var(--gray3);
+    --color-gray4: var(--gray4);
+    --color-white: var(--white);
+    --color-wild-sand: var(--wild-sand);
+    --color-mild-white: var(--mild-white);
+    --color-alternate-white: var(--alternate-white);
+    --color-muted-text: var(--muted-text);
+    --color-primary-text: var(--primary-text);
+    --color-inverted-text: var(--inverted-text);
+    --color-reactive-text: var(--reactive-text);
+    --color-alternate-text: var(--alternate-text);
+    --color-body-background: var(--body-background);
+    --color-inverted-background: var(--inverted-background);
+    --color-alternate-background: var(--alternate-background);
+    --color-background: var(--background);
+    --color-text-secondary: var(--text-secondary);
+    --color-overlay-background: var(--overlay-background);
+}
+
+:root {
+    --primary: #5b9279;
+    --secondary: #0b4650;
+    --tertiary: #c6ff33;
+    --quaternary: #fe7f2d;
+    --transparent: transparent;
+    --loader-primary: rgba(91, 146, 121, 50%);
+    --scrollbar-track: rgb(91, 146, 121, 25%);
+    --loader-secondary: rgba(254, 127, 45, 50%);
+    --success: #22c55d;
+    --warning: #fbbf24;
+    --error: #fa2c05;
+    --danger: var(--error);
+    --info: #009cbc;
+    --income: var(--emerald);
+    --expense: var(--apple-red);
+    --transfer: var(--quaternary);
+    --dark: #101011;
+    --black: #000000;
+    --gray1: #2b2b2c;
+    --gray2: #606266;
+    --mirage: #16232a;
+    --pitch-black: #0a0903;
+    --dark-card-bg: #233d4d;
+    --tertiary-dark: #898a8d;
+    --gray3: #a7a7a7;
+    --gray4: #d9d9d9;
+    --white: #ffffff;
+    --wild-sand: #e4eef0;
+    --mild-white: #f3f4f6;
+    --light-card-bg: #e8d8c9;
+    --tertiary-white: #f9f7f2;
+    --alternate-white: #f0f2f6;
+    --jet-black: #272d2d;
+    --jungle-teal: #5b9279;
+    --torch-red: #fb2b37;
+    --malachite: #00c951;
+    --burgundy: #88292f;
+    --emerald: #7ebc89;
+    --spicy-paprika: #ec4e20;
+    --red-emerald: #e53935;
+    --apple-red: #ff3b30;
+    --body-background: var(--white);
+    --inverted-background: var(--dark);
+    --alternate-background: var(--gray3);
+    --muted: var(--gray4);
+    --muted-text: var(--gray2);
+    --primary-text: var(--dark);
+    --inverted-text: var(--white);
+    --alternate-text: var(--gray1);
+    --reactive-text: var(--muted-text);
+    --background: var(--body-background);
+    --text-secondary: var(--muted-text);
+    --overlay-background: rgba(0, 0, 0, 0.65);
+}
+
+:root.light {
+    color-scheme: light;
+    --body-background: var(--alternate-white);
+    --alternate-background: var(--white);
+    --inverted-background: var(--dark);
+    --primary-text: var(--dark);
+    --inverted-text: var(--white);
+    --alternate-text: var(--gray1);
+    --muted-text: var(--gray2);
+    --reactive-text: var(--muted-text);
+    --background: var(--body-background);
+    --text-secondary: var(--muted-text);
+}
+
+:root.dark {
+    color-scheme: dark;
+    --body-background: var(--dark);
+    --alternate-background: var(--gray1);
+    --inverted-background: var(--mild-white);
+    --primary-text: var(--white);
+    --inverted-text: var(--black);
+    --alternate-text: var(--gray4);
+    --muted-text: var(--gray2);
+    --reactive-text: var(--tertiary-dark);
+    --background: var(--body-background);
+    --text-secondary: var(--reactive-text);
+}
+
+@media (prefers-color-scheme: light) {
+    :root:not(.light):not(.dark) {
+        color-scheme: light;
+        --body-background: var(--alternate-white);
+        --alternate-background: var(--white);
+        --inverted-background: var(--dark);
+        --primary-text: var(--dark);
+        --inverted-text: var(--white);
+        --alternate-text: var(--gray1);
+        --muted-text: var(--gray2);
+        --reactive-text: var(--muted-text);
+        --background: var(--body-background);
+        --text-secondary: var(--muted-text);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not(.light):not(.dark) {
+        color-scheme: dark;
+        --body-background: var(--dark);
+        --alternate-background: var(--gray1);
+        --inverted-background: var(--mild-white);
+        --primary-text: var(--white);
+        --inverted-text: var(--black);
+        --alternate-text: var(--gray4);
+        --muted-text: var(--gray2);
+        --reactive-text: var(--tertiary-dark);
+        --background: var(--body-background);
+        --text-secondary: var(--reactive-text);
+    }
+}
+
+:root {
+    --font-display: Spline Sans, Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif;
+    --font-serif: Georgia, 'Times New Roman', serif;
+}

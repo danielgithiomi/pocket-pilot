@@ -4,9 +4,13 @@ import { form } from '@angular/forms/signals';
 import { UserService } from '@api/user.service';
 import { ToastService } from '@components/ui/atoms/toast';
 import { Component, inject, input, signal } from '@angular/core';
-import { ChangePasswordSchema, changePasswordValidationSchema, initialChangePasswordFormState } from './change-password.types';
+import {
+    ChangePasswordSchema,
+    changePasswordValidationSchema,
+    initialChangePasswordFormState
+} from './change-password.types';
 import { AuthService } from '@api/auth.service';
-import { IVoidResourceResponse } from '@global/types';
+import { IVoidResourceResponse } from '@shared/types';
 
 @Component({
     selector: 'change-password',

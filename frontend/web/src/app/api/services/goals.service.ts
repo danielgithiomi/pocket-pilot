@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { GoalsResource } from '@methods/resources';
 import { GoalsMutation } from '@methods/mutations';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
-import { Goal, IStandardError, IStandardResponse, CreateGoalRequest, IVoidResourceResponse } from '@global/types';
+import { Goal, IStandardError, IStandardResponse, CreateGoalRequest, IVoidResourceResponse } from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

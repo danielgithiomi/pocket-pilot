@@ -10,7 +10,7 @@ export interface SettingsFormSchema {
     monthlySpendingLimit: number | null;
 }
 
-export const SettingsFormValidationSchema = schema<SettingsFormSchema>(root => {
+export const SettingsFormValidationSchema = schema<SettingsFormSchema>((root) => {
     // Preferred Theme
     required(root.preferredTheme, { message: 'The preferred theme is required field!' });
 
@@ -24,7 +24,7 @@ export const SettingsFormValidationSchema = schema<SettingsFormSchema>(root => {
     required(root.monthlySpendingLimit, {
         message: 'The monthly spending limit is required field!'
     });
-    validate(root.monthlySpendingLimit, context => {
+    validate(root.monthlySpendingLimit, (context) => {
         const value = context.value();
         if (value === null) return undefined;
 

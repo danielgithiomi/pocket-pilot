@@ -7,7 +7,7 @@ import { ThemeService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
-import { Account as IAccount, IVoidResourceResponse, UpdateAccountBalanceVisibilityPayload } from '@global/types';
+import { Account as IAccount, IVoidResourceResponse, UpdateAccountBalanceVisibilityPayload } from '@shared/types';
 import { Nfc, Trash, EyeOff, ScanEye, EllipsisVertical, FingerprintPattern, LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -96,7 +96,7 @@ export class Account implements OnInit {
 
         this.accountsService.updateAccountBalanceVisibilityById(this.id(), payload).subscribe({
             next: (account: IAccount) => {
-                const {name, isBalanceVisible} = account
+                const { name, isBalanceVisible } = account;
 
                 this.toastService.show({
                     variant: 'success',

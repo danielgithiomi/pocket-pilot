@@ -1,4 +1,4 @@
-import { CreateAccountPayload } from '@global/types';
+import { CreateAccountPayload } from '@shared/types';
 import { minLength, required, schema, validate } from '@angular/forms/signals';
 
 export type AccountsSchema = CreateAccountPayload;
@@ -7,16 +7,16 @@ export const INITIAL_FORM_STATE: AccountsSchema = {
     name: '',
     type: '',
     currency: '',
-    isBalanceVisible: true,
-}
+    isBalanceVisible: true
+};
 
-export const accountsFormValidationSchema = schema<AccountsSchema>(root => {
+export const accountsFormValidationSchema = schema<AccountsSchema>((root) => {
     // Account name
     required(root.name, { message: 'The account name is required field!' });
     minLength(root.name, 3, { message: 'The account name must be at least 3 characters long!' });
 
     // Account type
-    validate(root.type, context => {
+    validate(root.type, (context) => {
         const type = context.value();
         if (!type || type.trim() === '') {
             return {

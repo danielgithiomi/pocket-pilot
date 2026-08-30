@@ -4,8 +4,7 @@
     [class.hidden]="!isGoalsFormOpen()"
     description="Start a new financial goal"
     (onFormCloseEvent)="handleCloseForm($event)">
-
-<form (submit)="submitGoalForm($event)" class="my-4" id="goals-form" slot="content">
+    <form (submit)="submitGoalForm($event)" class="my-4" id="goals-form" slot="content">
         @if (goalFormStep() === 1) {
             <organism-date-picker
                 [required]="true"
@@ -137,7 +136,12 @@
 
     <div class="w-full flex flex-row items-center justify-end gap-4" slot="footer">
         @if (goalFormStep() === 2) {
-            <atom-button type="button" [inverted]="true" variant="secondary" id="previous-goal-step" (clicked)="onPreviousStep()">
+            <atom-button
+                type="button"
+                [inverted]="true"
+                variant="secondary"
+                id="previous-goal-step"
+                (clicked)="onPreviousStep()">
                 <div class="w-full flex flex-row items-center justify-between gap-4 py-1 lg:py-0">
                     <lucide-icon [img]="PreviousIcon" [size]="iconSize" name="previous-goal-step" />
                     <span class="hidden lg:block">Back</span>

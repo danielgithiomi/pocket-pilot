@@ -1,4 +1,4 @@
-import type { User } from '@global/types';
+import type { User } from '@shared/types';
 import { AuthService } from '@api/auth.service';
 import { STORED_AUTH_USER_KEY } from '@libs/constants';
 import { Injectable, signal, computed, effect, DestroyRef, inject } from '@angular/core';

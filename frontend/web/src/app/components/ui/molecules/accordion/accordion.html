@@ -19,7 +19,10 @@
 
                 <span class="accordion-title">{{ item.title }}</span>
 
-                <span class="accordion-toggle" [class.accordion-toggle-expanded]="isExpanded($index)" aria-hidden="true">
+                <span
+                    class="accordion-toggle"
+                    [class.accordion-toggle-expanded]="isExpanded($index)"
+                    aria-hidden="true">
                     <lucide-icon [size]="iconSize" [img]="ChevronDown" [name]="'accordion-chevron-' + $index" />
                 </span>
             </button>

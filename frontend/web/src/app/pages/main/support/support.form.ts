@@ -9,7 +9,7 @@ export interface SupportFormSchema {
     firstName: string;
 }
 
-export const SupportFormValidationSchema = schema<SupportFormSchema>(root => {
+export const SupportFormValidationSchema = schema<SupportFormSchema>((root) => {
     // First Name
     required(root.firstName, { message: 'The first name is required field!' });
     minLength(root.firstName, 3, { message: 'The first name must be at least 3 characters long!' });
@@ -24,7 +24,7 @@ export const SupportFormValidationSchema = schema<SupportFormSchema>(root => {
 
     // Phone (international format: +{countryCode}{nationalNumber})
     required(root.phone, { message: 'The phone is required field!' });
-    validate(root.phone, control => {
+    validate(root.phone, (control) => {
         const number = control.value();
         if (!number) return null;
 

@@ -2,11 +2,11 @@ import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
-import { FeatureCategoryEnum } from '@global/enums';
+import { FeatureCategoryEnum } from '@shared/enums';
 import { LucideAngularModule } from 'lucide-angular';
 import { Select, SelectOption } from '@atoms/select';
 import { Form, FormCloseEvent } from '@organisms/form';
-import { Feature, FeaturePayload } from '@global/types';
+import { Feature, FeaturePayload } from '@shared/types';
 import { FeaturesService } from '@api/features.service';
 import { TextArea } from '@components/ui/atoms/text-area';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
@@ -44,7 +44,7 @@ export class SuggestFeatureForm {
         }
 
         const categories = this.featuresService.getFeatureCategories();
-        return categories().map(category => {
+        return categories().map((category) => {
             const { value, label } = category;
 
             return {

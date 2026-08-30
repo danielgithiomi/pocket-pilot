@@ -56,7 +56,10 @@
         class="faqs-features-panel page-section flex-col-reverse pt-12 lg:pt-0"
         [ngClass]="{ 'md:flex-col-reverse! lg:flex-row!': !drawerService.isDrawerCollapsed() }">
         <div class="faqs-features-panel-secondary mt-4">
-            <atom-tab-list [items]="tabItems()" [activeItem]="activeTabIndex()" (selectedIndex)="onTabSelected($event)" />
+            <atom-tab-list
+                [items]="tabItems()"
+                [activeItem]="activeTabIndex()"
+                (selectedIndex)="onTabSelected($event)" />
 
             <p class="text-sm text-tertiary-dark text-ellipsis mt-4">{{ featuresSubtitle() }}</p>
 
@@ -85,7 +88,7 @@
                                 [id]="feature.id"
                                 [feature]="feature"
                                 [showDeleteIcon]="activeTabIndex() == 1"
-                                (onFeatureItemClick)="handleOnFeatureItemClick($event)"/>
+                                (onFeatureItemClick)="handleOnFeatureItemClick($event)" />
                         }
                     }
                 }
@@ -102,8 +105,8 @@
 
                 <div class="overflow-hidden w-3/4 mt-4">
                     <p class="overflow-hidden text-sm text-tertiary-dark text-ellipsis">
-                        At Pocket Pilot, we're always looking for ways to improve and add new features to make your experience
-                        better. If you have an idea for a new feature, please let us know.
+                        At Pocket Pilot, we're always looking for ways to improve and add new features to make your
+                        experience better. If you have an idea for a new feature, please let us know.
                     </p>
                 </div>
             </div>
@@ -128,7 +131,9 @@
 </section>
 
 @if (isFeatureFormOpen()) {
-    <suggest-feature-form [isFeatureFormOpen]="isFeatureFormOpen()" (featureFormClosedEvent)="handleCloseFeatureForm($event)" />
+    <suggest-feature-form
+        [isFeatureFormOpen]="isFeatureFormOpen()"
+        (featureFormClosedEvent)="handleCloseFeatureForm($event)" />
 }
 
 @if (isFeatureModalOpen() && selectedFeature()) {
@@ -136,5 +141,5 @@
         [feature]="selectedFeature()!"
         [onBackdropClickClose]="true"
         [featureId]="selectedFeature()!.id"
-        (onFeatureModalCloseEvent)="handleOnFeatureModalClose()"/>
+        (onFeatureModalCloseEvent)="handleOnFeatureModalClose()" />
 }

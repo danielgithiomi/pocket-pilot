@@ -14,7 +14,6 @@
         "target": "ES2023",
         "sourceMap": true,
         "outDir": "./dist",
-        "baseUrl": "./",
         "incremental": true,
         "skipLibCheck": true,
         "strictNullChecks": true,
@@ -24,7 +23,6 @@
         "noFallthroughCasesInSwitch": false,
         "paths": {
             "@libs/*": ["./src/libs/*"],
-            "@global/*": ["./../shared/*"],
             "@common/*": ["./src/common/*"],
             "@modules/*": ["./src/modules/*"],
             "@infrastructure/*": ["./src/infrastructure/*"]

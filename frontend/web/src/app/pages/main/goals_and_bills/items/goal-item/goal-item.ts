@@ -3,8 +3,8 @@ import { ToastService } from '@atoms/toast';
 import { ProgressBar } from '@atoms/progress-bar';
 import { GoalsService } from '@api/goals.service';
 import { AccountsService } from '@api/accounts.service';
-import { Goal, IVoidResourceResponse } from '@global/types';
-import { GoalCategoryEnum, GoalStatusEnum } from '@global/enums';
+import { Goal, IVoidResourceResponse } from '@shared/types';
+import { GoalCategoryEnum, GoalStatusEnum } from '@shared/enums';
 import { convertDaysToYearsAndMonths, formatCurrency } from '@libs/utils';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import {

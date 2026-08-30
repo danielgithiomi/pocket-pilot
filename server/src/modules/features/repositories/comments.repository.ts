@@ -5,7 +5,7 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 @Injectable()
 export class CommentsRepository {
     private readonly includedFields = {
-        author: { select: { name: true, profilePictureKey: true } }
+        author: { select: { name: true, profilePictureKey: true, profilePictureThumbnailKey: true } }
     };
 
     constructor(private readonly db: DatabaseService) {}

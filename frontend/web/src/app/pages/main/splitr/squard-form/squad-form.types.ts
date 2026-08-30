@@ -1,4 +1,4 @@
-import { SplitrSquadPayload } from '@global/types';
+import { SplitrSquadPayload } from '@shared/types';
 import { maxLength, minLength, required, schema } from '@angular/forms/signals';
 
 export type squadSchema = SplitrSquadPayload;
@@ -8,7 +8,7 @@ export const initialCreateSquadData: squadSchema = {
     squadMembers: []
 };
 
-export const squadValidationSchema = schema<squadSchema>(root => {
+export const squadValidationSchema = schema<squadSchema>((root) => {
     // Squad Name
     required(root.squadName, { message: 'The squad name is required field!' });
     minLength(root.squadName, 3, { message: 'The squad name must be at least 3 characters long!' });

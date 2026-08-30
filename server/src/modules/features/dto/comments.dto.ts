@@ -15,7 +15,7 @@ export class FeatureCommentPayload {
 // PRISMA
 export type PrismaComment = Prisma.FeatureCommentsGetPayload<{
     include: {
-        author: { select: { name: true; profilePictureKey: true } };
+        author: { select: { name: true; profilePictureKey: true; profilePictureThumbnailKey: true } };
     };
 }>;
 
@@ -44,6 +44,13 @@ export class FeatureCommentDto {
         description: 'The URL of the profile picture of the user who created the comment'
     })
     authorProfilePictureUrl!: string | null;
+
+    @Expose()
+    @ApiProperty({
+        example: 'https://pocket-pilot/profile-picture-thumbnail',
+        description: 'The URL of the profile picture thumbnail of the user who created the comment'
+    })
+    authorProfilePictureThumbnailUrl!: string | null;
 
     @Expose()
     @Type(() => Date)

@@ -1,4 +1,4 @@
-import { GoalCategoryEnum } from '@global/enums';
+import { GoalCategoryEnum } from '@shared/enums';
 import { required, schema, validate } from '@angular/forms/signals';
 
 // TYPES
@@ -23,7 +23,7 @@ export type NewGoalSchema = {
     targetCompletionStrategy: TargetCompletionStrategy | null;
 };
 
-export const newGoalFormValidationSchema = schema<NewGoalSchema>(root => {
+export const newGoalFormValidationSchema = schema<NewGoalSchema>((root) => {
     // Name
     required(root.name, { message: 'The goal name is required field!' });
 
@@ -41,7 +41,7 @@ export const newGoalFormValidationSchema = schema<NewGoalSchema>(root => {
 
     // Target Amount
     required(root.targetAmount, { message: 'The goal target amount is required field!' });
-    validate(root.targetAmount, context => {
+    validate(root.targetAmount, (context) => {
         const value = context.value();
         if (value === null) return undefined;
 
@@ -58,7 +58,7 @@ export const newGoalFormValidationSchema = schema<NewGoalSchema>(root => {
     required(root.monthlyContribution, {
         message: 'The goal monthly contribution is required field!'
     });
-    validate(root.monthlyContribution, context => {
+    validate(root.monthlyContribution, (context) => {
         const value = context.value();
         if (value === null) return undefined;
 

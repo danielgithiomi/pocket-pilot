@@ -8,7 +8,7 @@ export interface EditProfileSchema {
     phoneNumber: string;
 }
 
-export const editProfileFormValidationSchema = schema<EditProfileSchema>(root => {
+export const editProfileFormValidationSchema = schema<EditProfileSchema>((root) => {
     // Email
     email(root.email, { message: 'The email address format is invalid!' });
     required(root.email, { message: 'The email address is required field!' });
@@ -19,7 +19,7 @@ export const editProfileFormValidationSchema = schema<EditProfileSchema>(root =>
 
     // Phone Number (international format: +{countryCode}{nationalNumber})
     required(root.phoneNumber, { message: 'The phone number is required field!' });
-    validate(root.phoneNumber, control => {
+    validate(root.phoneNumber, (control) => {
         const number = control.value();
         if (!number) return null;
 

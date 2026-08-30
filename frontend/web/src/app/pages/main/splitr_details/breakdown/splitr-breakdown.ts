@@ -3,7 +3,7 @@ import { NgClass } from '@angular/common';
 import { CheckedCircle } from '@atoms/icons';
 import { Component, computed, input } from '@angular/core';
 import { formatCurrency, formatFullDate } from '@libs/utils';
-import { ISplitrEvent, SPLIT_STRATEGY_MAP } from '@global/types';
+import { ISplitrEvent, SPLIT_STRATEGY_MAP } from '@shared/types';
 import { EventPayer, OrderedItem, Settlement } from './splitr-breakdown.types';
 import { Users, Calendar1, ArrowRight, CircleCheck, LucideAngularModule } from 'lucide-angular';
 import { buildAvatarMap, calculateSettlments, buildParticipantsMap } from './splitr-breakdown.utils';
@@ -47,7 +47,7 @@ export class SplitrBreakdown {
     protected readonly payers = computed<EventPayer[]>(() => {
         const { billPayers, verificationTotal, billingCurrency } = this.splitrEvent();
 
-        return billPayers.map(billPayer => ({
+        return billPayers.map((billPayer) => ({
             id: crypto.randomUUID(),
             payerName: billPayer.payerName,
             avatar: buildAvatarMap(billPayer.payerName),
@@ -64,14 +64,14 @@ export class SplitrBreakdown {
             return formatCurrency(total, billingCurrency, 2, false);
         };
 
-        return eventSplittables.map(splittable => ({
+        return eventSplittables.map((splittable) => ({
             id: splittable.id,
             orderName: splittable.name,
             orderQuantity: splittable.quantity,
             splitStrategy: SPLIT_STRATEGY_MAP[splittable.splitStrategy],
             unitPrice: formatCurrency(splittable.unitPrice, billingCurrency, 2, false),
             orderTotal: formatCurrency(splittable.total, billingCurrency, 2, true, true),
-            orderQuantitySplits: splittable.quantitySplits.map(quantitySplit => ({
+            orderQuantitySplits: splittable.quantitySplits.map((quantitySplit) => ({
                 id: quantitySplit.id,
                 consumerName: quantitySplit.consumerName,
                 consumerQuantity: quantitySplit.consumerQuantity,

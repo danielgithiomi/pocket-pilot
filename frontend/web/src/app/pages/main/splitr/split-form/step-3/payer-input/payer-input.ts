@@ -1,4 +1,4 @@
-import { BillPayerPayload } from '@global/types';
+import { BillPayerPayload } from '@shared/types';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
 import { Component, computed, input, output } from '@angular/core';
 

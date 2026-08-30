@@ -18,7 +18,7 @@
                 [isLoading]="true"
                 [data]="skeletonData"
                 [columns]="transactionColumns"
-                id="transactions-table-skeleton"/>
+                id="transactions-table-skeleton" />
         </div>
     } @else {
         @let hasError = !!transactions.error();
@@ -26,9 +26,9 @@
         @let count = response?.count;
         <div class="page-container flex-1" [ngClass]="{ 'grid place-items-center': count === 0 || hasError }">
             @if (hasError) {
-                <fetch-error message="Failed to retrieve your transactions"/>
+                <fetch-error message="Failed to retrieve your transactions" />
             } @else if (count === 0) {
-                <no-data message="You have no transactions yet! Log one today." messageClass="text-sm"/>
+                <no-data message="You have no transactions yet! Log one today." messageClass="text-sm" />
             } @else {
                 <div>
                     <p class="mb-6 page-subtitle cursor-default">
@@ -41,7 +41,7 @@
                         <atom-tab-list
                             [items]="tabListItems"
                             [activeItem]="activeTabIndex()"
-                            (selectedIndex)="onTabSelected($event)"/>
+                            (selectedIndex)="onTabSelected($event)" />
                     </div>
 
                     <organism-table
@@ -50,7 +50,7 @@
                         [columns]="transactionColumns"
                         [emptyMessage]="editStateText()"
                         [data]="formattedTransactions()"
-                        (deleteRow)="deleteDataRow($event)"/>
+                        (deleteRow)="deleteDataRow($event)" />
                 </div>
             }
         </div>
@@ -62,12 +62,13 @@
         id="transactions"
         title="Log Transaction"
         [class.hidden]="!isFormOpen()"
-        (onFormCloseEvent)="handleCloseForm($event)"
-        description="Record a new transaction">
+        description="Record a new transaction"
+        (onFormCloseEvent)="handleCloseForm($event)">
 
         @let categories = transactionCategories();
         @let types = transactionTypes.value()?.data;
-        <form slot="content" id="transactions-form" (submit)="submitTransactionForm($event)">
+
+        <form slot="content" id="transactions-form" [formRoot]="transactionForm">
             <atom-input
                 id="name"
                 type="number"
@@ -77,7 +78,7 @@
                 [numberStep]="0.01"
                 placeholder="Eg: 100"
                 [formField]="transactionForm.amount"
-                (clearOutput)="transactionForm.amount().controlValue.set(null)"/>
+                (clearOutput)="transactionForm.amount().controlValue.set(null)" />
 
             <atom-input
                 type="text"
@@ -88,7 +89,7 @@
                 label="Description"
                 placeholder="Eg: Dinner with friends"
                 [formField]="transactionForm.description"
-                (clearOutput)="transactionForm.description().controlValue.set('')"/>
+                (clearOutput)="transactionForm.description().controlValue.set('')" />
 
             <div class="flex flex-col sm:flex-row gap-4">
                 <atom-select
@@ -99,7 +100,7 @@
                     label="Transaction Type"
                     placeholder="Select a type"
                     [formField]="transactionForm.type"
-                    [options]="types || [{ value: '', label: 'No transaction types found' }]"/>
+                    [options]="types || [{ value: '', label: 'No transaction types found' }]" />
 
                 <atom-select
                     class="flex-1"
@@ -110,7 +111,7 @@
                     placeholder="Select a category"
                     [disabled]="isTransferTransaction()"
                     [formField]="transactionForm.category"
-                    [options]="categories || [{ value: '', label: 'No transaction categories found' }]"/>
+                    [options]="categories || [{ value: '', label: 'No transaction categories found' }]" />
             </div>
 
             <atom-select
@@ -119,7 +120,7 @@
                 placeholder="Select source account"
                 [formField]="transactionForm.sourceAccountId"
                 [label]="isTransferTransaction() ? 'Source Account' : 'Associated Account'"
-                [options]="sourceAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"/>
+                [options]="sourceAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]" />
 
             @if (isTransferTransaction()) {
                 <atom-select
@@ -128,10 +129,11 @@
                     label="Target Account"
                     placeholder="Select target account"
                     [formField]="transactionForm.targetAccountId"
-                    [options]="targetAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]"/>
+                    [options]="targetAccountDropdown() || [{ value: '', label: 'You have no accounts yet' }]" />
             }
         </form>
 
+        @let isSubmittingForm = transactionForm().submitting();
         <div class="form-footer-buttons" slot="footer">
             <atom-button
                 type="button"
@@ -141,15 +143,15 @@
                 form="transactions-form"
                 id="reset-transaction-form"
                 (clicked)="resetTransactionForm()"
-                [disabled]="!transactionForm().dirty() || isSubmitting()"/>
+                [disabled]="!transactionForm().dirty() || isSubmittingForm" />
 
             <atom-button
                 type="submit"
                 label="Log Transaction"
                 form="transactions-form"
                 id="submit-transaction-form"
-                [isLoading]="isSubmitting()"
-                [disabled]="transactionForm().invalid() || isSubmitting()"/>
+                [isLoading]="isSubmittingForm"
+                [disabled]="transactionForm().invalid() || transactionForm().submitting()" />
         </div>
     </organism-form>
 }

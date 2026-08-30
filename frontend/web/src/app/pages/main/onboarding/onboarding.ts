@@ -1,4 +1,4 @@
-import { OnboardingPayload, User } from '@global/types';
+import { OnboardingPayload, User } from '@shared/types';
 import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { Form } from '@organisms/form';
@@ -7,11 +7,15 @@ import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
 import { form } from '@angular/forms/signals';
 import { PhoneNumber } from '@atoms/phone-number';
-import { CURRENCIES, DEFAULT_COUNTRY_ISO, LANGUAGES, WEB_ROUTES } from '@global/constants';
+import { CURRENCIES, DEFAULT_COUNTRY_ISO, LANGUAGES, WEB_ROUTES } from '@shared/constants';
 import { Component, inject, signal } from '@angular/core';
 import { OnboardingService } from '@api/onboarding.service';
 import { ChevronsRight, LucideAngularModule } from 'lucide-angular';
-import { INITIAL_ONBOARDING_FORM_STATE, ONBOARDING_FORM_VALIDATION_SCHEMA, OnboardingFormSchema } from './onboarding.types';
+import {
+    INITIAL_ONBOARDING_FORM_STATE,
+    ONBOARDING_FORM_VALIDATION_SCHEMA,
+    OnboardingFormSchema
+} from './onboarding.types';
 
 @Component({
     selector: 'onboarding',

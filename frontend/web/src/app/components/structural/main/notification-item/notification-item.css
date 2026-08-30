@@ -1,0 +1,204 @@
+@reference "tailwindcss";
+
+.notification-lucide-icon {
+    @apply cursor-pointer! text-(--reactive-text) hover:text-(--primary);
+}
+
+.notification-item {
+    @apply cursor-default! relative flex w-full min-w-0 max-w-full flex-row items-start gap-3 overflow-hidden border border-transparent bg-(--alternate-background) p-3 transition-all duration-300 ease-in-out;
+}
+
+.notification-item.compact {
+    @apply gap-3 py-2;
+}
+
+.notification-item.full {
+    @apply rounded-md;
+}
+
+.notification-item.unread {
+    @apply bg-(--loader-primary)/40;
+}
+
+.notification-item.is-unread {
+    @apply border-(--loader-primary);
+}
+
+.notification-item.critical {
+    @apply border-l-4 border-l-(--error);
+}
+
+.notification-item.high {
+    @apply border-l-4 border-l-(--quaternary);
+}
+
+.notification-item.medium {
+    @apply border-l-4 border-l-(--warning);
+}
+
+.notification-item.low {
+    @apply border-l-4 border-l-(--success);
+}
+
+.notification-leading {
+    @apply flex shrink-0 flex-row items-center justify-between pt-0.5;
+}
+
+.notification-unread-indicator {
+    @apply absolute top-2 right-2 grid shrink-0 place-items-center;
+}
+
+.notification-icon {
+    @apply grid size-8 place-items-center rounded-full bg-(--inverted-background) text-(--inverted-text);
+}
+
+.notification-item.compact .notification-icon {
+    @apply size-8;
+}
+
+.notification-content {
+    @apply min-w-0 flex-1 overflow-hidden;
+}
+
+.compact-content {
+    @apply flex w-full min-w-0 flex-col gap-1;
+}
+
+.compact-header {
+    @apply flex w-full min-w-0 flex-row items-center justify-between gap-2;
+}
+
+.compact-header h3 {
+    @apply min-w-0 flex-1 truncate text-sm font-semibold text-(--primary-text);
+}
+
+.compact-message {
+    @apply mb-1 min-w-0 max-w-full line-clamp-1 text-[11px] leading-4;
+}
+
+.compact-meta {
+    @apply flex w-full min-w-0 flex-row items-center gap-1.5 overflow-hidden text-[10px] font-semibold uppercase text-(--reactive-text);
+}
+
+.compact-meta span,
+.compact-meta time {
+    @apply min-w-0;
+}
+
+.compact-meta span[aria-hidden],
+.compact-meta time,
+.compact-priority {
+    @apply shrink-0;
+}
+
+.compact-meta span:not([aria-hidden]):not(.compact-priority) {
+    @apply truncate;
+}
+
+.compact-priority.critical {
+    @apply text-(--error);
+}
+
+.compact-priority.high {
+    @apply text-(--quaternary);
+}
+
+.compact-priority.medium {
+    @apply text-(--warning);
+}
+
+.compact-priority.low {
+    @apply text-(--success);
+}
+
+.compact-utility-actions {
+    @apply shrink-0 gap-1;
+}
+
+.notification-header {
+    @apply flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between;
+}
+
+.notification-header h3 {
+    @apply mt-1 truncate text-sm font-semibold text-(--primary-text);
+}
+
+.notification-time {
+    @apply shrink-0 text-[11px] text-(--reactive-text);
+}
+
+.notification-badges {
+    @apply flex flex-wrap gap-1.5;
+}
+
+.badge {
+    @apply rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-normal;
+}
+
+.badge.category {
+    @apply bg-(--alternate-background) text-(--primary-text);
+}
+
+.badge.priority {
+    @apply bg-(--loader-primary) text-(--primary-text);
+}
+
+.critical .badge.priority {
+    @apply bg-(--error) text-white;
+}
+
+.high .badge.priority {
+    @apply bg-(--warning) text-black;
+}
+
+.badge.action-required {
+    @apply bg-(--loader-secondary) text-(--primary-text);
+}
+
+.notification-message {
+    @apply mt-2 text-xs leading-5 text-(--reactive-text);
+}
+
+.metadata-chips {
+    @apply mt-3 flex flex-wrap gap-2;
+}
+
+.metadata-chip {
+    @apply flex items-center gap-1 rounded bg-(--reactive-text) px-2 py-1 text-[11px] text-white;
+}
+
+.metadata-chip strong {
+    @apply font-semibold text-inherit;
+}
+
+.notification-footer {
+    @apply mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+}
+
+.notification-actions {
+    @apply flex flex-wrap gap-1;
+}
+
+.notification-action {
+    @apply rounded text-[11px] font-semibold transition-all duration-200 ease-in-out text-(--inverted-text);
+}
+
+.notification-action.primary {
+    @apply bg-(--primary) text-white hover:scale-101;
+}
+
+.notification-action.secondary {
+    @apply bg-(--inverted-background) text-black hover:scale-101;
+}
+
+.notification-action.danger {
+    @apply bg-(--error) text-white hover:scale-101;
+}
+
+.notification-action.ghost {
+    @apply text-(--primary) underline underline-offset-2;
+}
+
+.utility-actions {
+    @apply flex shrink-0 items-center gap-2;
+}

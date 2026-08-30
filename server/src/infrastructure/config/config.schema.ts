@@ -4,11 +4,14 @@ export const PPConfigSchema = z.object({
     // Application
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
     PORT: z.coerce.number().default(3005),
-    BASE_URL: z.string().default('http://localhost:3005'),
+    BASE_URL: z.url().default('http://localhost:3005'),
 
     // Database
-    DATABASE_URL: z.string().url(),
+    DATABASE_URL: z.url(),
     DATABASE_POOL_SIZE: z.coerce.number().default(10),
+
+    // SSE
+    SSE_HEARTBEAT_INTERVAL_MINUTES: z.coerce.number().default(1), // fallback to one minute
 
     // Redis
     REDIS_HOST: z.string().default('localhost'),

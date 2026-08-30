@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
-import { ISplitrEvent } from '@global/types';
+import { ISplitrEvent } from '@shared/types';
 import { AuthService } from '@api/auth.service';
 import { SplitrService } from '@api/splitr.service';
 import { NoData } from '@structural/main/no-data/no-data';
@@ -40,7 +40,7 @@ export class SplitrEvents {
 
         if (!rawEvents) return [];
 
-        return rawEvents.data.map(event => ({
+        return rawEvents.data.map((event) => ({
             ...event,
             eventMembers: [...event.eventMembers, this.selfName()]
         }));

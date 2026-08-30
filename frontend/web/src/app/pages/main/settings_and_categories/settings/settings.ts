@@ -8,12 +8,17 @@ import { Radio, RadioOption } from '@atoms/radio';
 import { LucideAngularModule } from 'lucide-angular';
 import { AccountsService } from '@api/accounts.service';
 import { ThemeService } from '@infrastructure/services';
-import { CURRENCIES, LANGUAGES } from '@global/constants';
-import { UpdateUserPreferencesPayload } from '@global/types';
+import { CURRENCIES, LANGUAGES } from '@shared/constants';
+import { UpdateUserPreferencesPayload } from '@shared/types';
 import { PreferencesService } from '@api/preferences.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { normalizeThemePreference } from '@infrastructure/services/theme.utils';
-import { ThemeVariant, SettingsFormSchema, ApplicationThemeOptions, SettingsFormValidationSchema } from './settings.types';
+import {
+    ThemeVariant,
+    SettingsFormSchema,
+    ApplicationThemeOptions,
+    SettingsFormValidationSchema
+} from './settings.types';
 
 @Component({
     selector: 'settings',
@@ -44,7 +49,7 @@ export class Settings {
         return `Monthly Spending Limit (${this.defaultCurrency})`;
     });
     protected readonly applicationThemes = computed<RadioOption[]>(() =>
-        ApplicationThemeOptions.map(theme => {
+        ApplicationThemeOptions.map((theme) => {
             let label: string;
 
             switch (theme) {
@@ -66,7 +71,8 @@ export class Settings {
     // FORM
     private initialSettingsFormState: SettingsFormSchema = {
         defaultCurrency: this.defaultCurrency,
-        preferredTheme: normalizeThemePreference(this.user()?.userPreferences.preferredTheme) ?? this.themeService.theme(),
+        preferredTheme:
+            normalizeThemePreference(this.user()?.userPreferences.preferredTheme) ?? this.themeService.theme(),
         monthlySpendingLimit: this.monthlySpendingLimit,
         preferredLanguage: this.user()?.userPreferences.preferredLanguage ?? 'en'
     };

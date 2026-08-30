@@ -12,7 +12,7 @@ import {
     SplitrEventPayload,
     SettleSplitrPayload,
     IVoidResourceResponse
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'
@@ -38,7 +38,7 @@ export class SplitrService {
             return EMPTY;
         }
 
-        const squad = resourceValue.data.find(squad => squad.id === squadId);
+        const squad = resourceValue.data.find((squad) => squad.id === squadId);
 
         if (!squad) {
             this.errorService.renderToast({
@@ -98,7 +98,10 @@ export class SplitrService {
         );
     }
 
-    markSplitrEventAsSettledOrPending(eventId: string, payload: SettleSplitrPayload): Observable<IVoidResourceResponse> {
+    markSplitrEventAsSettledOrPending(
+        eventId: string,
+        payload: SettleSplitrPayload
+    ): Observable<IVoidResourceResponse> {
         return this.mutation.markSplitrEventAsSettledOrPending(eventId, payload).pipe(
             map((response: IStandardResponse<IVoidResourceResponse>) => response.data),
             catchError((error: IStandardError) => {

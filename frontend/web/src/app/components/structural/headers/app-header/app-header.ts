@@ -1,19 +1,23 @@
 import { tap } from 'rxjs';
 import { Button } from '@atoms/button';
-import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
-import { WEB_ROUTES } from '@global/constants';
+import { WEB_ROUTES } from '@shared/constants';
 import { AuthService } from '@api/auth.service';
+import { DrawerService } from '@infrastructure/services';
 import { UserSummary } from './user-summary/user-summary';
+import { Router } from '@angular/router';
+import { ClosePanelDirective } from '@infrastructure/directives';
 import { STORED_ONBOARDING_USER_KEY } from '@libs/constants';
-import { Component, inject, input, output } from '@angular/core';
-import { LucideAngularModule, Menu, Settings2, Bell, LogOut } from 'lucide-angular';
+import { NotificationsStore } from '@stores/notifications.store';
+import { Bell, LogOut, LucideAngularModule, Menu, Settings2 } from 'lucide-angular';
+import { NotificationsDropdown } from '@structural/dropdowns/notifications-dropdown';
+import { Component, inject, input, output, signal } from '@angular/core';
 
 @Component({
     selector: 'app-header',
     styleUrl: './app-header.css',
     templateUrl: './app-header.html',
-    imports: [LucideAngularModule, UserSummary, Button, NgClass]
+    imports: [NgClass, LucideAngularModule, UserSummary, Button, NotificationsDropdown, ClosePanelDirective]
 })
 export class AppHeader {
     protected readonly Menu = Menu;
@@ -22,28 +26,43 @@ export class AppHeader {
     protected readonly LogOut = LogOut;
     protected readonly Settings = Settings2;
 
-    // Inputs
+    // INPUTS
     withDrawerLayout = input<boolean>(true);
 
-    // Outputs
+    // OUTPUTS
     hamburgerClickEmitter = output<void>();
 
-    // Services
+    // SIGNAL STATES
+    protected isNotificationsPanelOpen = signal<boolean>(false);
+
+    // SERVICES
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
+    private readonly drawerService = inject(DrawerService);
+    protected readonly notificationsStore = inject(NotificationsStore);
 
-    // Data
+    // DATA
+    protected readonly notificationsSummary = this.notificationsStore.notificationsSummary;
     protected readonly isLinkActive = (link: string) => this.router.url === link;
 
-    // Methods
-    protected goToSettings() {
-        this.router.navigateByUrl(WEB_ROUTES.settings);
+    // METHODS
+    protected async goToSettings(): Promise<void> {
+        await this.router.navigateByUrl(WEB_ROUTES.settings);
+    }
+
+    protected handleNotificationsPanelToggle() {
+        this.isNotificationsPanelOpen.update((current) => !current);
+    }
+
+    protected closeNotificationsPanel(): void {
+        if (!this.isNotificationsPanelOpen()) return;
+        this.isNotificationsPanelOpen.set(false);
     }
 
     protected logout() {
         this.authService
             .logout()
-            .pipe(tap(() => this.router.navigateByUrl(WEB_ROUTES.login)))
+            .pipe(tap(async () => await this.router.navigateByUrl(WEB_ROUTES.login)))
             .subscribe({
                 complete: () => localStorage.removeItem(STORED_ONBOARDING_USER_KEY)
             });

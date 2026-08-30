@@ -1,6 +1,6 @@
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
-import { SplitrSquad } from '@global/types';
+import { SplitrSquad } from '@shared/types';
 import { SplitrEvents } from './events/events';
 import { SplitrSquads } from './squads/squads';
 import { SplitrService } from '@api/splitr.service';
@@ -52,12 +52,14 @@ export class Splitr {
         if (this.hasSquadsError()) return [];
         return this.userSquads.value()?.data ?? [];
     });
-    protected allSquadMembers = computed<string[]>(() => Array.from(new Set(this.squads().flatMap(squad => squad.squadMembers))));
+    protected allSquadMembers = computed<string[]>(() =>
+        Array.from(new Set(this.squads().flatMap((squad) => squad.squadMembers)))
+    );
 
     // METHODS
     protected handleOnUpdateSquadItemEvent(squadId: string) {
         this.splitrService.getSquadById(squadId).subscribe({
-            next: squad => {
+            next: (squad) => {
                 this.squadToUpdate.set(squad);
                 this.isUpdateSquadFormOpen.set(true);
             }

@@ -1,11 +1,11 @@
-<div class="tab-list">
+<div class="tab-list" [ngClass]="wrapperClassName()">
     @for (item of items(); track item.value; let index = $index) {
         <div
+            role="tab"
             [class]="getTabClasses(item)"
             (click)="selectTab(item, index)"
-            role="tab"
-            [attr.aria-selected]="isActive(item)"
-            [attr.aria-disabled]="disabled()">
+            [attr.aria-disabled]="disabled()"
+            [attr.aria-selected]="isActive(item)">
             {{ item.label }}
         </div>
     }

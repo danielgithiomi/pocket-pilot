@@ -50,7 +50,11 @@
             </div>
 
             @if (showClearIcon()) {
-                <button type="button" class="phone-clear-button" aria-label="Clear phone number" (click)="onClear($event)">
+                <button
+                    type="button"
+                    class="phone-clear-button"
+                    aria-label="Clear phone number"
+                    (click)="onClear($event)">
                     <lucide-icon
                         [img]="X"
                         [size]="iconSize"

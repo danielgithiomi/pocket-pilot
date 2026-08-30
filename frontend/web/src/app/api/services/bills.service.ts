@@ -3,7 +3,7 @@ import { BillsMutation } from '@methods/mutations';
 import { BillsResource } from '@methods/resources';
 import { inject, Injectable } from '@angular/core';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
-import { Bill, IStandardError, IStandardResponse, CreateBillPayload, IVoidResourceResponse } from '@global/types';
+import { Bill, IStandardError, IStandardResponse, CreateBillPayload, IVoidResourceResponse } from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

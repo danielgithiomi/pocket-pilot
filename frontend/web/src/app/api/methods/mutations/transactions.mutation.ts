@@ -1,6 +1,6 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { IVoidResourceResponse, TransactionWithAccount, CreateTransactionRequest } from '@global/types';
+import { IVoidResourceResponse, TransactionWithAccount, CreateTransactionRequest } from '@shared/types';
 
 interface NormalTransactionPayload {
     type: string;
@@ -30,7 +30,10 @@ export class TransactionsMutation {
     }
 
     createTransferTransaction(accountId: string, payload: CreateTransactionRequest) {
-        return this.client.post<TransactionWithAccount, CreateTransactionRequest>(`accounts/${accountId}/transfer`, payload);
+        return this.client.post<TransactionWithAccount, CreateTransactionRequest>(
+            `accounts/${accountId}/transfer`,
+            payload
+        );
     }
 
     deleteTransaction(accountId: string, transactionId: string) {

@@ -1,7 +1,12 @@
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
-import { AwsPresignedUrlResponse, IUpdateUserProfilePictureRequest, User } from '@global/types';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
+import {
+    AwsPresignedUrlResponse,
+    IUpdateUserProfilePictureRequest,
+    ProfilePictureUploadVariant,
+    User
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'
@@ -9,14 +14,23 @@ import { AwsPresignedUrlResponse, IUpdateUserProfilePictureRequest, User } from 
 export class AwsMutation {
     private readonly client = inject(ApiClient);
 
-    getPresignedUploadUrl(file: File) {
-        return this.client.uploadFile<AwsPresignedUrlResponse>(endpoints.presigned_url, file, 'profile-picture');
+    getPresignedUploadUrl(file: File, variant: ProfilePictureUploadVariant = 'original') {
+        return this.client.uploadFile<AwsPresignedUrlResponse>(
+            `${endpoints.presigned_url}?variant=${variant}`,
+            file,
+            'profile-picture'
+        );
     }
 
-    updateUserProfileWithPictureKey(userId: string, profilePictureAwsKey: string) {
+    updateUserProfileWithPictureKeys(
+        userId: string,
+        profilePictureAwsKey: string,
+        profilePictureThumbnailAwsKey: string
+    ) {
         const url = `users/${userId}/profile-picture`;
         return this.client.put<User, IUpdateUserProfilePictureRequest>(url, {
-            profilePictureAwsKey
+            profilePictureAwsKey,
+            profilePictureThumbnailAwsKey
         });
     }
 }

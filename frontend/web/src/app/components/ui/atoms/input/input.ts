@@ -3,7 +3,11 @@ import { AutoComplete, InputType } from './input.types';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { Eye, EyeClosed, LucideAngularModule, X } from 'lucide-angular';
 import { Component, computed, input, output, signal } from '@angular/core';
-import { FORM_FIELD_ERROR_BORDER_CLASSES, isFormFieldInError, resolveFormFieldVisualState } from '../form-field-visual-state';
+import {
+    FORM_FIELD_ERROR_BORDER_CLASSES,
+    isFormFieldInError,
+    resolveFormFieldVisualState
+} from '../form-field-visual-state';
 
 @Component({
     selector: 'atom-input',
@@ -68,6 +72,6 @@ export class Input {
 
     /* METHODS */
     togglePasswordVisibility() {
-        this.isPasswordVisible.update(curr => !curr);
+        this.isPasswordVisible.update((curr) => !curr);
     }
 }

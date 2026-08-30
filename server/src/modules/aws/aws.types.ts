@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+export type ProfilePictureUploadVariant = 'original' | 'thumbnail';
+
 export interface PreSignedUrlResponse {
     key: string;
     presignedUrl: string;

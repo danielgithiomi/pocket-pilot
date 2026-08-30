@@ -13,7 +13,7 @@ import {
     CreateCategoryRequest,
     DeleteCategoryRequest,
     IVoidResourceResponse
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'
@@ -41,9 +41,16 @@ export class CategoriesService {
         if (!data) return [];
 
         const { incomes, expenses } = data;
-        const allCategories = ['---Incomes---', ...incomes, '---Expenses---', ...expenses, '---Internal---', 'Transfer'];
+        const allCategories = [
+            '---Incomes---',
+            ...incomes,
+            '---Expenses---',
+            ...expenses,
+            '---Internal---',
+            'Transfer'
+        ];
 
-        return allCategories.map(category => ({
+        return allCategories.map((category) => ({
             value: category,
             disabled: category.startsWith('---') || category === 'Transfer',
             label: category.startsWith('---')

@@ -17,15 +17,45 @@
 
     @if (withDrawerLayout()) {
         <div class="flex flex-row items-center gap-4">
-            <div class="hidden sm:flex gap-4 md:hidden lg:flex">
-                <lucide-icon class="atom-icon" [name]="Bell" [img]="Bell" [size]="iconSize" />
+            <div class="hidden sm:flex justify-end gap-3 md:hidden lg:flex w-100">
+                <div
+                    closePanel
+                    class="notifications-dropdown-wrapper"
+                    (onPanelClose)="closeNotificationsPanel()"
+                    [closePanelEnabled]="isNotificationsPanelOpen()">
+                    @let isLoadingNotifications = notificationsStore.notificationsLoading;
+                    @if (isLoadingNotifications()) {
+                        <div class="p-1 header-icons mr-2 primary-loader bg-alternate-background! self-center"></div>
+                    } @else {
+                        <lucide-icon
+                            name="Bell"
+                            [img]="Bell"
+                            [size]="iconSize"
+                            (click)="handleNotificationsPanelToggle()"
+                            class="atom-icon header-icons transition-custom relative"
+                            [ngClass]="{ 'active-header-icon': isNotificationsPanelOpen() }" />
+
+                        @if (notificationsSummary().hasUnreadNotifications) {
+                            <span class="icon-badge">
+                                {{ notificationsSummary().unreadCount }}
+                            </span>
+                        }
+
+                        @if (isNotificationsPanelOpen()) {
+                            <notifications-dropdown
+                                (closeNotificationsPanelEvent)="isNotificationsPanelOpen.set(false)" />
+                        }
+                    }
+                </div>
+
+                @let isSettingsActive = isLinkActive('/settings');
                 <lucide-icon
+                    name="Settings"
                     [img]="Settings"
-                    class="atom-icon"
-                    [name]="Settings"
                     [size]="iconSize"
                     (click)="goToSettings()"
-                    [ngClass]="{ 'text-primary': isLinkActive('/settings') }" />
+                    class="atom-icon header-icons transition-custom"
+                    [ngClass]="{ 'active-header-icon': isSettingsActive }" />
             </div>
 
             <div class="vertical-separator h-8 md:hidden! lg:flex!"></div>

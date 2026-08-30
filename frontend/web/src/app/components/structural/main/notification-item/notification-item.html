@@ -1,0 +1,153 @@
+@let unread = isUnread();
+@let notification = notificationItem();
+
+<article
+    [id]="notificationId()"
+    class="notification-item"
+    [ngClass]="[
+        priorityClass(),
+        unread ? 'is-unread' : '',
+        isCompact() ? 'compact' : 'full',
+        showUnreadHighlight() ? 'unread' : '',
+        isCompact() ? 'bg-body-background!' : ''
+    ]">
+    <div class="notification-leading">
+        @if (unread) {
+            <div class="notification-unread-indicator" aria-hidden="true">
+                <atom-pinger pingerSize="xs" />
+            </div>
+        }
+
+        <div class="notification-icon">
+            <lucide-icon name="notification-type" [img]="icon()" [size]="NotificationIconSize" />
+        </div>
+    </div>
+
+    @if (isCompact()) {
+        <div class="notification-content compact-content">
+            <div class="compact-header">
+                <h3 class="text-xs!">{{ notification.title }}</h3>
+
+                <div class="utility-actions compact-utility-actions">
+                    @if (unread) {
+                        <atom-button
+                            type="button"
+                            class="notification-action"
+                            className="bg-transparent! px-0.5!"
+                            aria-label="Mark notification as read"
+                            [id]="`mark-${notification.id}-as-read`"
+                            (clicked)="markAsRead.emit(notification.id)">
+                            <lucide-icon
+                                name="mark-read"
+                                [img]="MarkReadIcon"
+                                [size]="FooterIconSize"
+                                class="notification-lucide-icon" />
+                        </atom-button>
+                    }
+
+                    <atom-button
+                        type="button"
+                        class="notification-action"
+                        aria-label="Archive Notification"
+                        className="bg-transparent! px-0.5!"
+                        (clicked)="archive.emit(notification.id)"
+                        [id]="`archive-notification-${notification.id}`">
+                        <lucide-icon
+                            name="archive"
+                            [img]="ArchiveIcon"
+                            [size]="FooterIconSize"
+                            class="notification-lucide-icon" />
+                    </atom-button>
+                </div>
+            </div>
+
+            <p class="notification-message compact-message">{{ previewMessage() }}</p>
+
+            <div class="compact-meta">
+                <span [ngClass]="['compact-priority', priorityClass()]">{{ priorityLabel() }}</span>
+                <span aria-hidden="true">•</span>
+                <span>{{ categoryLabel() }}</span>
+                <span aria-hidden="true">•</span>
+                <time>{{ compactCreatedAtLabel() }}</time>
+            </div>
+        </div>
+    } @else {
+        <div class="notification-content">
+            <div class="notification-header">
+                <div class="min-w-0">
+                    <div class="notification-badges">
+                        <span class="badge category">{{ categoryLabel() }}</span>
+                        <span class="badge priority">{{ priorityLabel() }}</span>
+
+                        @if (notification.requiresAction) {
+                            <span class="badge action-required">Action required</span>
+                        }
+                    </div>
+
+                    <h3>{{ notification.title }}</h3>
+                </div>
+
+                <span class="notification-time">{{ createdAtLabel() }}</span>
+            </div>
+
+            <p class="notification-message">{{ notification.message }}</p>
+
+            @if (metadataChips().length > 0) {
+                <div class="metadata-chips">
+                    @for (chip of metadataChips(); track chip.label) {
+                        <span class="metadata-chip">
+                            <span>{{ chip.label }}:</span>
+                            <strong>{{ chip.value }}</strong>
+                        </span>
+                    }
+                </div>
+            }
+
+            <div class="notification-footer">
+                <div class="notification-actions">
+                    @for (action of notification.actions ?? []; track action.id) {
+                        <atom-button
+                            type="button"
+                            [label]="action.label"
+                            class="notification-action"
+                            className="bg-transparent!"
+                            (clicked)="handleAction(action)"
+                            [id]="action.id + '-' + action.label"
+                            [ngClass]="action.variant.toLowerCase()"
+                            [variant]="action.variant === 'SECONDARY' ? 'secondary' : 'primary'" />
+                    }
+                </div>
+
+                <div class="utility-actions mr-2">
+                    @if (unread) {
+                        <atom-button
+                            type="button"
+                            className="bg-transparent! px-1!"
+                            aria-label="Mark notification as read"
+                            [id]="`mark-${notification.id}-as-read`"
+                            (clicked)="markAsRead.emit(notification.id)">
+                            <lucide-icon
+                                name="mark-read"
+                                [img]="MarkReadIcon"
+                                [size]="FooterIconSize"
+                                class="notification-lucide-icon" />
+                        </atom-button>
+                    }
+
+                    <atom-button
+                        type="button"
+                        [id]="`archive-notification`"
+                        className="bg-transparent! px-1!"
+                        aria-label="Archive notification"
+                        (clicked)="archive.emit(notification.id)">
+                        <lucide-icon
+                            [img]="ArchiveIcon"
+                            [size]="FooterIconSize"
+                            name="archive-notification"
+                            class="notification-lucide-icon" />
+                    </atom-button>
+                </div>
+            </div>
+        </div>
+    }
+</article>

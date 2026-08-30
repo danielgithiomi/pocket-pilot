@@ -5,7 +5,7 @@
     "printWidth": 120,
     "semi": true,
     "bracketSpacing": true,
-    "arrowParens": "avoid",
+    "arrowParens": "always",
     "endOfLine": "auto",
     "bracketSameLine": true,
     "overrides": [

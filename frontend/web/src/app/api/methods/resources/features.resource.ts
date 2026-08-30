@@ -1,7 +1,7 @@
 import { Injectable, Signal } from '@angular/core';
 import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
 import {
     Feature,
     FeaturesWithCount,
@@ -9,7 +9,7 @@ import {
     IStandardResponse,
     FeatureWithComments,
     FeatureComment
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({ providedIn: 'root' })
 export class FeaturesResource {

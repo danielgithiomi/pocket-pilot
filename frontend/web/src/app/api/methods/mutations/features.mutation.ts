@@ -1,15 +1,15 @@
 import { Observable } from 'rxjs';
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
 import {
     Feature,
     FeatureComment,
     FeaturePayload,
     IStandardResponse,
     IVoidResourceResponse,
-    FeatureCommentPayload,
-} from '@global/types';
+    FeatureCommentPayload
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +36,10 @@ export class FeaturesMutation {
     }
 
     // COMMENTS
-    addCommentToFeature(featureId: string, payload: FeatureCommentPayload): Observable<IStandardResponse<FeatureComment>> {
+    addCommentToFeature(
+        featureId: string,
+        payload: FeatureCommentPayload
+    ): Observable<IStandardResponse<FeatureComment>> {
         // features/{featureId}/comments
         const url = `${endpoints.features}/${featureId}/comments`;
         return this.client.post<FeatureComment, FeatureCommentPayload>(url, payload);

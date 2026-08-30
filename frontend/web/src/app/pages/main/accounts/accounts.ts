@@ -5,7 +5,7 @@ import { Select } from '@atoms/select';
 import { NgClass } from '@angular/common';
 import { Account } from '@widgets/account';
 import { form } from '@angular/forms/signals';
-import { CreateAccountPayload } from '@global/types';
+import { CreateAccountPayload } from '@shared/types';
 import { AccountsService } from '@api/accounts.service';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
@@ -13,7 +13,7 @@ import { NoData } from '@structural/main/no-data/no-data';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ListFilterPlus, LucideAngularModule } from 'lucide-angular';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
-import { CURRENCIES, DummyAccountData as DummyAccount } from '@global/constants';
+import { CURRENCIES, DummyAccountData as DummyAccount } from '@shared/constants';
 import { accountsFormValidationSchema, AccountsSchema, INITIAL_FORM_STATE } from './accounts.types';
 
 @Component({
@@ -70,7 +70,7 @@ export class Accounts {
     protected INITIAL_ACCOUNTS_FORM_STATE: AccountsSchema = {
         ...INITIAL_FORM_STATE,
         currency: this.currency
-    }
+    };
     protected accountsFormModel = signal<AccountsSchema>(this.INITIAL_ACCOUNTS_FORM_STATE);
     protected accountsForm = form(this.accountsFormModel, accountsFormValidationSchema);
 
@@ -104,7 +104,7 @@ export class Accounts {
                     this.resetAccountsForm();
                     this.isFormOpen.set(false);
                 },
-                error: error => console.error('Account creation failed:', error),
+                error: (error) => console.error('Account creation failed:', error),
                 complete: () => this.isSubmitting.set(false)
             });
         }, 1000);

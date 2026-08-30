@@ -62,20 +62,10 @@
                                 message="No income categories found." />
                         } @else {
                             @for (income of incomes; track income) {
-                                <div class="category-item group/item income">
-                                    <p>{{ formatCategoryName(income) }}</p>
-
-                                    <button
-                                        (click)="
-                                            onCategoryDelete.emit({
-                                                category: income,
-                                                type: CategoryTypeEnum.INCOME
-                                            })
-                                        "
-                                        class="category-icon atom-icon">
-                                        <lucide-icon [img]="X" [size]="13" name="delete-category"></lucide-icon>
-                                    </button>
-                                </div>
+                                <category-item
+                                    [categoryName]="income"
+                                    [variant]="CategoryTypeEnum.INCOME"
+                                    (onCategoryDelete)="onCategoryDelete.emit($event)" />
                             }
                         }
                     </div>
@@ -125,20 +115,10 @@
                                 messageClass="text-xs" />
                         } @else {
                             @for (expense of expenses; track expense) {
-                                <div class="category-item group/item expense">
-                                    <p>{{ formatCategoryName(expense) }}</p>
-
-                                    <button
-                                        (click)="
-                                            onCategoryDelete.emit({
-                                                category: expense,
-                                                type: CategoryTypeEnum.EXPENSE
-                                            })
-                                        "
-                                        class="category-icon atom-icon">
-                                        <lucide-icon [img]="X" [size]="13" name="delete-category"></lucide-icon>
-                                    </button>
-                                </div>
+                                <category-item
+                                    [categoryName]="expense"
+                                    [variant]="CategoryTypeEnum.EXPENSE"
+                                    (onCategoryDelete)="onCategoryDelete.emit($event)" />
                             }
                         }
                     </div>

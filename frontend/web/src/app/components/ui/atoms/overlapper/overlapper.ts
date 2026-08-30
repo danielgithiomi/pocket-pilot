@@ -37,7 +37,7 @@ export class Overlapper {
     protected readonly visibleItems = computed<OverlapperItem[]>(() => {
         return this.items()
             .slice(0, this.maxVisible())
-            .map(name => ({
+            .map((name) => ({
                 name,
                 initials: this.getInitials(name),
                 palette: COLOR_PALETTE[Math.abs(hashFromName(name)) % COLOR_PALETTE.length]
@@ -54,7 +54,8 @@ export class Overlapper {
 
     private readonly sizeClasses = computed<string>(() => OVERLAPPER_SIZE_STYLES[this.size()]);
 
-    private readonly baseItemClasses = 'inline-flex items-center justify-center rounded-full font-semibold ring-1 first:ml-0';
+    private readonly baseItemClasses =
+        'inline-flex items-center justify-center rounded-full font-semibold ring-1 first:ml-0';
 
     protected itemClasses(palette: ColorPalette): string {
         return [this.baseItemClasses, this.sizeClasses(), palette.bg, palette.fg].join(' ');
@@ -70,7 +71,7 @@ export class Overlapper {
 
         const parts = trimmed.split(/\s+/);
         if (parts.length === 1) {
-            return trimmed.slice(0, 2).replace(/^./, c => c.toUpperCase());
+            return trimmed.slice(0, 2).replace(/^./, (c) => c.toUpperCase());
         }
         return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     }

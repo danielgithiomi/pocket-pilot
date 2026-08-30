@@ -18,7 +18,7 @@ import {
     SPLIT_STRATEGY_MAP,
     SplitStrategyVariant,
     SPLIT_STRATEGY_OPTIONS
-} from '@global/types';
+} from '@shared/types';
 
 @Component({
     selector: 'order-item',
@@ -76,19 +76,19 @@ export class OrderItem {
         }));
     });
     protected readonly orderQuantities = computed<SelectOption[]>(() =>
-        QUANTITIES.map(quantity => ({
+        QUANTITIES.map((quantity) => ({
             value: quantity.toString(),
             label: quantity.toString()
         }))
     );
     protected readonly formattedConsumers = computed<ISquadMember[]>(() => {
         const currentSplits = this.updateSplittableForm().value().quantitySplits;
-        const currentConsumers = currentSplits.map(split => split.consumerName);
+        const currentConsumers = currentSplits.map((split) => split.consumerName);
 
-        return this.presentMembers().map(consumer => ({
+        return this.presentMembers().map((consumer) => ({
             memberName: consumer,
             isChecked: currentConsumers.includes(consumer),
-            quantity: currentSplits.find(split => split.consumerName === consumer)?.consumerQuantity || 1
+            quantity: currentSplits.find((split) => split.consumerName === consumer)?.consumerQuantity || 1
         }));
     });
     protected readonly quantityAssisgnableRemaining = computed<number>(() => {
@@ -161,7 +161,7 @@ export class OrderItem {
 
         const currentSplits = this.updateSplittableForm().value().quantitySplits;
 
-        const updatedSplits = currentSplits.map(split => {
+        const updatedSplits = currentSplits.map((split) => {
             if (split.consumerName === memberName)
                 return {
                     ...split,
@@ -181,9 +181,9 @@ export class OrderItem {
         const totalSplitsQuantity = orderSplits.reduce((acc, split) => acc + split.consumerQuantity, 0);
 
         let updatedSplits: LocalQuantitySplit[];
-        const memberExists = orderSplits.map(split => split.consumerName).includes(memberName);
+        const memberExists = orderSplits.map((split) => split.consumerName).includes(memberName);
 
-        if (memberExists) updatedSplits = orderSplits.filter(split => split.consumerName !== memberName);
+        if (memberExists) updatedSplits = orderSplits.filter((split) => split.consumerName !== memberName);
         else {
             if (totalSplitsQuantity >= orderQuantity) {
                 this.toastService.show({

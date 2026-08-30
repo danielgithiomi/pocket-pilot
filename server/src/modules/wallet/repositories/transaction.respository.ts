@@ -144,7 +144,7 @@ export class TransactionRepository {
                 data: { balance: { decrement: sourceAmount } }
             });
 
-            // Increment the target account
+            // Increment of the target account
             await prisma.account.update({
                 where: { id: targetAccountId },
                 data: { balance: { increment: targetAmount } }
@@ -154,8 +154,8 @@ export class TransactionRepository {
         });
     }
 
-    async deleteTransactionById(transactionId: string): Promise<void> {
-        await this.db.transaction.delete({
+    async deleteTransactionById(transactionId: string) {
+        return this.db.transaction.delete({
             where: { id: transactionId }
         });
     }

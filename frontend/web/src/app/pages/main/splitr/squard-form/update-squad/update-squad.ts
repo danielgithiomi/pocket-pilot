@@ -2,7 +2,7 @@ import { Input } from '@atoms/input';
 import { Button } from '@atoms/button';
 import { NgClass } from '@angular/common';
 import { ToastService } from '@atoms/toast';
-import { SplitrSquad } from '@global/types';
+import { SplitrSquad } from '@shared/types';
 import { form } from '@angular/forms/signals';
 import { formatToReadable } from '@libs/utils';
 import { SplitrService } from '@api/splitr.service';
@@ -51,12 +51,12 @@ export class UpdateSplitrSquad {
     protected readonly squadMembersPool = computed<ISquadMember[]>(() => {
         const squadMembers = this.updateSquadForm.squadMembers().value();
 
-        const inputMembers = this.allSquadMembers().map(member => ({
+        const inputMembers = this.allSquadMembers().map((member) => ({
             memberName: member,
             isChecked: squadMembers.includes(member)
         }));
 
-        const customMembers = this.customMembers().map(member => ({
+        const customMembers = this.customMembers().map((member) => ({
             memberName: member,
             isChecked: squadMembers.includes(member)
         }));
@@ -67,11 +67,12 @@ export class UpdateSplitrSquad {
     // METHODS
     protected validateMemberName(memberName: string) {
         const allMemberNames = this.squadMembersPool()
-            .flatMap(member => member.memberName)
-            .map(name => name.toLowerCase());
+            .flatMap((member) => member.memberName)
+            .map((name) => name.toLowerCase());
 
         const normalizedName = memberName.trim().toLowerCase();
-        const isValid = normalizedName.length > 1 && normalizedName.length <= 20 && !allMemberNames.includes(normalizedName);
+        const isValid =
+            normalizedName.length > 1 && normalizedName.length <= 20 && !allMemberNames.includes(normalizedName);
 
         this.isMemberNameValid.set(isValid);
     }
@@ -81,7 +82,7 @@ export class UpdateSplitrSquad {
 
         if (custom) {
             const normalizedInput = memberName.trim();
-            this.customMembers.update(members => [normalizedInput, ...members]);
+            this.customMembers.update((members) => [normalizedInput, ...members]);
             this.updateSquadForm.squadMembers().controlValue.set([normalizedInput, ...squadMembers]);
             return;
         }
@@ -89,7 +90,7 @@ export class UpdateSplitrSquad {
         const isExistingMember = squadMembers.includes(memberName);
 
         let updatedList: string[] = [];
-        if (isExistingMember) updatedList = squadMembers.filter(member => member !== memberName);
+        if (isExistingMember) updatedList = squadMembers.filter((member) => member !== memberName);
         else updatedList = [...squadMembers, memberName];
 
         this.updateSquadForm.squadMembers().controlValue.set(updatedList.map(formatToReadable));

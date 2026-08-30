@@ -1,12 +1,12 @@
 import { Input } from '@atoms/input';
-import { User } from '@global/types';
+import { User } from '@shared/types';
 import { Button } from '@atoms/button';
 import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
 import { UserService } from '@api/user.service';
 import { form, FormField } from '@angular/forms/signals';
 import { Component, inject, signal } from '@angular/core';
-import { WEB_ROUTES } from '@global/constants/routes.constants';
+import { WEB_ROUTES } from '@shared/constants/routes.constants';
 import { AuthBranding } from '@structural/auth/auth-branding/branding';
 import { RegisterSchema, initialRegisterFormState, registerFormValidationSchema } from '@libs/types';
 

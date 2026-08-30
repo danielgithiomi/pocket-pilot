@@ -1,11 +1,13 @@
 import { Router } from '@angular/router';
 import { ToastService } from '@atoms/toast';
-import { WEB_ROUTES } from '@global/constants';
+import { SSEService } from '@api/sse.service';
+import { WEB_ROUTES } from '@shared/constants';
 import { AuthMutation } from '@methods/mutations';
 import { HttpClient } from '@angular/common/http';
 import { concatUrl } from '@methods/methods.utils';
-import { catchError, EMPTY, firstValueFrom, Observable, of, tap } from 'rxjs';
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { catchError, EMPTY, firstValueFrom, Observable, of, tap } from 'rxjs';
+import { IStandardError, IStandardResponse, LoginPayload, User, UserPreferences } from '@shared/types';
 import {
     AuthError,
     INVALID_EMAIL_IDENTIFIER,
@@ -13,20 +15,20 @@ import {
     STORED_AUTH_USER_KEY,
     STORED_ONBOARDING_USER_KEY
 } from '@libs/constants';
-import { IStandardError, IStandardResponse, LoginPayload, User, UserPreferences } from '@global/types';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
     private readonly router = inject(Router);
+    private readonly http: HttpClient = inject(HttpClient);
+    private readonly sseService = inject(SSEService);
     private readonly mutation = inject(AuthMutation);
     private readonly toastService = inject(ToastService);
-    private readonly http: HttpClient = inject(HttpClient);
 
+    private sessionRequest: Promise<boolean> | null = null;
     private sessionLoaded = signal<boolean>(false);
     private sessionLoading = signal<boolean>(false);
-    private sessionRequest: Promise<boolean> | null = null;
     private readonly userSignal = signal<User | null>(null);
 
     // Public signals
@@ -43,13 +45,13 @@ export class AuthService {
         }
 
         // Listen to cross-tab session changes
-        window.addEventListener('storage', event => {
+        window.addEventListener('storage', async (event: StorageEvent) => {
             if (event.key === STORED_AUTH_USER_KEY) {
                 if (event.newValue) {
                     this.userSignal.set(JSON.parse(event.newValue));
                 } else {
                     this.userSignal.set(null);
-                    this.router.navigateByUrl(WEB_ROUTES.login);
+                    await this.router.navigateByUrl(WEB_ROUTES.login);
                 }
             }
         });
@@ -123,15 +125,15 @@ export class AuthService {
             tap((response: IStandardResponse<User>) => {
                 this.createSession(response.data);
             }),
-            catchError((error: IStandardError): Observable<{ type: AuthError; message: string }> => {
+            catchError((error: IStandardError): Observable<{ type: AuthError; message: string } | null> => {
                 const toastError = {
                     ...error,
-                    title: error.title.split('!')[0]
+                    title: error.title ? error.title.split('!')[0] : 'Something went wrong'
                 };
                 this.renderToast(toastError);
 
                 const { name } = error;
-                if (!name) return EMPTY;
+                if (!name) return of(null);
 
                 switch (name) {
                     case INVALID_EMAIL_IDENTIFIER:
@@ -145,7 +147,7 @@ export class AuthService {
                             message: error.title ?? 'The password you entered is incorrect! Please try again.'
                         });
                     default:
-                        return EMPTY;
+                        return of(null);
                 }
             })
         );

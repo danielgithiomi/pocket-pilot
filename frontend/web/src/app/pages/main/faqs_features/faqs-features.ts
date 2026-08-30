@@ -7,12 +7,12 @@ import { LucideAngularModule } from 'lucide-angular';
 import { TabList, TabListItem } from '@atoms/tab-list';
 import { FeaturesService } from '@api/features.service';
 import { NoData } from '@structural/main/no-data/no-data';
-import { CONTACT_ITEMS, FAQ_ITEMS } from '@global/constants';
+import { CONTACT_ITEMS, FAQ_ITEMS } from '@shared/constants';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FetchError } from '@structural/main/fetch-error/fetch-error';
 import { DrawerService } from '@infrastructure/services/drawer.service';
 import { FeatureItem } from '@structural/main/feature-item/feature-item';
-import { ContactItem, Feature, FeatureWithComments } from '@global/types';
+import { ContactItem, Feature, FeatureWithComments } from '@shared/types';
 import { FeatureDetails } from '@pages/main/faqs_features/feature-details';
 import { SuggestFeatureForm } from '@pages/main/faqs_features/feature-form';
 
@@ -55,7 +55,9 @@ export class FaqsFeatures {
 
     // DATA
     protected readonly faqItems = FAQ_ITEMS;
-    protected readonly contactItems = computed<ContactItem[]>(() => CONTACT_ITEMS.filter(item => item.id === 'email'));
+    protected readonly contactItems = computed<ContactItem[]>(() =>
+        CONTACT_ITEMS.filter((item) => item.id === 'email')
+    );
 
     // STORE
     private readonly featureStatuses = this.featuresService.getFeatureStatuses();
@@ -101,7 +103,7 @@ export class FaqsFeatures {
     }
 
     protected handleOnFeatureItemClick(featureId: string) {
-        const feature = this.featureRequests().features.find(f => f.id === featureId);
+        const feature = this.featureRequests().features.find((f) => f.id === featureId);
 
         if (!feature) {
             this.toastService.show({

@@ -1,26 +1,25 @@
-import { NgClass } from '@angular/common';
+import { Form } from '@organisms/form';
 import { ToastService } from '@atoms/toast';
 import { formatCurrency } from '@libs/utils';
-import { MONTHS_ENUM } from '@global/constants';
+import { AuthService } from '@api/auth.service';
 import { RatioSlider } from '@atoms/ratio-slider';
 import { ProgressBar } from '@atoms/progress-bar';
 import { CostAnalysis } from '@widgets/cost-analysis';
 import { AccountsService } from '@api/accounts.service';
+import { DashboardCalendar } from './dashboard-calendar';
 import { DrawerService } from '@infrastructure/services';
+import { TransactionsStore } from '@stores/transactions.store';
 import { TransactionsService } from '@api/transactions.service';
 import { UpcomingBills } from './upcoming-bills/upcoming-bills';
-import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { Component, computed, inject, signal } from '@angular/core';
+import { ChangedEventArgs } from '@syncfusion/ej2-angular-calendars';
 import { DashboardCard } from '@structural/main/dashboard-card/dashboard-card';
 import {
     Wallet,
     HandCoins,
-    PiggyBank,
-    Calendar1,
     CirclePile,
     TrendingUp,
     CircleGauge,
-    ReceiptCent,
     TrendingDown,
     ArrowLeftRight,
     BrickWallShield,
@@ -31,40 +30,49 @@ import {
     selector: 'app-dashboard',
     styleUrl: './dashboard.css',
     templateUrl: './dashboard.html',
-    imports: [NgClass, RatioSlider, ProgressBar, CostAnalysis, UpcomingBills, DashboardCard, CalendarModule, LucideAngularModule]
+    imports: [
+        Form,
+        RatioSlider,
+        ProgressBar,
+        CostAnalysis,
+        UpcomingBills,
+        DashboardCard,
+        DashboardCalendar,
+        LucideAngularModule
+    ]
 })
 export class Dashboard {
     // Icons
     readonly iconSize: number = 16;
     protected readonly walletIcon = Wallet;
-    protected readonly ratioIcon = PiggyBank;
     protected readonly pilesIcon = CirclePile;
     protected readonly gaugeIcon = CircleGauge;
-    protected readonly billsIcon = ReceiptCent;
     protected readonly incomeIcon = TrendingUp;
-    protected readonly calendarIcon = Calendar1;
     protected readonly handCoinsIcon = HandCoins;
     protected readonly expenseIcon = TrendingDown;
     protected readonly transactionIcon = ArrowLeftRight;
     protected readonly spendingLimitIcon = BrickWallShield;
 
     // Services
+    protected readonly authService = inject(AuthService);
     private readonly toastService = inject(ToastService);
     protected readonly drawerService = inject(DrawerService);
     private readonly accountsService = inject(AccountsService);
     private readonly transactionsService = inject(TransactionsService);
 
-    // Data
-    protected readonly minDate = new Date();
-    protected readonly currentMonthIndex = new Date().getMonth();
-    protected readonly accounts = this.accountsService.getUserAccounts();
+    // STORES
+    protected readonly transactionsStore = inject(TransactionsStore);
+
+    // DATA
+    protected readonly actualMonth = this.transactionsStore.actualMonth;
     protected readonly currency = this.accountsService.getDefaultCurrency();
-    protected readonly actualMonth = MONTHS_ENUM[this.currentMonthIndex].value;
-    protected readonly transactions = this.transactionsService.getUserTransactions();
+    protected readonly currentAnalysisMonth = this.transactionsStore.currentMonth;
     protected readonly monthlySpendingLimit = this.accountsService.getMonthlySpendingLimit();
+    protected readonly accounts = this.accountsService.getUserAccounts();
+    protected readonly transactions = this.transactionsService.getUserTransactions();
 
     // States
-    protected readonly currentMonth = signal<string>(this.actualMonth);
+    protected readonly isDateClickedModalOpen = signal<boolean>(false);
 
     // Computed
     protected readonly isDataLoading = computed(() => this.accounts.isLoading() || this.transactions.isLoading());
@@ -84,7 +92,7 @@ export class Dashboard {
         const transactions = this.transactions.value()?.data.data;
         if (!transactions) return 0;
         return transactions
-            .filter(transaction => transaction.type === 'INCOME')
+            .filter((transaction) => transaction.type === 'INCOME')
             .reduce((total, transaction) => total + transaction.amount, 0);
     });
 
@@ -93,14 +101,14 @@ export class Dashboard {
         const transactions = this.transactions.value()?.data.data;
         if (!transactions) return 0;
         return transactions
-            .filter(transaction => transaction.type === 'EXPENSE')
+            .filter((transaction) => transaction.type === 'EXPENSE')
             .reduce((total, transaction) => total + transaction.amount, 0);
     });
 
     protected readonly netCashFlow = computed(() => {
         const revenue = this.totalRevenue();
         const expenses = this.totalExpenses();
-        return revenue + expenses;
+        return revenue - expenses;
     });
 
     protected readonly formattedNetCashFlow = computed(() => {
@@ -118,11 +126,7 @@ export class Dashboard {
         return Math.min(100, Math.max(0, Math.round(ratio)));
     });
 
-    // Methods
-    protected onMonthChange(month: string) {
-        this.currentMonth.set(month);
-    }
-
+    // METHODS
     protected onSpendingLimitClick() {
         this.toastService.show({
             variant: 'info',
@@ -131,7 +135,18 @@ export class Dashboard {
         });
     }
 
-    // Helper Methods
+    protected handleOnDateClicked(event: ChangedEventArgs) {
+        console.log(event);
+        if (event.value) this.isDateClickedModalOpen.set(true);
+    }
+
+    protected handleOnDatePickerSubmit(event: Event) {
+        event.preventDefault();
+
+        console.log('Submitted form');
+    }
+
+    // HELPER FUNCTIONS
     protected formatCurrency(value: string) {
         return formatCurrency(Number(value), this.currency, 2, true, false);
     }

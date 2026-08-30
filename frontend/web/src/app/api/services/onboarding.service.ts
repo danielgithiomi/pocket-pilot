@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { catchError, EMPTY, map, tap } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { OnboardingMutation } from '@methods/mutations';
-import { IStandardError, IStandardResponse, OnboardingPayload, User } from '@global/types';
+import { IStandardError, IStandardResponse, OnboardingPayload, User } from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

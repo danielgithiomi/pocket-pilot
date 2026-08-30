@@ -1,4 +1,4 @@
-import { Bill } from '@global/types';
+import { Bill } from '@shared/types';
 import { NgClass } from '@angular/common';
 import { ReceiptCent } from 'lucide-angular';
 import { BillsService } from '@api/bills.service';
@@ -32,15 +32,15 @@ export class UpcomingBills {
     protected readonly isFetchingBills = computed(() => this.bills$.isLoading());
 
     protected readonly upcomingBills = computed<Bill[]>(() => {
+        if (!this.bills$.hasValue()) return [];
+
         const now = new Date();
         const oneWeekFromNow = new Date();
         oneWeekFromNow.setDate(now.getDate() + 7);
 
-        const allBills = this.bills$.value()?.data;
+        const allBills = this.bills$.value().data;
 
-        if (!allBills) return [];
-
-        return allBills.filter(bill => {
+        return allBills.filter((bill) => {
             const billDueDate = new Date(bill.dueDate);
             return billDueDate >= now && billDueDate <= oneWeekFromNow;
         });

@@ -1,0 +1,77 @@
+<section id="notification-dropdown" class="notification-dropdown" (click)="$event.stopPropagation()">
+    <div class="notifications-arrow"></div>
+
+    @let noNotifications = notificationsSummary().totalCount === 0;
+    @let noUnreadNotifications = notificationsSummary().unreadCount === 0;
+    <div class="notifications-content">
+        <div class="notifications-header">
+            <p class="font-semibold text-primary underline underline-offset-3 uppercase">Notifications</p>
+
+            <div class="flex flex-row items-center gap-2">
+                <div
+                    class="notifications-icon-wrapper"
+                    [ngClass]="{
+                        'cursor-not-allowed!': noUnreadNotifications,
+                        'bg-body-background! text-primary': isMarkingAllAsRead()
+                    }">
+                    @if (isMarkingAllAsRead()) {
+                        <div class="icon-loader"></div>
+                    } @else {
+                        <lucide-icon
+                            [size]="iconSize"
+                            name="mark-as-read"
+                            [img]="MarkAsReadIcon"
+                            (click)="handleMarkAllAsRead()"
+                            [ngClass]="{ 'text-reactive-text': noUnreadNotifications }" />
+                    }
+                </div>
+
+                <div class="notifications-icon-wrapper">
+                    <lucide-icon
+                        name="close-icon"
+                        [img]="CloseIcon"
+                        [size]="iconSize"
+                        class="notifications-icon"
+                        (click)="closeNotificationsPanelEvent.emit()" />
+                </div>
+            </div>
+        </div>
+
+        <div class="notifications-body">
+            <atom-tab-list
+                size="sm"
+                [items]="tabListItems()"
+                [disabled]="noNotifications"
+                [activeItem]="activeTabIndex()"
+                wrapperClassName="!bg-body-background mx-2"
+                (selectedIndexValue)="handleOnTabChange($event)" />
+
+            @let showScrollbar = notifications().length < 4;
+            <div
+                class="notifications-list"
+                [ngClass]="{
+                    'no-scrollbar': showScrollbar,
+                    'no-notifications': noNotifications || noUnreadNotifications
+                }">
+                @if (activeTabIndex() === 0 && noNotifications) {
+                    <p class="text-xs! text-reactive-text">You have no notifications.</p>
+                } @else if (activeTabIndex() === 1 && noUnreadNotifications) {
+                    <p class="text-xs! text-reactive-text">You have no unread notifications.</p>
+                } @else {
+                    @for (notification of notifications(); track notification.id) {
+                        <notification-item
+                            class="w-full shrink-0"
+                            [notificationItem]="notification"
+                            (actionSelected)="handleActionSelected($event)"
+                            (archive)="notificationsStore.archive($event)"
+                            (markAsRead)="notificationsStore.markAsRead($event)" />
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="notifications-footer" (click)="handleOnViewAllClick()">
+            <p [ngClass]="{ disabled: noNotifications }">View all notifications</p>
+        </div>
+    </div>
+</section>

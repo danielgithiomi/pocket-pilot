@@ -5,15 +5,9 @@
 
     <ol class="status-track" role="list">
         @for (step of steps(); track step.id; let index = $index; let last = $last) {
-            <li
-                class="status-step"
-                role="listitem"
-                [attr.aria-current]="isStepCurrent(index, step) ? 'step' : null">
+            <li class="status-step" role="listitem" [attr.aria-current]="isStepCurrent(index, step) ? 'step' : null">
                 <div class="status-icon-wrap" [ngClass]="iconWrapClass(index, step)">
-                    <lucide-icon
-                        [size]="iconSize()"
-                        [img]="resolveStepIcon(index, step)"
-                        [name]="step.id" />
+                    <lucide-icon [size]="iconSize()" [img]="resolveStepIcon(index, step)" [name]="step.id" />
                 </div>
                 <span
                     class="status-name"

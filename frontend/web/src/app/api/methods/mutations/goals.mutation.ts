@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 import { ApiClient } from '@methods/api-client';
 import { inject, Injectable } from '@angular/core';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
-import { CreateGoalRequest, Goal, IStandardResponse, IVoidResourceResponse } from '@global/types';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
+import { CreateGoalRequest, Goal, IStandardResponse, IVoidResourceResponse } from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

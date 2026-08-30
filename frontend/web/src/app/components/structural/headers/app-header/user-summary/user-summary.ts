@@ -1,22 +1,22 @@
-import { NgClass } from '@angular/common';
 import { AuthService } from '@api/auth.service';
 import { DrawerService } from '@infrastructure/services';
-import { LucideAngularModule, ChevronDown } from 'lucide-angular';
+import { NgClass, NgOptimizedImage } from '@angular/common';
+import { ChevronDown, LucideAngularModule } from 'lucide-angular';
 import { Component, computed, inject, input } from '@angular/core';
-import { HeaderDropdown } from '../header-dropdown/header-dropdown';
+import { HeaderDropdown } from '@structural/dropdowns/header-dropdown/header-dropdown';
 
 @Component({
     selector: 'user-summary',
-    imports: [LucideAngularModule, NgClass, HeaderDropdown],
+    imports: [LucideAngularModule, NgClass, NgOptimizedImage, HeaderDropdown],
     styles: `
         @reference "tailwindcss";
 
         .user-summary {
-            @apply relative flex flex-row items-center gap-2 min-w-10 max-w-50 hover:bg-(--body-background) transition-all duration-300 cursor-pointer rounded-lg py-1 px-2 z-999;
+            @apply relative flex flex-row items-center gap-2 min-w-10 max-w-55 hover:bg-(--body-background) transition-all duration-300 cursor-pointer rounded-lg py-1 px-2 z-999;
         }
 
         .avatar {
-            @apply size-8 bg-(--primary) grid place-items-center rounded-full shrink-0 mr-4 sm:mr-0 overflow-hidden;
+            @apply size-8 bg-(--primary) grid place-items-center rounded-full shrink-0 mr-4 sm:mr-0 overflow-hidden!;
         }
 
         .content {
@@ -47,15 +47,17 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
             }
             <!-- ABS: Dropdown Chevron End -->
 
-            <div id="avatar" class="avatar">
-                @if (profilePictureUrl()) {
+            <div id="avatar" class="avatar" [ngClass]="{ 'border border-primary': avatarPictureUrl() }">
+                @if (avatarPictureUrl()) {
                     <img
-                        [alt]="initial()"
-                        [src]="profilePictureUrl()"
-                        class="w-full h-full object-cover"
-                        (error)="onProfilePictureError()" />
+                        [width]="32"
+                        [height]="32"
+                        [alt]="fallbackInitial()"
+                        [ngSrc]="avatarPictureUrl()"
+                        (error)="onProfilePictureError()"
+                        class="h-full w-full object-cover" />
                 } @else {
-                    <p class="text-white">{{ initial() }}</p>
+                    <p class="text-white">{{ fallbackInitial() }}</p>
                 }
             </div>
 
@@ -71,25 +73,31 @@ import { HeaderDropdown } from '../header-dropdown/header-dropdown';
     `
 })
 export class UserSummary {
-    // Inputs
+    // ICONS
+    protected readonly ChevronDown = ChevronDown;
+
+    // INPUTS
     readonly withDrawerLayout = input.required<boolean>();
 
+    // SERVICES
     protected readonly authService: AuthService = inject(AuthService);
     protected readonly drawerService: DrawerService = inject(DrawerService);
 
-    protected readonly ChevronDown = ChevronDown;
+    // DATA
     protected readonly user = this.authService.user;
 
+    // COMPUTED
     protected readonly email = computed(() => this.user()?.email ?? '');
     protected readonly username = computed(() => this.user()?.name ?? '');
-    protected readonly profilePictureUrl = computed(() => this.authService.user()?.profilePictureUrl ?? null);
-
-    protected readonly initial = computed(() => {
+    protected readonly avatarPictureUrl = computed(() => {
+        const user = this.authService.user();
+        return user?.profilePictureThumbnailUrl ?? user?.profilePictureUrl ?? '';
+    });
+    protected readonly fallbackInitial = computed(() => {
         const name = this.username();
         return name ? name.substring(0, 1).toUpperCase() : '';
     });
 
-    protected onProfilePictureError() {
-        void this.authService.refreshUser();
-    }
+    // METHODS
+    protected onProfilePictureError = () => void this.authService.refreshUser();
 }

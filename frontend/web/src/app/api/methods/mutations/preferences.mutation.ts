@@ -1,7 +1,7 @@
 import { ApiClient } from '../api-client';
 import { inject, Injectable } from '@angular/core';
-import { API_ENDPOINTS as endpoints } from '@global/constants';
-import { IVoidResourceResponse, UpdateUserPreferencesPayload } from '@global/types';
+import { API_ENDPOINTS as endpoints } from '@shared/constants';
+import { IVoidResourceResponse, UpdateUserPreferencesPayload } from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

@@ -1,5 +1,5 @@
-import { CreateTransactionRequest } from '@global/types';
-import { TabListItem } from '@components/ui/atoms/tab-list/tab-list.types';
+import { TabListItem } from '@atoms/tab-list';
+import { CreateTransactionRequest } from '@shared/types';
 import { maxLength, min, required, schema, validate } from '@angular/forms/signals';
 
 // TABLE
@@ -31,14 +31,16 @@ export const initialTransactionFormState: TransactionSchema = {
     sourceAccountId: ''
 };
 
-export const transactionFormValidationSchema = schema<TransactionSchema>(root => {
+export const transactionFormValidationSchema = schema<TransactionSchema>((root) => {
+    // DESCRIPTION
     maxLength(root.description, 50, {
         message: 'The description must be less than 50 characters!'
     });
 
+    // TRANSACTION AMOUNT
     required(root.amount, { message: 'The amount is required field!' });
     min(root.amount, 1, { message: 'The minimum transaction amount must be at least 1!' });
-    validate(root.amount, context => {
+    validate(root.amount, (context) => {
         const value = context.value();
         if (value === null) return undefined;
 
@@ -48,7 +50,8 @@ export const transactionFormValidationSchema = schema<TransactionSchema>(root =>
         return isValid ? undefined : { kind: 'error', message: 'Amount cannot exceed 2 decimal places' };
     });
 
-    validate(root.type, context => {
+    // TRANSACTION TYPE
+    validate(root.type, (context) => {
         const type = context.value();
         if (!type || type.trim() === '') {
             return {
@@ -59,7 +62,8 @@ export const transactionFormValidationSchema = schema<TransactionSchema>(root =>
         return null;
     });
 
-    validate(root.category, context => {
+    // CATEGORY
+    validate(root.category, (context) => {
         const category = context.value();
         if (!category || category.trim() === '') {
             return {
@@ -69,6 +73,9 @@ export const transactionFormValidationSchema = schema<TransactionSchema>(root =>
         }
         return null;
     });
+
+    // ASSOCIATED ACCOUNT
+    required(root.sourceAccountId, { message: 'You must enter the associated account' });
 });
 
 // SKELETON

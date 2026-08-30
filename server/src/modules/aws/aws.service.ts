@@ -1,4 +1,4 @@
-import { PreSignedUrlResponse } from './aws.types';
+import { PreSignedUrlResponse, ProfilePictureUploadVariant } from './aws.types';
 import { Injectable, Logger } from '@nestjs/common';
 import { PPConfigService } from '@infrastructure/config';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
@@ -30,10 +30,15 @@ export class AwsService {
         this.s3BucketName = s3BucketName;
     }
 
-    async generateProfilePicturePresignedUrl(user: User, contentType: string, fileSize: number): Promise<PreSignedUrlResponse> {
+    async generateProfilePicturePresignedUrl(
+        user: User,
+        contentType: string,
+        fileSize: number,
+        variant: ProfilePictureUploadVariant = 'original'
+    ): Promise<PreSignedUrlResponse> {
         const ext = contentType.split('/')[1];
         const { presignedUrlExpiration: expiresIn } = this.configService.aws;
-        const key = `${user.email}/profile-picture-${Date.now()}.${ext}`;
+        const key = `${user.email}/${variant === 'thumbnail' ? 'profile-picture-thumbnail' : 'profile-picture'}-${Date.now()}.${ext}`;
 
         const uploadCommand: PutObjectCommand = new PutObjectCommand({
             Bucket: this.s3BucketName,

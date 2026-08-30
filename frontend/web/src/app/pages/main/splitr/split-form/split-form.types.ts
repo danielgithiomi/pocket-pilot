@@ -1,5 +1,5 @@
 import { required, schema } from '@angular/forms/signals';
-import { SplittableOrder, BillPayerPayload, PaymentStrategyVariant } from '@global/types';
+import { SplittableOrder, BillPayerPayload, PaymentStrategyVariant } from '@shared/types';
 
 export interface SplitFormSchema {
     eventDate: Date;
@@ -26,7 +26,7 @@ export const InitialSplitFormState = {
     billPaymentStrategy: 'ONE' as PaymentStrategyVariant
 };
 
-export const SplitFormValidationSchema = schema<SplitFormSchema>(root => {
+export const SplitFormValidationSchema = schema<SplitFormSchema>((root) => {
     // Name
     required(root.eventName, { message: 'The event name is required field!' });
 

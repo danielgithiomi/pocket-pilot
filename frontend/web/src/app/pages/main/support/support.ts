@@ -10,7 +10,7 @@ import { buildFullPhoneNumber, parsePhoneNumber, PhoneNumber } from '@atoms/phon
 import { DrawerService } from '@infrastructure/services';
 import { LucideAngularModule, Send } from 'lucide-angular';
 import { Component, computed, inject, signal } from '@angular/core';
-import { CONTACT_ITEMS, DEFAULT_COUNTRY_ISO } from '@global/constants';
+import { CONTACT_ITEMS, DEFAULT_COUNTRY_ISO } from '@shared/constants';
 import { SupportFormSchema, SupportFormValidationSchema } from './support.form';
 
 @Component({

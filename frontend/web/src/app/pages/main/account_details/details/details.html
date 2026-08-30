@@ -18,7 +18,10 @@
             <summary-item label="Balance" id="account-balance" [value]="formatBalance()" />
 
             @if (isDifferentCurrency()) {
-                <summary-item label="Conversion" id="account-conversion" [value]="formatConversion(account().baseBalance!)" />
+                <summary-item
+                    label="Conversion"
+                    id="account-conversion"
+                    [value]="formatConversion(account().baseBalance!)" />
             }
 
             <summary-item id="date-created" label="Date Created" [value]="formatDate(account().createdAt)" />

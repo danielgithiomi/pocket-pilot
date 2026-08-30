@@ -12,7 +12,7 @@ import {
     IUpdateUserRequest,
     IVoidResourceResponse,
     IChangePasswordRequest
-} from '@global/types';
+} from '@shared/types';
 
 @Injectable({
     providedIn: 'root'

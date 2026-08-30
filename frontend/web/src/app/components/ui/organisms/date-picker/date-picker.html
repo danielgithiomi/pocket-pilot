@@ -36,10 +36,10 @@
         @if (isCalendarOpen()) {
             <div class="calendar-dropdown" #calendarContainer (click)="onCalendarClick($event)">
                 <ejs-calendar
-                    [min]="min()"
-                    [max]="max()"
+                    [min]="calendarMin()"
+                    [max]="calendarMax()"
                     (blur)="closeCalendar()"
-                    [value]="selectedDateValue()"
+                    [value]="calendarValue()"
                     (change)="onDateSelect($event)" />
             </div>
         }

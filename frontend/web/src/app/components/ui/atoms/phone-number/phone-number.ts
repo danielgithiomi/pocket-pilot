@@ -1,10 +1,16 @@
-import { Country } from '@global/types';
+import { Country } from '@shared/types';
 import { NgClass } from '@angular/common';
 import { FieldTree } from '@angular/forms/signals';
-import { COUNTRIES, DEFAULT_COUNTRY_ISO } from '@global/constants';
+import { COUNTRIES, DEFAULT_COUNTRY_ISO } from '@shared/constants';
 import { Check, ChevronDown, ChevronUp, LucideAngularModule, Search, X } from 'lucide-angular';
 import { input, output, signal, effect, computed, viewChild, Component, ElementRef, HostListener } from '@angular/core';
-import { isoToFlag, filterCountries, findCountryByIso, parsePhoneNumber, buildFullPhoneNumber } from './phone-number.utils';
+import {
+    isoToFlag,
+    filterCountries,
+    findCountryByIso,
+    parsePhoneNumber,
+    buildFullPhoneNumber
+} from './phone-number.utils';
 
 @Component({
     selector: 'atom-phone-number',

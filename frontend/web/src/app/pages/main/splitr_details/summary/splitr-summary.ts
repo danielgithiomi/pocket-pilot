@@ -1,4 +1,4 @@
-import { ISplitrEvent } from '@global/types';
+import { ISplitrEvent } from '@shared/types';
 import { formatCurrency } from '@libs/utils';
 import { Component, computed, input } from '@angular/core';
 import { ConsumerSummary, IConsumerSummary } from './consumer_summary/consumer-summary';
@@ -26,7 +26,7 @@ export class SplitrSummary {
                 (acc, splittable) =>
                     acc +
                     splittable.quantitySplits
-                        .filter(quantitySplit => quantitySplit.consumerName === member)
+                        .filter((quantitySplit) => quantitySplit.consumerName === member)
                         .reduce((acc, quantitySplit) => acc + splittable.unitPrice * quantitySplit.consumerQuantity, 0),
                 0
             );
@@ -36,12 +36,12 @@ export class SplitrSummary {
                 (acc, splittable) =>
                     acc +
                     splittable.quantitySplits
-                        .filter(quantitySplit => quantitySplit.consumerName === payer)
+                        .filter((quantitySplit) => quantitySplit.consumerName === payer)
                         .reduce((acc, quantitySplit) => acc + quantitySplit.consumerQuantity, 0),
                 0
             );
 
-        return eventMembers.map(member => ({
+        return eventMembers.map((member) => ({
             isSettled: false,
             consumerName: member,
             amountPayable: memberTotalAmount(member),

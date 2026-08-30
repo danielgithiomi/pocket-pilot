@@ -7,8 +7,9 @@
     border-color: var(--loader-primary) transparent;
 }
 
+.icon-loader,
 .delete-loader,
-.visibility-loader {
+.primary-loader {
     width: 15px;
     aspect-ratio: 1;
     border: 2px solid;
@@ -17,16 +18,12 @@
     border-color: var(--error) transparent;
 }
 
-.visibility-loader {
+.primary-loader {
     border-color: var(--primary) transparent;
 }
 
 .icon-loader {
     width: 12px;
-    aspect-ratio: 1;
-    border: 2px solid;
-    border-radius: 50%;
-    animation: l1 1s infinite;
     border-color: var(--primary) transparent;
 }
 

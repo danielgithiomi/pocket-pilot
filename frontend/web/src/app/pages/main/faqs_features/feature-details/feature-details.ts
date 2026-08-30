@@ -4,16 +4,16 @@ import { NgClass } from '@angular/common';
 import { Status } from '@molecules/status';
 import { ToastService } from '@atoms/toast';
 import { AuthService } from '@api/auth.service';
-import { FeatureStatusEnum } from '@global/enums';
+import { FeatureStatusEnum } from '@shared/enums';
 import { Badge, BadgeVariant } from '@atoms/badge';
 import { FeatureComment } from '../feature-comment';
-import { denormalizeCategoryName } from '@global/utils';
+import { denormalizeCategoryName } from '@shared/utils';
 import { FeaturesService } from '@api/features.service';
 import { formatRelativeDate, formatToReadable } from '@libs/utils';
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ChevronsUp, LucideAngularModule, MessageSquareText, Send } from 'lucide-angular';
 import { FEATURE_STATUS_STEPS, resolveFeatureStatusActiveIndex } from './feature-details.types';
-import { FeatureWithComments, FeatureCommentPayload, FeatureComment as IFeatureComment } from '@global/types';
+import { FeatureComment as IFeatureComment, FeatureCommentPayload, FeatureWithComments } from '@shared/types';
 
 @Component({
     selector: 'feature-details',
@@ -47,11 +47,19 @@ export class FeatureDetails {
     private readonly featuresService = inject(FeaturesService);
 
     // DATA
+    protected readonly userId = this.authService.user()?.id ?? '';
     protected readonly commentsResource = this.featuresService.getCommentsAssociatedWithFeature(this.featureId);
 
     // COMPUTED
-    protected readonly isLoadingComments = computed<boolean>(() => this.commentsResource.isLoading());
+    protected readonly commentCount = computed<number>(() => this.featureComments().length);
     protected readonly compositeFeatureId = computed<string>(() => `feature-${this.feature().id}`);
+    protected readonly isLoadingComments = computed<boolean>(() => this.commentsResource.isLoading());
+    protected readonly canPostComment = computed<boolean>(() => this.commentDraft().trim().length > 0);
+    protected readonly formattedStatus = computed<string>(() => formatToReadable(this.feature().featureStatus));
+    protected readonly formattedSubmittedDate = computed<string>(() => formatRelativeDate(this.feature().createdAt));
+    protected readonly isUserUpvoted = computed<boolean>(() =>
+        this.feature().featureVotes.some((vote) => vote.userId === this.userId)
+    );
     protected readonly statusActiveIndex = computed<number>(() =>
         resolveFeatureStatusActiveIndex(this.feature().featureStatus)
     );
@@ -61,7 +69,6 @@ export class FeatureDetails {
 
         return [...this.optimisticComments(), ...apiComments];
     });
-    protected readonly commentCount = computed<number>(() => this.featureComments().length);
     protected readonly formattedAuthorName = computed<string>(() => {
         const author: string = this.feature().authorName;
         const [firstName, lastName] = author.split(' ');
@@ -71,8 +78,6 @@ export class FeatureDetails {
         const initial = lastName.charAt(0).toUpperCase();
         return `${firstName} ${initial}.`;
     });
-    protected readonly formattedSubmittedDate = computed<string>(() => formatRelativeDate(this.feature().createdAt));
-    protected readonly formattedStatus = computed<string>(() => formatToReadable(this.feature().featureStatus));
     protected readonly formattedCategory = computed<string>(() => {
         const category = this.feature().featureCategory;
         if (category === 'UI_UX') return 'UI/UX';
@@ -98,7 +103,6 @@ export class FeatureDetails {
 
         return FEATURE_STATUS_STEPS.map((step, index) => (index === 1 ? { ...step, state: 'error' as const } : step));
     });
-    protected readonly canPostComment = computed<boolean>(() => this.commentDraft().trim().length > 0);
 
     // METHODS
     protected handleCommentInput(event: Event) {
@@ -106,28 +110,32 @@ export class FeatureDetails {
         this.commentDraft.set(value);
     }
 
+    protected handleOnVoteToggle() {
+        this.toastService.show({
+            variant: 'warning',
+            title: 'Vote from feature list!',
+            details: 'Please close this details modal and vote from the features list.'
+        });
+    }
+
     protected handlePostComment() {
         if (!this.canPostComment()) return;
 
-        console.log('Optimistic Updates');
         const optimisticComment: IFeatureComment = {
             id: crypto.randomUUID(),
             featureId: this.feature().id,
             comment: this.commentDraft(),
             createdAt: new Date(Date.now()),
             authorName: this.authService.user()!.name,
-            authorProfilePictureUrl: this.authService.user()?.profilePictureUrl
+            authorProfilePictureUrl: this.authService.user()?.profilePictureUrl,
+            authorProfilePictureThumbnailUrl: this.authService.user()?.profilePictureThumbnailUrl
         };
 
-        this.optimisticComments.update(comments => [optimisticComment, ...comments]);
-
-        console.log('Posting comment:', this.commentDraft());
+        this.optimisticComments.update((comments) => [optimisticComment, ...comments]);
 
         this.isPostingComment.set(true);
 
-        const payload: FeatureCommentPayload = {
-            comment: this.commentDraft()
-        };
+        const payload: FeatureCommentPayload = { comment: this.commentDraft() };
 
         this.featuresService.addCommentToFeature(this.feature().id, payload).subscribe({
             next: (_: IFeatureComment) => {
@@ -137,9 +145,9 @@ export class FeatureDetails {
                     details: 'Your comment has been added to the feature request successfully.'
                 });
 
-                // Find the optimistic updates
+                // Filter out the optimistic comment
                 const filteredComments = this.optimisticComments().filter(
-                    comment => comment.id !== optimisticComment.id
+                    (comment) => comment.id !== optimisticComment.id
                 );
 
                 this.optimisticComments.set(filteredComments);
@@ -159,7 +167,7 @@ export class FeatureDetails {
                 // Remove comment from optimistic comments
                 setTimeout(() => {
                     const updatedList = this.optimisticComments().filter(
-                        comment => comment.id !== optimisticComment.id
+                        (comment) => comment.id !== optimisticComment.id
                     );
                     this.optimisticComments.set(updatedList);
                 }, 2000);

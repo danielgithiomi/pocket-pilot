@@ -3,9 +3,9 @@ import { Select } from '@atoms/select';
 import { Button } from '@atoms/button';
 import { Form } from '@organisms/form';
 import { ToastService } from '@atoms/toast';
-import { BillTypeEnum } from '@global/enums';
+import { BillTypeEnum } from '@shared/enums';
 import { form } from '@angular/forms/signals';
-import { CURRENCIES } from '@global/constants';
+import { CURRENCIES } from '@shared/constants';
 import { AccountsService } from '@api/accounts.service';
 import { BillsService } from '@api/bills.service';
 import { RadioOption, Radio } from '@atoms/radio';
@@ -55,8 +55,8 @@ export class BillsForm {
     // Computed
     protected readonly currencies = computed<SelectOption[]>(() => {
         const currenciesToInclude = ['USD', 'EUR', 'GBP', 'AED', 'MUR', 'KES', 'ZAR'];
-        const currencies = CURRENCIES.filter(currency => currenciesToInclude.includes(currency.value));
-        return currencies.map(currency => ({ value: currency.value, label: currency.label }));
+        const currencies = CURRENCIES.filter((currency) => currenciesToInclude.includes(currency.value));
+        return currencies.map((currency) => ({ value: currency.value, label: currency.label }));
     });
 
     protected readonly formattedBillTypes = computed<RadioOption[]>(() => {
@@ -76,7 +76,7 @@ export class BillsForm {
     }
 
     protected onBillingTypeChange(type: string) {
-        const billType = Object.values(BillTypeEnum).find(billType => billType === type);
+        const billType = Object.values(BillTypeEnum).find((billType) => billType === type);
         this.newBillForm.type().controlValue.set(billType!);
     }
 
@@ -94,7 +94,7 @@ export class BillsForm {
         const payload = {
             ...rest,
             amount: amount || 0,
-            type: Object.values(BillTypeEnum).find(billType => billType === type)!
+            type: Object.values(BillTypeEnum).find((billType) => billType === type)!
         };
 
         this.billService.createNewBill(payload).subscribe({

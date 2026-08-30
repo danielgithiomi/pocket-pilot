@@ -48,10 +48,7 @@
 
     <div class="drawer-footer">
         <div class="bordered-card p-3! items-center!" [ngClass]="{ 'justify-center!': !drawerOpen() }">
-            <div class="relative">
-                <span class="h-2 w-2 rounded-full bg-success block"></span>
-                <span class="absolute inset-0 h-2 w-2 rounded-full bg-success animate-ping"></span>
-            </div>
+            <atom-pinger pingerSize="sm" />
 
             @if (drawerOpen()) {
                 <div class="flex-1 flex flex-row items-center justify-between">

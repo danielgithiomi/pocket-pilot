@@ -9,12 +9,12 @@
                 <div class="flex flex-row items-center gap-4 md:gap-6">
                     <div class="flex flex-row items-center gap-2">
                         <lucide-icon name="calendar" [img]="CalendarIcon" [size]="iconSize" />
-                        <span class="text-muted-text text-xs">{{ formattedEventDate() }}</span>
+                        <span class="text-reactive-text text-xs">{{ formattedEventDate() }}</span>
                     </div>
 
                     <div class="flex flex-row items-center gap-2">
                         <lucide-icon name="users" [img]="Squads" [size]="iconSize" />
-                        <span class="text-muted-text text-xs">{{ splitrEvent().squadName }}</span>
+                        <span class="text-reactive-text text-xs">{{ splitrEvent().squadName }}</span>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
         <hr />
 
         <div class="flex flex-row flex-wrap items-center gap-2">
-            <p class="text-sm text-muted-text">People:</p>
+            <p class="text-sm text-reactive-text">People:</p>
 
             @for (member of splitrEvent().eventMembers; track member) {
                 <atom-badge variant="neutral" [label]="member" className="text-xs! px-3!" />
@@ -53,7 +53,7 @@
 
                     <div class="flex-1 flex flex-col gap-1">
                         <p class="text-sm font-semibold">{{ payer.payerName }}</p>
-                        <p class="text-xs text-muted-text">
+                        <p class="text-xs text-reactive-text">
                             Paid
                             <span class="font-bold text-primary">{{ payer.percentageContribution }}%</span>
                             of the bill.
@@ -77,12 +77,17 @@
                     <div class="flex flex-row items-center gap-4">
                         <div class="flex-1 flex flex-col gap-1">
                             <p class="font-semibold">{{ orderedItem.orderName }}</p>
-                            <p class="text-xs text-muted pl-1">{{ orderedItem.orderQuantity }} x {{ orderedItem.unitPrice }}</p>
+                            <p class="text-xs text-muted pl-1">
+                                {{ orderedItem.orderQuantity }} x {{ orderedItem.unitPrice }}
+                            </p>
                         </div>
 
                         <div class="flex-1 flex flex-col gap-1 items-end">
                             <p class="text-base font-bold">{{ orderedItem.orderTotal }}</p>
-                            <atom-badge variant="info" className="px-2!" [label]="orderedItem.splitStrategy.toUpperCase()" />
+                            <atom-badge
+                                variant="info"
+                                className="px-2!"
+                                [label]="orderedItem.splitStrategy.toUpperCase()" />
                         </div>
                     </div>
 
@@ -111,7 +116,9 @@
             @for (settlement of settlements(); track settlement.id) {
                 <div
                     class="flex flex-row items-center gap-4 w-full p-4 rounded-xl"
-                    [ngClass]="settlement.kind === 'receive' ? 'bg-income/10 border border-income/25' : 'no-shadow-card'">
+                    [ngClass]="
+                        settlement.kind === 'receive' ? 'bg-income/10 border border-income/25' : 'no-shadow-card'
+                    ">
                     <div class="flex flex-row items-center gap-2">
                         <div class="relative shrink-0">
                             <div
@@ -150,7 +157,7 @@
                         <p class="text-sm font-semibold" [ngClass]="settlement.kind === 'receive' ? 'text-income' : ''">
                             {{ settlement.fromParticipant }}
                         </p>
-                        <p class="text-xs text-muted-text">
+                        <p class="text-xs text-reactive-text">
                             @switch (settlement.kind) {
                                 @case ('pay') {
                                     pays {{ settlement.toParticipant }}.

@@ -12,7 +12,7 @@ export const initialChangePasswordFormState: ChangePasswordSchema = {
     confirmNewPassword: ''
 };
 
-export const changePasswordValidationSchema = schema<ChangePasswordSchema>(root => {
+export const changePasswordValidationSchema = schema<ChangePasswordSchema>((root) => {
     // Current Password
     required(root.currentPassword, { message: 'The current password is required field!' });
     minLength(root.currentPassword, 8, {
@@ -25,7 +25,7 @@ export const changePasswordValidationSchema = schema<ChangePasswordSchema>(root 
         message: 'Your new password cannot be less than 8 characters!'
     });
 
-    validate(root.newPassword, context => {
+    validate(root.newPassword, (context) => {
         const newPassword = context.value();
         const currentPassword = context.valueOf(root.currentPassword);
 
@@ -44,7 +44,7 @@ export const changePasswordValidationSchema = schema<ChangePasswordSchema>(root 
         message: 'Your confirm new password cannot be less than 8 characters!'
     });
 
-    validate(root.confirmNewPassword, context => {
+    validate(root.confirmNewPassword, (context) => {
         const confirmPassword = context.value();
         const newPassword = context.valueOf(root.newPassword);
 
