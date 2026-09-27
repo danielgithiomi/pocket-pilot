@@ -1,33 +1,33 @@
 {
-  "name": "pocket-pilot-dashboard",
-  "version": "1.0.0",
-  "author": "danielgithiomi <https://github.com/danielgithiomi>",
+    "name": "pocket-pilot-dashboard",
+    "version": "1.0.0",
+    "author": "danielgithiomi <https://github.com/danielgithiomi>",
     "description": "This is the pocket-pilot dashboard application developed with NextJS.",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.3.6",
-    "react": "19.2.8",
-    "react-dom": "19.2.8"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.6",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  },
-  "allowScripts": {
-    "unrs-resolver@1.12.2": true
-  },
-  "packageManager": "npm@11.12.1"
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "lint": "eslint",
+        "build": "next build",
+        "dev": "next dev --port 9999",
+        "start": "next start --port 9999"
+    },
+    "dependencies": {
+        "next": "16.3.6",
+        "react": "19.2.8",
+        "react-dom": "19.2.8"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "16.3.6",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    },
+    "allowScripts": {
+        "unrs-resolver@1.12.2": true
+    },
+    "packageManager": "npm@11.12.1"
 }
