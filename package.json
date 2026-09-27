@@ -11,7 +11,8 @@
     "workspaces": [
         "./server",
         "./frontend/web",
-        "./frontend/mobile"
+        "./frontend/mobile",
+        "./frontend/dashboard/"
     ],
     "repository": {
         "type": "git",

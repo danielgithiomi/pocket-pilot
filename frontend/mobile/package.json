@@ -58,5 +58,6 @@
         "reset-project": "node ./scripts/reset-project.js",
         "generate:colors": "node ../shared/scripts/generate-colors.cjs",
         "clean": "rimraf node_modules package-lock.json .turbo .expo .claude .cache && npm cache clean --force"
-    }
+    },
+    "packageManager": "npm@11.12.1"
 }

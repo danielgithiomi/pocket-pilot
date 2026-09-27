@@ -1,7 +1,10 @@
 {
-  "name": "dashboard",
-  "version": "0.1.0",
+  "name": "pocket-pilot-dashboard",
+  "version": "1.0.0",
+  "author": "danielgithiomi <https://github.com/danielgithiomi>",
+    "description": "This is the pocket-pilot dashboard application developed with NextJS.",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -25,5 +28,6 @@
   },
   "allowScripts": {
     "unrs-resolver@1.12.2": true
-  }
+  },
+  "packageManager": "npm@11.12.1"
 }
