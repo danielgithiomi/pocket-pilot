@@ -1,6 +1,6 @@
 import { User } from '@shared/types';
+import { concatUrl } from '@core/http';
 import { Injectable } from '@angular/core';
-import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
 
 @Injectable({

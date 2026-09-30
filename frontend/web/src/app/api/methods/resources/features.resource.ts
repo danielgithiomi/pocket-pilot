@@ -1,5 +1,5 @@
 import { Injectable, Signal } from '@angular/core';
-import { concatUrl } from '@methods/methods.utils';
+import { concatUrl } from '@core/http';
 import { httpResource } from '@angular/common/http';
 import { API_ENDPOINTS as endpoints } from '@shared/constants';
 import {
