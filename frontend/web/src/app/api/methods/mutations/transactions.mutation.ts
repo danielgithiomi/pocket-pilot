@@ -1,4 +1,4 @@
-import { ApiClient } from '@methods/api-client';
+import { ApiClient } from '@core/http';
 import { inject, Injectable } from '@angular/core';
 import { IVoidResourceResponse, TransactionWithAccount, CreateTransactionRequest } from '@shared/types';
 
