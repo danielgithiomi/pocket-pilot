@@ -1,8 +1,9 @@
 'use client';
 
+import { User } from './_models/user';
 import { ReactNode } from 'react';
 
-export const UsersRender = ({ users }: { users: any[] }): ReactNode => {
+export const UsersRender = ({ users }: { users: User[] }): ReactNode => {
     return (
         <div>
             {users.map((user) => (
