@@ -1,4 +1,6 @@
-import Image from "next/image";
+'use client';
+
+import Image from 'next/image';
 
 export default function Home() {
     return (
@@ -14,28 +16,25 @@ export default function Home() {
                 />
                 <div className="flex flex-col items-center sm:items-start gap-6 sm:text-left text-center">
                     <h1 className="max-w-xs font-semibold text-black dark:text-zinc-50 text-3xl leading-10 tracking-tight">
-                        To get started, edit the{" "}
+                        To get started, edit the{' '}
                         <code className="bg-black/6 dark:bg-white/8 px-1.5 py-0.5 rounded font-mono text-[0.9em]">
                             page.tsx
-                        </code>{" "}
+                        </code>{' '}
                         file.
                     </h1>
                     <p className="max-w-md text-zinc-600 dark:text-zinc-400 text-lg leading-8">
-                        Looking for a starting point or more instructions? Head
-                        over to{" "}
+                        Looking for a starting point or more instructions? Head over to{' '}
                         <a
                             href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-                            className="font-medium text-zinc-950 dark:text-zinc-50"
-                        >
+                            className="font-medium text-zinc-950 dark:text-zinc-50">
                             Templates
-                        </a>{" "}
-                        or the{" "}
+                        </a>{' '}
+                        or the{' '}
                         <a
                             href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-                            className="font-medium text-zinc-950 dark:text-zinc-50"
-                        >
+                            className="font-medium text-zinc-950 dark:text-zinc-50">
                             Learning
-                        </a>{" "}
+                        </a>{' '}
                         center.
                     </p>
                 </div>
@@ -44,8 +43,7 @@ export default function Home() {
                         className="flex justify-center items-center gap-2 bg-foreground hover:bg-[#383838] dark:hover:bg-[#ccc] px-5 rounded-full w-full md:w-39.5 h-12 text-background transition-colors"
                         href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
                         target="_blank"
-                        rel="noopener noreferrer"
-                    >
+                        rel="noopener noreferrer">
                         <Image
                             className="dark:invert w-4 h-3.5"
                             src="/vercel.svg"
@@ -59,11 +57,16 @@ export default function Home() {
                         className="flex justify-center items-center hover:bg-black/4 dark:hover:bg-[#1a1a1a] px-5 border border-black/8 hover:border-transparent dark:border-white/[.145] border-solid rounded-full w-full md:w-39.5 h-12 transition-colors"
                         href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
                         target="_blank"
-                        rel="noopener noreferrer"
-                    >
+                        rel="noopener noreferrer">
                         Documentation
                     </a>
                 </div>
+
+                <button
+                    className="bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 px-4 py-2 rounded-lg text-black dark:text-white transition-colors cursor-pointer"
+                    onClick={() => alert('Hello, World!')}>
+                    Alert
+                </button>
             </main>
         </div>
     );
