@@ -1,11 +1,11 @@
-import { clsx, ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
 /**
- * Function to merge class names to override default styles with custom styles
- * @param inputs - The class names to merge
- * @returns The merged class names
+ *
+ * @param amount the amount to format to currency
+ * @returns
  */
-export function cn(...inputs: ClassValue[]): string {
-    return twMerge(clsx(inputs));
+export function formatCurrency(amount: number): string {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }).format(amount);
 }
