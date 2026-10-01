@@ -44,17 +44,11 @@ export default function Home() {
                 </div>
                 <div className="flex sm:flex-row flex-col gap-4 font-medium text-base">
                     <a
-                        className="flex justify-center items-center gap-2 bg-foreground hover:bg-[#383838] dark:hover:bg-[#ccc] px-5 rounded-full w-full md:w-39.5 h-12 text-background transition-colors"
+                        className="flex justify-center items-center gap-2 bg-inverted-background hover:bg-[#383838] dark:hover:bg-[#ccc] px-5 rounded-full w-full md:w-39.5 h-12 text-background transition-colors"
                         href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
                         target="_blank"
                         rel="noopener noreferrer">
-                        <Image
-                            className="dark:invert w-4 h-3.5"
-                            src="/vercel.svg"
-                            alt="Vercel logomark"
-                            width={16}
-                            height={14}
-                        />
+                        <Image className="dark:invert w-4 h-3.5" src="/vercel.svg" alt="Vercel logomark" width={16} height={14} />
                         Deploy Now
                     </a>
                     <a

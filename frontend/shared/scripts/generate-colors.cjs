@@ -22,6 +22,10 @@ const outputs = [
     {
         path: resolve(frontendRoot, 'mobile', 'src', 'global.css'),
         content: buildPocketPilotMobileGlobalCss()
+    },
+    {
+        path: resolve(frontendRoot, 'dashboard', 'styles', 'generated-colors.css'),
+        content: buildPocketPilotWebColorCss()
     }
 ];
 

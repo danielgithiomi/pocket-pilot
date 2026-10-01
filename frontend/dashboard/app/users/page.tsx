@@ -7,8 +7,8 @@ export default async function Users() {
     }).then((res) => res.json());
 
     return (
-        <div id="users-page" className="flex-1 bg-white/5 m-8 p-8">
-            <h1>This is the Users page</h1>
+        <div id="users-page" className="flex-1 bg-inverted-background/5 m-8 p-8">
+            <h1 className="mb-4 font-bold text-2xl">This is the Users page</h1>
 
             <UsersRender users={users as User[]} />
         </div>
