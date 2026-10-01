@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { PPDRoutes } from '@core/config';
+import { PPDRoutes } from '@config/routes';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -48,7 +48,13 @@ export default function Home() {
                         href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
                         target="_blank"
                         rel="noopener noreferrer">
-                        <Image className="dark:invert w-4 h-3.5" src="/vercel.svg" alt="Vercel logomark" width={16} height={14} />
+                        <Image
+                            className="dark:invert w-4 h-3.5"
+                            src="/vercel.svg"
+                            alt="Vercel logomark"
+                            width={16}
+                            height={14}
+                        />
                         Deploy Now
                     </a>
                     <a
