@@ -1,3 +1,10 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'Login',
+    description: 'This is the Login Page'
+};
+
 export default function LoginPage() {
     return (
         <div id="login-page">
