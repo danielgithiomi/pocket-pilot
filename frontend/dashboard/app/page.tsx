@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { PPDRoutes } from '@libs/routes';
+import { PPDRoutes } from '@core/config';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
