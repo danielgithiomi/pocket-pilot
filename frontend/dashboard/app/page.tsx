@@ -1,8 +1,12 @@
 'use client';
 
 import Image from 'next/image';
+import { PPDRoutes } from '@libs/routes';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+    const router = useRouter();
+
     return (
         <div className="flex flex-col flex-1 justify-center items-center bg-zinc-50 dark:bg-black font-sans">
             <main className="flex flex-col flex-1 justify-between items-center sm:items-start bg-white dark:bg-black px-16 py-32 w-full max-w-3xl">
@@ -64,7 +68,7 @@ export default function Home() {
 
                 <button
                     className="bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 px-4 py-2 rounded-lg text-black dark:text-white transition-colors cursor-pointer"
-                    onClick={() => alert('Hello, World!')}>
+                    onClick={() => router.push(PPDRoutes.users)}>
                     Alert
                 </button>
             </main>
