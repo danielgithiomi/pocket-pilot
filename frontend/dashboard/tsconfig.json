@@ -22,6 +22,7 @@
             "@/*": ["./*"],
             "@core/*": ["./core/*"],
             "@libs/*": ["./core/libs/*"],
+            "@features/*": ["./features/*"],
             "@config/*": ["./core/config/*"]
         }
     },
