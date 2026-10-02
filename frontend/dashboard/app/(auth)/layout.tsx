@@ -5,8 +5,8 @@ import { AuthNavigation } from '@features/auth';
 
 export const metadata: Metadata = {
     title: {
-        default: 'Pocket Pilot Dashboard Auth',
-        template: '%s | Pocket Pilot Dashboard'
+        default: 'Dashboard Auth',
+        template: '%s | Dashboard Auth'
     },
     description: 'This is the Auth Layout'
 };
