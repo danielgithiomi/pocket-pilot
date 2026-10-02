@@ -1,7 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalDependencies": ["package.json", "turbo.json"],
+  "globalDependencies": [
+    "package.json",
+    "turbo.json",
+    "frontend/shared/assets/**",
+    "frontend/shared/scripts/sync-assets.cjs"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

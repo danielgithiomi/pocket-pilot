@@ -31,8 +31,9 @@
     "scripts": {
         "prepare": "husky",
         "generate:colors": "node frontend/shared/scripts/generate-colors.cjs",
-        "predev": "npm run generate:colors",
-        "prebuild": "npm run generate:colors",
+        "sync:assets": "node frontend/shared/scripts/sync-assets.cjs",
+        "predev": "npm run sync:assets && npm run generate:colors",
+        "prebuild": "npm run sync:assets && npm run generate:colors",
         "test": "turbo run test",
         "lint": "turbo run lint",
         "build": "turbo run build",

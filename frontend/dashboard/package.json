@@ -6,6 +6,9 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "sync:assets": "node ../shared/scripts/sync-assets.cjs dashboard",
+        "predev": "npm run sync:assets",
+        "prebuild": "npm run sync:assets",
         "lint": "eslint",
         "build": "next build",
         "lint:fix": "eslint --fix",

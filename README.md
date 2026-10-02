@@ -442,6 +442,7 @@ Run these from the repository root unless noted otherwise.
 | ------------------------- | ---------------------------------------------------------- |
 | `npm run dev`             | Start all workspace development servers through Turborepo  |
 | `npm run build`           | Build all workspaces                                       |
+| `npm run sync:assets`     | Copy shared images and animations into all frontend apps   |
 | `npm run lint`            | Run lint tasks across workspaces                           |
 | `npm run test`            | Run workspace tests                                        |
 | `npm run docker:up`       | Start PostgreSQL and Redis for the backend                 |
@@ -450,6 +451,22 @@ Run these from the repository root unless noted otherwise.
 | `npm run prisma:reset`    | Reset the Prisma database                                  |
 | `npm run prisma:studio`   | Open Prisma Studio                                         |
 | `npm run clean`           | Remove generated caches, dependencies, and build artifacts |
+
+Shared media lives in `frontend/shared/assets`. Run `npm run sync:assets` to copy its
+contents into `frontend/dashboard/public`, `frontend/web/public`, and
+`frontend/mobile/assets`, preserving nested paths such as `images/branding/logo.png`.
+Use `npm run sync:assets -- dashboard` (or `web`, `mobile`) to copy to one app.
+The same command inside a frontend workspace copies only to that workspace.
+
+Asset copying runs before root development/build commands and the frontend development
+and build scripts where available. Identical files are skipped, matching files are
+updated, and unrelated destination files are left intact. Deleted source files are not
+automatically removed from destinations. Edit the shared originals; rerun the command
+after changing assets during a running development session. Hidden files are excluded.
+
+Angular and Next.js can reference the copied logo as `/images/branding/logo.png`.
+React Native bundles it with a static reference such as
+`require('@/assets/images/branding/logo.png')`, using the existing mobile assets alias.
 
 Workspace-specific commands:
 
