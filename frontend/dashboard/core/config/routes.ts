@@ -1,8 +1,15 @@
-type PPDRoutes = 'root' | 'users' | 'login' | 'register';
-
-export const PPDRoutes: Record<PPDRoutes, string> = {
+export const PPDRoutes = {
     root: '/',
+    overview: '/overview',
+    traffic: '/analytics/traffic',
     users: '/users',
+    accounts: '/accounts',
+    transactions: '/transactions',
+    goals: '/goals',
+    splitr: '/splitr',
+    feedback: '/feedback',
+    notifications: '/notifications',
+    systemHealth: '/system/health',
     login: '/login',
     register: '/register'
-} satisfies Record<PPDRoutes, string>;
+} as const;
