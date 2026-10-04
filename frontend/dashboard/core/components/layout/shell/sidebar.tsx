@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { PPDRoutes } from '@config/routes';
-import { dashboardNavigation, isNavigationItemActive } from '@config/navigation';
 import { NavigationIcon } from './icon';
+import { PPDRoutes } from '@config/routes';
 import styles from './wrapper.module.css';
+import { dashboardNavigation, isNavigationItemActive } from '@config/navigation';
 
 type DashboardSidebarProps = {
     pathname: string;
@@ -16,14 +16,29 @@ export function DashboardSidebar({ pathname, collapsed = false, onNavigate, onCl
     return (
         <div className={styles.sidebar} data-collapsed={collapsed}>
             <div className={styles.sidebarHeader}>
-                <Link href={PPDRoutes.root} className={styles.brand} aria-label="Pocket Pilot dashboard home" onNavigate={onNavigate}>
+                <Link
+                    href={PPDRoutes.root}
+                    className={styles.brand}
+                    aria-label="Pocket Pilot dashboard home"
+                    onNavigate={onNavigate}>
                     <span className={styles.brandMark}>
-                        <Image src="/images/branding/logo.png" alt="" width={28} height={28} className={styles.logo} preload />
+                        <Image
+                            src="/images/branding/logo.png"
+                            alt=""
+                            width={28}
+                            height={28}
+                            className={styles.logo}
+                            preload
+                        />
                     </span>
                     <span className={styles.brandText}>Pocket Pilot</span>
                 </Link>
                 {onClose && (
-                    <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Close navigation">
+                    <button
+                        type="button"
+                        className={styles.closeButton}
+                        onClick={onClose}
+                        aria-label="Close navigation">
                         <NavigationIcon name="close" size={20} />
                     </button>
                 )}
@@ -39,10 +54,17 @@ export function DashboardSidebar({ pathname, collapsed = false, onNavigate, onCl
 
                                 return (
                                     <li key={item.href}>
-                                        <Link href={item.href} className={styles.navigationLink}
-                                            aria-label={item.label} aria-current={active ? 'page' : undefined}
-                                            title={collapsed ? item.label : undefined} onNavigate={onNavigate} prefetch={false}>
-                                            <span className={styles.navigationIcon}><NavigationIcon name={item.icon} size={20} /></span>
+                                        <Link
+                                            href={item.href}
+                                            className={styles.navigationLink}
+                                            aria-label={item.label}
+                                            aria-current={active ? 'page' : undefined}
+                                            title={collapsed ? item.label : undefined}
+                                            onNavigate={onNavigate}
+                                            prefetch={false}>
+                                            <span className={styles.navigationIcon}>
+                                                <NavigationIcon name={item.icon} size={20} />
+                                            </span>
                                             <span className={styles.linkText}>{item.label}</span>
                                         </Link>
                                     </li>
@@ -55,8 +77,12 @@ export function DashboardSidebar({ pathname, collapsed = false, onNavigate, onCl
 
             <div className={styles.sidebarFooter}>
                 <div className={styles.workspaceLabel} title={collapsed ? 'Admin workspace' : undefined}>
-                    <span className={styles.workspaceAvatar}><NavigationIcon name="shield" size={18} /></span>
-                    <span className={styles.footerText}>Admin workspace<small>Pocket Pilot</small></span>
+                    <span className={styles.workspaceAvatar}>
+                        <NavigationIcon name="shield" size={18} />
+                    </span>
+                    <span className={styles.footerText}>
+                        Admin workspace<small>Pocket Pilot</small>
+                    </span>
                 </div>
             </div>
         </div>
