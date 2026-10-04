@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { PPDRoutes } from '@config/routes';
-import { NavigationIcon } from '@/core/components/layout/dashboard/icon';
-import styles from '@core/components/layout/dashboard/wrapper.module.css';
+import { NavigationIcon } from '@layout/shell';
+import styles from '@layout/shell/wrapper.module.css';
 
 export default function DashboardNotFound() {
     return (

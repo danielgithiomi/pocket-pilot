@@ -23,7 +23,8 @@
             "@core/*": ["./core/*"],
             "@libs/*": ["./core/libs/*"],
             "@features/*": ["./features/*"],
-            "@config/*": ["./core/config/*"]
+            "@config/*": ["./core/config/*"],
+            "@layout/*": ["./core/components/layout/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts", "**/*.mts"],
