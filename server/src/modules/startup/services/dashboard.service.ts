@@ -1,6 +1,6 @@
 import { RegisterInputDto } from '@modules/identity/dto/auth.dto';
-import { ConflictException, Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { UserService } from '@modules/identity/services/user.service';
+import { ConflictException, Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 
 @Injectable()
 export class DashboardService implements OnApplicationBootstrap {
