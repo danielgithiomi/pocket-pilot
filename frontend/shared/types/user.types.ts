@@ -1,41 +1,45 @@
 import { UserPreferences } from "./onboarding.types";
 
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: Date;
-  updatedAt: Date;
-  lastLoginAt: Date;
-  phoneNumber: string;
-  isOnboarded: boolean;
-  isAccountLocked: boolean;
-  profilePictureUrl: string | null;
-  profilePictureThumbnailUrl: string | null;
-  failedLoginAttempts: number;
-  userPreferences: UserPreferences;
+    id: string;
+
+    firstName: string;
+    lastName: string;
+    username: string;
+
+    email: string;
+    createdAt: Date;
+    updatedAt: Date;
+    lastLoginAt: Date;
+    phoneNumber: string;
+    isOnboarded: boolean;
+    isAccountLocked: boolean;
+    failedLoginAttempts: number;
+    profilePictureUrl: string | null;
+    userPreferences: UserPreferences;
+    profilePictureThumbnailUrl: string | null;
 }
 
 // REGISTER
 export interface IRegisterRequest {
-  name: string;
-  email: string;
-  password: string;
+    name: string;
+    email: string;
+    password: string;
 }
 
 // UPDATE
 export interface IUpdateUserRequest {
-  name: string;
-  email: string;
-  phoneNumber: string;
+    name: string;
+    email: string;
+    phoneNumber: string;
 }
 
 export interface IChangePasswordRequest {
-  newPassword: string;
-  currentPassword: string;
+    newPassword: string;
+    currentPassword: string;
 }
 
 export interface IUpdateUserProfilePictureRequest {
-  profilePictureAwsKey: string;
-  profilePictureThumbnailAwsKey: string;
+    profilePictureAwsKey: string;
+    profilePictureThumbnailAwsKey: string;
 }

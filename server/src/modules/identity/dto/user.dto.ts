@@ -17,7 +17,12 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
-    name!: string;
+    firstName!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    lastName!: string;
 
     @IsEmail()
     @IsNotEmpty()
@@ -34,7 +39,12 @@ export class UpdateUserDto {
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
-    name!: string;
+    firstName!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    lastName!: string;
 
     @IsEmail()
     @IsNotEmpty()
@@ -98,10 +108,25 @@ export class UserResponseDto {
 
     @Expose()
     @ApiProperty({
-        example: 'John Doe',
-        description: 'Name of the user'
+        example: 'John',
+        description: 'First name of the user'
     })
-    name!: string;
+    firstName!: string;
+
+    @Expose()
+    @ApiProperty({
+        example: 'Doe',
+        description: 'Last name of the user'
+    })
+    lastName!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({
+        example: 'johndoe',
+        description: 'Username of the user'
+    })
+    username!: string;
 
     @Expose()
     @ApiProperty({

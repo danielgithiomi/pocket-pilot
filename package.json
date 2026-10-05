@@ -82,7 +82,9 @@
         "esbuild@0.28.1": true,
         "@parcel/watcher@2.6.0": true,
         "prisma@7.10.0": true,
-        "@prisma/engines@7.10.0": true
+        "@prisma/engines@7.10.0": true,
+        "esbuild@0.28.2": true,
+        "workerd@1.20260901.1": true
     },
     "devDependencies": {
         "lightningcss": "^1.30.1"
