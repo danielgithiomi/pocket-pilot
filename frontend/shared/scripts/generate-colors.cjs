@@ -1,35 +1,49 @@
-require('ts-node').register({
+require("ts-node").register({
     skipProject: true,
     transpileOnly: true,
     compilerOptions: {
-        module: 'Node16',
-        moduleResolution: 'Node16'
-    }
+        module: "Node16",
+        moduleResolution: "Node16",
+    },
 });
 
-const {mkdirSync, writeFileSync} = require('node:fs');
-const {dirname, resolve} = require('node:path');
+const { mkdirSync, writeFileSync } = require("node:fs");
+const { dirname, resolve } = require("node:path");
 
-const {buildPocketPilotMobileGlobalCss, buildPocketPilotWebColorCss} = require('../resources/colors.ts');
+const {
+    buildPocketPilotMobileGlobalCss,
+    buildPocketPilotWebColorCss,
+} = require("../resources/colors.ts");
 
-const frontendRoot = resolve(__dirname, '..', '..');
+const frontendRoot = resolve(__dirname, "..", "..");
 
 const outputs = [
     {
-        path: resolve(frontendRoot, 'web', 'src', 'styles', 'generated-colors.css'),
-        content: buildPocketPilotWebColorCss()
+        path: resolve(
+            frontendRoot,
+            "web",
+            "src",
+            "styles",
+            "generated-colors.css",
+        ),
+        content: buildPocketPilotWebColorCss(),
     },
     {
-        path: resolve(frontendRoot, 'mobile', 'src', 'global.css'),
-        content: buildPocketPilotMobileGlobalCss()
+        path: resolve(frontendRoot, "mobile", "src", "global.css"),
+        content: buildPocketPilotMobileGlobalCss(),
     },
     {
-        path: resolve(frontendRoot, 'dashboard', 'styles', 'generated-colors.css'),
-        content: buildPocketPilotWebColorCss()
-    }
+        path: resolve(
+            frontendRoot,
+            "dashboard",
+            "styles",
+            "generated-colors.css",
+        ),
+        content: buildPocketPilotWebColorCss(),
+    },
 ];
 
 for (const output of outputs) {
-    mkdirSync(dirname(output.path), {recursive: true});
+    mkdirSync(dirname(output.path), { recursive: true });
     writeFileSync(output.path, output.content);
 }

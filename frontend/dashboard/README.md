@@ -43,18 +43,18 @@ native tooltips. The drawer cycles keyboard focus through its controls.
 
 ## Planned navigation
 
-| Group | Label | URL |
-| --- | --- | --- |
-| Workspace | Overview | `/overview` |
-| Workspace | Traffic & engagement | `/analytics/traffic` |
-| Workspace | Users | `/users` |
-| Workspace | Financial accounts | `/accounts` |
-| Workspace | Transactions | `/transactions` |
-| Workspace | Goals & bills | `/goals` |
-| Workspace | Splitr | `/splitr` |
-| Operations | Feedback | `/feedback` |
-| Operations | Notifications | `/notifications` |
-| Operations | System health | `/system/health` |
+| Group      | Label                | URL                  |
+| ---------- | -------------------- | -------------------- |
+| Workspace  | Overview             | `/overview`          |
+| Workspace  | Traffic & engagement | `/analytics/traffic` |
+| Workspace  | Users                | `/users`             |
+| Workspace  | Financial accounts   | `/accounts`          |
+| Workspace  | Transactions         | `/transactions`      |
+| Workspace  | Goals & bills        | `/goals`             |
+| Workspace  | Splitr               | `/splitr`            |
+| Operations | Feedback             | `/feedback`          |
+| Operations | Notifications        | `/notifications`     |
+| Operations | System health        | `/system/health`     |
 
 These destinations intentionally return 404 until their pages are created.
 The previous demo Users route and its external sample-data request have been

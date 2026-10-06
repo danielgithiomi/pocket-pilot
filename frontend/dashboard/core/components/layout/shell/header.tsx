@@ -12,9 +12,14 @@ export function DashboardHeader({ title, pathname, mobileOpen, onOpenNavigation 
     return (
         <header className={styles.header}>
             <div className={styles.headerTitle}>
-                <button type="button" className={styles.menuButton} onClick={onOpenNavigation}
-                    aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded={mobileOpen}>
-                    <NavigationIcon name="menu" size={22} />
+                <button
+                    type="button"
+                    className={styles.menuButton}
+                    onClick={onOpenNavigation}
+                    aria-label="Open navigation"
+                    aria-controls="mobile-navigation"
+                    aria-expanded={mobileOpen}>
+                    <NavigationIcon name="menu" size={22} />ƒ
                 </button>
                 <h1 className={styles.srOnly}>{title}</h1>
                 <nav className={styles.breadcrumb} aria-label="Breadcrumb">

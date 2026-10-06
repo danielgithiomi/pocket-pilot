@@ -1,37 +1,50 @@
-const { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync } = require('node:fs');
-const { dirname, join, relative, resolve } = require('node:path');
+const {
+    statSync,
+    mkdirSync,
+    existsSync,
+    readdirSync,
+    copyFileSync,
+    readFileSync,
+} = require("node:fs");
+const { dirname, join, relative, resolve } = require("node:path");
 
-const frontendRoot = resolve(__dirname, '..', '..');
-const sourceRoot = resolve(__dirname, '..', 'assets');
+const frontendRoot = resolve(__dirname, "..", "..");
+const sourceRoot = resolve(__dirname, "..", "assets");
 
 const destinations = {
-    dashboard: resolve(frontendRoot, 'dashboard', 'public'),
-    web: resolve(frontendRoot, 'web', 'public'),
-    mobile: resolve(frontendRoot, 'mobile', 'assets')
+    dashboard: resolve(frontendRoot, "dashboard", "public"),
+    web: resolve(frontendRoot, "web", "public"),
+    mobile: resolve(frontendRoot, "mobile", "assets"),
 };
 
 // Paths come from the script's location, so it also works from individual workspaces.
 function collectFiles(directory) {
-    return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+    return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
         // Exclude filesystem metadata such as .DS_Store and hidden directories.
-        if (entry.name.startsWith('.')) return [];
+        if (entry.name.startsWith(".")) return [];
 
         const entryPath = join(directory, entry.name);
         if (entry.isDirectory()) return collectFiles(entryPath);
         if (entry.isFile()) return [entryPath];
 
-        throw new Error(`Unsupported shared asset: ${entryPath}. Use regular files and directories.`);
+        throw new Error(
+            `Unsupported shared asset: ${entryPath}. Use regular files and directories.`,
+        );
     });
 }
 
 function main() {
     const requestedTargets = process.argv.slice(2);
-    const targets = requestedTargets.length ? [...new Set(requestedTargets)] : Object.keys(destinations);
+    const targets = requestedTargets.length
+        ? [...new Set(requestedTargets)]
+        : Object.keys(destinations);
 
     // Validate every target before copying anything.
     for (const target of targets) {
         if (!Object.hasOwn(destinations, target)) {
-            throw new Error(`Unknown target "${target}". Choose dashboard, web or mobile, or omit targets to copy to all.`);
+            throw new Error(
+                `Unknown target "${target}". Choose dashboard, web or mobile, or omit targets to copy to all.`,
+            );
         }
     }
 
@@ -46,10 +59,16 @@ function main() {
         let unchanged = 0;
 
         for (const source of files) {
-            const destination = join(destinations[target], relative(sourceRoot, source));
+            const destination = join(
+                destinations[target],
+                relative(sourceRoot, source),
+            );
 
             // Avoid unnecessary writes and development-server reloads on repeated runs.
-            if (existsSync(destination) && readFileSync(source).equals(readFileSync(destination))) {
+            if (
+                existsSync(destination) &&
+                readFileSync(source).equals(readFileSync(destination))
+            ) {
                 unchanged++;
                 continue;
             }
@@ -60,7 +79,9 @@ function main() {
         }
 
         // Merge shared assets into each app; never delete app-specific files.
-        console.log(`[sync:assets] ${target}: ${copied} copied, ${unchanged} unchanged -> ${destinations[target]}`);
+        console.log(
+            `[sync:assets] ${target}: ${copied} copied, ${unchanged} unchanged -> ${destinations[target]}`,
+        );
     }
 }
 

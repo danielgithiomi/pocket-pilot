@@ -414,18 +414,18 @@ Successful API responses are wrapped like this:
 
 ```json
 {
-  "success": true,
-  "statusCode": 200,
-  "body": {},
-  "summary": {
-    "title": "Operation Successful",
-    "details": null
-  },
-  "metadata": {
-    "endpoint": "/api/v1/example",
-    "requestId": "uuid",
-    "timestamp": "2026-06-04T00:00:00.000Z"
-  }
+    "success": true,
+    "statusCode": 200,
+    "body": {},
+    "summary": {
+        "title": "Operation Successful",
+        "details": null
+    },
+    "metadata": {
+        "endpoint": "/api/v1/example",
+        "requestId": "uuid",
+        "timestamp": "2026-06-04T00:00:00.000Z"
+    }
 }
 ```
 
