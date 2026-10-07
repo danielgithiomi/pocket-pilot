@@ -4,8 +4,8 @@ import { plainToInstance } from 'class-transformer';
 import { AwsService } from '@modules/aws/aws.service';
 import { UserRepository } from '../repositories/user.repository';
 import { CategoriesService } from '@modules/wallet/services/categories.service';
-import { JWTPayload, RegisterInputDto, RegisterOutputDto } from '../dto/auth.dto';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { JWTPayload, RegisterInputDto, RegisterOutputDto, CreateUserInputDto } from '../dto/auth.dto';
 import { UpdateUserDto, UserResponseDto, ChangePasswordDto, UserWithPreferences, UserWithPreferencesDto } from '../dto/user.dto';
 
 @Injectable()
@@ -18,7 +18,8 @@ export class UserService {
     ) {}
 
     async registerUser(data: RegisterInputDto): Promise<RegisterOutputDto> {
-        const userExists = await this.validateUserExists(data.email);
+
+        const userExists = await this.validateUserExistsByEmailAndUsername(data.email, "username.placeholder");
 
         if (userExists)
             throw new ConflictException({
@@ -26,10 +27,15 @@ export class UserService {
                 title: 'User Already Exists.',
                 details: `A user with the same email address already exists!`
             });
+            
+        const createUserData: CreateUserInputDto = {
+            ...data,
+            username: data.email.split('@')[0] // Simple username generation, you might want to improve this
+        };
 
         const hashedPassword = await argon.hash(data.password);
 
-        const createdUser = await this.userRepository.createNewUser(data, hashedPassword);
+        const createdUser = await this.userRepository.createNewUser(createUserData, hashedPassword);
 
         const payload: JWTPayload = this.cookiesService.generatePayload(createdUser);
 
@@ -57,6 +63,19 @@ export class UserService {
                 name: 'USER_NOT_FOUND!',
                 title: 'User Not Found!',
                 details: `No user found with the ID: [${userId}].`
+            });
+
+        return this.toUserPreferenceDto(user);
+    }
+
+    async findUserByUsername(username: string): Promise<UserWithPreferencesDto> {
+        const user = await this.userRepository.findUserByUsername(username);
+
+        if (!user)
+            throw new NotFoundException({
+                name: 'USER_NOT_FOUND!',
+                title: 'User Not Found!',
+                details: `No user found with the username: [${username}].`
             });
 
         return this.toUserPreferenceDto(user);
@@ -110,8 +129,8 @@ export class UserService {
     }
 
     // HELPER FUNCTIONS
-    private async validateUserExists(email: string): Promise<boolean> {
-        const user = await this.userRepository.findUserByEmail(email);
+    private async validateUserExistsByEmailAndUsername(email: string, username: string): Promise<boolean> {
+        const user = await this.userRepository.findUniqueUserByEmailAndUsername(email, username);
         return !!user;
     }
 

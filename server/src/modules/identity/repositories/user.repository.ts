@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterInputDto } from '../dto/auth.dto';
+import { CreateUserInputDto } from '../dto/auth.dto';
 import { FullUser, UpdateUserDto } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
@@ -7,7 +7,7 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 export class UserRepository {
     constructor(private readonly db: DatabaseService) {}
 
-    async createNewUser(data: RegisterInputDto, hashedPassword: string): Promise<FullUser> {
+    async createNewUser(data: CreateUserInputDto, hashedPassword: string): Promise<FullUser> {
         const now = new Date();
         const newUser = {
             ...data,
@@ -25,8 +25,12 @@ export class UserRepository {
         return this.db.user.findUnique({ where: { id: userId }, include: { userPreferences: true } });
     }
 
-    async findUserByEmail(email: string) {
-        return this.db.user.findUnique({ where: { email }, include: { userPreferences: true } });
+    async findUserByUsername(username: string) {
+        return this.db.user.findFirst({ where: { username }, include: { userPreferences: true } });
+    }
+
+    async findUniqueUserByEmailAndUsername(email: string, username: string) {
+        return this.db.user.findUnique({ where: { email_username: { email, username } }, include: { userPreferences: true } });
     }
 
     async updateUserById(userId: string, updatePayload: UpdateUserDto) {

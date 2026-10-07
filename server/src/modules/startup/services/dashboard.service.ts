@@ -10,7 +10,8 @@ export class DashboardService implements OnApplicationBootstrap {
 
     async onApplicationBootstrap(): Promise<void> {
         const superUser: RegisterInputDto = {
-            name: 'Super User',
+            firstName: 'Super',
+            lastName: 'User',
             password: 'SuperUserPassword123!',
             email: 'superuser@pocketpilot.com'
         } as const;

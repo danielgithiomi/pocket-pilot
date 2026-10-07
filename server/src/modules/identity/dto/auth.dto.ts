@@ -28,7 +28,9 @@ export class LoginInputDto {
     password!: string;
 }
 
-export type RegisterInputDto = Pick<FullUser, 'name' | 'email' | 'password'>;
+export type RegisterInputDto = Pick<FullUser, 'firstName' | 'lastName' | 'email' | 'password'>;
+
+export type CreateUserInputDto = Pick<FullUser, 'firstName' | 'lastName' | 'email' | 'password' | 'username'>;
 
 // OUTPUT DTOs
 export interface LoginOutputDto {
