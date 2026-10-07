@@ -18,8 +18,7 @@ export class UserService {
     ) {}
 
     async registerUser(data: RegisterInputDto): Promise<RegisterOutputDto> {
-
-        const userExists = await this.validateUserExistsByEmailAndUsername(data.email, "username.placeholder");
+        const userExists = await this.validateUserExistsByEmailAndUsername(data.email, 'username.placeholder');
 
         if (userExists)
             throw new ConflictException({
@@ -27,7 +26,7 @@ export class UserService {
                 title: 'User Already Exists.',
                 details: `A user with the same email address already exists!`
             });
-            
+
         const createUserData: CreateUserInputDto = {
             ...data,
             username: data.email.split('@')[0] // Simple username generation, you might want to improve this
