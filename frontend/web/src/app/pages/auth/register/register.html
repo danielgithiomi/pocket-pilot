@@ -8,13 +8,14 @@
 
             <!--   FORM START   -->
             <form (submit)="submitRegistrationForm($event)" id="register-form">
-                <div class="w-full bg-red-600 flex flex-col md:flex-row gap-0 p-0 my-0!">
+                <div class="w-full flex flex-col md:flex-row gap-4 my-4!">
                     <atom-input
                         type="text"
                         id="firstname"
                         label="First Name"
                         placeholder="John"
                         autocomplete="name"
+                        wrapperClassName="my-0!"
                         [formField]="registerForm.name"
                         (clearOutput)="registerForm.name().controlValue.set('')"/>
 
@@ -24,6 +25,7 @@
                         label="Last Name"
                         placeholder="Doe"
                         autocomplete="name"
+                        wrapperClassName="my-0!"
                         [formField]="registerForm.name"
                         (clearOutput)="registerForm.name().controlValue.set('')"/>
                 </div>
