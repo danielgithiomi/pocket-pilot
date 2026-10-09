@@ -74,7 +74,7 @@ export class ProfilePicture {
 
     // METHODS
     protected readonly initial = computed(() => {
-        const name = this.authService.user()?.name;
+        const name = this.authService.user()?.username;
         return name ? name.substring(0, 1).toUpperCase() : '';
     });
 

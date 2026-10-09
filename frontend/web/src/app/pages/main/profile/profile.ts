@@ -9,8 +9,7 @@ import { UserService } from '@api/user.service';
 import { DEFAULT_COUNTRY_ISO } from '@shared/constants';
 import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { ProfileDetail } from './profile-detail/profile-detail';
@@ -57,11 +56,11 @@ export class Profile {
     protected readonly user = this.authService.user;
     protected readonly uploadProgress = this.awsService.progress;
     protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => {
-        const { name, email, phoneNumber } = this.user()!;
+        const { username: name, email, phoneNumber } = this.user()!;
         const { country, nationalNumber } = parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO);
 
         return {
-            name,
+            name, // TODO: change to first and last name
             email,
             phoneNumber: buildFullPhoneNumber(country, nationalNumber)
         };

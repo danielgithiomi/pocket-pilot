@@ -3,11 +3,31 @@
         <div class="form-wrapper">
             <div class="space-y-4">
                 <h3>Hello there,</h3>
-                <p>Create a new account to continue</p>
+                <p>Create a new account to start using Pocket Pilot</p>
             </div>
 
             <!--   FORM START   -->
             <form (submit)="submitRegistrationForm($event)" id="register-form">
+                <div class="w-full bg-red-600 flex flex-col md:flex-row gap-0 p-0 my-0!">
+                    <atom-input
+                        type="text"
+                        id="firstname"
+                        label="First Name"
+                        placeholder="John"
+                        autocomplete="name"
+                        [formField]="registerForm.name"
+                        (clearOutput)="registerForm.name().controlValue.set('')"/>
+
+                    <atom-input
+                        type="text"
+                        id="lastname"
+                        label="Last Name"
+                        placeholder="Doe"
+                        autocomplete="name"
+                        [formField]="registerForm.name"
+                        (clearOutput)="registerForm.name().controlValue.set('')"/>
+                </div>
+
                 <atom-input
                     id="email"
                     type="email"
@@ -16,15 +36,6 @@
                     placeholder="johndoe@gmail.com"
                     [formField]="registerForm.email"
                     (clearOutput)="registerForm.email().controlValue.set('')" />
-
-                <atom-input
-                    type="text"
-                    id="username"
-                    label="Username"
-                    placeholder="John Doe"
-                    autocomplete="username"
-                    [formField]="registerForm.name"
-                    (clearOutput)="registerForm.name().controlValue.set('')" />
 
                 <atom-input
                     id="password"

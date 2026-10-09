@@ -64,7 +64,7 @@ export class Login {
                 this.toastService.show({
                     variant: 'success',
                     title: response.summary.title,
-                    details: `Welcome back to Pocket Pilot - ${response.data.name.toLocaleUpperCase()}`
+                    details: `Welcome back to Pocket Pilot - ${response.data.username.toLocaleUpperCase()}`
                 });
             });
             return;

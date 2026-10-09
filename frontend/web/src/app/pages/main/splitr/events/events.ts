@@ -30,7 +30,7 @@ export class SplitrEvents {
     protected readonly hasError = computed<boolean>(() => !!this.splitrEventsResource.error());
     protected readonly isFetchingEvents = computed<boolean>(() => this.splitrEventsResource.isLoading());
     protected readonly selfName = computed(() => {
-        const username = this.authService.user()?.name.split(' ')[0];
+        const username = this.authService.user()?.username;
         return `${username}(Self)`;
     });
     protected readonly splitrEvents = computed<ISplitrEvent[]>(() => {

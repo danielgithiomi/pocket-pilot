@@ -41,11 +41,11 @@ export class Register {
 
         this.userService.register({ name, email, password }).subscribe({
             next: (response: User) => {
-                const { name } = response;
+                const { username } = response;
                 this.toastService.show({
                     variant: 'success',
                     title: 'Registration Successful!',
-                    details: `Welcome ${name}! You are now part of the Pocket Pilot family!`
+                    details: `Welcome ${username}! You are now part of the Pocket Pilot family!`
                 });
 
                 this.router.navigate([WEB_ROUTES.onboarding], { replaceUrl: true });

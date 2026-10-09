@@ -126,7 +126,7 @@ export class FeatureDetails {
             featureId: this.feature().id,
             comment: this.commentDraft(),
             createdAt: new Date(Date.now()),
-            authorName: this.authService.user()!.name,
+            authorName: this.authService.user()!.username,
             authorProfilePictureUrl: this.authService.user()?.profilePictureUrl,
             authorProfilePictureThumbnailUrl: this.authService.user()?.profilePictureThumbnailUrl
         };

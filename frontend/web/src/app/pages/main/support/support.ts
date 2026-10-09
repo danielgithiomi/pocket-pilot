@@ -46,7 +46,7 @@ export class Support {
             };
         }
 
-        const { email, name, phoneNumber } = user;
+        const { email, username: name, phoneNumber } = user;
         const nameParts = name.trim().split(/\s+/);
         const firstName = nameParts[0] ?? '';
         const lastName = nameParts.slice(1).join(' ');
