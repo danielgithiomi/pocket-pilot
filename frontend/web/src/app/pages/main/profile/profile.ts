@@ -56,11 +56,12 @@ export class Profile {
     protected readonly user = this.authService.user;
     protected readonly uploadProgress = this.awsService.progress;
     protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => {
-        const { username: name, email, phoneNumber } = this.user()!;
+        const { firstName, lastName, email, phoneNumber } = this.user()!;
         const { country, nationalNumber } = parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO);
 
         return {
-            name, // TODO: change to first and last name
+            firstName,
+            lastName, // TODO: change to first and last name
             email,
             phoneNumber: buildFullPhoneNumber(country, nationalNumber)
         };
@@ -103,7 +104,8 @@ export class Profile {
         const initialData = this.initialEditProfileFormData();
         const currentData = this.editProfileFormModel();
         return (
-            initialData.name !== currentData.name ||
+            initialData.firstName !== currentData.firstName ||
+            initialData.lastName !== currentData.lastName ||
             initialData.email !== currentData.email ||
             initialData.phoneNumber !== currentData.phoneNumber
         );

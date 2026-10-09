@@ -3,7 +3,8 @@ import { email, minLength, required, schema, validate } from '@angular/forms/sig
 
 // FORM
 export interface EditProfileSchema {
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     phoneNumber: string;
 }
@@ -13,9 +14,13 @@ export const editProfileFormValidationSchema = schema<EditProfileSchema>((root) 
     email(root.email, { message: 'The email address format is invalid!' });
     required(root.email, { message: 'The email address is required field!' });
 
-    // Username
-    required(root.name, { message: 'The username is required field!' });
-    minLength(root.name, 6, { message: 'The username cannot be less than 6 characters!' });
+    // First Name
+    required(root.firstName, { message: 'The first name is a required field!' });
+    minLength(root.firstName, 3, { message: 'The first name cannot be less than 3 characters!' });
+
+    // Last Name
+    required(root.lastName, { message: 'The last name is a required field!' });
+    minLength(root.lastName, 3, { message: 'The last name cannot be less than 3 characters!' });
 
     // Phone Number (international format: +{countryCode}{nationalNumber})
     required(root.phoneNumber, { message: 'The phone number is required field!' });

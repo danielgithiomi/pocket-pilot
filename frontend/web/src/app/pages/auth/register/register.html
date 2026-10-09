@@ -16,8 +16,8 @@
                         placeholder="John"
                         autocomplete="name"
                         wrapperClassName="my-0!"
-                        [formField]="registerForm.name"
-                        (clearOutput)="registerForm.name().controlValue.set('')"/>
+                        [formField]="registerForm.firstName"
+                        (clearOutput)="registerForm.firstName().controlValue.set('')"/>
 
                     <atom-input
                         type="text"
@@ -26,8 +26,8 @@
                         placeholder="Doe"
                         autocomplete="name"
                         wrapperClassName="my-0!"
-                        [formField]="registerForm.name"
-                        (clearOutput)="registerForm.name().controlValue.set('')"/>
+                        [formField]="registerForm.lastName"
+                        (clearOutput)="registerForm.lastName().controlValue.set('')"/>
                 </div>
 
                 <atom-input

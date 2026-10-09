@@ -37,18 +37,19 @@ export class Register {
 
         this.isSubmitting.set(true);
 
-        const { email, name, password } = this.registerFormModel();
+        const { email, firstName, lastName, password } = this.registerFormModel();
 
-        this.userService.register({ name, email, password }).subscribe({
+        this.userService.register({ firstName, lastName, email, password }).subscribe({
             next: (response: User) => {
                 const { username } = response;
-                this.toastService.show({
-                    variant: 'success',
-                    title: 'Registration Successful!',
-                    details: `Welcome ${username}! You are now part of the Pocket Pilot family!`
-                });
 
-                this.router.navigate([WEB_ROUTES.onboarding], { replaceUrl: true });
+                this.router.navigate([WEB_ROUTES.onboarding], { replaceUrl: true }).then(() => {
+                    this.toastService.show({
+                        variant: 'success',
+                        title: 'Registration Successful!',
+                        details: `Welcome ${username}! You are now part of the Pocket Pilot family!`
+                    });
+                });
             },
             complete: () => this.isSubmitting.set(false)
         });
