@@ -124,7 +124,7 @@ export type AccountWithTransactions = Prisma.AccountGetPayload<{
 }>;
 
 export type AccountWithHolder = Prisma.AccountGetPayload<{
-    include: { holder: { select: { name: true; email: true } } };
+    include: { holder: { select: { username: true; email: true } } };
 }>;
 
 @Exclude()

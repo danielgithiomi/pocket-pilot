@@ -25,12 +25,16 @@ export class UserRepository {
         return this.db.user.findUnique({ where: { id: userId }, include: { userPreferences: true } });
     }
 
+    async findUniqueUserByEmail(email: string) {
+        return this.db.user.findUnique({ where: { email }, include: { userPreferences: true } });
+    }
+
     async findUserByUsername(username: string) {
         return this.db.user.findFirst({ where: { username }, include: { userPreferences: true } });
     }
 
     async findUniqueUserByEmailAndUsername(email: string, username: string) {
-        return this.db.user.findUnique({ where: { email_username: { email, username } }, include: { userPreferences: true } });
+        return this.db.user.findUnique({ where: { email, username }, include: { userPreferences: true } });
     }
 
     async updateUserById(userId: string, updatePayload: UpdateUserDto) {

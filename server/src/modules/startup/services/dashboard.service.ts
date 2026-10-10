@@ -1,5 +1,6 @@
 import { RegisterInputDto } from '@modules/identity/dto/auth.dto';
 import { UserService } from '@modules/identity/services/user.service';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { ConflictException, Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 
 @Injectable()
@@ -18,8 +19,14 @@ export class DashboardService implements OnApplicationBootstrap {
 
         try {
             await this.userService.registerUser(superUser);
+            this.logger.debug("The 'superuser' account has been created successfully.");
         } catch (error) {
-            if (error instanceof ConflictException) {
+            const prismaUserExistsErrorCodes: string[] = ['P2002'];
+
+            if (
+                error instanceof ConflictException ||
+                (error instanceof PrismaClientKnownRequestError && prismaUserExistsErrorCodes.includes(error.code))
+            ) {
                 this.logger.warn('Super user already exists. Skipping creation.');
                 return;
             }
