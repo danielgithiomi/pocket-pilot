@@ -120,10 +120,9 @@ export class UserResponseDto {
     })
     lastName!: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @Expose()
     @ApiProperty({
-        example: 'johndoe',
+        example: 'john.doe',
         description: 'Username of the user'
     })
     username!: string;

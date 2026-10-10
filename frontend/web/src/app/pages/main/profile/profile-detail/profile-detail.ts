@@ -12,7 +12,7 @@ import {
     LucideAngularModule
 } from 'lucide-angular';
 
-type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-login';
+type DetailVariant = 'name' | 'username' | 'email' | 'phone' | 'role' | 'status' | 'last-login';
 
 @Component({
     imports: [LucideAngularModule, NgClass],
@@ -39,6 +39,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
                     [ngClass]="{
                         'w-1/2':
                             detailVariant() === 'name' ||
+                            detailVariant() === 'username' ||
                             detailVariant() === 'email' ||
                             detailVariant() === 'last-login',
                         'w-1/3': detailVariant() === 'phone',
@@ -99,6 +100,8 @@ export class ProfileDetail {
         switch (this.detailVariant()) {
             case 'name':
                 return 'Full Name';
+            case 'username':
+                return 'Username';
             case 'email':
                 return 'Email Address';
             case 'phone':
@@ -115,6 +118,8 @@ export class ProfileDetail {
     protected detailIcon = computed<LucideIconData>(() => {
         switch (this.detailVariant()) {
             case 'name':
+                return User;
+            case 'username':
                 return User;
             case 'email':
                 return AtSign;
