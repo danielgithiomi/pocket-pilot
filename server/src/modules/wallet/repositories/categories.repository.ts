@@ -15,7 +15,7 @@ export class CategoriesRepository {
                 createdAt: new Date()
             },
             include: {
-                user: { select: { id: true, name: true } }
+                user: { select: { id: true, username: true } }
             }
         });
     }
@@ -24,7 +24,7 @@ export class CategoriesRepository {
         return this.db.categories.findUnique({
             where: { userId },
             include: {
-                user: { select: { id: true, name: true } }
+                user: { select: { id: true, username: true } }
             }
         });
     }
@@ -69,7 +69,7 @@ export class CategoriesRepository {
                     lastUpdated: new Date()
                 },
                 include: {
-                    user: { select: { id: true, name: true } }
+                    user: { select: { id: true, username: true } }
                 }
             });
         });
@@ -114,7 +114,7 @@ export class CategoriesRepository {
                     lastUpdated: new Date()
                 },
                 include: {
-                    user: { select: { id: true, name: true } }
+                    user: { select: { id: true, username: true } }
                 }
             });
         });

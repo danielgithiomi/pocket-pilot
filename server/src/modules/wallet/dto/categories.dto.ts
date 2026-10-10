@@ -42,9 +42,9 @@ export class UserMetaData {
     @Expose()
     @ApiProperty({
         example: 'John Doe',
-        description: 'The name of the user'
+        description: 'The username of the user'
     })
-    name!: string;
+    username!: string;
 }
 
 @Exclude()

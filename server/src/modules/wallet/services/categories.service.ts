@@ -52,7 +52,7 @@ export class CategoriesService {
     }
 
     async getAllUserCategories(user: UserResponseDto): Promise<CategoriesDto> {
-        const { id: userId, name } = user;
+        const { id: userId, username } = user;
 
         const cachedCategories = await this.cache.getCache(userId);
         if (cachedCategories) return cachedCategories;
@@ -67,7 +67,7 @@ export class CategoriesService {
                 lastUpdated: null,
                 user: {
                     id: userId,
-                    name
+                    username
                 }
             };
 

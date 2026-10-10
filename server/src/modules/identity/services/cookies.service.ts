@@ -14,10 +14,12 @@ export class CookiesService {
     ) {}
 
     generatePayload(user: UserWithPreferences | FullUser): JWTPayload {
+        const { username, email } = user;
+
         return {
             sub: user.id!,
-            username: user.name,
-            email: user.email,
+            email: email,
+            username: username,
             iat: Date.now()
         } satisfies JWTPayload;
     }

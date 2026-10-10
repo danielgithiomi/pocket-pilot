@@ -72,15 +72,27 @@
         description="Update your personal information."
         (onFormCloseEvent)="isEditFormOpen.set(false)">
         <form slot="content" id="edit-user-profile" (submit)="submitEditProfileForm($event)">
-            <atom-input
-                type="text"
-                id="update-name"
-                label="Full Name"
-                [inverted]="true"
-                autocomplete="name"
-                placeholder="John Doe"
-                [formField]="editProfileForm.name"
-                (clearOutput)="editProfileForm.name().controlValue.set('')" />
+            <div class="w-full flex flex-col md:flex-row gap-0 md:gap-4">
+                <atom-input
+                    type="text"
+                    id="update-name"
+                    [inverted]="true"
+                    label="First Name"
+                    placeholder="John"
+                    autocomplete="name"
+                    [formField]="editProfileForm.firstName"
+                    (clearOutput)="editProfileForm.firstName().controlValue.set('')"/>
+
+                <atom-input
+                    type="text"
+                    id="update-name"
+                    label="Last Name"
+                    [inverted]="true"
+                    placeholder="Doe"
+                    autocomplete="name"
+                    [formField]="editProfileForm.lastName"
+                    (clearOutput)="editProfileForm.lastName().controlValue.set('')"/>
+            </div>
 
             <atom-input
                 type="email"

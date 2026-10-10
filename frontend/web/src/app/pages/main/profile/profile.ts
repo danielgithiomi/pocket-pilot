@@ -60,9 +60,9 @@ export class Profile {
         const { country, nationalNumber } = parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO);
 
         return {
-            firstName,
-            lastName, // TODO: change to first and last name
             email,
+            lastName,
+            firstName,
             phoneNumber: buildFullPhoneNumber(country, nationalNumber)
         };
     });
