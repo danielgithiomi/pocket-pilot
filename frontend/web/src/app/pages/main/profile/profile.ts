@@ -1,4 +1,4 @@
-import { User } from '@shared/types';
+import { IUpdateUserRequest, User } from '@shared/types';
 import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
 import { formatFullDate } from '@libs/utils';
@@ -56,11 +56,12 @@ export class Profile {
     protected readonly user = this.authService.user;
     protected readonly uploadProgress = this.awsService.progress;
     protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => {
-        const { firstName, lastName, email, phoneNumber } = this.user()!;
+        const { firstName, lastName, username, email, phoneNumber } = this.user()!;
         const { country, nationalNumber } = parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO);
 
         return {
             email,
+            username,
             lastName,
             firstName,
             phoneNumber: buildFullPhoneNumber(country, nationalNumber)
@@ -76,6 +77,11 @@ export class Profile {
     // COMPUTED
     protected readonly formattedDate = computed<string>(() => {
         return formatFullDate(this.user()!.lastLoginAt.toString());
+    });
+    protected readonly userFullName = computed<string>(() => {
+        const firstName = this.user()?.firstName;
+        const lastName = this.user()?.lastName;
+        return firstName + ' ' + lastName;
     });
     protected readonly isFetchingProfileData = computed(() => this.authService.isLoading());
 
@@ -173,7 +179,9 @@ export class Profile {
         event.preventDefault();
 
         const { id } = this.user()!;
-        const payload = this.editProfileFormModel();
+        const { firstName, lastName, email, phoneNumber } = this.editProfileFormModel();
+        // Disabled fields remain in the model; send only the fields accepted by the update API.
+        const payload: IUpdateUserRequest = { firstName, lastName, email, phoneNumber };
 
         this.isSubmittingEditProfileForm.set(true);
 

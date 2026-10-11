@@ -16,7 +16,7 @@
             [autocomplete]="autocomplete()"
             [ngClass]="customInputClasses()" />
 
-        @if (allowEndIcon()) {
+        @if (allowEndIcon() && !fieldState().disabled()) {
             <div
                 class="input-icon-wrapper"
                 [ngClass]="{

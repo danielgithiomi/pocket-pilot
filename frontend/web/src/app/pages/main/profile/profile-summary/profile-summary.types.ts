@@ -1,11 +1,12 @@
 import { getNationalNumberDigits } from '@atoms/phone-number';
-import { email, minLength, required, schema, validate } from '@angular/forms/signals';
+import { disabled, email, minLength, required, schema, validate } from '@angular/forms/signals';
 
 // FORM
 export interface EditProfileSchema {
-    firstName: string;
-    lastName: string;
     email: string;
+    lastName: string;
+    username: string;
+    firstName: string;
     phoneNumber: string;
 }
 
@@ -13,6 +14,9 @@ export const editProfileFormValidationSchema = schema<EditProfileSchema>((root) 
     // Email
     email(root.email, { message: 'The email address format is invalid!' });
     required(root.email, { message: 'The email address is required field!' });
+
+    // Username is displayed here, but the server controls how it is updated.
+    disabled(root.username);
 
     // First Name
     required(root.firstName, { message: 'The first name is a required field!' });

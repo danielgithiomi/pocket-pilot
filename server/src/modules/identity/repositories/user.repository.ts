@@ -7,13 +7,27 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 export class UserRepository {
     constructor(private readonly db: DatabaseService) {}
 
-    async createNewUser(data: CreateUserInputDto, hashedPassword: string): Promise<FullUser> {
+    async createNewUser(data: CreateUserInputDto, hashedPassword: string, isAdmin: boolean = false): Promise<FullUser> {
         const now = new Date();
-        const newUser = {
+
+        const defaultsForAdmins = {
+            isOnboarded: true,
+            isAccountLocked: false,
+            phoneNumber: '0000000000'
+        };
+
+        let newUser = {
             ...data,
             lastLoginAt: now,
             password: hashedPassword
         };
+
+        if (isAdmin)
+            newUser = {
+                ...newUser,
+                ...defaultsForAdmins
+            };
+
         return this.db.user.create({ data: newUser });
     }
 

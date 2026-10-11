@@ -5,6 +5,7 @@ import { AwsService } from '@modules/aws/aws.service';
 import { UserRepository } from '../repositories/user.repository';
 import { CategoriesService } from '@modules/wallet/services/categories.service';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { generateUsernameFromNames, prepareUserIdentity } from './../utils/username-generator';
 import { JWTPayload, RegisterInputDto, RegisterOutputDto, CreateUserInputDto } from '../dto/auth.dto';
 import { UpdateUserDto, UserResponseDto, ChangePasswordDto, UserWithPreferences, UserWithPreferencesDto } from '../dto/user.dto';
 
@@ -18,7 +19,8 @@ export class UserService {
     ) {}
 
     async registerUser(data: RegisterInputDto): Promise<RegisterOutputDto> {
-        const userExists = await this.validateUserExistsByEmailAndUsername(data.email, 'username.placeholder');
+        const { firstName, lastName, email } = data;
+        const userExists = await this.userRepository.findUniqueUserByEmail(email);
 
         if (userExists)
             throw new ConflictException({
@@ -27,9 +29,16 @@ export class UserService {
                 details: `A user with the same email address already exists!`
             });
 
+        const username: string = generateUsernameFromNames(firstName, lastName);
+
+        const isUsernameTaken: () => Promise<boolean> = async () =>
+            Boolean(await this.userRepository.findUserByUsername(username));
+
+        const identity = await prepareUserIdentity(data, isUsernameTaken);
+
         const createUserData: CreateUserInputDto = {
             ...data,
-            username: data.email.split('@')[0] // Simple username generation, you might want to improve this
+            ...identity
         };
 
         const hashedPassword = await argon.hash(data.password);

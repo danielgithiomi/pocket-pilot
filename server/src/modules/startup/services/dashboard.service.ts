@@ -13,7 +13,7 @@ export class DashboardService implements OnApplicationBootstrap {
         const superUser: RegisterInputDto = {
             firstName: 'Super',
             lastName: 'User',
-            password: 'SuperUserPassword123!',
+            password: 'PocketPilot@123!',
             email: 'superuser@pocketpilot.com'
         } as const;
 
