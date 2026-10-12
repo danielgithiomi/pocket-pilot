@@ -21,7 +21,11 @@ type DetailVariant = 'name' | 'username' | 'email' | 'phone' | 'role' | 'status'
     template: ` <div
         id="profile-detail"
         class="profile-detail"
-        [ngClass]="{ 'border-b border-muted-text': !isLast(), 'mb-6! md:mb-0!': isLast() }">
+        [ngClass]="{
+            'border-b border-muted-text': !isLast(),
+            'mb-6! md:mb-0!': isLast(),
+            'border-b-0': !includeBottomBorder()
+        }">
         <div class="icon shrink-0">
             <lucide-icon
                 [size]="18"
@@ -82,10 +86,11 @@ type DetailVariant = 'name' | 'username' | 'email' | 'phone' | 'role' | 'status'
     </div>`
 })
 export class ProfileDetail {
+    detailValue = input.required();
     isLoading = input(true);
     isLast = input<boolean>(false);
-    detailValue = input.required();
     detailVariant = input.required<DetailVariant>();
+    includeBottomBorder = input<boolean>(true);
 
     protected formattedPhone = computed(() => {
         if (this.detailVariant() !== 'phone') return null;
