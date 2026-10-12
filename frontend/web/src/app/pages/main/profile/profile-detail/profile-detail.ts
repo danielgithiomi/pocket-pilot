@@ -22,9 +22,9 @@ type DetailVariant = 'name' | 'username' | 'email' | 'phone' | 'role' | 'status'
         id="profile-detail"
         class="profile-detail"
         [ngClass]="{
-            'border-b border-muted-text': !isLast(),
+            'border-b! border-muted-text': !isLast(),
             'mb-6! md:mb-0!': isLast(),
-            'border-b-0': !includeBottomBorder()
+            'border-b sm:border-b-0!': !includeBottomBorder()
         }">
         <div class="icon shrink-0">
             <lucide-icon

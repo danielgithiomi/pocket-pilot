@@ -10,9 +10,9 @@ import { catchError, EMPTY, firstValueFrom, Observable, of, tap } from 'rxjs';
 import { IStandardError, IStandardResponse, LoginPayload, User, UserPreferences } from '@shared/types';
 import {
     AuthError,
+    STORED_AUTH_USER_KEY,
     INVALID_EMAIL_IDENTIFIER,
     INVALID_PASSWORD_IDENTIFIER,
-    STORED_AUTH_USER_KEY,
     STORED_ONBOARDING_USER_KEY
 } from '@libs/constants';
 

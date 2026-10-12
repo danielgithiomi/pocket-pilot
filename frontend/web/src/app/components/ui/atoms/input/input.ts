@@ -41,9 +41,9 @@ export class Input {
     clearOutput = output<void>();
 
     /* ICONS */
+    readonly iconSize = 18;
     readonly X = X;
     readonly Visible = Eye;
-    readonly iconSize = 18;
     readonly Hidden = EyeClosed;
 
     /* SIGNALS */

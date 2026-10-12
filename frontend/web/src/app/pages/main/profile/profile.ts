@@ -1,4 +1,3 @@
-import { IUpdateUserRequest, User } from '@shared/types';
 import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
 import { formatFullDate } from '@libs/utils';
@@ -6,16 +5,17 @@ import { form } from '@angular/forms/signals';
 import { AwsService } from '@api/aws.service';
 import { AuthService } from '@api/auth.service';
 import { UserService } from '@api/user.service';
-import { DEFAULT_COUNTRY_ISO } from '@shared/constants';
 import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
-import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
+import { DEFAULT_COUNTRY_ISO } from '@shared/constants';
+import { IUpdateUserRequest, User } from '@shared/types';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { ProfileDetail } from './profile-detail/profile-detail';
 import { ChangePassword } from './change-password/change-password';
 import { ProfileSummary } from './profile-summary/profile-summary';
 import { Component, computed, inject, signal } from '@angular/core';
+import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { buildFullPhoneNumber, parsePhoneNumber, PhoneNumber } from '@atoms/phone-number';
 import { EditProfileSchema, editProfileFormValidationSchema } from './profile-summary/profile-summary.types';
 
