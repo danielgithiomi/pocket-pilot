@@ -1,11 +1,12 @@
 import { getNationalNumberDigits } from '@atoms/phone-number';
-import { email, minLength, required, schema, validate } from '@angular/forms/signals';
+import { email, minLength, required, schema, validate, disabled } from '@angular/forms/signals';
 
 export interface SupportFormSchema {
     email: string;
     phone: string;
     message: string;
     lastName: string;
+    username: string;
     firstName: string;
 }
 
@@ -17,6 +18,9 @@ export const SupportFormValidationSchema = schema<SupportFormSchema>((root) => {
     // Last Name
     required(root.lastName, { message: 'The last name is required field!' });
     minLength(root.lastName, 3, { message: 'The last name must be at least 3 characters long!' });
+
+    // Username
+    disabled(root.username);
 
     // Email
     email(root.email, { message: 'The email address format is invalid!' });

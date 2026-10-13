@@ -67,14 +67,29 @@
                                 (clearOutput)="supportForm.lastName().controlValue.set('')" />
                         </div>
 
-                        <atom-input
-                            id="email"
-                            type="email"
-                            label="Email"
-                            autocomplete="email"
-                            [formField]="supportForm.email"
-                            placeholder="john.doe@example.com"
-                            (clearOutput)="supportForm.email().controlValue.set('')" />
+                        <div class="flex flex-col md:flex-row gap-4 w-full my-0">
+                            <atom-input
+                                type="text"
+                                id="username"
+                                class="flex-1"
+                                label="Username"
+                                placeholder="john.doe"
+                                autocomplete="username"
+                                wrapperClassName="mb-1"
+                                [formField]="supportForm.username"
+                                (clearOutput)="supportForm.username().controlValue.set('')"/>
+
+                            <atom-input
+                                id="email"
+                                type="email"
+                                label="Email"
+                                class="flex-1"
+                                autocomplete="email"
+                                wrapperClassName="mb-1"
+                                [formField]="supportForm.email"
+                                placeholder="john.doe@example.com"
+                                (clearOutput)="supportForm.email().controlValue.set('')"/>
+                        </div>
 
                         <atom-phone-number
                             id="phone"
