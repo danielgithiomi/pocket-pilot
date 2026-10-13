@@ -46,10 +46,7 @@ export class Support {
             };
         }
 
-        const { email, username: name, phoneNumber } = user;
-        const nameParts = name.trim().split(/\s+/);
-        const firstName = nameParts[0] ?? '';
-        const lastName = nameParts.slice(1).join(' ');
+        const { email, firstName, lastName, username, phoneNumber } = user;
         const { country, nationalNumber } = parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO);
 
         return {
