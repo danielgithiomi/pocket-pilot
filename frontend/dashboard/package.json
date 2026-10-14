@@ -6,14 +6,15 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "sync:assets": "node ../shared/scripts/sync-assets.cjs dashboard",
-        "predev": "npm run sync:assets",
-        "prebuild": "npm run sync:assets",
         "lint": "eslint",
         "build": "next build",
         "lint:fix": "eslint --fix",
         "dev": "next dev --port 9999",
-        "start": "next start --port 9999"
+        "predev": "npm run sync:assets",
+        "start": "next start --port 9999",
+        "prebuild": "npm run sync:assets",
+        "sync:assets": "node ../shared/scripts/sync-assets.cjs dashboard",
+        "clean": "rimraf node_modules package-lock.json .turbo .next .cache && npm cache clean --force"
     },
     "dependencies": {
         "clsx": "^2.1.1",
