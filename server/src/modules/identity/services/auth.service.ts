@@ -78,7 +78,7 @@ export class AuthService {
 
     // HELPER FUNCTIONS
     private async validateUser(email: string, password: string): Promise<ValidationResult> {
-        const user = await this.userRepository.findUserByEmail(email);
+        const user = await this.userRepository.findUniqueUserByEmail(email);
 
         if (!user)
             throw new NotFoundException({

@@ -40,22 +40,21 @@ export class Support {
             return {
                 email: '',
                 phone: '',
+                username: '',
                 lastName: '',
                 firstName: '',
                 phoneCountryIso: DEFAULT_COUNTRY_ISO
             };
         }
 
-        const { email, name, phoneNumber } = user;
-        const nameParts = name.trim().split(/\s+/);
-        const firstName = nameParts[0] ?? '';
-        const lastName = nameParts.slice(1).join(' ');
+        const { email, firstName, lastName, phoneNumber, username } = user;
         const { country, nationalNumber } = parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO);
 
         return {
             email,
-            firstName,
             lastName,
+            username,
+            firstName,
             phoneCountryIso: country.iso,
             phone: buildFullPhoneNumber(country, nationalNumber)
         };
@@ -65,12 +64,13 @@ export class Support {
 
     // FORM
     private getInitialFormState(): SupportFormSchema {
-        const { email, phone, lastName, firstName } = this.userData();
+        const { email, phone, lastName, firstName, username } = this.userData();
 
         return {
             message: '',
             email,
             phone,
+            username,
             lastName,
             firstName
         };

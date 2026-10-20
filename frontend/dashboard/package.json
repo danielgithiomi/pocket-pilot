@@ -1,0 +1,40 @@
+{
+    "name": "pocket-pilot-dashboard",
+    "version": "1.0.0",
+    "author": "danielgithiomi <https://github.com/danielgithiomi>",
+    "description": "This is the pocket-pilot dashboard application developed with NextJS.",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "lint": "eslint",
+        "build": "next build",
+        "lint:fix": "eslint --fix",
+        "dev": "next dev --port 9999",
+        "predev": "npm run sync:assets",
+        "start": "next start --port 9999",
+        "prebuild": "npm run sync:assets",
+        "sync:assets": "node ../shared/scripts/sync-assets.cjs dashboard",
+        "clean": "rimraf node_modules package-lock.json .turbo .next .cache && npm cache clean --force"
+    },
+    "dependencies": {
+        "clsx": "^2.1.1",
+        "next": "16.3.6",
+        "react": "19.2.8",
+        "react-dom": "19.2.8",
+        "tailwind-merge": "^3.7.0"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "16.3.6",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    },
+    "allowScripts": {
+        "unrs-resolver@1.12.2": true
+    },
+    "packageManager": "npm@11.12.1"
+}

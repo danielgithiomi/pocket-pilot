@@ -55,7 +55,7 @@ export class SplitFormStep2 {
 
     // COMPUTED
     protected readonly consumerOptions = computed<string[]>(() => {
-        const userFirstName = this.user?.name.split(' ')[0];
+        const userFirstName = this.user?.username;
         return [`${userFirstName}(Self)`, ...this.presentMembers()];
     });
     protected readonly quantityAssisgnableRemaining = computed<number>(() => {

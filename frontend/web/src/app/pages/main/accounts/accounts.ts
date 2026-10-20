@@ -19,6 +19,7 @@ import { accountsFormValidationSchema, AccountsSchema, INITIAL_FORM_STATE } from
 @Component({
     selector: 'accounts',
     templateUrl: './accounts.html',
+    providers: [AccountsService, DrawerService, ToastService],
     styles: `
         @reference 'tailwindcss';
 

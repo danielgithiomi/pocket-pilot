@@ -1,7 +1,7 @@
+import { concatUrl } from '@core/http';
 import { Categories } from '@shared/types';
 import { Injectable } from '@angular/core';
 import { IStandardResponse } from '@shared/types';
-import { concatUrl } from '@methods/methods.utils';
 import { httpResource } from '@angular/common/http';
 import { API_ENDPOINTS as endpoints } from '@shared/constants';
 

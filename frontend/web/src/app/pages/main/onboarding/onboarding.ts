@@ -70,7 +70,7 @@ export class Onboarding {
                     this.toastService.show({
                         variant: 'success',
                         title: 'Onboarding completed!',
-                        details: `You have completed the onboarding process [${response.name}]. You can now enjoy Pocket Pilot!`
+                        details: `You have completed the onboarding process [${response.username}]. You can now enjoy Pocket Pilot!`
                     });
 
                     this.resetOnboardingForm();

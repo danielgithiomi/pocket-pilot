@@ -1,4 +1,4 @@
-import { ApiClient } from '../api-client';
+import { ApiClient } from '@core/http';
 import { inject, Injectable } from '@angular/core';
 import { API_ENDPOINTS as endpoints } from '@shared/constants';
 import { IVoidResourceResponse, UpdateUserPreferencesPayload } from '@shared/types';

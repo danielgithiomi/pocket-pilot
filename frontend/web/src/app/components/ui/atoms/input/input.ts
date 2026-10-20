@@ -17,9 +17,9 @@ import {
 export class Input {
     /* INPUTS */
     id = input.required<string>();
+    label = input.required<string>();
     numberStep = input<number>(1);
     required = input<boolean>(true);
-    label = input.required<string>();
     allowEndIcon = input<boolean>(true);
 
     // Inversions
@@ -41,9 +41,9 @@ export class Input {
     clearOutput = output<void>();
 
     /* ICONS */
+    readonly iconSize = 18;
     readonly X = X;
     readonly Visible = Eye;
-    readonly iconSize = 18;
     readonly Hidden = EyeClosed;
 
     /* SIGNALS */

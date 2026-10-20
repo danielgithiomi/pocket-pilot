@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ApiClient } from '@methods/api-client';
+import { ApiClient } from '@core/http';
 import { inject, Injectable } from '@angular/core';
 import { API_ENDPOINTS as endpoints } from '@shared/constants';
 import { AppNotification, IStandardResponse, IVoidResourceResponse, NotificationActionResult } from '@shared/types';

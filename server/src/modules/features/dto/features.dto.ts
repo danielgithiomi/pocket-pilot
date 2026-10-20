@@ -8,7 +8,7 @@ import { FeatureCategory, FeatureStatus, Prisma } from '@prisma/client';
 export type FeatureWithUser = Prisma.FeatureGetPayload<{
     include: {
         featureVotes: true;
-        user: { select: { name: true } };
+        user: { select: { username: true } };
         _count: { select: { featureComments: true; featureVotes: true } };
     };
 }>;
@@ -19,7 +19,7 @@ export type PrismaFeatureWithComments = FeatureWithUser &
             featureComments: {
                 include: {
                     feature: { select: { id: true } };
-                    author: { select: { name: true; profilePictureUrl: true } };
+                    author: { select: { username: true; profilePictureUrl: true } };
                 };
             };
         };

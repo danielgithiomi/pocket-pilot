@@ -70,7 +70,7 @@ export class SplitFormStep3 {
         }));
     });
     protected readonly billPayerOptions = computed<ISquadMember[]>(() => {
-        const firstName = this.authService.user()?.name.split(' ')[0];
+        const firstName = this.authService.user()?.username;
         const allMembers = [`${firstName}(Self)`, ...this.presentMembers()];
 
         return allMembers.map((member) => ({

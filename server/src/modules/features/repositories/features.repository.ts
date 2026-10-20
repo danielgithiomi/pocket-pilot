@@ -8,7 +8,7 @@ export class FeaturesRepository {
 
     private readonly includedFields = {
         featureVotes: true,
-        user: { select: { name: true } },
+        user: { select: { username: true } },
         _count: { select: { featureVotes: true, featureComments: true } }
     };
 

@@ -1,4 +1,4 @@
-import { ApiClient } from '@methods/api-client';
+import { ApiClient } from '@core/http';
 import { inject, Injectable } from '@angular/core';
 import { User, OnboardingPayload } from '@shared/types';
 import { API_ENDPOINTS as endpoints } from '@shared/constants';

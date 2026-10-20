@@ -28,14 +28,16 @@ export const loginFormValidationSchema = schema<LoginSchema>((root) => {
 
 // REGISTRATION
 export interface RegisterSchema {
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     confirmPassword: string;
 }
 
 export const initialRegisterFormState: RegisterSchema = {
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -46,9 +48,13 @@ export const registerFormValidationSchema = schema<RegisterSchema>((root) => {
     email(root.email, { message: 'The email address format is invalid!' });
     required(root.email, { message: 'The email address is required field!' });
 
-    // Username
-    required(root.name, { message: 'The username is required field!' });
-    minLength(root.name, 6, { message: 'The username cannot be less than 6 characters!' });
+    // First Name
+    required(root.firstName, { message: 'The first name is a required field!' });
+    minLength(root.firstName, 3, { message: 'The first name cannot be less than 3 characters!' });
+
+    // Last Name
+    required(root.lastName, { message: 'The last name is a required field!' });
+    minLength(root.lastName, 3, { message: 'The last name cannot be less than 3 characters!' });
 
     // Password
     required(root.password, { message: 'The password is required field!' });

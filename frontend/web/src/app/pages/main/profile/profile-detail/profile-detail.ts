@@ -12,7 +12,7 @@ import {
     LucideAngularModule
 } from 'lucide-angular';
 
-type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-login';
+type DetailVariant = 'name' | 'username' | 'email' | 'phone' | 'role' | 'status' | 'last-login';
 
 @Component({
     imports: [LucideAngularModule, NgClass],
@@ -21,7 +21,11 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
     template: ` <div
         id="profile-detail"
         class="profile-detail"
-        [ngClass]="{ 'border-b border-muted-text': !isLast(), 'mb-6! md:mb-0!': isLast() }">
+        [ngClass]="{
+            'border-b! border-muted-text': !isLast(),
+            'mb-6! md:mb-0!': isLast(),
+            'border-b sm:border-b-0!': !includeBottomBorder()
+        }">
         <div class="icon shrink-0">
             <lucide-icon
                 [size]="18"
@@ -39,6 +43,7 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
                     [ngClass]="{
                         'w-1/2':
                             detailVariant() === 'name' ||
+                            detailVariant() === 'username' ||
                             detailVariant() === 'email' ||
                             detailVariant() === 'last-login',
                         'w-1/3': detailVariant() === 'phone',
@@ -81,10 +86,11 @@ type DetailVariant = 'name' | 'email' | 'phone' | 'role' | 'status' | 'last-logi
     </div>`
 })
 export class ProfileDetail {
+    detailValue = input.required();
     isLoading = input(true);
     isLast = input<boolean>(false);
-    detailValue = input.required();
     detailVariant = input.required<DetailVariant>();
+    includeBottomBorder = input<boolean>(true);
 
     protected formattedPhone = computed(() => {
         if (this.detailVariant() !== 'phone') return null;
@@ -99,6 +105,8 @@ export class ProfileDetail {
         switch (this.detailVariant()) {
             case 'name':
                 return 'Full Name';
+            case 'username':
+                return 'Username';
             case 'email':
                 return 'Email Address';
             case 'phone':
@@ -115,6 +123,8 @@ export class ProfileDetail {
     protected detailIcon = computed<LucideIconData>(() => {
         switch (this.detailVariant()) {
             case 'name':
+                return User;
+            case 'username':
                 return User;
             case 'email':
                 return AtSign;

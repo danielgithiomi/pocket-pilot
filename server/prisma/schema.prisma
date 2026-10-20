@@ -13,12 +13,14 @@ datasource db {
 }
 
 model User {
-    id                String  @id() @default(uuid())
-    name              String
-    email             String
-    password          String
-    phoneNumber       String?
-    profilePictureKey String?
+    id                         String  @id() @default(uuid())
+    firstName                  String
+    lastName                   String
+    username                   String  @unique
+    email                      String  @unique
+    password                   String
+    phoneNumber                String?
+    profilePictureKey          String?
     profilePictureThumbnailKey String?
 
     createdAt DateTime @default(now())
@@ -62,7 +64,6 @@ model User {
     // Link to feature comments - one-to-many
     comments FeatureComments[] @relation("UserFeatureComments")
 
-    @@unique([email])
     @@map("Users")
 }
 

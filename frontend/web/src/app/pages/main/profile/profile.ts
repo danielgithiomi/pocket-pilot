@@ -1,4 +1,3 @@
-import { User } from '@shared/types';
 import { Form } from '@organisms/form';
 import { NgClass } from '@angular/common';
 import { formatFullDate } from '@libs/utils';
@@ -6,17 +5,17 @@ import { form } from '@angular/forms/signals';
 import { AwsService } from '@api/aws.service';
 import { AuthService } from '@api/auth.service';
 import { UserService } from '@api/user.service';
-import { DEFAULT_COUNTRY_ISO } from '@shared/constants';
 import { Input } from '@components/ui/atoms/input';
 import { Button } from '@components/ui/atoms/button';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormControl, FormGroup } from '@angular/forms';
+import { DEFAULT_COUNTRY_ISO } from '@shared/constants';
+import { IUpdateUserRequest, User } from '@shared/types';
 import { DrawerService } from '@infrastructure/services';
 import { ToastService } from '@components/ui/atoms/toast';
 import { ProfileDetail } from './profile-detail/profile-detail';
 import { ChangePassword } from './change-password/change-password';
 import { ProfileSummary } from './profile-summary/profile-summary';
 import { Component, computed, inject, signal } from '@angular/core';
+import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { buildFullPhoneNumber, parsePhoneNumber, PhoneNumber } from '@atoms/phone-number';
 import { EditProfileSchema, editProfileFormValidationSchema } from './profile-summary/profile-summary.types';
 
@@ -57,12 +56,14 @@ export class Profile {
     protected readonly user = this.authService.user;
     protected readonly uploadProgress = this.awsService.progress;
     protected readonly initialEditProfileFormData = computed<EditProfileSchema>(() => {
-        const { name, email, phoneNumber } = this.user()!;
+        const { firstName, lastName, username, email, phoneNumber } = this.user()!;
         const { country, nationalNumber } = parsePhoneNumber(phoneNumber, DEFAULT_COUNTRY_ISO);
 
         return {
-            name,
             email,
+            username,
+            lastName,
+            firstName,
             phoneNumber: buildFullPhoneNumber(country, nationalNumber)
         };
     });
@@ -76,6 +77,11 @@ export class Profile {
     // COMPUTED
     protected readonly formattedDate = computed<string>(() => {
         return formatFullDate(this.user()!.lastLoginAt.toString());
+    });
+    protected readonly userFullName = computed<string>(() => {
+        const firstName = this.user()?.firstName;
+        const lastName = this.user()?.lastName;
+        return firstName + ' ' + lastName;
     });
     protected readonly isFetchingProfileData = computed(() => this.authService.isLoading());
 
@@ -104,7 +110,8 @@ export class Profile {
         const initialData = this.initialEditProfileFormData();
         const currentData = this.editProfileFormModel();
         return (
-            initialData.name !== currentData.name ||
+            initialData.firstName !== currentData.firstName ||
+            initialData.lastName !== currentData.lastName ||
             initialData.email !== currentData.email ||
             initialData.phoneNumber !== currentData.phoneNumber
         );
@@ -172,7 +179,9 @@ export class Profile {
         event.preventDefault();
 
         const { id } = this.user()!;
-        const payload = this.editProfileFormModel();
+        const { firstName, lastName, email, phoneNumber } = this.editProfileFormModel();
+        // Disabled fields remain in the model; send only the fields accepted by the update API.
+        const payload: IUpdateUserRequest = { firstName, lastName, email, phoneNumber };
 
         this.isSubmittingEditProfileForm.set(true);
 

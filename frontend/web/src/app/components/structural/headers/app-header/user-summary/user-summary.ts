@@ -88,7 +88,7 @@ export class UserSummary {
 
     // COMPUTED
     protected readonly email = computed(() => this.user()?.email ?? '');
-    protected readonly username = computed(() => this.user()?.name ?? '');
+    protected readonly username = computed(() => this.user()?.username ?? '');
     protected readonly avatarPictureUrl = computed(() => {
         const user = this.authService.user();
         return user?.profilePictureThumbnailUrl ?? user?.profilePictureUrl ?? '';

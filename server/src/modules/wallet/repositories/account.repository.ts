@@ -13,7 +13,7 @@ export class AccountRepository {
 
     getAllApplicationAccounts() {
         return this.db.account.findMany({
-            include: { holder: { select: { name: true, email: true } } }
+            include: { holder: { select: { username: true, email: true } } }
         });
     }
 

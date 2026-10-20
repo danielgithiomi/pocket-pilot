@@ -11,7 +11,8 @@
     "workspaces": [
         "./server",
         "./frontend/web",
-        "./frontend/mobile"
+        "./frontend/mobile",
+        "./frontend/dashboard/"
     ],
     "repository": {
         "type": "git",
@@ -30,8 +31,9 @@
     "scripts": {
         "prepare": "husky",
         "generate:colors": "node frontend/shared/scripts/generate-colors.cjs",
-        "predev": "npm run generate:colors",
-        "prebuild": "npm run generate:colors",
+        "sync:assets": "node frontend/shared/scripts/sync-assets.cjs",
+        "predev": "npm run sync:assets && npm run generate:colors",
+        "prebuild": "npm run sync:assets && npm run generate:colors",
         "test": "turbo run test",
         "lint": "turbo run lint",
         "build": "turbo run build",
@@ -80,7 +82,9 @@
         "esbuild@0.28.1": true,
         "@parcel/watcher@2.6.0": true,
         "prisma@7.10.0": true,
-        "@prisma/engines@7.10.0": true
+        "@prisma/engines@7.10.0": true,
+        "esbuild@0.28.2": true,
+        "workerd@1.20260901.1": true
     },
     "devDependencies": {
         "lightningcss": "^1.30.1"

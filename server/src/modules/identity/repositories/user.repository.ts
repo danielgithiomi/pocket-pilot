@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterInputDto } from '../dto/auth.dto';
+import { CreateUserInputDto } from '../dto/auth.dto';
 import { FullUser, UpdateUserDto } from '../dto/user.dto';
 import { DatabaseService } from '@infrastructure/database/database.service';
 
@@ -7,13 +7,27 @@ import { DatabaseService } from '@infrastructure/database/database.service';
 export class UserRepository {
     constructor(private readonly db: DatabaseService) {}
 
-    async createNewUser(data: RegisterInputDto, hashedPassword: string): Promise<FullUser> {
+    async createNewUser(data: CreateUserInputDto, hashedPassword: string, isAdmin: boolean = false): Promise<FullUser> {
         const now = new Date();
-        const newUser = {
+
+        const defaultsForAdmins = {
+            isOnboarded: true,
+            isAccountLocked: false,
+            phoneNumber: '0000000000'
+        };
+
+        let newUser = {
             ...data,
             lastLoginAt: now,
             password: hashedPassword
         };
+
+        if (isAdmin)
+            newUser = {
+                ...newUser,
+                ...defaultsForAdmins
+            };
+
         return this.db.user.create({ data: newUser });
     }
 
@@ -25,8 +39,16 @@ export class UserRepository {
         return this.db.user.findUnique({ where: { id: userId }, include: { userPreferences: true } });
     }
 
-    async findUserByEmail(email: string) {
+    async findUniqueUserByEmail(email: string) {
         return this.db.user.findUnique({ where: { email }, include: { userPreferences: true } });
+    }
+
+    async findUserByUsername(username: string) {
+        return this.db.user.findFirst({ where: { username }, include: { userPreferences: true } });
+    }
+
+    async findUniqueUserByEmailAndUsername(email: string, username: string) {
+        return this.db.user.findUnique({ where: { email, username }, include: { userPreferences: true } });
     }
 
     async updateUserById(userId: string, updatePayload: UpdateUserDto) {

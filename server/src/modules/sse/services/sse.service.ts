@@ -13,7 +13,7 @@ export class SSEService {
     private readonly userStreams = new Map<string, Subject<MessageEvent>>();
     private readonly userStreamConnections = new Map<string, number>();
 
-    streamForUser({ id: userId, name: username }: User): Observable<MessageEvent> {
+    streamForUser({ id: userId, username }: User): Observable<MessageEvent> {
         const stream = this.getOrCreateUserStream(userId);
         this.userStreamConnections.set(userId, (this.userStreamConnections.get(userId) ?? 0) + 1);
 

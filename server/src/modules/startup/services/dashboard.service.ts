@@ -1,0 +1,37 @@
+import { RegisterInputDto } from '@modules/identity/dto/auth.dto';
+import { UserService } from '@modules/identity/services/user.service';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
+import { ConflictException, Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
+
+@Injectable()
+export class DashboardService implements OnApplicationBootstrap {
+    private readonly logger = new Logger(DashboardService.name);
+
+    constructor(private readonly userService: UserService) {}
+
+    async onApplicationBootstrap(): Promise<void> {
+        const superUser: RegisterInputDto = {
+            firstName: 'Super',
+            lastName: 'User',
+            password: 'PocketPilot@123!',
+            email: 'superuser@pocketpilot.com'
+        } as const;
+
+        try {
+            await this.userService.registerUser(superUser);
+            this.logger.debug("The 'superuser' account has been created successfully.");
+        } catch (error) {
+            const prismaUserExistsErrorCodes: string[] = ['P2002'];
+
+            if (
+                error instanceof ConflictException ||
+                (error instanceof PrismaClientKnownRequestError && prismaUserExistsErrorCodes.includes(error.code))
+            ) {
+                this.logger.warn('Super user already exists. Skipping creation.');
+                return;
+            }
+
+            this.logger.error('Failed to create super user:', error);
+        }
+    }
+}
