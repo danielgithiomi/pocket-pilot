@@ -680,7 +680,7 @@ Expo customer mobile ---/          |          --> Redis (cache / selected infras
 Next.js staff dashboard ---------->|
        staff-only queries/actions  +--> Events/jobs --> inbox, email, foreground SSE, optional push
 
-frontend/shared --> serialisable contracts, constants, colours, and asset sources
+frontend/shared --> serializable contracts, constants, colours, and asset sources
 ```
 
 All clients go through authenticated, authorised NestJS contracts for domain data. Clients must not hold database
